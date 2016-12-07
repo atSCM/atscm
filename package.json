@@ -1,0 +1,67 @@
+{
+  "name": "atscm",
+  "version": "0.1.0",
+  "description": "Source code management utilities for atvise",
+  "main": "out/index.js",
+  "scripts": {
+    "compile": "babel src --out-dir out",
+    "compile:watch": "npm run compile -- --watch",
+    "docs": "esdoc -c esdoc.json",
+    "lint": "eslint src",
+    "test": "mocha --recursive --require babel-register",
+    "test:watch": "npm test -- --watch --reporter min",
+    "test:coverage": "NODE_ENV=test nyc --reporter=html npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm.git"
+  },
+  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm/issues"
+  },
+  "homepage": "https://github.com/atSCM/atscm#readme",
+  "devDependencies": {
+    "babel-plugin-istanbul": "^3.0.0",
+    "babel-preset-node6": "^11.0.0",
+    "babel-register": "^6.18.0",
+    "esdoc": "^0.4.8",
+    "eslint": "^3.11.1",
+    "eslint-config-lsage": "^0.1.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
+    "unexpected": "^10.20.0"
+  },
+  "eslintConfig": {
+    "extends": "lsage"
+  },
+  "babel": {
+    "presets": [
+      "node6"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "check-coverage": true
+  },
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "gulp": "^3.9.1"
+  }
+}

@@ -1,0 +1,23 @@
+machine:
+  environment:
+    # Save mocha test results
+    MOCHA_FILE: "$CIRCLE_TEST_REPORTS/mocha.xml"
+
+dependencies:
+  post:
+    # Needed for proper mocha test results
+    - npm install mocha-circleci-reporter
+
+test:
+  override:
+    # Run mocha tests
+    - npm test -- --reporter mocha-circleci-reporter
+    # Lint files
+    - node_modules/.bin/eslint -f junit src > $CIRCLE_TEST_REPORTS/eslint.xml
+    # Test coverage
+    - node_modules/.bin/nyc --reporter=html --report-dir=$CIRCLE_ARTIFACTS/coverage npm test
+  post:
+    # Create API docs and save them to artifacts
+    - npm run docs
+    - cp -R docs $CIRCLE_ARTIFACTS
+
