@@ -5,6 +5,8 @@ machine:
 
 dependencies:
   post:
+    # For some reason this plugin is not automatically installed inside the CircleCI container
+    - npm install eslint-plugin-import@latest
     # Needed for proper mocha test results
     - npm install mocha-circleci-reporter
 
