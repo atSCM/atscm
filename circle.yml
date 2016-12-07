@@ -17,7 +17,7 @@ test:
     # Lint files
     - node_modules/.bin/eslint -f junit src > $CIRCLE_TEST_REPORTS/eslint.xml
     # Test coverage
-    - node_modules/.bin/nyc --reporter=lcov > coverage.lcov npm test
+    - node_modules/.bin/nyc --reporter=text-lcov > coverage.lcov npm test
   post:
     # Create coverage report
     - bash <(curl -s https://codecov.io/bash)
