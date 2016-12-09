@@ -9,6 +9,7 @@ dependencies:
     - npm install eslint-plugin-import@latest
     # Needed for proper mocha test results
     - npm install mocha-circleci-reporter
+    - npm install codecov
 
 test:
   override:
@@ -23,5 +24,6 @@ test:
     - cp -R docs $CIRCLE_ARTIFACTS
   post:
     # Create coverage report
-    - bash <(curl -s https://codecov.io/bash)
+    - ./node_modules/.bin/codecov
+    # - bash <(curl -s https://codecov.io/bash)
 
