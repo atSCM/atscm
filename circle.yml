@@ -7,9 +7,13 @@ dependencies:
   post:
     # For some reason this plugin is not automatically installed inside the CircleCI container
     - npm install eslint-plugin-import@latest
+
     # Needed for proper mocha test results
     - npm install mocha-circleci-reporter
     - npm install codecov
+
+    # Needed for hosted API docs
+    - npm install esdoc-uploader
 
 test:
   override:
@@ -29,3 +33,9 @@ test:
     - node ./test/check-docs-coverage
     # Save API docs
     - cp -R docs/api $CIRCLE_ARTIFACTS
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - node_modules/.bin/esdoc-uploader
