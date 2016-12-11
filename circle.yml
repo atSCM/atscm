@@ -30,7 +30,7 @@ test:
     # Create API docs
     - npm run docs
     # Check docs coverage
-    - node ./test/check-docs-coverage
+    - node ./test/check-docs-coverage $CIRCLE_TEST_REPORTS/esdoc.xml
     # Save API docs
     - cp -R docs/api $CIRCLE_ARTIFACTS
 
