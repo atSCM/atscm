@@ -27,5 +27,6 @@ test:
     # - cp -R docs $CIRCLE_ARTIFACTS
   post:
     # Create coverage report
-    - ./node_modules/.bin/codecov
+    # - ./node_modules/.bin/codecov
+    - bash <(curl -s https://codecov.io/bash)
 
