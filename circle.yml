@@ -26,7 +26,4 @@ test:
     # Create API docs and save them to artifacts
     - npm run docs
     - cp -R docs $CIRCLE_ARTIFACTS
-  post:
-    # Create coverage report
-    - bash <(curl -s https://codecov.io/bash)
 
