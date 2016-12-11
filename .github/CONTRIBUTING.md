@@ -10,10 +10,7 @@ Builds will only pass if they meet the following criteria:
 
 - **No ESLint errors:** We use [ESLint](http://eslint.org) to lint our entire JavaScript code. The config used is [eslint-config-lsage](https://www.npmjs.com/package/eslint-config-lsage). Any lint errors will cause the build to fail.
 - **Test coverage >= 90%:** We use [istanbul](https://gotwarlost.github.io/istanbul/) to validate test coverage is at least 90 percent. Any commits not covered by tests will cause the build to fail.
-
-Additionally pull requests will not be merged unless they meet these (manually validated) criteria:
-
-- **Documentation coverage >= 90%:** Our source code is documented using [ESDoc](https://esdoc.org). We will only merge if your contribution is documented as well. 
+- **Documentation coverage >= 90%:** Our source code is documented using [ESDoc](https://esdoc.org). We will only merge if your contribution is documented as well.
 
 ## Setting up the development environment
 
