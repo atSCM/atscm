@@ -37,6 +37,9 @@ Our [mocha](https://mochajs.org) tests can be run by calling `npm test`. If you 
 
 Test coverage can be checked by running `npm run test:coverage`.
 
+### Creating API documentation
+
+Run `npm run docs` to create [ESDoc](https://esdoc.org) API documentation.
 
 <!-- TODO: Add steps for creating good issues -->
 <!-- TODO: Add links to documentation and manuals -->
