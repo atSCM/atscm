@@ -22,7 +22,7 @@ const fail = givenPercentage < RequiredPercentage;
 const msg = `Coverage is at ${docsCoverage.coverage} (${RequiredPercentage}% required)`;
 
 if (docsReportPath) { // Create JUnit XML Report
-  const report = `<testsuite tests="1">
+  const report = `<testsuite name="ESDoc coverage" tests="1">
   <testcase classname="ESDoc" name="Coverage">${
       fail ? `\n    <failure type="NotEnoughCoverage">${msg}</failure>\n` : ''
     }  </testcase>
