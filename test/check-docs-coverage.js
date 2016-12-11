@@ -14,8 +14,8 @@ const givenPercentage = parseInt(/([0-9]+)%/.exec(docsCoverage.coverage)[1], 10)
 // Report docs coverage
 const msg = `Documentation coverage is at ${docsCoverage.coverage}`;
 if (givenPercentage >= requiredPercentage) {
-  process.stdout.write(`${msg}.\r\n`);
+  process.stdout.write(`${msg}.\n`);
 } else {
-  process.stderr.write(`${msg}, ${requiredPercentage}% required.\r\n`);
+  process.stderr.write(`${msg}, ${requiredPercentage}% required.\n`);
   process.exit(1);
 }
