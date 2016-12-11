@@ -1,5 +1,9 @@
 // import { src, dest } from 'gulp4';
 
-export default function config() {
+/**
+ * Just testing
+ * @return {string} A test result
+ */
+export default function() {
   return 'config';
 }
