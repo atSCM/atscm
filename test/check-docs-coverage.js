@@ -1,5 +1,5 @@
 const joinPath = require('path').join;
-const { writeFileSync } = require('fs');
+const writeFileSync = require('fs').writeFileSync;
 const args = require('yargs').argv;
 const esdocConfig = require('../esdoc.json');
 
