@@ -1,7 +1,6 @@
 {
   "source": "./",
-  "includes": ["^(src|docs/typedef)/.*\\.js$"],
-  "destination": "./docs/api",
+  "destination": "./docs",
   "access": ["public", "package", "private"],
   "test": {
     "type": "mocha",
