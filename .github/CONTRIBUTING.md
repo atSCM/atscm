@@ -19,12 +19,6 @@ Additionally pull requests will not be merged unless they meet these (manually v
 
 > In order to meet out coding guideline it's very useful to have your development environment set up right.
 
-### Running tests
-
-Our [mocha](https://mochajs.org) tests can be run by calling `npm test`. If you want the tests to be run right after you saved your changes, then run `npm run test:watch`.
-
-Test coverage can be checked by running `npm run test:coverage`.
-
 ### Linting files
 
 You can lint all source files by running `npm run lint`. Although most IDEs support running it directly in the editor:
@@ -36,6 +30,13 @@ You can lint all source files by running `npm run lint`. Although most IDEs supp
 **Atom**
 
 [Atom](https://atom.io) has several packages that provide support for inline ESLint validation. We recommend you to use [linter-eslint](https://atom.io/packages/linter-eslint).
+
+### Running tests
+
+Our [mocha](https://mochajs.org) tests can be run by calling `npm test`. If you want the tests to be run right after you saved your changes, then run `npm run test:watch`.
+
+Test coverage can be checked by running `npm run test:coverage`.
+
 
 <!-- TODO: Add steps for creating good issues -->
 <!-- TODO: Add links to documentation and manuals -->
