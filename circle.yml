@@ -27,10 +27,9 @@ test:
     # Report coverage
     - node_modules/.bin/nyc report --reporter=lcov | node_modules/.bin/codecov
 
-    # Create API docs
+    # Create API docs and validate coverage
     - npm run docs
-    # Check docs coverage
-    - node ./test/check-docs-coverage $CIRCLE_TEST_REPORTS/esdoc.xml
+  post:
     # Save API docs
     - cp -R docs/api $CIRCLE_ARTIFACTS
 
