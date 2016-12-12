@@ -1,0 +1,71 @@
+{
+  "name": "atscm-cli",
+  "version": "0.1.0",
+  "description": "atSCM command line interface",
+  "main": "out/index.js",
+  "bin": {
+    "gulp": "out/bin/gulp.js"
+  },
+  "scripts": {
+    "compile": "babel src --out-dir out",
+    "compile:watch": "npm run compile -- --watch",
+    "docs": "esdoc -c esdoc.json",
+    "lint": "eslint src",
+    "test": "mocha --recursive --require babel-register test/**/*.spec.js",
+    "test:watch": "npm test -- --watch --reporter min",
+    "test:coverage": "NODE_ENV=test nyc --reporter=html npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm-cli.git"
+  },
+  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm-cli/issues"
+  },
+  "homepage": "https://github.com/atSCM/atscm-cli#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-istanbul": "^3.0.0",
+    "babel-preset-node6": "^11.0.0",
+    "babel-register": "^6.18.0",
+    "esdoc": "^0.4.8",
+    "esdoc-plugin-require-coverage": "^0.1.1",
+    "eslint": "^3.12.0",
+    "eslint-config-lsage": "^0.1.0",
+    "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
+    "unexpected": "^10.20.0"
+  },
+  "eslintConfig": {
+    "extends": "lsage"
+  },
+  "babel": {
+    "presets": [
+      "node6"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "check-coverage": true
+  },
+  "dependencies": {
+    "liftoff": "^2.3.0"
+  }
+}
