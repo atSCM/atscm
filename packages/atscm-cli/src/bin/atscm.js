@@ -1,4 +1,5 @@
 #!/usr/bin/env node
 
-import Liftoff from 'liftoff';
+import AtscmCli from '../';
 
+(new AtscmCli(process.argv)).launch();
