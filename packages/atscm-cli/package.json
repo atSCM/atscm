@@ -6,6 +6,9 @@
   "bin": {
     "atscm": "out/bin/atscm.js"
   },
+  "engines": {
+    "node": ">=6.0"
+  },
   "scripts": {
     "compile": "babel src --out-dir out",
     "compile:watch": "npm run compile -- --watch",
