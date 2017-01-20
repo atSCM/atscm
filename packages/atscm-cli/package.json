@@ -16,7 +16,8 @@
     "lint": "eslint src",
     "test": "mocha --recursive --require babel-register \"./test/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
-    "test:coverage": "NODE_ENV=test nyc --reporter=html npm test"
+    "test:coverage": "NODE_ENV=test nyc --reporter=html npm test",
+    "test:docs": "blcl docs/api"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "babel-plugin-istanbul": "^3.0.0",
     "babel-preset-node6": "^11.0.0",
     "babel-register": "^6.18.0",
+    "broken-link-checker-local": "^0.1.1",
     "esdoc": "^0.5.2",
     "esdoc-plugin-require-coverage": "^0.1.2",
     "eslint": "^3.12.0",
