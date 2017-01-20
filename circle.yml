@@ -1,4 +1,6 @@
 machine:
+  node:
+    version: 6.1
   environment:
     # Save mocha test results
     MOCHA_FILE: "$CIRCLE_TEST_REPORTS/mocha.xml"
