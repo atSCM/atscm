@@ -29,6 +29,8 @@ test:
 
     # Create API docs and validate coverage
     - npm run docs
+    # Check API docs for broken links
+    - npm run test:docs
   post:
     # Save API docs
     - cp -R docs/api $CIRCLE_ARTIFACTS
