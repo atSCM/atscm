@@ -11,7 +11,7 @@
     "compile:watch": "npm run compile -- --watch",
     "docs": "esdoc -c esdoc.json",
     "lint": "eslint src",
-    "test": "mocha --recursive --require babel-register test/**/*.spec.js",
+    "test": "mocha --recursive --require babel-register \"test/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "NODE_ENV=test nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
