@@ -74,7 +74,6 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static debug(...message) {
-    console.log('DEBUG CALLED');
     gulplog.debug(...message);
   }
 
@@ -83,7 +82,6 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static info(...message) {
-    console.log('INFO CALLED');
     gulplog.info(...message);
   }
 
@@ -92,7 +90,6 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static warn(...message) {
-    console.log('WARN CALLED');
     gulplog.warn(...message);
   }
 
@@ -101,7 +98,6 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static error(...message) {
-    console.log('ERROR CALLED');
     gulplog.error(...message);
   }
 
