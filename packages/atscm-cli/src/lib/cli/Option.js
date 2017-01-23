@@ -6,7 +6,7 @@ export default class Option {
   /**
    * Creates a new {@link Option} based on a description and some options.
    * @param {String} desc A string describing the option. Used for help texts.
-   * @param {Option} [options={}] The options to create the {@link Option} with. Refer to
+   * @param {Object} [options={}] The options to create the {@link Option} with. Refer to
    * [yarg's documentation](http://yargs.js.org/docs/#methods-optionskey-opt) in order to know what
    * options can be used here.
    */
