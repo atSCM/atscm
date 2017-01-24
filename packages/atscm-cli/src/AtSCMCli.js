@@ -84,7 +84,7 @@ export default class AtSCMCli extends Liftoff {
             y.strict();
             y.help('help', Options.help.desc);
             y.demandCommand(...command.demandCommand);
-          }, () => console.log(`Run command ${command.usage}`, !(this.command = command))),
+          }, () => (this.command = command)),
         yargs()
           .usage('Usage: $0 [cmd=run]')
           .options(GlobalOptions)
