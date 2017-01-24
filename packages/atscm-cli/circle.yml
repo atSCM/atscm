@@ -38,7 +38,7 @@ test:
     # Save API docs
     - cp -R docs/api $CIRCLE_ARTIFACTS
     # Upload coverage report
-    bash <(curl -s https://codecov.io/bash)
+    - bash <(curl -s https://codecov.io/bash)
 
 deployment:
   staging:
