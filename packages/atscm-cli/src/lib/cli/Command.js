@@ -1,14 +1,14 @@
 /**
  * A command that can be run through the CLI.
+ * @abstract
  */
 export default class Command {
 
   /**
    * Creates a new Command with the given name and options.
    * @param {String} name The command's name.
-   * @param {function(cli: AtSCMCli): Promise} run The action the command should run.
+   * @param {String} description The command's description.
    * @param {Object} options The options to apply.
-   * @param {String} options.description The command's description.
    * @param {Map<String, Option>} options.options The options available for this command.
    * @param {String} [options.arguments] The command's argument string. See
    * [yargs' documentation](http://yargs.js.org/docs/#methods-commandmodule-positional-arguments)
@@ -17,9 +17,9 @@ export default class Command {
    * requires.
    * @param {Number} [options.maxArguments] The maximum number or (non-option) arguments the command
    * requires.
-   * @throws {Error} Throws an error if options.description is not set.
+   * @throws {Error} Throws an error if options.maxArguments is less than options.minArguments.
    */
-  constructor(name, run, options = {}) {
+  constructor(name, description, options = {}) {
     /**
      * The command's name.
      * @type {String}
@@ -27,14 +27,10 @@ export default class Command {
     this.name = name;
 
     /**
-     * The action the command should run.
-     * @type {function(cli: AtSCMCli): Promise}
+     * The command descriptions.
+     * @type {String}
      */
-    this.run = run;
-
-    if (!options.description) {
-      throw new Error('options.description is required');
-    }
+    this.description = description;
 
     if (options.minArguments && options.maxArguments !== undefined
       && options.maxArguments < options.minArguments) {
@@ -47,6 +43,15 @@ export default class Command {
      * @private
      */
     this._options = options;
+  }
+
+  /**
+   * Runs the command with the current Cli instance. **Asynchronous commands should return a Promise
+   * here.**
+   * @param {AtSCMCli} cli The current cli instance.
+   */
+  run(cli) { // eslint-disable-line no-unused-vars
+    throw new Error('Must be implemented by all subclasses');
   }
 
   /**
@@ -81,14 +86,6 @@ export default class Command {
     }
 
     return ret;
-  }
-
-  /**
-   * The command descriptions.
-   * @type {String}
-   */
-  get description() {
-    return this._options.description;
   }
 
 }
