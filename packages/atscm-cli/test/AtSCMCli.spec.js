@@ -45,7 +45,7 @@ describe('AtSCMCli', function() {
     it('should fail with UsageError with an unknown argument', function() {
       return expect(unknownArgCli.parseArguments(), 'when rejected', 'to be a', UsageError);
     });
-    
+
     it('should report the invalid argument', function() {
       return expect(unknownArgCli.parseArguments(), 'when rejected',
         'to have message', 'Unknown argument: unknown'
@@ -105,7 +105,7 @@ describe('AtSCMCli', function() {
         });
     });
   });
-  
+
   /** @test {AtSCMCli#requireEnvironment} */
   describe('#requireEnvironment', function() {
     it('should fail without local module', function() {
@@ -125,7 +125,7 @@ describe('AtSCMCli', function() {
   describe('#getVersion', function() {
     it('should return cli version without local module', function() {
       return expect((new AtSCMCli()).getVersion(), 'when fulfilled',
-        'to equal', { cli: pkg.version, local: null })
+        'to equal', { cli: pkg.version, local: null });
     });
 
     it('should even return cli version with invalid cwd', function() {
