@@ -1,4 +1,4 @@
-import { realpathSync, readFileSync } from 'fs';
+import { realpathSync } from 'fs';
 import Liftoff from 'liftoff';
 import yargs from 'yargs';
 import pkg from '../package.json';
@@ -143,7 +143,7 @@ export default class AtSCMCli extends Liftoff {
 
         if (env.cwd !== process.cwd()) {
           // FIXME: call process.chdir here.
-          Logger.info('Changing CWD to', Logger.format.path(env.cwd))
+          Logger.info('Changing CWD to', Logger.format.path(env.cwd));
         }
 
         return env;
