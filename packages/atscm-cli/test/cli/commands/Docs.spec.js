@@ -10,7 +10,7 @@ const DocsCommand = proxyquire('../../../src/cli/commands/Docs', {
 
 /** @test {DocsCommand} */
 describe('DocsCommand', function() {
-  const command = new DocsCommand('docs', 'Open documentation');
+  const command = new DocsCommand('docs', 'Open documentation.');
 
   /** @test {DocsCommand#pathToOpen} */
   describe('#pathToOpen', function() {
