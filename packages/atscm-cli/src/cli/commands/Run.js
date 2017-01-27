@@ -1,3 +1,4 @@
+import { join } from 'path';
 import Command from '../../lib/cli/Command';
 import CliOptions from '../Options';
 
@@ -24,10 +25,25 @@ export default class RunCommand extends Command {
   }
 
   /**
-   * **Not implemented yet.**
+   * Runs gulp with the specified tasks.
+   * @param {AtSCMCli} cli The current Cli instance.
    */
-  run() {
-    throw new Error('Not implemented yet');
+  run(cli) {
+    const opts = {
+      _: cli.options.tasks,
+      tasks: cli.options.T,
+      tasksSimple: cli.options.tasksSimple,
+      tasksJson: cli.options.tasksJson,
+      continue: cli.options.continue,
+    };
+
+    // eslint-disable-next-line global-require
+    require('gulp-cli/lib/versioned/^4.0.0-alpha.2/')(
+      opts,
+      {
+        configPath: join(cli.environment.modulePath, '../Gulpfile.js'),
+        modulePath: join(cli.environment.cwd, 'node_modules/gulp'),
+      });
   }
 
 }
