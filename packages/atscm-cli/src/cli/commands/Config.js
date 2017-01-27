@@ -17,7 +17,7 @@ export default class ConfigCommand extends Command {
   }
 
   /**
-   * **Not implemented yet.
+   * **Not implemented yet**.
    */
   run() {
     throw new Error('Not implemented yet');
