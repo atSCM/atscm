@@ -1,14 +1,54 @@
+import { join } from 'path';
 import expect from 'unexpected';
+import { spy } from 'sinon';
+import proxyquire from 'proxyquire';
 
-import RunCommand from '../../../src/cli/commands/Run';
+const gulpCli = spy();
+const RunCommand = proxyquire('../../../src/cli/commands/Run', {
+  'gulp-cli/lib/versioned/^4.0.0-alpha.2/': gulpCli,
+}).default;
 
 /** @test {RunCommand} */
 describe('RunCommand', function() {
+  const command = new RunCommand('run', 'Run tasks.');
+
   /** @test {RunCommand#run} */
   describe('#run', function() {
-    it('is not implemented yet', function() {
-      expect(() => (new RunCommand('run', 'Run tasks')).run(),
-        'to throw error', 'Not implemented yet');
+    const cli = {
+      environment: {
+        cwd: __dirname,
+        modulePath: join(__dirname, 'out/index.js'),
+      },
+      options: {
+        tasks: ['task1', 'task2'],
+        T: 'tasks',
+        tasksJson: 'tasks-json',
+        tasksSimple: 'tasks-simple',
+        continue: 'continue',
+      },
+    };
+
+    afterEach(() => {
+      gulpCli.reset();
+    });
+
+    it('should run gulp-cli', function() {
+      command.run(cli);
+
+      expect(gulpCli.calledOnce, 'to be', true);
+      expect(gulpCli.lastCall.args, 'to equal', [
+        {
+          _: ['task1', 'task2'],
+          tasks: 'tasks',
+          tasksSimple: 'tasks-simple',
+          tasksJson: 'tasks-json',
+          continue: 'continue',
+        },
+        {
+          configPath: join(__dirname, 'out/Gulpfile.js'),
+          modulePath: join(__dirname, 'node_modules/gulp'),
+        },
+      ]);
     });
   });
 });
