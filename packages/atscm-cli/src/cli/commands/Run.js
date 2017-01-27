@@ -1,4 +1,5 @@
 import Command from '../../lib/cli/Command';
+import CliOptions from '../Options';
 
 /**
  * The command invoked when running "run".
@@ -13,6 +14,12 @@ export default class RunCommand extends Command {
   constructor(name, description) {
     super(name, description, {
       arguments: '[tasks...]',
+      options: {
+        tasks: CliOptions.tasks,
+        'tasks-simple': CliOptions['tasks-simple'],
+        'tasks-json': CliOptions['tasks-json'],
+        continue: CliOptions.continue,
+      },
     });
   }
 
