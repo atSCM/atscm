@@ -16,6 +16,7 @@ import Option from '../lib/cli/Option';
 const Options = {
   browser: Option.string('Which browser to open in.'),
   cli: Option.boolean('Open CLI documentation.'),
+  continue: Option.boolean('Continue execution of tasks upon failure.'),
   cwd: Option.string('Manually set the CWD.'),
   help: Option.boolean('Show this help.'),
   'log-level': new Option('Set the Logger level. ' +
@@ -29,6 +30,11 @@ const Options = {
     'This will set the CWD to the Atviseproject file\'s directory as well.',
     { alias: 'p' }),
   silent: Option.boolean('Suppress all logging.', { alias: 'S' }),
+  tasks: Option.boolean('Print the task dependency tree.', {
+    alias: 'T',
+  }),
+  'tasks-simple': Option.boolean('Print a plaintext list of tasks.'),
+  'tasks-json': Option.boolean('Print the task dependency tree, in JSON format.'),
   version: Option.boolean('Print version.', { alias: 'v' }),
 };
 
