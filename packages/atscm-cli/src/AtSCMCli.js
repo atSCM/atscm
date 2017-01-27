@@ -51,7 +51,7 @@ export default class AtSCMCli extends Liftoff {
 
     /**
      * The options parsed from {@link AtSCMCli#_argv}. Note that **these options are not complete**
-     * until {@link AtSCMCli#lauch} was called.
+     * until {@link AtSCMCli#launch} was called.
      * @type {Object}
      */
     this.options = yargs(argv).option(GlobalOptions).argv;
@@ -183,8 +183,8 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Runs the command specified in the command line arguments ({@link AtSCMCli#_argv}). **Note that
-   * this will only work if {@link AtSCMCli#parseArguments} was called before!**
-   * @return {Promise<*, Error>} Fullfilled if the command succeeded.
+   * this will only work if {@link AtSCMCli#parseArguments} was called before.**
+   * @return {Promise<*, Error>} Fulfilled if the command succeeded.
    */
   runCommand() {
     if (this.options.version) {
