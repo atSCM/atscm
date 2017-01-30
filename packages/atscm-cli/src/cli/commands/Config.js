@@ -23,6 +23,7 @@ export default class ConfigCommand extends Command {
    * @param {AtSCMCli} cli The current Cli instance.
    */
   run(cli) {
+    // eslint-disable-next-line global-require
     const config = require(cli.environment.configPath).default;
 
     Logger.info(
