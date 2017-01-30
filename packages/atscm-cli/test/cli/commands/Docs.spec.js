@@ -81,4 +81,11 @@ describe('DocsCommand', function() {
       expect(openSpy.lastCall.args[1], 'to equal', 'custombrowser');
     });
   });
+
+  /** @test {DocsCommand#requiresEnvironment} */
+  describe('#requiresEnvironment', function() {
+    it('should return false if `--cli` is used', function() {
+      expect(command.requiresEnvironment({ options: { cli: true } }), 'to be', false);
+    });
+  });
 });
