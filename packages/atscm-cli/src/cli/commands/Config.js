@@ -19,7 +19,8 @@ export default class ConfigCommand extends Command {
   }
 
   /**
-   * **Not implemented yet**.
+   * Prints the project's configuration.
+   * @param {AtSCMCli} cli The current Cli instance.
    */
   run(cli) {
     const config = require(cli.environment.configPath).default;
