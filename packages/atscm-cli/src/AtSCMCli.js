@@ -192,7 +192,10 @@ export default class AtSCMCli extends Liftoff {
     }
 
     if (this.command) {
-      return this.requireEnvironment()
+      return (this.command.requiresEnvironment(this) ?
+        this.requireEnvironment() :
+        Promise.resolve()
+      )
         .then(() => this.command.run(this));
     }
 
