@@ -30,15 +30,38 @@ export default class AtSCMCli extends Liftoff {
   }
 
   /**
+   * Reports an error and exits the process with return code `1`.
+   * @param {Error} err The error that occurred.
+   */
+  _reportCliError(err) {
+    Logger.error(Logger.colors.red(err.message));
+
+    if (err instanceof UsageError) {
+      Logger.info(err.help);
+    } else {
+      Logger.debug(err.stack);
+    }
+
+    process.exitCode = 1;
+  }
+
+  /**
    * Creates a new {@link AtSCMCli} object based on command line arguments.
    * @param {String[]} argv The command line arguments to use. If no command is provided and neither
    * `--help` nor `--version` are used, the command `run` is added.
+   * @throws {UsageError} Throws an error if option parsing fails.
    */
   constructor(argv = []) {
     super({
       name: AtSCMCli.BinName,
       configName: AtSCMCli.ConfigName,
     });
+
+    /**
+     * `true` if the instance was created by running the binaries, `false` if used programmatically.
+     * @type {Boolean}
+     */
+    this.runViaCli = realpathSync(process.argv[1]) === require.resolve('./bin/atscm');
 
     /**
      * The raw, unparsed command line arguments the Cli was created with.
@@ -54,7 +77,19 @@ export default class AtSCMCli extends Liftoff {
      * until {@link AtSCMCli#launch} was called.
      * @type {Object}
      */
-    this.options = yargs(argv).option(GlobalOptions).argv;
+    this.options = yargs(argv).option(GlobalOptions)
+      .fail((msg, e, y) => {
+        const err = new UsageError(msg, y.help());
+
+        if (this.runViaCli) {
+          gulplog.on('error', () => {}); // Prevent logger to throw an error
+
+          this._reportCliError(err);
+        } else {
+          throw err;
+        }
+      })
+      .argv;
 
     if (!this.options.help && !this.options.version) {
       if (this.options._.filter(e => commandNames.includes(e)).length === 0) {
@@ -93,12 +128,6 @@ export default class AtSCMCli extends Liftoff {
           .help('help', Options.help.desc)
           .alias('help', 'h')
       );
-
-    /**
-     * `true` if the instance was created by running the binaries, `false` if used programmatically.
-     * @type {Boolean}
-     */
-    this.runViaCli = realpathSync(process.argv[1]) === require.resolve('./bin/atscm');
   }
 
   /**
@@ -215,17 +244,7 @@ export default class AtSCMCli extends Liftoff {
 
     if (this.runViaCli) {
       return app
-        .catch(err => {
-          Logger.error(Logger.colors.red(err.message));
-
-          if (err instanceof UsageError) {
-            Logger.info(err.help);
-          } else {
-            Logger.debug(err.stack);
-          }
-
-          process.exitCode = 1;
-        });
+        .catch(err => this._reportCliError(err));
     }
 
     return app;

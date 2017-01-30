@@ -12,6 +12,10 @@ import pkg from '../package.json';
 describe('AtSCMCli', function() {
   /** @test {AtSCMCli#constructor} */
   describe('#constructor', function() {
+    it('should throw UsageError with invalid options', function() {
+      expect(() => new AtSCMCli(['--cwd']), 'to throw');
+    });
+
     it('should create an instance of Liftoff', function() {
       expect(new AtSCMCli(), 'to be a', Liftoff);
     });
