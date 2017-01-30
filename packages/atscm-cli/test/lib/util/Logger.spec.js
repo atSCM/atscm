@@ -38,8 +38,8 @@ describe('LogFormat', function() {
     });
   });
 
-  /** @test {LogFormat#number} */
-  describe('#number', function() {
+  /** @test {LogFormat.number} */
+  describe('.number', function() {
     it('should return magenta colored text', function() {
       expectStyle(Logger.format.number(text), Logger.colors.styles.magenta);
     });
