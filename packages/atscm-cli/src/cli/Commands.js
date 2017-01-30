@@ -1,6 +1,6 @@
-import DocsCommand from './commands/Docs';
 import RunCommand from './commands/Run';
 import ConfigCommand from './commands/Config';
+import DocsCommand from './commands/Docs';
 
 /**
  * CLI commands available.
@@ -8,8 +8,8 @@ import ConfigCommand from './commands/Config';
  */
 const Commands = [
   new RunCommand('run', '(default) Run tasks.'),
-  new DocsCommand('docs', 'Open documentation.'),
   new ConfigCommand('config', 'Validate and print config file.'),
+  new DocsCommand('docs', 'Open documentation.'),
 ];
 
 export default Commands;
