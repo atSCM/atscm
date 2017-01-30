@@ -55,6 +55,14 @@ export default class Command {
   }
 
   /**
+   * Returns `true` if the command requires a {@link Liftoff.Environment} before it can be run.
+   * @param {AtSCMCli} cli The current cli instance.
+   */
+  requiresEnvironment(cli) { // eslint-disable-line no-unused-vars
+    return true;
+  }
+
+  /**
    * Returns the usage string for the command. Something like "{name} {arguments}".
    * @type {String}
    */
