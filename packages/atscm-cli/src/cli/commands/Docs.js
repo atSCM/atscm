@@ -45,4 +45,12 @@ export default class DocsCommand extends Command {
     open(this.pathToOpen(cli), cli.options.browser);
   }
 
+  /**
+   * Returns `true` if the `--cli` option is used.
+   * @param {AtSCMCli} cli The current cli instance.
+   */
+  requiresEnvironment(cli) {
+    return !cli.options.cli;
+  }
+
 }
