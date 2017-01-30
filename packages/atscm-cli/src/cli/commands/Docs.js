@@ -46,8 +46,9 @@ export default class DocsCommand extends Command {
   }
 
   /**
-   * Returns `true` if the `--cli` option is used.
+   * Returns `false` if the `--cli` option is used.
    * @param {AtSCMCli} cli The current cli instance.
+   * @return {Boolean} `false` if the `--cli` option is used.
    */
   requiresEnvironment(cli) {
     return !cli.options.cli;
