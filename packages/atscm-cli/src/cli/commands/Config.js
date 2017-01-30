@@ -1,3 +1,5 @@
+import { inspect } from 'util';
+import Logger from '../../lib/util/Logger';
 import Command from '../../lib/cli/Command';
 
 /**
@@ -19,8 +21,13 @@ export default class ConfigCommand extends Command {
   /**
    * **Not implemented yet**.
    */
-  run() {
-    throw new Error('Not implemented yet');
+  run(cli) {
+    const config = require(cli.environment.configPath).default;
+
+    Logger.info(
+      'Configuration at', Logger.format.path(cli.environment.configPath),
+      `\n${inspect(config, { colors: true, depth: null })}`,
+    );
   }
 
 }
