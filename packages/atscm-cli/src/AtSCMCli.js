@@ -1,6 +1,7 @@
 import { realpathSync } from 'fs';
 import Liftoff from 'liftoff';
 import yargs from 'yargs';
+import gulplog from 'gulplog';
 import pkg from '../package.json';
 import Logger from './lib/util/Logger';
 import Options, { GlobalOptions } from './cli/Options';
