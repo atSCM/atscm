@@ -37,4 +37,11 @@ export default class NodeId extends OpcNodeId {
     }
   }
 
+  inspect(depth, options) {
+    return [
+      options.stylize(this.namespace, 'number'),
+      options.stylize(this.value, this.identifierType === Type.NUMERIC ? 'number' : 'string'),
+    ].join(' ');
+  }
+
 }

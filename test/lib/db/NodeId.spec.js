@@ -1,4 +1,5 @@
 import expect from 'unexpected';
+import { spy } from 'sinon';
 
 import { NodeId as OpcNodeId } from 'node-opcua';
 import NodeId from '../../../src/lib/db/NodeId';
@@ -62,6 +63,35 @@ describe('NodeId', function() {
 
     it('should extend node-opcua\'s NodeId', function() {
       expect((new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)), 'to be a', OpcNodeId);
+    });
+  });
+
+  /** @test {NodeId#inspect} */
+  describe('#inspect', function() {
+    const opts = {
+      stylize: spy(t => t),
+    };
+
+    beforeEach(() => opts.stylize.reset());
+
+    it('should return "namespace value"', function() {
+      const nodeId = new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS', 1);
+
+      expect(nodeId.inspect(0, opts), 'to match', /1 AGENT\.DISPLAYS/);
+    });
+
+    it('should style string id as string', function() {
+      (new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS', 1)).inspect(0, opts);
+
+      expect(opts.stylize.calledTwice, 'to be true');
+      expect(opts.stylize.lastCall.args, 'to equal', ['AGENT.DISPLAYS', 'string']);
+    });
+
+    it('should style numeric id as number', function() {
+      (new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)).inspect(0, opts);
+
+      expect(opts.stylize.calledTwice, 'to be true');
+      expect(opts.stylize.lastCall.args, 'to equal', [123, 'number']);
     });
   });
 });
