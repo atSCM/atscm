@@ -58,6 +58,17 @@ export default class AtSCMCli extends Liftoff {
       configName: AtSCMCli.ConfigName,
     });
 
+    this.on('require', function(name) {
+      Logger.debug('Requiring external module', Logger.colors.magenta(name));
+    });
+
+    this.on('requireFail', function(name) {
+      Logger.error(
+        Logger.colors.red('Failed to load external module'),
+        Logger.colors.magenta(name)
+      );
+    });
+
     /**
      * `true` if the instance was created by running the binaries, `false` if used programmatically.
      * @type {Boolean}
@@ -155,6 +166,7 @@ export default class AtSCMCli extends Liftoff {
       super.launch({
         cwd: this.options.cwd,
         configPath: this.options.projectfile,
+        require: this.options.require,
       }, env => resolve(this.environment = env));
     });
   }
