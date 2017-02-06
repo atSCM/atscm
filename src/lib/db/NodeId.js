@@ -17,8 +17,8 @@ export default class NodeId extends OpcNodeId {
   /**
    * Creates a new NodeId. Can be called in multiple ways:
    *  - with a {@link NodeOpcua.NodeIdType}, a value and a namespace (defaults to 0),
-   *  - with a value only (type will be taken from it, namespace defaults to 1)
-   *  - with a {@link NodeId}s string representation (e.g. `ns=1;s=AGENT.DISPLAYS`)
+   *  - with a value only (type will be taken from it, namespace defaults to 1) or
+   *  - with a {@link NodeId}s string representation (e.g. `ns=1;s=AGENT.DISPLAYS`).
    * @param {NodeOpcua.NodeIdType|String|Number} typeOrValue The type or value to use.
    * @param {(Number|String)} [value] The value to use.
    * @param {Number} [namespace=1] The namespace to use.
