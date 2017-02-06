@@ -31,7 +31,7 @@ export default class ConfigCommand extends Command {
 
     Logger.info(
       'Configuration at', Logger.format.path(cli.environment.configPath),
-      `\n${inspect(config, { colors: true, depth: null })}`
+      `\n${inspect(config, { colors: true, depth: null, breakLength: 0 })}`
     );
   }
 
