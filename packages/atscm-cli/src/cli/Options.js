@@ -29,6 +29,7 @@ const Options = {
   projectfile: Option.string('Manually set path of Atviseproject file to use. ' +
     'This will set the CWD to the Atviseproject file\'s directory as well.',
     { alias: 'p' }),
+  require: Option.string('Will require a module before running atscm.'),
   silent: Option.boolean('Suppress all logging.', { alias: 'S' }),
   tasks: Option.boolean('Print the task dependency tree.', {
     alias: 'T',
@@ -47,6 +48,7 @@ export default Options;
 export const GlobalOptions = {
   projectfile: Options.projectfile,
   cwd: Options.cwd,
+  require: Options.require,
   version: Options.version,
   help: Options.help,
   silent: Options.silent,
