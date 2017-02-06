@@ -26,6 +26,9 @@ export default class ConfigCommand extends Command {
     // eslint-disable-next-line global-require
     const config = require(cli.environment.configPath).default;
 
+    inspect.styles.number = 'magenta';
+    inspect.styles.string = 'cyan';
+
     Logger.info(
       'Configuration at', Logger.format.path(cli.environment.configPath),
       `\n${inspect(config, { colors: true, depth: null })}`
