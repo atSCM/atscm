@@ -118,7 +118,8 @@ describe('InitTask', function() {
             // Expect code can be transpiled
             const configCode = configs[0].contents.toString();
             let resultingCode;
-            expect(() => (resultingCode = transform(configCode, createdFiles)), 'not to throw');
+            expect(() => (resultingCode = transform(configCode, createdFiles)
+              .replace(/require\(['|"]atscm['|"]\)/, 'require(\'../../../\')')), 'not to throw');
 
             // Expect transpiled code to be runnable
             let config;
