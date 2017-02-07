@@ -34,13 +34,17 @@
     "babel-preset-node6": "^11.0.0",
     "babel-register": "^6.18.0",
     "broken-link-checker-local": "^0.1.1",
+    "coffee-script": "^1.12.3",
     "esdoc": "^0.5.2",
     "esdoc-plugin-require-coverage": "^0.1.1",
     "eslint": "^3.11.1",
     "eslint-config-lsage": "^0.1.0",
+    "eval": "^0.1.2",
     "mocha": "^3.2.0",
     "nyc": "^10.0.0",
+    "proxyquire": "^1.7.11",
     "sinon": "^1.17.7",
+    "typescript": "^2.1.5",
     "unexpected": "^10.20.0",
     "yargs": "^6.5.0"
   },
@@ -75,8 +79,13 @@
     "check-coverage": true
   },
   "dependencies": {
-    "gulp4": "^4.0.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-compile-handlebars": "^0.6.1",
+    "handlebars-helpers": "^0.8.0",
     "node-opcua": "0.0.60",
-    "validate-npm-package-name": "^2.2.2"
+    "stream-to-promise": "^2.2.0",
+    "through2": "^2.0.3",
+    "validate-npm-package-name": "^2.2.2",
+    "vinyl": "^2.0.1"
   }
 }
