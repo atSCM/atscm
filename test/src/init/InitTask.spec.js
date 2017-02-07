@@ -16,8 +16,6 @@ import pkg from '../../../package.json';
 import { ConfigLangs } from '../../../src/init/Options';
 import Atviseproject from '../../../src/lib/config/Atviseproject';
 
-import { inspect } from 'util';
-
 // const srcSpy = spy(() => ({ pipe: () => {} }));
 // const handlebarsSpy = spy(() => ({ pipe: () => {} }));
 const destSpy = spy((c, e, cb) => cb(null));
