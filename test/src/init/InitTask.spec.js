@@ -29,12 +29,12 @@ const gulpStub = {
 
 const handlebarsSpy = spy(handlebars);
 
-const InitTask = proxyquire('../../../src/init/init', {
+const InitTask = proxyquire('../../../src/init/InitTask', {
   gulp: gulpStub,
   handlebars: {
     default: handlebarsSpy,
   },
-}).InitTask;
+}).default;
 
 /** @test {InitTask} */
 describe('InitTask', function() {
