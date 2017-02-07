@@ -4,8 +4,8 @@ import Validator from '../../../src/init/OptionsValidator';
 
 /** @test {InitOptionsValidator} */
 describe('InitOptionsValidator', function() {
-  /** @test {InitOptionsValidator#name} */
-  describe('#name', function() {
+  /** @test {InitOptionsValidator.name} */
+  describe('.name', function() {
     it('should fail for empty names', function() {
       expect(Validator.name(''), 'to match', /must be greater than zero/);
     });
