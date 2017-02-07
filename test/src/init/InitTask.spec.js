@@ -9,7 +9,7 @@ import { src } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
 import { transform as babelTransform } from 'babel-core';
 import { transpileModule as tsTransform } from 'typescript';
-import { compile as coffeeTransform } from 'coffee-script';
+// import { compile as coffeeTransform } from 'coffee-script';
 import evaluate from 'eval';
 
 import pkg from '../../../package.json';
