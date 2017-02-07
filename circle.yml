@@ -20,7 +20,7 @@ dependencies:
 test:
   override:
     # Link module
-    npm link .
+    - npm link .
 
     # Lint files
     - node_modules/.bin/eslint -f junit src > $CIRCLE_TEST_REPORTS/eslint.xml
