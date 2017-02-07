@@ -3,9 +3,6 @@ import { src, dest } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
 import helpers from 'handlebars-helpers';
 import streamToPromise from 'stream-to-promise';
-
-import { ConfigLangs } from './Options';
-
 import { obj as createStream } from 'through2';
 
 export class InitTask {
