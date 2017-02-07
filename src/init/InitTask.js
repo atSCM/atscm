@@ -4,7 +4,7 @@ import handlebars from 'gulp-compile-handlebars';
 import helpers from 'handlebars-helpers';
 import streamToPromise from 'stream-to-promise';
 
-export class InitTask {
+export default class InitTask {
 
   static filesToHandle(langId) {
     return [
