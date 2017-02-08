@@ -18,11 +18,7 @@ dependencies:
     - npm install esdoc-uploader
 
     # Needed as long as atscm is not published
-    - cd ../
-    - git clone https://github.com/atSCM/atscm.git
-    - cd atscm
-    - npm install
-    - cd ../atscm-cli
+    - cd ../ && git clone https://github.com/atSCM/atscm.git && cd atscm && npm install
 
 test:
   override:
