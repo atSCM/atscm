@@ -16,8 +16,8 @@ const LoggerSpy = {
   error: spy(),
   applyOptions: spy(),
   colors,
-  format: LogFormat
-}
+  format: LogFormat,
+};
 
 const AtSCMCli = proxyquire('../src/AtSCMCli', {
   './lib/util/Logger': {
@@ -34,7 +34,8 @@ describe('AtSCMCli', function() {
     LoggerSpy.warn.reset();
     LoggerSpy.error.reset();
     LoggerSpy.applyOptions.reset();
-  })
+  });
+
   /** @test {AtSCMCli#constructor} */
   describe('#constructor', function() {
     it('should throw UsageError with invalid options', function() {
