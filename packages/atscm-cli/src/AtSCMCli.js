@@ -181,13 +181,12 @@ export default class AtSCMCli extends Liftoff {
   requireEnvironment() {
     return this.getEnvironment()
       .then(env => {
-        if (!env.modulePath || !env.configPath) {
+        if (!env.modulePath) {
           throw new Error(`Local ${AtSCMCli.BinName} not found`);
         }
 
-        if (env.cwd !== process.cwd()) {
-          // FIXME: call process.chdir here.
-          Logger.info('Changing CWD to', Logger.format.path(env.cwd));
+        if (!env.configPath) {
+          throw new Error('No config file found');
         }
 
         return env;
