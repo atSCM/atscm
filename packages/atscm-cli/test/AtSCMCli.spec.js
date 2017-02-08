@@ -1,15 +1,40 @@
 import expect from 'unexpected';
 import { spy, stub } from 'sinon';
+import proxyquire from 'proxyquire';
 
+import colors from 'chalk';
 import Liftoff from 'liftoff';
-import AtSCMCli from '../src/AtSCMCli';
+import { LogFormat } from '../src/lib/util/Logger';
 import UsageError from '../src/lib/error/UsageError';
-import Logger from '../src/lib/util/Logger';
 import Command from '../src/lib/cli/Command';
 import pkg from '../package.json';
 
+const LoggerSpy = {
+  debug: spy(),
+  info: spy(),
+  warn: spy(),
+  error: spy(),
+  applyOptions: spy(),
+  colors,
+  format: LogFormat
+}
+
+const AtSCMCli = proxyquire('../src/AtSCMCli', {
+  './lib/util/Logger': {
+    _esModule: true,
+    default: LoggerSpy,
+  },
+}).default;
+
 /** @test {AtSCMCli} */
 describe('AtSCMCli', function() {
+  beforeEach(() => {
+    LoggerSpy.debug.reset();
+    LoggerSpy.info.reset();
+    LoggerSpy.warn.reset();
+    LoggerSpy.error.reset();
+    LoggerSpy.applyOptions.reset();
+  })
   /** @test {AtSCMCli#constructor} */
   describe('#constructor', function() {
     it('should throw UsageError with invalid options', function() {
@@ -145,24 +170,21 @@ describe('AtSCMCli', function() {
 
   /** @test {AtSCMCli#printVersion} */
   describe('#printVersion', function() {
-    beforeEach(() => stub(Logger, 'info'));
-    afterEach(() => Logger.info.restore());
-
     it('should print cli version only without local module', function() {
       return expect((new AtSCMCli()).printVersion(), 'to be fulfilled')
         .then(() => {
-          expect(Logger.info.calledOnce, 'to be', true);
-          expect(Logger.info.lastCall.args[0], 'to match', /CLI version/);
-          expect(Logger.info.lastCall.args[1], 'to match', new RegExp(pkg.version));
+          expect(LoggerSpy.info.calledOnce, 'to be', true);
+          expect(LoggerSpy.info.lastCall.args[0], 'to match', /CLI version/);
+          expect(LoggerSpy.info.lastCall.args[1], 'to match', new RegExp(pkg.version));
         });
     });
 
     it('should print cli and local version with local module', function() {
       return expect((new AtSCMCli(['--cwd', 'test/fixtures'])).printVersion(), 'to be fulfilled')
         .then(() => {
-          expect(Logger.info.calledTwice, 'to be', true);
-          expect(Logger.info.lastCall.args[0], 'to match', /Local version/);
-          expect(Logger.info.lastCall.args[1], 'to match', /latest/);
+          expect(LoggerSpy.info.calledTwice, 'to be', true);
+          expect(LoggerSpy.info.lastCall.args[0], 'to match', /Local version/);
+          expect(LoggerSpy.info.lastCall.args[1], 'to match', /latest/);
         });
     });
   });
@@ -193,16 +215,13 @@ describe('AtSCMCli', function() {
         });
     });
 
-    before(() => spy(Logger, 'warn'));
-    after(() => Logger.warn.restore());
-
     it('should warn if no command is used', function() {
       const cli = new AtSCMCli(['--cwd', 'test/fixtures']);
 
       return cli.runCommand()
         .then(() => {
-          expect(Logger.warn.calledOnce, 'to be', true);
-          expect(Logger.warn.lastCall.args[0], 'to contain', 'No command specified');
+          expect(LoggerSpy.warn.calledOnce, 'to be', true);
+          expect(LoggerSpy.warn.lastCall.args[0], 'to contain', 'No command specified');
         });
     });
   });
