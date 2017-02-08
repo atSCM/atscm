@@ -100,7 +100,7 @@ export default class InitCommand extends Command {
     Logger.info('Installing latest version of atscm...');
 
     // FIXME: call with (path, 'atscm') once atscm is published
-    return this.install(path, join(__dirname, '../../../', process.env.ATSCM_CLI_LOCAL_NAME));
+    return this.install(path, join(__dirname, '../../../../atscm'));
   }
 
   /**
