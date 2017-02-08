@@ -23,3 +23,7 @@
 /**
  * @external {yargs} http://yargs.js.org
  */
+
+/**
+ * @external {node.stream.Readable} https://nodejs.org/api/stream.html#stream_class_stream_readable
+ */

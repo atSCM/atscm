@@ -3,6 +3,7 @@ import expect from 'unexpected';
 import { stub } from 'sinon';
 
 import gulplog from 'gulplog';
+import { obj as createStream } from 'through2';
 import Logger from '../../../src/lib/util/Logger';
 
 /** @test {LogFormat} */
@@ -57,11 +58,8 @@ describe('Logger', function() {
   let warnSpy;
   let errorSpy;
 
-  before(function() {
-    Logger.applyOptions({ });
-  });
-
   beforeEach(function() {
+    stub(process.stdout, 'write');
     debugSpy = stub(gulplog, 'debug');
     infoSpy = stub(gulplog, 'info');
     warnSpy = stub(gulplog, 'warn');
@@ -69,6 +67,7 @@ describe('Logger', function() {
   });
 
   afterEach(function() {
+    process.stdout.write.restore();
     gulplog.debug.restore();
     gulplog.info.restore();
     gulplog.warn.restore();
@@ -117,6 +116,28 @@ describe('Logger', function() {
       expect(errorSpy.calledOnce, 'to be', true);
 
       expect(errorSpy.lastCall.args, 'to equal', [t]);
+    });
+  });
+
+  /** @test {Logger.pipeLastLine} */
+  describe('.pipeLastLine', function() {
+    it('should print last line of each chunk', function(done) {
+      const stream = createStream((c, e, cb) => cb(null, c));
+
+      Logger.pipeLastLine(stream);
+
+      stream.on('end', () => {
+        const a = process.stdout.write.args;
+
+        expect(a[a.length - 5][0], 'to match', /last 1$/);
+        expect(a[a.length - 3][0], 'to match', /last 2$/);
+
+        done();
+      });
+
+      stream.push('first\nlast 1'); // should log [HH:MM:SS] last 1
+      stream.push('first\nlast 2'); // should log [HH:MM:SS] last 2
+      stream.end();
     });
   });
 });
