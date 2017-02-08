@@ -70,6 +70,26 @@ export default class Logger {
   }
 
   /**
+   * The prefix added to each log. Should always equal
+   * [fancy-logs prefix](https://github.com/js-cli/fancy-log/blob/master/index.js#L8).
+   * @type {String}
+   */
+  static get prefix() {
+    function pad(val) {
+      return `00${val}`.slice(-2);
+    }
+
+    const now = new Date();
+    const timestamp = [
+      pad(now.getHours()),
+      pad(now.getMinutes()),
+      pad(now.getSeconds()),
+    ].join(':');
+
+    return `[${chalk.gray(timestamp)}]`;
+  }
+
+  /**
    * Print debug messages.
    * @param {...String} message The message(s) to print.
    */
@@ -108,6 +128,24 @@ export default class Logger {
    */
   static applyOptions(options) {
     toConsole(gulplog, options);
+  }
+
+  /**
+   * Pipes a readable stream and logs the last line of each chunk processed.
+   * @param {node.stream.Readable} stream The stream to pipe.
+   */
+  static pipeLastLine(stream) {
+    stream
+      .on('data', d => {
+        const lines = d.toString().split('\n').filter(l => l !== '');
+
+        process.stdout.clearLine();
+        process.stdout.write(`\r${Logger.prefix} ${lines[lines.length - 1]}`);
+      })
+      .on('end', () => {
+        process.stdout.clearLine();
+        process.stdout.write('\r');
+      });
   }
 
 }
