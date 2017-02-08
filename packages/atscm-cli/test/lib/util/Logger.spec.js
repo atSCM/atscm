@@ -1,10 +1,15 @@
 /* eslint-disable no-console */
 import expect from 'unexpected';
-import { stub } from 'sinon';
+import { stub, spy } from 'sinon';
+import proxyquire from 'proxyquire';
 
 import gulplog from 'gulplog';
 import { obj as createStream } from 'through2';
-import Logger from '../../../src/lib/util/Logger';
+
+const toConsole = spy();
+const Logger = proxyquire('../../../src/lib/util/Logger', {
+  'gulp-cli/lib/shared/log/toConsole': toConsole,
+}).default;
 
 /** @test {LogFormat} */
 describe('LogFormat', function() {
@@ -116,6 +121,17 @@ describe('Logger', function() {
       expect(errorSpy.calledOnce, 'to be', true);
 
       expect(errorSpy.lastCall.args, 'to equal', [t]);
+    });
+  });
+
+  /** @test {Logger.applyOptions} */
+  describe('.applyOptions', function() {
+    it('should forward options to gulp-cli', function() {
+      const options = { silent: true };
+      Logger.applyOptions(options);
+
+      expect(toConsole.calledOnce, 'to be', true);
+      expect(toConsole.lastCall.args, 'to equal', [gulplog, options]);
     });
   });
 
