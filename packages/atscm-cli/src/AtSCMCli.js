@@ -2,6 +2,7 @@ import { realpathSync } from 'fs';
 import Liftoff from 'liftoff';
 import yargs from 'yargs';
 import gulplog from 'gulplog';
+import { jsVariants } from 'interpret';
 import pkg from '../package.json';
 import Logger from './lib/util/Logger';
 import Options, { GlobalOptions } from './cli/Options';
@@ -56,6 +57,7 @@ export default class AtSCMCli extends Liftoff {
     super({
       name: AtSCMCli.BinName,
       configName: AtSCMCli.ConfigName,
+      extensions: jsVariants,
     });
 
     this.on('require', function(name) {
