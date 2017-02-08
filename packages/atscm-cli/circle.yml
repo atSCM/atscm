@@ -30,7 +30,7 @@ test:
     - node_modules/.bin/eslint -f junit src > $CIRCLE_TEST_REPORTS/eslint.xml
 
     # Run mocha tests
-    - ATSCM_CLI_LOCAL_MODULE=../atscm NODE_ENV=test node_modules/.bin/nyc npm test -- --reporter mocha-circleci-reporter
+    - NODE_ENV=test node_modules/.bin/nyc npm test -- --reporter mocha-circleci-reporter
     # Check coverage
     - node_modules/.bin/nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
     # Report coverage
