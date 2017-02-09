@@ -1,8 +1,10 @@
+import { readdir } from 'fs';
 import { join } from 'path';
 import Emitter from 'events';
 import expect from 'unexpected';
 import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
+import inTmpDir from '../../helpers/inTmpDir';
 import atscmPkg from '../../fixtures/node_modules/atscm/package.json';
 
 class StubPipe extends Emitter {}
@@ -23,7 +25,14 @@ class StubProcess extends Emitter {
 
 const stubModulePath = join(__dirname, 'stub.js');
 
-const whichStub = spy((name, cb) => cb(null, name));
+function createImportStub(func, noCallThru = true) {
+  return {
+    __esModule: true,
+    default: spy(func),
+    '@noCallThru': noCallThru,
+  };
+}
+
 const stubProcessEmitter = new Emitter();
 const spawnStub = spy(() => {
   const process = new StubProcess();
@@ -32,7 +41,12 @@ const spawnStub = spy(() => {
 
   return process;
 });
-const initSpy = spy(() => Promise.resolve());
+
+const fsStub = {
+  readdir: spy(readdir),
+};
+let whichStub = createImportStub((name, cb) => cb(null, name));
+const initStub = createImportStub(() => Promise.resolve());
 const promptSpy = spy(() => Promise.resolve({}));
 const stubInitOptions = {};
 
@@ -45,21 +59,13 @@ const InitCommand = proxyquire('../../../src/cli/commands/Init', {
     spawn: spawnStub,
     '@noCallThru': true,
   },
-  which: {
-    __esModule: true,
-    default: whichStub,
-    '@noCallThru': true,
-  },
+  which: whichStub,
   [join(stubModulePath, '../init/options')]: {
     __esModule: true,
     default: stubInitOptions,
     '@noCallThru': true,
   },
-  [join(stubModulePath, '../init/init')]: {
-    __esModule: true,
-    default: initSpy,
-    '@noCallThru': true,
-  },
+  [join(stubModulePath, '../init/init')]: initStub,
 }).default;
 
 /** @test {InitCommand} */
@@ -68,27 +74,58 @@ describe('InitCommand', function() {
 
   /** @test {InitCommand#checkDirectory} */
   describe('#checkDirectory', function() {
-    it('should fail if directory does not exist', function() {
-      return expect(command.checkDirectory('./not/existant'),
-        'to be rejected with', /does not exist$/);
+    inTmpDir(path => {
+      it('should fail if directory does not exist', function() {
+        return expect(command.checkDirectory('./not/existant'),
+          'to be rejected with', /does not exist$/);
+      });
+
+      it('should fail if path is not a directory', function() {
+        return expect(command.checkDirectory(join(__dirname, './Init.spec.js')),
+          'to be rejected with', /is not a directory$/);
+      });
+
+      it('should fail if directory is not empty', function() {
+        return expect(command.checkDirectory(__dirname),
+          'to be rejected with', /is not empty$/);
+      });
+
+      it('should work with empty dir', function() {
+        return expect(command.checkDirectory(path), 'to be fulfilled');
+      });
     });
 
-    it('should fail if path is not a directory', function() {
-      return expect(command.checkDirectory(join(__dirname, './Init.spec.js')),
-        'to be rejected with', /is not a directory$/);
-    });
+    context('when non-ENOENT and ENOTDIR occurres', function() {
+      const orgReaddir = fsStub.readdir;
 
-    it('should fail if directory is not empty', function() {
-      return expect(command.checkDirectory(__dirname),
-        'to be rejected with', /is not empty$/);
+      before(() => (fsStub.readdir = spy((path, cb) => cb(new Error('Any other error')))));
+      after(() => (fsStub.readdir = orgReaddir));
+
+      it('should fail with original error', function() {
+        return expect(command.checkDirectory('path'),
+          'to be rejected with', 'Any other error'
+        );
+      });
     });
   });
 
   /** @test {InitCommand#createEmptyPackage} */
   describe('#createEmptyPackage', function() {
-    it('should fail with invalid path', function() {
-      return expect(command.createEmptyPackage('path/that/does/not/exist'),
-        'to be rejected with', /^Unable to create package.json at/);
+    inTmpDir(path => {
+      it('should fail with invalid path', function() {
+        return expect(command.createEmptyPackage('path/that/does/not/exist'),
+          'to be rejected with', /^Unable to create package.json at/);
+      });
+
+      it('should work in empty directory', function() {
+        return expect(command.createEmptyPackage(path), 'to be fulfilled')
+          .then(() => {
+            let pkg;
+            expect(() => (pkg = require(join(path, 'package.json'))), 'not to throw');
+            expect(pkg, 'to equal', {});
+
+          });
+      });
     });
   });
 
@@ -98,7 +135,7 @@ describe('InitCommand', function() {
       spy(process.stdout, 'clearLine');
       spy(process.stdout, 'write');
 
-      whichStub.reset();
+      whichStub.default.reset();
     });
 
     afterEach(() => {
@@ -118,8 +155,8 @@ describe('InitCommand', function() {
         'to be fulfilled'
       )
         .then(() => {
-          expect(whichStub.calledOnce, 'to be', true);
-          expect(whichStub.lastCall.args[0], 'to equal', 'npm');
+          expect(whichStub.default.calledOnce, 'to be', true);
+          expect(whichStub.default.lastCall.args[0], 'to equal', 'npm');
         });
     });
 
@@ -147,6 +184,22 @@ describe('InitCommand', function() {
         command.install(stubModulePath, ['dep']),
         'to be rejected with', `npm install returned code ${code}`
       );
+    });
+
+    context('when npm is not installed', function() {
+      const orgWhichStub = whichStub.default;
+
+      before(() => (whichStub.default = spy((name, cb) => cb(new Error('A which error')))));
+      after(() => (whichStub.default = orgWhichStub));
+
+      it('should fail', function() {
+        whichStub = spy((name, cb) => cb(new Error('A which error')));
+
+        return expect(
+          command.install(stubModulePath, ['dep']),
+          'to be rejected with', 'A which error'
+        );
+      });
     });
   });
 
@@ -201,8 +254,8 @@ describe('InitCommand', function() {
       return expect(command.writeFiles(stubModulePath, options),
           'to be fulfilled')
         .then(() => {
-          expect(initSpy.calledOnce, 'to be', true);
-          expect(initSpy.lastCall.args[0], 'to be', options);
+          expect(initStub.default.calledOnce, 'to be', true);
+          expect(initStub.default.lastCall.args[0], 'to be', options);
         });
     });
   });
