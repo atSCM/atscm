@@ -15,6 +15,8 @@ export default class InitOption {
    * @param {Inquirer.Validator} [messageOrOptions.validate] A function that validates user input.
    * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list
    * types only.
+   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to
+   * prompt this option.
    * @param {String|Number} [defaultOrUndefined] The default value to use.
    */
   constructor(messageOrOptions, defaultOrUndefined) {
@@ -64,6 +66,12 @@ export default class InitOption {
        * @type {Inquirer.Validator}
        */
       this.validate = messageOrOptions.validate;
+
+      /**
+       * A function or boolean that indicates weather or not to prompt this option.
+       * @type {Boolean|function(answers: Object): Boolean|undefined}
+       */
+      this.when = messageOrOptions.when;
     }
   }
 
