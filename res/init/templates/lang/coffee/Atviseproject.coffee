@@ -31,6 +31,7 @@ class {{pascalcase name}} extends Atviseproject
   @login:
     username: '{{atviseUser}}'
     password: '{{atvisePasssword}}'
+  {{/if}}
 
 module.exports =
   default: {{pascalcase name}}
