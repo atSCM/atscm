@@ -33,6 +33,16 @@ export default class Atviseproject {
   }
 
   /**
+   * The login to use. Return `false` if no login is required (default).
+   * @type {Boolean|Object}
+   * @property {String} username The username to log in with.
+   * @property {String} password The password to log in with.
+   */
+  static get login() {
+    return false;
+  }
+
+  /**
    * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
    * @type {Transformer[]}
    */

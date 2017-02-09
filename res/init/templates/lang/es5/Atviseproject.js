@@ -25,6 +25,21 @@ class {{pascalcase name}} extends Atviseproject {
       http: {{atvisePortHttp}},
     };
   }
+  {{#if useLogin}}
+
+  /**
+   * The login to use. Return `false` if no login is required.
+   * @type {Boolean|Object}
+   * @property {String} username The username to log in with.
+   * @property {String} password The password to log in with.
+   */
+  static get login() {
+    return {
+      username: '{{atviseUser}}',
+      password: '{{atvisePassword}}',
+    };
+  }
+  {{/if}}
 
 }
 
