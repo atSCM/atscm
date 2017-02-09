@@ -50,7 +50,7 @@ export default class Atviseproject {
    */
   static get nodes() {
     return [
-      new NodeId('ns=1;s=AGENT'),
+      new NodeId('AGENT'),
       new NodeId('SYSTEM'),
       new NodeId('ObjectTypes.PROJECT'),
     ];
