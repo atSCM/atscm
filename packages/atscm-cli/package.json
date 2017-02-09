@@ -15,6 +15,7 @@
     "docs": "esdoc -c esdoc.json",
     "lint": "eslint src",
     "lint:test": "eslint test",
+    "predocs": "node docs/helpers/createReadme",
     "prepublish": "npm run compile && npm run docs",
     "test": "mocha --recursive --require babel-register \"./test/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
