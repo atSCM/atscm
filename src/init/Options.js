@@ -36,6 +36,19 @@ export const InitOptions = {
   atviseHost: new InitOption('Atvise server host', Atviseproject.host),
   atvisePortOpc: new InitOption('Atvise OPC port', Atviseproject.port.opc),
   atvisePortHttp: new InitOption('Atvise HTTP port', Atviseproject.port.http),
+  useLogin: new InitOption({
+    message: 'Does your atvise server require login',
+    type: 'confirm',
+    default: false,
+  }),
+  atviseUser: new InitOption({
+    message: ' - Username',
+    when: answers => answers.useLogin,
+  }),
+  atvisePassword: new InitOption({
+    message: ' - Password',
+    when: answers => answers.useLogin,
+  }),
   configLang: new InitOption({
     type: 'list',
     message: 'Configuration language to use',
