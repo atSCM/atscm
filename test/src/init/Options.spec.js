@@ -11,6 +11,22 @@ describe('InitOptions', function() {
       expect(InitOptions[key], 'to be a', InitOption);
     });
   });
+
+  /** @test {InitOptions.atviseUser} */
+  describe('.atviseUser', function() {
+    it('should only be asked if using login', function() {
+      expect(InitOptions.atviseUser.when({ useLogin: false }), 'to equal', false);
+      expect(InitOptions.atviseUser.when({ useLogin: true }), 'to equal', true);
+    });
+  });
+
+  /** @test {InitOptions.atvisePassword} */
+  describe('.atvisePassword', function() {
+    it('should only be asked if using login', function() {
+      expect(InitOptions.atvisePassword.when({ useLogin: false }), 'to equal', false);
+      expect(InitOptions.atvisePassword.when({ useLogin: true }), 'to equal', true);
+    });
+  });
 });
 
 /** @test {InitOptionsAsArray} */
