@@ -23,6 +23,9 @@ export const ConfigLangs = {
  * @property {InitOption<input>} atviseHost The new project's atvise server host.
  * @property {InitOption<input>} atvisePortOpc The new project's atvise server OPC port.
  * @property {InitOption<input>} atvisePortHttp The new project's atvise server HTTP port.
+ * @property {InitOption<confirm>} useLogin If the new porject's atvise server requires login.
+ * @property {InitOption<input>} atviseUsername The new project's atvise server login name.
+ * @property {InitOption<input>} atvisePassword The new project's atvise server login password.
  * @property {InitOption<list>} configLang The language to use for the new project's configuration.
  */
 export const InitOptions = {
