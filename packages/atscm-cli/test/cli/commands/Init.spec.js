@@ -51,6 +51,7 @@ const promptSpy = spy(() => Promise.resolve({}));
 const stubInitOptions = {};
 
 const InitCommand = proxyquire('../../../src/cli/commands/Init', {
+  fs: fsStub,
   inquirer: {
     prompt: promptSpy,
   },
