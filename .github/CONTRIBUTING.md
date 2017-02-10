@@ -32,6 +32,8 @@ You can lint all source files by running `npm run lint`. Although most IDEs supp
 
 Our [mocha](https://mochajs.org) tests can be run by calling `npm test`. If you want the tests to be run right after you saved your changes, then run `npm run test:watch`.
 
+<!-- TODO: Document ATVISE_USERNAME and ATVISE_PASSWORD -->
+
 Test coverage can be checked by running `npm run test:coverage`.
 
 ### Creating API documentation
