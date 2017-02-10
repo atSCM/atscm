@@ -34,7 +34,6 @@ export default class Client extends OPCUAClient {
     return new Promise((resolve, reject) => {
       const cli = new OPCUAClient({
         // Insert options
-        certificateFile: null
       });
 
       cli.connect(`opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`, err => {
