@@ -2,7 +2,7 @@ import expect from 'unexpected';
 import { spy } from 'sinon';
 
 import { NodeId as OpcNodeId } from 'node-opcua';
-import NodeId from '../../../src/lib/db/NodeId';
+import NodeId from '../../../../src/lib/db/NodeId';
 
 /** @test {NodeId} */
 describe('NodeId', function() {
@@ -63,6 +63,29 @@ describe('NodeId', function() {
 
     it('should extend node-opcua\'s NodeId', function() {
       expect((new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)), 'to be a', OpcNodeId);
+    });
+  });
+
+  /** @test {NodeId#fromFilePath} */
+  describe.skip('#fromFilePath', function() {
+    it('should return a NodeId', function() {
+      expect(NodeId.fromFilePath(path), 'to be a', NodeId);
+    });
+
+    it('should return file path again', function() {
+      const nodeId = NodeId.fromFilePath(path);
+      expect(nodeId.filePath, 'to be a', 'string');
+      expect(nodeId.filePath, 'to equal', path);
+    });
+  });
+
+  /** @test {NodeId#filePath} */
+  describe.skip('#filePath', function() {
+    it('should return a valid file path', function() {
+      const nodeId = new NodeId(NodeId.NodeIdType.STRING, id, 1);
+
+      expect(nodeId.filePath, 'to be a', 'string');
+      expect(nodeId.filePath, 'to equal', path);
     });
   });
 

@@ -1,6 +1,6 @@
 import expect from 'unexpected';
 
-import * as tasks from '../src/Gulpfile';
+import * as tasks from '../../src/Gulpfile';
 
 describe('Gulpfile', function() {
   it('should export description for all tasks', function() {

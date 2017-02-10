@@ -1,6 +1,6 @@
 import expect from 'unexpected';
 
-import InitOption from '../../../src/lib/init/Option';
+import InitOption from '../../../../src/lib/init/Option';
 
 /** @test {InitOption} */
 describe('InitOption', function() {
