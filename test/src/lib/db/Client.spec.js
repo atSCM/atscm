@@ -78,14 +78,14 @@ describe('_Client', function() {
       return expect(client.connect(validEndpoint),
         'to be fulfilled'
       )
-        .then(client => {
-          spy(client, '_removeSession');
+        .then(cli => {
+          spy(cli, '_removeSession');
         })
         .then(() => client.createSession())
         .then(session => session.close())
         .then(() => {
           expect(client._removeSession.calledOnce, 'to be', true);
-        })
+        });
     });
 
     it('should disconnect client without any pending sessions', function() {
