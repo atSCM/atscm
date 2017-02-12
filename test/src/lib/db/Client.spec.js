@@ -35,8 +35,7 @@ describe('_Client', function() {
       client.on('connect', listener);
 
       return expect(client.connect(validEndpoint),
-        'to be fulfilled',
-      )
+        'to be fulfilled')
         .then(() => {
           expect(listener.calledOnce, 'to be', true);
         })
