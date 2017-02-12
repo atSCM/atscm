@@ -32,7 +32,14 @@ You can lint all source files by running `npm run lint`. Although most IDEs supp
 
 Our [mocha](https://mochajs.org) tests can be run by calling `npm test`. If you want the tests to be run right after you saved your changes, then run `npm run test:watch`.
 
-<!-- TODO: Document ATVISE_USERNAME and ATVISE_PASSWORD -->
+**Setup needed to run tests on atvise server**
+
+Please note, that you have to **provide a valid atvise server connection** in order to get tests against atvise server running. You can achieve that by doing one of the following:
+
+ - Set environment variables `ATVISE_USERNAME` and `ATVISE_PASSWORD` to valid credentials for the public atvise demo server at [demo.ativse.com](http://185.67.228.66:8888).
+ - Adapt host, ports and login credentials inside `./test/fixtures/Atviseproject.babel.js`.
+
+**Check test coverage**
 
 Test coverage can be checked by running `npm run test:coverage`.
 
