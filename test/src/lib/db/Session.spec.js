@@ -12,7 +12,6 @@ describe('Session', function() {
           .then(session => session.close())
           .then(session => session.close()),
         'to be rejected with', 'no channel');
-
     });
   });
 

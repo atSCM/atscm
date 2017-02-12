@@ -1,6 +1,6 @@
 import expect from 'unexpected';
 
-import InitOptionsAsArray, { InitOptions, ConfigLangs } from '../../../src/init/Options';
+import InitOptionsAsArray, { InitOptions } from '../../../src/init/Options';
 import InitOption from '../../../src/lib/init/Option';
 
 /** @test {InitOptions} */

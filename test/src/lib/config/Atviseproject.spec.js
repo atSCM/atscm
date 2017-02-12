@@ -53,7 +53,7 @@ describe('Atviseproject', function() {
         'useTransformers',
         'nodes',
         'nodesToWatch',
-        'ignoreNodes'
+        'ignoreNodes',
       ]);
     });
   });

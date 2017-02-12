@@ -29,7 +29,7 @@ describe('_Client', function() {
       );
     });
 
-    it('should emit `connect` event'  , function() {
+    it('should emit `connect` event', function() {
       const listener = spy();
       const client = new _Client();
       client.on('connect', listener);
@@ -38,7 +38,7 @@ describe('_Client', function() {
         'to be fulfilled')
         .then(() => {
           expect(listener.calledOnce, 'to be', true);
-        })
+        });
     });
   });
 
@@ -58,7 +58,7 @@ describe('_Client', function() {
       return expect((new _Client()).createSession(),
         'to be rejected with', 'Client is not connected');
     });
-    
+
     it('should return a Session object', function() {
       return expect((new _Client()).connect(validEndpoint), 'to be fulfilled')
         .then(client => expect(client.createSession(), 'to be fulfilled'))
@@ -75,12 +75,8 @@ describe('_Client', function() {
     it('should be called when a session is closed', function() {
       const client = new _Client();
 
-      return expect(client.connect(validEndpoint),
-        'to be fulfilled'
-      )
-        .then(cli => {
-          spy(cli, '_removeSession');
-        })
+      return expect(client.connect(validEndpoint), 'to be fulfilled')
+        .then(() => spy(client, '_removeSession'))
         .then(() => client.createSession())
         .then(session => session.close())
         .then(() => {
@@ -92,12 +88,8 @@ describe('_Client', function() {
       let firstSession;
       const client = new _Client();
 
-      return expect(client.connect(validEndpoint),
-        'to be fulfilled'
-      )
-        .then(client => {
-          spy(client, 'disconnect');
-        })
+      return expect(client.connect(validEndpoint), 'to be fulfilled')
+        .then(() => spy(client, 'disconnect'))
         .then(() => client.createSession())
         .then(session => (firstSession = session))
         .then(() => client.createSession())
@@ -133,7 +125,7 @@ describe('Client', function() {
         .then(() => Client.shared())
         .then(client => {
           expect(client, 'not to be', original);
-        })
+        });
     });
   });
 
