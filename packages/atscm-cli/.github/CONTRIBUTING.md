@@ -20,7 +20,7 @@ Builds will only pass if they meet the following criteria:
 
 You can lint all source files by running `npm run lint`. Although most IDEs support running it directly in the editor:
 
-**Jetbeans Webstorm**
+**Jetbrains Webstorm**
 
 [Webstorm](https://www.jetbrains.com/webstorm/) has built-in support for ESLint. Check out [their documentation](https://www.jetbrains.com/help/webstorm/2016.3/eslint.html) to set it up.
 
