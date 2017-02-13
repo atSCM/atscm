@@ -40,7 +40,7 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
    * @return {Promise<*, Error>} Should be resolved if the action fails or rejected with the error
    * that occured.
    */
-  runWithSession(session, ...args) {
+  runWithSession(session, ...args) { // eslint-disable-line no-unused-vars
     return Promise.resolve();
   }
 
