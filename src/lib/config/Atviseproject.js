@@ -55,7 +55,7 @@ export default class Atviseproject {
 
   /**
    * The atvise-server nodes that atvise-scm should sync. Defaults to
-   * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM']`
+   * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM', 'ns=1;s=ObjectTypes.PROJECT']`
    * @type {String[]|NodeId[]}
    */
   static get nodes() {
