@@ -1,7 +1,7 @@
 import expect from 'unexpected';
 
 import Atviseproject from '../../../../src/lib/config/Atviseproject';
-import NodeId from '../../../../src/lib/db/NodeId';
+import NodeId from '../../../../src/lib/server/NodeId';
 
 /** @test {Atviseproject} */
 describe('Atviseproject', function() {

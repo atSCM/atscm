@@ -49,6 +49,10 @@ export default class NodeId extends OpcNodeId {
     }
   }
 
+  get filePath() {
+    return this.value.split('.').join('/');
+  }
+
   /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using node.js's *util.inspect*.
