@@ -1,4 +1,4 @@
-import { browse_service as BrowseService } from 'node-opcua';
+import { browse_service as BrowseService, NodeClass } from 'node-opcua';
 import Stream from './Stream';
 import NodeId from './NodeId';
 
@@ -88,7 +88,7 @@ export default class NodeStream extends Stream {
             // Remove variable nodes
             .map(ref => {
               // Push all variable ids
-              if (ref.nodeClass.value === 2) {
+              if (ref.nodeClass.value === NodeClass.Variable.value) {
                 // TODO: Use read option to read variable nodes
                 this.push(Object.setPrototypeOf(ref.nodeId, NodeId.prototype));
               }
