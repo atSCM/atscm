@@ -8,11 +8,14 @@ export default class ReadStream extends Stream {
 
   /**
    * Reads the given node.
-   * @param {NodeId} nodeId The node to browse.
    * @param {function(err: ?Error, data: ?Object)} callback Called with the error that occurred, or
    * otherwise with the read results.
+   * @param {NodeOpcua.ReferenceDescription} referenceDescription The reference description of the
+   * node to read from.
    */
-  readNode(nodeId, callback) {
+  readNode(referenceDescription, callback) {
+    const nodeId = referenceDescription.nodeId;
+
     this.session.read([{ nodeId }], (err, nodesToRead, results) => {
       if (err) {
         callback(new Error(`Reading ${nodeId.toString()} failed: ${err.message}`));
@@ -24,6 +27,7 @@ export default class ReadStream extends Stream {
         callback(null, {
           nodeId,
           value: results[0].value,
+          referenceDescription: nodesToRead[0],
         });
       }
     });
