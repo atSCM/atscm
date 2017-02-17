@@ -8,10 +8,10 @@ export default class ReadStream extends Stream {
 
   /**
    * Reads the given node.
-   * @param {function(err: ?Error, data: ?Object)} callback Called with the error that occurred, or
-   * otherwise with the read results.
    * @param {NodeOpcua.ReferenceDescription} referenceDescription The reference description of the
    * node to read from.
+   * @param {function(err: ?Error, data: ?ReadStream.ReadResult)} callback Called with the error
+   * that occurred, or the read results the read results otherwise.
    */
   readNode(referenceDescription, callback) {
     const nodeId = referenceDescription.nodeId;
@@ -50,3 +50,10 @@ export default class ReadStream extends Stream {
   }
 
 }
+
+/**
+ * @typedef {Object} ReadStream.ReadResult
+ * @property {NodeId} nodeId The read node's id.
+ * @property {?NodeOpcua.DataValue} value The read value.
+ * @property {Object} referenceDescription Additional info on the read node.
+ */
