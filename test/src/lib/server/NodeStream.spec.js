@@ -1,7 +1,7 @@
 import expect from '../../../expect';
 import { stub, spy } from 'sinon';
 
-import { ClientSession, resolveNodeId } from 'node-opcua';
+import { ClientSession, resolveNodeId, browse_service as BrowseService } from 'node-opcua';
 import NodeStream from '../../../../src/lib/server/NodeStream';
 import Stream from '../../../../src/lib/server/Stream';
 import NodeId from '../../../../src/lib/server/NodeId';
@@ -149,9 +149,8 @@ describe('NodeStream', function() {
       it('should push browsed variable nodes', function(done) {
         const stream = new NodeStream(testNodes);
 
-        stream.on('data', data => {
-          expect(data.constructor.name, 'to equal', 'NodeId');
-          expect(data, 'to equal', nodeId);
+        stream.on('data', desc => {
+          expect(desc.nodeId, 'to equal', nodeId);
         })
           .on('end', () => done());
       });
@@ -176,9 +175,7 @@ describe('NodeStream', function() {
         const nodes = [];
 
         stream
-          .on('data', node => {
-            nodes.push(node);
-          }) // unpause readable stream
+          .on('data', desc => nodes.push(desc.nodeId)) // unpause readable stream
           .on('end', () => {
             expect(stream.browseNode.callCount, 'to be greater than', 1);
             expect(stream.browseNode, 'to have calls satisfying',

@@ -3,7 +3,8 @@ import Stream from './Stream';
 import NodeId from './NodeId';
 
 /**
- * An object transform stream that browses atvise server.
+ * An object transform stream that browses atvise server and pushes the resulting
+ * {@link NodeOpcua.ReferenceDescription}s.
  */
 export default class NodeStream extends Stream {
 
@@ -89,8 +90,11 @@ export default class NodeStream extends Stream {
             .map(ref => {
               // Push all variable ids
               if (ref.nodeClass.value === NodeClass.Variable.value) {
+                // "Cast" ref.nodeId to NodeId
+                Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
+
                 // TODO: Use read option to read variable nodes
-                this.push(Object.setPrototypeOf(ref.nodeId, NodeId.prototype));
+                this.push(ref);
               }
 
               return ref.nodeId;
