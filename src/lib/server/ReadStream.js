@@ -27,7 +27,7 @@ export default class ReadStream extends Stream {
         callback(null, {
           nodeId,
           value: results[0].value,
-          referenceDescription: nodesToRead[0],
+          referenceDescription,
         });
       }
     });
