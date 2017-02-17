@@ -17,3 +17,11 @@
 /**
  * @external {NodeOpcua.ClientSession} http://node-opcua.github.io/api_doc/classes/ClientSession.html
  */
+
+/**
+ * @external {NodeOpcua.DataValue} http://node-opcua.github.io/api_doc/classes/DataValue.html
+ */
+
+/**
+ * @external {NodeOpcua.ReferenceDescription} http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html
+ */
