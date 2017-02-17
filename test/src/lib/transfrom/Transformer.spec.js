@@ -87,4 +87,45 @@ describe('Transformer', function() {
         'to call the callback with error', /must be overridden/);
     });
   });
+  
+  /** @test {Transformer.applyTransformers} */
+  describe('.applyTransformers', function() {
+    it('should throw on invalid direction', function() {
+      expect(() => Transformer.applyTransformers([], 'asdf'), 'to throw error', 'Direction is invalid');
+    });
+
+    it('should return directed transformer if only one is passed', function() {
+      const firstTransformer = new Transformer();
+      const result = Transformer.applyTransformers([firstTransformer], TransformDirection.FromDB);
+
+      expect(result, 'to be', firstTransformer);
+      expect(firstTransformer.direction, 'to equal', TransformDirection.FromDB);
+    });
+
+    it('should return last transformer piped to previous', function() {
+      const firstTransformer = new Transformer();
+      const lastTransformer = new Transformer();
+      const result = Transformer.applyTransformers([
+        firstTransformer,
+        lastTransformer,
+      ], TransformDirection.FromDB);
+
+      expect(result, 'to be', lastTransformer);
+      expect(firstTransformer.direction, 'to equal', TransformDirection.FromDB);
+      expect(lastTransformer.direction, 'to equal', TransformDirection.FromDB);
+    });
+
+    it('should reverse transformers if called with "FromFilesystem"', function() {
+      const firstTransformer = new Transformer();
+      const lastTransformer = new Transformer();
+      const result = Transformer.applyTransformers([
+        firstTransformer,
+        lastTransformer,
+      ], TransformDirection.FromFilesystem);
+
+      expect(result, 'to be', firstTransformer);
+      expect(firstTransformer.direction, 'to equal', TransformDirection.FromFilesystem);
+      expect(lastTransformer.direction, 'to equal', TransformDirection.FromFilesystem);
+    });
+  });
 });
