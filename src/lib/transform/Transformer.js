@@ -1,5 +1,9 @@
 import { ctor as throughStreamClass } from 'through2';
 
+/**
+ * The directions a transformer can be run in.
+ * @type {{FromDB: String, FromFilesystem: String}}
+ */
 export const TransformDirection = {
   FromDB: 'FromDB',
   FromFilesystem: 'FromFilesystem',
