@@ -53,7 +53,7 @@ export default class NodeId extends OpcNodeId {
     const parts = this.value.split('RESOURCES');
     parts[0] = parts[0].split('.').join('/');
 
-    return parts.join('/');
+    return parts.join('RESOURCES');
   }
 
   /**
