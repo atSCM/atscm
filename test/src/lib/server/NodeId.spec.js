@@ -80,7 +80,7 @@ describe('NodeId', function() {
   });
 
   /** @test {NodeId#filePath} */
-  describe.skip('#filePath', function() {
+  describe('#filePath', function() {
     it('should return a valid file path', function() {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, id, 1);
 
