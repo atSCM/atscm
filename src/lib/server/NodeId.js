@@ -50,7 +50,10 @@ export default class NodeId extends OpcNodeId {
   }
 
   get filePath() {
-    return this.value.split('.').join('/');
+    const parts = this.value.split('RESOURCES');
+    parts[0] = parts[0].split('.').join('/');
+
+    return parts.join('/');
   }
 
   /**

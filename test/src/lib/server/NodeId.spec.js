@@ -88,6 +88,14 @@ describe('NodeId', function() {
       expect(nodeId.filePath, 'to equal', path);
     });
 
+    it('should handle resource paths', function() {
+      const nodeId = new NodeId(NodeId.NodeIdType.STRING, 'SYSTEM.LIBRARY.RESOURCES/test.ext', 1);
+
+      expect(nodeId.filePath, 'to be a', 'string');
+      expect(nodeId.filePath, 'to equal', 'SYSTEM/LIBRARY/RESOURCES/test.ext');
+    });
+  });
+
   /** @test {NodeId#inspect} */
   describe('#inspect', function() {
     const opts = {
