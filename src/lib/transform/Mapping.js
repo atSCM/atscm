@@ -67,8 +67,8 @@ export default class MappingTransformer extends Transformer {
    * Maps {@link NodeStream.ReadResult}s to files.
    * @param {NodeStream.ReadResult} readResult The read results to transform.
    * @param {String} enc The encoding used.
-   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured while
-   * transforming or the resulting {@link AtviseFile}.
+   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured
+   * while transforming or the resulting {@link AtviseFile}.
    */
   transformFromDB(readResult, enc, callback) {
     if (!readResult.value) {
