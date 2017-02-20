@@ -107,6 +107,7 @@ export default class NodeStream extends Stream {
           const browseNext = results[0].references
             // Remove parent nodes
             .filter(ref => ref.nodeId.value.toString().split(nodeId.value).length > 1)
+            // TODO: Print ignored nodes (debug level)
             .filter(ref => !(ref.nodeId.toString().match(this.ignoredRegExp)))
 
             // Remove variable nodes
