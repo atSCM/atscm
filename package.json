@@ -52,6 +52,16 @@
     "unexpected-stream": "^2.1.0",
     "yargs": "^6.5.0"
   },
+  "dependencies": {
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-compile-handlebars": "^0.6.1",
+    "handlebars-helpers": "^0.8.0",
+    "node-opcua": "0.0.60",
+    "stream-to-promise": "^2.2.0",
+    "through2": "^2.0.3",
+    "validate-npm-package-name": "^2.2.2",
+    "vinyl": "^2.0.1"
+  },
   "eslintConfig": {
     "extends": "lsage"
   },
@@ -81,15 +91,5 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
-  },
-  "dependencies": {
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-compile-handlebars": "^0.6.1",
-    "handlebars-helpers": "^0.8.0",
-    "node-opcua": "0.0.60",
-    "stream-to-promise": "^2.2.0",
-    "through2": "^2.0.3",
-    "validate-npm-package-name": "^2.2.2",
-    "vinyl": "^2.0.1"
   }
 }
