@@ -11,6 +11,13 @@ describe('Atviseproject', function() {
     });
   }
 
+  /** @test {Atviseproject.login} */
+  describe('.login', function() {
+    it('should default to false', function() {
+      expect(Atviseproject.login, 'to equal', false);
+    });
+  });
+
   /** @test {Atviseproject.nodes} */
   describe('.nodes', function() {
     expectNodeIds(Atviseproject.nodes);
