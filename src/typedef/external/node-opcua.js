@@ -25,3 +25,7 @@
 /**
  * @external {NodeOpcua.ReferenceDescription} http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html
  */
+
+/**
+ * @external {NodeOpcua.DataType} https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js
+ */
