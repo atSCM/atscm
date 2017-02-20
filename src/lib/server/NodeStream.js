@@ -1,6 +1,7 @@
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
 import Stream from './Stream';
 import NodeId from './NodeId';
+import Project from '../../config/ProjectConfig';
 
 /**
  * An object transform stream that browses atvise server and pushes the resulting
@@ -12,6 +13,8 @@ export default class NodeStream extends Stream {
    * Creates a new NodesStream based on the nodes to start browsing at and some options.
    * @param {NodeId[]} nodesToBrowse The nodes to start browsing at.
    * @param {Object} [options] The options to use.
+   * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
+   * to ignore.
    * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
    * @param {Boolean} [options.read=false] If the discovered nodes should be read (*Not
    * implemented yet*).
@@ -19,6 +22,10 @@ export default class NodeStream extends Stream {
   constructor(nodesToBrowse, options) {
     if (!nodesToBrowse || !(nodesToBrowse instanceof Array)) {
       throw new Error('nodes is required');
+    }
+
+    if (options && options.ignoreNodes !== undefined && !(options.ignoreNodes instanceof Array)) {
+      throw new Error('ignoreNodes must be an array of node ids');
     }
 
     super();
@@ -43,6 +50,12 @@ export default class NodeStream extends Stream {
      */
     this.readNodes = false;
 
+    /**
+     * An array of {@link NodeId}s to ignore.
+     * @type {NodeId[]}
+     */
+    this.ignoreNodes = Project.ignoreNodes;
+
     if (options) {
       if (options.read !== undefined) {
         this.readNodes = options.read;
@@ -51,14 +64,23 @@ export default class NodeStream extends Stream {
       if (options.recursive !== undefined) {
         this.recursive = options.recursive;
       }
+
+      if (options.ignoreNodes !== undefined) {
+        this.ignoreNodes = options.ignoreNodes;
+      }
     }
 
-    // Cache result mask
     /**
      * The result mask to use.
      * @type {UInt32}
      */
     this._resultMask = BrowseService.makeResultMask('ReferenceType | NodeClass | TypeDefinition');
+
+    /**
+     * A regular expression matching all node ids specified in {@link NodeStream#ignoreNodes}
+     * @type {RegExp}
+     */
+    this.ignoredRegExp = new RegExp(`^(${this.ignoreNodes.map(n => n.toString()).join('|')})`);
   }
 
   /**
@@ -85,6 +107,7 @@ export default class NodeStream extends Stream {
           const browseNext = results[0].references
             // Remove parent nodes
             .filter(ref => ref.nodeId.value.toString().split(nodeId.value).length > 1)
+            .filter(ref => !(ref.nodeId.toString().match(this.ignoredRegExp)))
 
             // Remove variable nodes
             .map(ref => {

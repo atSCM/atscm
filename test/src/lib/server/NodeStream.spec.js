@@ -39,6 +39,16 @@ describe('NodeStream', function() {
     it('should handle "recursive" option', function() {
       expect((stream = new NodeStream(testNodes, { recursive: false })).recursive, 'to be false');
     });
+
+    it('should throw if options.ignoreNodes is not an array', function() {
+      expect(() => (stream = new NodeStream(testNodes, { ignoreNodes: 'asdf' })), 'to throw',
+        'ignoreNodes must be an array of node ids');
+    });
+
+    it('should handle "ignoreNodes" option', function() {
+      expect((stream = new NodeStream(testNodes, { ignoreNodes: [new NodeId('TESTNODE')] }))
+        .ignoredRegExp, 'to equal', new RegExp('^(ns=1;s=TESTNODE)'));
+    });
   });
 
   /** @test {NodeStream#browseNodes} */
