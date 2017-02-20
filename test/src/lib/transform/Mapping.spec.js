@@ -157,9 +157,10 @@ describe('MappingTransformer', function() {
     it('should not transform without a value', function() {
       const transformer = new MappingTransformer();
 
-      expect(transformer.transformFromDB({
+      expect(cb => transformer.transformFromDB({
         value: null,
-      }), 'to call the callback')
+        nodeId: new NodeId('SYSTEM.LIBRARY.PROJECT.Test'),
+      }, 'utf8', cb), 'to call the callback')
         .then(args => expect(args, 'to have length', 1));
     });
 
