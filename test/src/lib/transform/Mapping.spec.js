@@ -2,7 +2,7 @@ import File from 'vinyl';
 import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
 import Transformer from '../../../../src/lib/transform/Transformer';
-import MappingTransformer from '../../../../src/lib/transform/Mapping';
+import MappingTransformer from '../../../../src/transform/Mapping';
 import NodeId from '../../../../src/lib/server/NodeId';
 import AtviseTypes from '../../../../src/lib/server/Types';
 

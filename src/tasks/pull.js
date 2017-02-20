@@ -3,7 +3,7 @@ import ProjectConfig from '../config/ProjectConfig';
 import NodeStream from '../lib/server/NodeStream';
 import ReadStream from '../lib/server/ReadStream';
 import { TransformDirection } from '../lib/transform/Transformer';
-import MappingStream from '../lib/transform/Mapping';
+import MappingStream from '../transform/Mapping';
 
 /**
  * Pulls all nodes from atvise server.

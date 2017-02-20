@@ -1,9 +1,9 @@
 import { DataType, VariantArrayType } from 'node-opcua';
 import Logger from 'gulplog';
-import Transformer from './Transformer';
-import NodeId from '../server/NodeId';
-import File from '../server/AtviseFile';
-import AtviseTypes from '../server/Types';
+import Transformer from '../lib/transform/Transformer';
+import NodeId from '../lib/server/NodeId';
+import File from '../lib/server/AtviseFile';
+import AtviseTypes from '../lib/server/Types';
 
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
