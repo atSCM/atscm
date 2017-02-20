@@ -9,4 +9,12 @@ import File from 'vinyl';
  */
 export default class AtviseFile extends File {
 
+  /**
+   * `true` for files containing atvise displays.
+   * @type {Boolean}
+   */
+  get isDisplay() {
+    return this.typeDefinition.value === 'VariableTypes.ATVISE.Display';
+  }
+
 }
