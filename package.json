@@ -14,7 +14,7 @@
     "lint": "eslint src",
     "lint:test": "eslint test",
     "prepublish": "npm run compile && npm run docs",
-    "test": "ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/lib/transform/*.spec.js\"",
+    "test": "ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/lib/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "NODE_ENV=test nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
