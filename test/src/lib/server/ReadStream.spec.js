@@ -17,7 +17,7 @@ describe('ReadStream', function() {
         stream.session.read = (node, cb) => cb(new Error('Failed'));
       });
 
-      return expect([validNodeId], 'when piped through', stream,
+      return expect([{ nodeId: validNodeId }], 'when piped through', stream,
         'to error with', `Reading ${validNodeId.toString()} failed: Failed`);
     });
 
@@ -28,7 +28,7 @@ describe('ReadStream', function() {
         stream.session.read = (node, cb) => cb(null, []);
       });
 
-      return expect([validNodeId], 'when piped through', stream,
+      return expect([{ nodeId: validNodeId }], 'when piped through', stream,
         'to error with', `Reading ${validNodeId.toString()} failed: No results`);
     });
 
@@ -36,14 +36,14 @@ describe('ReadStream', function() {
       const stream = new ReadStream();
       const nodeId = new NodeId('ns=123;i=2262'); // This node does not exist
 
-      return expect([nodeId], 'when piped through', stream,
+      return expect([{ nodeId }], 'when piped through', stream,
         'to error with', /Reading ns=123;i=2262 failed: Status BadNodeIdUnknown/);
     });
 
     it('should read variables', function() {
       const stream = new ReadStream();
 
-      return expect([validNodeId], 'when piped through', stream, 'to yield objects satisfying', [{
+      return expect([{ nodeId: validNodeId }], 'when piped through', stream, 'to yield objects satisfying', [{
         nodeId: validNodeId,
         value: { value: 'http://www.atvise.com' },
       }]);
