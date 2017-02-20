@@ -82,7 +82,6 @@ export default class MappingTransformer extends Transformer {
 
       let path = readResult.nodeId.filePath;
 
-
       if (typeDefinition.value === VariableTypeDefinition.value) {
         // Variable nodes are stored with their lowercase datatype as an extension
         path += `.${this.extensionForDataType(dataType)}`;
