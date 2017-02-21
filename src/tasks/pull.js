@@ -2,8 +2,8 @@ import { dest } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import NodeStream from '../lib/server/NodeStream';
 import ReadStream from '../lib/server/ReadStream';
-import { TransformDirection } from '../lib/transform/Transformer';
-import MappingStream from '../transform/Mapping';
+import Transformer, { TransformDirection } from '../lib/transform/Transformer';
+import MappingTransformer from '../transform/Mapping';
 
 /**
  * Pulls all nodes from atvise server.
@@ -16,7 +16,7 @@ export default function pull() {
     .on('data', () => found++);
   const readStream = new ReadStream()
     .on('data', () => pulled++);
-  const mappingStream = new MappingStream({ direction: TransformDirection.FromDB });
+  const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
   const storeStream = dest('./src')
     .on('data', () => stored++);
 
