@@ -1,3 +1,4 @@
+import { Stream } from 'stream';
 import { stub } from 'sinon';
 import expect from '../../../expect';
 
@@ -126,6 +127,10 @@ describe('Transformer', function() {
       expect(result, 'to be', firstTransformer);
       expect(firstTransformer.direction, 'to equal', TransformDirection.FromFilesystem);
       expect(lastTransformer.direction, 'to equal', TransformDirection.FromFilesystem);
+    });
+
+    it('should work with empty array as argument', function() {
+      expect(Transformer.applyTransformers([], TransformDirection.FromDB), 'to be a', Stream);
     });
   });
 });

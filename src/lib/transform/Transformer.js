@@ -1,4 +1,4 @@
-import { ctor as throughStreamClass } from 'through2';
+import { ctor as throughStreamClass, obj as createStream } from 'through2';
 
 /**
  * The directions a transformer can be run in.
@@ -115,6 +115,10 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   static applyTransformers(transformers, direction) {
     if (!isValidDirection(direction)) {
       throw new Error('Direction is invalid');
+    }
+
+    if (transformers.length === 0) {
+      return createStream();
     }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
