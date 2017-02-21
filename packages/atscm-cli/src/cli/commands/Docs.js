@@ -2,6 +2,7 @@ import { join } from 'path';
 import open from 'open';
 import Command from '../../lib/cli/Command';
 import CliOptions from '../Options';
+import Logger from '../../lib/util/Logger';
 
 /**
  * The command invoked when running "docs". Handles the options --cli and --browser.
@@ -42,7 +43,10 @@ export default class DocsCommand extends Command {
    * @param {AtSCMCli} cli The current Cli instance.
    */
   run(cli) {
-    open(this.pathToOpen(cli), cli.options.browser);
+    const docsPath = this.pathToOpen(cli);
+    Logger.debug('Opening', Logger.format.path(docsPath));
+
+    open(docsPath, cli.options.browser);
   }
 
   /**
