@@ -33,7 +33,7 @@ export default class DocsCommand extends Command {
     return join(
       cli.options.cli ?
         join(__dirname, '../../../') :
-        join(cli.environment.modulePath, '../'),
+        join(cli.environment.modulePath, '../../'),
       'docs/api/index.html'
     );
   }
