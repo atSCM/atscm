@@ -29,3 +29,7 @@
 /**
  * @external {NodeOpcua.DataType} https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js
  */
+
+/**
+ * @external {NodeOpcua.VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js
+ */
