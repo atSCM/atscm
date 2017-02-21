@@ -200,9 +200,7 @@ export default class AtviseFile extends File {
       }
     }
 
-    const complete = () => {
-      return this._dataType !== undefined && this._typeDefinition !== undefined;
-    };
+    const complete = () => this._dataType !== undefined && this._typeDefinition !== undefined;
 
     // Handle array types
     ifLastExtensionMatches(ext => ext === 'array', () => {

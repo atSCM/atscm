@@ -2,7 +2,7 @@ import { dest } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import NodeStream from '../lib/server/NodeStream';
 import ReadStream from '../lib/server/ReadStream';
-import Transformer, { TransformDirection } from '../lib/transform/Transformer';
+import { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from '../transform/Mapping';
 
 /**
