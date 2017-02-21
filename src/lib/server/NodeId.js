@@ -49,6 +49,10 @@ export default class NodeId extends OpcNodeId {
     }
   }
 
+  /**
+   * The node id's value, encoded to a file path.
+   * @type {String}
+   */
   get filePath() {
     const parts = this.value.split('RESOURCES');
     parts[0] = parts[0].split('.').join('/');
