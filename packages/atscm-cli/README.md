@@ -8,24 +8,14 @@
 
 ## Installation
 
-<!-- TODO: Update once published -->
-As this modules is **not yet published** it requires manual building and linking:
+This module can be installed via [npm](https://www.npmjs.com). With [node.js](https://nodejs.org/en/) **version 6 or later** installed run:
 
 ```bash
-# Clone the Repository
-git clone https://github.com/atSCM/atscm-cli.git
-
-# Enter the repository
-cd atscm-cli
-
-# Install dependencies
-npm install
-
 # Install atscm-cli globally
-npm install -g .
+npm install -g atscm-cli
 ```
 
-*You may have to run the last command as an administrator.*
+*You may have to run this command as an administrator.*
 
 ## Basic usage
 
