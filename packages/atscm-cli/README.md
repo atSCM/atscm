@@ -31,7 +31,7 @@ For more detailed information on the init command look at the [manuals](https://
 
 Run tasks by typing `atscm [task]` inside a project directory.
 
-Lookup the tasks available in [the atscm manuals](https://doc.esdoc.org/github.com/atSCM/atscm/manual/index.html).
+Lookup the tasks available in [the atscm manuals](https://doc.esdoc.org/github.com/atSCM/atscm/manual/index.html) or by running `atscm --tasks`.
 
 ### Open documentation
 
