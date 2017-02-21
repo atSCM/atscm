@@ -1,4 +1,4 @@
-# atSCM
+# atscm
 
 > Source code management utilities for atvise
 
