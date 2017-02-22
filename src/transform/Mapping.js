@@ -28,6 +28,8 @@ export default class MappingTransformer extends Transformer {
    */
   transformFromFilesystem(file, encoding, callback) {
     callback(null, new AtviseFile({
+      cwd: file.cwd,
+      base: file.base,
       path: file.path,
       contents: file.contents,
     }));
