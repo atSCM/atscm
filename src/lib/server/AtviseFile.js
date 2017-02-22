@@ -343,7 +343,15 @@ export default class AtviseFile extends File {
    * @return {NodeId} The file's node id.
    */
   get nodeId() {
-    return NodeId.fromFilePath(this.relative);
+    const atType = AtviseTypesByValue[this.typeDefinition.value];
+    let idPath = this.relative;
+
+    if (!atType || !atType.keepExtension) {
+      const exts = idPath.match(ExtensionRegExp)[1];
+      idPath = idPath.split(`.${exts}`)[0];
+    }
+
+    return NodeId.fromFilePath(idPath);
   }
 
 }
