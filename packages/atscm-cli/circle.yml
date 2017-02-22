@@ -42,7 +42,7 @@ test:
 
 deployment:
   staging:
-    branch: master
+    branch: [master, next]
     commands:
       - node_modules/.bin/esdoc-uploader
 
