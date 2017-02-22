@@ -2,6 +2,9 @@ import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
 
+/**
+ * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
+ */
 export default class MappingTransformer extends Transformer {
 
   /**
