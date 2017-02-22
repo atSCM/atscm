@@ -335,4 +335,12 @@ export default class AtviseFile extends File {
     return AtviseFile.decodeValue(this.contents, this.dataType);
   }
 
+  /**
+   * Returns the node id associated with the file.
+   * @return {NodeId} The file's node id.
+   */
+  get nodeId() {
+    return NodeId.fromFilePath(this.relative);
+  }
+
 }
