@@ -67,7 +67,7 @@ describe('NodeId', function() {
   });
 
   /** @test {NodeId#fromFilePath} */
-  describe.skip('#fromFilePath', function() {
+  describe('#fromFilePath', function() {
     it('should return a NodeId', function() {
       expect(NodeId.fromFilePath(path), 'to be a', NodeId);
     });
@@ -76,6 +76,13 @@ describe('NodeId', function() {
       const nodeId = NodeId.fromFilePath(path);
       expect(nodeId.filePath, 'to be a', 'string');
       expect(nodeId.filePath, 'to equal', path);
+    });
+
+    it('should work with resource paths', function() {
+      expect(NodeId.fromFilePath(
+        'SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif'
+      ).value,
+        'to equal', 'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif');
     });
   });
 

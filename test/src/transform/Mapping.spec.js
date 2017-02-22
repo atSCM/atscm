@@ -53,11 +53,27 @@ describe('MappingTransformer', function() {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect([
-        new File({ path: 'Test.path' }),
+        new File({ path: 'Test.ext' }),
       ], 'when piped through', stream,
       'to yield chunks satisfying', [
         expect.it('to be an', AtviseFile),
       ]);
+    });
+
+    it('should keep base', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+      return expect(cb => stream.transformFromFilesystem(
+        new File({ path: 'folder/Test.ext', base: 'folder' }), 'utf8', cb
+      ), 'to call the callback')
+        .then(args => {
+          expect(args[0], 'to be falsy');
+
+          const result = args[1];
+          console.log(result);
+          expect(result.base, 'to equal', 'folder');
+          expect(result.relative, 'to equal', 'Test.ext');
+        });
     });
   });
 });

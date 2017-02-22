@@ -45,6 +45,9 @@ const typeExtensions = types.map(t => t.toLowerCase());
 const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
 
+// Cache Regular expressions
+const ExtensionRegExp = /\.([^\/]*)$/;
+
 // Value encoding related cache
 const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
@@ -192,7 +195,7 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     let extensions = [];
-    extensions = this.relative.match(/\.(.*)/)[1].split('.');
+    extensions = this.relative.match(ExtensionRegExp)[1].split('.');
 
     function ifLastExtensionMatches(matches, fn) {
       if (matches(extensions[extensions.length - 1])) {
@@ -331,6 +334,22 @@ export default class AtviseFile extends File {
    */
   get value() {
     return AtviseFile.decodeValue(this.contents, this.dataType);
+  }
+
+  /**
+   * Returns the node id associated with the file.
+   * @return {NodeId} The file's node id.
+   */
+  get nodeId() {
+    const atType = AtviseTypesByValue[this.typeDefinition.value];
+    let idPath = this.relative;
+
+    if (!atType || !atType.keepExtension) {
+      const exts = idPath.match(ExtensionRegExp)[1];
+      idPath = idPath.split(`.${exts}`)[0];
+    }
+
+    return NodeId.fromFilePath(idPath);
   }
 
 }
