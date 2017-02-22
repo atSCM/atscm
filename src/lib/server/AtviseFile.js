@@ -17,7 +17,7 @@ const AtviseTypesByIdentifier = AtviseTypes
 
 /**
  * A map providing shorter extensions for data types
- * @type {Map<NodeOpcua.DataType, String>}
+ * @type {Map<node-opcua~DataType, String>}
  */
 export const ExtensionForDataType = {
   [DataType.Boolean]: 'bool',
@@ -33,7 +33,7 @@ function reverseObject(obj) {
 
 /**
  * A map providing data types for shorter extensions (Reverse of {@link DataTypeForExtension}).
- * * @type {Map<String, NodeOpcua.DataType>}
+ * * @type {Map<String, node-opcua~DataType>}
  */
 export const DataTypeForExtension = reverseObject(ExtensionForDataType);
 
@@ -61,11 +61,11 @@ const Encoder = {
 };
 
 /**
- * Returns the extension for a specific {@link NodeOpcua.DataType}.
+ * Returns the extension for a specific {@link node-opcua~DataType}.
  * Algorithm:
  *   - if the type has a shortened extension defined in {@link ExtensionForDataType}, return it.
  *   - else return the DataType's name, in lowercase letters.
- * @param {NodeOpcua.DataType} dataType The datatype to get the extension for.
+ * @param {node-opcua~DataType} dataType The datatype to get the extension for.
  * @return {String} The resulting extension.
  */
 function extensionForDataType(dataType) {
@@ -74,7 +74,7 @@ function extensionForDataType(dataType) {
 
 /**
  * An extension to {@link vinyl~File} providing some additional, atvise-related properties.
- * @property {NodeOpcua.DataType} AtviseFile#dataType The {@link NodeOpcua.DataType} the node is
+ * @property {node-opcua~DataType} AtviseFile#dataType The {@link node-opcua~DataType} the node is
  * stored against on atvise server.
  * @property {NodeId} typeDefinition The file's type definition on atvise server.
  * FIXME: Additional properties not showing in API docs.
@@ -131,7 +131,7 @@ export default class AtviseFile extends File {
   /**
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
-   * @param {NodeOpcua.DataType} dataType The {@link NodeOpcua.DataType} to encode the value for.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType) {
@@ -146,7 +146,7 @@ export default class AtviseFile extends File {
   /**
    * Decodes a file's contents to a node's value
    * @param {Buffer} buffer The file contents to decode.
-   * @param {NodeOpcua.DataType} dataType The {@link NodeOpcua.DataType} to decode the contents for.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents for.
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType) {
@@ -189,8 +189,8 @@ export default class AtviseFile extends File {
   _getMetadata() {
     // Set default metadata
     /**
-     * The node's stored {@link NodeOpcua.VariantArrayType}.
-     * @type {?NodeOpcua.VariantArrayType}
+     * The node's stored {@link node-opcua~VariantArrayType}.
+     * @type {?node-opcua~VariantArrayType}
      */
     this._arrayType = VariantArrayType.Scalar;
 
@@ -216,8 +216,8 @@ export default class AtviseFile extends File {
 
     ifLastExtensionMatches(ext => typeExtensions.includes(ext), ext => {
       /**
-       * The node's stored {@link NodeOpcua.DataType}.
-       * @type {?NodeOpcua.DataType}
+       * The node's stored {@link node-opcua~DataType}.
+       * @type {?node-opcua~DataType}
        */
       this._dataType = DataType[types[typeExtensions.indexOf(ext)]];
     });
@@ -230,7 +230,7 @@ export default class AtviseFile extends File {
     if (extensions.length === 0) { // Got variable
       /**
        * The node's stored type definition.
-       * @type {?NodeOpcua.NodeId}
+       * @type {?node-opcua~NodeId}
        */
       this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
     }
@@ -273,8 +273,8 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * The file's {@link NodeOpcua.DataType}.
-   * @type {NodeOpcua.DataType}
+   * The file's {@link node-opcua~DataType}.
+   * @type {node-opcua~DataType}
    */
   get dataType() {
     if (!this._dataType) {
@@ -285,8 +285,8 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * The file's {@link NodeOpcua.VariantArrayType}.
-   * @type {NodeOpcua.VariantArrayType}
+   * The file's {@link node-opcua~VariantArrayType}.
+   * @type {node-opcua~VariantArrayType}
    */
   get arrayType() {
     if (!this._arrayType) {
@@ -298,7 +298,7 @@ export default class AtviseFile extends File {
 
   /**
    * The file's type definition.
-   * @type {NodeOpcua.NodeId}
+   * @type {node-opcua~NodeId}
    */
   get typeDefinition() {
     if (!this._typeDefinition) {

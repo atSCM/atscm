@@ -2,14 +2,14 @@ import { OPCUAClient } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
 
 /**
- * A wrapper around {@link NodeOpcua.OPCUAClient} used to connect to atvise server.
+ * A wrapper around {@link node-opcua~OPCUAClient} used to connect to atvise server.
  */
 export default class Client {
 
   /**
-   * Creates and connects a new instance of {@link NodeOpcua.OPCUAClient}.
-   * @return {Promise<NodeOpcua.OPCUAClient, Error>} Fulfilled with an already connected
-   * {@link NodeOpcua.OPCUAClient} instance, rejected if an error occured.
+   * Creates and connects a new instance of {@link node-opcua~OPCUAClient}.
+   * @return {Promise<node-opcua~OPCUAClient, Error>} Fulfilled with an already connected
+   * {@link node-opcua~OPCUAClient} instance, rejected if an error occured.
    */
   static create() {
     const client = new OPCUAClient({

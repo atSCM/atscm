@@ -5,7 +5,7 @@ import Project from '../../config/ProjectConfig';
 
 /**
  * An object transform stream that browses atvise server and pushes the resulting
- * {@link NodeOpcua.ReferenceDescription}s.
+ * {@link node-opcua~ReferenceDescription}s.
  */
 export default class NodeStream extends Stream {
 
