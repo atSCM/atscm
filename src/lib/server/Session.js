@@ -3,14 +3,14 @@ import Client from './Client';
 import ProjectConfig from '../../config/ProjectConfig';
 
 /**
- * A wrapper around {@link NodeOpcua.ClientSession} used to connect to atvise server.
+ * A wrapper around {@link node-opcua~ClientSession} used to connect to atvise server.
  */
 export default class Session {
 
   /**
-   * Creates and opens a new {@link NodeOpcua.ClientSession}.
-   * @return {Promise<NodeOpcua.ClientSession, Error>} Fulfilled with an already opened
-   * {@link NodeOpcua.ClientSession}.
+   * Creates and opens a new {@link node-opcua~ClientSession}.
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
+   * {@link node-opcua~ClientSession}.
    */
   static create() {
     return Client.create()
@@ -41,9 +41,9 @@ export default class Session {
 
   /**
    * Closes the given session.
-   * @param {NodeOpcua.ClientSession} session The session to close.
+   * @param {node-opcua~ClientSession} session The session to close.
    * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
-   * @return {Promise<NodeOpcua.ClientSession, Error>} Fulfilled with the (now closed!) session or
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
    * rejected with the error that occured while closing.
    */
   static close(session, deleteSubscriptions = true) {

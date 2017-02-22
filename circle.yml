@@ -39,6 +39,11 @@ test:
 
 deployment:
   staging:
-    branch: master
+    branch: [master, next]
     commands:
       - node_modules/.bin/esdoc-uploader
+
+      - git config user.email "admin@ls-age.com"
+      - git config user.name "LukasHechenberger"
+      - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
+      - node_modules/.bin/automated-release --add-files out docs/api

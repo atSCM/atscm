@@ -8,11 +8,11 @@ export default class InitOption {
    * Creates a new option based either on a message and (optionally) a default value or some
    * options.
    * @param {String|Object} messageOrOptions The message or options to use.
-   * @param {Inquirer.PromptType} [messageOrOptions.type] The option's type.
+   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.
    * @param {String} messageOrOptions.message The option's message. Required if `messageOrOptions`
    * is an object.
    * @param {String|Number} [messageOrOptions.default] The options's default value.
-   * @param {Inquirer.Validator} [messageOrOptions.validate] A function that validates user input.
+   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.
    * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list
    * types only.
    * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to
@@ -30,8 +30,8 @@ export default class InitOption {
       }
 
       /**
-       * The option's {@link Inquirer.PromptType}. Defaults to 'input'.
-       * @type {Inquirer.PromptType}
+       * The option's {@link inquirer~PromptType}. Defaults to 'input'.
+       * @type {inquirer~PromptType}
        */
       this.type = InitOption.DefaultType;
 
@@ -63,7 +63,7 @@ export default class InitOption {
 
       /**
        * Validates the user input for this option.
-       * @type {Inquirer.Validator}
+       * @type {inquirer~Validator}
        */
       this.validate = messageOrOptions.validate;
 
@@ -76,8 +76,8 @@ export default class InitOption {
   }
 
   /**
-   * The default {@link Inquirer.PromptType} to use. Equals 'input'.
-   * @return {Inquirer.PromptType}
+   * The default {@link inquirer~PromptType} to use. Equals 'input'.
+   * @return {inquirer~PromptType}
    */
   static get DefaultType() {
     return 'input';
