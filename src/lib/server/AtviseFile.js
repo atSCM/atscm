@@ -46,7 +46,7 @@ const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
 
 // Cache Regular expressions
-const ExtensionRegExp = /\.([^\/]*)$/;
+const ExtensionRegExp = /\.([^/]*)$/;
 
 // Value encoding related cache
 const Decoder = {
