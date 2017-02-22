@@ -1,3 +1,4 @@
+import { sep } from 'path';
 import { NodeId as OpcNodeId } from 'node-opcua';
 
 const Type = OpcNodeId.NodeIdType;
@@ -47,6 +48,31 @@ export default class NodeId extends OpcNodeId {
     } else {
       super(typeOrValue, value, namespace);
     }
+  }
+
+  /**
+   * Creates a new NodeId based on a file path.
+   * @param {String} path The file path to use.
+   * @return {NodeId} The resulting NodeId.
+   */
+  static fromFilePath(path) {
+    let separator = '.';
+    const value = path.split(sep)
+      .reduce((result, current) => {
+        if (!result) {
+          return current;
+        }
+
+        const next = `${result}${separator}${current}`;
+
+        if (current === 'RESOURCES') {
+          separator = '/';
+        }
+
+        return next;
+      });
+
+    return new NodeId(NodeId.NodeIdType.STRING, value, 1);
   }
 
   /**
