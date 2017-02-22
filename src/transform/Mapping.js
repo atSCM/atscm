@@ -1,3 +1,4 @@
+import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
 
@@ -14,7 +15,7 @@ export default class MappingTransformer extends Transformer {
     try {
       callback(null, AtviseFile.fromReadResult(readResult));
     } catch (e) {
-      console.log(`Unable to map ${readResult.nodeId.toString()}`, e.message);
+      Logger.warn(`Unable to map ${readResult.nodeId.toString()}`, e.message);
       callback(null);
     }
   }
