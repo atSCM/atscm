@@ -4,6 +4,9 @@ import { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from '../transform/Mapping';
 import WriteStream from '../lib/server/WriteStream';
 
+/**
+ * Pushes {@link AtviseFile}s to atvise server.
+ */
 export default function push() {
   let uploaded = 0;
 
