@@ -1,5 +1,4 @@
 import { src } from 'gulp';
-import ProjectConfig from '../config/ProjectConfig';
 import { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from '../transform/Mapping';
 import WriteStream from '../lib/server/WriteStream';
