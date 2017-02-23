@@ -1,0 +1,98 @@
+{
+  "name": "atscm",
+  "version": "0.1.2",
+  "description": "Source code management utilities for atvise",
+  "main": "out/index.js",
+  "engines": {
+    "node": ">=6.0",
+    "atscm-cli": "*"
+  },
+  "scripts": {
+    "compile": "babel src --out-dir out",
+    "compile:watch": "npm run compile -- --watch",
+    "docs": "esdoc -c esdoc.json",
+    "lint": "eslint src",
+    "lint:test": "eslint test",
+    "prepublish": "npm run compile && npm run docs",
+    "test": "ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/**/*.spec.js\"",
+    "test:watch": "npm test -- --watch --reporter min",
+    "test:coverage": "NODE_ENV=test nyc --reporter=html npm test",
+    "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm.git"
+  },
+  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm/issues"
+  },
+  "homepage": "https://github.com/atSCM/atscm#readme",
+  "devDependencies": {
+    "@lhechenberger/automated-release": "^0.1.19",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.22.1",
+    "babel-plugin-istanbul": "^3.0.0",
+    "babel-preset-node6": "^11.0.0",
+    "babel-register": "^6.18.0",
+    "broken-link-checker-local": "^0.1.1",
+    "coffee-script": "^1.12.3",
+    "esdoc": "^0.5.2",
+    "esdoc-plugin-require-coverage": "^0.1.2",
+    "eslint": "^3.11.1",
+    "eslint-config-lsage": "^0.1.0",
+    "eval": "^0.1.2",
+    "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
+    "proxyquire": "^1.7.11",
+    "sinon": "^1.17.7",
+    "typescript": "^2.1.5",
+    "unexpected": "^10.20.0",
+    "unexpected-sinon": "^10.7.0",
+    "unexpected-stream": "^2.1.0",
+    "yargs": "^6.5.0"
+  },
+  "dependencies": {
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulplog": "^1.0.0",
+    "handlebars-helpers": "^0.8.0",
+    "node-opcua": "0.0.60",
+    "stream-to-promise": "^2.2.0",
+    "through2": "^2.0.3",
+    "validate-npm-package-name": "^2.2.2",
+    "vinyl": "^2.0.1",
+    "xml2js": "^0.4.17"
+  },
+  "eslintConfig": {
+    "extends": "lsage"
+  },
+  "babel": {
+    "presets": [
+      "node6"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul"
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "res/**/*.*"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false,
+    "check-coverage": true
+  }
+}
