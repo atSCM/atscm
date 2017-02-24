@@ -15,4 +15,14 @@ describe('atscm module', function() {
   it('should export NodeId class', function() {
     expect(globalExports.NodeId, 'to be', NodeId);
   });
+
+  /** @test {Transformer} */
+  it('should export Transformer class', function() {
+    expect(globalExports.Transformer, 'to be', Transformer);
+  });
+
+  /** @test {TransformDirection} */
+  it('should export TransformDirection enum', function() {
+    expect(globalExports.TransformDirection, 'to be', TransformDirection);
+  });
 });
