@@ -1,9 +1,11 @@
 import { src } from 'gulp';
-import ProjectConfig from '../config/ProjectConfig';
-import Transformer, { TransformDirection } from '../lib/transform/Transformer';
+import { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from '../transform/Mapping';
 import WriteStream from '../lib/server/WriteStream';
 
+/**
+ * Pushes {@link AtviseFile}s to atvise server.
+ */
 export default function push() {
   let uploaded = 0;
 
@@ -17,8 +19,6 @@ export default function push() {
 
   return src('./src/**/*.*')
     .pipe(mappingStream)
-    .pipe(Transformer.applyTransformers(ProjectConfig.useTransformers,
-      TransformDirection.FromFilesystem))
     .pipe(writeStream)
     .on('end', () => {
       process.stdout.clearLine();

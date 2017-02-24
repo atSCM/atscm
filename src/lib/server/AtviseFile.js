@@ -146,7 +146,8 @@ export default class AtviseFile extends File {
   /**
    * Decodes a file's contents to a node's value
    * @param {Buffer} buffer The file contents to decode.
-   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents for.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
+   * for.
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType) {
