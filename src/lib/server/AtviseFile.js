@@ -331,7 +331,7 @@ export default class AtviseFile extends File {
 
   /**
    * Returns the decoded node value for the file.
-   * @return {?*} The file's decoded value.
+   * @type {?*} The file's decoded value.
    */
   get value() {
     return AtviseFile.decodeValue(this.contents, this.dataType);
@@ -339,7 +339,7 @@ export default class AtviseFile extends File {
 
   /**
    * Returns the node id associated with the file.
-   * @return {NodeId} The file's node id.
+   * @type {NodeId} The file's node id.
    */
   get nodeId() {
     const atType = AtviseTypesByValue[this.typeDefinition.value];
