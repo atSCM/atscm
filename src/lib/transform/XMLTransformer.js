@@ -72,4 +72,13 @@ export default class XMLTransformer extends Transformer {
     }
   }
 
+  /**
+   * Helper function: Returns `true` if the given tag exists and is not empty.
+   * @param {Object} tag A tag in a parsed xml document.
+   * @return {Boolean} `true` if the given tag exists and is not empty.
+   */
+  tagNotEmpty(tag) {
+    return Boolean(tag && tag.length > 0);
+  }
+
 }
