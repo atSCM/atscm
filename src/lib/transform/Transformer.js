@@ -153,4 +153,18 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     return newFile;
   }
 
+  /**
+   * Combines split files to a single one.
+   * @param {vinyl~File[]} files The files to combine.
+   * @param {String} newExtension The extension the resulting file gets.
+   * @return {vinyl~File} The resulting file.
+   */
+  static combineFiles(files, newExtension) {
+    const newFile = files[0].clone();
+
+    newFile.path = `${newFile.dirname}${newExtension}`;
+
+    return newFile;
+  }
+
 }

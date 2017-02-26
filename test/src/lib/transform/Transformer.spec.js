@@ -149,4 +149,20 @@ describe('Transformer', function() {
       expect(Transformer.splitFile(original, '.another').extname, 'to equal', '.another');
     });
   });
+
+  /** @test {Transformer.combineFiles} */
+  describe('.combineFiles', function() {
+    const originals = [
+      new File({ path: 'path/name.type/name.ext1' }),
+      new File({ path: 'path/name.type/name.ext2' }),
+    ];
+
+    it('should return a file', function() {
+      expect(Transformer.combineFiles(originals, '.another'), 'to be a', File);
+    });
+
+    it('should apply the new extension', function() {
+      expect(Transformer.combineFiles(originals, '.another').extname, 'to equal', '.another');
+    });
+  });
 });
