@@ -22,7 +22,7 @@ describe('MappingTransformer', function() {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         expect(cb => stream.transformFromDB({
-          nodeId: new NodeId('AGENT.DISPLAYS.Main')
+          nodeId: new NodeId('AGENT.DISPLAYS.Main'),
         }, 'utf8', cb), 'to call the callback')
           .then(args => expect(args, 'to have length', 1));
       });
