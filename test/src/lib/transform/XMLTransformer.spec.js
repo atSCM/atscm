@@ -95,5 +95,31 @@ describe('XMLTransformer', function() {
           '<root>\r\n <sub>test</sub>\r\n</root>', done);
       });
     });
+
+    it('should support forced CDATA', function() {
+      expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB })).encodeContents({
+        svg: [
+          { script: [
+            { _: XMLTransformer.forceCData('test()') },
+          ] },
+        ],
+      }, cb), 'to call the callback')
+        .then(args => expect(args[1], 'to end with', `<svg>
+  <script><![CDATA[test()]]></script>
+</svg>`));
+    });
+
+    it('should not double escape forced CDATA', function() {
+      expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB })).encodeContents({
+        svg: [
+          { script: [
+            { _: XMLTransformer.forceCData('var test = "<asdf>"') },
+          ] },
+        ],
+      }, cb), 'to call the callback')
+        .then(args => expect(args[1], 'to end with', `<svg>
+  <script><![CDATA[var test = "<asdf>"]]></script>
+</svg>`));
+    });
   });
 });
