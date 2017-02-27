@@ -54,7 +54,7 @@ describe('Transformer', function() {
 
     it('should fail without direction', function() {
       return expect(cb => transformer._transform({}, 'utf8', cb),
-        'to call the callback with error', 'Transformer has no direction');
+        'to call the callback with error', 'SplittingTransformer has no direction');
     });
 
     it('should call transformFromDB with direction FromDB', function() {
