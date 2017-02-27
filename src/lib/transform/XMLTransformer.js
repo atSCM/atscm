@@ -71,8 +71,8 @@ export default class XMLTransformer extends Transformer {
     try {
       callback(null,
         this.builder.buildObject(object)
-          .replace(START_CDATA, '<![CDATA[')
-          .replace(END_CDATA, ']]>')
+          .replace(new RegExp(`(<!\\[CDATA\\[)?${START_CDATA}`), '<![CDATA[')
+          .replace(new RegExp(`${END_CDATA}(\\]\\]>)?`), ']]>')
       );
     } catch (e) {
       callback(e);
