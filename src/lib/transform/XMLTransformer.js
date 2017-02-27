@@ -37,7 +37,7 @@ export default class XMLTransformer extends Transformer {
         encoding: 'UTF-8',
         standalone: false,
       },
-      cdata: false,
+      cdata: true,
     });
   }
 
