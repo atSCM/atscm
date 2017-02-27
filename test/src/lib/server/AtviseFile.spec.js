@@ -266,8 +266,8 @@ describe('AtviseFile', function() {
     });
   });
 
-  /** @test {AtviseFile#NodeId} */
-  describe('#NodeId', function() {
+  /** @test {AtviseFile#nodeId} */
+  describe('#nodeId', function() {
     it('should keep extensions for resources', function() {
       expect((new AtviseFile({ path: 'SYSTEM/LIBRARY/PROJECT/RESOURCES/example.js' }).nodeId.value),
         'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/example.js');
