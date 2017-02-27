@@ -1,6 +1,5 @@
 import { Stream } from 'stream';
 import { stub } from 'sinon';
-import File from 'vinyl';
 import expect from '../../../expect';
 
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
@@ -133,37 +132,6 @@ describe('Transformer', function() {
 
     it('should work with empty array as argument', function() {
       expect(Transformer.applyTransformers([], TransformDirection.FromDB), 'to be a', Stream);
-    });
-  });
-
-  /** @test {Transformer.splitFile} */
-  describe('.splitFile', function() {
-    const original = new File({
-      path: 'path/name.type.ext',
-    });
-
-    it('should return a file', function() {
-      expect(Transformer.splitFile(original, '.another'), 'to be a', File);
-    });
-
-    it('should apply the new extension', function() {
-      expect(Transformer.splitFile(original, '.another').extname, 'to equal', '.another');
-    });
-  });
-
-  /** @test {Transformer.combineFiles} */
-  describe('.combineFiles', function() {
-    const originals = [
-      new File({ path: 'path/name.type/name.ext1' }),
-      new File({ path: 'path/name.type/name.ext2' }),
-    ];
-
-    it('should return a file', function() {
-      expect(Transformer.combineFiles(originals, '.another'), 'to be a', File);
-    });
-
-    it('should apply the new extension', function() {
-      expect(Transformer.combineFiles(originals, '.another').extname, 'to equal', '.another');
     });
   });
 });

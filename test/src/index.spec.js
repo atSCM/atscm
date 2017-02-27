@@ -5,6 +5,7 @@ import Atviseproject from '../../src/lib/config/Atviseproject';
 import NodeId from '../../src/lib/server/NodeId';
 import Transformer, { TransformDirection } from '../../src/lib/transform/Transformer';
 import PartialTransformer from '../../src/lib/transform/PartialTransformer';
+import SplittingTransformer from '../../src/lib/transform/SplittingTransformer';
 import DisplayTransformer from '../../src/transform/DisplayTransformer';
 
 describe('atscm module', function() {
@@ -31,6 +32,11 @@ describe('atscm module', function() {
   /** @test {PartialTransformer} */
   it('should export PartialTransformer class', function() {
     expect(globalExports.PartialTransformer, 'to be', PartialTransformer);
+  });
+
+  /** @test {Splitting} */
+  it('should export SplittingTransformer class', function() {
+    expect(globalExports.SplittingTransformer, 'to be', SplittingTransformer);
   });
 
   /** @test {DisplayTransformer} */
