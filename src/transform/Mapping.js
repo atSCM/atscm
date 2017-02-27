@@ -31,12 +31,16 @@ export default class MappingTransformer extends Transformer {
    * while transforming the read result or the resulting file.
    */
   transformFromFilesystem(file, encoding, callback) {
-    callback(null, new AtviseFile({
-      cwd: file.cwd,
-      base: file.base,
-      path: file.path,
-      contents: file.contents,
-    }));
+    if (file.isDirectory()) {
+      callback(null);
+    } else {
+      callback(null, new AtviseFile({
+        cwd: file.cwd,
+        base: file.base,
+        path: file.path,
+        contents: file.contents,
+      }));
+    }
   }
 
 }

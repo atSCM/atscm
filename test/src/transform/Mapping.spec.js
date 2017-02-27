@@ -74,5 +74,17 @@ describe('MappingTransformer', function() {
           expect(result.relative, 'to equal', 'Test.ext');
         });
     });
+
+    it('should skip directories', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+      return expect(cb => stream.transformFromFilesystem(
+        { isDirectory: () => true }, 'utf8', cb
+      ), 'to call the callback')
+        .then(args => {
+          expect(args, 'to have length', 1);
+          expect(args[0], 'to be falsy');
+        });
+    });
   });
 });
