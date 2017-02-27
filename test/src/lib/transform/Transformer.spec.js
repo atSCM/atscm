@@ -89,7 +89,7 @@ describe('Transformer', function() {
         'to call the callback with error', /must be overridden/);
     });
   });
-  
+
   /** @test {Transformer.applyTransformers} */
   describe('.applyTransformers', function() {
     it('should throw on invalid direction', function() {
