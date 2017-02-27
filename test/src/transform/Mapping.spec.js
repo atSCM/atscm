@@ -70,7 +70,6 @@ describe('MappingTransformer', function() {
           expect(args[0], 'to be falsy');
 
           const result = args[1];
-          console.log(result);
           expect(result.base, 'to equal', 'folder');
           expect(result.relative, 'to equal', 'Test.ext');
         });
