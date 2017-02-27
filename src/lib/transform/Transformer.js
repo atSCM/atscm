@@ -33,16 +33,14 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     super();
 
     if (options) {
-      if (options.direction) {
-        if (isValidDirection(options.direction)) {
-          /**
-           * The transformer's direction
-           * @type {TransformerDirection}
-           */
-          this.direction = options.direction;
-        } else {
-          throw new Error('Invalid direction');
-        }
+      if (isValidDirection(options.direction)) {
+        /**
+         * The transformer's direction
+         * @type {TransformerDirection}
+         */
+        this.direction = options.direction;
+      } else {
+        throw new Error('Invalid direction');
       }
     }
   }
