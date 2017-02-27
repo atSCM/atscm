@@ -112,8 +112,8 @@ describe('AtviseFile', function() {
       }))
   );
 
-  /** @test {AtviseFile.pathForReadResults} */
-  describe('.pathForReadResults', function() {
+  /** @test {AtviseFile.pathForReadResult} */
+  describe('.pathForReadResult', function() {
     tests.forEach(test => {
       it(test.name, function() {
         expect(AtviseFile.pathForReadResult({
