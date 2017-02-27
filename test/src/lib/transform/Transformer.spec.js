@@ -93,7 +93,8 @@ describe('Transformer', function() {
   /** @test {Transformer.applyTransformers} */
   describe('.applyTransformers', function() {
     it('should throw on invalid direction', function() {
-      expect(() => Transformer.applyTransformers([], 'asdf'), 'to throw error', 'Direction is invalid');
+      expect(() => Transformer.applyTransformers([], 'asdf'), 'to throw error',
+        'Direction is invalid');
     });
 
     it('should return directed transformer if only one is passed', function() {
