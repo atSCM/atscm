@@ -96,7 +96,9 @@ export default class SplittingTransformer extends PartialTransformer {
    * @abstract
    */
   createCombinedFile(files, lastFile, callback) { // eslint-disable-line no-unused-vars
-    throw new Error('SplittingTransformer#createCombinedFile must be implemented by all subclasses');
+    throw new Error(
+      'SplittingTransformer#createCombinedFile must be implemented by all subclasses'
+    );
   }
 
   /**
