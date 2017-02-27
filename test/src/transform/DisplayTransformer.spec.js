@@ -2,89 +2,25 @@ import { Buffer } from 'buffer';
 import { EOL } from 'os';
 import File from 'vinyl';
 import { stub } from 'sinon';
-import proxyquire from 'proxyquire';
 import expect from '../../expect';
 
 import AtviseFile from '../../../src/lib/server/AtviseFile';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
-import DisplayTransformer, { DisplayCache } from '../../../src/transform/DisplayTransformer';
-
-const StubDisplayCache = proxyquire('../../../src/transform/DisplayTransformer', {
-  fs: {
-    readdir: (dir, cb) => cb(null, ['file.ext1', 'file.ext2']),
-  },
-}).DisplayCache;
-
-/** @test {DisplayCache} */
-describe('DisplayCache', function() {
-  /** @test {DisplayCache#gotAllFiles} */
-  describe('#gotAllFiles', function() {
-    it('should forward readdir errors', function() {
-      const cache = new DisplayCache();
-
-      return expect(cb => cache.gotAllFiles(new File({ path: 'that/does/not.exist' }), cb),
-        'to call the callback with error', /ENOENT/);
-    });
-
-    it('should store required files if missing', function() {
-      const cache = new StubDisplayCache();
-
-      return expect(cb => cache.gotAllFiles({ dirname: 'dirname' }, cb),
-        'to call the callback')
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be undefined');
-          expect(cache._required.dirname, 'to equal', ['.ext1', '.ext2']);
-        });
-    });
-
-    const fillCache = new StubDisplayCache();
-    const file1 = { dirname: 'dirname', extname: '.ext1' };
-    const file2 = { dirname: 'dirname', extname: '.ext2' };
-
-    it('should cache passed file', function() {
-      return expect(cb => fillCache.gotAllFiles(file1, cb),
-        'to call the callback')
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be undefined');
-          expect(fillCache._required.dirname, 'to equal', ['.ext1', '.ext2']);
-          expect(fillCache._files.dirname['.ext1'], 'to equal', file1);
-        });
-    });
-
-    it('should pass all cached files if all required are present', function() {
-      return expect(cb => fillCache.gotAllFiles(file2, cb),
-        'to call the callback')
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to equal', {
-            '.ext1': file1,
-            '.ext2': file2,
-          });
-
-          // Expect cache is cleaned
-          expect(fillCache._files.dirname, 'to be undefined');
-        });
-    });
-  });
-});
+import DisplayTransformer from '../../../src/transform/DisplayTransformer';
 
 /** @test {DisplayTransformer} */
 describe('DisplayTransformer', function() {
   const nonDisplayFile = { isDisplay: false };
 
+  /** @test {DisplayTransformer#shouldBeTransformed} */
+  describe('#shouldBeTransformed', function() {
+    it('should return false for non-display files', function() {
+      expect(DisplayTransformer.prototype.shouldBeTransformed(nonDisplayFile), 'to equal', false);
+    });
+  });
+
   /** @test {DisplayTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
-    it('should pass non-display files', function() {
-      return expect(cb => DisplayTransformer.prototype.transformFromDB(nonDisplayFile, 'utf8', cb),
-        'to call the callback')
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be', nonDisplayFile);
-        });
-    });
-
     function writeXMLToDisplayTransformer(xmlString) {
       const transformer = new DisplayTransformer({ direction: TransformDirection.FromDB });
       const file = new AtviseFile({
@@ -267,8 +203,8 @@ ${xmlString}`),
     });
   });
 
-  /** @test {DisplayTransformer#createDisplay} */
-  describe('#createDisplay', function() {
+  /** @test {DisplayTransformer#createCombinedFile} */
+  describe('#createCombinedFile', function() {
     function createDisplayWithFileContents(contents) {
       let lastKey;
       const files = Object.keys(contents).reduce((prev, ext) => {
@@ -285,7 +221,7 @@ ${xmlString}`),
 
       const transformer = new DisplayTransformer({ direction: TransformDirection.FromFilesystem });
 
-      return cb => transformer.createDisplay(files, files[lastKey], cb);
+      return cb => transformer.createCombinedFile(files, files[lastKey], cb);
     }
 
     it('should fail with invalid config file', function() {
@@ -413,60 +349,6 @@ ${xmlString}`.replace(new RegExp(EOL, 'g'), '\r\n'));
           '.svg': '<svg><rect></rect></svg>',
         }), 'to call the callback with error', 'Encode error');
       });
-    });
-  });
-
-  /** @test {DisplayTransformer#transformFromFilesystem} */
-  describe('#transformFromFilesystem', function() {
-    it('should pass non-display files', function() {
-      return expect(cb =>
-        DisplayTransformer.prototype.transformFromFilesystem(nonDisplayFile, 'utf8', cb),
-        'to call the callback'
-      )
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be', nonDisplayFile);
-        });
-    });
-
-    it('should forward cache errors', function() {
-      const transformer = new DisplayTransformer({ direction: TransformDirection.FromFilesystem });
-      transformer._displayCache.gotAllFiles = (file, cb) => cb(new Error('Cache error'));
-
-      expect(cb => transformer.transformFromFilesystem(
-        new AtviseFile({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback with error', 'Cache error');
-    });
-
-    it('should cache display files', function() {
-      const transformer = new DisplayTransformer({ direction: TransformDirection.FromFilesystem });
-      transformer._displayCache.gotAllFiles = (files, cb) => cb(null, false);
-
-      return expect(cb =>
-          transformer.transformFromFilesystem(
-            new AtviseFile({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback'
-      )
-        .then(args => {
-          expect(args[0], 'to be falsy');
-        });
-    });
-
-    it('should call #createDisplay if all required files are cached', function() {
-      const transformer = new DisplayTransformer({ direction: TransformDirection.FromFilesystem });
-      const stubDisplay = {};
-      transformer._displayCache.gotAllFiles = (files, cb) => cb(null, [{}]);
-      stub(transformer, 'createDisplay', (files, last, cb) => cb(null, stubDisplay));
-
-      return expect(cb =>
-          transformer.transformFromFilesystem(
-            new AtviseFile({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback'
-      )
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be', stubDisplay);
-        });
     });
   });
 });

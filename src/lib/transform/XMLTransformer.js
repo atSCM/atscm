@@ -1,5 +1,6 @@
 import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
-import Transformer, { TransformDirection } from './Transformer';
+import { TransformDirection } from './Transformer';
+import SplittingTransformer from './SplittingTransformer';
 
 const START_CDATA = 'STARTCDATA';
 const END_CDATA = 'ENDCDATA';
@@ -7,7 +8,7 @@ const END_CDATA = 'ENDCDATA';
 /**
  * A transformer used to transform XML documents.
  */
-export default class XMLTransformer extends Transformer {
+export default class XMLTransformer extends SplittingTransformer {
 
   /**
    * Creates a new XMLTransformer based on some options.

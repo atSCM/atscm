@@ -9,7 +9,7 @@ import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
 describe('XMLTransformer', function() {
   /** @test {XMLTransformer#constructor} */
   describe('#constructor', function() {
-    it('should return a Transformer', function() {
+    it('should return a SplittingTransformer', function() {
       expect(new XMLTransformer(), 'to be a', Transformer);
     });
 

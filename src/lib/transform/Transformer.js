@@ -33,16 +33,14 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     super();
 
     if (options) {
-      if (options.direction) {
-        if (isValidDirection(options.direction)) {
-          /**
-           * The transformer's direction
-           * @type {TransformerDirection}
-           */
-          this.direction = options.direction;
-        } else {
-          throw new Error('Invalid direction');
-        }
+      if (isValidDirection(options.direction)) {
+        /**
+         * The transformer's direction
+         * @type {TransformerDirection}
+         */
+        this.direction = options.direction;
+      } else {
+        throw new Error('Invalid direction');
       }
     }
   }
@@ -131,40 +129,6 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
 
         return directed;
       }, false);
-  }
-
-  /**
-   * Splits a {@link vinyl~File}: The resulting is a clone of the input file, with a different path.
-   * @param {vinyl~File} file The file to split.
-   * @param {?String} newExtension The extension the resulting file gets.
-   * @return {vinyl~File} The resulting file.
-   * @example
-   * // Assuming that `original` is a File with the path "path/to/file.type.xml":
-   * const result = Transformer.splitFile(original, '.another');
-   * // `result` is a new File, with the contents of `original` and the path
-   * // "path/to/file.type/file.another"
-   */
-  static splitFile(file, newExtension) {
-    const newFile = file.clone();
-
-    newFile.basename = `${newFile.stem}/${newFile.stem}`;
-    newFile.extname = newExtension;
-
-    return newFile;
-  }
-
-  /**
-   * Combines split files to a single one.
-   * @param {vinyl~File[]} files The files to combine.
-   * @param {String} newExtension The extension the resulting file gets.
-   * @return {vinyl~File} The resulting file.
-   */
-  static combineFiles(files, newExtension) {
-    const newFile = files[0].clone();
-
-    newFile.path = `${newFile.dirname}${newExtension}`;
-
-    return newFile;
   }
 
 }

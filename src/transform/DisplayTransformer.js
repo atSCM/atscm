@@ -1,71 +1,5 @@
-import { readdir } from 'fs';
-import { extname } from 'path';
 import { Buffer } from 'buffer';
 import XMLTransformer from '../lib/transform/XMLTransformer';
-
-/**
- * Determines which files are needed to create a display and stores these files as long as some of
- * them are missing.
- */
-export class DisplayCache {
-
-  /**
-   * Creates a new DisplayCache.
-   */
-  constructor() {
-    /**
-     * The files caches for the given path.
-     * @type {Map<String, vinyl~File>}
-     */
-    this._files = {};
-
-    /**
-     * The extensions of the files required.
-     * @type {String[]}
-     */
-    this._required = {};
-  }
-
-  /**
-   * Checks if, when `file` is added, all required files are cached.
-   * @param {vinyl~File} file The file to add before checking.
-   * @param {function(err: ?Error, files: ?Map<String, vinyl~File>)} callback Called with the error
-   * that occured while checking or all files related to `file` if all required files are already
-   * cached.
-   */
-  gotAllFiles(file, callback) {
-    const dirname = file.dirname;
-
-    if (!this._required[dirname]) {
-      readdir(dirname, (err, files) => {
-        if (err) {
-          callback(err);
-        } else {
-          this._files[dirname] = {};
-          this._required[dirname] = files
-            .filter(name => name[0] !== '.')
-            .map(name => extname(name));
-
-          this.gotAllFiles(file, callback);
-        }
-      });
-    } else {
-      this._files[dirname][file.extname] = file;
-
-      const required = this._required[dirname];
-      const files = this._files[dirname];
-
-      if (required.filter(ext => files[ext] === undefined).length === 0) {
-        callback(null, files);
-
-        delete this._files[dirname];
-      } else {
-        callback(null);
-      }
-    }
-  }
-
-}
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -74,17 +8,12 @@ export class DisplayCache {
 export default class DisplayTransformer extends XMLTransformer {
 
   /**
-   * Creates a new DisplayTransformer.
-   * @param {Object} options The options to use.
+   * Returns true for all files containing atvise displays.
+   * @param {AtviseFile} file The file to check.
+   * @return {Boolean} `true` for all atvise display files.
    */
-  constructor(options) {
-    super(options);
-
-    /**
-     * Caches the found displays
-     * @type {Map<String, Map<String, vinyl~File>>}
-     */
-    this._displayCache = new DisplayCache();
+  shouldBeTransformed(file) {
+    return file.isDisplay;
   }
 
   /**
@@ -96,79 +25,75 @@ export default class DisplayTransformer extends XMLTransformer {
    * while transforming the display, or the file passed through.
    */
   transformFromDB(file, enc, callback) {
-    if (file.isDisplay) {
-      this.decodeContents(file, (err, results) => {
-        if (err) {
-          callback(err);
-        } else if (!results || results.svg === undefined) {
-          callback(new Error('Error parsing display: No `svg` tag'));
-        } else {
-          const xml = results;
-          const document = results.svg;
+    this.decodeContents(file, (err, results) => {
+      if (err) {
+        callback(err);
+      } else if (!results || results.svg === undefined) {
+        callback(new Error('Error parsing display: No `svg` tag'));
+      } else {
+        const xml = results;
+        const document = results.svg;
 
-          const config = {};
+        const config = {};
 
-          // Extract JavaScript
-          if (this.tagNotEmpty(document.script)) {
-            document.script.forEach(script => {
-              if (script.$ && (script.$.src || script.$['xlink:href'])) {
-                if (!config.dependencies) {
-                  config.dependencies = [];
-                }
-
-                config.dependencies.push(script.$.src || script.$['xlink:href']);
-              } else {
-                // TODO: Warn on multiple inline scripts
-
-                const scriptFile = DisplayTransformer.splitFile(file, '.js');
-                const scriptText = (typeof script === 'string') ?
-                  script : script._ || '';
-
-                scriptFile.contents = Buffer.from(scriptText);
-                this.push(scriptFile);
+        // Extract JavaScript
+        if (this.tagNotEmpty(document.script)) {
+          document.script.forEach(script => {
+            if (script.$ && (script.$.src || script.$['xlink:href'])) {
+              if (!config.dependencies) {
+                config.dependencies = [];
               }
-            });
 
-            delete xml.svg.script;
-          }
-
-          // Extract metadata
-          if (this.tagNotEmpty(document.metadata)) {
-            // TODO: Warn on multiple metadata tags
-
-            const meta = document.metadata[0];
-
-            // - Parameters
-            if (this.tagNotEmpty(meta['atv:parameter'])) {
-              config.parameters = [];
-              meta['atv:parameter'].forEach(param => config.parameters.push(param.$));
-
-              delete xml.svg.metadata[0]['atv:parameter'];
-            }
-          }
-
-          const configFile = DisplayTransformer.splitFile(file, '.json');
-
-          configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
-          this.push(configFile);
-
-          const svgFile = DisplayTransformer.splitFile(file, '.svg');
-
-          this.encodeContents(xml, (encodeErr, stringValue) => {
-            if (encodeErr) {
-              callback(encodeErr);
+              config.dependencies.push(script.$.src || script.$['xlink:href']);
             } else {
-              svgFile.contents = Buffer.from(stringValue);
-              this.push(svgFile);
+              // TODO: Warn on multiple inline scripts
 
-              callback(null);
+              const scriptFile = DisplayTransformer.splitFile(file, '.js');
+              const scriptText = (typeof script === 'string') ?
+                script : script._ || '';
+
+              scriptFile.contents = Buffer.from(scriptText);
+              this.push(scriptFile);
             }
           });
+
+          delete xml.svg.script;
         }
-      });
-    } else {
-      callback(null, file);
-    }
+
+        // Extract metadata
+        if (this.tagNotEmpty(document.metadata)) {
+          // TODO: Warn on multiple metadata tags
+
+          const meta = document.metadata[0];
+
+          // - Parameters
+          if (this.tagNotEmpty(meta['atv:parameter'])) {
+            config.parameters = [];
+            meta['atv:parameter'].forEach(param => config.parameters.push(param.$));
+
+            delete xml.svg.metadata[0]['atv:parameter'];
+          }
+        }
+
+        const configFile = DisplayTransformer.splitFile(file, '.json');
+
+        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+        this.push(configFile);
+
+        const svgFile = DisplayTransformer.splitFile(file, '.svg');
+
+        this.encodeContents(xml, (encodeErr, stringValue) => {
+          if (encodeErr) {
+            callback(encodeErr);
+          } else {
+            svgFile.contents = Buffer.from(stringValue);
+            this.push(svgFile);
+
+            callback(null);
+          }
+        });
+      }
+    });
   }
 
   /**
@@ -178,7 +103,7 @@ export default class DisplayTransformer extends XMLTransformer {
    * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
    * while creating the display or the resulting file.
    */
-  createDisplay(files, lastFile, callback) {
+  createCombinedFile(files, lastFile, callback) {
     const configFile = files['.json'];
     let config = {};
 
@@ -264,30 +189,6 @@ export default class DisplayTransformer extends XMLTransformer {
         });
       }
     });
-  }
-
-  /**
-   * Caches all display files read, calls {@link DisplayTransformer#createDisplay} as soon as all
-   * files required to create a display are read.
-   * @param {AtviseFile} file The file to transform.
-   * @param {String} enc The encoding used.
-   * @param {function(err: ?Error, data: ?vinyl~File)} callback Called with the error that occurred
-   * or the passed file.
-   */
-  transformFromFilesystem(file, enc, callback) {
-    if (file.isDisplay) {
-      this._displayCache.gotAllFiles(file, (err, allFiles) => {
-        if (err) {
-          callback(err);
-        } else if (allFiles) {
-          this.createDisplay(allFiles, file, callback);
-        } else { // Missing files => pass without combined file
-          callback(null);
-        }
-      });
-    } else {
-      callback(null, file);
-    }
   }
 
 }
