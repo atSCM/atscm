@@ -1,6 +1,9 @@
 import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
 import Transformer, { TransformDirection } from './Transformer';
 
+const START_CDATA = 'STARTCDATA';
+const END_CDATA = 'ENDCDATA';
+
 /**
  * A transformer used to transform XML documents.
  */
@@ -34,7 +37,7 @@ export default class XMLTransformer extends Transformer {
         encoding: 'UTF-8',
         standalone: false,
       },
-      cdata: false,
+      cdata: true,
     });
   }
 
@@ -66,10 +69,32 @@ export default class XMLTransformer extends Transformer {
    */
   encodeContents(object, callback) {
     try {
-      callback(null, this.builder.buildObject(object));
+      callback(null,
+        this.builder.buildObject(object)
+          .replace(new RegExp(`(<!\\[CDATA\\[)?${START_CDATA}`), '<![CDATA[')
+          .replace(new RegExp(`${END_CDATA}(\\]\\]>)?`), ']]>')
+      );
     } catch (e) {
       callback(e);
     }
+  }
+
+  /**
+   * Helper function: Returns `true` if the given tag exists and is not empty.
+   * @param {Object} tag A tag in a parsed xml document.
+   * @return {Boolean} `true` if the given tag exists and is not empty.
+   */
+  tagNotEmpty(tag) {
+    return Boolean(tag && tag.length > 0);
+  }
+
+  /**
+   * Forces `string`, when assigned as textContent to a node, to be wrapped in a CDATA-section.
+   * @param {String} string The string to force a CDATA-section for.
+   * @return {String} The string to assign as textContent to a node.
+   */
+  static forceCData(string) {
+    return `${START_CDATA}${string}${END_CDATA}`;
   }
 
 }
