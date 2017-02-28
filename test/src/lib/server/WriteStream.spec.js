@@ -1,7 +1,5 @@
 import { stub, spy } from 'sinon';
-
-import { Buffer } from 'buffer';
-import { NodeId, DataType, VariantArrayType } from 'node-opcua';
+import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
