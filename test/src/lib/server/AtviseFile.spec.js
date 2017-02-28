@@ -132,8 +132,8 @@ describe('AtviseFile', function() {
 
   /** @test {AtviseFile.encodeValue} */
   describe('.encodeValue', function() {
-    it('should forward null', function() {
-      expect(AtviseFile.encodeValue(null), 'to equal', null);
+    it('should return empty buffer for null', function() {
+      expect(AtviseFile.encodeValue({ value: null }), 'to equal', Buffer.from(''));
     });
 
     it('should store timestamp as string for DateTime values', function() {
