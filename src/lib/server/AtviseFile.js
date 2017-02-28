@@ -269,7 +269,6 @@ export default class AtviseFile extends File {
     }
 
     if (!gotCustomType && !complete()) {
-      Logger.warn('FALLING BACK TO OCTET STREAM');
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
     }
