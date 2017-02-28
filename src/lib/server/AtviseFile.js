@@ -99,8 +99,8 @@ export default class AtviseFile extends File {
       // Property nodes are stored with ".prop" and their lowercase datatype as an extension
       path += `.prop.${extensionForDataType(dataType)}`;
     } else {
-      // Handle object types
-      let identifier = 'obj';
+      // Handle custom types
+      let identifier = 'var';
       let fileExtension = false;
       let keepExtension = false;
 
