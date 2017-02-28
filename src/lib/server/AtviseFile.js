@@ -135,8 +135,8 @@ export default class AtviseFile extends File {
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType) {
-    if (value === null) {
-      return null;
+    if (value.value === null) {
+      return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
@@ -151,7 +151,7 @@ export default class AtviseFile extends File {
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType) {
-    if (buffer === null) {
+    if (buffer === null || buffer.length === 0) {
       return null;
     }
 
