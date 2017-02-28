@@ -12,13 +12,21 @@ export default class WriteStream extends Stream {
    * or the successfully written file.
    */
   writeFile(file, callback) {
-    this.session.writeSingleNode(file.nodeId.toString(), {
-      dataType: file.dataType,
-      arrayType: file.arrayType,
-      value: file.value,
-    }, err => {
-      callback(err, file);
-    });
+    try {
+      this.session.writeSingleNode(file.nodeId.toString(), {
+        dataType: file.dataType,
+        arrayType: file.arrayType,
+        value: file.value,
+      }, err => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, file);
+        }
+      });
+    } catch (e) {
+      callback(e);
+    }
   }
 
   /**

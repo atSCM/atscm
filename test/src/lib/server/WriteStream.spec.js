@@ -1,8 +1,8 @@
-import expect from 'unexpected';
 import { stub, spy } from 'sinon';
 
 import { Buffer } from 'buffer';
 import { NodeId, DataType, VariantArrayType } from 'node-opcua';
+import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
 
@@ -10,6 +10,32 @@ import AtviseFile from '../../../../src/lib/server/AtviseFile';
 describe('WriteStream', function() {
   /** @test {WriteStream#writeFile} */
   describe('#writeFile', function() {
+    it('should forward write errors', function() {
+      const stream = new WriteStream();
+      stream.once('session-open', () => {
+        stub(stream.session, 'writeSingleNode', (node, value, cb) => cb(new Error('Test')));
+      });
+
+      stream.on('data', () => stream.end()); // Unpause readable stream
+      stream.write(new AtviseFile({ path: 'AGENT/DISPLAYS/Main.display' }));
+
+      return expect(stream, 'to error with', 'Test');
+    });
+
+    it('should forward synchronous errors', function() {
+      const stream = new WriteStream();
+      stream.once('session-open', () => {
+        stub(stream.session, 'writeSingleNode', () => {
+          throw new Error('Sync Test');
+        });
+      });
+
+      stream.on('data', () => stream.end()); // Unpause readable stream
+      stream.write(new AtviseFile({ path: 'AGENT/DISPLAYS/Main.display' }));
+
+      return expect(stream, 'to error with', 'Sync Test');
+    });
+
     it('should call node-opcua~ClientSession#writeSingleNode', function(done) {
       const stream = new WriteStream();
       stream.once('session-open', () => {
