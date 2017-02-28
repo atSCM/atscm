@@ -273,4 +273,21 @@ describe('AtviseFile', function() {
         'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/example.js');
     });
   });
+
+  /** @test {AtviseFile#clone} */
+  describe('#clone', function() {
+    it('should return a file again', function() {
+      expect(new AtviseFile({
+        path: 'path/to/name.display.xml',
+        _arrayType: VariantArrayType.Matrix,
+      }).clone(), 'to be a', AtviseFile);
+    });
+
+    it('should return file with the same array type', function() {
+      expect(new AtviseFile({
+        path: 'path/to/name.display.xml',
+        _arrayType: VariantArrayType.Matrix,
+      }).clone()._arrayType, 'to equal', VariantArrayType.Matrix);
+    });
+  });
 });

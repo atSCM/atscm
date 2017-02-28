@@ -359,4 +359,18 @@ export default class AtviseFile extends File {
     return NodeId.fromFilePath(idPath);
   }
 
+  /**
+   * Returns a new file with all attributes of the current file.
+   * @param {Object} options See https://github.com/gulpjs/vinyl#filecloneoptions for all options
+   * available.
+   * @return {AtviseFile} The cloned file.
+   */
+  clone(options) {
+    const clonedFile = super.clone(options);
+
+    clonedFile._arrayType = this._arrayType;
+
+    return clonedFile;
+  }
+
 }
