@@ -18,11 +18,12 @@ export default function push() {
     process.stdout.write(`\rUploaded: ${uploaded}`);
   }, 1000);
 
-  return src('./src/**/*.*')
-    .pipe(mappingStream)
-    .pipe(Transformer.applyTransformers(
-      ProjectConfig.useTransformers, TransformDirection.FromFilesystem
-    ))
+  return Transformer.applyTransformers(
+    src('./src/**/*.*')
+      .pipe(mappingStream),
+    ProjectConfig.useTransformers,
+    TransformDirection.FromFilesystem
+  )
     .pipe(writeStream)
     .on('end', () => {
       process.stdout.clearLine();

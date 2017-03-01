@@ -106,29 +106,24 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   /**
    * Creates a stream with all transformers passed, with the given direction. Transformers are
    * reversed if using {@link TransformDirection.FromFilesystem}.
+   * @param {Stream} stream The stream to apply the transformers to.
    * @param {Transformer[]} transformers The transformers to apply.
    * @param {TransformDirection} direction The direction to use.
    * @return {Transformer} The last transformer passed, piped to the previous.
    */
-  static applyTransformers(transformers, direction) {
+  static applyTransformers(stream, transformers, direction) {
     if (!isValidDirection(direction)) {
       throw new Error('Direction is invalid');
     }
 
     if (transformers.length === 0) {
-      return createStream();
+      return stream;
     }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
-      .reduce((prev, curr) => {
-        const directed = curr.withDirection(direction);
+      .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
+  }
 
-        if (prev) {
-          return prev.pipe(directed);
-        }
-
-        return directed;
-      }, false);
   }
 
 }
