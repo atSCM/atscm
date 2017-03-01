@@ -1,4 +1,4 @@
-import { ctor as throughStreamClass, obj as createStream } from 'through2';
+import { ctor as throughStreamClass } from 'through2';
 
 /**
  * The directions a transformer can be run in.
