@@ -124,6 +124,4 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
       .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
   }
 
-  }
-
 }
