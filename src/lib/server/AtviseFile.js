@@ -316,6 +316,22 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * `true` for files containing atvise scripts.
+   * @type {Boolean}
+   */
+  get isScript() {
+    return this.typeDefinition.value === 'VariableTypes.ATVISE.ScriptCode';
+  }
+
+  /**
+   * `true` for files containing atvise quick dynamics.
+   * @type {Boolean}
+   */
+  get isQuickDynamic() {
+    return this.typeDefinition.value === 'VariableTypes.ATVISE.QuickDynamic';
+  }
+
+  /**
    * Sets the node value for the file.
    * @param {?*} newValue The value to set.
    */
