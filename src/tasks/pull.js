@@ -2,7 +2,7 @@ import { dest } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import NodeStream from '../lib/server/NodeStream';
 import ReadStream from '../lib/server/ReadStream';
-import { TransformDirection } from '../lib/transform/Transformer';
+import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from '../transform/Mapping';
 
 /**
@@ -27,6 +27,7 @@ export default function pull() {
   return nodeStream
     .pipe(readStream)
     .pipe(mappingStream)
+    .pipe(Transformer.applyTransformers(ProjectConfig.useTransformers, TransformDirection.FromDB))
     .pipe(storeStream)
     .on('end', () => {
       process.stdout.clearLine();
