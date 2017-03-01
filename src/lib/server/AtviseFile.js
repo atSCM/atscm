@@ -109,10 +109,6 @@ export default class AtviseFile extends File {
         identifier = atType.identifier;
         fileExtension = atType.fileExtension;
         keepExtension = atType.keepExtension;
-      } else {
-        process.stdout.clearLine();
-        Logger.warn('\rMissing', typeDefinition.namespace, typeDefinition.value,
-          `(${readResult.nodeId.value})`);
       }
 
       if (!keepExtension) {
