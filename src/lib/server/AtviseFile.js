@@ -246,14 +246,7 @@ export default class AtviseFile extends File {
       this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
     });
 
-    let gotCustomType = false;
-    ifLastExtensionMatches(ext => ext === 'obj', () => {
-      gotCustomType = true;
-
-      Logger.warn('NEED SPECIAL HANDLING');
-    });
-
-    if (!gotCustomType && !complete()) {
+    if (!complete()) {
       // Handle atvise types
       let foundAtType = false;
 
@@ -268,7 +261,7 @@ export default class AtviseFile extends File {
       });
     }
 
-    if (!gotCustomType && !complete()) {
+    if (!complete()) {
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
     }
