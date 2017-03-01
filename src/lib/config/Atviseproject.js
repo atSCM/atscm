@@ -62,7 +62,7 @@ export default class Atviseproject {
     return [
       new NodeId('AGENT'),
       new NodeId('SYSTEM'),
-      // new NodeId('ObjectTypes.PROJECT'),
+      new NodeId('ObjectTypes.PROJECT'),
     ];
   }
 
