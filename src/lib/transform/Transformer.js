@@ -33,6 +33,10 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   constructor(options = {}) {
     super();
 
+    /**
+     * The options the transformer was created with. Used for printing description.
+     * @type {Object}
+     */
     this._options = options;
 
     if (options.direction) {
