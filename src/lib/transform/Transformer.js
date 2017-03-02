@@ -32,10 +32,10 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   constructor(options = {}) {
     super();
 
-    this._options = options
+    this._options = options;
 
     if (options.direction) {
-      if (options.direction && isValidDirection(options.direction)) {
+      if (isValidDirection(options.direction)) {
         /**
          * The transformer's direction
          * @type {TransformerDirection}
