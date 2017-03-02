@@ -34,10 +34,11 @@ describe('pull', function() {
 
   it('should return a stream', function(done) {
     const stream = pull();
+
     expect(stream, 'to be a', Stream);
     stream.once('end', done);
   });
-  
+
   it('should stream AtviseFiles', function(done) {
     const stream = pull();
 
