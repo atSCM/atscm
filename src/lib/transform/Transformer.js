@@ -29,11 +29,13 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * @param {TransformDirection} [options.direction] The direction to use.
    * @throws {Error} Throws an error if the given direction is invalid.
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
 
-    if (options) {
-      if (isValidDirection(options.direction)) {
+    this._options = options
+
+    if (options.direction) {
+      if (options.direction && isValidDirection(options.direction)) {
         /**
          * The transformer's direction
          * @type {TransformerDirection}
