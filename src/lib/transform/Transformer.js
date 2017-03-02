@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import { ctor as throughStreamClass } from 'through2';
 
 /**
@@ -124,6 +125,27 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
       .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
+  }
+
+  /**
+   * Prints the transformer.
+   * @param {?Number} depth The depth to inspect.
+   * @param {Object} options See https://nodejs.org/api/util.html#util_util_inspect_object_options
+   * for details
+   * @return {String} A string representation of the transformer.
+   */
+  inspect(depth, options) {
+    const newOptions = options;
+    newOptions.depth = options.depth === null ? null : options.depth - 1;
+
+    if (depth > 0) {
+      return options.stylize(`[${this.constructor.name}]`, 'special');
+    }
+
+    return `${options.stylize(this.constructor.name, 'special')}${inspect(this._options, newOptions)
+      .replace(/^{/, '<').replace(/}$/, '>')
+      .replace(/\n/, `\n${' '.repeat(this.constructor.name.length)}`)
+    }`;
   }
 
 }
