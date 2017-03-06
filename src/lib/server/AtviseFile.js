@@ -176,6 +176,7 @@ export default class AtviseFile extends File {
       _dataType: readResult.value.$dataType,
       _arrayType: readResult.value.$arrayType,
       _typeDefinition: readResult.referenceDescription.typeDefinition,
+      stat: { mtime: readResult.mtime },
     });
   }
 
