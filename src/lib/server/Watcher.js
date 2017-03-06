@@ -7,6 +7,7 @@ import {
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeStream from './NodeStream';
 import Stream from './Stream';
+import Session from './Session';
 
 /**
  * A stream that monitors changes in the read nodes.
@@ -88,7 +89,7 @@ export class SubscribeStream extends Stream {
 
     item.on('err', err => {
       const error = err;
-      error.message = `Error monitoring ${nodeId.toString()}`;
+      error.message = `Error monitoring ${nodeId.toString()}: ${err.message}`;
 
       callback(error);
     });
@@ -152,6 +153,14 @@ export default class Watcher extends Emitter {
 
     this._subscribeStream.on('finish', () => this.emit('ready'));
     this._subscribeStream.on('change', event => this.emit('change', event));
+  }
+
+  /**
+   * Ends monitoring nodes.
+   */
+  close() {
+    Session.close(this._subscribeStream.session)
+      .catch(e => this.emit('error', e));
   }
 
 }

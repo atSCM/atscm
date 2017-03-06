@@ -12,7 +12,6 @@ class StubMonitoredItem extends Emitter {
   constructor(error = false) {
     super();
 
-    console.log('EMITTING', error ? 'err' : 'changed');
     // Simulate first notification or error
     setTimeout(() => this.emit(error ? 'err' : 'changed', error || {}), 10);
   }
@@ -138,7 +137,7 @@ describe('SubscribeStream', function() {
         stream.monitorNode({
           nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         }, err => {
-          expect(err, 'to have message', 'Test');
+          expect(err, 'to have message', 'Error monitoring ns=1;s=AGENT.DISPLAYS.Main: Test');
 
           done();
         });
@@ -182,25 +181,31 @@ describe('Watcher', function() {
   /** @test {Watcher#constructor} */
   describe('#constructor', function() {
     it('should work without arguments', function() {
-      expect(() => new Watcher(), 'not to throw');
+      let watcher;
+      expect(() => (watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')])),
+        'not to throw');
+
+      watcher.on('ready', () => watcher.close());
     });
 
     it('should emit ready event once subscribe stream finished', function(done) {
-      const watcher = new Watcher();
-      watcher._nodeStream.end();
+      const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
-      watcher.on('ready', () => done());
+      watcher.on('ready', () => {
+        watcher.close();
+        done();
+      });
     });
 
     it('should forward change events', function(done) {
-      const watcher = new Watcher();
-      watcher._nodeStream.end();
+      const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
       watcher.on('ready', () => {
         const event = {};
 
         watcher.on('change', e => {
           expect(e, 'to be', event);
+          watcher.close();
           done();
         });
 
