@@ -19,6 +19,10 @@
  */
 
 /**
+ * @external {node-opcua~ClientSubscription} http://node-opcua.github.io/api_doc/classes/ClientSubscription.html
+ */
+
+/**
  * @external {node-opcua~DataValue} http://node-opcua.github.io/api_doc/classes/DataValue.html
  */
 
