@@ -1,3 +1,4 @@
+import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import Logger from 'gulplog';
@@ -376,6 +377,28 @@ export default class AtviseFile extends File {
     clonedFile._arrayType = this._arrayType;
 
     return clonedFile;
+  }
+
+  /**
+   * Creates a new AtviseFile and reads it's contents.
+   * @param {Object} options See {@link vinyl~File} for available options.
+   * @return {Promise} Resolved with the new file of rejected with the error that occured while
+   * trying to read it's path.
+   */
+  static read(options) {
+    return new Promise((resolve, reject) => {
+      if (!options.path) {
+        reject(new Error('options.path is required'));
+      } else {
+        readFile(options.path, (err, contents) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
+    });
   }
 
 }
