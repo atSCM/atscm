@@ -11,7 +11,7 @@ import AtviseFile from '../lib/server/AtviseFile';
 let pulling = false;
 let pushing = false;
 let lastPull = 0;
-let lastPush = 0;
+let lastPushed = null;
 
 /**
  * Watches local files and atvise server nodes to trigger pull/push on change.
@@ -25,26 +25,30 @@ const watch = parallel(
       const source = src(join(root, path), { base: root });
 
       (new PushStream(source))
+        .on('data', file => (lastPushed = file.nodeId.toString()))
         .on('end', () => {
           pushing = false;
-          lastPush = AtviseFile.normalizeMtime(new Date());
         });
     }
   }),
   watchForServerChanges(readResult => {
-    if (!pushing && AtviseFile.normalizeMtime(readResult.mtime) > lastPush) {
-      pulling = true;
-      Logger.info(readResult.nodeId.toString(), 'changed');
+    if (!pushing) {
+      if (readResult.nodeId.toString() !== lastPushed) {
+        pulling = true;
+        Logger.info(readResult.nodeId.toString(), 'changed');
 
-      const readStream = createStream();
-      readStream.write(readResult);
-      readStream.end();
+        const readStream = createStream();
+        readStream.write(readResult);
+        readStream.end();
 
-      (new PullStream(readStream))
-        .on('end', () => {
-          pulling = false;
-          lastPull = AtviseFile.normalizeMtime(readResult.mtime);
-        });
+        (new PullStream(readStream))
+          .on('end', () => {
+            pulling = false;
+            lastPull = AtviseFile.normalizeMtime(readResult.mtime);
+          });
+      } else {
+        lastPushed = null;
+      }
     }
   })
 );
