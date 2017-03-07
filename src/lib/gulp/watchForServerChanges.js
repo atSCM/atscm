@@ -7,7 +7,8 @@ import Watcher from '../server/Watcher';
  * @return {function()} The resulting gulp task.
  */
 export default function watchForServerChanges(listener) {
-  return () => new Watcher()
-      .on('change', data => listener(data))
-      .on('ready', () => Logger.info('Waiting for server changes...'));
+  return cb => new Watcher()
+    .on('change', data => listener(data))
+    .on('ready', () => Logger.info('Waiting for server changes...'))
+    .on('error', err => cb(err));
 }

@@ -7,11 +7,12 @@ import Logger from 'gulplog';
  * @return {function()} The resulting gulp task.
  */
 export default function watchForFileChanges(listener) {
-  return () => sane('./src', {
+  return cb => sane('./src', {
     glob: '**/*.*',
     watchman: ['darwin'].indexOf(process.platform) >= 0,
   })
     .on('change', listener)
     // FIXME: Need to handle `add` and `delete` events
-    .on('ready', () => Logger.info('Waiting for file changes...'));
+    .on('ready', () => Logger.info('Waiting for file changes...'))
+    .on('error', err => cb(err));
 }
