@@ -1,3 +1,33 @@
+<a name="0.2.0-alpha.3"></a>
+# [0.2.0-alpha.3](https://github.com/atSCM/atscm/compare/0.2.0-alpha.1...v0.2.0-alpha.3) (2017-03-07)
+
+
+### Bug Fixes
+
+* **AtviseFile:** Ignore leading and trailing whitespaces and newlines when encoding ([269564a](https://github.com/atSCM/atscm/commit/269564a)), closes [#21](https://github.com/atSCM/atscm/issues/21)
+* **Syntax:** Fix typo ([fd6cfc1](https://github.com/atSCM/atscm/commit/fd6cfc1))
+* **test:** Support empty mtime field ([03909e1](https://github.com/atSCM/atscm/commit/03909e1))
+* **Transformer:** Fixes an issue where Transformer#constructor throws with options not containing direction ([022a9bd](https://github.com/atSCM/atscm/commit/022a9bd))
+* **transformers:** Fixes an issue where Transformer#applyTransformers does not run all transformers ([97c042f](https://github.com/atSCM/atscm/commit/97c042f))
+* **watch:** Ignore value changes of nodes that were just pushed ([7ccc546](https://github.com/atSCM/atscm/commit/7ccc546)), closes [#20](https://github.com/atSCM/atscm/issues/20)
+
+
+### Features
+
+* **AtviseFile:** Add AtviseFile.read ([dba5498](https://github.com/atSCM/atscm/commit/dba5498))
+* **AtviseFile:** Normalize file mtime when created form ReadResult ([bd55033](https://github.com/atSCM/atscm/commit/bd55033))
+* **AtviseFile:** Store node timestamp as file mtime ([84e2c2a](https://github.com/atSCM/atscm/commit/84e2c2a))
+* **ReadStream:** Store node timestamp as file mtime ([4b8ead4](https://github.com/atSCM/atscm/commit/4b8ead4))
+* **tasks:** Add `watch` task ([cf9c8f5](https://github.com/atSCM/atscm/commit/cf9c8f5)), closes [#11](https://github.com/atSCM/atscm/issues/11)
+* **tasks:** Add watchForFileChanges ([2b2a913](https://github.com/atSCM/atscm/commit/2b2a913))
+* **tasks:** Add watchForFileChanges gulp task ([3345a25](https://github.com/atSCM/atscm/commit/3345a25))
+* **tasks:** config: Better Transformer info ([36031e9](https://github.com/atSCM/atscm/commit/36031e9))
+* **tasks:** Implement server node watcher ([3104c43](https://github.com/atSCM/atscm/commit/3104c43))
+* **tasks:** Implement server node watcher ([41cef52](https://github.com/atSCM/atscm/commit/41cef52))
+* **transformers:** SplittingTransformer now loads missing required files ([615cb73](https://github.com/atSCM/atscm/commit/615cb73))
+
+
+
 <a name="0.2.0-alpha.2"></a>
 # [0.2.0-alpha.2](https://github.com/atSCM/atscm/compare/0.2.0-alpha.1...v0.2.0-alpha.2) (2017-03-07)
 
