@@ -26,7 +26,7 @@ export default class Client {
 
       client.connect(endpoint, err => {
         if (err) {
-          reject(`Unable to connect to ${endpoint}: ${err.message}`);
+          reject(new Error(`Unable to connect to ${endpoint}: ${err.message}`));
         } else {
           resolve(client);
         }
