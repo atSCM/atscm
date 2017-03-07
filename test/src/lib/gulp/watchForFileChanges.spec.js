@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-import { spy } from 'sinon';
 import watchForFileChanges from '../../../../src/lib/gulp/watchForFileChanges';
 
 /** @test {watchForFileChanges} */
