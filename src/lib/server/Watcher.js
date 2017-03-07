@@ -52,6 +52,8 @@ export class SubscribeStream extends Stream {
       this.subscription = subscription;
       this.emit('subscription-started', subscription);
     });
+
+    subscription.on('failure', err => this.emit('error', err));
   }
 
   /**
@@ -141,13 +143,15 @@ export default class Watcher extends Emitter {
      * The node stream that discovers the nodes to watch.
      * @type {NodeStream}
      */
-    this._nodeStream = new NodeStream(nodes);
+    this._nodeStream = new NodeStream(nodes)
+      .on('error', err => this.emit('error', err));
 
     /**
      * The stream that starts monitoring the nodes to watch.
      * @type {SubscribeStream}
      */
-    this._subscribeStream = new SubscribeStream();
+    this._subscribeStream = new SubscribeStream()
+      .on('error', err => this.emit('error', err));
 
     this._nodeStream.pipe(this._subscribeStream);
 
