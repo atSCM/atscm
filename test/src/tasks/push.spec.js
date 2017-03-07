@@ -2,9 +2,8 @@ import { Stream } from 'stream';
 import { Buffer } from 'buffer';
 import proxyquire from 'proxyquire';
 import File from 'vinyl';
-import through, { ctor as throughStreamClass } from 'through2';
+import through from 'through2';
 import expect from '../../expect';
-import AtviseFile from '../../../src/lib/server/AtviseFile';
 
 const push = proxyquire('../../../src/tasks/push', {
   gulp: {
@@ -21,9 +20,13 @@ const push = proxyquire('../../../src/tasks/push', {
       return stream;
     },
   },
-  '../lib/server/WriteStream': {
+  '../lib/gulp/PushStream': {
     _esModule: true,
-    default: class WStream extends throughStreamClass({ objectMode: true }) {},
+    default: class WStream {
+      constructor(srcStream) {
+        return srcStream;
+      }
+    },
   },
 }).default;
 
@@ -32,16 +35,8 @@ describe('push', function() {
   it('should return a stream', function(done) {
     const stream = push();
     expect(stream, 'to be a', Stream);
-    stream.once('end', done);
-  });
 
-  it('should stream AtviseFiles', function(done) {
-    const stream = push();
-
-    stream.on('data', data => {
-      expect(data, 'to be a', AtviseFile);
-    });
-
+    stream.on('data', () => {}); // Unpipe readable stream
     stream.once('end', done);
   });
 });
