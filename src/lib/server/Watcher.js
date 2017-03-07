@@ -2,7 +2,7 @@ import Emitter from 'events';
 import {
   ClientSubscription,
   AttributeIds,
-  subscription_service as SubscriptionService
+  subscription_service as SubscriptionService,
 } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeStream from './NodeStream';
