@@ -3,7 +3,7 @@ import { Stream } from 'stream';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
 import expect from 'unexpected';
-import { ClientSubscription, resolveNodeId } from 'node-opcua';
+import { resolveNodeId } from 'node-opcua';
 import { ctor as throughStreamClass } from 'through2';
 import Watcher from '../../../../src/lib/server/Watcher';
 
