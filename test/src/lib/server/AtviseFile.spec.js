@@ -172,6 +172,23 @@ describe('AtviseFile', function() {
       expect(AtviseFile.decodeValue(buffer, DataType.ByteString), 'to equal', buffer);
     });
   });
+  
+  /** @test {AtviseFile.normalizeMtime} */
+  describe('.normalizeMtime', function() {
+    it('should return original without milliseconds', function() {
+      const org = new Date();
+      org.setMilliseconds(0);
+
+      expect(AtviseFile.normalizeMtime(org), 'to equal', org);
+    });
+
+    it('should remove milliseconds if provided', function() {
+      const org = new Date();
+      org.setMilliseconds(500);
+
+      expect(AtviseFile.normalizeMtime(org).getMilliseconds(), 'to equal', 0);
+    });
+  });
 
   /** @test {AtviseFile.fromReadResult} */
   describe('.fromReadResult', function() {

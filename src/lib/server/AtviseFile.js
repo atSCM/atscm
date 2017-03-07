@@ -162,6 +162,19 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * As file mtimes do not support millisecond resolution these must be removed before storing
+   * files.
+   * @param {Date} date The original mtime.
+   * @return {Date} The normalized mtime.
+   */
+  static normalizeMtime(date) {
+    const result = date;
+    result.setMilliseconds(0);
+
+    return result;
+  }
+
+  /**
    * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
    * @param {ReadStream.ReadResult} readResult The read result to create the file for.
    * @return {AtviseFile} The resulting file.
