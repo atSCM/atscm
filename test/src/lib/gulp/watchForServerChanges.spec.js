@@ -18,4 +18,15 @@ describe('watchForServerChanges', function() {
     expect(listener.calledOnce, 'to be true');
     expect(listener.lastCall.args[0], 'to equal', event);
   });
+
+  it('should call callback on error', function(done) {
+    const watcher = watchForServerChanges(() => {})(err => {
+      expect(err, 'to have message', 'Test');
+      done();
+    })
+      .on('ready', () => {
+        watcher.emit('error', new Error('Test'));
+        watcher.close();
+      });
+  });
 });

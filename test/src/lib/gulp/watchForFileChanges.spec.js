@@ -20,4 +20,15 @@ describe('watchForFileChanges', function() {
       watcher.close();
     });
   });
+
+  it('should call callback on error', function(done) {
+    const watcher = watchForFileChanges(() => {})(err => {
+      expect(err, 'to have message', 'Test');
+      done();
+    })
+      .on('ready', () => {
+        watcher.emit('error', new Error('Test'));
+        watcher.close();
+      });
+  });
 });
