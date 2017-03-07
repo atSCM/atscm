@@ -107,9 +107,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', () => {
-        const item = stream.monitorNode({
-          nodeId
-        }, function(err) {
+        const item = stream.monitorNode({ nodeId }, function(err) {
           expect(err, 'to be falsy');
 
           setTimeout(() => item.emit('changed', {
