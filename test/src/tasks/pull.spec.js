@@ -2,9 +2,8 @@ import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 
 import { Stream } from 'stream';
-import through, { ctor as throughStreamClass } from 'through2';
+import { ctor as throughStreamClass } from 'through2';
 import NodeId from '../../../src/lib/server/NodeId';
-import AtviseFile from '../../../src/lib/server/AtviseFile';
 
 const pull = proxyquire('../../../src/tasks/pull', {
   '../lib/server/NodeStream': {
@@ -22,9 +21,13 @@ const pull = proxyquire('../../../src/tasks/pull', {
       }
     },
   },
-  gulp: {
+  '../lib/gulp/PullStream': {
     _esModule: true,
-    dest: () => through.obj(),
+    default: class PStream {
+      constructor(readStream) {
+        return readStream;
+      }
+    },
   },
 }).default;
 
@@ -36,16 +39,8 @@ describe('pull', function() {
     const stream = pull();
 
     expect(stream, 'to be a', Stream);
-    stream.once('end', done);
-  });
 
-  it('should stream AtviseFiles', function(done) {
-    const stream = pull();
-
-    stream.on('data', data => {
-      expect(data, 'to be a', AtviseFile);
-    });
-
+    stream.on('data', () => {}); // Unpipe readable stream
     stream.once('end', done);
   });
 });
