@@ -137,7 +137,7 @@ export default class AtviseFile extends File {
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString());
+    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
   }
 
   /**
