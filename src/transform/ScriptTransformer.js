@@ -33,7 +33,7 @@ export default class ScriptTransformer extends XMLTransformer {
           Logger.warn(`Empty document at ${file.relative}`);
         }
 
-        const document = results ? results.script : {};
+        const document = results && results.script ? results.script : {};
 
         const config = {};
         let code = '';
