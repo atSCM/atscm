@@ -23,10 +23,8 @@ describe('watchForServerChanges', function() {
     const watcher = watchForServerChanges(() => {})(err => {
       expect(err, 'to have message', 'Test');
       done();
-    })
-      .on('ready', () => {
-        watcher.emit('error', new Error('Test'));
-        watcher.close();
-      });
+    });
+
+    watcher.emit('error', new Error('Test'));
   });
 });
