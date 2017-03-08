@@ -1,4 +1,5 @@
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
+import Logger from 'gulplog';
 import Stream from './Stream';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
@@ -16,7 +17,7 @@ export default class NodeStream extends Stream {
    * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
    * to ignore.
    * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
-   * @param {Boolean} [options.read=false] If the discovered nodes should be read (*Not
+   * @param {Number} [options.maxRetries=3] How often failing browse requests should be retried.
    * implemented yet*).
    */
   constructor(nodesToBrowse, options) {
@@ -44,7 +45,10 @@ export default class NodeStream extends Stream {
     this.recursive = true;
 
     /**
+     * How often failing browse requests should be retried.
+     * @type {Number}
      */
+    this.maxRetries = 3;
 
     /**
      * An array of {@link NodeId}s to ignore.
@@ -59,6 +63,10 @@ export default class NodeStream extends Stream {
 
       if (options.ignoreNodes !== undefined) {
         this.ignoreNodes = options.ignoreNodes;
+      }
+
+      if (options.maxRetries !== undefined) {
+        this.maxRetries = options.maxRetries;
       }
     }
 
@@ -81,7 +89,7 @@ export default class NodeStream extends Stream {
    * @return {Promise<NodeId[], Error>} Fulfilled with the next nodes to browse or rejected with the
    * error that occurred while browsing.
    */
-  browseNode(nodeId) {
+  browseNode(nodeId, retry) {
     const promise = new Promise((resolve, reject) => {
       this.session.browse({
         nodeId,
@@ -90,7 +98,21 @@ export default class NodeStream extends Stream {
         resultMask: this._resultMask,
       }, (err, results) => {
         if (err) {
-          reject(new Error(`Browsing ${nodeId.toString()} failed: ${err.message}`));
+          if (err.message === 'Transaction has timed out') {
+            const tryNo = retry || 1;
+            Logger.warn(`Timeout while browsing. Retrying... (${tryNo})`, nodeId.toString());
+
+            if (retry && retry === this.maxRetries) {
+              reject(
+                new Error(`Browsing ${nodeId.toString()} failed: Timeout (${promise.retry}x)`)
+              );
+            } else {
+              this.browseNode(nodeId, tryNo)
+                .then(resolve, reject);
+            }
+          } else {
+            reject(new Error(`Browsing ${nodeId.toString()} failed: ${err.message}`));
+          }
         } else if (!results || results.length === 0) {
           reject(new Error(`Browsing ${nodeId.toString()} failed: No results`));
         } else if (results[0].statusCode > 0) {
@@ -121,7 +143,7 @@ export default class NodeStream extends Stream {
       });
     });
 
-    if (this.recursive) {
+    if (this.recursive && retry === undefined) {
       return promise.then(childObjectNodes => this.browseNodes(childObjectNodes));
     }
 

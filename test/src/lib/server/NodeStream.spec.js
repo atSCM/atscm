@@ -28,8 +28,8 @@ describe('NodeStream', function() {
       expect((stream = new NodeStream(testNodes)), 'to be a', Stream);
     });
 
-    it('should store "read" option', function() {
-      expect((stream = new NodeStream(testNodes, { read: true })).readNodes, 'to be true');
+    it('should store "maxRetries" option', function() {
+      expect((stream = new NodeStream(testNodes, { maxRetries: 13 })).maxRetries, 'to equal', 13);
     });
 
     it('should set "recursive" to true by default', function() {
