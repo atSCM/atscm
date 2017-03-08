@@ -44,11 +44,7 @@ export default class NodeStream extends Stream {
     this.recursive = true;
 
     /**
-     * If the discovered nodes should be read (*Not implemented yet*).
-     * @type {Boolean}
-     * @todo Implement
      */
-    this.readNodes = false;
 
     /**
      * An array of {@link NodeId}s to ignore.
@@ -57,10 +53,6 @@ export default class NodeStream extends Stream {
     this.ignoreNodes = Project.ignoreNodes;
 
     if (options) {
-      if (options.read !== undefined) {
-        this.readNodes = options.read;
-      }
-
       if (options.recursive !== undefined) {
         this.recursive = options.recursive;
       }
