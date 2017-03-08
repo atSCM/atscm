@@ -1,14 +1,25 @@
-import { stub } from 'sinon';
+import { Buffer } from 'buffer';
+import { stub, spy } from 'sinon';
+import proxyquire from 'proxyquire';
 import { DataType, VariantArrayType } from 'node-opcua';
 import File from 'vinyl';
+import Logger from 'gulplog';
 import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
-import MappingTransformer from '../../../src/transform/Mapping';
 import NodeId from '../../../src/lib/server/NodeId';
 import AtviseFile from '../../../src/lib/server/AtviseFile';
 
+const readFile = (path, enc, cb) => cb(null, JSON.stringify({
+  typeDefinition: 'ns=1;s=VariableTypes.PROJECT.Custom',
+}));
+const fs = { readFile };
+
+const MappingTransformer = proxyquire('../../../src/transform/Mapping', { fs }).default;
+
 /** @test {MappingTransformer} */
 describe('MappingTransformer', function() {
+  before(() => Logger.on('error', () => true));
+
   /** @test {MappingTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
     context('when AtviseFile.fromReadResult returns error', function() {
@@ -44,6 +55,33 @@ describe('MappingTransformer', function() {
       }], 'when piped through', stream, 'to yield chunks satisfying', [
         expect.it('to be an', AtviseFile),
       ]);
+    });
+
+    context('when file has non-standard type-definition', function() {
+      it('should push .rc file', function() {
+        const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+        return expect([{
+          nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
+          value: {
+            value: '<xml></xml>',
+            $dataType: DataType.XmlElement,
+            $arrayType: VariantArrayType.Scalar,
+          },
+          referenceDescription: {
+            typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+          },
+        }], 'when piped through', stream, 'to yield chunks satisfying', [
+          {
+            contents: new Buffer(JSON.stringify({
+              typeDefinition: 'ns=1;s=VariableTypes.PROJECT.CustomType',
+            }, null, '  ')),
+          },
+          {
+            typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+          },
+        ]);
+      });
     });
   });
 
@@ -85,6 +123,56 @@ describe('MappingTransformer', function() {
           expect(args, 'to have length', 1);
           expect(args[0], 'to be falsy');
         });
+    });
+
+    context('when file has non-standard type-definition', function() {
+      context('with .rc file', function() {
+        before(() => spy(fs, 'readFile'));
+        after(() => fs.readFile.restore());
+
+        it('should read .rc file', function() {
+          const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+          return expect([
+            new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }),
+          ], 'when piped through', stream)
+            .then(() => {
+              expect(fs.readFile, 'was called once');
+            });
+        });
+      });
+
+      context('when .rc file cannot be read', function() {
+        beforeEach(() => stub(fs, 'readFile', (path, enc, cb) => cb(new Error('Test'))));
+        afterEach(() => fs.readFile.restore());
+
+        it('should forward error', function() {
+          const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+          const promise = expect(stream, 'to error with', 'Test');
+
+          stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
+          stream.end();
+
+          return promise;
+        });
+      });
+
+      context('when .rc file cannot be parsed', function() {
+        beforeEach(() => stub(fs, 'readFile', (path, enc, cb) => cb(null, 'invalid')));
+        afterEach(() => fs.readFile.restore());
+
+        it('should forward error', function() {
+          const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+          const promise = expect(stream, 'to error with', /Unexpected token i in JSON/);
+
+          stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
+          stream.end();
+
+          return promise;
+        });
+      });
     });
   });
 });

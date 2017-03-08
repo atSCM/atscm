@@ -1,5 +1,6 @@
 import { Stream } from 'stream';
 import { stub } from 'sinon';
+import { obj as createStream } from 'through2';
 import expect from '../../../expect';
 
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
@@ -92,13 +93,14 @@ describe('Transformer', function() {
   /** @test {Transformer.applyTransformers} */
   describe('.applyTransformers', function() {
     it('should throw on invalid direction', function() {
-      expect(() => Transformer.applyTransformers([], 'asdf'), 'to throw error',
+      expect(() => Transformer.applyTransformers(createStream(), [], 'asdf'), 'to throw error',
         'Direction is invalid');
     });
 
     it('should return directed transformer if only one is passed', function() {
       const firstTransformer = new Transformer();
-      const result = Transformer.applyTransformers([firstTransformer], TransformDirection.FromDB);
+      const result = Transformer.applyTransformers(createStream(), [firstTransformer],
+        TransformDirection.FromDB);
 
       expect(result, 'to be', firstTransformer);
       expect(firstTransformer.direction, 'to equal', TransformDirection.FromDB);
@@ -107,7 +109,7 @@ describe('Transformer', function() {
     it('should return last transformer piped to previous', function() {
       const firstTransformer = new Transformer();
       const lastTransformer = new Transformer();
-      const result = Transformer.applyTransformers([
+      const result = Transformer.applyTransformers(createStream(), [
         firstTransformer,
         lastTransformer,
       ], TransformDirection.FromDB);
@@ -120,7 +122,7 @@ describe('Transformer', function() {
     it('should reverse transformers if called with "FromFilesystem"', function() {
       const firstTransformer = new Transformer();
       const lastTransformer = new Transformer();
-      const result = Transformer.applyTransformers([
+      const result = Transformer.applyTransformers(createStream(), [
         firstTransformer,
         lastTransformer,
       ], TransformDirection.FromFilesystem);
@@ -131,7 +133,8 @@ describe('Transformer', function() {
     });
 
     it('should work with empty array as argument', function() {
-      expect(Transformer.applyTransformers([], TransformDirection.FromDB), 'to be a', Stream);
+      expect(Transformer.applyTransformers(createStream(), [], TransformDirection.FromDB),
+        'to be a', Stream);
     });
   });
 });

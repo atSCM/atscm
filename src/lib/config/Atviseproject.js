@@ -1,9 +1,8 @@
 /* eslint-disable no-useless-escape */
 
 import NodeId from '../server/NodeId';
-
-class DisplayTransformer {}
-class ScriptTransformer {}
+import DisplayTransformer from '../../transform/DisplayTransformer';
+import ScriptTransformer from '../../transform/ScriptTransformer';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -62,7 +61,7 @@ export default class Atviseproject {
     return [
       new NodeId('AGENT'),
       new NodeId('SYSTEM'),
-      // new NodeId('ObjectTypes.PROJECT'),
+      new NodeId('ObjectTypes.PROJECT'),
     ];
   }
 

@@ -1,3 +1,4 @@
+import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import Logger from 'gulplog';
@@ -99,8 +100,8 @@ export default class AtviseFile extends File {
       // Property nodes are stored with ".prop" and their lowercase datatype as an extension
       path += `.prop.${extensionForDataType(dataType)}`;
     } else {
-      // Handle object types
-      let identifier = 'obj';
+      // Handle custom types
+      let identifier = 'var';
       let fileExtension = false;
       let keepExtension = false;
 
@@ -109,10 +110,6 @@ export default class AtviseFile extends File {
         identifier = atType.identifier;
         fileExtension = atType.fileExtension;
         keepExtension = atType.keepExtension;
-      } else {
-        process.stdout.clearLine();
-        Logger.warn('\rMissing', typeDefinition.namespace, typeDefinition.value,
-          `(${readResult.nodeId.value})`);
       }
 
       if (!keepExtension) {
@@ -135,12 +132,12 @@ export default class AtviseFile extends File {
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType) {
-    if (value === null) {
-      return null;
+    if (value.value === null) {
+      return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString());
+    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
   }
 
   /**
@@ -151,7 +148,7 @@ export default class AtviseFile extends File {
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType) {
-    if (buffer === null) {
+    if (buffer === null || buffer.length === 0) {
       return null;
     }
 
@@ -162,6 +159,19 @@ export default class AtviseFile extends File {
     }
 
     return buffer;
+  }
+
+  /**
+   * As file mtimes do not support millisecond resolution these must be removed before storing
+   * files.
+   * @param {Date} date The original mtime.
+   * @return {Date} The normalized mtime.
+   */
+  static normalizeMtime(date) {
+    const result = date;
+    result.setMilliseconds(0);
+
+    return result;
   }
 
   /**
@@ -180,6 +190,7 @@ export default class AtviseFile extends File {
       _dataType: readResult.value.$dataType,
       _arrayType: readResult.value.$arrayType,
       _typeDefinition: readResult.referenceDescription.typeDefinition,
+      stat: { mtime: readResult.mtime ? this.normalizeMtime(readResult.mtime) : undefined },
     });
   }
 
@@ -246,14 +257,7 @@ export default class AtviseFile extends File {
       this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
     });
 
-    let gotCustomType = false;
-    ifLastExtensionMatches(ext => ext === 'obj', () => {
-      gotCustomType = true;
-
-      Logger.warn('NEED SPECIAL HANDLING');
-    });
-
-    if (!gotCustomType && !complete()) {
+    if (!complete()) {
       // Handle atvise types
       let foundAtType = false;
 
@@ -268,8 +272,7 @@ export default class AtviseFile extends File {
       });
     }
 
-    if (!gotCustomType && !complete()) {
-      Logger.warn('FALLING BACK TO OCTET STREAM');
+    if (!complete()) {
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
     }
@@ -324,6 +327,22 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * `true` for files containing atvise scripts.
+   * @type {Boolean}
+   */
+  get isScript() {
+    return this.typeDefinition.value === 'VariableTypes.ATVISE.ScriptCode';
+  }
+
+  /**
+   * `true` for files containing atvise quick dynamics.
+   * @type {Boolean}
+   */
+  get isQuickDynamic() {
+    return this.typeDefinition.value === 'VariableTypes.ATVISE.QuickDynamic';
+  }
+
+  /**
    * Sets the node value for the file.
    * @param {?*} newValue The value to set.
    */
@@ -357,6 +376,42 @@ export default class AtviseFile extends File {
     }
 
     return NodeId.fromFilePath(idPath);
+  }
+
+  /**
+   * Returns a new file with all attributes of the current file.
+   * @param {Object} options See https://github.com/gulpjs/vinyl#filecloneoptions for all options
+   * available.
+   * @return {AtviseFile} The cloned file.
+   */
+  clone(options) {
+    const clonedFile = super.clone(options);
+
+    clonedFile._arrayType = this._arrayType;
+
+    return clonedFile;
+  }
+
+  /**
+   * Creates a new AtviseFile and reads it's contents.
+   * @param {Object} options See {@link vinyl~File} for available options.
+   * @return {Promise} Resolved with the new file of rejected with the error that occured while
+   * trying to read it's path.
+   */
+  static read(options) {
+    return new Promise((resolve, reject) => {
+      if (!options.path) {
+        reject(new Error('options.path is required'));
+      } else {
+        readFile(options.path, (err, contents) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
+    });
   }
 
 }

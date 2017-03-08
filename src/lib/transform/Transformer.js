@@ -1,4 +1,5 @@
-import { ctor as throughStreamClass, obj as createStream } from 'through2';
+import { inspect } from 'util';
+import { ctor as throughStreamClass } from 'through2';
 
 /**
  * The directions a transformer can be run in.
@@ -29,10 +30,16 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * @param {TransformDirection} [options.direction] The direction to use.
    * @throws {Error} Throws an error if the given direction is invalid.
    */
-  constructor(options) {
+  constructor(options = {}) {
     super();
 
-    if (options) {
+    /**
+     * The options the transformer was created with. Used for printing description.
+     * @type {Object}
+     */
+    this._options = options;
+
+    if (options.direction) {
       if (isValidDirection(options.direction)) {
         /**
          * The transformer's direction
@@ -106,29 +113,43 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   /**
    * Creates a stream with all transformers passed, with the given direction. Transformers are
    * reversed if using {@link TransformDirection.FromFilesystem}.
+   * @param {Stream} stream The stream to apply the transformers to.
    * @param {Transformer[]} transformers The transformers to apply.
    * @param {TransformDirection} direction The direction to use.
    * @return {Transformer} The last transformer passed, piped to the previous.
    */
-  static applyTransformers(transformers, direction) {
+  static applyTransformers(stream, transformers, direction) {
     if (!isValidDirection(direction)) {
       throw new Error('Direction is invalid');
     }
 
     if (transformers.length === 0) {
-      return createStream();
+      return stream;
     }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
-      .reduce((prev, curr) => {
-        const directed = curr.withDirection(direction);
+      .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
+  }
 
-        if (prev) {
-          return prev.pipe(directed);
-        }
+  /**
+   * Prints the transformer.
+   * @param {?Number} depth The depth to inspect.
+   * @param {Object} options See https://nodejs.org/api/util.html#util_util_inspect_object_options
+   * for details
+   * @return {String} A string representation of the transformer.
+   */
+  inspect(depth, options) {
+    const newOptions = options;
+    newOptions.depth = options.depth === null ? null : options.depth - 1;
 
-        return directed;
-      }, false);
+    if (depth > 0) {
+      return options.stylize(`[${this.constructor.name}]`, 'special');
+    }
+
+    return `${options.stylize(this.constructor.name, 'special')}${inspect(this._options, newOptions)
+      .replace(/^{/, '<').replace(/}$/, '>')
+      .replace(/\n/, `\n${' '.repeat(this.constructor.name.length)}`)
+    }`;
   }
 
 }

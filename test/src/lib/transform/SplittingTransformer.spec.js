@@ -1,11 +1,38 @@
 import expect from 'unexpected';
+import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
 
 import File from 'vinyl';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
+import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import SplittingTransformer, {
   CombineFilesCache,
 } from '../../../../src/lib/transform/SplittingTransformer';
+
+class StubSplittingTransformer extends proxyquire('../../../../src/lib/transform/SplittingTransformer', {
+  '../server/AtviseFile': {
+    _esModule: true,
+    default: class StubAtviseFile extends AtviseFile {
+      static read(options) {
+        return Promise.resolve(options);
+      }
+    },
+  },
+}).default {
+  constructor(combineError) {
+    super();
+
+    this.combineError = combineError;
+  }
+
+  createCombinedFile(files, last, callback) {
+    if (this.combineError) {
+      callback(this.combineError);
+    } else {
+      callback(null, last);
+    }
+  }
+}
 
 const StubCombineFilesCache = proxyquire('../../../../src/lib/transform/SplittingTransformer', {
   fs: {
@@ -15,6 +42,25 @@ const StubCombineFilesCache = proxyquire('../../../../src/lib/transform/Splittin
 
 /** @test {CombineFilesCache} */
 describe('CombineFilesCache', function() {
+  /** @test {CombineFilesCache#missingExtensions} */
+  describe('#missingExtensions', function() {
+    it('should return extensions if required files are missing', function() {
+      const cache = new CombineFilesCache();
+      cache._files.fakeDir = { '.ext': {} };
+      cache._required.fakeDir = ['.ext', '.ext2'];
+
+      expect(cache.missingExtensions('fakeDir'), 'to equal', ['.ext2']);
+    });
+
+    it('should return empty array if all required files are cached', function() {
+      const cache = new CombineFilesCache();
+      cache._files.fakeDir = { '.ext': {} };
+      cache._required.fakeDir = ['.ext'];
+
+      expect(cache.missingExtensions('fakeDir'), 'to equal', []);
+    });
+  });
+
   /** @test {CombineFilesCache#gotAllFiles} */
   describe('#gotAllFiles', function() {
     it('should forward readdir errors', function() {
@@ -155,6 +201,60 @@ describe('SplittingTransformer', function() {
 
     it('should apply the new extension', function() {
       expect(SplittingTransformer.combineFiles(originals, '.other').extname, 'to equal', '.other');
+    });
+  });
+
+  /** @test {SplittingTransformer#_flush} */
+  describe('#_flush', function() {
+    it('should just callback if no files are missing', function() {
+      const transformer = new SplittingTransformer();
+      const callback = spy();
+
+      transformer._flush(callback);
+
+      expect(callback.calledOnce, 'to be', true);
+    });
+
+    it('should push additional files if some are missing', function(done) {
+      const transformer = new StubSplittingTransformer();
+      const file = {
+        cwd: '/fake/cwd',
+        base: '/base',
+      };
+
+      transformer._combineFilesCache._files['base/not/existent/dir'] = {
+        '.ext': file,
+      };
+      transformer._combineFilesCache._required['base/not/existent/dir'] = ['.ext', '.ext1'];
+      spy(transformer, 'push');
+
+      transformer._flush(err => {
+        expect(err, 'to be falsy');
+        expect(transformer.push.calledOnce, 'to be true');
+        expect(transformer.push.lastCall.args[0], 'to be', file);
+
+        done();
+      });
+    });
+
+    it('should forward read errors', function(done) {
+      const transformer = new StubSplittingTransformer(new Error('Test error'));
+      const file = {
+        cwd: '/fake/cwd',
+        base: '/base',
+      };
+
+      transformer._combineFilesCache._files['base/not/existent/dir'] = {
+        '.ext': file,
+      };
+      transformer._combineFilesCache._required['base/not/existent/dir'] = ['.ext', '.ext1'];
+      spy(transformer, 'push');
+
+      transformer._flush(err => {
+        expect(err, 'to have message', 'Test error');
+
+        done();
+      });
     });
   });
 });

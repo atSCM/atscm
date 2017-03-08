@@ -1,6 +1,6 @@
 {
   "name": "atscm",
-  "version": "0.1.2",
+  "version": "0.2.0-alpha.4",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
   "engines": {
@@ -54,11 +54,13 @@
     "yargs": "^6.5.0"
   },
   "dependencies": {
+    "browser-sync": "^2.18.6",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-compile-handlebars": "^0.6.1",
     "gulplog": "^1.0.0",
     "handlebars-helpers": "^0.8.0",
     "node-opcua": "0.0.60",
+    "sane": "^1.6.0",
     "stream-to-promise": "^2.2.0",
     "through2": "^2.0.3",
     "validate-npm-package-name": "^2.2.2",

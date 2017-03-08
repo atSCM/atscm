@@ -28,6 +28,7 @@ export default class ReadStream extends Stream {
           nodeId,
           value: results[0].value,
           referenceDescription,
+          mtime: results[0].sourceTimestamp,
         });
       }
     });
@@ -56,4 +57,5 @@ export default class ReadStream extends Stream {
  * @property {NodeId} nodeId The read node's id.
  * @property {?node-opcua~DataValue} value The read value.
  * @property {Object} referenceDescription Additional info on the read node.
+ * @property {Date} mtime The timestamp the node's value last changed.
  */

@@ -1,6 +1,8 @@
 import { readdir } from 'fs';
-import { extname } from 'path';
+import { extname, basename, join } from 'path';
+import Logger from 'gulplog';
 import PartialTransformer from './PartialTransformer';
+import AtviseFile from '../server/AtviseFile';
 
 /**
  * Determines which files are needed to create a combined file and stores these files as long as
@@ -23,6 +25,18 @@ export class CombineFilesCache {
      * @type {String[]}
      */
     this._required = {};
+  }
+
+  /**
+   * Returns the extensions of the missing files for the given `dirname`.
+   * @param {String} dirname The cache key to look for.
+   * @return {String[]} Extensions of the missing files.
+   */
+  missingExtensions(dirname) {
+    const required = this._required[dirname];
+    const files = this._files[dirname];
+
+    return required.filter(ext => files[ext] === undefined);
   }
 
   /**
@@ -51,13 +65,12 @@ export class CombineFilesCache {
     } else {
       this._files[dirname][file.extname] = file;
 
-      const required = this._required[dirname];
-      const files = this._files[dirname];
-
-      if (required.filter(ext => files[ext] === undefined).length === 0) {
+      if (this.missingExtensions(dirname).length === 0) {
+        const files = this._files[dirname];
         callback(null, files);
 
         delete this._files[dirname];
+        delete this._required[dirname];
       } else {
         callback(null);
       }
@@ -153,6 +166,62 @@ export default class SplittingTransformer extends PartialTransformer {
     newFile.path = `${newFile.dirname}${newExtension}`;
 
     return newFile;
+  }
+
+  /**
+   * If there are any missing files this method loads these files and calls
+   * {SplittingTransformer#createCombinedFile} with them.
+   * @param {function(err: ?Error)} callback Called with the error that occurred while loading
+   * missing files.
+   */
+  _flush(callback) {
+    const missingDirnames = Object.keys(this._combineFilesCache._files);
+
+    if (missingDirnames.length > 0) {
+      Promise.all(
+        missingDirnames.map(dirname => {
+          const files = this._combineFilesCache._files[dirname];
+          const firstFile = files[Object.keys(files)[0]];
+
+          const missing = this._combineFilesCache.missingExtensions(dirname);
+          const stem = basename(dirname, extname(dirname));
+          const paths = missing.map(ext => join(dirname, '/', `${stem}${ext}`));
+
+          delete this._combineFilesCache._files[dirname];
+          delete this._combineFilesCache._required[dirname];
+
+          Logger.debug('Loading', paths.length, 'required file(s)');
+
+          return Promise.all(
+            paths.map((path, i) => AtviseFile.read({
+              cwd: firstFile.cwd,
+              base: firstFile.base,
+              path,
+            })
+              .then(file => {
+                files[missing[i]] = file;
+              })
+            )
+          )
+            .then(() => new Promise((resolve, reject) => {
+              this.createCombinedFile(files, firstFile, (err, file) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  this.push(file);
+
+                  resolve(file);
+                }
+              });
+            }));
+        })
+      )
+        .then(files => Logger.debug('Created', files.length, 'additional file(s)'))
+        .then(() => callback())
+        .catch(err => callback(err));
+    } else {
+      callback();
+    }
   }
 
 }

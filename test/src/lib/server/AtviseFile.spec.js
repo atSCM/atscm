@@ -132,8 +132,8 @@ describe('AtviseFile', function() {
 
   /** @test {AtviseFile.encodeValue} */
   describe('.encodeValue', function() {
-    it('should forward null', function() {
-      expect(AtviseFile.encodeValue(null), 'to equal', null);
+    it('should return empty buffer for null', function() {
+      expect(AtviseFile.encodeValue({ value: null }), 'to equal', Buffer.from(''));
     });
 
     it('should store timestamp as string for DateTime values', function() {
@@ -170,6 +170,23 @@ describe('AtviseFile', function() {
     it('should forward buffer without spection encoding', function() {
       const buffer = new Buffer('test');
       expect(AtviseFile.decodeValue(buffer, DataType.ByteString), 'to equal', buffer);
+    });
+  });
+  
+  /** @test {AtviseFile.normalizeMtime} */
+  describe('.normalizeMtime', function() {
+    it('should return original without milliseconds', function() {
+      const org = new Date();
+      org.setMilliseconds(0);
+
+      expect(AtviseFile.normalizeMtime(org), 'to equal', org);
+    });
+
+    it('should remove milliseconds if provided', function() {
+      const org = new Date();
+      org.setMilliseconds(500);
+
+      expect(AtviseFile.normalizeMtime(org).getMilliseconds(), 'to equal', 0);
     });
   });
 
@@ -271,6 +288,23 @@ describe('AtviseFile', function() {
     it('should keep extensions for resources', function() {
       expect((new AtviseFile({ path: 'SYSTEM/LIBRARY/PROJECT/RESOURCES/example.js' }).nodeId.value),
         'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/example.js');
+    });
+  });
+
+  /** @test {AtviseFile#clone} */
+  describe('#clone', function() {
+    it('should return a file again', function() {
+      expect(new AtviseFile({
+        path: 'path/to/name.display.xml',
+        _arrayType: VariantArrayType.Matrix,
+      }).clone(), 'to be a', AtviseFile);
+    });
+
+    it('should return file with the same array type', function() {
+      expect(new AtviseFile({
+        path: 'path/to/name.display.xml',
+        _arrayType: VariantArrayType.Matrix,
+      }).clone()._arrayType, 'to equal', VariantArrayType.Matrix);
     });
   });
 });
