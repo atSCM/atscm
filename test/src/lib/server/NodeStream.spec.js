@@ -1,7 +1,6 @@
-import expect from '../../../expect';
-import { stub, spy } from 'sinon';
-
 import { ClientSession, resolveNodeId, browse_service as BrowseService } from 'node-opcua';
+import { stub, spy } from 'sinon';
+import expect from '../../../expect';
 import NodeStream from '../../../../src/lib/server/NodeStream';
 import Stream from '../../../../src/lib/server/Stream';
 import NodeId from '../../../../src/lib/server/NodeId';
