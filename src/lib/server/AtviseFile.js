@@ -55,10 +55,12 @@ const Decoder = {
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
+  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
 };
 
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
+  [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
 };
 
 /**
