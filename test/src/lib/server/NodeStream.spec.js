@@ -3,6 +3,7 @@ import { stub, spy } from 'sinon';
 import expect from '../../../expect';
 import NodeStream from '../../../../src/lib/server/NodeStream';
 import Stream from '../../../../src/lib/server/Stream';
+import Session from '../../../../src/lib/server/Session';
 import NodeId from '../../../../src/lib/server/NodeId';
 
 /** @test {NodeStream} */
@@ -72,7 +73,7 @@ describe('NodeStream', function() {
       it('should forward errors', function(done) {
         const stream = new NodeStream(testNodes);
         stream.once('session-open', () => {
-          stream.session.close(() => {});
+          Session.close(stream.session);
         });
 
         stream.on('data', () => {}) // unpause readable stream
@@ -96,7 +97,7 @@ describe('NodeStream', function() {
       it('should emit error', function(done) {
         const stream = new NodeStream(testNodes);
         stream.once('session-open', () => {
-          stream.session.close(() => {});
+          Session.close(stream.session);
         });
 
         stream.on('data', () => {}) // unpause readable stream
