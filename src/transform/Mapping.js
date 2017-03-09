@@ -1,6 +1,5 @@
 import { Buffer } from 'buffer';
 import { readFile } from 'fs';
-import { basename, join } from 'path';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
