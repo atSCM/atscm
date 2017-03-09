@@ -13,11 +13,6 @@ describe('NodeStream', function() {
   /** @test {NodeStream#constructor} */
   describe('#constructor', function() {
     let stream;
-    afterEach(() => {
-      if (stream) {
-        // stream.end();
-      }
-    });
 
     it('should fail without nodes', function() {
       expect(() => (stream = new NodeStream()), 'to throw', 'nodes is required');
