@@ -107,7 +107,7 @@ describe('Session', function() {
     it('should return if session is already closed', function() {
       return expect(Session.create(), 'to be fulfilled')
         .then(session => expect(Session.close(session), 'to be fulfilled'))
-        .then(session => expect(Session.close(session), 'to be fulfilled'))
+        .then(session => expect(Session.close(session), 'to be fulfilled'));
     });
 
     it('should wait for session to close if already closing', function() {
@@ -130,15 +130,13 @@ describe('Session', function() {
 
     it('should work if session is already closed', function() {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => {
-          return new Promise((resolve) => {
-            session._client.closeSession(session, true, err => {
-              expect(err, 'to be falsy');
-            });
-
-            resolve(session);
+        .then(session => new Promise((resolve) => {
+          session._client.closeSession(session, true, err => {
+            expect(err, 'to be falsy');
           });
-        })
+
+          resolve(session);
+        }))
         .then(session => expect(Session.close(session), 'to be fulfilled'));
     });
   });
