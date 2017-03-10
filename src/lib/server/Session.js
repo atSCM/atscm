@@ -113,6 +113,14 @@ export default class Session {
   }
 
   /**
+   * The sessions currently open.
+   * @type {Session[]}
+   */
+  static get open() {
+    return openSessions;
+  }
+
+  /**
    * Closes all open sessions.
    * @return {Promise<Error, Session[]>} Rejected with the error that occurred while closing the
    * sessions or fulfilled with the (now closed) sessions affected.
