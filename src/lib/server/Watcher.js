@@ -90,10 +90,19 @@ export class SubscribeStream extends Stream {
     });
 
     item.on('err', err => {
-      const error = err;
-      error.message = `Error monitoring ${nodeId.toString()}: ${err.message}`;
+      /*
+        This works around a bug in node-opcua:
+        Instead of a error a string is emitted
+        FIXME: Remove once bug is fixed
+       */
+      if (err instanceof Error) {
+        const error = err;
+        error.message = `Error monitoring ${nodeId.toString()}: ${err.message}`;
 
-      callback(error);
+        callback(error);
+      } else {
+        callback(new Error(`Error monitoring ${nodeId.toString()}: ${err}`));
+      }
     });
 
     return item;
@@ -164,7 +173,7 @@ export default class Watcher extends Emitter {
    */
   close() {
     Session.close(this._subscribeStream.session)
-      .catch(e => this.emit('error', e));
+      .catch(err => this.emit(err));
   }
 
 }

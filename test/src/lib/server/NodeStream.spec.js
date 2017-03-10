@@ -1,4 +1,4 @@
-import { ClientSession, resolveNodeId, browse_service as BrowseService } from 'node-opcua';
+import { ClientSession, resolveNodeId } from 'node-opcua';
 import { stub, spy } from 'sinon';
 import expect from '../../../expect';
 import NodeStream from '../../../../src/lib/server/NodeStream';
