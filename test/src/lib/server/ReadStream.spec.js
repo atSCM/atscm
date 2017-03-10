@@ -43,10 +43,11 @@ describe('ReadStream', function() {
     it('should read variables', function() {
       const stream = new ReadStream();
 
-      return expect([{ nodeId: validNodeId }], 'when piped through', stream, 'to yield objects satisfying', [{
-        nodeId: validNodeId,
-        value: { value: 'http://www.atvise.com' },
-      }]);
+      return expect([{ nodeId: validNodeId }], 'when piped through', stream,
+        'to yield objects satisfying', [{
+          nodeId: validNodeId,
+          value: { value: 'http://www.atvise.com' },
+        }]);
     });
   });
 
