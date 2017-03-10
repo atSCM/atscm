@@ -56,5 +56,43 @@ describe('Session', function() {
     it('should fail without session', function() {
       return expect(() => Session.close(), 'to be rejected with', 'session is required');
     });
+
+    it('should return if session is already closed', function() {
+      return expect(Session.create(), 'to be fulfilled')
+        .then(session => expect(Session.close(session), 'to be fulfilled'))
+        .then(session => expect(Session.close(session), 'to be fulfilled'))
+    });
+
+    it('should wait for session to close if already closing', function() {
+      return expect(Session.create(), 'to be fulfilled')
+        .then(session => {
+          spy(session, 'close');
+
+          return session;
+        })
+        .then(session => Promise.all([
+          Session.close(session),
+          Session.close(session),
+        ]))
+        .then(sessions => {
+          expect(sessions, 'to have length', 2);
+          expect(sessions[0], 'to be', sessions[1]);
+          expect(sessions[0].close.calledOnce, 'to be true');
+        });
+    });
+
+    it('should work if session is already closed', function() {
+      return expect(Session.create(), 'to be fulfilled')
+        .then(session => {
+          return new Promise((resolve) => {
+            session._client.closeSession(session, true, err => {
+              expect(err, 'to be falsy');
+            });
+
+            resolve(session);
+          });
+        })
+        .then(session => expect(Session.close(session), 'to be fulfilled'));
+    });
   });
 });
