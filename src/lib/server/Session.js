@@ -41,12 +41,11 @@ export default class Session {
               reject(new Error(`Unable to create session: ${err.message}`));
             }
           } else {
+            openSessions.push(session);
             resolve(session);
           }
 
-          openSessions.push(session);
           openingSessions--;
-
           if (openingSessions === 0) {
             emitter.emit('all-open');
           }
@@ -81,6 +80,10 @@ export default class Session {
     Object.assign(session, { _closing: true });
 
     return new Promise((resolve, reject) => {
+      function removeOpenSession(sess) {
+        openSessions.splice(openSessions.indexOf(sess), 1);
+      }
+
       session.close(deleteSubscriptions, (err) => {
         if (err) {
           if (err.response.responseHeader.serviceResult === StatusCodes.BadSessionIdInvalid) {
@@ -98,13 +101,7 @@ export default class Session {
             if (clientErr) {
               reject(new Error(`Unable to disconnect client: ${clientErr.message}`));
             } else {
-              const i = openSessions.indexOf(session);
-
-              if (i >= 0) {
-                openSessions.splice(i, 1);
-              } else {
-                // FIXME: Throw error here, this should never happen
-              }
+              removeOpenSession(session);
 
               Object.assign(session, { _closed: true });
               resolve(session);
@@ -115,6 +112,11 @@ export default class Session {
     });
   }
 
+  /**
+   * Closes all open sessions.
+   * @return {Promise<Error, Session[]>} Rejected with the error that occurred while closing the
+   * sessions or fulfilled with the (now closed) sessions affected.
+   */
   static closeOpen() {
     function closeSessions(sessions) {
       return Promise.all(
