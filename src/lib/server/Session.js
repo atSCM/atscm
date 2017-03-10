@@ -1,5 +1,6 @@
 import Emitter from 'events';
 import { StatusCodes, ClientSession } from 'node-opcua';
+import Logger from 'gulplog';
 import Client from './Client';
 import ProjectConfig from '../../config/ProjectConfig';
 
@@ -82,7 +83,12 @@ export default class Session {
     return new Promise((resolve, reject) => {
       session.close(deleteSubscriptions, (err) => {
         if (err) {
-          if (err.message === 'no channel') {
+          if (err.response.responseHeader.serviceResult === StatusCodes.BadSessionIdInvalid) {
+            removeOpenSession(session);
+            Logger.debug('Attempted to close a session that does not exist');
+            resolve(session);
+          } else if (err.message === 'no channel') {
+            removeOpenSession(session);
             resolve(session);
           } else {
             reject(new Error(`Unable to close session: ${err.message}`));
