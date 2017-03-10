@@ -69,6 +69,17 @@ describe('SubscribeStream', function() {
         done();
       });
     });
+
+    it('should emit error if subscription failed', function(done) {
+      const stream = new SubscribeStream();
+      stream.once('error', err => {
+        expect(err, 'to have message', 'Test');
+        done();
+      });
+      stream.once('subscription-started', subscription => {
+        subscription.emit('failure', new Error('Test'));
+      });
+    });
   });
 
   /** @test {SubscribeStream#monitorNode} */
@@ -131,6 +142,21 @@ describe('SubscribeStream', function() {
       const stream = new SubscribeStream();
       stream.once('subscription-started', () => {
         stream.subscription.monitor = spy(() => new StubMonitoredItem(new Error('Test')));
+
+        stream.monitorNode({
+          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        }, err => {
+          expect(err, 'to have message', 'Error monitoring ns=1;s=AGENT.DISPLAYS.Main: Test');
+
+          done();
+        });
+      });
+    });
+
+    it('should emit errors even if node-opcua fails with string error', function(done) {
+      const stream = new SubscribeStream();
+      stream.once('subscription-started', () => {
+        stream.subscription.monitor = spy(() => new StubMonitoredItem('Test'));
 
         stream.monitorNode({
           nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
@@ -208,6 +234,46 @@ describe('Watcher', function() {
         });
 
         watcher._subscribeStream.emit('change', event);
+      });
+    });
+
+    it('should forward NodeStream errors', function(done) {
+      const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
+
+      watcher.on('error', err => {
+        expect(err, 'to have message', 'Test');
+        done();
+      });
+
+      watcher.on('ready', () => watcher._nodeStream.emit('error', new Error('Test')));
+    });
+
+    it('should forward SubscribeStream errors', function(done) {
+      const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
+
+      watcher.on('error', err => {
+        expect(err, 'to have message', 'Test');
+        done();
+      });
+
+      watcher.on('ready', () => watcher._subscribeStream.emit('error', new Error('Test')));
+    });
+  });
+
+  /** @test {Watcher#close} */
+  describe('#close', function() {
+    it('should forward errors', function(done) {
+      const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
+
+      watcher.on('error', err => {
+        expect(err, 'to have message', 'session is required');
+        done();
+      });
+
+      watcher.on('ready', () => {
+        watcher._subscribeStream.session = undefined;
+
+        watcher.close();
       });
     });
   });

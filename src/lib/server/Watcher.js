@@ -173,7 +173,7 @@ export default class Watcher extends Emitter {
    */
   close() {
     Session.close(this._subscribeStream.session)
-      .catch(err => this.emit(err));
+      .catch(err => this.emit('error', err));
   }
 
 }
