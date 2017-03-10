@@ -14,9 +14,7 @@ export default class TestProject extends Atviseproject {
   }
 
   static get login() {
-    return {
-      false
-    };
+    return false;
   }
 
 }
