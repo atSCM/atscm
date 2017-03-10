@@ -1,0 +1,2904 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="">
+  <title data-ice="title">Test | atscm API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">config</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-config">config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">init</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/config</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/gulp</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watchForFileChanges">watchForFileChanges</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watchForServerChanges">watchForServerChanges</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/init</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/server</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeId.js~NodeId.html">NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html">NodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html">ReadStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Session.js~Session.html">Session</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Stream.js~Stream.html">Stream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~Watcher.html">Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/transform</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">tasks</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">transform</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef/external</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1>Test</h1>
+<table class="test-summary">
+  <thead>
+    <tr>
+      <td class="test-description">Description</td>
+      <td class="test-target">Identifier</td>
+      <td class="test-count">Count</td>
+    </tr>
+  </thead>
+
+  <tbody data-ice="tests">
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/Gulpfile.spec.js.html#lineNumber5"><p>Gulpfile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/Gulpfile.spec.js.html#lineNumber6"><p>should export description for all tasks</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/index.spec.js.html#lineNumber12"><p>atscm module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">8</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber14"><p>should export Atviseproject class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber19"><p>should export NodeId class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeId.js~NodeId.html">NodeId</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber24"><p>should export Transformer class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber29"><p>should export TransformDirection enum</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber34"><p>should export PartialTransformer class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber39"><p>should export SplittingTransformer class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>Splitting</span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber44"><p>should export DisplayTransformer class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/index.spec.js.html#lineNumber49"><p>should export ScriptTransformer class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber38"><p>InitTask</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber58"><p>.filesToHandle</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/init/InitTask.js~InitTask.html#static-method-filesToHandle">InitTask.filesToHandle</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber59"><p>should return array of absolute paths</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber68"><p>.run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/init/InitTask.js~InitTask.html#static-method-run">InitTask.run</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber69"><p>should handle all general files</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber93">test/src/init/InitTask.spec.js</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/InitTask.spec.js.html#lineNumber109">test/src/init/InitTask.spec.js</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber7"><p>InitOptions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber8"><p>should contain InitOptions stored against names</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber16"><p>.atviseUser</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>InitOptions.atviseUser</span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber17"><p>should only be asked if using login</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber24"><p>.atvisePassword</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>InitOptions.atvisePassword</span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber25"><p>should only be asked if using login</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber33"><p>InitOptionsAsArray</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/init/Options.spec.js.html#lineNumber34"><p>should contain all InitOptions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber6"><p>InitOptionsValidator</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></td>
+  <td data-ice="testCount">9</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber8"><p>.name</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html#static-method-name">InitOptionsValidator.name</a></span></td>
+  <td data-ice="testCount">9</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber9"><p>should fail for empty names</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber13"><p>should fail with capital letters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber17"><p>should fail with non-url-safe characters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber21"><p>should fail with names starting with . or _</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber26"><p>should fail with leading or trailing spaces</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber31"><p>should fail with core nodejs module name</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber35"><p>should fail with blacklisted name</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber39"><p>should fail with names longer than 214 characters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber43"><p>should work for valid package names</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber7"><p>Atviseproject</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber9"><p>should contain NodeIds</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber15"><p>.login</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-login">Atviseproject.login</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber16"><p>should default to false</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber22"><p>.nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-nodes">Atviseproject.nodes</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber27"><p>.nodesToWatch</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-nodesToWatch">Atviseproject.nodesToWatch</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber32"><p>.EditorRelatedNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-EditorRelatedNodes">Atviseproject.EditorRelatedNodes</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber37"><p>.ServerRelatedNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-ServerRelatedNodes">Atviseproject.ServerRelatedNodes</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber42"><p>.ignoreNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-get-EditorRelatedNodes">Atviseproject.EditorRelatedNodes</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber45"><p>should contain Atviseproject.EditorRelatedNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber49"><p>should contain Atviseproject.ServerRelatedNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber55"><p>.inspect</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html#static-method-inspect">Atviseproject.inspect</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber56"><p>should return the properties to print</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/PullStream.spec.js.html#lineNumber26"><p>PullStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/PullStream.spec.js.html#lineNumber28"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html#instance-constructor-constructor">PullStream#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/gulp/PullStream.spec.js.html#lineNumber31"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/gulp/PullStream.spec.js.html#lineNumber35"><p>should apply transformers from db</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber33"><p>PushStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber35"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html#instance-constructor-constructor">PushStream#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber38"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber42"><p>should apply transforms from filesystem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/watchForFileChanges.spec.js.html#lineNumber5"><p>watchForFileChanges</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="function/index.html#static-function-watchForFileChanges">watchForFileChanges</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForFileChanges.spec.js.html#lineNumber6"><p>should return a function</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForFileChanges.spec.js.html#lineNumber10"><p>should call listener on change</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForFileChanges.spec.js.html#lineNumber24"><p>should call callback on error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/gulp/watchForServerChanges.spec.js.html#lineNumber8"><p>watchForServerChanges</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="function/index.html#static-function-watchForServerChanges">watchForServerChanges</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForServerChanges.spec.js.html#lineNumber9"><p>should return a Watcher</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForServerChanges.spec.js.html#lineNumber13"><p>should forward change events to listener</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForServerChanges.spec.js.html#lineNumber23"><p>should call callback on error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/gulp/watchForServerChanges.spec.js.html#lineNumber32"><p>should log once ready</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber6"><p>InitOption</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber7"><p>should throw when run without arguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber12"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/init/Option.js~InitOption.html#instance-constructor-constructor">InitOption#constructor</a></span></td>
+  <td data-ice="testCount">10</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber13"><p>when run with string, string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber14"><p>should throw error for empty message</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber18"><p>should work with message only</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber26"><p>should set default type</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber30"><p>should add <code>?</code> to message</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber34"><p>should store default if given</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber39"><p>when run with object</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber40"><p>should throw error for missing message</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber44"><p>should throw error for empty message</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber48"><p>should add <code>?</code> to message</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber52"><p>should set default type</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/init/Options.spec.js.html#lineNumber56"><p>should store type, message, default and validate</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber12"><p>AtviseFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></td>
+  <td data-ice="testCount">18</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber218"><p>should call _getMetadata if not present</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber14"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>AtviseFile#constructor</span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber15"><p>should create a vinyl instance</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber116"><p>.pathForReadResult</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#static-method-pathForReadResult">AtviseFile.pathForReadResult</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber118">test/src/lib/server/AtviseFile.spec.js</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber134"><p>.encodeValue</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#static-method-encodeValue">AtviseFile.encodeValue</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber135"><p>should return empty buffer for null</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber139"><p>should store timestamp as string for DateTime values</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber148"><p>.decodeValue</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#static-method-decodeValue">AtviseFile.decodeValue</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber149"><p>should forward null</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber154">test/src/lib/server/AtviseFile.spec.js</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber170"><p>should forward buffer without spection encoding</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber177"><p>.normalizeMtime</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#static-method-normalizeMtime">AtviseFile.normalizeMtime</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber178"><p>should return original without milliseconds</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber185"><p>should remove milliseconds if provided</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber194"><p>.fromReadResult</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#static-method-fromReadResult">AtviseFile.fromReadResult</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber195"><p>should fail without value</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber201"><p>#_getMetadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-method-_getMetadata">AtviseFile#_getMetadata</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber203">test/src/lib/server/AtviseFile.spec.js</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber228"><p>#dataType</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-dataType">AtviseFile#dataType</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber233"><p>#arrayType</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-arrayType">AtviseFile#arrayType</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber238"><p>#typeDefinition</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-typeDefinition">AtviseFile#typeDefinition</a></span></td>
+  
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber243"><p>#isDisplay</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-isDisplay">AtviseFile#isDisplay</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber244"><p>should return true for AtviseFiles with correct TypeDefinition</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber253"><p>#value</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>AtivseFile#value</span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber266"><p>when used as getter</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber267"><p>should return decodedValue</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber275"><p>when used as setter</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber276"><p>should set encoded value as contents</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber287"><p>#nodeId</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-nodeId">AtviseFile#nodeId</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber288"><p>should keep extensions for resources</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber295"><p>#clone</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-method-clone">AtviseFile#clone</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber296"><p>should return a file again</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber303"><p>should return file with the same array type</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber38"><p>Client</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Client.js~Client.html">Client</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber42"><p>.create</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Client.js~Client.html#static-method-create">Client.create</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber43"><p>should return a OPCUAClient</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber47"><p>should fail with invalid host</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber51"><p>should fail on connection timeout</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Client.spec.js.html#lineNumber55"><p>should fail when node-opcua encounters an error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber8"><p>NodeId</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeId.js~NodeId.html">NodeId</a></span></td>
+  <td data-ice="testCount">18</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber13"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeId.js~NodeId.html#instance-constructor-constructor">NodeId#constructor</a></span></td>
+  <td data-ice="testCount">10</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber64"><p>should extend node-opcua&apos;s NodeId</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber18"><p>when called with value only</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber19"><p>should work</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber23"><p>should set namespace to 1</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber27"><p>should set indentifierType to string if string is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber31"><p>should set indentifierType to number if number is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber36"><p>when called with a nodeid string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber37"><p>should work</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber41"><p>should get namespace from string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber45"><p>should get identifierType from string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber53"><p>when called with type, value, namespace</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber54"><p>should work</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber58"><p>should set namespace to 1 if omitted</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber70"><p>#fromFilePath</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>NodeId#fromFilePath</span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber71"><p>should return a NodeId</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber75"><p>should return file path again</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber81"><p>should work with resource paths</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber90"><p>#filePath</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeId.js~NodeId.html#instance-get-filePath">NodeId#filePath</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber91"><p>should return a valid file path</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber98"><p>should handle resource paths</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber107"><p>#inspect</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeId.js~NodeId.html#instance-method-inspect">NodeId#inspect</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber114"><p>should return &quot;namespace value&quot;</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber120"><p>should style string id as string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber127"><p>should style numeric id as number</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber10"><p>NodeStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html">NodeStream</a></span></td>
+  <td data-ice="testCount">14</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber15"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html#instance-constructor-constructor">NodeStream#constructor</a></span></td>
+  <td data-ice="testCount">7</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber18"><p>should fail without nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber22"><p>should return a server Stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber26"><p>should store &quot;maxRetries&quot; option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber30"><p>should set &quot;recursive&quot; to true by default</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber34"><p>should handle &quot;recursive&quot; option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber38"><p>should throw if options.ignoreNodes is not an array</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber43"><p>should handle &quot;ignoreNodes&quot; option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber50"><p>#browseNodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html#instance-method-browseNodes">NodeStream#browseNodes</a></span></td>
+  <td data-ice="testCount">7</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber51"><p>should be called for the specified nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber64"><p>when browsing fails</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber73"><p>should forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber88"><p>when browsing returns empty results</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber97"><p>should emit error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber112"><p>when browsing returns status codes &gt; 0</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber121"><p>should emit error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber133"><p>when browsing works</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber154"><p>should push browsed variable nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber163"><p>should be called only once when recursive is set to false</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber177"><p>should be called for all browsed nodes if recursive is set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber8"><p>ReadStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html">ReadStream</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber12"><p>#readNode</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html#instance-method-readNode">ReadStream#readNode</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber13"><p>should fail if an error occurs</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber24"><p>should with no or empty results</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber35"><p>should fail with non-good status code</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber43"><p>should read variables</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber55"><p>#_transform</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html#instance-method-_transform">ReadStream#_transform</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber56"><p>should wait for session to open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/ReadStream.spec.js.html#lineNumber75"><p>should read immediate if session is open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber47"><p>Session</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Session.js~Session.html">Session</a></span></td>
+  <td data-ice="testCount">9</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber51"><p>.create</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Session.js~Session.html#static-method-create">Session.create</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber52"><p>should create a new ClientSession</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber61"><p>should store newly created session</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber70"><p>should fail with invalid credentials</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber92"><p>should forward Client.create errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber96"><p>should forward non-login errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber102"><p>.close</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Session.js~Session.html#static-method-close">Session.close</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber103"><p>should fail without session</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber107"><p>should return if session is already closed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber113"><p>should wait for session to close if already closing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Session.spec.js.html#lineNumber131"><p>should work if session is already closed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber11"><p>Stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Stream.js~Stream.html">Stream</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber15"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Stream.js~Stream.html#instance-constructor-constructor">Stream#constructor</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber16"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber20"><p>should emit &quot;session-open&quot; once session is open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber32"><p>should forward session connect errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber51"><p>should close session and disconnect client on end</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber69"><p>should be endable even if session was not opened yet</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Stream.spec.js.html#lineNumber83"><p>should forward errors occurring while closing session</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber47"><p>SubscribeStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber49"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html#instance-constructor-constructor">SubscribeStream#constructor</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber50"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber56"><p>#createSubscription</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html#instance-method-createSubscription">SubscribeStream#createSubscription</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber57"><p>should be called once session is open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber65"><p>should emit <code>subscription-started</code> event</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber73"><p>should emit error if subscription failed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber86"><p>#monitorNode</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html#instance-method-monitorNode">SubscribeStream#monitorNode</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber87"><p>should call node-opcua~ClientSubscription#monitor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber100"><p>should ignore first change event</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber116"><p>should forward change events when tracking changes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber141"><p>should forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber156"><p>should emit errors even if node-opcua fails with string error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber173"><p>#_transform</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html#instance-method-_transform">SubscribeStream#_transform</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber176"><p>should should wait for subscription to start</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber189"><p>should call #monitorNode immediately if subscription started</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber204"><p>Watcher</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~Watcher.html">Watcher</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber206"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~Watcher.html#instance-constructor-constructor">Watcher#constructor</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber207"><p>should work without arguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber215"><p>should emit ready event once subscribe stream finished</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber224"><p>should forward change events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber240"><p>should forward NodeStream errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber251"><p>should forward SubscribeStream errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber264"><p>#close</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/Watcher.js~Watcher.html#instance-method-close">Watcher#close</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber265"><p>should forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber8"><p>WriteStream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html">WriteStream</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber12"><p>#writeFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html#instance-method-writeFile">WriteStream#writeFile</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber13"><p>should forward write errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber25"><p>should forward synchronous errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber39"><p>should call node-opcua~ClientSession#writeSingleNode</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber65"><p>#_transform</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html#instance-method-_transform">WriteStream#_transform</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber66"><p>should wait for session to open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/server/WriteStream.spec.js.html#lineNumber86"><p>should write immediately if session is open</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber7"><p>PartialTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber9"><p>#shouldBeTransformed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-shouldBeTransformed">PartialTransformer#shouldBeTransformed</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber10"><p>should throw if not overridden</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber17"><p>#_transform</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-_transform">PartialTransformer#_transform</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber18"><p>should pass original file if shouldBeTransformed returns false</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber30"><p>should call super if shouldbeTransformed returns true</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber44"><p>CombineFilesCache</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber46"><p>#missingExtensions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html#instance-method-missingExtensions">CombineFilesCache#missingExtensions</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber47"><p>should return extensions if required files are missing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber55"><p>should return empty array if all required files are cached</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber65"><p>#gotAllFiles</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html#instance-method-gotAllFiles">CombineFilesCache#gotAllFiles</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber66"><p>should forward readdir errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber73"><p>should store required files if missing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber89"><p>should cache passed file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber100"><p>should pass all cached files if all required are present</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber118"><p>SplittingTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber120"><p>#createCombinedFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html#instance-method-createCombinedFile">SplittingTransformer#createCombinedFile</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber121"><p>should throw if not overridden</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber128"><p>#transformFromFilesystem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html#instance-method-transformFromFilesystem">SplittingTransformer#transformFromFilesystem</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber129"><p>should forward cache errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber140"><p>should cache display files</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber156"><p>should call #createCombinedFile if all required files are cached</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber177"><p>.splitFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html#static-method-splitFile">SplittingTransformer.splitFile</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber182"><p>should return a file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber186"><p>should apply the new extension</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber192"><p>.combineFiles</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html#static-method-combineFiles">SplittingTransformer.combineFiles</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber198"><p>should return a file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber202"><p>should apply the new extension</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber208"><p>#_flush</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html#instance-method-_flush">SplittingTransformer#_flush</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber209"><p>should just callback if no files are missing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber218"><p>should push additional files if some are missing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber240"><p>should forward read errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber9"><p>Transformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></td>
+  <td data-ice="testCount">15</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber11"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#instance-constructor-constructor">Transformer#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber12"><p>should throw with invalid direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber17"><p>should store direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber24"><p>#withDirection</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#instance-method-withDirection">Transformer#withDirection</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber29"><p>should throw without direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber33"><p>should throw with invalid direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber37"><p>should return self with direction set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber46"><p>#_transform</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#instance-method-_transform">Transformer#_transform</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber55"><p>should fail without direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber60"><p>should call transformFromDB with direction FromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber66"><p>should call transformFromFilesystem with direction FromFilesystem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber74"><p>#transformFromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromDB">Transformer#transformFromDB</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber77"><p>should fail if not overridden</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber84"><p>#transformFromFilesytem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromFilesystem">Transformer#transformFromFilesystem</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber87"><p>should fail if not overridden</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber94"><p>.applyTransformers</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html#static-method-applyTransformers">Transformer.applyTransformers</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber95"><p>should throw on invalid direction</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber100"><p>should return directed transformer if only one is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber109"><p>should return last transformer piped to previous</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber122"><p>should reverse transformers if called with &quot;FromFilesystem&quot;</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber135"><p>should work with empty array as argument</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber9"><p>XMLTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></td>
+  <td data-ice="testCount">12</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber11"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html#instance-constructor-constructor">XMLTransformer#constructor</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber12"><p>should return a SplittingTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber16"><p>should create a _fromDBBuilder</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber23"><p>should create a _fromFilesystemBuilder</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber32"><p>#builder</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html#instance-get-builder">XMLTransformer#builder</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber33"><p>should return the #_fromDBBuilder if direction is FromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber40"><p>should return the #_fromDBBuilder if direction is FromFilesystem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber49"><p>#decodeContents</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html#instance-method-decodeContents">XMLTransformer#decodeContents</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber50"><p>should forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber56"><p>should return object for valid xml</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber79"><p>#encodeContents</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html#instance-method-encodeContents">XMLTransformer#encodeContents</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber80"><p>should forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber99"><p>should support forced CDATA</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber112"><p>should not double escape forced CDATA</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber85"><p>when direction is FromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber86"><p>should indent with double space</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber92"><p>when direction is FromFilesytem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/lib/transform/XMLTransformer.spec.js.html#lineNumber93"><p>should indent with single space</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/tasks/pull.spec.js.html#lineNumber35"><p>pull</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="function/index.html#static-function-pull">pull</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/tasks/pull.spec.js.html#lineNumber38"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/tasks/push.spec.js.html#lineNumber34"><p>push</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="function/index.html#static-function-push">push</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/tasks/push.spec.js.html#lineNumber35"><p>should return a stream</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber49"><p>watch</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="function/index.html#static-function-watch">watch</a></span></td>
+  <td data-ice="testCount">10</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber50"><p>should return a function</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber54"><p>when run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">9</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber55"><p>should return a Promise</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber59"><p>should init browser-sync once watchers are ready</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber70"><p>should call listeners on file change</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber78"><p>should not call file listeners while pulling</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber88"><p>should call listeners on server change</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber97"><p>should not call server listeners while pushing</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber107"><p>should not call server listeners when delayed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber121"><p>should forward file watcher errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/tasks/watch.spec.js.html#lineNumber128"><p>should forward server watcher errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber12"><p>DisplayTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></td>
+  <td data-ice="testCount">25</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber16"><p>#shouldBeTransformed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-shouldBeTransformed">DisplayTransformer#shouldBeTransformed</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber17"><p>should return false for non-display files</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber23"><p>#transformFromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-transformFromDB">DisplayTransformer#transformFromDB</a></span></td>
+  <td data-ice="testCount">12</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber46"><p>should forward parse errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber51"><p>should error with invalid xml</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber81"><p>should store empty config for empty display</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber88"><p>should store dependencies in config when referenced as &quot;src&quot;</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber99"><p>should store dependencies in config when referenced as &quot;xlink:href&quot;</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber110"><p>should store multiple dependencies in config</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber123"><p>when display contains inline script</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber126"><p>should be stored when given with attributes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber135"><p>should be stored when given without attributes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber144"><p>should store empty inline scripts in separate file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber154"><p>when display contains metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber155"><p>should work without parameters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber164"><p>should store parameters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber194"><p>when encoding fails</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber199"><p>should forward encode error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber207"><p>#createCombinedFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-createCombinedFile">DisplayTransformer#createCombinedFile</a></span></td>
+  <td data-ice="testCount">12</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber227"><p>should fail with invalid config file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber233"><p>should fail without SVG file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber239"><p>should fail with invalid SVG</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber245"><p>should fail without <code>svg</code> tag</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber264"><p>should work with empty svg tag</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber270"><p>should inline script</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber280"><p>should link dependencies</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber290"><p>should work without empty parameters config</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber299"><p>should reuse existant metadata section</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber315"><p>should create metadata section if omitted</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber326"><p>should keep parameters specified in SVG</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber342"><p>when encoding fails</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber347"><p>should forward encode error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber20"><p>MappingTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></td>
+  <td data-ice="testCount">9</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber24"><p>#transformFromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html#instance-method-transformFromDB">MappingTransformer#transformFromDB</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber42"><p>should return an AtviseFile for the given ReadResult</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber25"><p>when AtviseFile.fromReadResult returns error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber32"><p>should not forward errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber60"><p>when file has non-standard type-definition</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber61"><p>should push .rc file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber89"><p>#transformFromFilesystem</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html#instance-method-transformFromFilesystem">MappingTransformer#transformFromFilesystem</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber90"><p>should write AtviseFiles for read Files</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber101"><p>should keep base</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber116"><p>should skip directories</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber128"><p>when file has non-standard type-definition</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber129"><p>with .rc file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="4">
+  <td data-ice="testDescription" style="padding-left: 50px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber133"><p>should read .rc file</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber145"><p>when .rc file cannot be read</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="4">
+  <td data-ice="testDescription" style="padding-left: 50px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber149"><p>should forward error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber161"><p>when .rc file cannot be parsed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="4">
+  <td data-ice="testDescription" style="padding-left: 50px"><span><a href="test-file/test/src/transform/Mapping.spec.js.html#lineNumber165"><p>should forward error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber10"><p>ScriptTransformer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></td>
+  <td data-ice="testCount">21</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber15"><p>#shouldBeTransformed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html#instance-method-shouldBeTransformed">ScriptTransformer#shouldBeTransformed</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber16"><p>should return true for ScriptCode type nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber22"><p>should return true for QuickDynamic type nodes</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber30"><p>#transformFromDB</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html#instance-method-transformFromDB">ScriptTransformer#transformFromDB</a></span></td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber31"><p>should forward parse errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber36"><p>should warn with invalid xml</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber48"><p>should write empty config file for empty Script</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber56"><p>should write empty .js file for empty Script</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber64"><p>should store icon metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber79"><p>should store empty icon metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber93"><p>should store visible metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber105"><p>should store title metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber117"><p>should store description metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber129"><p>should store parameters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber141"><p>should store code</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber152"><p>#createCombinedFile</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html#instance-method-createCombinedFile">ScriptTransformer#createCombinedFile</a></span></td>
+  <td data-ice="testCount">8</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber153"><p>should forward config parse errors</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber203"><p>should insert parameters</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber212"><p>should insert script code</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber159"><p>when called on a quick dynamic</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber160"><p>should store empty metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber168"><p>should insert icon metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber177"><p>should insert visible metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber185"><p>should insert title metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber193"><p>should insert description metadata</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
