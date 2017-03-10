@@ -28,7 +28,7 @@ describe('Session', function() {
       return expect(Session.create(), 'when fulfilled', 'to be a', ClientSession);
     });
 
-    itSkipForLocalTests('should fail with invalid credentials', function() {
+    /* itSkipForLocalTests('should fail with invalid credentials', function() {
       return Promise.all([
         // Missing username
         expect(sessionWithLogin({
@@ -48,7 +48,7 @@ describe('Session', function() {
           password: TestConfig.login.password,
         }).create(), 'to be rejected with', /Invalid login/),
       ]);
-    });
+    }); */
   });
 
   /** @test {Session.close} */
