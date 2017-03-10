@@ -72,7 +72,7 @@ export default class Session {
     if (session._closing) {
       return new Promise(resolve => {
         session.on('session_closed', () => {
-          resolve();
+          resolve(session);
         });
       });
     }
