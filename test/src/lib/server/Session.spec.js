@@ -28,27 +28,27 @@ describe('Session', function() {
       return expect(Session.create(), 'when fulfilled', 'to be a', ClientSession);
     });
 
-    /* itSkipForLocalTests('should fail with invalid credentials', function() {
+    it('should fail with invalid credentials', function() {
       return Promise.all([
         // Missing username
         expect(sessionWithLogin({
           username: false,
-          password: TestConfig.login.password,
+          password: 'invalid password',
         }).create(), 'to be rejected with', /Invalid login/),
 
         // Missing password
         expect(sessionWithLogin({
-          username: TestConfig.login.username,
+          username: 'invalid username',
           password: false,
         }).create(), 'to be rejected with', /Invalid login/),
 
-        // Invalid username
+        // Invalid credentials
         expect(sessionWithLogin({
-          username: TestConfig.login.password,
-          password: TestConfig.login.password,
+          username: 'invalid username',
+          password: 'invalid password',
         }).create(), 'to be rejected with', /Invalid login/),
       ]);
-    }); */
+    });
   });
 
   /** @test {Session.close} */
