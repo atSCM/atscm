@@ -25,7 +25,7 @@ export default class WriteStream extends Stream {
         }
       });
     } catch (e) {
-      callback(e);
+      callback(new Error(`Error writing node ${file.nodeId.toString()}: ${e.message}`));
     }
   }
 
