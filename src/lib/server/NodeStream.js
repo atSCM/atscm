@@ -86,6 +86,8 @@ export default class NodeStream extends Stream {
   /**
    * Browses the given node.
    * @param {NodeId} nodeId The node to browse.
+   * @param {Number} [retry=0] How often browsing was retried so far. **Do pass a value for this
+   * parameter, it is only meant be used in recursion**
    * @return {Promise<NodeId[], Error>} Fulfilled with the next nodes to browse or rejected with the
    * error that occurred while browsing.
    */
@@ -107,7 +109,7 @@ export default class NodeStream extends Stream {
                 new Error(`Browsing ${nodeId.toString()} failed: Timeout (${promise.retry}x)`)
               );
             } else {
-              this.browseNode(nodeId, tryNo)
+              this.browseNode(nodeId, (tryNo + 1))
                 .then(resolve, reject);
             }
           } else {
@@ -131,7 +133,6 @@ export default class NodeStream extends Stream {
                 // "Cast" ref.nodeId to NodeId
                 Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
 
-                // TODO: Use read option to read variable nodes
                 this.push(ref);
               }
 

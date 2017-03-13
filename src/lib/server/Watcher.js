@@ -172,8 +172,10 @@ export default class Watcher extends Emitter {
    * Ends monitoring nodes.
    */
   close() {
-    Session.close(this._subscribeStream.session)
-      .catch(err => this.emit('error', err));
+    if (this._subscribeStream.session) {
+      Session.close(this._subscribeStream.session)
+        .catch(err => this.emit('error', err));
+    }
   }
 
 }

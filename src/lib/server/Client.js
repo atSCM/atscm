@@ -22,7 +22,7 @@ export default class Client {
 
       setTimeout(() => reject(
         new Error(`Unable to connect to ${endpoint}: Connection timed out`)
-      ), 3000);
+      ), 5000);
 
       client.connect(endpoint, err => {
         if (err) {

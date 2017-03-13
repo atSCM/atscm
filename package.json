@@ -1,11 +1,11 @@
 {
   "name": "atscm",
-  "version": "0.2.1-alpha.6",
+  "version": "0.2.1-alpha.7",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
   "engines": {
     "node": ">=6.0",
-    "atscm-cli": "*"
+    "atscm-cli": ">=0.2.0-alpha.1"
   },
   "scripts": {
     "compile": "babel src --out-dir out",
@@ -14,7 +14,7 @@
     "lint": "eslint src",
     "lint:test": "eslint test",
     "prepublish": "npm run compile && npm run docs",
-    "test": "NODE_ENV=test ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --timeout 5000",
+    "test": "NODE_ENV=test ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --timeout 10000",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
