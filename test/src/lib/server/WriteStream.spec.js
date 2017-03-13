@@ -6,8 +6,6 @@ import AtviseFile from '../../../../src/lib/server/AtviseFile';
 
 /** @test {WriteStream} */
 describe('WriteStream', function() {
-  this.timeout(5000);
-
   /** @test {WriteStream#writeFile} */
   describe('#writeFile', function() {
     it('should forward write errors', function() {

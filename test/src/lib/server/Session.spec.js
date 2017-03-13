@@ -45,8 +45,6 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
 
 /** @test {Session} */
 describe('Session', function() {
-  this.timeout(5000);
-
   /** @test {Session.create} */
   describe('.create', function() {
     it('should create a new ClientSession', function() {

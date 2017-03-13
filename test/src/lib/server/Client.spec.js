@@ -36,8 +36,6 @@ const FailingClient = proxyquire('../../../../src/lib/server/Client', {
 
 /** @test {Client} */
 describe('Client', function() {
-  this.timeout(5000);
-
   /** @test {Client.create} */
   describe('.create', function() {
     it('should return a OPCUAClient', function() {

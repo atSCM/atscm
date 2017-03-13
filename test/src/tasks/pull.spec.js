@@ -33,8 +33,6 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
 /** @test {pull} */
 describe('pull', function() {
-  this.timeout(5000);
-
   it('should return a stream', function(done) {
     const stream = pull();
 

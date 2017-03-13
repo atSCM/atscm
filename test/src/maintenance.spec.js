@@ -5,8 +5,6 @@ process.on('unhandledRejection', e => {
 });
 
 after(function() {
-  this.timeout(5000);
-
   console.log('Maintenance: Closing open sessions');
 
   return Session.closeOpen()

@@ -8,7 +8,6 @@ import NodeId from '../../../../src/lib/server/NodeId';
 
 /** @test {NodeStream} */
 describe('NodeStream', function() {
-  this.timeout(5000);
   const testNodes = [new NodeId('ns=1;s=AGENT.DISPLAYS')];
 
   /** @test {NodeStream#constructor} */
