@@ -1,0 +1,354 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 794,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 30,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 794,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 30,
+        "column": 0
+      }
+    },
+    "sourceType": "module",
+    "body": [],
+    "directives": [],
+    "leadingComments": null,
+    "innerComments": [
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {Liftoff} https://github.com/js-cli/js-liftoff\n ",
+        "start": 0,
+        "end": 67,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * A {@link Liftoff} environment.\n * @typedef {Object} Liftoff.Environment\n * @property {String} cwd The resulting working directory.\n * @property {String} [configPath] Path to the config file found.\n * @property {String} [configBase] The directory the config file is in.\n * @property {String} [modulePath] Path to the local module found.\n * @property {Object} [modulePackage={}] The parsed package.json of the local module found.\n ",
+        "start": 69,
+        "end": 507,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 13,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {gulplog} https://github.com/gulpjs/gulplog\n ",
+        "start": 509,
+        "end": 573,
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 0
+          },
+          "end": {
+            "line": 17,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {chalk} https://github.com/chalk/chalk\n ",
+        "start": 575,
+        "end": 634,
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 0
+          },
+          "end": {
+            "line": 21,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {yargs} http://yargs.js.org\n ",
+        "start": 636,
+        "end": 684,
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 0
+          },
+          "end": {
+            "line": 25,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {node.stream.Readable} https://nodejs.org/api/stream.html#stream_class_stream_readable\n ",
+        "start": 686,
+        "end": 793,
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 0
+          },
+          "end": {
+            "line": 29,
+            "column": 3
+          }
+        }
+      }
+    ]
+  },
+  "comments": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {Liftoff} https://github.com/js-cli/js-liftoff\n ",
+      "start": 0,
+      "end": 67,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * A {@link Liftoff} environment.\n * @typedef {Object} Liftoff.Environment\n * @property {String} cwd The resulting working directory.\n * @property {String} [configPath] Path to the config file found.\n * @property {String} [configBase] The directory the config file is in.\n * @property {String} [modulePath] Path to the local module found.\n * @property {Object} [modulePackage={}] The parsed package.json of the local module found.\n ",
+      "start": 69,
+      "end": 507,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {gulplog} https://github.com/gulpjs/gulplog\n ",
+      "start": 509,
+      "end": 573,
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {chalk} https://github.com/chalk/chalk\n ",
+      "start": 575,
+      "end": 634,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {yargs} http://yargs.js.org\n ",
+      "start": 636,
+      "end": 684,
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node.stream.Readable} https://nodejs.org/api/stream.html#stream_class_stream_readable\n ",
+      "start": 686,
+      "end": 793,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {Liftoff} https://github.com/js-cli/js-liftoff\n ",
+      "start": 0,
+      "end": 67,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * A {@link Liftoff} environment.\n * @typedef {Object} Liftoff.Environment\n * @property {String} cwd The resulting working directory.\n * @property {String} [configPath] Path to the config file found.\n * @property {String} [configBase] The directory the config file is in.\n * @property {String} [modulePath] Path to the local module found.\n * @property {Object} [modulePackage={}] The parsed package.json of the local module found.\n ",
+      "start": 69,
+      "end": 507,
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {gulplog} https://github.com/gulpjs/gulplog\n ",
+      "start": 509,
+      "end": 573,
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 0
+        },
+        "end": {
+          "line": 17,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {chalk} https://github.com/chalk/chalk\n ",
+      "start": 575,
+      "end": 634,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {yargs} http://yargs.js.org\n ",
+      "start": 636,
+      "end": 684,
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node.stream.Readable} https://nodejs.org/api/stream.html#stream_class_stream_readable\n ",
+      "start": 686,
+      "end": 793,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 794,
+      "end": 794,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 0
+        }
+      }
+    }
+  ]
+}

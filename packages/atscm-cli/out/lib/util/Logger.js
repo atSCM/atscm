@@ -1,14 +1,32 @@
-import { Console } from 'console';
-import gulplog from 'gulplog';
-import chalk from 'chalk';
-import tildify from 'tildify';
+'use strict';
 
-const logConsole = new Console(process.stdout, process.stderr);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LogFormat = undefined;
+
+var _console = require('console');
+
+var _gulplog = require('gulplog');
+
+var _gulplog2 = _interopRequireDefault(_gulplog);
+
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
+var _tildify = require('tildify');
+
+var _tildify2 = _interopRequireDefault(_tildify);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const logConsole = new _console.Console(process.stdout, process.stderr);
 
 /**
  * Formats strings to be used in the {@link Logger}.
  */
-export class LogFormat {
+class LogFormat {
 
   /**
    * Formats a string to represent a path.
@@ -16,7 +34,7 @@ export class LogFormat {
    * @return {String} The formatted string.
    */
   static path(path) {
-    return chalk.magenta(tildify(path));
+    return _chalk2.default.magenta((0, _tildify2.default)(path));
   }
 
   /**
@@ -25,7 +43,7 @@ export class LogFormat {
    * @return {String} The formatted string.
    */
   static command(command) {
-    return chalk.bold(command);
+    return _chalk2.default.bold(command);
   }
 
   /**
@@ -34,7 +52,7 @@ export class LogFormat {
    * @return {String} The formatted string.
    */
   static value(value) {
-    return chalk.cyan(value);
+    return _chalk2.default.cyan(value);
   }
 
   /**
@@ -43,24 +61,25 @@ export class LogFormat {
    * @return {String} The formatted string.
    */
   static number(number) {
-    return chalk.magenta(number);
+    return _chalk2.default.magenta(number);
   }
 
 }
 
-/**
- * A logger used in all console outputs.
- * **Should never be instantiated.**
- * Log levels, `--silent`-flags etc. are handled automatically by {@link gulplog}.
- */
-export default class Logger {
+exports.LogFormat = LogFormat; /**
+                                * A logger used in all console outputs.
+                                * **Should never be instantiated.**
+                                * Log levels, `--silent`-flags etc. are handled automatically by {@link gulplog}.
+                                */
+
+class Logger {
 
   /**
    * An instance of {@link chalk}.
    * @type {chalk}
    */
   static get colors() {
-    return chalk;
+    return _chalk2.default;
   }
 
   /**
@@ -78,17 +97,13 @@ export default class Logger {
    */
   static get prefix() {
     function pad(val) {
-      return `00${val}`.slice(-2);
+      return `00${ val }`.slice(-2);
     }
 
     const now = new Date();
-    const timestamp = [
-      pad(now.getHours()),
-      pad(now.getMinutes()),
-      pad(now.getSeconds()),
-    ].join(':');
+    const timestamp = [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join(':');
 
-    return `[${chalk.gray(timestamp)}]`;
+    return `[${ _chalk2.default.gray(timestamp) }]`;
   }
 
   /**
@@ -96,7 +111,7 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static debug(...message) {
-    gulplog.debug(...message);
+    _gulplog2.default.debug(...message);
   }
 
   /**
@@ -104,7 +119,7 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static info(...message) {
-    gulplog.info(...message);
+    _gulplog2.default.info(...message);
   }
 
   /**
@@ -112,7 +127,7 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static warn(...message) {
-    gulplog.warn(...message);
+    _gulplog2.default.warn(...message);
   }
 
   /**
@@ -120,7 +135,7 @@ export default class Logger {
    * @param {...String} message The message(s) to print.
    */
   static error(...message) {
-    gulplog.error(...message);
+    _gulplog2.default.error(...message);
   }
 
   static get levels() {
@@ -134,15 +149,13 @@ export default class Logger {
    */
   static applyOptions(options) {
     if (options.tasksSimple || options.silent || options.logLevel === 0) {
-      gulplog.on('error', () => {});
+      _gulplog2.default.on('error', () => {});
       return;
     }
 
-    this.levels
-      .filter((item, i) => i < options.logLevel)
-      .forEach(level => gulplog.on(level, (...args) => {
-        logConsole[level === 'error' ? 'error' : 'info']([this.prefix].concat(args));
-      }));
+    this.levels.filter((item, i) => i < options.logLevel).forEach(level => _gulplog2.default.on(level, (...args) => {
+      logConsole[level === 'error' ? 'error' : 'info']([this.prefix].concat(args));
+    }));
   }
 
   /**
@@ -150,17 +163,16 @@ export default class Logger {
    * @param {node.stream.Readable} stream The stream to pipe.
    */
   static pipeLastLine(stream) {
-    stream
-      .on('data', d => {
-        const lines = d.toString().split('\n').filter(l => l.trim() !== '');
+    stream.on('data', d => {
+      const lines = d.toString().split('\n').filter(l => l.trim() !== '');
 
-        process.stdout.clearLine();
-        process.stdout.write(`\r${Logger.prefix} ${lines[lines.length - 1]}`);
-      })
-      .on('end', () => {
-        process.stdout.clearLine();
-        process.stdout.write('\r');
-      });
+      process.stdout.clearLine();
+      process.stdout.write(`\r${ Logger.prefix } ${ lines[lines.length - 1] }`);
+    }).on('end', () => {
+      process.stdout.clearLine();
+      process.stdout.write('\r');
+    });
   }
 
 }
+exports.default = Logger;
