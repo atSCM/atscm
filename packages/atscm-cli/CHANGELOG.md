@@ -1,3 +1,8 @@
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/atSCM/atscm-cli/compare/0.2.0-alpha.1...v0.2.0) (2017-03-13)
+
+
+
 <a name="0.2.0-alpha.1"></a>
 # 0.2.0-alpha.1 (2017-03-13)
 
