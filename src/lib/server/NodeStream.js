@@ -133,7 +133,6 @@ export default class NodeStream extends Stream {
                 // "Cast" ref.nodeId to NodeId
                 Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
 
-                // TODO: Use read option to read variable nodes
                 this.push(ref);
               }
 
