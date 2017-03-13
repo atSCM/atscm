@@ -63,7 +63,9 @@ describe('NodeStream', function() {
     context('when browsing fails', function() {
       before(() => {
         stub(ClientSession.prototype, 'browse', (node, cb) => {
-          cb(new Error('Browse error'));
+          setTimeout(() => {
+            cb(new Error('Browse error'));
+          }, 50);
         });
       });
 
@@ -87,7 +89,9 @@ describe('NodeStream', function() {
     context('when browsing returns empty results', function() {
       before(() => {
         stub(ClientSession.prototype, 'browse', (node, cb) => {
-          cb(null, []);
+          setTimeout(() => {
+            cb(null, []);
+          }, 50);
         });
       });
 
