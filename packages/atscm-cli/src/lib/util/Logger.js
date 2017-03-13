@@ -141,7 +141,7 @@ export default class Logger {
     this.levels
       .filter((item, i) => i < options.logLevel)
       .forEach(level => gulplog.on(level, (...args) => {
-        logConsole[level === 'error' ? 'error' : 'info']([this.prefix].concat(args));
+        logConsole[level === 'error' ? 'error' : 'info'](...[this.prefix].concat(args));
       }));
   }
 
