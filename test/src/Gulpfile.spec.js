@@ -17,11 +17,13 @@ describe('Gulpfile', function() {
   it('should register cleanupHandler', function() {
     const nodeCleanup = spy();
 
+    const orgLog = console.log;
     process.env.NODE_ENV = 'production';
     proxyquire('../../src/Gulpfile', {
       'node-cleanup': nodeCleanup,
     });
     process.env.NODE_ENV = 'test';
+    console.log = orgLog;
 
     expect(nodeCleanup.calledOnce, 'to be', true);
   });
