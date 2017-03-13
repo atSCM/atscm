@@ -108,7 +108,7 @@ export default class ScriptTransformer extends XMLTransformer {
       try {
         config = JSON.parse(configFile.contents.toString());
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}`));
+        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
         return;
       }
     }
