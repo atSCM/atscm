@@ -1,24 +1,18 @@
-import expect from '../../../expect';
+import { ClientSession, resolveNodeId } from 'node-opcua';
 import { stub, spy } from 'sinon';
-
-import { ClientSession, resolveNodeId, browse_service as BrowseService } from 'node-opcua';
+import expect from '../../../expect';
 import NodeStream from '../../../../src/lib/server/NodeStream';
 import Stream from '../../../../src/lib/server/Stream';
+import Session from '../../../../src/lib/server/Session';
 import NodeId from '../../../../src/lib/server/NodeId';
 
 /** @test {NodeStream} */
 describe('NodeStream', function() {
-  this.timeout(5000);
   const testNodes = [new NodeId('ns=1;s=AGENT.DISPLAYS')];
 
   /** @test {NodeStream#constructor} */
   describe('#constructor', function() {
     let stream;
-    afterEach(() => {
-      if (stream) {
-        // stream.end();
-      }
-    });
 
     it('should fail without nodes', function() {
       expect(() => (stream = new NodeStream()), 'to throw', 'nodes is required');
@@ -28,8 +22,8 @@ describe('NodeStream', function() {
       expect((stream = new NodeStream(testNodes)), 'to be a', Stream);
     });
 
-    it('should store "read" option', function() {
-      expect((stream = new NodeStream(testNodes, { read: true })).readNodes, 'to be true');
+    it('should store "maxRetries" option', function() {
+      expect((stream = new NodeStream(testNodes, { maxRetries: 13 })).maxRetries, 'to equal', 13);
     });
 
     it('should set "recursive" to true by default', function() {
@@ -78,7 +72,7 @@ describe('NodeStream', function() {
       it('should forward errors', function(done) {
         const stream = new NodeStream(testNodes);
         stream.once('session-open', () => {
-          stream.session.close(() => {});
+          Session.close(stream.session);
         });
 
         stream.on('data', () => {}) // unpause readable stream
@@ -102,7 +96,7 @@ describe('NodeStream', function() {
       it('should emit error', function(done) {
         const stream = new NodeStream(testNodes);
         stream.once('session-open', () => {
-          stream.session.close(() => {});
+          Session.close(stream.session);
         });
 
         stream.on('data', () => {}) // unpause readable stream

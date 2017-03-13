@@ -1,7 +1,8 @@
+import Logger from 'gulplog';
+import { spy } from 'sinon';
 import expect from '../../expect';
 import TransformerHelper from '../../helpers/Transformer';
 import ScriptTransformer from '../../../src/transform/ScriptTransformer';
-import AtviseFile from '../../../src/lib/server/AtviseFile';
 
 const transformerHelper = new TransformerHelper(ScriptTransformer);
 
@@ -32,9 +33,16 @@ describe('ScriptTransformer', function() {
         'to be rejected with', /Text data outside of root node/);
     });
 
-    it('should error with invalid xml', function() {
+    it('should warn with invalid xml', function() {
+      const onWarn = spy();
+      Logger.on('warn', onWarn);
+
       return expect(transformerHelper.writeXMLToTransformer(ScriptPath, '<root></root>'),
-        'to be rejected with', /No `script` tag/);
+        'to be fulfilled')
+        .then(() => {
+          expect(onWarn, 'was called once');
+          expect(onWarn, 'to have a call satisfying', { args: [/Empty document/] });
+        });
     });
 
     it('should write empty config file for empty Script', function() {

@@ -19,13 +19,13 @@ export default class WriteStream extends Stream {
         value: file.value,
       }, err => {
         if (err) {
-          callback(err);
+          callback(new Error(`Error writing node ${file.nodeId.toString()}: ${err.message}`));
         } else {
           callback(null, file);
         }
       });
     } catch (e) {
-      callback(e);
+      callback(new Error(`Error writing node ${file.nodeId.toString()}: ${e.message}`));
     }
   }
 

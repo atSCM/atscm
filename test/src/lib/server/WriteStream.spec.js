@@ -17,7 +17,7 @@ describe('WriteStream', function() {
       stream.on('data', () => stream.end()); // Unpause readable stream
       stream.write(new AtviseFile({ path: 'AGENT/DISPLAYS/Main.display' }));
 
-      return expect(stream, 'to error with', 'Test');
+      return expect(stream, 'to error with', /Test/);
     });
 
     it('should forward synchronous errors', function() {
@@ -31,7 +31,7 @@ describe('WriteStream', function() {
       stream.on('data', () => stream.end()); // Unpause readable stream
       stream.write(new AtviseFile({ path: 'AGENT/DISPLAYS/Main.display' }));
 
-      return expect(stream, 'to error with', 'Sync Test');
+      return expect(stream, 'to error with', /Sync Test/);
     });
 
     it('should call node-opcua~ClientSession#writeSingleNode', function(done) {

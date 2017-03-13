@@ -1,6 +1,5 @@
 import { Buffer } from 'buffer';
 import { readFile } from 'fs';
-import { basename, join } from 'path';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
@@ -64,9 +63,11 @@ export default class MappingTransformer extends Transformer {
       });
 
       if (file.relative.match(/\.var\./)) {
-        const rcPath = join(file.dirname, `.${basename(file.stem, '.var')}.rc`);
+        const rcFile = file.clone({ contents: false });
+        rcFile.extname = '';
+        rcFile.basename = `.${rcFile.stem}.rc`;
 
-        readFile(rcPath, 'utf8', (err, data) => {
+        readFile(rcFile.path, 'utf8', (err, data) => {
           try {
             const rc = JSON.parse(data);
             atFile._typeDefinition = new NodeId(rc.typeDefinition);

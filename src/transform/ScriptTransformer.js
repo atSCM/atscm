@@ -1,3 +1,4 @@
+import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
@@ -27,10 +28,12 @@ export default class ScriptTransformer extends XMLTransformer {
     this.decodeContents(file, (err, results) => {
       if (err) {
         callback(err);
-      } else if (!results || results.script === undefined) {
-        callback(new Error('Error parsing script: No `script` tag'));
       } else {
-        const document = results.script;
+        if (!results || results.script === undefined) {
+          Logger.warn(`Empty document at ${file.relative}`);
+        }
+
+        const document = results && results.script ? results.script : {};
 
         const config = {};
         let code = '';
@@ -105,7 +108,7 @@ export default class ScriptTransformer extends XMLTransformer {
       try {
         config = JSON.parse(configFile.contents.toString());
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}`));
+        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
         return;
       }
     }

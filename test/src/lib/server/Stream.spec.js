@@ -9,8 +9,6 @@ import Session from '../../../../src/lib/server/Session';
 
 /** @test {Stream} */
 describe('Stream', function() {
-  this.timeout(5000);
-
   /** @test {Stream#constructor} */
   describe('#constructor', function() {
     it('should return a stream', function() {
