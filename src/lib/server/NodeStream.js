@@ -86,6 +86,8 @@ export default class NodeStream extends Stream {
   /**
    * Browses the given node.
    * @param {NodeId} nodeId The node to browse.
+   * @param {Number} [retry=0] How often browsing was retried so far. **Do pass a value for this
+   * parameter, it is only meant be used in recursion**
    * @return {Promise<NodeId[], Error>} Fulfilled with the next nodes to browse or rejected with the
    * error that occurred while browsing.
    */
