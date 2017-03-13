@@ -109,7 +109,7 @@ export default class NodeStream extends Stream {
                 new Error(`Browsing ${nodeId.toString()} failed: Timeout (${promise.retry}x)`)
               );
             } else {
-              this.browseNode(nodeId, tryNo)
+              this.browseNode(nodeId, (tryNo + 1))
                 .then(resolve, reject);
             }
           } else {
