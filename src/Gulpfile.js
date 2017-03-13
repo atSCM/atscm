@@ -9,6 +9,9 @@ export { default as watch } from './tasks/watch';
 // Register cleanup
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
+  // Prevent node-opcua logging
+  console.log = () => {}; // eslint-disable-line no-console
+
   cleanup((code, signal) => cleanupHandler(code, signal, cleanup.uninstall), {
     ctrl_C: '',
     unhandledRejection: '',
