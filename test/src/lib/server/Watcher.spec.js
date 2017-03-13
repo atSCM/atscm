@@ -271,7 +271,7 @@ describe('Watcher', function() {
       });
 
       watcher.on('ready', () => {
-        watcher._subscribeStream.session = undefined;
+        watcher._subscribeStream.session = {};
 
         watcher.close();
       });
