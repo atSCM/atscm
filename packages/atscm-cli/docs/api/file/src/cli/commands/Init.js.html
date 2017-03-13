@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/cli/commands/Init.js | atscm-cli API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm-cli" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Commands">Commands</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GlobalOptions">GlobalOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Options">Options</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli/commands</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/cli</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/error</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Liftoff.Environment">Liftoff.Environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/js-cli/js-liftoff">Liftoff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/chalk/chalk">chalk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/gulplog">gulplog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/stream.html#stream_class_stream_readable">node.stream.Readable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://yargs.js.org">yargs</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/cli/commands/Init.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { readdir, writeFile } from &apos;fs&apos;;
+import { join } from &apos;path&apos;;
+import { spawn } from &apos;child_process&apos;;
+import which from &apos;which&apos;;
+import { prompt } from &apos;inquirer&apos;;
+import { satisfies as validVersion } from &apos;semver&apos;;
+import Command from &apos;../../lib/cli/Command&apos;;
+import Logger from &apos;../../lib/util/Logger&apos;;
+import pkg from &apos;../../../package.json&apos;;
+
+const IgnoredFiles = [&apos;.ds_store&apos;, &apos;thumbs.db&apos;];
+
+/**
+ * The command invoked when running &quot;init&quot;.
+ */
+export default class InitCommand extends Command {
+
+  /**
+   * Checks if the given path contains an empty directory. OS specific temporary files (.DS_Store
+   * under macOS, thumbs.db under Windows) are ignored.
+   * @param {String} path The path to check.
+   * @return {Promise&lt;String, Error&gt;} Fulfilled with the valid directory&apos;s path, rejected if `path`
+   * contains no or a non-empty directory.
+   */
+  checkDirectory(path) {
+    return new Promise((resolve, reject) =&gt; {
+      readdir(path, (err, files) =&gt; {
+        if (err) {
+          if (err.code === &apos;ENOENT&apos;) {
+            reject(new Error(`${Logger.format.path(path)} does not exist`));
+          } else if (err.code === &apos;ENOTDIR&apos;) {
+            reject(new Error(`${Logger.format.path(path)} is not a directory`));
+          } else {
+            reject(err);
+          }
+        } else if (files.filter(f =&gt; !IgnoredFiles.includes(f.toLowerCase())).length &gt; 0) {
+          reject(new Error(`${Logger.format.path(path)} is not empty`));
+        } else {
+          resolve(path);
+        }
+      });
+    });
+  }
+
+  /**
+   * Creates a an empty *package.json* file at the given path.
+   * @param {String} path The location to create the package at.
+   * @return {Promise&lt;undefined, Error&gt;} Rejected if an error occurred while writing the file.
+   */
+  createEmptyPackage(path) {
+    return new Promise((resolve, reject) =&gt; {
+      writeFile(join(path, &apos;package.json&apos;), &apos;{}&apos;, err =&gt; {
+        if (err) {
+          // FIXME: Call with SystemError class
+          reject(Object.assign(err, {
+            message: `Unable to create package.json at ${path}`,
+            originalMessage: err.message,
+          }));
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  /**
+   * Runs `npm install --save-dev {packages}` at the given path.
+   * @param {String} path The path to install packages at.
+   * @param {String|String[]} packages Names of the packages to install.
+   * @return {Promise&lt;undefined, Error&gt;} Rejected if installing failed, resolved otherwise.
+   */
+  install(path, packages) {
+    return new Promise((resolve, reject) =&gt; {
+      which(&apos;npm&apos;, (err, npm) =&gt; {
+        if (err) {
+          reject(err);
+        } else {
+          const child = spawn(npm, [&apos;install&apos;, &apos;--save-dev&apos;].concat(packages), { cwd: path })
+            .on(&apos;error&apos;, npmErr =&gt; reject(npmErr))
+            .on(&apos;close&apos;, code =&gt; {
+              if (code &gt; 0) {
+                reject(new Error(`npm install returned code ${code}`));
+              } else {
+                resolve();
+              }
+            });
+
+          Logger.pipeLastLine(child.stdout);
+        }
+      });
+    });
+  }
+
+  /**
+   * Installs the local atscm module at the given path.
+   * @param {String} path The path to install the module at.
+   * @return {Promise&lt;undefined, Error&gt;} Rejected if installing failed, resolved otherwise.
+   */
+  installLocal(path) {
+    Logger.info(&apos;Installing latest version of atscm...&apos;);
+
+    // FIXME: call with (path, &apos;atscm&apos;) once atscm is published
+    return this.install(path, &apos;atscm&apos;);
+  }
+
+  /**
+   * Checks the version of this package against the &quot;engines.atscm-cli&quot; field of the newly installed
+   * atscm module&apos;s package.json.
+   * @param {Liftoff.Environment} env The environment to check.
+   * @return {Liftoff.Environment} The environment to check.
+   * @throws {Error} Throws an error if the atscm-cli version does not match.
+   */
+  checkCliVersion(env) {
+    Logger.debug(&apos;Checking atscm-cli version...&apos;);
+
+    const required = env.modulePackage.engines[&apos;atscm-cli&apos;];
+    if (!validVersion(pkg.version, required)) {
+      Logger.info(&apos;Your version of atscm-cli is not compatible with the latest version atscm.&apos;);
+      Logger.info(&apos;Please run&apos;, Logger.format.command(&apos;npm install -g atscm-cli&apos;), &apos;to update.&apos;);
+
+      throw new Error(`Invalid atscm-cli version: ${required} required.`);
+    }
+
+    return env;
+  }
+
+  /**
+   * Resolves the needed options from the local atscm module and asks for them. These options are
+   * stored in the `atscm` module inside `out/init/options.js`.
+   * @param {String} modulePath The path to the local module to use.
+   * @return {Promise&lt;Object, Error&gt;} Resolved with the chosen options.
+   */
+  getOptions(modulePath) {
+    Logger.info(&apos;Answer these questions to create a new project:&apos;);
+
+    // eslint-disable-next-line global-require
+    const options = require(join(modulePath, &apos;../init/options&apos;)).default;
+
+    return prompt(options);
+  }
+
+  /**
+   * Runs the local atscm module&apos;s init script. This script is stored in the `atscm` module inside
+   * `out/init/init.js`.
+   * @param {String} modulePath The path to the local module to use.
+   * @param {Object} options The options to apply (Received by calling
+   * {@link InitCommand#getOptions}).
+   * @return {Promise&lt;{install: String[]}, Error&gt;} Resolved with information on the further init
+   * steps (e.g. which dependencies are needed), rejected with an error if running the init script
+   * failed.
+   */
+  writeFiles(modulePath, options) {
+    // eslint-disable-next-line global-require
+    return require(join(modulePath, &apos;../init/init&apos;)).default(options);
+  }
+
+  /**
+   * Installs any additional dependencies needed after writing files.
+   * @param {String} path The path to install the dependencies at.
+   * @param {String[]} deps Names of the packages to install.
+   * @return {Promise&lt;undefined, Error&gt;} Rejected if installing failed, resolved otherwise.
+   */
+  installDependencies(path, deps) {
+    Logger.info(&apos;Installing dependencies...&apos;);
+
+    return this.install(path, deps);
+  }
+
+  /**
+   * Creates a new atscm project.
+   * @param {AtSCMCli} cli The current Cli instance.
+   */
+  run(cli) {
+    return cli.getEnvironment()
+      .then(env =&gt; this.checkDirectory(env.cwd))
+      .then(() =&gt; this.createEmptyPackage(cli.environment.cwd))
+      .then(() =&gt; this.installLocal(cli.environment.cwd))
+      .then(() =&gt; cli.getEnvironment())
+      .then(env =&gt; this.checkCliVersion(env))
+      .then(env =&gt; process.chdir(env.cwd))
+      .then(() =&gt; this.getOptions(cli.environment.modulePath))
+      .then(options =&gt; this.writeFiles(
+        cli.environment.modulePath,
+        Object.assign({}, cli.environment, options)
+      ))
+      .then(result =&gt; this.installDependencies(cli.environment.cwd, result.install))
+      .then(() =&gt; {
+        Logger.info(&apos;Created new project at&apos;, Logger.format.path(cli.environment.cwd));
+      });
+  }
+
+  /**
+   * This command never requires an {@link Liftoff.Environment}.
+   * @return {Boolean} Always `false`.
+   */
+  requiresEnvironment() {
+    return false;
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
