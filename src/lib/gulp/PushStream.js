@@ -1,4 +1,5 @@
 import readline from 'readline';
+import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
@@ -21,8 +22,10 @@ export default class PushStream {
       .on('data', () => uploaded++);
 
     const printProgress = setInterval(() => {
-      process.stdout.write(`Pushed: ${uploaded}`);
+      Logger.info(`Pushed: ${uploaded}`);
+
       readline.cursorTo(process.stdout, 0);
+      readline.moveCursor(process.stdout, 0, -1);
     }, 1000);
 
     return Transformer.applyTransformers(
