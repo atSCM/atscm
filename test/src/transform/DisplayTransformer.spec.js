@@ -257,7 +257,7 @@ ${xmlString}`),
 
           return expect(args[1].contents.toString(),
             'to equal', `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-${xmlString}`.replace(new RegExp(EOL, 'g'), '\r\n'));
+${xmlString}`.replace(/\r?\n|\r/, '\r\n'));
         });
     }
 
