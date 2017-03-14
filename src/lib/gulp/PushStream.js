@@ -1,3 +1,4 @@
+import readline from 'readline';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
@@ -20,7 +21,8 @@ export default class PushStream {
       .on('data', () => uploaded++);
 
     const printProgress = setInterval(() => {
-      process.stdout.write(`\rUploaded: ${uploaded}`);
+      process.stdout.write(`Pushed: ${uploaded}`);
+      readline.cursorTo(process.stdout, 0);
     }, 1000);
 
     return Transformer.applyTransformers(
@@ -31,8 +33,9 @@ export default class PushStream {
     )
       .pipe(writeStream)
       .on('end', () => {
-        process.stdout.clearLine();
-        process.stdout.write('\r');
+        readline.cursorTo(process.stdout, 0);
+        readline.clearLine(process.stdout);
+
         clearInterval(printProgress);
       });
   }

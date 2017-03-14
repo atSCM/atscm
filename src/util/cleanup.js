@@ -1,3 +1,4 @@
+import readline from 'readline';
 import Logger from 'gulplog';
 import Session from '../lib/server/Session';
 
@@ -12,8 +13,8 @@ export default function cleanup(exitCode, signal, uninstall) {
   uninstall();
 
   if (signal === 'SIGINT') {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
+    readline.clearLine(process.stdout);
+    readline.cursorTo(process.stdout, 0);
     Logger.warn('Ctrl-C');
   }
 

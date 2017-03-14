@@ -1,3 +1,4 @@
+import readline from 'readline';
 import { dest } from 'gulp';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
@@ -21,7 +22,8 @@ export default class PullStream {
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
     const printProgress = setInterval(() => {
-      process.stdout.write(`\rPulled: ${pulled}`);
+      process.stdout.write(`Pulled: ${pulled}`);
+      readline.cursorTo(process.stdout, 0);
     }, 1000);
 
     return Transformer.applyTransformers(
@@ -33,8 +35,9 @@ export default class PullStream {
       .pipe(dest('./src'))
       .on('data', () => {}) // Unpipe readable stream
       .on('end', () => {
-        process.stdout.clearLine();
-        process.stdout.write('\r');
+        readline.clearLine(process.stdout, 0);
+        readline.cursorTo(process.stdout, 0);
+
         clearInterval(printProgress);
       });
   }
