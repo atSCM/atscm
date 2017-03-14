@@ -1,3 +1,4 @@
+import { join } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 
@@ -80,7 +81,7 @@ describe('NodeId', function() {
 
     it('should work with resource paths', function() {
       expect(NodeId.fromFilePath(
-        'SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif'
+        join('SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif')
       ).value,
         'to equal', 'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif');
     });
