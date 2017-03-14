@@ -1,3 +1,4 @@
+import { EOL } from 'os';
 import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
@@ -21,7 +22,10 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromDB}.
      * @type {xml2js~Builder}
      */
-    this._fromDBBuilder = new XMLBuilder({ cdata: false });
+    this._fromDBBuilder = new XMLBuilder({
+      cdata: false,
+      newline: EOL,
+    });
 
     /**
      * The builder to use with direction {@link TransformDirection.FromFilesystem}.
