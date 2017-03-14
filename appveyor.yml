@@ -18,7 +18,6 @@ test_script:
   - node_modules/.bin/eslint -f junit src > eslint.xml
 
   # Run tests
-  - set NODE_ENV=TEST
   - node_modules/.bin/nyc npm test
   - node_modules/.bin/nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
 

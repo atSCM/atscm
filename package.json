@@ -14,7 +14,7 @@
     "lint": "eslint src",
     "lint:test": "eslint test",
     "prepublish": "npm run compile && npm run docs",
-    "test": "NODE_ENV=test ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --timeout 10000",
+    "test": "cross-env NODE_ENV=test ATSCM_CONFIG_PATH=\"${PWD}/test/fixtures/Atviseproject.babel.js\" mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --timeout 10000",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
@@ -38,6 +38,7 @@
     "babel-register": "^6.18.0",
     "broken-link-checker-local": "^0.1.1",
     "coffee-script": "^1.12.3",
+    "cross-env": "^3.2.3",
     "esdoc": "^0.5.2",
     "esdoc-plugin-require-coverage": "^0.1.2",
     "eslint": "^3.11.1",
