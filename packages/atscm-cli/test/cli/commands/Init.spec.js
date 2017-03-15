@@ -132,17 +132,7 @@ describe('InitCommand', function() {
 
   /** @test {InitCommand#install} */
   describe('#install', function() {
-    beforeEach(() => {
-      spy(process.stdout, 'clearLine');
-      spy(process.stdout, 'write');
-
-      whichStub.default.reset();
-    });
-
-    afterEach(() => {
-      process.stdout.clearLine.restore();
-      process.stdout.write.restore();
-    });
+    beforeEach(() => whichStub.default.reset());
 
     it('should run which for npm', function() {
       const deps = ['dep1', 'dep2'];
