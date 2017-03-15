@@ -25,8 +25,10 @@ export default class PullStream {
     const printProgress = setInterval(() => {
       Logger.info(`Pulled: ${pulled}`);
 
-      readline.cursorTo(process.stdout, 0);
-      readline.moveCursor(process.stdout, 0, -1);
+      if (Logger.listenerCount('info') > 0) {
+        readline.cursorTo(process.stdout, 0);
+        readline.moveCursor(process.stdout, 0, -1);
+      }
     }, 1000);
 
     return Transformer.applyTransformers(
