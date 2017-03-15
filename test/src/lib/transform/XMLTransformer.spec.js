@@ -85,7 +85,9 @@ describe('XMLTransformer', function() {
     context('when direction is FromDB', function() {
       it('should indent with double space', function(done) {
         testBuilder(TransformDirection.FromDB, { root: { sub: 'test' } },
-          `<root>${EOL}  <sub>test</sub>${EOL}</root>`, done);
+          `<root>
+  <sub>test</sub>
+</root>`, done);
       });
     });
 
