@@ -1,3 +1,4 @@
+import readline from 'readline';
 import { Console } from 'console';
 import gulplog from 'gulplog';
 import chalk from 'chalk';
@@ -138,8 +139,16 @@ export default class Logger {
       return;
     }
 
+    this._handled = {};
+
     this.levels
-      .filter((item, i) => i < options.logLevel)
+      .filter((item, i) => {
+        const handle = (i < options.logLevel);
+
+        this._handled[i] = handle;
+
+        return handle;
+      })
       .forEach(level => gulplog.on(level, (...args) => {
         logConsole[level === 'error' ? 'error' : 'info'](...[this.prefix].concat(args));
       }));
@@ -150,16 +159,26 @@ export default class Logger {
    * @param {node.stream.Readable} stream The stream to pipe.
    */
   static pipeLastLine(stream) {
+    let loggedBefore = false;
+
     stream
       .on('data', d => {
         const lines = d.toString().split('\n').filter(l => l.trim() !== '');
 
-        process.stdout.clearLine();
-        process.stdout.write(`\r${Logger.prefix} ${lines[lines.length - 1]}`);
+        if (loggedBefore && this._handled[2]) {
+          readline.moveCursor(process.stdout, 0, -1);
+          readline.clearLine(process.stdout);
+        }
+
+        Logger.info(lines[lines.length - 1]);
+        loggedBefore = true;
       })
       .on('end', () => {
-        process.stdout.clearLine();
-        process.stdout.write('\r');
+        if (loggedBefore && this._handled[3]) {
+          readline.moveCursor(process.stdout, 0, -1);
+          readline.clearLine(process.stdout);
+          readline.cursorTo(process.stdout, 0);
+        }
       });
   }
 
