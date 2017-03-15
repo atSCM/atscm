@@ -124,7 +124,11 @@ export default class Logger {
     gulplog.error(...message);
   }
 
-  static get levels() {
+  /**
+   * The log types available.
+   * @type {String[]}
+   */
+  static get types() {
     return ['error', 'warn', 'info', 'debug'];
   }
 
@@ -139,13 +143,17 @@ export default class Logger {
       return;
     }
 
+    /**
+     * The log types handled.
+     * @type {Map<String, Boolean>}
+     */
     this._handled = {};
 
-    this.levels
+    this.types
       .filter((item, i) => {
         const handle = (i < options.logLevel);
 
-        this._handled[i] = handle;
+        this._handled[item] = handle;
 
         return handle;
       })
@@ -165,7 +173,7 @@ export default class Logger {
       .on('data', d => {
         const lines = d.toString().split('\n').filter(l => l.trim() !== '');
 
-        if (loggedBefore && this._handled[2]) {
+        if (loggedBefore && this._handled.info) {
           readline.moveCursor(process.stdout, 0, -1);
           readline.clearLine(process.stdout);
         }
@@ -174,7 +182,7 @@ export default class Logger {
         loggedBefore = true;
       })
       .on('end', () => {
-        if (loggedBefore && this._handled[3]) {
+        if (loggedBefore && this._handled.info) {
           readline.moveCursor(process.stdout, 0, -1);
           readline.clearLine(process.stdout);
           readline.cursorTo(process.stdout, 0);
