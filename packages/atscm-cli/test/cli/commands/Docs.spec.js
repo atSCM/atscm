@@ -22,7 +22,7 @@ describe('DocsCommand', function() {
             modulePath: '/path/to/package.json',
           },
         }),
-        'to equal', '/path/docs/api/index.html'
+        'to equal', join('/path/docs/api/index.html')
       );
     });
 
@@ -49,7 +49,7 @@ describe('DocsCommand', function() {
       });
 
       expect(openSpy.calledOnce, 'to be', true);
-      expect(openSpy.lastCall.args[0], 'to equal', '/path/docs/api/index.html');
+      expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
       expect(openSpy.lastCall.args[1], 'to be undefined');
     });
 
@@ -77,7 +77,7 @@ describe('DocsCommand', function() {
       });
 
       expect(openSpy.calledOnce, 'to be', true);
-      expect(openSpy.lastCall.args[0], 'to equal', '/path/docs/api/index.html');
+      expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
       expect(openSpy.lastCall.args[1], 'to equal', 'custombrowser');
     });
   });
