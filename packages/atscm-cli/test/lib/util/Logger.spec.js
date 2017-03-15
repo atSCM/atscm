@@ -60,7 +60,6 @@ describe('Logger', function() {
   let errorSpy;
 
   beforeEach(function() {
-    stub(process.stdout, 'write');
     debugSpy = stub(gulplog, 'debug');
     infoSpy = stub(gulplog, 'info');
     warnSpy = stub(gulplog, 'warn');
@@ -68,7 +67,6 @@ describe('Logger', function() {
   });
 
   afterEach(function() {
-    process.stdout.write.restore();
     gulplog.debug.restore();
     gulplog.info.restore();
     gulplog.warn.restore();
@@ -189,10 +187,9 @@ describe('Logger', function() {
       Logger.pipeLastLine(stream);
 
       stream.on('end', () => {
-        const a = process.stdout.write.args;
-
-        expect(a[a.length - 5][0], 'to match', /last 1$/);
-        expect(a[a.length - 3][0], 'to match', /last 2$/);
+        expect(gulplog.info.callCount, 'to be', 2);
+        expect(gulplog.info.getCall(0).args[0], 'to match', /last 1$/);
+        expect(gulplog.info.lastCall.args[0], 'to match', /last 2$/);
 
         done();
       });
@@ -208,10 +205,9 @@ describe('Logger', function() {
       Logger.pipeLastLine(stream);
 
       stream.on('end', () => {
-        const a = process.stdout.write.args;
-
-        expect(a[a.length - 5][0], 'to match', /last 1$/);
-        expect(a[a.length - 3][0], 'to match', /last 2$/);
+        expect(gulplog.info.callCount, 'to be', 2);
+        expect(gulplog.info.getCall(0).args[0], 'to match', /last 1$/);
+        expect(gulplog.info.lastCall.args[0], 'to match', /last 2$/);
 
         done();
       });
