@@ -11,6 +11,10 @@ import Logger from '../../../src/lib/util/Logger';
 describe('LogFormat', function() {
   const text = 'Test string';
 
+  const orgEnabled = Logger.colors.supportsColor;
+  before(() => (Logger.colors.enabled = true));
+  after(() => (Logger.colors.enabled = orgEnabled));
+
   function expectStyle(styledText, style) {
     expect(styledText, 'to equal', `${style.open}${text}${style.close}`);
   }
