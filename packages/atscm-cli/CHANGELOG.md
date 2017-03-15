@@ -1,3 +1,15 @@
+<a name="0.2.2"></a>
+## [0.2.2](https://github.com/atSCM/atscm-cli/compare/0.2.0-alpha.1...v0.2.2) (2017-03-15)
+
+
+### Bug Fixes
+
+* **Logger:** Print as single message ([a251179](https://github.com/atSCM/atscm-cli/commit/a251179))
+* **Logger:** Use windows-friendly stdout API ([2693bbd](https://github.com/atSCM/atscm-cli/commit/2693bbd))
+* **test:** Use windows-friendly paths ([3ff7018](https://github.com/atSCM/atscm-cli/commit/3ff7018))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/atSCM/atscm-cli/compare/0.2.0-alpha.1...v0.2.1) (2017-03-13)
 
