@@ -106,7 +106,7 @@ export default class NodeStream extends Stream {
 
             if (retry && retry === this.maxRetries) {
               reject(
-                new Error(`Browsing ${nodeId.toString()} failed: Timeout (${promise.retry}x)`)
+                new Error(`Browsing ${nodeId.toString()} failed: Timeout (${tryNo}x)`)
               );
             } else {
               this.browseNode(nodeId, (tryNo + 1))
