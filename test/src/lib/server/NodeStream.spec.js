@@ -72,17 +72,13 @@ describe('NodeStream', function() {
       after(() => ClientSession.prototype.browse.restore());
 
       it('should forward errors', function(done) {
-        const stream = new NodeStream(testNodes);
-        stream.once('session-open', () => {
-          Session.close(stream.session);
-        });
-
-        stream.on('data', () => {}) // unpause readable stream
+        (new NodeStream(testNodes))
           .on('error', err => {
             expect(err, 'to have message', /Browse error/);
 
             done();
-          });
+          })
+          .on('data', () => {}); // unpause readable stream
       });
     });
 
