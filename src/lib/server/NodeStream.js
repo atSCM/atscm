@@ -102,7 +102,7 @@ export default class NodeStream extends Stream {
         if (err) {
           if (err.message === 'Transaction has timed out') {
             const tryNo = retry || 1;
-            Logger.warn(`Timeout while browsing. Retrying... (${tryNo})`, nodeId.toString());
+            Logger.debug(`Timeout while browsing. Retrying... (${tryNo})`, nodeId.toString());
 
             if (retry && retry === this.maxRetries) {
               reject(
