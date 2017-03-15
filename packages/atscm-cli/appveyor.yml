@@ -5,8 +5,11 @@ environment:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  # install modules
+  # Install modules
   - npm install
+
+  # Needed for proper mocha test results
+  - npm install mocha-appveyor-reporter
 
 # Post-install test scripts.
 test_script:
@@ -19,7 +22,7 @@ test_script:
 
   # Run tests
   - set NODE_ENV=TEST
-  - node_modules/.bin/nyc npm test
+  - node_modules/.bin/nyc npm test -- --reporter mocha-appveyor-reporter
   - node_modules/.bin/nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
 
 # Don't actually build.
