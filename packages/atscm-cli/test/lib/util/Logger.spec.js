@@ -125,11 +125,11 @@ describe('Logger', function() {
   /** @test {Logger.applyOptions} */
   describe('.applyOptions', function() {
     afterEach(() => {
-      Logger.levels.forEach(name => gulplog.removeAllListeners(name));
+      Logger.types.forEach(name => gulplog.removeAllListeners(name));
     });
 
     function expectListeners(levels) {
-      Logger.levels.forEach((name, i) => {
+      Logger.types.forEach((name, i) => {
         expect(gulplog.listenerCount(name), 'to equal', levels[i] ? 1 : 0);
       });
     }
