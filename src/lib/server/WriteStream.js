@@ -1,3 +1,5 @@
+import Logger from 'gulplog';
+import { StatusCodes } from 'node-opcua';
 import Stream from './Stream';
 
 /**
@@ -17,9 +19,20 @@ export default class WriteStream extends Stream {
         dataType: file.dataType,
         arrayType: file.arrayType,
         value: file.value,
-      }, err => {
+      }, (err, statusCode) => {
         if (err) {
           callback(new Error(`Error writing node ${file.nodeId.toString()}: ${err.message}`));
+        } else if (statusCode.value !== 0) {
+          if (statusCode === StatusCodes.BadUserAccessDenied) {
+            Logger.warn(`Error writing node ${
+              file.nodeId.toString()
+            }: Make sure it is not open in atvise builder`);
+            callback(null, file);
+          } else {
+            callback(
+              new Error(`Error writing node ${file.nodeId.toString()}: ${statusCode.description}`)
+            );
+          }
         } else {
           callback(null, file);
         }
