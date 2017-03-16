@@ -26,7 +26,7 @@ export default class WriteStream extends Stream {
           if (statusCode === StatusCodes.BadUserAccessDenied) {
             Logger.warn(`Error writing node ${
               file.nodeId.toString()
-            }: Make sure it is not open in atvise builder`);
+            }: Make sure it is not opened in atvise builder`);
             callback(null, file);
           } else {
             callback(
