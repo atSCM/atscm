@@ -11,8 +11,8 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
    * @emits {Session} Emits an `session-open` event once the session is open, passing the Session
    * instance.
    */
-  constructor() {
-    super();
+  constructor(options = {}) {
+    super(options);
 
     Session.create()
       .then(session => (this.session = session))
