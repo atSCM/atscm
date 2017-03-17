@@ -55,7 +55,7 @@ describe('AtviseFile', function() {
     {
       name: 'should store html help documents with a ".help.html" extension',
       nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Test.en'),
-      dataType: DataType.XmlElement,
+      dataType: DataType.ByteString,
       typeDefinition: new NodeId('VariableTypes.ATVISE.HtmlHelp'),
       arrayType: VariantArrayType.Scalar,
       filePath: 'AGENT/DISPLAYS/Test/en.help.html',

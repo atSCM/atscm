@@ -32,7 +32,7 @@ class AtviseResourceType extends AtviseType {
  * @type {AtviseType[]}
  */
 const AtviseTypes = [
-  new AtviseType('HtmlHelp', 'help', DataType.XmlElement, 'html'),
+  new AtviseType('HtmlHelp', 'help', DataType.ByteString, 'html'),
   new AtviseType('QuickDynamic', 'qd', DataType.XmlElement),
   new AtviseType('ScriptCode', 'script', DataType.XmlElement),
   new AtviseType('Display', 'display', DataType.XmlElement),
