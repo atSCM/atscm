@@ -283,7 +283,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, '\r\n'));
         '.json': '{ "dependencies": ["path/to/dep.js"] }',
       }, `<svg>
  <rect/>
- <script src="path/to/dep.js"/>
+ <script xlink:href="path/to/dep.js"/>
 </svg>`);
     });
 

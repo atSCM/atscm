@@ -145,7 +145,7 @@ export default class DisplayTransformer extends XMLTransformer {
         result.svg.script = [];
         if (config.dependencies) {
           config.dependencies.forEach(p => result.svg.script.push({
-            $: { src: p },
+            $: { 'xlink:href': p },
           }));
         }
 
