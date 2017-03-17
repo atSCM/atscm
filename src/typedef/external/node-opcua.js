@@ -37,3 +37,7 @@
 /**
  * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js
  */
+
+/**
+ * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/lib/raw_status_codes.js
+ */
