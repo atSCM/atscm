@@ -99,7 +99,7 @@ export default class QueueStream extends Stream {
 
   /**
    * The function to call when a chunk is ready to be processed. **Must be overridden by all
-   * subclasses**
+   * subclasses.**
    * @param {*} chunk The chunk to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors Call this function to handle errors and bad status codes. When no error occured
