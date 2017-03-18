@@ -38,8 +38,10 @@ export default class PushStream {
     )
       .pipe(writeStream)
       .on('end', () => {
-        readline.cursorTo(process.stdout, 0);
-        readline.clearLine(process.stdout);
+        if (Logger.listenerCount('info') > 0) {
+          readline.cursorTo(process.stdout, 0);
+          readline.clearLine(process.stdout);
+        }
 
         clearInterval(printProgress);
       });

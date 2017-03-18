@@ -40,8 +40,10 @@ export default class PullStream {
       .pipe(dest('./src'))
       .on('data', () => {}) // Unpipe readable stream
       .on('end', () => {
-        readline.clearLine(process.stdout, 0);
-        readline.cursorTo(process.stdout, 0);
+        if (Logger.listenerCount('info') > 0) {
+          readline.clearLine(process.stdout, 0);
+          readline.cursorTo(process.stdout, 0);
+        }
 
         clearInterval(printProgress);
       });
