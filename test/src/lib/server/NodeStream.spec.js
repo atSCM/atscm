@@ -1,10 +1,14 @@
-import { ClientSession, resolveNodeId } from 'node-opcua';
-import { stub, spy } from 'sinon';
+import { resolveNodeId, StatusCodes, NodeClass } from 'node-opcua';
+import { spy } from 'sinon';
 import expect from '../../../expect';
 import NodeStream from '../../../../src/lib/server/NodeStream';
-import Stream from '../../../../src/lib/server/Stream';
-import Session from '../../../../src/lib/server/Session';
 import NodeId from '../../../../src/lib/server/NodeId';
+
+class StubNodeStream extends NodeStream {
+  _transform(chunk, enc, callback) {
+    callback(null, chunk);
+  }
+}
 
 /** @test {NodeStream} */
 describe('NodeStream', function() {
@@ -12,183 +16,178 @@ describe('NodeStream', function() {
 
   /** @test {NodeStream#constructor} */
   describe('#constructor', function() {
-    let stream;
-
-    it('should fail without nodes', function() {
-      expect(() => (stream = new NodeStream()), 'to throw', 'nodes is required');
+    it('should fail without nodesToBrowse', function() {
+      expect(() => new NodeStream(), 'to throw', /nodesToBrowse is required/);
     });
 
-    it('should return a server Stream', function() {
-      expect((stream = new NodeStream(testNodes)), 'to be a', Stream);
+    it('should throw with invalid ignoreNodes', function() {
+      expect(() => new NodeStream(testNodes, { ignoreNodes: 'test' }),
+        'to throw', /ignoreNodes must be an array/);
     });
 
-    it('should store "maxRetries" option', function() {
-      expect((stream = new NodeStream(testNodes, { maxRetries: 13 })).maxRetries, 'to equal', 13);
+    it('should store "recursive" option', function() {
+      expect((new StubNodeStream(testNodes, { recursive: false })).recursive, 'to be', false);
     });
 
-    it('should set "recursive" to true by default', function() {
-      expect((stream = new NodeStream(testNodes)).recursive, 'to be true');
+    it('should create ignoredRexExp', function() {
+      expect((new StubNodeStream(testNodes, { ignoreNodes: testNodes })).ignoredRegExp,
+        'to equal', /^(ns=1;s=AGENT.DISPLAYS)/);
     });
 
-    it('should handle "recursive" option', function() {
-      expect((stream = new NodeStream(testNodes, { recursive: false })).recursive, 'to be false');
-    });
-
-    it('should throw if options.ignoreNodes is not an array', function() {
-      expect(() => (stream = new NodeStream(testNodes, { ignoreNodes: 'asdf' })), 'to throw',
-        'ignoreNodes must be an array of node ids');
-    });
-
-    it('should handle "ignoreNodes" option', function() {
-      expect((stream = new NodeStream(testNodes, { ignoreNodes: [new NodeId('TESTNODE')] }))
-        .ignoredRegExp, 'to equal', new RegExp('^(ns=1;s=TESTNODE)'));
+    it('should listen to drained events', function() {
+      expect((new StubNodeStream(testNodes)).listenerCount('drained'), 'to equal', 1);
     });
   });
 
-  /** @test {NodeStream#browseNodes} */
-  describe('#browseNodes', function() {
-    it('should be called for the specified nodes', function(done) {
-      const stream = new NodeStream(testNodes);
-      stub(stream, 'browseNodes', () => Promise.resolve(true));
+  /** @test {NodeStream#processErrorMessage} */
+  describe('#processErrorMessage', function() {
+    const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+    expect(NodeStream.prototype.processErrorMessage(nodeId),
+      'to contain', nodeId.toString());
+  });
 
-      stream.on('data', () => {}) // unpause readable stream
-        .on('end', () => {
-          expect(stream.browseNodes.calledOnce, 'to be', true);
-          expect(stream.browseNodes.lastCall.args, 'to equal', [testNodes]);
-
-          done();
+  /** @test {NodeStream#processChunk} */
+  describe('#processChunk', function() {
+    it('should forward browse errors', function() {
+      const stream = new NodeStream(testNodes)
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(new Error('Browse error'));
+          };
         });
+
+      return expect(stream, 'to error with', /Browse error/);
     });
 
-    context('when browsing fails', function() {
-      before(() => {
-        stub(ClientSession.prototype, 'browse', (node, cb) => {
-          setTimeout(() => {
-            cb(new Error('Browse error'));
-          }, 50);
+    it('should emit error without results', function() {
+      const stream = new NodeStream(testNodes)
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, null);
+          };
         });
-      });
 
-      after(() => ClientSession.prototype.browse.restore());
-
-      it('should forward errors', function(done) {
-        (new NodeStream(testNodes))
-          .on('error', err => {
-            expect(err, 'to have message', /Browse error/);
-
-            done();
-          })
-          .on('data', () => {}); // unpause readable stream
-      });
+      return expect(stream, 'to error with', /No results/);
     });
 
-    context('when browsing returns empty results', function() {
-      before(() => {
-        stub(ClientSession.prototype, 'browse', (node, cb) => {
-          setTimeout(() => {
-            cb(null, []);
-          }, 50);
-        });
-      });
-
-      after(() => ClientSession.prototype.browse.restore());
-
-      it('should emit error', function(done) {
-        const stream = new NodeStream(testNodes);
-        stream.once('session-open', () => {
-          Session.close(stream.session);
+    it('should emit error with empty results', function() {
+      const stream = new NodeStream(testNodes)
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, []);
+          };
         });
 
-        stream.on('data', () => {}) // unpause readable stream
-          .on('error', err => {
-            expect(err, 'to have message', /No results/);
-
-            done();
-          });
-      });
+      return expect(stream, 'to error with', /No results/);
     });
 
-    context('when browsing returns status codes > 0', function() {
-      before(() => {
-        stub(ClientSession.prototype, 'browse', (node, cb) => {
-          cb(null, [{ statusCode: 13 }]);
-        });
-      });
-
-      after(() => ClientSession.prototype.browse.restore());
-
-      it('should emit error', function(done) {
-        const stream = new NodeStream(testNodes);
-
-        stream.on('data', () => {}) // unpause readable stream
-          .on('error', err => {
-            expect(err, 'to have message', /failed: Code 13/);
-
-            done();
-          });
-      });
-    });
-
-    context('when browsing works', function() {
-      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
-      let firstCall = true;
-
-      before(() => {
-        stub(ClientSession.prototype, 'browse', (node, cb) => {
-          if (firstCall) {
-            cb(null, [{
-              references: [{ nodeClass: { value: 2 }, nodeId }],
+    it('should not push parent nodes', function() {
+      const stream = new NodeStream(testNodes, { recursive: false })
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, [{
+              statusCode: StatusCodes.Good,
+              references: [
+                { nodeId: new NodeId('ns=1;s=AGENT') },
+              ],
             }]);
-            firstCall = false;
-          } else {
-            cb(null, [{ references: [] }]);
-          }
+          };
         });
-      });
 
-      after(() => ClientSession.prototype.browse.restore());
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0);
+    });
 
-      beforeEach(() => (firstCall = true));
+    it('should not push ignored nodes', function() {
+      const stream = new NodeStream(testNodes, {
+        recursive: false,
+        ignoreNodes: [new NodeId('ns=1;s=AGENT.DISPLAYS.Main')],
+      })
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, [{
+              statusCode: StatusCodes.Good,
+              references: [
+                { nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main') },
+              ],
+            }]);
+          };
+        });
 
-      it('should push browsed variable nodes', function(done) {
-        const stream = new NodeStream(testNodes);
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0);
+    });
 
-        stream.on('data', desc => {
-          expect(desc.nodeId, 'to equal', nodeId);
-        })
-          .on('end', () => done());
-      });
+    it('should not push discovered object nodes', function() {
+      const stream = new NodeStream(testNodes, { recursive: false })
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, [{
+              statusCode: StatusCodes.Good,
+              references: [
+                {
+                  nodeClass: NodeClass.Object,
+                  nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+                },
+              ],
+            }]);
+          };
+        });
 
-      it('should be called only once when recursive is set to false', function(done) {
-        const stream = new NodeStream(testNodes, { recursive: false });
-        spy(stream, 'browseNode');
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0);
+    });
 
-        stream
-          .on('data', () => {}) // unpause readable stream
-          .on('end', () => {
-            expect(stream.browseNode, 'was called times', 1);
-            expect(stream.browseNode, 'was called with', testNodes[0]);
+    it('should push discovered variable nodes', function() {
+      const stream = new NodeStream(testNodes, { recursive: false })
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, [{
+              statusCode: StatusCodes.Good,
+              references: [
+                {
+                  nodeClass: NodeClass.Variable,
+                  nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+                },
+              ],
+            }]);
+          };
+        });
 
-            done();
-          });
-      });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 1);
+    });
 
-      it('should be called for all browsed nodes if recursive is set', function(done) {
-        const stream = new NodeStream(testNodes, { recursive: true });
-        spy(stream, 'browseNode');
-        const nodes = [];
+    it('should write discovered nodes if recursive', function() {
+      let alreadyCalled = false;
+      const stream = new NodeStream(testNodes, { recursive: true })
+        .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            if (alreadyCalled) {
+              callback(null, [{
+                statusCode: StatusCodes.Good,
+                references: [],
+              }]);
+            } else {
+              alreadyCalled = true;
 
-        stream
-          .on('data', desc => nodes.push(desc.nodeId)) // unpause readable stream
-          .on('end', () => {
-            expect(stream.browseNode.callCount, 'to be greater than', 1);
-            expect(stream.browseNode, 'to have calls satisfying',
-              testNodes.concat(nodes).map(n => ({ args: [n] }))
-            );
+              callback(null, [{
+                statusCode: StatusCodes.Good,
+                references: [
+                  {
+                    nodeClass: NodeClass.Variable,
+                    nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+                  },
+                  {
+                    nodeClass: NodeClass.Object,
+                    nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.MAIN'),
+                  },
+                ],
+              }]);
+            }
+          };
+        });
 
-            done();
-          });
-      });
+      spy(stream, 'write');
+
+      return expect(stream, 'to yield objects satisfying', 'to have length', 1)
+        .then(() => expect(stream.write, 'was called times', 2));
     });
   });
 });

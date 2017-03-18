@@ -1,41 +1,33 @@
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
 import Logger from 'gulplog';
+import QueueStream from './QueueStream';
 import Stream from './Stream';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
 
 /**
- * An object transform stream that browses atvise server and pushes the resulting
- * {@link node-opcua~ReferenceDescription}s.
+ * A stream that browses the nodes specified and (if *recursive* option is set) it's child nodes.
  */
-export default class NodeStream extends Stream {
+export default class NodeStream extends QueueStream {
 
   /**
-   * Creates a new NodesStream based on the nodes to start browsing at and some options.
-   * @param {NodeId[]} nodesToBrowse The nodes to start browsing at.
+   * Creates a new NodeStream based on the nodes to start browsing with and some options.
+   * @param {NodeId[]} nodesToBrowse The nodes to start browsing with.
    * @param {Object} [options] The options to use.
+   * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
    * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
    * to ignore.
-   * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
-   * @param {Number} [options.maxRetries=3] How often failing browse requests should be retried.
-   * implemented yet*).
    */
-  constructor(nodesToBrowse, options) {
-    if (!nodesToBrowse || !(nodesToBrowse instanceof Array)) {
-      throw new Error('nodes is required');
+  constructor(nodesToBrowse, options = {}) {
+    if (!nodesToBrowse || !(nodesToBrowse instanceof Array) || nodesToBrowse.length === 0) {
+      throw new Error('nodesToBrowse is required');
     }
 
-    if (options && options.ignoreNodes !== undefined && !(options.ignoreNodes instanceof Array)) {
+    if (options && options.ignoreNodes && !(options.ignoreNodes instanceof Array)) {
       throw new Error('ignoreNodes must be an array of node ids');
     }
 
-    super();
-
-    this.once('session-open',
-      () => this.browseNodes(nodesToBrowse)
-        .then(() => this.end())
-        .catch(err => this.emit('error', err))
-      );
+    super(options);
 
     // Handle options
     /**
@@ -43,31 +35,13 @@ export default class NodeStream extends Stream {
      * @type {Boolean}
      */
     this.recursive = true;
+    if (options.recursive !== undefined) {
+      this.recursive = options.recursive;
+    }
 
-    /**
-     * How often failing browse requests should be retried.
-     * @type {Number}
-     */
-    this.maxRetries = 3;
-
-    /**
-     * An array of {@link NodeId}s to ignore.
-     * @type {NodeId[]}
-     */
-    this.ignoreNodes = Project.ignoreNodes;
-
-    if (options) {
-      if (options.recursive !== undefined) {
-        this.recursive = options.recursive;
-      }
-
-      if (options.ignoreNodes !== undefined) {
-        this.ignoreNodes = options.ignoreNodes;
-      }
-
-      if (options.maxRetries !== undefined) {
-        this.maxRetries = options.maxRetries;
-      }
+    let ignoreNodes = Project.ignoreNodes;
+    if (options.ignoreNodes !== undefined) {
+      ignoreNodes = options.ignoreNodes;
     }
 
     /**
@@ -80,88 +54,73 @@ export default class NodeStream extends Stream {
      * A regular expression matching all node ids specified in {@link NodeStream#ignoreNodes}
      * @type {RegExp}
      */
-    this.ignoredRegExp = new RegExp(`^(${this.ignoreNodes.map(n => n.toString()).join('|')})`);
-  }
+    this.ignoredRegExp = new RegExp(`^(${ignoreNodes.map(n => n.toString()).join('|')})`);
 
-  /**
-   * Browses the given node.
-   * @param {NodeId} nodeId The node to browse.
-   * @param {Number} [retry=0] How often browsing was retried so far. **Do pass a value for this
-   * parameter, it is only meant be used in recursion**
-   * @return {Promise<NodeId[], Error>} Fulfilled with the next nodes to browse or rejected with the
-   * error that occurred while browsing.
-   */
-  browseNode(nodeId, retry) {
-    const promise = new Promise((resolve, reject) => {
-      this.session.browse({
-        nodeId,
-        browseDirection: BrowseService.BrowseDirection.Forward,
-        includeSubtypes: true,
-        resultMask: this._resultMask,
-      }, (err, results) => {
-        if (err) {
-          if (err.message === 'Transaction has timed out') {
-            const tryNo = retry || 1;
-            Logger.debug(`Timeout while browsing. Retrying... (${tryNo})`, nodeId.toString());
+    // Write nodes to read
+    nodesToBrowse.forEach(nodeId => this.write(nodeId));
 
-            if (retry && retry === this.maxRetries) {
-              reject(
-                new Error(`Browsing ${nodeId.toString()} failed: Timeout (${tryNo}x)`)
-              );
-            } else {
-              this.browseNode(nodeId, (tryNo + 1))
-                .then(resolve, reject);
-            }
-          } else {
-            reject(new Error(`Browsing ${nodeId.toString()} failed: ${err.message}`));
-          }
-        } else if (!results || results.length === 0) {
-          reject(new Error(`Browsing ${nodeId.toString()} failed: No results`));
-        } else if (results[0].statusCode > 0) {
-          reject(new Error(`Browsing ${nodeId.toString()} failed: Code ${results[0].statusCode}`));
-        } else {
-          const browseNext = results[0].references
-            // Remove parent nodes
-            .filter(ref => ref.nodeId.value.toString().split(nodeId.value).length > 1)
-            // TODO: Print ignored nodes (debug level)
-            .filter(ref => !(ref.nodeId.toString().match(this.ignoredRegExp)))
-
-            // Remove variable nodes
-            .map(ref => {
-              // Push all variable ids
-              if (ref.nodeClass.value === NodeClass.Variable.value) {
-                // "Cast" ref.nodeId to NodeId
-                Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
-
-                this.push(ref);
-              }
-
-              return ref.nodeId;
-            });
-
-          resolve(browseNext);
-        }
-      });
+    // End once drained
+    this.once('drained', () => {
+      this.end();
     });
-
-    if (this.recursive && retry === undefined) {
-      return promise.then(childObjectNodes => this.browseNodes(childObjectNodes));
-    }
-
-    return promise;
   }
 
   /**
-   * Browses the given nodes.
-   * @param {NodeId[]} nodes The nodes to browse.
-   * @return {Promise<?NodeId[], Error>} Rejected with the error that occurred, otherwise fulfilled
-   * with the next nodes to browse.
-   * If {@link NodeStream#recursive} is set to `true` this method is called recursively.
+   * Returns an error message specifically for the given nodeId.
+   * @param {NodeId} nodeId The node id to get the error message for.
+   * @return {String} The specific error message.
    */
-  browseNodes(nodes) {
-    return Promise.all(
-      nodes.map(node => this.browseNode(node))
-    );
+  processErrorMessage(nodeId) {
+    return `Error browsing ${nodeId.toString()}`;
+  }
+
+  /**
+   * Returns a {ReadStream.ReadResult} for the given reference description.
+   * @param {NodeId} nodeId The node id to browse.
+   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
+   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   */
+  processChunk(nodeId, handleErrors) {
+    this.session.browse({
+      nodeId,
+      browseDirection: BrowseService.BrowseDirection.Forward,
+      includeSubtypes: true,
+      resultMask: this._resultMask,
+    }, (err, results) => {
+      if (!err && (!results || results.length === 0)) {
+        handleErrors(new Error('No results'));
+      } else {
+        handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
+          Promise.all(
+            results[0].references
+            // Remove parent nodes
+              .filter(ref => ref.nodeId.value.toString().split(nodeId.value).length > 1)
+              // Ignore specified nodes
+              // TODO: Print ignored nodes (debug level)
+              .filter(ref => !(ref.nodeId.toString().match(this.ignoredRegExp)))
+              // Push variable nodes, recurse
+              .map(ref => {
+                // Push all variable ids
+                if (ref.nodeClass.value === NodeClass.Variable.value) {
+                  // "Cast" ref.nodeId to NodeId
+                  Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
+
+                  this.push(ref);
+                }
+
+                if (this.recursive) {
+                  return new Promise((resolve) => {
+                    this.write(ref.nodeId, null, resolve);
+                  });
+                }
+
+                return Promise.resolve();
+              })
+          )
+            .then(done);
+        });
+      }
+    });
   }
 
 }
