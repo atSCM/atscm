@@ -59,10 +59,6 @@ export default class NodeId extends OpcNodeId {
     let separator = '.';
     const value = path.split(sep)
       .reduce((result, current) => {
-        if (!result) {
-          return current;
-        }
-
         const next = `${result}${separator}${current}`;
 
         if (current === 'RESOURCES') {
