@@ -13,17 +13,13 @@ export default class PullStream {
   /**
    * Creates a new PullStream based on a stream that writes {@link ReadStream.ReadResult} which may
    * be an instance of {@link ReadStream}.
-   * @param {Stream} readStream The stream to read from.
+   * @param {ReadStream} readStream The stream to read from.
    */
   constructor(readStream) {
-    let pulled = 0;
-
-    readStream
-      .on('data', () => pulled++);
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
     const printProgress = setInterval(() => {
-      Logger.info(`Pulled: ${pulled}`);
+      Logger.info(`Pulled: ${readStream.processed} (${readStream.opsPerSecond.toFixed(1)} ops/s)`);
 
       if (Logger.listenerCount('info') > 0) {
         readline.cursorTo(process.stdout, 0);
@@ -38,8 +34,7 @@ export default class PullStream {
       TransformDirection.FromDB
     )
       .pipe(dest('./src'))
-      .on('data', () => {}) // Unpipe readable stream
-      .on('end', () => {
+      .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.clearLine(process.stdout, 0);
           readline.cursorTo(process.stdout, 0);
