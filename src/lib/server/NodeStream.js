@@ -1,7 +1,5 @@
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
-import Logger from 'gulplog';
 import QueueStream from './QueueStream';
-import Stream from './Stream';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
 
