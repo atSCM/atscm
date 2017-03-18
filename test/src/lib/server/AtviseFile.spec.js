@@ -127,7 +127,7 @@ describe('AtviseFile', function() {
           },
         }), 'to equal', test.filePath);
       });
-    })
+    });
   });
 
   /** @test {AtviseFile.encodeValue} */
@@ -172,7 +172,7 @@ describe('AtviseFile', function() {
       expect(AtviseFile.decodeValue(buffer, DataType.ByteString), 'to equal', buffer);
     });
   });
-  
+
   /** @test {AtviseFile.normalizeMtime} */
   describe('.normalizeMtime', function() {
     it('should return original without milliseconds', function() {

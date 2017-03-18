@@ -27,10 +27,10 @@ const FailingClient = proxyquire('../../../../src/lib/server/Client', {
     OPCUAClient: class FailingCli extends OPCUAClient {
 
       connect(endpoint, callback) {
-        callback(new Error('Error message'))
+        callback(new Error('Error message'));
       }
 
-    }
+    },
   },
 }).default;
 
