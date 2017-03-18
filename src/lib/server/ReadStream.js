@@ -1,53 +1,45 @@
-import { StatusCodes } from 'node-opcua';
-import Stream from './Stream';
+import QueueStream from './QueueStream';
 
 /**
- * An object transform stream that reads the written {@link NodeId}s.
+ * A stream that reads atvise server nodes for the {@link node-opcua~ReferenceDescription}s passed.
  */
-export default class ReadStream extends Stream {
+export default class ReadStream extends QueueStream {
 
   /**
-   * Reads the given node.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description of the
-   * node to read from.
-   * @param {function(err: ?Error, data: ?ReadStream.ReadResult)} callback Called with the error
-   * that occurred, or the read results the read results otherwise.
+   * Returns an error message specifically for the given reference description.
+   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
+   * the error message for.
+   * @return {String} The specific error message.
    */
-  readNode(referenceDescription, callback) {
-    const nodeId = referenceDescription.nodeId;
-
-    this.session.read([{ nodeId }], (err, nodesToRead, results) => {
-      if (err) {
-        callback(new Error(`Reading ${nodeId.toString()} failed: ${err.message}`));
-      } else if (!results || results.length === 0) {
-        callback(new Error(`Reading ${nodeId.toString()} failed: No results`));
-      } else if (results[0].statusCode !== StatusCodes.Good) {
-        callback(new Error(`Reading ${nodeId.toString()} failed: Status ${results[0].statusCode}`));
-      } else {
-        callback(null, {
-          nodeId,
-          value: results[0].value,
-          referenceDescription,
-          mtime: results[0].sourceTimestamp,
-        });
-      }
-    });
+  processErrorMessage(referenceDescription) {
+    return `Error reading node ${referenceDescription.nodeId.toString()}`;
   }
 
   /**
-   * Calls {@link ReadStream#readNode} once the session is open for the passed node.
-   * @param {NodeId} nodeId The node to read.
-   * @param {String} enc The encoding used.
-   * @param {function(err: ?Error, data: ?Object)} callback Called by {@link ReadStream#readNode}
-   * once reading ended.
-   * @listens {Session} Listens to the `session-open`-event if the session is not open yet.
+   * Returns a {ReadStream.ReadResult} for the given reference description.
+   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to read
+   * the atvise server node for.
+   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
+   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  _transform(nodeId, enc, callback) {
-    if (this.session) {
-      this.readNode(nodeId, callback);
-    } else {
-      this.once('session-open', () => this.readNode(nodeId, callback));
-    }
+  processChunk(referenceDescription, handleErrors) {
+    const nodeId = referenceDescription.nodeId;
+
+    this.session.read([{ nodeId }], (err, nodesToRead, results) => {
+      if (!err && (!results || results.length === 0)) {
+        handleErrors(new Error('No results'));
+      } else {
+        handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
+          this.push({
+            nodeId,
+            value: results[0].value,
+            referenceDescription,
+            mtime: results[0].sourceTimestamp,
+          });
+          done();
+        });
+      }
+    });
   }
 
 }
