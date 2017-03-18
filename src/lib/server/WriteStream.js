@@ -1,60 +1,35 @@
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
 import Stream from './Stream';
+import QueueStream from './QueueStream';
 
-/**
- * A stream that writes all read {@link AtviseFile}s to atvise server.
- */
-export default class WriteStream extends Stream {
+export default class WriteStream extends QueueStream {
 
-  /**
-   * Writes a file to atvise server.
-   * @param {AtviseFile} file The file to write.
-   * @param {function(err: ?Error, file: ?AtviseFile)} callback Called with the error that occurred
-   * or the successfully written file.
-   */
-  writeFile(file, callback) {
+  processErrorMessage(file) {
+    return `Error writing ${file.nodeId.toString()}`;
+  }
+
+  processChunk(file, callback) {
     try {
       this.session.writeSingleNode(file.nodeId.toString(), {
         dataType: file.dataType,
         arrayType: file.arrayType,
         value: file.value,
       }, (err, statusCode) => {
-        if (err) {
-          callback(new Error(`Error writing node ${file.nodeId.toString()}: ${err.message}`));
-        } else if (statusCode.value !== 0) {
-          if (statusCode === StatusCodes.BadUserAccessDenied) {
-            Logger.warn(`Error writing node ${
-              file.nodeId.toString()
-            }: Make sure it is not opened in atvise builder`);
-            callback(null, file);
-          } else {
-            callback(
-              new Error(`Error writing node ${file.nodeId.toString()}: ${statusCode.description}`)
-            );
-          }
+        if (statusCode === StatusCodes.BadUserAccessDenied) {
+          Logger.warn(`Error writing node ${
+            file.nodeId.toString()
+          }: Make sure it is not opened in atvise builder`);
+          callback(err, StatusCodes.Good, done => done());
         } else {
-          callback(null, file);
+          callback(err, statusCode, done => {
+            this.push(file);
+            done();
+          });
         }
       });
     } catch (e) {
-      callback(new Error(`Error writing node ${file.nodeId.toString()}: ${e.message}`));
-    }
-  }
-
-  /**
-   * Calls {@link WriteStream#writeFile} once the session is open.
-   * @param {AtviseFile} file The file to write.
-   * @param {String} enc The encoding used.
-   * @param {function(err: ?Error, file: ?AtviseFile)} callback Called with the error that occurred
-   * or the successfully written file.
-   * @listens {Session} Listens to the `session-open`-event if the session is not open yet.
-   */
-  _transform(file, enc, callback) {
-    if (this.session) {
-      this.writeFile(file, callback);
-    } else {
-      this.once('session-open', () => this.writeFile(file, callback));
+      callback(e);
     }
   }
 
