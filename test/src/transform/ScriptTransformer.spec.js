@@ -162,7 +162,7 @@ describe('ScriptTransformer', function() {
           '.json': '{ }',
         }), 'to call the callback')
           .then(args => transformerHelper.expectFileContents([args[1]]))
-          .then(contents => expect(contents[0], 'to contain', `<metadata/>`));
+          .then(contents => expect(contents[0], 'to contain', '<metadata/>'));
       });
 
       it('should insert icon metadata', function() {
