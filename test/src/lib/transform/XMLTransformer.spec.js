@@ -1,6 +1,4 @@
 import expect from 'unexpected';
-
-import { EOL } from 'os';
 import { Builder } from 'xml2js';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
@@ -99,28 +97,30 @@ describe('XMLTransformer', function() {
     });
 
     it('should support forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB })).encodeContents({
-        svg: {
-          script: [
-            { _: XMLTransformer.forceCData('test()') },
-          ]
-        },
-      }, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to end with', `<svg>
-  <script><![CDATA[test()]]></script>
-</svg>`));
+      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB }))
+        .encodeContents({
+          svg: {
+            script: [
+              { _: XMLTransformer.forceCData('test()') },
+            ],
+          },
+        }, cb), 'to call the callback')
+          .then(args => expect(args[1], 'to end with', `<svg>
+    <script><![CDATA[test()]]></script>
+  </svg>`));
     });
 
     it('should not double escape forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromFilesystem })).encodeContents({
-        svg: {
-          script: [
-            { _: XMLTransformer.forceCData('console.log("<asdf>")') },
-          ],
-        },
-      }, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to contain',
-          '<script><![CDATA[console.log("<asdf>")]]></script>'));
+      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromFilesystem }))
+        .encodeContents({
+          svg: {
+            script: [
+              { _: XMLTransformer.forceCData('console.log("<asdf>")') },
+            ],
+          },
+        }, cb), 'to call the callback')
+          .then(args => expect(args[1], 'to contain',
+            '<script><![CDATA[console.log("<asdf>")]]></script>'));
     });
   });
 });

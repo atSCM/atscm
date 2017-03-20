@@ -9,16 +9,18 @@ import SplittingTransformer, {
   CombineFilesCache,
 } from '../../../../src/lib/transform/SplittingTransformer';
 
-class StubSplittingTransformer extends proxyquire('../../../../src/lib/transform/SplittingTransformer', {
-  '../server/AtviseFile': {
-    _esModule: true,
-    default: class StubAtviseFile extends AtviseFile {
-      static read(options) {
-        return Promise.resolve(options);
-      }
+class StubSplittingTransformer extends proxyquire(
+  '../../../../src/lib/transform/SplittingTransformer',
+  {
+    '../server/AtviseFile': {
+      _esModule: true,
+      default: class StubAtviseFile extends AtviseFile {
+        static read(options) {
+          return Promise.resolve(options);
+        }
+      },
     },
-  },
-}).default {
+  }).default {
   constructor(combineError) {
     super();
 
