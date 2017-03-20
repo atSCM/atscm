@@ -1,5 +1,5 @@
-import { stub, spy } from 'sinon';
-import { DataType, VariantArrayType, StatusCodes, resolveNodeId } from 'node-opcua';
+import { spy } from 'sinon';
+import { StatusCodes, resolveNodeId } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
