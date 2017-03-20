@@ -136,7 +136,7 @@ describe('AtviseFile', function() {
           $arrayType: VariantArrayType.Scalar,
         },
         referenceDescription: {
-          typeDefinition: new NodeId('VariableTypes.Project.CustomType')
+          typeDefinition: new NodeId('VariableTypes.Project.CustomType'),
         }
       }), 'to equal', 'AGENT/OBJECTS/CustomVar.var.bool');
     });
