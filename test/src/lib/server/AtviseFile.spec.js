@@ -128,6 +128,19 @@ describe('AtviseFile', function() {
         }), 'to equal', test.filePath);
       });
     });
+
+    it('should store custom typed variables with a ".var" extension', function() {
+      expect(AtviseFile.pathForReadResult({
+        nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
+        value: {
+          $dataType: DataType.Boolean,
+          $arrayType: VariantArrayType.Scalar,
+        },
+        referenceDescription: {
+          typeDefinition: new NodeId('VariableTypes.Project.CustomType')
+        }
+      }), 'to equal', 'AGENT/OBJECTS/CustomVar.var.bool');
+    });
   });
 
   /** @test {AtviseFile.encodeValue} */
@@ -246,7 +259,9 @@ describe('AtviseFile', function() {
         const file = new AtviseFile({ path: test.filePath });
 
         expect(() => file._getMetadata(), 'not to throw');
-        expect(file._dataType, 'to equal', test.dataType);
+        if (test.dataType) {
+          expect(file._dataType, 'to equal', test.dataType);
+        }
         expect(file._arrayType, 'to equal', test.arrayType);
         expect(file._typeDefinition, 'to equal', test.typeDefinition);
       });
