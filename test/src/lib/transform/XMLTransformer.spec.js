@@ -106,8 +106,8 @@ describe('XMLTransformer', function() {
           },
         }, cb), 'to call the callback')
           .then(args => expect(args[1], 'to end with', `<svg>
-    <script><![CDATA[test()]]></script>
-  </svg>`));
+  <script><![CDATA[test()]]></script>
+</svg>`));
     });
 
     it('should not double escape forced CDATA', function() {
