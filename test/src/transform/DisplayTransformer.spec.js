@@ -1,5 +1,4 @@
 import { Buffer } from 'buffer';
-import { EOL } from 'os';
 import File from 'vinyl';
 import { stub } from 'sinon';
 import expect from '../../expect';
