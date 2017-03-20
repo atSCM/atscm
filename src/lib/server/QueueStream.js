@@ -89,8 +89,9 @@ export default class QueueStream extends Stream {
 
   /**
    * The error message to use when processing a chunk fails. **Must be overridden by all
-   * subclasses**
-   * @param {*} chunk The chunk being processed
+   * subclasses!**
+   * @param {*} chunk The chunk being processed.
+   * @return {String} The error message to use.
    * @abstract
    */
   processErrorMessage(chunk) { // eslint-disable-line no-unused-vars
