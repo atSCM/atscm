@@ -1,6 +1,5 @@
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
-import Stream from './Stream';
 import QueueStream from './QueueStream';
 
 export default class WriteStream extends QueueStream {
