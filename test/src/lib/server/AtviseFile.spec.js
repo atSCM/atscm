@@ -206,6 +206,37 @@ describe('AtviseFile', function() {
     it('should fail without value', function() {
       expect(() => AtviseFile.fromReadResult({}), 'to throw', 'no value');
     });
+
+    it('should return a new instance with valid readResult', function() {
+      const nodeId = new NodeId('AGENT.DISPLAYS.Main');
+
+      expect(AtviseFile.fromReadResult({
+        nodeId,
+        value: { value: '<svg></svg>', $dataType: DataType.XmlElement },
+        referenceDescription: {
+          nodeId,
+          typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
+        },
+        mtime: new Date(),
+      }), 'to be a', AtviseFile);
+    });
+
+    it('should use undefined as mtime if not provided', function() {
+      const nodeId = new NodeId('AGENT.DISPLAYS.Main');
+
+      const file = AtviseFile.fromReadResult({
+        nodeId,
+        value: { value: '<svg></svg>', $dataType: DataType.XmlElement },
+        referenceDescription: {
+          nodeId,
+          typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
+        },
+        mtime: new Date(),
+      });
+
+      expect(file, 'to be a', AtviseFile);
+      expect(file.mtime, 'to be', undefined);
+    });
   });
 
   /** @test {AtviseFile#_getMetadata} */
