@@ -400,7 +400,7 @@ export default class AtviseFile extends File {
    * @return {Promise} Resolved with the new file of rejected with the error that occured while
    * trying to read it's path.
    */
-  static read(options) {
+  static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
         reject(new Error('options.path is required'));

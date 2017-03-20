@@ -385,4 +385,23 @@ describe('AtviseFile', function() {
       }).clone()._arrayType, 'to equal', VariantArrayType.Matrix);
     });
   });
+
+  /** @test {AtviseFile.read} */
+  describe('.read', function() {
+    it('should fail without path', function() {
+      return expect(AtviseFile.read(), 'to be rejected with', 'options.path is required');
+    });
+
+    it('should forward read errors', function() {
+      return expect(AtviseFile.read({
+        path: 'does/not/exist',
+      }), 'to be rejected with', /no such file/);
+    });
+
+    it('should return AtviseFile if read succeeds', function() {
+      return expect(AtviseFile.read({
+        path: `${__filename}`,
+      }), 'when fulfilled', 'to be a', AtviseFile);
+    });
+  });
 });
