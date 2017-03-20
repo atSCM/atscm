@@ -285,9 +285,26 @@ describe('AtviseFile', function() {
   describe('#isDisplay', function() {
     it('should return true for AtviseFiles with correct TypeDefinition', function() {
       expect((new AtviseFile({
-        path: 'test.display',
         _typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
       })).isDisplay, 'to be true');
+    });
+  });
+
+  /** @test {AtviseFile#isScript} */
+  describe('#isScript', function() {
+    it('should return true for AtviseFiles with correct TypeDefinition', function() {
+      expect((new AtviseFile({
+        _typeDefinition: new NodeId('VariableTypes.ATVISE.ScriptCode'),
+      })).isScript, 'to be true');
+    });
+  });
+
+  /** @test {AtviseFile#isQuickDynamic} */
+  describe('#isScript', function() {
+    it('should return true for AtviseFiles with correct TypeDefinition', function() {
+      expect((new AtviseFile({
+        _typeDefinition: new NodeId('VariableTypes.ATVISE.QuickDynamic'),
+      })).isQuickDynamic, 'to be true');
     });
   });
 
