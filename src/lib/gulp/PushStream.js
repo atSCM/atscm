@@ -15,14 +15,13 @@ export default class PushStream {
    * @param {Stream} srcStream The file stream to read from.
    */
   constructor(srcStream) {
-    let uploaded = 0;
-
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
-    const writeStream = new WriteStream()
-      .on('data', () => uploaded++);
+    const writeStream = new WriteStream();
 
     const printProgress = setInterval(() => {
-      Logger.info(`Pushed: ${uploaded}`);
+      Logger.info(
+        `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
+      );
 
       if (Logger.listenerCount('info') > 0) {
         readline.cursorTo(process.stdout, 0);
@@ -37,7 +36,7 @@ export default class PushStream {
       TransformDirection.FromFilesystem
     )
       .pipe(writeStream)
-      .on('end', () => {
+      .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.cursorTo(process.stdout, 0);
           readline.clearLine(process.stdout);
