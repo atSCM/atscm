@@ -1,9 +1,8 @@
-import expect from 'unexpected';
 import { stub } from 'sinon';
-
 import { Buffer } from 'buffer';
 import File from 'vinyl';
 import { DataType, VariantArrayType } from 'node-opcua';
+import expect from '../../../expect';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import AtviseTypes from '../../../../src/lib/server/Types';
 import NodeId from '../../../../src/lib/server/NodeId';
@@ -273,10 +272,23 @@ describe('AtviseFile', function() {
 
     it('should call _getMetadata if not present', function() {
       const file = new AtviseFile({ path: 'path' });
+      expect(file[`_${name}`], 'to be', undefined);
+
       const val = file[name];
 
       expect(val, 'to be', undefined);
       expect(AtviseFile.prototype._getMetadata.calledOnce, 'to be', true);
+    });
+
+    it('should return stored value if present', function() {
+      const value = 'value';
+      const file = new AtviseFile({
+        path: 'path',
+        [`_${name}`]: value,
+      });
+
+      expect(file[name], 'to be', value);
+      expect(AtviseFile.prototype._getMetadata, 'was not called');
     });
   }
 
