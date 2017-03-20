@@ -142,7 +142,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     const newOptions = options;
     newOptions.depth = options.depth === null ? null : options.depth - 1;
 
-    if (depth > 0) {
+    if (depth < 0) {
       return options.stylize(`[${this.constructor.name}]`, 'special');
     }
 
