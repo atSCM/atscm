@@ -175,11 +175,18 @@ describe('ScriptTransformer', function() {
       });
 
       it('should insert visible metadata', function() {
-        return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
-          '.json': '{ "visible": false }',
-        }), 'to call the callback')
-          .then(args => transformerHelper.expectFileContents([args[1]]))
-          .then(contents => expect(contents[0], 'to contain', '<visible>0</visible>'));
+        return Promise.all([
+          expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+            '.json': '{ "visible": false }',
+          }), 'to call the callback')
+            .then(args => transformerHelper.expectFileContents([args[1]]))
+            .then(contents => expect(contents[0], 'to contain', '<visible>0</visible>')),
+          expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+            '.json': '{ "visible": true }',
+          }), 'to call the callback')
+            .then(args => transformerHelper.expectFileContents([args[1]]))
+            .then(contents => expect(contents[0], 'to contain', '<visible>1</visible>')),
+          ]);
       });
 
       it('should insert title metadata', function() {
