@@ -142,6 +142,11 @@ describe('AtviseFile', function() {
       expect(AtviseFile.encodeValue({ value: now }, DataType.DateTime),
         'to equal', Buffer.from(now.getTime().toString()));
     });
+
+    it('should store JSON encoded bytes for UInt64 values', function() {
+      expect(AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64),
+        'to equal', Buffer.from('[1,2]'));
+    });
   });
 
   /** @test {AtviseFile.decodeValue} */
@@ -165,6 +170,7 @@ describe('AtviseFile', function() {
       [DataType.String, 'test', 'test'],
       [DataType.NodeId, 'ns=1;s=AGENT.DISPLAYS.Main', new NodeId('AGENT.DISPLAYS.Main')],
       [DataType.DateTime, now.getTime().toString(), now],
+      [DataType.UInt64, '[1,2]', [1, 2]],
     ].forEach(t => testDecoderForDataType(...t));
 
     it('should forward buffer without spection encoding', function() {
