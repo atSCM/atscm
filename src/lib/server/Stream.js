@@ -8,11 +8,21 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
 
   /**
    * Creates a new Stream and starts opening a new session to atvise server.
+   * @param {Object} [options] The options to use. See
+   * [through2 documentation](https://github.com/rvagg/through2#options) for details.
+   * @param {Boolean} [options.keepSessionAlive=false] If the ativse server session should be closed
+   * one the stream ends.
    * @emits {Session} Emits an `session-open` event once the session is open, passing the Session
    * instance.
    */
   constructor(options = {}) {
     super(options);
+
+    /**
+     * `true` if the stream's atvise server session should be kept alive once the stream ends.
+     * @type {Boolean}
+     */
+    this._keepSessionAlive = options.keepSessionAlive || false;
 
     Session.create()
       .then(session => (this.session = session))
@@ -25,7 +35,7 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
    * @param {function(err: ?Error, data: Object)} callback Called once the session is closed.
    */
   _flush(callback) {
-    if (this.session) {
+    if (this.session && !this._keepSessionAlive) {
       Session.close(this.session)
         .then(() => callback())
         .catch(err => callback(err));
