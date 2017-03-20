@@ -137,7 +137,7 @@ describe('AtviseFile', function() {
         },
         referenceDescription: {
           typeDefinition: new NodeId('VariableTypes.Project.CustomType'),
-        }
+        },
       }), 'to equal', 'AGENT/OBJECTS/CustomVar.var.bool');
     });
   });

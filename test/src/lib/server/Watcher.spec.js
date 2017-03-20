@@ -1,5 +1,4 @@
 import Emitter from 'events';
-import { Stream } from 'stream';
 import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
 import { resolveNodeId } from 'node-opcua';
