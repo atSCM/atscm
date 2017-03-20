@@ -200,6 +200,17 @@ describe('ScriptTransformer', function() {
       });
     });
 
+    context('when called on a script', function() {
+      it('should ignore metadata', function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
+          '.json': '{ "icon": { "type": "image/png", "content": "asdf" } }',
+        }), 'to call the callback')
+          .then(args => transformerHelper.expectFileContents([args[1]]))
+          .then(contents => expect(contents[0],
+            'not to contain', '<icon', '<metadata'));
+      });
+    });
+
     it('should insert parameters', function() {
       return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
         '.json': '{ "parameters": [{ "name": "paramname" }] }',
