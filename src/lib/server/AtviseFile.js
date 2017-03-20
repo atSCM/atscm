@@ -209,7 +209,10 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     let extensions = [];
-    extensions = this.relative.match(ExtensionRegExp)[1].split('.');
+    const m = this.relative.match(ExtensionRegExp);
+    if (m) {
+      extensions = m[1].split('.');
+    }
 
     // For split files, add the directory name extension
     const dirnameExts = this.dirname.split('.');
@@ -277,10 +280,6 @@ export default class AtviseFile extends File {
     if (!complete()) {
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
-    }
-
-    if (!complete()) {
-      Logger.warn('Unable to map', this.relative);
     }
   }
 

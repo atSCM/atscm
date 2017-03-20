@@ -264,6 +264,12 @@ describe('AtviseFile', function() {
         expect(file._typeDefinition, 'to equal', test.typeDefinition);
       });
     });
+
+    it('should use dirname extensions if filename has no extensions', function() {
+      const file = new AtviseFile({ path: 'dir.display/file' });
+      expect(() => file._getMetadata(), 'not to throw');
+      expect(file._typeDefinition, 'to equal', new NodeId('VariableTypes.ATVISE.Display'));
+    });
   });
 
   function testMetaGetter(name) {
