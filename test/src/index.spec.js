@@ -35,7 +35,7 @@ describe('atscm module', function() {
     expect(globalExports.PartialTransformer, 'to be', PartialTransformer);
   });
 
-  /** @test {Splitting} */
+  /** @test {SplittingTransformer} */
   it('should export SplittingTransformer class', function() {
     expect(globalExports.SplittingTransformer, 'to be', SplittingTransformer);
   });
