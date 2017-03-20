@@ -147,6 +147,11 @@ describe('AtviseFile', function() {
       expect(AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64),
         'to equal', Buffer.from('[1,2]'));
     });
+
+    it('should use trimmed string value if no special encoder is used', function() {
+      expect(AtviseFile.encodeValue({ value: 'string\n ' }, DataType.String),
+        'to equal', Buffer.from('string'));
+    });
   });
 
   /** @test {AtviseFile.decodeValue} */
