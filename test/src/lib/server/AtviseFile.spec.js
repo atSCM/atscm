@@ -348,6 +348,11 @@ describe('AtviseFile', function() {
       expect((new AtviseFile({ path: 'SYSTEM/LIBRARY/PROJECT/RESOURCES/example.js' }).nodeId.value),
         'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/example.js');
     });
+
+    it('should remove extension for non-atvise types', function() {
+      expect((new AtviseFile({ path: 'AGENT/OBJECTS/Test.bool' }).nodeId.value),
+        'to equal', 'AGENT.OBJECTS.Test');
+    });
   });
 
   /** @test {AtviseFile#clone} */
