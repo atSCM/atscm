@@ -1,11 +1,11 @@
 import Emitter from 'events';
 import { Stream } from 'stream';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
-import expect from 'unexpected';
 import { resolveNodeId } from 'node-opcua';
 import { ctor as throughStreamClass } from 'through2';
-import Watcher from '../../../../src/lib/server/Watcher';
+import expect from '../../../expect';
+import Watcher, { SubscribeStream } from '../../../../src/lib/server/Watcher';
 
 class StubMonitoredItem extends Emitter {
 
@@ -19,7 +19,7 @@ class StubMonitoredItem extends Emitter {
 }
 
 const stubSession = {};
-const SubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
+const StubSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
   'node-opcua': {
     ClientSubscription: class StubClientSubscription extends Emitter {
       constructor() {
@@ -43,157 +43,193 @@ const SubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
   },
 }).SubscribeStream;
 
+const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
+  'node-opcua': {
+    ClientSubscription: class StubClientSubscription extends Emitter {
+      constructor() {
+        super();
+
+        this.monitor = spy(() => new StubMonitoredItem());
+
+        setTimeout(() => this.emit('failure', new Error('ClientSubscription failure')), 10);
+      }
+    },
+  },
+}).SubscribeStream;
+
 /** @test {SubscribeStream} */
 describe('SubscribeStream', function() {
   /** @test {SubscribeStream#constructor} */
   describe('#constructor', function() {
-    it('should return a stream', function() {
-      expect(new SubscribeStream(), 'to be a', Stream);
+    it('should apply keepSessionAlive option', function() {
+      const stream = new SubscribeStream();
+      stream.end();
+
+      expect(stream._keepSessionAlive, 'to be', true);
+    });
+
+    it('should not track changes instantly', function() {
+      const stream = new SubscribeStream();
+      stream.end();
+
+      expect((new SubscribeStream())._trackChanges, 'to be', false);
+    });
+
+    context('once session is opened', function() {
+      it('should create subscription once session is opened', function(done) {
+        const stream = new SubscribeStream();
+        spy(stream, 'createSubscription');
+
+        stream.once('session-open', () => {
+          expect(stream.createSubscription, 'was called once');
+          done();
+        });
+      });
     });
   });
 
   /** @test {SubscribeStream#createSubscription} */
   describe('#createSubscription', function() {
-    it('should be called once session is open', function() {
-      const stream = new SubscribeStream();
-      stream.createSubscription = spy();
-      stream.once('session-open', () => {
-        expect(stream.createSubscription.calledOnce, 'to be true');
-      });
+    it('should forward errors while creating subscription', function() {
+      const stream = new FailingSubscribeStream();
+
+      return expect(stream, 'to error with', /ClientSubscription failure/);
     });
 
-    it('should emit `subscription-started` event', function(done) {
+    it('should emit `subscription-started`', function(done) {
       const stream = new SubscribeStream();
-      stream.once('subscription-started', subscription => {
-        expect(subscription.constructor.name, 'to equal', 'StubClientSubscription');
-        done();
-      });
+
+      stream.on('subscription-started', () => done());
     });
 
-    it('should emit error if subscription failed', function(done) {
+    it('should set subscription property', function(done) {
       const stream = new SubscribeStream();
-      stream.once('error', err => {
-        expect(err, 'to have message', 'Test');
+
+      stream.on('subscription-started', subscription => {
+        expect(stream.subscription, 'to be defined');
+        expect(stream.subscription, 'to be', subscription);
         done();
-      });
-      stream.once('subscription-started', subscription => {
-        subscription.emit('failure', new Error('Test'));
       });
     });
   });
 
-  /** @test {SubscribeStream#monitorNode} */
-  describe('#monitorNode', function() {
-    it('should call node-opcua~ClientSubscription#monitor', function(done) {
-      const stream = new SubscribeStream();
-      stream.once('subscription-started', () => {
-        stream.monitorNode({
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-        }, err => {
-          expect(err, 'to be falsy');
-          expect(stream.subscription.monitor.calledOnce, 'to be true');
-          done();
-        });
-      });
+  /** @test {SubscribeStream#processErrorMessage} */
+  describe('#processErrorMessage', function() {
+    it('should contain node id', function() {
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      expect(SubscribeStream.prototype.processErrorMessage({ nodeId }),
+        'to contain', nodeId.toString());
     });
+  });
 
-    it('should ignore first change event', function(done) {
-      const stream = new SubscribeStream();
-      stream.once('subscription-started', () => {
-        const changeListener = spy();
-        stream.on('changed', changeListener);
-
-        stream.monitorNode({
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-        }, err => {
-          expect(err, 'to be falsy');
-          expect(changeListener.callCount, 'to equal', 0);
-          done();
-        });
-      });
-    });
-
-    it('should forward change events when tracking changes', function(done) {
+  /** @test {SubscribeStream#processChunk} */
+  describe('#processChunk', function() {
+    it('should call ClientSubscription#monitor', function() {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-      stream.once('subscription-started', () => {
-        const item = stream.monitorNode({ nodeId }, function(err) {
-          expect(err, 'to be falsy');
-
-          setTimeout(() => item.emit('changed', {
-            value: { value: 13 },
-            serverTimestamp: new Date() }
-            ),
-            10);
-          stream.end();
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor', () => {
+          return new StubMonitoredItem();
         });
-      })
-        .on('change', e => {
-          expect(e.nodeId, 'to equal', nodeId);
-          expect(e.referenceDescription.nodeId, 'to equal', nodeId);
-          expect(e.value.value, 'to equal', 13);
+      });
 
-          done();
+      return expect([{ nodeId }], 'when piped through', stream,
+        'to yield objects satisfying', 'to have length', 0)
+        .then(() => {
+          expect(stream.subscription.monitor, 'was called once');
+          expect(stream.subscription.monitor.lastCall.args[0], 'to have properties', { nodeId });
         });
     });
 
-    it('should forward errors', function(done) {
+    it('should forward MonitoredItem errors', function() {
       const stream = new SubscribeStream();
-      stream.once('subscription-started', () => {
-        stream.subscription.monitor = spy(() => new StubMonitoredItem(new Error('Test')));
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-        stream.monitorNode({
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-        }, err => {
-          expect(err, 'to have message', 'Error monitoring ns=1;s=AGENT.DISPLAYS.Main: Test');
-
-          done();
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor', () => {
+          return new StubMonitoredItem(new Error('item error'));
         });
       });
+
+      return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
     });
 
-    it('should emit errors even if node-opcua fails with string error', function(done) {
+    it('should forward MonitoredItem errors when given as string', function() {
       const stream = new SubscribeStream();
-      stream.once('subscription-started', () => {
-        stream.subscription.monitor = spy(() => new StubMonitoredItem('Test'));
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-        stream.monitorNode({
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-        }, err => {
-          expect(err, 'to have message', 'Error monitoring ns=1;s=AGENT.DISPLAYS.Main: Test');
-
-          done();
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor', () => {
+          return new StubMonitoredItem('item error');
         });
       });
+
+      return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
+    });
+
+    it('should forward change events', function() {
+      const stream = new SubscribeStream();
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      const listener = spy();
+      stream.on('change', listener);
+
+      const changeData = {
+        value: 'value',
+        serverTimestamp: new Date(),
+      };
+
+      let item;
+
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor', () => {
+          item = new StubMonitoredItem(false);
+          return item;
+        });
+      });
+
+      return expect([{ nodeId }], 'when piped through', stream,
+        'to yield objects satisfying', 'to have length', 0)
+        .then(() => item.emit('changed', changeData))
+        .then(() => {
+          expect(listener, 'was called once');
+          expect(listener.lastCall, 'to satisfy', [{
+            nodeId,
+            value: changeData.value,
+            referenceDescription: { nodeId },
+            mtime: changeData.serverTimestamp,
+          }]);
+        });
     });
   });
 
   /** @test {SubscribeStream#_transform} */
   describe('#_transform', function() {
-    const desc = { nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main') };
+    const chunk = 'chunk';
 
-    it('should should wait for subscription to start', function(done) {
+    it('should call enqueue immediately if subscription started', function(done) {
       const stream = new SubscribeStream();
-      spy(stream, 'monitorNode');
+      stub(stream, '_enqueueChunk', () => {});
+      stream.once('subscription-started', subscription => {
+        expect(stream.subscription, 'to be', subscription);
 
-      stream.write(desc);
-      expect(stream.monitorNode.callCount, 'to equal', 0);
+        stream._transform(chunk, 'utf8', () => {});
 
-      stream.once('subscription-started', () => {
-        expect(stream.monitorNode.calledOnce, 'to be', true);
+        expect(stream._enqueueChunk, 'was called once');
+        expect(stream._enqueueChunk.lastCall, 'to satisfy', [chunk]);
         done();
       });
     });
 
-    it('should call #monitorNode immediately if subscription started', function(done) {
+    it('should wait for subscription to start before calling enqueue', function(done) {
       const stream = new SubscribeStream();
-      spy(stream, 'monitorNode');
+      stub(stream, '_enqueueChunk', () => {});
+      stream._transform(chunk, 'utf8', () => {});
 
+      expect(stream._enqueueChunk, 'was not called');
       stream.once('subscription-started', () => {
-        stream.write(desc);
-        expect(stream.monitorNode.calledOnce, 'to be', true);
-
+        expect(stream._enqueueChunk, 'was called once');
+        expect(stream._enqueueChunk.lastCall, 'to satisfy', [chunk]);
         done();
       });
     });
@@ -206,16 +242,16 @@ describe('Watcher', function() {
   describe('#constructor', function() {
     it('should work without arguments', function() {
       let watcher;
-      expect(() => (watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')])),
+      expect(() => (watcher = new Watcher()),
         'not to throw');
 
-      watcher.on('ready', () => watcher.close());
+      watcher.close();
     });
 
     it('should emit ready event once subscribe stream finished', function(done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
-      watcher.on('ready', () => {
+      watcher.once('ready', () => {
         watcher.close();
         done();
       });

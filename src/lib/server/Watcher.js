@@ -3,22 +3,24 @@ import {
   ClientSubscription,
   AttributeIds,
   subscription_service as SubscriptionService,
+  StatusCodes,
 } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeStream from './NodeStream';
-import Stream from './Stream';
+import QueueStream from './QueueStream';
 import Session from './Session';
 
 /**
  * A stream that monitors changes in the read nodes.
  */
-export class SubscribeStream extends Stream {
+export class SubscribeStream extends QueueStream {
 
   /**
-   * Creates a new SubscribeStream.
+   * Creates a new SubscribeStream based on some options.
+   * @param {Object} options The stream options to apply.
    */
-  constructor() {
-    super({ keepSessionAlive: true });
+  constructor(options = {}) {
+    super(Object.assign(options, { keepSessionAlive: true })); // FIXME: Option not handled.
 
     /**
      * Set to true once all nodes are monitored.
@@ -57,13 +59,22 @@ export class SubscribeStream extends Stream {
   }
 
   /**
-   * Starts monitoring of the node with the given {@link node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} referenceDescription Reference description of the node
-   * to monitor.
-   * @param {function(err: Error?)} callback Called with the error that occured while trying to
-   * monitor the given node.
+   * Returns an error message specifically for the given reference description.
+   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
+   * the error message for.
+   * @return {String} The specific error message.
    */
-  monitorNode(referenceDescription, callback) {
+  processErrorMessage(referenceDescription) {
+    return `Error reading node ${referenceDescription.nodeId.toString()}`;
+  }
+
+  /**
+   * Monitors the nodes specified by a {@link node-opcua~ReferenceDescription}.
+   * @param {node-opcua~ReferenceDescription} referenceDescription The refernce description to use.
+   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
+   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   */
+  processChunk(referenceDescription, handleErrors) {
     const nodeId = referenceDescription.nodeId;
 
     const item = this.subscription.monitor({
@@ -78,7 +89,7 @@ export class SubscribeStream extends Stream {
 
     item.on('changed', dataValue => {
       if (!this._trackChanges) {
-        callback(); // Ignore first notification
+        handleErrors(null, StatusCodes.Good, done => done()); // Ignore first notification
       } else {
         this.emit('change', {
           nodeId,
@@ -91,26 +102,21 @@ export class SubscribeStream extends Stream {
 
     item.on('err', err => {
       /*
-        This works around a bug in node-opcua:
-        Instead of a error a string is emitted
-        FIXME: Remove once bug is fixed
+       This works around a bug in node-opcua:
+       Instead of a error a string is emitted
+       FIXME: Remove once bug is fixed
        */
       if (err instanceof Error) {
-        const error = err;
-        error.message = `Error monitoring ${nodeId.toString()}: ${err.message}`;
-
-        callback(error);
+        handleErrors(err);
       } else {
-        callback(new Error(`Error monitoring ${nodeId.toString()}: ${err}`));
+        handleErrors(new Error(err));
       }
     });
-
-    return item;
   }
 
   /**
    * Buffers all read node descriptions until the subscription started, then calls
-   * {@link SubscribeStream#monitorNode} with them.
+   * {@link QueueStream#_enqueueChunk} with them.
    * @param {node-opcua~ReferenceDescription} desc Reference description of the node to transform.
    * @param {String} enc The encoding used.
    * @param {function(err: ?Error)} callback Called with the error that occured while trying to
@@ -118,19 +124,25 @@ export class SubscribeStream extends Stream {
    */
   _transform(desc, enc, callback) {
     if (this.subscription) {
-      this.monitorNode(desc, callback);
+      this._enqueueChunk(desc);
+      callback();
     } else {
-      this.once('subscription-started', () => this.monitorNode(desc, callback));
+      this.once('subscription-started', () => {
+        this._enqueueChunk(desc);
+        callback();
+      });
     }
   }
 
   /**
-   * Overriding this method prevents closing the session.
-   * @param {function()} callback Called immediately.
+   * Starts tracking node changes.
+   * @param {function(err: ?Error)} callback Called once flushing is complete.
    */
   _flush(callback) {
-    this._trackChanges = true;
-    callback();
+    super._flush(err => {
+      this._trackChanges = true;
+      callback(err);
+    });
   }
 
 }
