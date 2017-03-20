@@ -1,7 +1,6 @@
 import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
-import Logger from 'gulplog';
 import AtviseTypes from './Types';
 import NodeId from './NodeId';
 
