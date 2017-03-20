@@ -18,30 +18,18 @@ class StubMonitoredItem extends Emitter {
 
 }
 
-const stubSession = {};
-const StubSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
-  'node-opcua': {
-    ClientSubscription: class StubClientSubscription extends Emitter {
-      constructor() {
-        super();
-
-        this.monitor = spy(() => new StubMonitoredItem());
-
-        setTimeout(() => this.emit('started', {}), 10);
-      }
-    },
-  },
-  './Stream': {
-    _esModule: true,
+const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
+  './NodeStream': {
+    __esModule: true,
     default: class ServerStream extends throughStreamClass({ objectMode: true }) {
       constructor() {
         super();
 
-        setTimeout(() => this.emit('session-open', stubSession), 10);
+        setTimeout(() => this.end(), 10);
       }
     },
   },
-}).SubscribeStream;
+}).default;
 
 const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
   'node-opcua': {
@@ -129,9 +117,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => {
-          return new StubMonitoredItem();
-        });
+        stub(subscription, 'monitor', () => new StubMonitoredItem());
       });
 
       return expect([{ nodeId }], 'when piped through', stream,
@@ -147,9 +133,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => {
-          return new StubMonitoredItem(new Error('item error'));
-        });
+        stub(subscription, 'monitor', () => new StubMonitoredItem(new Error('item error')));
       });
 
       return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
@@ -160,9 +144,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => {
-          return new StubMonitoredItem('item error');
-        });
+        stub(subscription, 'monitor', () => new StubMonitoredItem('item error'));
       });
 
       return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
@@ -242,7 +224,7 @@ describe('Watcher', function() {
   describe('#constructor', function() {
     it('should work without arguments', function() {
       let watcher;
-      expect(() => (watcher = new Watcher()),
+      expect(() => (watcher = new StubWatcher()),
         'not to throw');
 
       watcher.close();
