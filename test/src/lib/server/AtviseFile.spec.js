@@ -244,11 +244,10 @@ describe('AtviseFile', function() {
           nodeId,
           typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
         },
-        mtime: new Date(),
       });
 
       expect(file, 'to be a', AtviseFile);
-      expect(file.mtime, 'to be', undefined);
+      expect(file.stat.mtime, 'to be', undefined);
     });
   });
 
