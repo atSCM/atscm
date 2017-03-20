@@ -236,5 +236,21 @@ describe('ScriptTransformer', function() {
         .then(contents => expect(contents[0],
           'to contain', `<code><![CDATA[${code}]]></code>`));
     });
+
+    context('when encoding fails', function() {
+      it('should forward encode errors', function() {
+        class FailingScriptTransformer extends ScriptTransformer {
+          encodeContents(object, callback) {
+            callback(new Error('Encode error'));
+          }
+        }
+
+        const helper = new TransformerHelper(FailingScriptTransformer);
+
+        return expect(helper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          '.json': '{ "parameters": [{ "name": "paramname" }] }',
+        }), 'to call the callback with error', 'Encode error');
+      });
+    });
   });
 });
