@@ -1,4 +1,5 @@
 import { Stream } from 'stream';
+import { inspect } from 'util';
 import { stub } from 'sinon';
 import { obj as createStream } from 'through2';
 import expect from '../../../expect';
@@ -135,6 +136,24 @@ describe('Transformer', function() {
     it('should work with empty array as argument', function() {
       expect(Transformer.applyTransformers(createStream(), [], TransformDirection.FromDB),
         'to be a', Stream);
+    });
+  });
+
+  /** @test {Transformer#inspect} */
+  describe('#inspect', function() {
+    it('should return constructor name if depth is less than zero ', function() {
+      expect(inspect(new Transformer({ opt: 'val' }), { depth: -1 }),
+        'to contain', 'Transformer');
+    });
+
+    it('should return options if depth is positive', function() {
+      expect(inspect(new Transformer({ opt: 'val', opt2: 2 }), { depth: 1 }),
+        'to contain', 'Transformer', 'opt: \'val\'', 'opt2: 2');
+    });
+
+    it('should return options if depth is null', function() {
+      expect(inspect(new Transformer({ opt: 'val', opt2: 2 }), { depth: null }),
+        'to contain', 'Transformer', 'opt: \'val\'', 'opt2: 2');
     });
   });
 });
