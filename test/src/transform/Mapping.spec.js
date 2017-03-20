@@ -23,19 +23,71 @@ describe('MappingTransformer', function() {
   /** @test {MappingTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
     context('when AtviseFile.fromReadResult returns error', function() {
-      before(() => stub(AtviseFile, 'fromReadResult', () => {
-        throw new Error('Test');
-      }));
+      let warnListener;
+      let debugListener;
 
-      after(() => AtviseFile.fromReadResult.restore());
+      beforeEach(() => {
+        stub(AtviseFile, 'fromReadResult', () => {
+          throw new Error('Test');
+        });
+        Logger.on('warn', (warnListener = spy()));
+        Logger.on('debug', (debugListener = spy()));
+      });
+
+      afterEach(() => {
+        AtviseFile.fromReadResult.restore();
+        Logger.removeListener('warn', warnListener);
+        Logger.removeListener('debug', debugListener);
+      });
 
       it('should not forward errors', function() {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
-        expect(cb => stream.transformFromDB({
+        return expect(cb => stream.transformFromDB({
           nodeId: new NodeId('AGENT.DISPLAYS.Main'),
         }, 'utf8', cb), 'to call the callback')
           .then(args => expect(args, 'to have length', 1));
+      });
+
+      it('should log warning', function() {
+        const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+        return expect(cb => stream.transformFromDB({
+          nodeId: new NodeId('AGENT.DISPLAYS.Main'),
+        }, 'utf8', cb), 'to call the callback')
+          .then(args => expect(args, 'to have length', 1))
+          .then(() => expect(warnListener, 'was called once'))
+          .then(() => expect(debugListener, 'was called once'));
+      });
+    });
+
+    context('when AtviseFile.fromReadResult returns "no value" error', function() {
+      let warnListener;
+      let debugListener;
+
+      beforeEach(() => {
+        stub(AtviseFile, 'fromReadResult', () => {
+          throw new Error('no value');
+        });
+        Logger.on('warn', (warnListener = spy()));
+        Logger.on('debug', (debugListener = spy()));
+      });
+
+      afterEach(() => {
+        AtviseFile.fromReadResult.restore();
+        Logger.removeListener('warn', warnListener);
+        Logger.removeListener('debug', debugListener);
+      });
+
+      it('should only debug log', function() {
+        const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+        return expect(cb => stream.transformFromDB({
+          nodeId: new NodeId('AGENT.DISPLAYS.Main'),
+        }, 'utf8', cb), 'to call the callback')
+          .then(args => expect(args, 'to have length', 1))
+          .then(() => expect(debugListener, 'was called twice'))
+          .then(() => expect(warnListener, 'was not called'));
       });
     });
 
