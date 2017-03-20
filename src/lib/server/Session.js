@@ -14,8 +14,8 @@ let openingSessions = 0;
 export default class Session {
 
   /**
-   * An {@link events~EventEmitter} that emits events when creating / closing sessions.
-   * @type {events~EventEmitter}
+   * An {@link events~Emitter} that emits events when creating / closing sessions.
+   * @type {events~Emitter}
    */
   static get emitter() {
     return emitter;
