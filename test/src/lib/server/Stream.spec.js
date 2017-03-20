@@ -1,9 +1,8 @@
-import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { spy } from 'sinon';
-
 import { Stream as CoreStream } from 'stream';
 import { ClientSession } from 'node-opcua';
+import expect from '../../../expect';
 import Stream from '../../../../src/lib/server/Stream';
 import Session from '../../../../src/lib/server/Session';
 
@@ -46,22 +45,19 @@ describe('Stream', function() {
         });
     });
 
-    it('should close session and disconnect client on end', function(done) {
+    it('should close session on end', function() {
       const stream = new Stream();
 
-      stream
-        .once('session-open', () => {
-          spy(stream.session, 'close');
-          spy(stream.session._client, 'disconnect');
+      stream.once('session-open', () => {
+        spy(Session, 'close');
 
-          stream.end();
-        })
-        .on('end', () => {
-          expect(stream.session.close.calledOnce, 'to be', true);
-          expect(stream.session._client.disconnect.calledOnce, 'to be', true);
-          done();
-        })
-        .on('data', () => {}); // unpause readable stream
+        stream.end();
+      });
+
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
+        .then(() => {
+          expect(Session.close, 'was called once');
+        });
     });
 
     it('should be endable even if session was not opened yet', function(done) {
