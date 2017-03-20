@@ -14,15 +14,24 @@ let openingSessions = 0;
 export default class Session {
 
   /**
+   * An {@link events~EventEmitter} that emits events when creating / closing sessions.
+   * @type {events~EventEmitter}
+   */
+  static get emitter() {
+    return emitter;
+  }
+
+  /**
    * Creates and opens a new {@link node-opcua~ClientSession}.
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
    * {@link node-opcua~ClientSession}.
+   * @emits {undefined} Emits an `all-open` event once all opening sessions are open.
    */
   static create() {
+    openingSessions++;
+
     return Client.create()
       .then(client => new Promise((resolve, reject) => {
-        openingSessions++;
-
         client.createSession({
           userName: ProjectConfig.login.username,
           password: ProjectConfig.login.password,
@@ -41,6 +50,8 @@ export default class Session {
               reject(new Error(`Unable to create session: ${err.message}`));
             }
           } else {
+            Object.assign(session, { _emitter: new Emitter() });
+
             openSessions.push(session);
             resolve(session);
           }
@@ -71,28 +82,31 @@ export default class Session {
 
     if (session._closing) {
       return new Promise(resolve => {
-        session.on('session_closed', () => {
-          resolve(session);
-        });
+        session._emitter.on('fully-closed', () => resolve(session));
       });
     }
 
     Object.assign(session, { _closing: true });
 
     return new Promise((resolve, reject) => {
-      function removeOpenSession(sess) {
-        openSessions.splice(openSessions.indexOf(sess), 1);
+      function markAsClosed() {
+        openSessions.splice(openSessions.indexOf(session), 1);
+        Object.assign(session, { _closed: true });
+
+        resolve(session);
+        session._emitter.emit('fully-closed');
       }
 
-      session.close(deleteSubscriptions, (err) => {
+      session.close(deleteSubscriptions, err => {
         if (err) {
-          if (err.response.responseHeader.serviceResult === StatusCodes.BadSessionIdInvalid) {
-            removeOpenSession(session);
+          if (err.response &&
+            err.response.responseHeader.serviceResult === StatusCodes.BadSessionIdInvalid
+          ) {
             Logger.debug('Attempted to close a session that does not exist');
-            resolve(session);
+            markAsClosed(session);
           } else if (err.message === 'no channel') {
-            removeOpenSession(session);
-            resolve(session);
+            // Client already disconnected
+            markAsClosed(session);
           } else {
             reject(new Error(`Unable to close session: ${err.message}`));
           }
@@ -101,10 +115,7 @@ export default class Session {
             if (clientErr) {
               reject(new Error(`Unable to disconnect client: ${clientErr.message}`));
             } else {
-              removeOpenSession(session);
-
-              Object.assign(session, { _closed: true });
-              resolve(session);
+              markAsClosed(session);
             }
           });
         }
@@ -141,7 +152,7 @@ export default class Session {
     }
 
     return new Promise((resolve, reject) => {
-      emitter.on('all-open', () => {
+      emitter.once('all-open', () => {
         closeSessions(openSessions)
           .then(resolve, reject);
       });
