@@ -10,5 +10,6 @@ export default function watchForServerChanges(listener) {
   return cb => new Watcher()
     .on('change', data => listener(data))
     .on('ready', () => Logger.info('Waiting for server changes...'))
-    .on('error', err => cb(err));
+    .on('error', () => {})
+    .once('error', err => cb(err));
 }
