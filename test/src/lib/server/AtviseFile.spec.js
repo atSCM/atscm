@@ -224,7 +224,11 @@ describe('AtviseFile', function() {
 
       expect(AtviseFile.fromReadResult({
         nodeId,
-        value: { value: '<svg></svg>', $dataType: DataType.XmlElement },
+        value: {
+          value: '<svg></svg>',
+          $dataType: DataType.XmlElement,
+          $arrayType: VariantArrayType.Scalar,
+        },
         referenceDescription: {
           nodeId,
           typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
@@ -238,7 +242,11 @@ describe('AtviseFile', function() {
 
       const file = AtviseFile.fromReadResult({
         nodeId,
-        value: { value: '<svg></svg>', $dataType: DataType.XmlElement },
+        value: {
+          value: '<svg></svg>',
+          $dataType: DataType.XmlElement,
+          $arrayType: VariantArrayType.Scalar,
+        },
         referenceDescription: {
           nodeId,
           typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
