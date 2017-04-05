@@ -14,11 +14,14 @@ export default class InitOptionsValidator {
   static name(value) {
     const result = validatePackageName(value);
 
-    if (result.validForNewPackages) { return true; }
-
     if (result.errors) { return result.errors[0]; }
 
-    return result.warnings[0];
+    // First letter must be a letter
+    if (value.match(/^[a-z]+/i) === null) {
+      return 'name must start with a letter';
+    }
+
+    return result.validForNewPackages ? true : result.warnings[0];
   }
 
 }
