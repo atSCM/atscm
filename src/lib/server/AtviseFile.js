@@ -119,7 +119,7 @@ export default class AtviseFile extends File {
     }
 
     // Add "array" or "matrix" extensions for corresponding array types
-    if (arrayType !== VariantArrayType.Scalar) {
+    if (arrayType.value !== VariantArrayType.Scalar.value) {
       path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
     }
 
