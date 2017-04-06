@@ -1,6 +1,6 @@
 import { Stream } from 'stream';
 import { inspect } from 'util';
-import { stub, spy } from 'sinon';
+import { stub } from 'sinon';
 import { obj as createStream } from 'through2';
 import expect from '../../../expect';
 
@@ -58,48 +58,16 @@ describe('Transformer', function() {
         'to call the callback with error', 'Transformer has no direction');
     });
 
-    context('when implemented with transform functions', function() {
-      it('should call transformFromDB with direction FromDB', function() {
-        transformer.withDirection(TransformDirection.FromDB)._transform({}, 'utf8', () => {});
+    it('should call transformFromDB with direction FromDB', function() {
+      transformer.withDirection(TransformDirection.FromDB)._transform({}, 'utf8', () => {});
 
-        return expect(transformer.transformFromDB, 'was called');
-      });
-
-      it('should call transformFromFilesystem with direction FromFilesystem', function() {
-        transformer.withDirection(TransformDirection.FromFilesystem)
-          ._transform({}, 'utf8', () => {});
-
-        return expect(transformer.transformFromFilesystem, 'was called');
-      });
+      return expect(transformer.transformFromDB, 'was called');
     });
 
-    context('when implemented with transform streams', function() {
-      const fromDBTransform = spy();
-      const fromFsTransform = spy();
+    it('should call transformFromFilesystem with direction FromFilesystem', function() {
+      transformer.withDirection(TransformDirection.FromFilesystem)._transform({}, 'utf8', () => {});
 
-      class CustomTransformer extends Transformer {
-
-        get fromDBStream() {
-          return createStream(fromDBTransform);
-        }
-
-        get fromFilesystemStream() {
-          return createStream(fromFsTransform);
-        }
-
-      }
-
-      it('should apply fromDBStream with direction FromDB', function() {
-        (new CustomTransformer()).withDirection(TransformDirection.FromDB)
-          ._transform({}, 'utf8', () => {});
-        return expect(fromDBTransform, 'was called');
-      });
-
-      it('should apply fromFilesystemStream with direction FromFilesystem', function() {
-        (new CustomTransformer()).withDirection(TransformDirection.FromFilesystem)
-          ._transform({}, 'utf8', () => {});
-        return expect(fromFsTransform, 'was called');
-      });
+      return expect(transformer.transformFromFilesystem, 'was called');
     });
   });
 
