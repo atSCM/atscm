@@ -66,7 +66,8 @@ describe('Transformer', function() {
       });
 
       it('should call transformFromFilesystem with direction FromFilesystem', function() {
-        transformer.withDirection(TransformDirection.FromFilesystem)._transform({}, 'utf8', () => {});
+        transformer.withDirection(TransformDirection.FromFilesystem)
+          ._transform({}, 'utf8', () => {});
 
         return expect(transformer.transformFromFilesystem, 'was called');
       });
