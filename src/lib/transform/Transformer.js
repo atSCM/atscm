@@ -107,8 +107,8 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
-   * **Must be overridden if {@link Transformer#transformFromDBStream} returns null:** Transforms the
-   * given chunk when using {@link TransformDirection.FromDB}.
+   * **Must be overridden if {@link Transformer#transformFromDBStream} returns null:** Transforms
+   * the given chunk when using {@link TransformDirection.FromDB}.
    * @param {Object} chunk The chunk to transform.
    * @param {String} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
