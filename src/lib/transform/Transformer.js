@@ -63,6 +63,14 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
       throw new Error('Invalid direction');
     }
 
+    /**
+     * The stream to use for transforming in the current direction.
+     * @type {?stream~Transform}
+     */
+    this._transformStream = direction === TransformDirection.FromDB ?
+      this.fromDBStream :
+      this.fromFilesystemStream;
+
     this.direction = direction;
     return this;
   }
@@ -79,6 +87,8 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   _transform(chunk, enc, callback) {
     if (!this.direction) {
       callback(new Error('Transformer has no direction'));
+    } else if (this._transformStream) {
+      this._transformStream._transform(chunk, enc, callback);
     } else if (this.direction === TransformDirection.FromDB) {
       this.transformFromDB(chunk, enc, callback);
     } else {
@@ -87,24 +97,46 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
-   * **Must be overridden by all subclasses:** Transforms the given chunk when using
+   * If this getter returns a valid object transform stream it is used for transforming in direction
    * {@link TransformDirection.FromDB}.
+   * @type {?stream~Transform}
+   * @since 0.3.0
+   */
+  get fromDBStream() {
+    return null;
+  }
+
+  /**
+   * **Must be overridden if {@link Transformer#transformFromDBStream} returns null:** Transforms the
+   * given chunk when using {@link TransformDirection.FromDB}.
    * @param {Object} chunk The chunk to transform.
    * @param {String} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
+   * @deprecated Implement Transformer#fromDBStream instead.
    */
   transformFromDB(chunk, enc, callback) {
     callback(new Error('Transformer#transformFromDB must be overridden by all subclasses'));
   }
 
   /**
-   * **Must be overridden by all subclasses:** Transforms the given chunk when using
+   * If this getter returns a valid object transform stream it is used for transforming in direction
    * {@link TransformDirection.FromFilesystem}.
+   * @type {?stream~Transform}
+   * @since 0.3.0
+   */
+  get fromFilesystemStream() {
+    return null;
+  }
+
+  /**
+   * **Must be overridden if {@link Transformer#transformFromFilesystemStream} returns null:**
+   * Transforms the given chunk when using {@link TransformDirection.FromFilesystem}.
    * @param {Object} chunk The chunk to transform.
    * @param {String} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
+   * @deprecated Implement Transformer#fromFilesystemStream instead.
    */
   transformFromFilesystem(chunk, enc, callback) {
     callback(new Error('Transformer#transformFromFilesystem must be overridden by all subclasses'));
