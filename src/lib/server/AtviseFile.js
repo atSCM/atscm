@@ -216,7 +216,7 @@ export default class AtviseFile extends File {
     // For split files, add the directory name extension
     const dirnameExts = this.dirname.split('.');
     if (dirnameExts.length > 1) {
-      extensions.unshift(dirnameExts[1]);
+      extensions.unshift(dirnameExts[dirnameExts.length - 1]);
     }
 
     function ifLastExtensionMatches(matches, fn) {
