@@ -10,8 +10,7 @@
  
 ---
 
-<details>
-<summary><strong>Environment</strong></summary>
+<details><summary><strong>Environment</strong></summary>
 
 | package       |               version |
 | :------------ | --------------------: |
