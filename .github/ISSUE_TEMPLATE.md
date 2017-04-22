@@ -6,11 +6,12 @@
 
 **Original error message**
 
-*Insert error message here*
+*Insert error message (or screenshot) here*
  
 ---
 
-**Environment**
+<details>
+<summary><strong>Environment</strong></summary>
 
 | package       |               version |
 | :------------ | --------------------: |
@@ -20,11 +21,15 @@
 | atvise server | atvise server version |
 | node          |          node version | <!-- run `node --version` -->
 | npm           |           npm version | <!-- run `npm --version` -->
-
  
-**Contents of Atviseproject**
+</details>
+
+<details><summary><strong>Project configuration</strong></summary>
 
 ```javascript
+// Atviseproject.babel.js
+
 // Insert contents of Atviseproject here
 ```
 
+</details>
