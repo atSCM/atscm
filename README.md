@@ -7,7 +7,17 @@
 [![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
 [![ESDoc](https://doc.esdoc.org/github.com/atSCM/atscm/badge.svg)](https://doc.esdoc.org/github.com/atSCM/atscm/)
 
-
 ## Installation
 
-With [atscm-cli](https://github.com/atSCM/atscm-cli) installed run `atscm init` to create a new *atSCM* project.
+This module can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+
+<details>
+<summary><strong>Installing <i>atscm-cli</i></strong></summary>
+
+ - Make sure node.js (version 6 or later) is installed by running `node --version`.
+ - Make sure npm is installed by running `npm --version`.
+ - Run `npm install --global atscm-cli` to install *atscm-cli* globally. *You may have to run this command as an administrator.*
+
+</details>
+
+With [atscm-cli](https://github.com/atSCM/atscm-cli) installed run `atscm init` to create a new *atscm* project.
