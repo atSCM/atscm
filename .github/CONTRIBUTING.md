@@ -89,7 +89,7 @@ We have very precise rules over how our git commit messages can be formatted. Th
 
 ### Commit message format
 
-> tl;dr: We use an adaption of the [angular commit message convention](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines) with to only difference that capitalized subjects are allowed.
+> tl;dr: We use an adaption of the [angular commit message convention](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines) with the only difference that capitalized subjects are allowed.
 
 Each commit message consists of a *header*, a *body* and a footer. The header has a special format that includes a *type*, a *scope* and a *subject*:
 
