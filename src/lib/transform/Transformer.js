@@ -110,6 +110,14 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     callback(new Error('Transformer#transformFromFilesystem must be overridden by all subclasses'));
   }
 
+  /**
+   * Applies the transformer to the given stream. By default this just invokes
+   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}. Override
+   * this method if you want to pipe streams directly.
+   * @param {Stream} stream The stream to apply the transformer to.
+   * @param {TransformDirection} direction The direction to use.
+   * @return {Stream} The resulting stream.
+   */
   applyToStream(stream, direction) {
     return stream.pipe(this.withDirection(direction));
   }

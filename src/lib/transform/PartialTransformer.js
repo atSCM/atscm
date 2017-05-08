@@ -7,9 +7,18 @@ import Transformer from './Transformer';
  */
 export default class PartialTransformer extends Transformer {
 
-  constructor(options) {
+  /**
+   * Creates a new partial transformer with the specified options.
+   * @param {Object} options The options to use. See {@link Transformer#constructor} for available
+   * options.
+   */
+  constructor(options = {}) {
     super(options);
 
+    /**
+     * The filter stream used.
+     * @type {Stream}
+     */
     this.filter = filter(file => this.shouldBeTransformed(file), { restore: true });
   }
 
@@ -37,6 +46,16 @@ export default class PartialTransformer extends Transformer {
     }
   }
 
+  /**
+   * Applies the transformer to the given stream. It does so by running the following steps:
+   *  - Pipe the {@link PartialTransformer#filter} stream
+   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.
+   *  - Otherwise pipe {@link Transformer#withDirection}.
+   *  - Restore the filter stream
+   * @param {Stream} stream The stream to apply the transformer to.
+   * @param {TransformDirection} direction The direction to use.
+   * @return {Stream} The resulting stream.
+   */
   applyToStream(stream, direction) {
     const filteredStream = stream.pipe(this.filter);
 
@@ -45,6 +64,14 @@ export default class PartialTransformer extends Transformer {
       .pipe(this.filter.restore);
   }
 
+  /**
+   * Applies a stream transformer to the given, already filtered stream. Override this method if you
+   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes
+   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.
+   * @param {Stream} stream The stream to apply the transformer to.
+   * @param {TransformDirection} direction The direction to use.
+   * @return {?Stream} The resulting stream.
+   */
   applyToFilteredStream(stream, direction) { // eslint-disable-line no-unused-vars
     return false;
   }
