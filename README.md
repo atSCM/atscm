@@ -7,6 +7,17 @@
 [![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
 [![ESDoc](https://doc.esdoc.org/github.com/atSCM/atscm/badge.svg)](https://doc.esdoc.org/github.com/atSCM/atscm/)
 
+*atscm* is a [node.js](https://nodejs.org) based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:
+
+ - atvise project can be put under source control (e.g. using *git*)
+ - source code can be edited in external editors
+ - easier unit testing
+ - easier source code linting / static analysis
+ - source files can be preprocessed by using custom transformers: <!-- TODO: Insert links -->
+   - using alternate programming languages such as [ES2015 JavaScript](http://babeljs.io/learn-es2015/) or [TypeScript](http://www.typescriptlang.org)
+   - using alternate markup languages such as [pug](https://pugjs.org)
+   - using templating engines such as [handlebars](http://handlebarsjs.com)
+
 ## Installation
 
 This module can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
