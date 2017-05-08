@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/atSCM/atscm/compare/v0.2.4...v0.3.0) (2017-05-08)
+
+
+### Bug Fixes
+
+* **mapping:** Handle dirnames that contain multiple dots ([#43](https://github.com/atSCM/atscm/issues/43)) ([710fa4f](https://github.com/atSCM/atscm/commit/710fa4f))
+
+
+### Features
+
+* **transformer:** Use existing gulp plugins to implement custom transformers ([#49](https://github.com/atSCM/atscm/issues/49)) ([a6a3f71](https://github.com/atSCM/atscm/commit/a6a3f71))
+* **Transformer:** Stream based transformers ([96dfd58](https://github.com/atSCM/atscm/commit/96dfd58))
+
+
+### Reverts
+
+* Feature: Stream based transformers ([#40](https://github.com/atSCM/atscm/issues/40)) ([6180d83](https://github.com/atSCM/atscm/commit/6180d83))
+
+
+
 <a name="0.2.4"></a>
 ## [0.2.4](https://github.com/atSCM/atscm/compare/0.2.0-alpha.1...v0.2.4) (2017-04-05)
 

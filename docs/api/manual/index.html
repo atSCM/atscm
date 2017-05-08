@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container manual-root manual-index" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual" data-toc-name="tutorial">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-tutorial" data-section-count="&#x25A0;" data-link="manual/tutorial/README.html"><a href="manual/tutorial/README.html" data-ice="link">Tutorials</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;&#x25A0;" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#overview" data-ice="link">Overview</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-0-project-setup" data-ice="link">Step 0: Project setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-1-import-partialtransformer-class" data-ice="link">Step 1: Import PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-2-create-the-babeltransformer-class" data-ice="link">Step 2: Create the BabelTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-3-use-babeltransformer-" data-ice="link">Step 3: Use BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-4-implement-partialtransformer-shouldbetransformed-" data-ice="link">Step 4: Implement PartialTransformer#shouldBeTransformed</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-5-implement-transformer-transformfromfilesystem-" data-ice="link">Step 5: Implement Transformer#transformFromFilesystem</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-6-test-babeltransformer-" data-ice="link">Step 6: Test BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#step-7-implement-transformer-transformfromdb-" data-ice="link">Step 7: Implement Transformer#transformFromDB</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#result" data-ice="link">Result</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/tutorial/custom-transformer.html"><a href="manual/tutorial/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="advanced">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-advanced" data-section-count="&#x25A0;" data-link="manual/advanced/README.html"><a href="manual/advanced/README.html" data-ice="link">Guides</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-advanced" data-section-count="&#x25A0;&#x25A0;" data-link="manual/advanced/gulp-plugins.html"><a href="manual/advanced/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/advanced/gulp-plugins.html"><a href="manual/advanced/gulp-plugins.html#using-transformer-class" data-ice="link">Using Transformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/advanced/gulp-plugins.html"><a href="manual/advanced/gulp-plugins.html#using-partialtransformer-class" data-ice="link">Using PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/advanced/gulp-plugins.html"><a href="manual/advanced/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/advanced/gulp-plugins.html"><a href="manual/advanced/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="reference">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-reference" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="identifiers.html"><a href="identifiers.html" data-ice="link">Reference</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#class" data-ice="link">Class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#function" data-ice="link">Function</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#variable" data-ice="link">Variable</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#typedef" data-ice="link">Typedef</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="identifiers.html"><a href="identifiers.html#external" data-ice="link">External</a></li>
+</ul>
+  </div>
+<div data-ice="manual" data-toc-name="changelog">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#change-log" data-ice="link">Change Log</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-4-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-4-2017-04-05-" data-ice="link">0.2.4 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-3-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-3-2017-04-05-" data-ice="link">0.2.3 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-2-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-2-2017-03-20-" data-ice="link">0.2.2 (2017-03-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-1-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-1-2017-03-13-" data-ice="link">0.2.1 (2017-03-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-1-alpha-7-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-1-alpha-7-2017-03-13-" data-ice="link">0.2.1-alpha.7 (2017-03-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-1-alpha-6-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-1-alpha-6-2017-03-13-" data-ice="link">0.2.1-alpha.6 (2017-03-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-1-alpha-5-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-1-alpha-5-2017-03-10-" data-ice="link">0.2.1-alpha.5 (2017-03-10)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-0-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-0-2017-03-08-" data-ice="link">0.2.0 (2017-03-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-0-alpha-4-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-0-alpha-4-2017-03-08-" data-ice="link">0.2.0-alpha.4 (2017-03-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-0-alpha-3-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-0-alpha-3-2017-03-07-" data-ice="link">0.2.0-alpha.3 (2017-03-07)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-0-alpha-2-https-github-com-atscm-atscm-compare-0-2-0-alpha-1-v0-2-0-alpha-2-2017-03-07-" data-ice="link">0.2.0-alpha.2 (2017-03-07)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1 manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-2-0-alpha-1-https-github-com-atscm-atscm-compare-0-1-1-v0-2-0-alpha-1-2017-03-01-" data-ice="link">0.2.0-alpha.1 (2017-03-01)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-1-2-https-github-com-atscm-atscm-compare-0-1-1-v0-1-2-2017-02-23-" data-ice="link">0.1.2 (2017-02-23)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#0-1-1-2017-02-22-" data-ice="link">0.1.1 (2017-02-22)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/changelog/CHANGELOG.html"><a href="manual/changelog/CHANGELOG.html#-0-1-0-https-github-com-atscm-atscm-releases-tag-v0-1-0-2017-02-21-" data-ice="link">0.1.0 (2017-02-21)</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown">
+  
+
+  <p class="manual-badge" data-ice="manualBadge"><img src="./manual-badge.svg"></p>
+
+  <div class="manual-cards">
+    
+  <div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-tutorial" data-section-count="&#x25A0;"><span data-ice="label-inner">Tutorials</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>Tutorials</h1><p>These tutorials provide step by step guides on common tasks.</p><p><strong>Available tutorials</strong></p><ul>
+<li><a href="./manual/tutorial/custom-transformer.html">Custom transformer</a> - Learn how to implement a simple custom transformer.</li>
+</ul></div>
+        <a data-ice="link" href="manual/tutorial/README.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-tutorial" data-section-count="&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">Tutorial: Custom Transformer</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>Tutorial: Custom Transformer</h1><blockquote>
+<p>tl;dr: Jump to the <a href="https://github.com/atSCM/tutorial-custom-transformer">tutorial-custom-transformer repository</a> to see the results.</p>
+</blockquote><p>In this document we&apos;ll guide you through the steps necessary to implement a custom Transformer.
+Our transformer will use <a href="http://babeljs.io">Babel</a> to transpile ES2015/ES6 JavaScript to plain ES5 JavaScript that works in all Browsers.</p><h2>Overview</h2><p>Custom transformers provide an easy way to extend the build functionality of <em>atscm</em>. Basically, a transformer implements two behaviours: How atvise server nodes are mapped to files (when running <code>atscm pull</code>) and vice versa (when running <code>atscm push</code>).</p><p><strong>Where to store transformers</strong></p><p>Basically, transformers can be stored anywhere inside your <em>atscm</em> project. When using a non-ES5 configuration language (such as ES2015 or TypeScript, chosen when running <code>atscm init</code>) transformers should also be written in this language. <em>atscm</em> will handle the transpilation of your transformer code automatically. If you plan to write multiple custom transformers for your project, it is recommended to create your transformers in an own directory, e.g <code>./atscm</code>.</p><h2>Step 0: Project setup</h2><p>In order to have the same starting point, create a new <em>atscm</em> project to follow this tutorial. Run <code>atscm init</code> and <strong>pick ES2015 as configuration language</strong>.</p><p>As for now the atvise library is written in old ES5 JavaScript, we&apos;ll ignore it in our project. Adjust your project configuration accordingly:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+...
+
+export default class MyProject extends Atviseproject {
+  ...
+
+  static get ignoreNodes() {
+    return super.ignoreNodes
+      .concat([&apos;ns=1;s=SYSTEM.LIBRARY.ATVISE&apos;]);
+  }
+
+}</code>
+</code></pre><p>Now we&apos;re ready to pull the project by running:</p><pre><code><code class="source-code prettyprint">atscm pull</code>
+</code></pre><p>We&apos;ll use the default project files for testing later.</p><p>As suggested above, we&apos;ll store our custom transformer inside a new directory, <code>./atscm</code>. Create the directory and an empty file called <em>BabelTransformer.js</em>:</p><pre><code class="lang-bash"><code class="source-code prettyprint">mkdir atscm
+touch atscm/BabelTransformer.js</code>
+</code></pre><p>By now you should have a project containing an <code>./Atviseproject.babel.js</code> and an empty <code>./atscm/BabelTransformer.js</code> file.
+Make sure the <code>./src</code> directory contains at least the <em>default Main display</em> which should exist inside <code>./src/AGENT/DISPLAYS/Main.display</code>.</p><h2>Step 1: Import <em>PartialTransformer</em> class</h2><p>As we don&apos;t want to implement things twice we&apos;ll subclass <em>atscm</em>&apos;s <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html">Transformer class</a>. As our transformer shall only be used for JavaScript source files we can even use the <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer class</a> which supports filtering source files out of the box. As both of these classes are exported from <em>atscm</em>&apos;s main file, importing them is pretty straightforward. Inside the <em>BabelTransformer.js</em> file add:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { PartialTransformer } from &apos;atscm&apos;;</code>
+</code></pre><h2>Step 2: Create the <em>BabelTransformer</em> class</h2><p>The next step is to create and export our Transformer class:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { PartialTransformer } from &apos;atscm&apos;;
+
+export default class BabelTransformer extends PartialTransformer {
+
+}</code>
+</code></pre><p>We just created a <em>PartialTransformer</em> subclass that is exported as the file&apos;s default export. For more detailed information on ES2015&apos;s module system <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">take a look at the docs</a>. </p><h2>Step 3: Use <em>BabelTransformer</em></h2><p>By default, <em>atscm</em> uses just some standard transformers. Any additional transformers must be configured to use inside the project&apos;s <em>Atviseproject</em> file.</p><p>First of all, we have to import our newly created <em>BabelTransformer</em> class:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+import { Atviseproject } from &apos;atscm&apos;
+import BabelTransformer from &apos;./atscm/BabelTransformer&apos;;
+
+export default class MyProject extends Atviseproject { ... }</code>
+</code></pre><p>Now we override the <em>Atviseproject.useTransformers</em> <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Functions/get">getter</a> to use our transformer:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+...
+
+export default class MyProject extends Atviseproject {
+  ...
+
+  static get useTransformers() {
+    return super.useTransformers
+      .concat(new BabelTransformer());
+  }
+
+}</code>
+</code></pre><p>This statement tells <em>atscm</em> to use a new <em>BabelTransformer</em> instance <strong>in addition to the default transformers</strong> (<code>super.useTransformers</code>).</p><p>To verify everything worked so far run <code>atscm config</code>. Our new Transformer should show up in the <em>useTransformers</em> section:</p><pre><code><code class="source-code prettyprint">$ atscm config
+[08:38:16] Configuration at ~/custom-transformer/Atviseproject.babel.js 
+{ host: &apos;10.211.55.4&apos;,
+  port: 
+   { opc: 4840,
+     http: 80 },
+  useTransformers: 
+   [ DisplayTransformer&lt;&gt;,
+     ScriptTransformer&lt;&gt;,
+     BabelTransformer&lt;&gt; ],
+  ...</code>
+</code></pre><h2>Step 4: Implement <em>PartialTransformer#shouldBeTransformed</em></h2><p><a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-shouldBeTransformed">PartialTransformer#shouldBeTransformed</a> is responsible for filtering the files we want to transform. Returning <code>true</code> means the piped file will be transformed, <code>false</code> bypasses the file.</p><p>In out case we want to edit all JavaScript source files. Therefore we return true for all files with the extension <code>.js</code>. Edit <em>BabelTransformer.js</em> accordingly:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer
+
+...
+
+export default class BabelTransformer extends PartialTransformer {
+
+  shouldBeTransformed(file) {
+    return file.extname === &apos;.js&apos;;
+  }
+
+}</code>
+</code></pre><h2>Step 5: Implement <em>Transformer#transformFromFilesystem</em></h2><p>Implementing <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromFilesystem">Transformer#transformFromFilesystem</a> is probably the most important part of this tutorial. In here we define the logic that actually creates ES5 code from ES2015 sources.</p><p>First of all, we need to <strong>install additional dependencies</strong> required. Running</p><pre><code class="lang-bash"><code class="source-code prettyprint">npm install --save-dev babel-core babel-preset-2015</code>
+</code></pre><p>will install <a href="http://babeljs.io">Babel</a> and it&apos;s ES2015 preset. This preset ensures all ES5 compatible browsers will be able to run the resulting code.</p><p>We will also need the <a href="https://nodejs.org/api/buffer.html">node.js buffer module</a>. We don&apos;t need to install it, as it comes with every node installation.</p><p>Next, import these modules as usual:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { Buffer } from &apos;buffer&apos;;
+import { PartialTransformer } from &apos;atscm&apos;;
+import { transform } from &apos;babel-core&apos;;
+
+...</code>
+</code></pre><p>The import order follows a pretty usual convention:</p><ol>
+<li>Core <strong>node.js modules</strong> (<em>buffer</em> in our case)</li>
+<li>Other <strong>external modules</strong> (<em>babel-core</em> and <em>atscm</em> in our case)</li>
+<li><strong>Relative modules</strong> (<em>./atscm/BabelTransformer.js</em> inside <em>Atviseproject.babel.js</em> in our case)</li>
+</ol><p>Now we&apos;re ready to implement <em>Transformer#transformFromFilesystem</em>. What we&apos;re about to do is pretty simple:</p><ul>
+<li>We&apos;ll transpile the contents of the passed file with babels <em>transform</em> method</li>
+<li>We clone the passed file and set it&apos;s contents to a Buffer containing the resulting code</li>
+<li>We pass the resulting file to other streams</li>
+</ul><pre><code class="lang-javascript"><code class="source-code prettyprint">import ...
+
+export default class BabelTransformer extends PartialTransformer {
+
+  static shouldBeTransformed(file) { ... }
+
+  transformFromFilesystem(file, enc, callback) {
+    // Create ES5 code
+    const { code } = transform(file.contents, {
+      presets: [&apos;es2015&apos;]
+    });
+
+    // Create new file with ES5 content
+    const result = file.clone();
+    result.contents = Buffer.from(code);
+
+    // We&apos;re done, pass the new file to other streams
+    callback(null, result);
+  }
+
+}</code>
+</code></pre><p><strong>Wow!</strong> You just implemented your first custom transformer! Now we can write any scripts using the new ES2015 syntax.</p><h2>Step 6: Test <em>BabelTransformer</em></h2><p>It&apos;s time to check if everything works as expected. Create a script file for the Main display containing ES2015 JavaScript:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// src/AGENT/DISPLAYS/Main.display/Main.js
+
+// Class syntax
+class Test {
+
+  constructor(options = {}, ...otherArgs) { // Default values and rest params
+    this.options = options;
+    this.args = otherArgs.map(arg =&gt; parseInt(arg, 10)); // Arrows and Lexical This
+  }
+
+}
+
+const a = 13; // Constants
+const { options, args } = new Test({ a }, &apos;23&apos;); // Enhanced Object Literals
+
+alert(`Option a: ${options.a}, args: ${args.join(&apos;, &apos;)}`); // Template Strings</code>
+</code></pre><p>Run <code>atscm push</code> to upload the new display script to atvise server. Open your atvise project in your favorite browser (you may have to delete the browser cache) and if everything worked you should see an alert box containing the text &quot;Option a: 13, args: 23&quot;. When you inspect the page&apos;s source you&apos;ll see the display script code was transpiled to ES5.</p><h2>Step 7: Implement <em>Transformer#transformFromDB</em></h2><p>As said at the beginning, atscm transformers allow transformation from and to the filesystem. A babel transpilation is a one-way process, meaning you cannot create ES2015 source code from the resulting ES5 code. Therefore the only thing we can do when transforming from atvise server to the filesystem is to prevent an override.</p><p>We do so by implementing <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromDB">Transformer#transformFromDB</a>:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+...
+
+export default class BabelTransformer extends PartialTransfromer {
+  ...
+
+  transformFromDB(file, enc, callback) {
+    // Optionally, we could print a warning here
+    callback(null); // Ignore file, remove it from the stream
+  }
+}</code>
+</code></pre><p>Now we can run <code>atscm push</code> without overriding our ES2015 source code.</p><h2>Result</h2><p>This is how your custom transformer should look now:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { Buffer } from &apos;buffer&apos;;
+import { PartialTransformer } from &apos;atscm&apos;;
+import { transform } from &apos;babel-core&apos;;
+
+export default class BabelTransformer extends PartialTransformer {
+
+  shouldBeTransformed(file) {
+    return file.extname === &apos;.js&apos;;
+  }
+
+  transformFromFilesystem(file, enc, callback) {
+    // Create ES5 code
+    const { code } = transform(file.contents, {
+      presets: [&apos;es2015&apos;],
+    });
+
+    // Create new file with ES5 content
+    const result = file.clone();
+    result.contents = Buffer.from(code);
+
+    // We&apos;re done, pass the new file to other streams
+    callback(null, result);
+  }
+
+  transformFromDB(file, enc, callback) {
+    callback(null); // Ignore file, remove it from the stream
+  }
+
+}</code>
+</code></pre><h2>Conclusion</h2><p>We just created a custom Transformer in no time. It transpiles ES2015 code on push and prevents overriding this code on pull.</p><p>Of course there are many ways to improve the transformer, for example:</p><ul>
+<li>Handle options to configure how babel transpiles the source code</li>
+</ul><h2>Further reading</h2><ul>
+<li><a href="http://babeljs.io/learn-es2015/">babeljs.io</a> provides a nice overview of ES2015 features. You can also use the <a href="http://babeljs.io/repl/">REPL</a> to try out these features.</li>
+</ul></div>
+        <a data-ice="link" href="manual/tutorial/custom-transformer.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-advanced" data-section-count="&#x25A0;"><span data-ice="label-inner">Guides</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>Guides</h1><p>Guides provide information on advanced <em>atscm</em> use cases.</p><p><strong>Available guides:</strong></p><ul>
+<li><a href="./manual/advanced/gulp-plugins.html">gulp.js plugins</a> - Speed up your transformer development by using existing gulp plugins.</li>
+</ul></div>
+        <a data-ice="link" href="manual/advanced/README.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-advanced" data-section-count="&#x25A0;&#x25A0;"><span data-ice="label-inner">Guide: gulp.js plugins</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>Guide: gulp.js plugins</h1><blockquote>
+<p><strong>Please note:</strong> This guide assumes you have a basic knowledge on how gulp.js and custom <em>atscm</em> transformers work. You may go through <a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">gulp&apos;s getting started guide</a> or the <a href="https://doc.esdoc.org/github.com/atSCM/atscm/manual/tutorial/custom-transformer.html">custom transformer tutorial</a> first otherwise.   </p>
+</blockquote><p><em>atscm</em> heavily relies on the <a href="http://gulpjs.com">gulp.js</a> build tool. Therefore it&apos;s pretty easy to integrate existing <a href="http://gulpjs.com/plugins/">gulp plugins</a> into <em>atscm</em> transformers.</p><h2>Using <em>Transformer</em> class</h2><p>Basically, the only Transformer method you have to override is <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-applyToStream">Transformer#applyToStream</a>. In there, you can pipe your gulp plugin just as you would do in a regular gulp project. The only difference is, that you have to handle the current transform direction as well:</p><p><strong>A basic example:</strong></p><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Transformer, TransformDirection } from &apos;atscm&apos;;
+import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
+import fromFSGulpPlugin from &apos;gulp-plugin-to-use-from-fs&apos;;
+
+class MyTransformer extends Transformer {
+
+  applyToStream(stream, direction) {
+    if (direction === TransformDirection.FromDB) {
+      return stream.pipe(fromDBGulpPlugin(/* plugin options */));
+    }
+
+    return stream.pipe(fromFSGulpPlugin(/* plugin options */));
+  }
+
+}</code>
+</code></pre><h2>Using <em>PartialTransformer</em> class</h2><p>In most cases you&apos;ll have to transform only parts of the piped files. This can be done by inheriting from <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransfomer class</a>:</p><p><strong>Transforming only JavaScript files:</strong></p><pre><code class="lang-javascript"><code class="source-code prettyprint">import { PartialTransformer, TransformDirection } from &apos;atscm&apos;;
+import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
+import fromFSGulpPlugin from &apos;gulp-plugin-to-use-from-fs&apos;;
+
+class MyPartialTransformer extends PartialTransformer {
+
+  shouldBeTransformed(file) {
+    return file.extname === &apos;.js&apos;;
+  }
+
+  applyToFilteredStream(stream, direction) {
+    if (direction === TransformDirection.FromDB) {
+      return stream.pipe(fromDBGulpPlugin(/* plugin options */));
+    }
+
+    return stream.pipe(fromFSGulpPlugin(/* plugin options */));
+  }
+
+}</code>
+</code></pre><h2>Conclusion</h2><p>Using existing gulp plugins is probably the easiest way to use custom transformers inside an <em>atscm</em> project. As there are <strong>thousands of well-tested gulp-plugins</strong> out there, you won&apos;t have to implemtent any transform logic in most cases.</p><p>Give it a try!</p><h2>Further reading</h2><ul>
+<li>Take a look at <a href="http://gulpjs.com/plugins/">gulp&apos;s plugin page</a> for a list of available plugins.</li>
+</ul></div>
+        <a data-ice="link" href="manual/advanced/gulp-plugins.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-reference" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">References</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>References</h1>
+<div data-ice="classSummary"><h2 id="class">Class Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Class Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>An extension to <span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span> providing some additional, atvise-related properties.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      <span class="abstract" data-ice="abstract">abstract</span>
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>An <em>atvise-scm</em> project&apos;s configuration.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/Client.js~Client.html">Client</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A wrapper around <span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span> used to connect to atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Determines which files are needed to create a combined file and stores these files as long as
+some of them are missing.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Splits read atvise display XML nodes into their SVG and JavaScript sources,
+alongside with a .json file containing the display&apos;s parameters.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>An option the &quot;atscm init&quot; command handles.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A static class containing validators for the options used when running &quot;atscm init&quot;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The action run when running &quot;atscm init&quot;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A Transformer that maps <span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span>s to <span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span>s.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/NodeId.js~NodeId.html">NodeId</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A wrapper around <span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span>.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html">NodeStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that browses the nodes specified and (if <em>recursive</em> option is set) it&apos;s child nodes.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      <span class="abstract" data-ice="abstract">abstract</span>
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A transformer that transforms only some of the files read.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that transforms read <span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span>s and stores the on the filesystem.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that transforms read <span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span>s and pushes them to atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      <span class="abstract" data-ice="abstract">abstract</span>
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/QueueStream.js~QueueStream.html">QueueStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that process atvise server requests in parallel.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html">ReadStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that reads atvise server nodes for the <span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span>s passed.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
+containing parameters and metadata.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/Session.js~Session.html">Session</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A wrapper around <span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span> used to connect to atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      <span class="abstract" data-ice="abstract">abstract</span>
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A transformer that splits files into multiple others.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/Stream.js~Stream.html">Stream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>An object transform stream connected to atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that monitors changes in the read nodes.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      <span class="abstract" data-ice="abstract">abstract</span>
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A special kind of an object transform stream: It does apply different transformations based on
+it&apos;s direction.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~Watcher.html">Watcher</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Watches the given nodes for value changes.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html">WriteStream</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A stream that writes all read <span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span>s to their corresponding nodes on atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A transformer used to transform XML documents.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="functionSummary"><h2 id="function">Function Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Function Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-cleanup">cleanup</a></span></span><span data-ice="signature">(exitCode: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">Number</a></span>, signal: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, uninstall: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Cleans up after the app ended with the specified code or signal.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span><span data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Pulls all nodes from atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span><span data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Pushes <span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span>s to atvise server.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span><span data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Watches local files and atvise server nodes to trigger pull/push on change.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-watchForFileChanges">watchForFileChanges</a></span></span><span data-ice="signature">(listener: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(path: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, root: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, stat: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns a fully set up gulp task that watches the project&apos;s source files for changes.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="function/index.html#static-function-watchForServerChanges">watchForServerChanges</a></span></span><span data-ice="signature">(listener: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(path: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, root: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, stat: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span>)</span></span>): <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>()</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns a fully set up gulp task that watches atvise server nodes for value changes.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="variableSummary"><h2 id="variable">Variable Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Variable Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span><span data-ice="signature">: <span><span>AtviseType</span><span>[]</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The atvise types to handle.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A map providing dirnames for config langs</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A map providing data types for shorter extensions (Reverse of <span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span>).</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js">node-opcua~DataType</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A map providing shorter extensions for data types</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Options available for the &quot;atscm init&quot; command.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span><span data-ice="signature">: <span><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span><span>[]</span></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span>, exported as an array.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span><span data-ice="signature">: {FromDB: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>, FromFilesystem: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The directions a transformer can be run in.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-config">config</a></span></span><span data-ice="signature">: <span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The current project&apos;s configuration.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span><span data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The path to the project&apos;s configuration file.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="typedefSummary"><h2 id="typedef">Typedef Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Typedef Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span><span data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Must be one of: &apos;list&apos;, &apos;rawlist&apos;, &apos;expand&apos;, &apos;checkbox&apos;, &apos;confirm&apos;, &apos;input&apos;, &apos;password&apos;,
+&apos;editor&apos;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span><span data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span><span>(value: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span>)</span>: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></span></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>A function that, when called with a value, validates this value and either retunrs <code>true</code> if
+validation succeeded or an error message.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+<div data-ice="externalSummary"><h2 id="external">External Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public External Summary</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js">node-opcua~DataType</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/lib/raw_status_codes.js">node-opcua~StatusCodes</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          <span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+        <a data-ice="link" href="identifiers.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <h1 data-ice="label" class="manual-color manual-color-changelog" data-section-count="&#x25A0;&#x25A0;&#x25A0;&#x25A0;&#x25A0;"><span data-ice="label-inner">0.2.0-alpha.1 (2017-03-01)</span></h1>
+      <div class="manual-card">
+        <div data-ice="card"><h1>0.2.0-alpha.1 (2017-03-01)</h1><h3>Bug Fixes</h3><ul>
+<li><strong>AtviseFile:</strong> Assign original array type (<a href="https://github.com/atSCM/atscm/commit/c95d6db">c95d6db</a>), closes <a href="https://github.com/atSCM/atscm/issues/18">#18</a></li>
+<li><strong>MappingTransformer:</strong> Exclude directories from mapping (<a href="https://github.com/atSCM/atscm/commit/167ffe5">167ffe5</a>)</li>
+<li><strong>test:</strong> Return unexpected Promises in XMLTransformer tests (<a href="https://github.com/atSCM/atscm/commit/0877e3c">0877e3c</a>)</li>
+<li><strong>WriteStream:</strong> Handle sync errors (<a href="https://github.com/atSCM/atscm/commit/5e0292e">5e0292e</a>)</li>
+<li><strong>XMLTransformer:</strong> Prevent double escaping in CDATA (<a href="https://github.com/atSCM/atscm/commit/246b5b5">246b5b5</a>)</li>
+</ul><h3>Features</h3><ul>
+<li><strong>exports:</strong> Export Transformer class (<a href="https://github.com/atSCM/atscm/commit/af0d288">af0d288</a>)</li>
+<li><strong>mapping:</strong> Handle project ObjectTypes (<a href="https://github.com/atSCM/atscm/commit/5106a61">5106a61</a>)</li>
+<li><strong>mapping:</strong> Support custom variable types (<a href="https://github.com/atSCM/atscm/commit/d7b48d7">d7b48d7</a>)</li>
+<li><strong>mapping:</strong> Support split files (<a href="https://github.com/atSCM/atscm/commit/e1a52fb">e1a52fb</a>)</li>
+<li><strong>Mapping:</strong> Store variables with <code>null</code> value (<a href="https://github.com/atSCM/atscm/commit/1a21d0f">1a21d0f</a>), closes <a href="https://github.com/atSCM/atscm/issues/17">#17</a></li>
+<li><strong>transformer:</strong> Use Transformers in tasks (<a href="https://github.com/atSCM/atscm/commit/09f97bf">09f97bf</a>), closes <a href="https://github.com/atSCM/atscm/issues/10">#10</a></li>
+<li>Add AtviseFile#isScript and #isQuickDynamic helpers (<a href="https://github.com/atSCM/atscm/commit/16a4dbe">16a4dbe</a>)</li>
+<li><strong>transformers:</strong> Add <code>DisplayTransformer</code> (<a href="https://github.com/atSCM/atscm/commit/585303d">585303d</a>), closes <a href="https://github.com/atSCM/atscm/issues/9">#9</a></li>
+<li><strong>transformers:</strong> Implement DisplayTransformer (<a href="https://github.com/atSCM/atscm/commit/ccbe02b">ccbe02b</a>), closes <a href="https://github.com/atSCM/atscm/issues/8">#8</a></li>
+<li><strong>XMLTransformer:</strong> Support forced CDATA (<a href="https://github.com/atSCM/atscm/commit/0cb1634">0cb1634</a>)</li>
+<li><strong>XMLTransformer:</strong> Wrap in CDATA (<a href="https://github.com/atSCM/atscm/commit/5583410">5583410</a>)</li>
+</ul><p><a name="0.1.2"></a></p><h2><a href="https://github.com/atSCM/atscm/compare/0.1.1...v0.1.2">0.1.2</a> (2017-02-23)</h2><p><a name="0.1.1"></a></p><h2>0.1.1 (2017-02-22)</h2><h3>Bug Fixes</h3><ul>
+<li>Export NodeId (<a href="https://github.com/atSCM/atscm/issues/2">#2</a>) (<a href="https://github.com/atSCM/atscm/commit/6d9a5e6">6d9a5e6</a>)</li>
+</ul><h3>Features</h3><ul>
+<li><strong>tasks:</strong> Add push task (<a href="https://github.com/atSCM/atscm/commit/adc4b1a">adc4b1a</a>)</li>
+</ul><h3>Performance Improvements</h3><ul>
+<li><strong>mapping:</strong> Cache regular expressions (<a href="https://github.com/atSCM/atscm/commit/0daf35e">0daf35e</a>)</li>
+</ul><h2><a href="https://github.com/atSCM/atscm/releases/tag/v0.1.0">0.1.0</a> (2017-02-21)</h2><ul>
+<li>First release </li>
+</ul></div>
+        <a data-ice="link" href="manual/changelog/CHANGELOG.html#-0-2-0-alpha-1-https-github-com-atscm-atscm-compare-0-1-1-v0-2-0-alpha-1-2017-03-01-"></a>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
