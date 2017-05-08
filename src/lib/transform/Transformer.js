@@ -111,6 +111,18 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
+   * Applies the transformer to the given stream. By default this just invokes
+   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}. Override
+   * this method if you want to pipe streams directly.
+   * @param {Stream} stream The stream to apply the transformer to.
+   * @param {TransformDirection} direction The direction to use.
+   * @return {Stream} The resulting stream.
+   */
+  applyToStream(stream, direction) {
+    return stream.pipe(this.withDirection(direction));
+  }
+
+  /**
    * Creates a stream with all transformers passed, with the given direction. Transformers are
    * reversed if using {@link TransformDirection.FromFilesystem}.
    * @param {Stream} stream The stream to apply the transformers to.
@@ -128,7 +140,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
-      .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
+      .reduce((prev, curr) => curr.applyToStream(prev, direction), stream);
   }
 
   /**
