@@ -110,6 +110,10 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     callback(new Error('Transformer#transformFromFilesystem must be overridden by all subclasses'));
   }
 
+  applyToStream(stream, direction) {
+    return stream.pipe(this.withDirection(direction));
+  }
+
   /**
    * Creates a stream with all transformers passed, with the given direction. Transformers are
    * reversed if using {@link TransformDirection.FromFilesystem}.
@@ -128,7 +132,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     }
 
     return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
-      .reduce((prev, curr) => prev.pipe(curr.withDirection(direction)), stream);
+      .reduce((prev, curr) => curr.applyToStream(prev, direction), stream);
   }
 
   /**
