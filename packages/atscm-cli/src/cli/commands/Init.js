@@ -194,11 +194,11 @@ export default class InitCommand extends Command {
    * @param {AtSCMCli} cli The current Cli instance.
    */
   run(cli) {
-    return cli.getEnvironment()
+    return cli.getEnvironment(false)
       .then(env => this.checkDirectory(env.cwd, cli.options.force))
       .then(() => this.createEmptyPackage(cli.environment.cwd))
       .then(() => this.installLocal(cli.environment.cwd))
-      .then(() => cli.getEnvironment())
+      .then(() => cli.getEnvironment(false))
       .then(env => this.checkCliVersion(env))
       .then(env => process.chdir(env.cwd))
       .then(() => this.getOptions(cli.environment.modulePath))
