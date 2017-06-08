@@ -7,6 +7,7 @@ import { satisfies as validVersion } from 'semver';
 import Command from '../../lib/cli/Command';
 import Logger from '../../lib/util/Logger';
 import pkg from '../../../package.json';
+import CliOptions from '../Options';
 
 const IgnoredFiles = ['.ds_store', 'thumbs.db'];
 
@@ -16,13 +17,27 @@ const IgnoredFiles = ['.ds_store', 'thumbs.db'];
 export default class InitCommand extends Command {
 
   /**
+   * Creates a new {@link InitCommand} with the specified name and description.
+   * @param {String} name The command's name.
+   * @param {String} description The command's description.
+   */
+  constructor(name, description) {
+    super(name, description, {
+      options: {
+        force: CliOptions.force,
+      },
+    });
+  }
+
+  /**
    * Checks if the given path contains an empty directory. OS specific temporary files (.DS_Store
    * under macOS, thumbs.db under Windows) are ignored.
    * @param {String} path The path to check.
+   * @param {Boolean} [overwrite=false] If existing files should be overwritten.
    * @return {Promise<String, Error>} Fulfilled with the valid directory's path, rejected if `path`
    * contains no or a non-empty directory.
    */
-  checkDirectory(path) {
+  checkDirectory(path, overwrite = false) {
     return new Promise((resolve, reject) => {
       readdir(path, (err, files) => {
         if (err) {
@@ -34,7 +49,15 @@ export default class InitCommand extends Command {
             reject(err);
           }
         } else if (files.filter(f => !IgnoredFiles.includes(f.toLowerCase())).length > 0) {
-          reject(new Error(`${Logger.format.path(path)} is not empty`));
+          const message = `${Logger.format.path(path)} is not empty`;
+
+          if (overwrite) {
+            Logger.warn(message);
+            Logger.warn(Logger.colors.yellow('Using --force, continue...'));
+            resolve(path);
+          } else {
+            reject(new Error(message));
+          }
         } else {
           resolve(path);
         }
@@ -172,7 +195,7 @@ export default class InitCommand extends Command {
    */
   run(cli) {
     return cli.getEnvironment()
-      .then(env => this.checkDirectory(env.cwd))
+      .then(env => this.checkDirectory(env.cwd, cli.options.force))
       .then(() => this.createEmptyPackage(cli.environment.cwd))
       .then(() => this.installLocal(cli.environment.cwd))
       .then(() => cli.getEnvironment())
