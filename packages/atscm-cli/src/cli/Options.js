@@ -11,6 +11,7 @@ import Option from '../lib/cli/Option';
  * @property {Option} help Show help.
  * @property {Option} logLevel Set the Logger level.
  * @property {Option} projectfile Manually set path of Atviseproject file to use.
+ * @property {Option} remote Open hosted documentation.
  * @property {Option} silent Supress all logging.
  * @property {Option} version Print version.
  */
@@ -32,6 +33,9 @@ const Options = {
     'This will set the CWD to the Atviseproject file\'s directory as well.',
     { alias: 'p' }),
   require: Option.string('Will require a module before running atscm.'),
+  remote: Option.boolean('Open hosted documentation.', {
+    default: undefined,
+  }),
   silent: Option.boolean('Suppress all logging.', { alias: 'S' }),
   tasks: Option.boolean('Print the task dependency tree.', {
     alias: 'T',
