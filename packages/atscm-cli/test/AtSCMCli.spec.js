@@ -1,3 +1,4 @@
+import { join } from 'path';
 import expect from 'unexpected';
 import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
@@ -133,6 +134,30 @@ describe('AtSCMCli', function() {
             ['cwd', 'configPath', 'configBase', 'modulePath', 'modulePackage']
           );
         });
+    });
+
+    context('when not looking up parent directories', function() {
+      it('should resolve to initial cwd', function() {
+        return (new AtSCMCli()).getEnvironment(false)
+          .then(env => expect(env.cwd, 'to equal', process.cwd()));
+      });
+
+      const projChildDir = join('test/fixtures/node_modules');
+
+      it('should resolve to initial cwd in project child directories', function() {
+        return (new AtSCMCli([
+          '--cwd', projChildDir,
+        ])).getEnvironment(false)
+          .then(env => expect(env.cwd, 'to end with', projChildDir));
+      });
+
+      it('should ignore --projectfile option', function() {
+        return (new AtSCMCli([
+          '--cwd', projChildDir,
+          '--projectfile', join(projChildDir, '../Atviseproject.js'),
+        ])).getEnvironment(false)
+          .then(env => expect(env.cwd, 'to end with', projChildDir));
+      });
     });
   });
 

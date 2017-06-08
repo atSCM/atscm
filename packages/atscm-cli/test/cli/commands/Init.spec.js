@@ -282,7 +282,7 @@ describe('InitCommand', function() {
         cwd: stubModulePath,
       },
       options: {
-        force: false
+        force: false,
       },
       getEnvironment: spy(() => Promise.resolve({
         cwd: stubModulePath,
@@ -317,6 +317,11 @@ describe('InitCommand', function() {
 
     it('should call AtSCMCli#getEnvironment twice', function() {
       return expectCalled(cli.getEnvironment, 2);
+    });
+
+    it('should not search in parent directories', function() {
+      return expect(command.run(cli), 'to be fulfilled')
+        .then(() => expect(cli.getEnvironment.alwaysCalledWith(false), 'to equal', true));
     });
 
     it('should call InitCommand#createEmptyPackage', function() {

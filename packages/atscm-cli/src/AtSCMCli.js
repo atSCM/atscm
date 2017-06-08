@@ -1,4 +1,5 @@
 import { realpathSync } from 'fs';
+import { join } from 'path';
 import Liftoff from 'liftoff';
 import yargs from 'yargs';
 import gulplog from 'gulplog';
@@ -161,13 +162,17 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Returns a {@link Liftoff.Environment} for the Cli.
+   * @param {Boolean} [findUp=false] If the environment should be searched for in parent
+   * directories.
    * @return {Promise<Object>} Fulfilled with a {@link Liftoff} environment.
    */
-  getEnvironment() {
+  getEnvironment(findUp = true) {
     return new Promise(resolve => {
       super.launch({
         cwd: this.options.cwd,
-        configPath: this.options.projectfile,
+        configPath: findUp ?
+          this.options.projectfile :
+          join((this.options.cwd || process.cwd()), `${this.constructor.ConfigName}.js`),
         require: this.options.require,
       }, env => resolve(this.environment = env));
     });
