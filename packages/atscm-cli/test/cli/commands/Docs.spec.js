@@ -45,7 +45,7 @@ describe('DocsCommand', function() {
 
     it('should return path to atscm-cli docs with `--cli` option passed', function() {
       expect(command.remoteDocsUrl({ options: { cli: true } }),
-        'to equal', `${DocsCommand.RemoteDocsBase}atscm-cli`,);
+        'to equal', `${DocsCommand.RemoteDocsBase}atscm-cli`);
     });
   });
 
@@ -180,7 +180,7 @@ describe('DocsCommand', function() {
       })
         .then(() => {
           expect(openSpy.calledOnce, 'to be', true);
-          expect(openSpy.lastCall.args[0], 'to start with', DocsCommand.RemoteDocsBase);
+          expect(openSpy.lastCall.args[0], 'to begin with', DocsCommand.RemoteDocsBase);
         });
     });
   });

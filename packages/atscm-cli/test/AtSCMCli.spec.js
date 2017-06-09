@@ -257,7 +257,7 @@ describe('AtSCMCli', function() {
     it('should call AtSCMCli#parseArguments', function() {
       const cli = new AtSCMCli();
       spy(cli, 'parseArguments');
-      stub(cli, 'runCommand', () => Promise.resolve(true));
+      stub(cli, 'runCommand').callsFake(() => Promise.resolve(true));
 
       return cli.launch()
         .then(() => {
@@ -269,7 +269,7 @@ describe('AtSCMCli', function() {
     it('should handle all exceptions if run via cli', function() {
       const cli = new AtSCMCli();
       cli.runViaCli = true;
-      stub(cli, 'runCommand', () => Promise.reject(new Error('test')));
+      stub(cli, 'runCommand').callsFake(() => Promise.reject(new Error('test')));
 
       return expect(cli.launch(), 'to be fulfilled');
     });

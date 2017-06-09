@@ -27,3 +27,8 @@
 /**
  * @external {node.stream.Readable} https://nodejs.org/api/stream.html#stream_class_stream_readable
  */
+
+/**
+ * @external {node.ChildProcess}
+ * https://nodejs.org/api/child_process.html#child_process_class_childprocess
+ */
