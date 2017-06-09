@@ -202,7 +202,7 @@ describe('InitCommand', function() {
 
   /** @test {InitCommand#installLocal} */
   describe('#installLocal', function() {
-    beforeEach(() => stub(command, 'install', () => Promise.resolve(true)));
+    beforeEach(() => stub(command, 'install').callsFake(() => Promise.resolve(true)));
     afterEach(() => command.install.restore());
 
     it('should call InitCommand#install', function() {
@@ -259,7 +259,7 @@ describe('InitCommand', function() {
 
   /** @test {InitCommand#installDependencies} */
   describe('#installDependencies', function() {
-    beforeEach(() => stub(command, 'install', () => Promise.resolve(true)));
+    beforeEach(() => stub(command, 'install').callsFake(() => Promise.resolve(true)));
     afterEach(() => command.install.restore());
 
     it('should run install with given deps', function() {
@@ -291,13 +291,13 @@ describe('InitCommand', function() {
     };
 
     beforeEach(() => {
-      stub(command, 'checkDirectory', () => Promise.resolve());
-      stub(command, 'createEmptyPackage', () => Promise.resolve());
-      stub(command, 'installLocal', () => Promise.resolve());
+      stub(command, 'checkDirectory').callsFake(() => Promise.resolve());
+      stub(command, 'createEmptyPackage').callsFake(() => Promise.resolve());
+      stub(command, 'installLocal').callsFake(() => Promise.resolve());
       stub(process, 'chdir');
-      stub(command, 'getOptions', () => Promise.resolve());
-      stub(command, 'writeFiles', () => Promise.resolve({ dependencies: deps }));
-      stub(command, 'installDependencies', () => Promise.resolve());
+      stub(command, 'getOptions').callsFake(() => Promise.resolve());
+      stub(command, 'writeFiles').callsFake(() => Promise.resolve({ dependencies: deps }));
+      stub(command, 'installDependencies').callsFake(() => Promise.resolve());
     });
 
     afterEach(() => {
