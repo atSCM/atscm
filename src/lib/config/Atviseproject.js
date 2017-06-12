@@ -121,6 +121,7 @@ export default class Atviseproject {
     return {
       host: this.host,
       port: this.port,
+      login: this.login,
       useTransformers: this.useTransformers,
       nodes: this.nodes,
       nodesToWatch: this.nodesToWatch,
