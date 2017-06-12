@@ -1,4 +1,4 @@
-import { Atviseproject } from '../../';
+import Atviseproject from '../../src/lib/config/Atviseproject';
 
 export default class TestProject extends Atviseproject {
 
