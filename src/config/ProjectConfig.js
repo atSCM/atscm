@@ -1,5 +1,6 @@
 /**
  * The path to the project's configuration file.
+ * @type {string}
  */
 export const path = process.env.ATSCM_CONFIG_PATH;
 
