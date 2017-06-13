@@ -85,6 +85,21 @@ describe('InitTask', function() {
         });
     });
 
+    it('should not escape author field in package.json (#52)', function() {
+      const author = 'Sample name <mail@example.com>';
+
+      return InitTask.run({ configLang: 'es2015', author })
+        .then(() => {
+          expect(srcSpy.callCount, 'to be greater than', 0);
+
+          const pkgOut = destSpy.args
+            .map(args => args[0])
+            .filter(f => f.relative === 'package.json')[0].contents.toString();
+
+          expect(JSON.parse(pkgOut).author, 'to equal', author);
+        });
+    });
+
     function expectHandlingLangFiles(configLang) {
       const files = readdirSync(
         join(__dirname, '../../../res/init/templates/lang', configLang)
