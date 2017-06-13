@@ -84,7 +84,7 @@ describe('InitTask', function() {
           expect(resulting.map(f => f.relative), 'to contain', ...files);
         });
     });
-    
+
     it('should not escape author field in package.json (#52)', function() {
       const author = 'Sample name <mail@example.com>';
 
