@@ -1,4 +1,5 @@
 import { join } from 'path';
+import colors from 'chalk';
 import Command from '../../lib/cli/Command';
 import CliOptions from '../Options';
 
@@ -45,6 +46,8 @@ export default class RunCommand extends Command {
       {
         configPath: join(cli.environment.modulePath, '../Gulpfile.js'),
         modulePath: join(cli.environment.cwd, 'node_modules/gulp'),
+      }, {
+        description: colors.bold('Available tasks:'),
       });
   }
 
