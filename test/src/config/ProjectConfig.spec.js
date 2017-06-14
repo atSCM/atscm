@@ -50,28 +50,24 @@ describe('ProjectConfig', function() {
     ATSCM_PROJECT__PORT__OPC: '1234',
   }, function() {
     expect(ProjectConfig.port.opc, 'to equal', 1234);
-    expect(ProjectConfig.port.http, 'to equal', TestConfig.port.http);
   });
 
   checkOverride('use ATSCM_PROJECT__PORT__HTTP if provided', {
     ATSCM_PROJECT__PORT__HTTP: '1234',
   }, function() {
     expect(ProjectConfig.port.http, 'to equal', 1234);
-    expect(ProjectConfig.port.opc, 'to equal', TestConfig.port.opc);
   });
 
   checkOverride('use ATSCM_PROJECT__LOGIN__USERNAME if provided', {
     ATSCM_PROJECT__LOGIN__USERNAME: 'username',
   }, function() {
     expect(ProjectConfig.login.username, 'to equal', 'username');
-    expect(ProjectConfig.login.password, 'to equal', TestConfig.login.password);
   });
 
   checkOverride('use ATSCM_PROJECT__LOGIN__PASSWORD if provided', {
     ATSCM_PROJECT__LOGIN__PASSWORD: 'password',
   }, function() {
     expect(ProjectConfig.login.password, 'to equal', 'password');
-    expect(ProjectConfig.login.username, 'to equal', TestConfig.login.username);
   });
 
   checkDefault('ATSCM_PROJECT__HOST',
