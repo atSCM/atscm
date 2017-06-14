@@ -36,19 +36,18 @@ describe('RunCommand', function() {
       command.run(cli);
 
       expect(gulpCli.calledOnce, 'to be', true);
-      expect(gulpCli.lastCall.args, 'to equal', [
-        {
-          _: ['task1', 'task2'],
-          tasks: 'tasks',
-          tasksSimple: 'tasks-simple',
-          tasksJson: 'tasks-json',
-          continue: 'continue',
-        },
-        {
-          configPath: join(__dirname, 'out/Gulpfile.js'),
-          modulePath: join(__dirname, 'node_modules/gulp'),
-        },
-      ]);
+      expect(gulpCli.lastCall.args, 'to contain', {
+        _: ['task1', 'task2'],
+        tasks: 'tasks',
+        tasksSimple: 'tasks-simple',
+        tasksJson: 'tasks-json',
+        continue: 'continue',
+      });
+
+      expect(gulpCli.lastCall.args, 'to contain', {
+        configPath: join(__dirname, 'out/Gulpfile.js'),
+        modulePath: join(__dirname, 'node_modules/gulp'),
+      });
     });
   });
 });
