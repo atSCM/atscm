@@ -69,6 +69,32 @@ describe('AtSCMCli', function() {
     });
   });
 
+  /** @test {AtSCMCli#_exposeOverride} */
+  describe('#_exposeOverride', function() {
+    it('should set single options', function() {
+      AtSCMCli.prototype._exposeOverride({ test: 13 }, 'test', 'TEST_ENVS__');
+
+      expect(process.env.TEST_ENVS__TEST, 'to be defined');
+      expect(process.env.TEST_ENVS__TEST, 'to equal', '13');
+    });
+
+    it('should set object options', function() {
+      AtSCMCli.prototype._exposeOverride({ test: { another: 13 } }, 'test', 'TEST_ENVS__');
+
+      expect(process.env.TEST_ENVS__TEST__ANOTHER, 'to be defined');
+      expect(process.env.TEST_ENVS__TEST__ANOTHER, 'to equal', '13');
+    });
+
+    it('should use default base', function() {
+      AtSCMCli.prototype._exposeOverride({ test: 13 }, 'test');
+
+      expect(process.env.ATSCM_PROJECT__TEST, 'to be defined');
+      expect(process.env.ATSCM_PROJECT__TEST, 'to equal', '13');
+
+      delete process.env.ATSCM_PROJECT__TEST;
+    })
+  });
+
   /** @test {AtSCMCli#parseArguments} */
   describe('#parseArguments', function() {
     const unknownArgCli = new AtSCMCli(['--unknown']);
@@ -101,6 +127,13 @@ describe('AtSCMCli', function() {
 
       return cli.parseArguments()
         .then(() => expect(cli.command.name, 'to equal', 'docs'));
+    });
+
+    it('should expose project options as environment variables', function() {
+      const cli = new AtSCMCli(['--tasks', '--project.test', 'test']);
+
+      return cli.parseArguments()
+        .then(() => expect(process.env.ATSCM_PROJECT__TEST, 'to equal', 'test'));
     });
   });
 

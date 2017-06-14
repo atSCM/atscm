@@ -92,7 +92,9 @@ export default class AtSCMCli extends Liftoff {
      * until {@link AtSCMCli#launch} was called.
      * @type {Object}
      */
-    this.options = yargs(argv).option(GlobalOptions)
+    this.options = yargs(argv)
+      .env('ATSCM')
+      .option(GlobalOptions)
       .fail((msg, e, y) => {
         const err = new UsageError(msg, y.help());
 
@@ -136,6 +138,7 @@ export default class AtSCMCli extends Liftoff {
             y.demandCommand(...command.demandCommand);
           }, () => (this.command = command)),
         yargs()
+          .env('ATSCM')
           .usage('Usage: $0 [cmd=run]')
           .options(GlobalOptions)
           .global(globalOptionNames)
@@ -146,7 +149,27 @@ export default class AtSCMCli extends Liftoff {
   }
 
   /**
-   * Parses arguments.
+   * Used to expose project config overrides via environment variables. All project options are
+   * exposed as `ATSCM_PROJECT__{KEY}={VALUE}`.
+   * @param {Object} config The object to expose.
+   * @param {string} key The key currently handled.
+   * @param {string} [base=ATSCM_PROJECT__] The parent key.
+   */
+  _exposeOverride(config, key, base = 'ATSCM_PROJECT__') {
+    const currentKey = `${base}${key.toUpperCase()}`;
+
+    if (typeof config[key] === 'object') {
+      const c = config[key];
+
+      Object.keys(c).forEach(k => this._exposeOverride(c, k, `${currentKey}__`));
+    } else {
+      process.env[currentKey] = config[key];
+      Logger.debug(`Setting ${currentKey}:`, Logger.format.value(config[key]));
+    }
+  }
+
+  /**
+   * Parses arguments and exposes the project options as environment variables.
    * @return {Promise<Object, UsageError>} Rejected with a {@link UsageError} if parsing failed,
    * otherwise fulfilled with the parsed arguments.
    */
@@ -155,6 +178,9 @@ export default class AtSCMCli extends Liftoff {
       this.options = this.argumentsParser
         .fail((msg, err, y) => reject(new UsageError(msg, y.help())))
         .parse(this._argv);
+
+      Object.keys(this.options.project)
+        .forEach(key => this._exposeOverride(this.options.project, key));
 
       resolve(this.options);
     });
