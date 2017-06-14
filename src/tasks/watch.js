@@ -75,8 +75,8 @@ export class WatchTask {
 
   /**
    * Starts a file watcher for the directory {@link WatchTask#directoryToWatch}.
-   * @return {Promise<sane~Watcher, Error>} Fulfilled with the file watcher once it is ready or rejected
-   * with the error that occurred while starting the watcher.
+   * @return {Promise<sane~Watcher, Error>} Fulfilled with the file watcher once it is ready or
+   * rejected with the error that occurred while starting the watcher.
    */
   startFileWatcher() {
     return validateDirectoryExists(this.directoryToWatch)
