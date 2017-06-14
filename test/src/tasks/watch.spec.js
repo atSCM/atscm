@@ -146,7 +146,7 @@ describe('WatchTask', function() {
 
     it('should not do anything while pulling', function() {
       const task = new StubWatchTask();
-      task.pulling = true;
+      task._pulling = true;
 
       return expect(task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
         'to be fulfilled with', false);
@@ -173,16 +173,16 @@ describe('WatchTask', function() {
   describe('#handleServerChange', function() {
     it('should do nothing while pushing', function() {
       const task = new StubWatchTask();
-      task.pushing = true;
+      task._pushing = true;
 
       return expect(task.handleServerChange({}), 'to be fulfilled with', false);
     });
 
     it('should do nothing when handling node that was just pushed', function() {
       const task = new StubWatchTask();
-      task.lastPushed = 'ns=13;s=Test';
+      task._lastPushed = 'ns=13;s=Test';
 
-      return expect(task.handleServerChange({ nodeId: task.lastPushed }),
+      return expect(task.handleServerChange({ nodeId: task._lastPushed }),
         'to be fulfilled with', false);
     });
 
