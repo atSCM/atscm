@@ -1,20 +1,18 @@
 import Emitter from 'events';
-import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { obj as createThroughStream } from 'through2';
-import { spy } from 'sinon';
-import watch from '../../../src/tasks/watch';
+import { spy, stub } from 'sinon';
+import expect from '../../expect';
+import watch, { WatchTask } from '../../../src/tasks/watch';
 
-class StubBrowserSync {
-  init(options, callback) { callback(); }
-  reload() {}
-}
+class TestEmitter extends Emitter {
 
-function watchForStubChanges(listener) {
-  return cb => new Emitter()
-    .on('change', listener)
-    .on('error', err => cb(err))
-    .on('close', () => cb());
+  constructor(name, payload = true, delay = 1) {
+    super();
+
+    setTimeout(() => this.emit(name, payload), delay);
+  }
+
 }
 
 class NoopStream {
@@ -23,115 +21,218 @@ class NoopStream {
   }
 }
 
-const stubWatch = proxyquire('../../../src/tasks/watch', {
-  'browser-sync': {
-    _esModule: true,
-    default: StubBrowserSync,
-    create() { return new StubBrowserSync(); },
-    '@noCallThru': true,
-  },
-  gulp: {
-    src(path, options) {
-      const stream = createThroughStream();
-      stream.write(Object.assign({}, options, { path, nodeId: 'source node id' }));
-      stream.end();
+const stubGulp = {
+  src(path, options) {
+    const stream = createThroughStream();
+    stream.write(Object.assign({}, options, { path, nodeId: 'source node id' }));
+    stream.end();
 
-      return stream;
+    return stream;
+  },
+};
+
+const stubModule = proxyquire('../../../src/tasks/watch', {
+  sane: () => new TestEmitter('ready', 1),
+  'browser-sync': {
+    create() {
+      return {
+        init() {
+          this.emitter.emit('service:running', true);
+        },
+        emitter: new TestEmitter(),
+        reload() {},
+      };
     },
   },
-  '../lib/gulp/watchForFileChanges': { _esModule: true, default: watchForStubChanges },
-  '../lib/gulp/watchForServerChanges': { _esModule: true, default: watchForStubChanges },
-  '../lib/gulp/PullStream': { __esModule: true, default: NoopStream, '@noCallThru': true },
-  '../lib/gulp/PushStream': { __esModule: true, default: NoopStream, '@noCallThru': true },
-}).default;
+  gulp: stubGulp,
+  '../util/fs': {
+    validateDirectoryExists: () => Promise.resolve(true),
+  },
+  '../lib/server/Watcher': {
+    default: class extends TestEmitter {
+      constructor() { super('ready', 1); }
+    },
+  },
+  '../lib/gulp/PullStream': { default: NoopStream },
+  '../lib/gulp/PushStream': { default: NoopStream },
+});
+
+const StubWatchTask = stubModule.WatchTask;
+const stubWatch = stubModule.default;
+
+/** @test {WatchTask} */
+describe('WatchTask', function() {
+  /** @test {WatchTask#constructor} */
+  describe('#constructor', function() {
+    it('should create a new browser-sync instance', function() {
+      expect((new WatchTask()).browserSyncInstance, 'to be defined');
+    });
+  });
+
+  /** @test {WatchTask#_waitForWatcher} */
+  describe('#_waitForWatcher', function() {
+    it('should be rejected on error', function() {
+      const task = new WatchTask();
+      const fakeWatcher = new TestEmitter('error', new Error('Test error'));
+
+      return expect(task._waitForWatcher(fakeWatcher), 'to be rejected with', 'Test error');
+    });
+
+    it('should be fulfilled on ready', function() {
+      const task = new WatchTask();
+      const fakeWatcher = new TestEmitter('ready');
+
+      return expect(task._waitForWatcher(fakeWatcher), 'to be fulfilled');
+    });
+  });
+
+  /** @test {WatchTask#startFileWatcher} */
+  describe('#startFileWatcher', function() {
+    it('should fail if directory does not exist', function() {
+      class FailingTask extends WatchTask { get directoryToWatch() { return './does-not-exist'; } }
+
+      const task = new FailingTask();
+
+      return expect(task.startFileWatcher(), 'to be rejected with', /does not exist/);
+    });
+
+    it('should fail if fs#stat fails', function() {
+      class FailingTask extends WatchTask { get directoryToWatch() { return 13; } }
+
+      const task = new FailingTask();
+
+      return expect(task.startFileWatcher(), 'to be rejected with', /Path must be a string/);
+    });
+
+    it('should call #_waitForWatcher', function() {
+      const task = new StubWatchTask();
+      spy(task, '_waitForWatcher');
+
+      return expect(task.startFileWatcher(), 'to be fulfilled')
+        .then(() => expect(task._waitForWatcher, 'was called once'));
+    });
+  });
+
+  /** @test {WatchTask#startServerWatcher} */
+  describe('#startServerWatcher', function() {
+    it('should call #_waitForWatcher', function() {
+      const task = new StubWatchTask();
+      spy(task, '_waitForWatcher');
+
+      return expect(task.startServerWatcher(), 'to be fulfilled')
+        .then(() => expect(task._waitForWatcher, 'was called once'));
+    });
+  });
+
+  /** @test {WatchTask#initBrowserSync} */
+  describe('#initBrowserSync', function() {
+    it('should call BrowserSync#init', function() {
+      const task = new WatchTask();
+      stub(task.browserSyncInstance, 'init').returns(true);
+
+      task.initBrowserSync();
+      expect(task.browserSyncInstance.init, 'was called once');
+    });
+  });
+
+  /** @test {WatchTask#handleFileChange} */
+  describe('#handleFileChange', function() {
+    it('should not do anything when lately pulled files change', function() {
+      const task = new StubWatchTask();
+
+      return expect(task.handleFileChange('./path.file', './src', { mtime: new Date(-10000) }),
+        'to be fulfilled with', false);
+    });
+
+    it('should not do anything while pulling', function() {
+      const task = new StubWatchTask();
+      task.pulling = true;
+
+      return expect(task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
+        'to be fulfilled with', false);
+    });
+
+    it('should push changed files', function() {
+      const task = new StubWatchTask();
+
+      return expect(task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
+        'to be fulfilled with', true);
+    });
+
+    it('should reload browser', function() {
+      const task = new StubWatchTask();
+      spy(task.browserSyncInstance, 'reload');
+
+      return expect(task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
+        'to be fulfilled with', true)
+        .then(() => expect(task.browserSyncInstance.reload, 'was called once'));
+    });
+  });
+
+  /** @test {WatchTask#handleServerChange} */
+  describe('#handleServerChange', function() {
+    it('should do nothing while pushing', function() {
+      const task = new StubWatchTask();
+      task.pushing = true;
+
+      return expect(task.handleServerChange({}), 'to be fulfilled with', false);
+    });
+
+    it('should do nothing when handling node that was just pushed', function() {
+      const task = new StubWatchTask();
+      task.lastPushed = 'ns=13;s=Test';
+
+      return expect(task.handleServerChange({ nodeId: task.lastPushed }),
+        'to be fulfilled with', false);
+    });
+
+    it('should pull changed nodes', function() {
+      const task = new StubWatchTask();
+
+      return expect(task.handleServerChange({ nodeId: 'ns=13;s=Test', mtime: new Date() }),
+        'to be fulfilled with', true);
+    });
+  });
+
+  /** @test {WatchTask#run} */
+  describe('#run', function() {
+    it('should fail if file watcher errors', function() {
+      const task = new StubWatchTask();
+      task.startFileWatcher = () => Promise.reject(new Error('Test'));
+
+      return expect(task.run(), 'to be rejected with', 'Test');
+    });
+
+    it('should fail if server watcher errors', function() {
+      const task = new StubWatchTask();
+      task.startServerWatcher = () => Promise.reject(new Error('Test'));
+
+      return expect(task.run(), 'to be rejected with', 'Test');
+    });
+
+    it('should init browser sync', function() {
+      const task = new StubWatchTask();
+      stub(task.browserSyncInstance, 'init').callsFake(() => {
+        task.browserSyncInstance.emitter.emit('service:running', true);
+      });
+
+      return expect(task.run(), 'to be fulfilled')
+        .then(() => expect(task.browserSyncInstance.init, 'was called once'));
+    });
+  });
+});
 
 /** @test {watch} */
 describe('watch', function() {
-  it('should return a function', function() {
+  it('should export a function', function() {
     expect(watch, 'to be a', 'function');
   });
 
-  context('when run', function() {
-    it('should return a Promise', function() {
-      expect(stubWatch(), 'to be a', Promise);
-    });
-
-    it('should init browser-sync once watchers are ready', function() {
-      const { browserSync, fileWatcher, serverWatcher } = stubWatch();
-      spy(browserSync, 'init');
-
-      fileWatcher.emit('ready');
-      expect(browserSync.init.callCount, 'to equal', 0);
-
-      serverWatcher.emit('ready');
-      expect(browserSync.init.calledOnce, 'to be', true);
-    });
-
-    it('should call listeners on file change', function(done) {
-      const promise = stubWatch();
-
-      promise.fileWatcher.emit('change', 'root', 'path', { mtime: new Date() });
-
-      promise.browserSync.reload = () => done();
-    });
-
-    it('should not call file listeners while pulling', function(done) {
-      const promise = stubWatch();
-
-      const readResult = { nodeId: 'fake node id', mtime: new Date() };
-      promise.serverWatcher.emit('change', readResult);
-      promise.fileWatcher.emit('change', 'root', 'path', { mtime: new Date() });
-
-      promise.browserSync.reload = () => done();
-    });
-
-    it('should call listeners on server change', function(done) {
-      const promise = stubWatch();
-
-      const readResult = { nodeId: 'fake node id', mtime: new Date() };
-      promise.serverWatcher.emit('change', readResult);
-
-      promise.browserSync.reload = () => done();
-    });
-
-    it('should not call server listeners while pushing', function(done) {
-      const promise = stubWatch();
-
-      const readResult = { nodeId: 'fake node id', mtime: new Date() };
-      promise.fileWatcher.emit('change', 'root', 'path', { mtime: new Date() });
-      promise.serverWatcher.emit('change', readResult);
-
-      promise.browserSync.reload = () => done();
-    });
-
-    it('should not call server listeners when delayed', function(done) {
-      const promise = stubWatch();
-
-      promise.fileWatcher.emit('change', 'root', 'path', { mtime: new Date() });
-      promise.fileWatcher.once('push', () => {
-        const readResult = { nodeId: 'source node id', mtime: new Date() };
-        promise.serverWatcher.emit('change', readResult);
-        done();
-      });
-      promise.serverWatcher.once('pull', () => {
-        done(new Error('server listener unexpectedly called on delayed change'));
-      });
-    });
-
-    it('should forward file watcher errors', function() {
-      const promise = stubWatch();
-      promise.fileWatcher.emit('error', new Error('Test'));
-
-      return expect(promise, 'to be rejected with', 'Test');
-    });
-
-    it('should forward server watcher errors', function() {
-      const promise = stubWatch();
-      promise.serverWatcher.emit('error', new Error('Test'));
-
-      return expect(promise, 'to be rejected with', 'Test');
-    });
+  it('should resolve once watchers are ready', function() {
+    return expect(stubWatch(), 'to be fulfilled');
   });
 
-  // FIXME: Need additional tests that actually subscribe nodes / watch files
+  it('should export a description', function() {
+    expect(watch.description, 'to be defined');
+  });
 });

@@ -1,118 +1,162 @@
 import { join } from 'path';
 import { src } from 'gulp';
+import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
 import { obj as createStream } from 'through2';
-import watchForFileChanges from '../lib/gulp/watchForFileChanges';
-import watchForServerChanges from '../lib/gulp/watchForServerChanges';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
 import AtviseFile from '../lib/server/AtviseFile';
+import ServerWatcher from '../lib/server/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
+import { validateDirectoryExists } from '../util/fs';
 
-/**
- * Watches local files and atvise server nodes to trigger pull/push on change.
- */
-export default function watch() {
-  let fileWatcher;
-  let serverWatcher;
-  const browserSyncInstance = browserSync.create();
+export class WatchTask {
 
-  let pulling = false;
-  let pushing = false;
-  let lastPull = 0;
-  let lastPushed = null;
+  constructor() {
+    this.browserSyncInstance = browserSync.create();
 
-  function initBrowserSync() {
-    return new Promise((resolve) => {
-      let ready = 0;
+    this.pulling = false;
+    this.pushing = false;
+    this.lastPull = 0;
+    this.lastPushed = null;
+  }
 
-      function initIfReady() {
-        ready++;
+  get directoryToWatch() {
+    return './src';
+  }
 
-        if (ready === 2) {
-          browserSyncInstance.init({
-            proxy: {
-              target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-              ws: true,
-            },
-          }, () => resolve());
+  _waitForWatcher(watcher) {
+    return new Promise((resolve, reject) => {
+      watcher.on('error', err => reject(err));
+      watcher.on('ready', () => resolve(watcher));
+    });
+  }
+
+  startFileWatcher() {
+    return validateDirectoryExists(this.directoryToWatch)
+      .catch(err => {
+        if (err.code === 'ENOENT') {
+          Logger.info(`Create a directory at ${this.directoryToWatch} or run \`atscm pull\` first`);
+
+          Object.assign(err, {
+            message: `Directory ${this.directoryToWatch} does not exist`,
+          });
         }
+
+        throw err;
+      })
+      .then(() => this._waitForWatcher(sane(this.directoryToWatch, {
+        glob: '**/*.*',
+        watchman: process.platform === 'darwin',
+      })));
+  }
+
+  startServerWatcher() {
+    return this._waitForWatcher(new ServerWatcher());
+  }
+
+  initBrowserSync() {
+    this.browserSyncInstance.init({
+      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+      ws: true,
+      // logLevel: 'debug', FIXME: Use log level specified in cli options
+      // logPrefix: '',
+    });
+
+    /* bs.logger.logOne = function(args, msg, level, unprefixed) {
+      args = args.slice(2);
+
+      if (this.config.useLevelPrefixes && !unprefixed) {
+        msg = this.config.prefixes[level] + msg;
       }
 
-      fileWatcher.once('ready', () => initIfReady());
-      serverWatcher.once('ready', () => initIfReady());
+      msg = this.compiler.compile(msg, unprefixed);
+
+      args.unshift(msg);
+
+      Logger[level](format(...args));
+
+      this.resetTemps();
+
+      return this;
+    }; */
+  }
+
+  handleFileChange(path, root, stat) {
+    return new Promise(resolve => {
+      if (!this.pulling && AtviseFile.normalizeMtime(stat.mtime) > this.lastPull) {
+        this.pushing = true;
+        Logger.info(path, 'changed');
+
+        const source = src(join(root, path), { base: root });
+
+        (new PushStream(source))
+          .on('data', file => (this.lastPushed = file.nodeId.toString()))
+          .on('end', () => {
+            this.pushing = false;
+            this.browserSyncInstance.reload();
+
+            resolve(true);
+          });
+      } else {
+        resolve(false);
+      }
     });
   }
 
-  function rejectOnError(err, resolve, reject) {
-    if (err) {
-      reject(err);
-    } else {
-      resolve();
-    }
-  }
+  handleServerChange(readResult) {
+    return new Promise(resolve => {
+      if (!this.pushing) {
+        if (readResult.nodeId.toString() !== this.lastPushed) {
+          this.pulling = true;
+          Logger.info(readResult.nodeId.toString(), 'changed');
 
-  function startFileWatcher() {
-    return new Promise((resolve, reject) => {
-      fileWatcher = watchForFileChanges((path, root, stat) => {
-        if (!pulling && AtviseFile.normalizeMtime(stat.mtime) > lastPull) {
-          pushing = true;
-          Logger.info(path, 'changed');
+          const readStream = createStream();
+          readStream.write(readResult);
+          readStream.end();
 
-          const source = src(join(root, path), { base: root });
-
-          (new PushStream(source))
-            .on('data', file => (lastPushed = file.nodeId.toString()))
+          (new PullStream(readStream))
             .on('end', () => {
-              pushing = false;
-              browserSyncInstance.reload();
-              fileWatcher.emit('push');
+              this.pulling = false;
+              this.lastPull = AtviseFile.normalizeMtime(readResult.mtime);
+              this.browserSyncInstance.reload();
+
+              resolve(true);
             });
+        } else {
+          this.lastPushed = null;
+
+          resolve(false);
         }
-      })(err => rejectOnError(err, resolve, reject));
+      } else {
+        resolve(false);
+      }
     });
   }
 
-  function startServerWatcher() {
-    return new Promise((resolve, reject) => {
-      serverWatcher = watchForServerChanges(readResult => {
-        if (!pushing) {
-          if (readResult.nodeId.toString() !== lastPushed) {
-            pulling = true;
-            Logger.info(readResult.nodeId.toString(), 'changed');
+  run() {
+    return Promise.all([
+      this.startFileWatcher(),
+      this.startServerWatcher(),
+    ])
+      .then(([fileWatcher, serverWatcher]) => {
+        this.browserSyncInstance.emitter.on('service:running', () => {
+          Logger.info('Watching for changes...');
+          Logger.debug('Press Ctrl-C to exit');
+        });
 
-            const readStream = createStream();
-            readStream.write(readResult);
-            readStream.end();
+        fileWatcher.on('change', this.handleFileChange.bind(this));
+        serverWatcher.on('change', this.handleServerChange.bind(this));
 
-            (new PullStream(readStream))
-              .on('end', () => {
-                pulling = false;
-                lastPull = AtviseFile.normalizeMtime(readResult.mtime);
-                browserSyncInstance.reload();
-                fileWatcher.emit('pull');
-              });
-          } else {
-            lastPushed = null;
-          }
-        }
-      })(err => rejectOnError(err, resolve, reject));
-    });
+        this.initBrowserSync();
+      });
   }
 
-  const promise = Promise.all([
-    startFileWatcher(),
-    startServerWatcher(),
-  ]);
+}
 
-  initBrowserSync();
-
-  promise.browserSync = browserSyncInstance;
-  promise.fileWatcher = fileWatcher;
-  promise.serverWatcher = serverWatcher;
-
-  return promise;
+export default function watch() {
+  return (new WatchTask()).run();
 }
 
 watch.description = 'Watch local files and atvise server nodes to trigger pull/push on change';
