@@ -1,3 +1,1 @@
-/**
- * Created by lukas on 14/12/2016.
- */
+module.exports.default = class TestProj {}

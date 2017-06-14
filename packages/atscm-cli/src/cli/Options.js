@@ -29,6 +29,7 @@ const Options = {
       default: 3,
     }
   ),
+  project: new Option('Override Atviseproject values.', { default: {} }),
   projectfile: Option.string('Manually set path of Atviseproject file to use. ' +
     'This will set the CWD to the Atviseproject file\'s directory as well.',
     { alias: 'p' }),
@@ -54,6 +55,7 @@ export default Options;
 export const GlobalOptions = {
   projectfile: Options.projectfile,
   cwd: Options.cwd,
+  project: Options.project,
   require: Options.require,
   version: Options.version,
   help: Options.help,
