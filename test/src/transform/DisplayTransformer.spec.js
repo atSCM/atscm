@@ -20,11 +20,13 @@ describe('DisplayTransformer', function() {
 
   /** @test {DisplayTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
-    function writeXMLToDisplayTransformer(xmlString) {
+    function writeXMLToDisplayTransformer(xmlString, raw = false) {
       const transformer = new DisplayTransformer({ direction: TransformDirection.FromDB });
       const file = new AtviseFile({
         path: 'AGENT/DISPLAYS/Main.display.xml',
-        contents: Buffer.from(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        contents: Buffer.from(raw ?
+          xmlString :
+          `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 ${xmlString}`),
       });
 
@@ -43,8 +45,8 @@ ${xmlString}`),
     }
 
     it('should forward parse errors', function() {
-      return expect(writeXMLToDisplayTransformer('invalid xml'),
-        'to be rejected with', /Text data outside of root node/);
+      return expect(writeXMLToDisplayTransformer('', true),
+        'to be rejected with', /Parse error/);
     });
 
     it('should error with invalid xml', function() {
@@ -191,8 +193,8 @@ ${xmlString}`),
     });
 
     context('when encoding fails', function() {
-      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents',
-        (obj, cb) => cb(new Error('Encode error'))));
+      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents')
+        .callsFake((obj, cb) => cb(new Error('Encode error'))));
       afterEach(() => DisplayTransformer.prototype.encodeContents.restore());
 
       it('should forward encode error', function() {
@@ -237,8 +239,8 @@ ${xmlString}`),
 
     it('should fail with invalid SVG', function() {
       return expect(createDisplayWithFileContents({
-        '.svg': 'invalid XML',
-      }), 'to call the callback with error', /Non-whitespace before first tag/);
+        '.svg': '',
+      }), 'to call the callback with error', /Parse error/);
     });
 
     it('should fail without `svg` tag', function() {
@@ -260,87 +262,89 @@ ${xmlString}`.replace(/\r?\n|\r/g, '\r\n'));
         });
     }
 
+    function expectDisplayWithFileContentToHaveInnerXML(contents, xmlString) {
+      const dec = 'xmlns:atv="http://webmi.atvise.com/2007/svgext" xmlns:xlink="http://www.w3.org/1999/xlink"';
+
+      if (xmlString) {
+        return expectDisplayWithFileContentToHaveXML(contents, `<svg ${dec}>
+${xmlString}
+</svg>`);
+      }
+      return expectDisplayWithFileContentToHaveXML(contents, `<svg ${dec}/>`);
+    }
+
     it('should work with empty svg tag', function() {
-      return expectDisplayWithFileContentToHaveXML({
+      return expectDisplayWithFileContentToHaveInnerXML({
         '.svg': '<svg></svg>',
-      }, '<svg/>');
+      }, false);
     });
 
     it('should inline script', function() {
-      return expectDisplayWithFileContentToHaveXML({
-        '.svg': '<svg><rect></rect></svg>',
+      return expectDisplayWithFileContentToHaveInnerXML({
+        '.svg': `<svg>
+ <rect></rect></svg>`,
         '.js': 'code()',
-      }, `<svg>
- <rect/>
- <script type="text/ecmascript"><![CDATA[code()]]></script>
-</svg>`);
+      }, ` <rect/>
+ <script type="text/ecmascript">
+  <![CDATA[code()]]>
+ </script>`);
     });
 
     it('should link dependencies', function() {
-      return expectDisplayWithFileContentToHaveXML({
+      return expectDisplayWithFileContentToHaveInnerXML({
         '.svg': '<svg><rect></rect></svg>',
         '.json': '{ "dependencies": ["path/to/dep.js"] }',
-      }, `<svg>
- <rect/>
- <script xlink:href="path/to/dep.js"/>
-</svg>`);
+      }, ` <rect/>
+ <script xlink:href="path/to/dep.js"/>`);
     });
 
     it('should work without empty parameters config', function() {
-      return expectDisplayWithFileContentToHaveXML({
-        '.svg': '<svg><rect></rect></svg>',
+      return expectDisplayWithFileContentToHaveInnerXML({
+        '.svg': '<svg xmlns:atv="http://webmi.atvise.com/2007/svgext" xmlns:xlink="http://www.w3.org/1999/xlink"><rect></rect></svg>',
         '.json': '{ "parameters": [] }',
-      }, `<svg>
- <rect/>
-</svg>`);
+      }, ' <rect/>');
     });
 
     it('should reuse existant metadata section', function() {
-      return expectDisplayWithFileContentToHaveXML({
+      return expectDisplayWithFileContentToHaveInnerXML({
         '.svg': `<svg>
   <metadata>
     <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
   </metadata>
 </svg>`,
         '.json': '{ "parameters": [{ "name": "test" }] }',
-      }, `<svg>
- <metadata>
+      }, ` <metadata>
   <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
   <atv:parameter name="test"/>
- </metadata>
-</svg>`);
+ </metadata>`);
     });
 
     it('should create metadata section if omitted', function() {
-      return expectDisplayWithFileContentToHaveXML({
-        '.svg': '<svg></svg>',
+      return expectDisplayWithFileContentToHaveInnerXML({
+        '.svg': '<svg xmlns:atv="http://webmi.atvise.com/2007/svgext" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>',
         '.json': '{ "parameters": [{ "name": "test" }] }',
-      }, `<svg>
- <metadata>
+      }, ` <metadata>
   <atv:parameter name="test"/>
- </metadata>
-</svg>`);
+ </metadata>`);
     });
 
     it('should keep parameters specified in SVG', function() {
-      return expectDisplayWithFileContentToHaveXML({
-        '.svg': `<svg>
+      return expectDisplayWithFileContentToHaveInnerXML({
+        '.svg': `<svg xmlns:atv="http://webmi.atvise.com/2007/svgext" xmlns:xlink="http://www.w3.org/1999/xlink">
   <metadata>
     <atv:parameter name="existant"/>
   </metadata>
 </svg>`,
         '.json': '{ "parameters": [{ "name": "test" }] }',
-      }, `<svg>
- <metadata>
+      }, ` <metadata>
   <atv:parameter name="existant"/>
   <atv:parameter name="test"/>
- </metadata>
-</svg>`);
+ </metadata>`);
     });
 
     context('when encoding fails', function() {
-      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents',
-        (obj, cb) => cb(new Error('Encode error'))));
+      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents')
+        .callsFake((obj, cb) => cb(new Error('Encode error'))));
       afterEach(() => DisplayTransformer.prototype.encodeContents.restore());
 
       it('should forward encode error', function() {
