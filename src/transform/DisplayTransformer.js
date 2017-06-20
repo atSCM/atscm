@@ -25,64 +25,57 @@ export default class DisplayTransformer extends XMLTransformer {
    * while transforming the display, or the file passed through.
    */
   transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+    this.decodeContents(file, (err, doc) => {
       if (err) {
         callback(err);
-      } else if (!results || results.svg === undefined) {
+      } else if (!doc || !doc.documentElement || doc.documentElement.tagName !== 'svg') {
         callback(new Error('Error parsing display: No `svg` tag'));
       } else {
-        const xml = results;
-        const document = results.svg;
-
         const config = {};
 
         // Extract JavaScript
-        if (this.tagNotEmpty(document.script)) {
-          document.script.forEach(script => {
-            if (script.$ && (script.$.src || script.$['xlink:href'])) {
-              if (!config.dependencies) {
-                config.dependencies = [];
-              }
+        Array.from(doc.getElementsByTagName('script')).forEach(elm => {
+          const src = elm.getAttribute('src') || elm.getAttribute('xlink:href');
 
-              config.dependencies.push(script.$.src || script.$['xlink:href']);
-            } else {
-              // TODO: Warn on multiple inline scripts
-
-              const scriptFile = DisplayTransformer.splitFile(file, '.js');
-              const scriptText = (typeof script === 'string') ?
-                script : script._ || '';
-
-              scriptFile.contents = Buffer.from(scriptText);
-              this.push(scriptFile);
+          // Dependencies
+          if (src) {
+            if (!config.dependencies) {
+              config.dependencies = [];
             }
-          });
 
-          delete xml.svg.script;
-        }
+            config.dependencies.push(src);
+          } else { // Script code
+            // TODO: Warn on multiple inline scripts
 
-        // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
-          // TODO: Warn on multiple metadata tags
-
-          const meta = document.metadata[0];
-
-          // - Parameters
-          if (this.tagNotEmpty(meta['atv:parameter'])) {
-            config.parameters = [];
-            meta['atv:parameter'].forEach(param => config.parameters.push(param.$));
-
-            delete xml.svg.metadata[0]['atv:parameter'];
+            const scriptFile = DisplayTransformer.splitFile(file, '.js');
+            scriptFile.contents = Buffer.from(elm.textContent);
+            this.push(scriptFile);
           }
-        }
+
+          elm.parentNode.removeChild(elm);
+        });
+
+        // Extract parameters
+        Array.from(doc.getElementsByTagName('atv:parameter')).forEach(elm => {
+          if (!config.parameters) {
+            config.parameters = [];
+          }
+
+          config.parameters.push(this.getElementAttributes(elm));
+        });
+
+        // Create config file
 
         const configFile = DisplayTransformer.splitFile(file, '.json');
 
         configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
         this.push(configFile);
 
+        // Create svg file
+
         const svgFile = DisplayTransformer.splitFile(file, '.svg');
 
-        this.encodeContents(xml, (encodeErr, stringValue) => {
+        this.encodeContents(doc, (encodeErr, stringValue) => {
           if (encodeErr) {
             callback(encodeErr);
           } else {
@@ -128,57 +121,57 @@ export default class DisplayTransformer extends XMLTransformer {
       inlineScript = scriptFile.contents.toString();
     }
 
-    this.decodeContents(svgFile, (err, xml) => {
+    this.decodeContents(svgFile, (err, doc) => {
       if (err) {
         callback(err);
-      } else if (!xml || xml.svg === undefined) {
+      } else if (!doc || !doc.documentElement || doc.documentElement.tagName !== 'svg') {
         callback(new Error('Error parsing display SVG: No `svg` tag'));
       } else {
-        const result = xml;
-
-        // Handle empty svg tag
-        if (typeof result.svg === 'string') {
-          result.svg = {};
-        }
-
         // Insert dependencies
-        result.svg.script = [];
+
         if (config.dependencies) {
-          config.dependencies.forEach(p => result.svg.script.push({
-            $: { 'xlink:href': p },
+          config.dependencies.forEach(p => this.appendNode(doc, 'script', {
+            'xlink:href': p,
           }));
         }
 
         // Insert script
-        // FIXME: Import order is not preserved!
+
         if (scriptFile) {
-          result.svg.script.push({
-            $: { type: 'text/ecmascript' },
-            _: XMLTransformer.forceCData(inlineScript),
+          const n = this.createNode(doc, 'script', {
+            type: 'text/ecmascript',
           });
+          const data = doc.createCDATASection(inlineScript);
+
+          n.appendChild(data);
+
+          doc.documentElement.appendChild(n);
         }
 
         // Insert metadata
-        // - Parameters
+
         if (config.parameters && config.parameters.length > 0) {
-          if (!result.svg.metadata || !result.svg.metadata[0]) {
-            result.svg.metadata = [{}];
-          }
-          if (!result.svg.metadata[0]['atv:parameter']) {
-            result.svg.metadata[0]['atv:parameter'] = [];
+          let container = doc.getElementsByTagName('metadata');
+
+          if (container.length > 0) {
+            container = container[0];
+          } else {
+            container = this.createNode(doc, 'metadata');
+            doc.documentElement.insertBefore(container, doc.documentElement.childNodes[0]);
           }
 
-          // FIXME: Parameters should come before `atv:gridconfig` and `atv:snapconfig`
           config.parameters
-            .forEach(param => result.svg.metadata[0]['atv:parameter'].push({ $: param }));
+            .forEach(attrs => this.appendNode(doc, 'atv:parameter', attrs, container));
         }
+
+        // Create display
 
         const display = DisplayTransformer.combineFiles(
           Object.keys(files).map(ext => files[ext]),
           '.xml'
         );
 
-        this.encodeContents(result, (encodeErr, xmlString) => {
+        this.encodeContents(doc, (encodeErr, xmlString) => {
           if (encodeErr) {
             callback(encodeErr);
           } else {

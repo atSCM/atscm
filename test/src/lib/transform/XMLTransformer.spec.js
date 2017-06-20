@@ -1,64 +1,188 @@
 import expect from 'unexpected';
-import { Builder } from 'xml2js';
-import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
+import proxyquire from 'proxyquire';
+import { stub } from 'sinon';
+import { DOMParser } from 'xmldom';
+import Logger from 'gulplog';
+import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
 
 /** @test {XMLTransformer} */
 describe('XMLTransformer', function() {
-  /** @test {XMLTransformer#constructor} */
-  describe('#constructor', function() {
-    it('should return a SplittingTransformer', function() {
-      expect(new XMLTransformer(), 'to be a', Transformer);
+  /** @test {XMLTransformer#serializationOptions} */
+  describe('#serializationOptions', function() {
+    context('if running FromDB', function() {
+      const transformer = new XMLTransformer({ direction: TransformDirection.FromDB });
+
+      it('should use default indent', function() {
+        expect(transformer.serializationOptions.indent, 'to be undefined');
+      });
+
+      it('should use default newline', function() {
+        expect(transformer.serializationOptions.newline, 'to be undefined');
+      });
     });
 
-    it('should create a _fromDBBuilder', function() {
-      const transformer = new XMLTransformer();
+    context('if running FromFilesystem', function() {
+      const transformer = new XMLTransformer({ direction: TransformDirection.FromFilesystem });
 
-      expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
-    });
+      it('should use indent of one space', function() {
+        expect(transformer.serializationOptions.indent, 'to equal', 1);
+      });
 
-    it('should create a _fromFilesystemBuilder', function() {
-      const transformer = new XMLTransformer();
-
-      expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
+      it('should use windows newline', function() {
+        expect(transformer.serializationOptions.newline, 'to equal', '\r\n');
+      });
     });
   });
 
-  /** @test {XMLTransformer#builder} */
-  describe('#builder', function() {
-    it('should return the #_fromDBBuilder if direction is FromDB', function() {
-      const transformer = new XMLTransformer({ direction: TransformDirection.FromDB });
+  /** @test {XMLTransformer#_getParserErrorMessage} */
+  describe('#_getParserErrorMessage', function() {
+    it('should parse regular xmldom error messages', function() {
+      const msg = ['[xmldom error]\tinvalid document source', '\n@#[line:1,col:2]'];
 
-      expect(transformer.builder, 'to be defined');
-      expect(transformer.builder, 'to be', transformer._fromDBBuilder);
+      expect(XMLTransformer.prototype._getParserErrorMessage(msg),
+        'to equal', 'invalid document source');
     });
 
-    it('should return the #_fromDBBuilder if direction is FromFilesystem', function() {
-      const transformer = new XMLTransformer({ direction: TransformDirection.FromFilesystem });
+    it('should not fail if xmldoc or sax changes error handling api', function() {
+      expect(XMLTransformer.prototype._getParserErrorMessage(['single error arg']),
+        'to equal', 'single error arg');
+    });
+  });
 
-      expect(transformer.builder, 'to be defined');
-      expect(transformer.builder, 'to be', transformer._fromFilesystemBuilder);
+  /** @test {XMLTransformer#_getParserErrorInfo} */
+  describe('#_getParserErrorInfo', function() {
+    it('should return parser position', function() {
+      const parser = { options: { locator: { lineNumber: 1, columnNumber: 2 } } };
+
+      expect(XMLTransformer.prototype._getParserErrorInfo(parser, {}),
+        'to satisfy', { line: 1, column: 2 });
+    });
+
+    it('should return file path', function() {
+      const parser = { options: { locator: { lineNumber: 1, columnNumber: 2 } } };
+
+      expect(XMLTransformer.prototype._getParserErrorInfo(parser, { relative: 'path/file.ext' }),
+        'to satisfy', { path: 'path/file.ext' });
     });
   });
 
   /** @test {XMLTransformer#decodeContents} */
   describe('#decodeContents', function() {
-    it('should forward errors', function(done) {
-      expect(cb => (new XMLTransformer()).decodeContents({ contents: 'no valid xml' }, cb),
-        'to call the callback with error', /Non-whitespace before first tag./)
-        .then(() => done());
+    Logger.on('error', () => {}); // Prevent exit on Logger.error
+
+    it('should forward errors', function() {
+      return expect(cb => (new XMLTransformer())
+          .decodeContents({
+            contents: '>asdf<',
+            relative: 'test',
+          }, cb),
+        'to call the callback with error', /Parse error/);
     });
 
-    it('should return object for valid xml', function(done) {
-      expect(cb => (new XMLTransformer()).decodeContents({ contents: '<tag>value</tag>' }, cb),
-        'to call the callback')
+    it('should return DOM document for valid xml', function() {
+      return expect(cb => (new XMLTransformer()).decodeContents({
+        contents: '<tag>value</tag>',
+      }, cb), 'to call the callback')
         .then(args => {
           expect(args[0], 'to be falsy');
-          expect(args[1], 'to equal', { tag: 'value' });
-          done();
+          expect(args[1].constructor.name, 'to equal', 'Document');
         });
+    });
+
+    context('on parser error', function() {
+      beforeEach(() => {
+        stub(Logger, 'warn');
+        stub(Logger, 'error');
+      });
+
+      afterEach(() => {
+        Logger.warn.restore();
+        Logger.error.restore();
+      });
+
+      it('should log warnings', function() {
+        const StubTransformer = proxyquire('../../../../src/lib/transform/XMLTransformer', {
+          xmldom: {
+            DOMParser: class {
+              constructor(options) { this.options = options; }
+              parseFromString() {
+                this.options.errorHandler.warning(['[xmldoc warning]\ttest warning']);
+              }
+            },
+          },
+        }).default;
+
+        return expect(cb => (new StubTransformer())
+            .decodeContents({ contents: '<root></root>' }, cb),
+          'to call the callback without error')
+          .then(() => expect(Logger.warn.calledOnce, 'to be true'));
+      });
+
+      it('should fail on error', function() {
+        const StubTransformer = proxyquire('../../../../src/lib/transform/XMLTransformer', {
+          xmldom: {
+            DOMParser: class {
+              constructor(options) { this.options = options; }
+              parseFromString() {
+                this.options.errorHandler.error(['[xmldoc error]\ttest error\n[line:1,col:3]']);
+              }
+            },
+          },
+        }).default;
+
+        return expect(cb => (new StubTransformer())
+            .decodeContents({ contents: '<root></root>' }, cb),
+          'to call the callback with error', /test error/)
+          .then(() => expect(Logger.error.calledOnce, 'to be true'));
+      });
+
+      it('should fail on fatal error', function() {
+        const StubTransformer = proxyquire('../../../../src/lib/transform/XMLTransformer', {
+          xmldom: {
+            DOMParser: class {
+              constructor(options) { this.options = options; }
+              parseFromString() {
+                this.options.errorHandler.fatalError(['[xmldoc error]\tfatal\n[line:1,col:3]']);
+              }
+            },
+          },
+        }).default;
+
+        return expect(cb => (new StubTransformer())
+            .decodeContents({ contents: '<root></root>' }, cb),
+          'to call the callback with error', /fatal/)
+          .then(() => expect(Logger.error.calledOnce, 'to be true'));
+      });
+
+      it('should handle sync errors', function() {
+        const StubTransformer = proxyquire('../../../../src/lib/transform/XMLTransformer', {
+          xmldom: {
+            DOMParser: class {
+              constructor(options) { this.options = options; }
+              parseFromString() {
+                throw new Error('Test');
+              }
+            },
+          },
+        }).default;
+
+        return expect(cb => (new StubTransformer())
+            .decodeContents({ contents: '<root></root>' }, cb),
+          'to call the callback with error', 'Test');
+      });
+    });
+  });
+
+  /** @test {XMLTransformer#getElementAttributes} */
+  describe('#getElementAttributes', function() {
+    const elm = (new DOMParser())
+      .parseFromString('<root attr1="one" attr2="two" />')
+      .documentElement;
+
+    expect(XMLTransformer.prototype.getElementAttributes(elm), 'to equal', {
+      attr1: 'one',
+      attr2: 'two',
     });
   });
 
@@ -76,51 +200,39 @@ describe('XMLTransformer', function() {
   /** @test {XMLTransformer#encodeContents} */
   describe('#encodeContents', function() {
     it('should forward errors', function() {
-      expect(cb => (new XMLTransformer()).encodeContents(null, cb),
+      return expect(cb => (new XMLTransformer()).encodeContents(null, cb),
         'to call the callback with error', 'Cannot convert undefined or null to object');
     });
 
+    it('should error without document element', function() {
+      const doc = (new DOMParser()).parseFromString('<!-- test -->');
+
+      return expect(cb => (new XMLTransformer()).encodeContents(doc, cb),
+        'to call the callback with error', 'Missing document element');
+    });
+
+    it('should error with non-document input', function() {
+      const elm = (new DOMParser()).parseFromString('<root />').createElement('asdf');
+
+      return expect(cb => (new XMLTransformer()).encodeContents(elm, cb),
+        'to call the callback with error', 'Not a DOMDocument instance');
+    });
+
+    const validDocument = (new DOMParser()).parseFromString('<root><sub>test</sub></root>');
+
     context('when direction is FromDB', function() {
       it('should indent with double space', function(done) {
-        testBuilder(TransformDirection.FromDB, { root: { sub: 'test' } },
-          `<root>
-  <sub>test</sub>
+        testBuilder(TransformDirection.FromDB, validDocument,
+          `  <sub>test</sub>
 </root>`, done);
       });
     });
 
     context('when direction is FromFilesytem', function() {
       it('should indent with single space', function(done) {
-        testBuilder(TransformDirection.FromFilesystem, { root: { sub: 'test' } },
-          '<root>\r\n <sub>test</sub>\r\n</root>', done);
+        testBuilder(TransformDirection.FromFilesystem, validDocument,
+          '\r\n <sub>test</sub>\r\n</root>', done);
       });
-    });
-
-    it('should support forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB }))
-        .encodeContents({
-          svg: {
-            script: [
-              { _: XMLTransformer.forceCData('test()') },
-            ],
-          },
-        }, cb), 'to call the callback')
-          .then(args => expect(args[1], 'to end with', `<svg>
-  <script><![CDATA[test()]]></script>
-</svg>`));
-    });
-
-    it('should not double escape forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromFilesystem }))
-        .encodeContents({
-          svg: {
-            script: [
-              { _: XMLTransformer.forceCData('console.log("<asdf>")') },
-            ],
-          },
-        }, cb), 'to call the callback')
-          .then(args => expect(args[1], 'to contain',
-            '<script><![CDATA[console.log("<asdf>")]]></script>'));
     });
   });
 });

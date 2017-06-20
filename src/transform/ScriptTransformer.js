@@ -1,4 +1,5 @@
 import Logger from 'gulplog';
+import { DOMParser } from 'xmldom';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
@@ -6,6 +7,20 @@ import XMLTransformer from '../lib/transform/XMLTransformer';
  * containing parameters and metadata.
  */
 export default class ScriptTransformer extends XMLTransformer {
+
+  /**
+   * Creates a new Transformer instance.
+   * @param {Object} options The transformer options to use.
+   */
+  constructor(options) {
+    super(options);
+
+    /**
+     * The template document to base script output on.
+     * @type {DOMDocument}
+     */
+    this._template = (new DOMParser()).parseFromString('<script></script>');
+  }
 
   /**
    * Returns `true` for all files containing script code or quick dynamics.
@@ -25,57 +40,59 @@ export default class ScriptTransformer extends XMLTransformer {
    * while transforming the script, or the file passed through.
    */
   transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+    // Helpers
+
+    function processSingleTag(doc, name, process) {
+      let result;
+
+      Array.from(doc.getElementsByTagName(name)).forEach((n, i) => {
+        if (i === 0) {
+          result = process(n);
+        } else if (i === 1) {
+          Logger.warn(`Multiple ${name} tags found in ${file.relative}`);
+        }
+      });
+
+      return result;
+    }
+
+    function singleTagValue(doc, name) {
+      return processSingleTag(doc, name, n => n.textContent);
+    }
+
+    this.decodeContents(file, (err, doc) => {
       if (err) {
         callback(err);
       } else {
-        if (!results || results.script === undefined) {
-          Logger.warn(`Empty document at ${file.relative}`);
-        }
-
-        const document = results && results.script ? results.script : {};
-
         const config = {};
         let code = '';
 
-        // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
-          // TODO: Warn on multiple metadata tags
-
-          const meta = document.metadata[0];
+        if (!doc || !doc.documentElement || doc.documentElement.tagName !== 'script') {
+          Logger.warn(`Empty document at ${file.relative}`);
+        } else {
+          // Extract Metadata
 
           // - Icon
-          if (this.tagNotEmpty(meta.icon)) {
-            const icon = meta.icon[0];
-            config.icon = icon.$ || {};
-            config.icon.content = icon._ || '';
-          }
+          processSingleTag(doc, 'icon', n => {
+            config.icon = this.getElementAttributes(n);
+            config.icon.content = n.textContent;
+          });
 
           // - Visible
-          if (this.tagNotEmpty(meta.visible)) {
-            config.visible = Boolean(meta.visible[0]);
-          }
+          const v = singleTagValue(doc, 'visible');
+          config.visible = v && Boolean(v);
 
           // - Title
-          if (this.tagNotEmpty(meta.title)) {
-            config.title = meta.title[0];
-          }
+          config.title = singleTagValue(doc, 'title');
 
           // - Description
-          if (this.tagNotEmpty(meta.description)) {
-            config.description = meta.description[0];
-          }
-        }
+          config.description = singleTagValue(doc, 'description');
 
-        // Extract Parameters
-        if (this.tagNotEmpty(document.parameter)) {
-          config.parameters = [];
-          document.parameter.forEach(param => config.parameters.push(param.$));
-        }
+          // Extract parameters
+          config.parameters = Array.from(doc.getElementsByTagName('parameter'))
+            .map(p => this.getElementAttributes(p));
 
-        // Extract JavaScript
-        if (this.tagNotEmpty(document.code)) {
-          code = document.code[0];
+          code = singleTagValue(doc, 'code') || '';
         }
 
         // Write config file
@@ -120,54 +137,51 @@ export default class ScriptTransformer extends XMLTransformer {
       code = scriptFile.contents.toString();
     }
 
-    const result = {
-      script: { },
-    };
+    const doc = this._template.cloneNode(true);
 
-    // Insert metadata
     if (lastFile.isQuickDynamic) {
-      const meta = {};
+      // Insert metadata
+
+      const meta = doc.createElement('metadata');
+      doc.documentElement.appendChild(meta);
 
       // - Icon
       if (config.icon) {
-        const icon = config.icon.content;
+        const content = config.icon.content;
         delete config.icon.content;
 
-        meta.icon = {
-          $: config.icon,
-          _: icon,
-        };
+        this.appendNode(doc, 'icon', Object.assign({
+          textContent: content,
+        }, config.icon), meta);
       }
 
-      // - Other fields
       if (config.visible !== undefined) {
-        meta.visible = config.visible ? 1 : 0;
+        this.appendNode(doc, 'visible', { textContent: config.visible ? 1 : 0 }, meta);
       }
 
       if (config.title !== undefined) {
-        meta.title = config.title;
+        this.appendNode(doc, 'title', { textContent: config.title }, meta);
       }
 
       if (config.description !== undefined) {
-        meta.description = config.description;
+        this.appendNode(doc, 'description', { textContent: config.description }, meta);
       }
-
-      result.script.metadata = meta;
     }
 
     // Insert parameters
-    result.script.parameter = config.parameters ?
-      config.parameters.map(param => ({ $: param })) :
-      [];
 
-    result.script.code = ScriptTransformer.forceCData(code);
+    (config.parameters || []).forEach(p => this.appendNode(doc, 'parameter', p));
+
+    // Insert code
+    this.appendNode(doc, 'code')
+      .appendChild(doc.createCDATASection(code));
 
     const script = ScriptTransformer.combineFiles(
       Object.keys(files).map(ext => files[ext]),
       '.xml'
     );
 
-    this.encodeContents(result, (encodeErr, xmlString) => {
+    this.encodeContents(doc, (encodeErr, xmlString) => {
       if (encodeErr) {
         callback(encodeErr);
       } else {

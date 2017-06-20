@@ -28,9 +28,17 @@ describe('ScriptTransformer', function() {
 
   /** @test {ScriptTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
+    beforeEach(function() {
+      spy(Logger, 'warn');
+    });
+
+    afterEach(function() {
+      Logger.warn.restore();
+    });
+
     it('should forward parse errors', function() {
-      return expect(transformerHelper.writeXMLToTransformer(ScriptPath, 'invalid xml'),
-        'to be rejected with', /Text data outside of root node/);
+      return expect(transformerHelper.writeXMLToTransformer(ScriptPath, '<<>invalid xml'),
+        'to be rejected with', /Parse error/);
     });
 
     it('should warn with invalid xml', function() {
@@ -49,7 +57,9 @@ describe('ScriptTransformer', function() {
       return transformerHelper.writeXMLToTransformer(ScriptPath, '<script></script>')
         .then(files => transformerHelper.expectFileContents(files))
         .then(contents => {
-          expect(contents[0], 'to equal', '{}');
+          expect(contents[0], 'to equal', `{
+  "parameters": []
+}`);
         });
     });
 
@@ -68,12 +78,47 @@ describe('ScriptTransformer', function() {
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
           icon: {
             type: 'image/png',
             content: 'asdf',
           },
         }));
+    });
+
+    it('should warn on multiple meta definitions', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <icon type="image/png">asdf</icon>
+    <icon type="image/png">asdf2</icon>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
+          icon: {
+            type: 'image/png',
+            content: 'asdf',
+          },
+        }))
+        .then(() => expect(Logger.warn.calledOnce, 'to be true'));
+    });
+
+    it('should warn only once on multiple meta definitions', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <icon type="image/png">asdf</icon>
+    <icon type="image/png">asdf2</icon>
+    <icon type="image/png">asdf3</icon>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
+          icon: {
+            type: 'image/png',
+            content: 'asdf',
+          },
+        }))
+        .then(() => expect(Logger.warn.calledOnce, 'to be true'));
     });
 
     it('should store empty icon metadata', function() {
@@ -83,7 +128,7 @@ describe('ScriptTransformer', function() {
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
           icon: {
             content: '',
           },
@@ -97,7 +142,7 @@ describe('ScriptTransformer', function() {
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
           visible: true,
         }));
     });
@@ -109,7 +154,7 @@ describe('ScriptTransformer', function() {
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
           title: 'script title',
         }));
     });
@@ -121,7 +166,7 @@ describe('ScriptTransformer', function() {
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+        .then(contents => expect(JSON.parse(contents[0]), 'to satisfy', {
           description: 'script description',
         }));
     });
@@ -186,7 +231,7 @@ describe('ScriptTransformer', function() {
           }), 'to call the callback')
             .then(args => transformerHelper.expectFileContents([args[1]]))
             .then(contents => expect(contents[0], 'to contain', '<visible>1</visible>')),
-          ]);
+        ]);
       });
 
       it('should insert title metadata', function() {
@@ -233,8 +278,7 @@ describe('ScriptTransformer', function() {
         '.js': code,
       }), 'to call the callback')
         .then(args => transformerHelper.expectFileContents([args[1]]))
-        .then(contents => expect(contents[0],
-          'to contain', `<code><![CDATA[${code}]]></code>`));
+        .then(contents => expect(contents[0], 'to contain', `<![CDATA[${code}]]>`));
     });
 
     context('when encoding fails', function() {
