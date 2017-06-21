@@ -37,7 +37,9 @@ ${xmlString}`, direction);
 
   expectFileContents(files) {
     return Promise.all(
-      files.map(file => expect(file.contents, 'when decoded as', 'utf-8'))
+      files.map(file => expect(file, 'to be an', 'object')
+        .then(() => expect(file.contents, 'when decoded as', 'utf-8'))
+      )
     );
   }
 
