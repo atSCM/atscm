@@ -3,12 +3,12 @@ import Atviseproject from '../../src/lib/config/Atviseproject';
 export default class TestProject extends Atviseproject {
 
   static get host() {
-    return '185.67.228.66';
+    return '35.184.69.89';
   }
 
   static get port() {
     return {
-      opc: 4888,
+      opc: 4840,
       http: 8888,
     };
   }
