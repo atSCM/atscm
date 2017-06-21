@@ -55,6 +55,7 @@ export default class Session {
               [
                 'userName === null || typeof userName === "string"',
                 'password === null || typeof password === "string"',
+                ' ServiceResult is BadUserAccessDenied (0x801f0000)',
               ].includes(err.message) ||
               (err.response &&
               err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
