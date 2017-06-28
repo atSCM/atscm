@@ -142,7 +142,16 @@ export default class XMLTransformer extends SplittingTransformer {
         throw new Error('Missing document element');
       }
 
-      const str = (new XMLSerializer()).serializeToString(doc);
+      let i = 0;
+      const str = (new XMLSerializer()).serializeToString(doc)
+        // Remove additional namespace declarations
+        .replace(/\s?xmlns:[a-z]+="[^"]+"/g, match => {
+          if (i++ !== 0) {
+            return '';
+          }
+
+          return match;
+        });
 
       callback(null, prettify(str, this.serializationOptions));
     } catch (e) {

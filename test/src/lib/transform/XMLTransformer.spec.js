@@ -218,6 +218,14 @@ describe('XMLTransformer', function() {
         'to call the callback with error', 'Not a DOMDocument instance');
     });
 
+    it('should remove additional xmlns attributes', function(done) {
+      const testDocument = (new DOMParser()).parseFromString('<root><sub xmlns:atv="asdf">test</sub></root>');
+
+      testBuilder(TransformDirection.FromDB, testDocument,
+        `  <sub>test</sub>
+</root>`, done);
+    });
+
     const validDocument = (new DOMParser()).parseFromString('<root><sub>test</sub></root>');
 
     context('when direction is FromDB', function() {
