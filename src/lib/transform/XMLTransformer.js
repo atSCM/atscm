@@ -142,13 +142,15 @@ export default class XMLTransformer extends SplittingTransformer {
         throw new Error('Missing document element');
       }
 
-      let i = 0;
+      const ns = {};
       const str = (new XMLSerializer()).serializeToString(doc)
         // Remove additional namespace declarations
-        .replace(/\s?xmlns:[a-z]+="[^"]+"/g, match => {
-          if (i++ !== 0) {
+        .replace(/\s?xmlns:([a-z]+)="[^"]+"/g, (match, name) => {
+          if (ns[name]) {
             return '';
           }
+
+          ns[name] = true;
 
           return match;
         });
