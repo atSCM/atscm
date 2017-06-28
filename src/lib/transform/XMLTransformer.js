@@ -145,7 +145,7 @@ export default class XMLTransformer extends SplittingTransformer {
       const ns = {};
       const str = (new XMLSerializer()).serializeToString(doc)
         // Remove additional namespace declarations
-        .replace(/\s?xmlns:([a-z]+)="[^"]+"/g, (match, name) => {
+        .replace(/(\s?xmlns:([a-z]+)="([^"]+)")/g, (match, _, name) => {
           if (ns[name]) {
             return '';
           }
