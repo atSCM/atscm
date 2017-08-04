@@ -60,6 +60,7 @@ const Decoder = {
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
+  [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
 };
 
 /**
