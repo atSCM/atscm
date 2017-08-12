@@ -12,8 +12,8 @@ import NodeId from './NodeId';
  */
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-    [type.typeDefinition.value]: type,
-  }), {});
+  [type.typeDefinition.value]: type,
+}), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
@@ -21,8 +21,8 @@ const AtviseTypesByValue = AtviseTypes
  */
 const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-    [type.identifier]: type,
-  }), {});
+  [type.identifier]: type,
+}), {});
 
 /**
  * A map providing shorter extensions for data types
@@ -41,8 +41,8 @@ export const ExtensionForDataType = {
 function reverseObject(obj) {
   return Object.keys(obj)
     .reduce((result, key) => Object.assign(result, {
-      [obj[key]]: key,
-    }), {});
+    [obj[key]]: key,
+  }), {});
 }
 
 /**
@@ -75,6 +75,7 @@ const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
  * @type {NodeId}
  */
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
+const ObjectTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 1, 0);
 
 // Cache Regular expressions
 /**
@@ -103,7 +104,7 @@ const Decoder = {
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
-  [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
+  [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary')
 };
 
 /**
@@ -132,11 +133,12 @@ export default class AtviseFile extends File {
    * @param {ReadStream.ReadResult} readResult The read result to get a path for.
    */
   static pathForReadResult(readResult) {
-    let path = readResult.nodeId.filePath;
+    let path = `${readResult.nodeId.filePath}/${readResult.nodeId.browseName}`;
 
-    const dataType = readResult.value.$dataType;
-    const arrayType = readResult.value.$arrayType;
-    const typeDefinition = readResult.referenceDescription.typeDefinition;
+    const dataType = readResult.dataType;
+    const arrayType = readResult.arrayType;
+    const typeDefinition = readResult.typeDefinition;
+
 
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
@@ -160,14 +162,23 @@ export default class AtviseFile extends File {
       if (!keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
-    }
 
-    // Add "array" or "matrix" extensions for corresponding array types
-    if (arrayType.value !== VariantArrayType.Scalar.value) {
-      path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+    if (arrayType) {
+      // Add "array" or "matrix" extensions for corresponding array types
+      if (arrayType.value !== VariantArrayType.Scalar.value) {
+        path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+      }
     }
 
     return path;
+  }
+
+  /**
+   * Returns an atvise type with type definition as accessor
+   * @return {AtviseTypes{}} Object containing atvise types
+   */
+  static getAtviseTypesByValue() {
+    return AtviseTypesByValue;
   }
 
   /**
@@ -177,12 +188,12 @@ export default class AtviseFile extends File {
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType) {
-    if (value.value === null) {
+    if (value === null) {
       return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
+    return Buffer.from(encoder ? encoder(value) : value.toString().trim());
   }
 
   /**
@@ -225,16 +236,16 @@ export default class AtviseFile extends File {
    * @return {AtviseFile} The resulting file.
    */
   static fromReadResult(readResult) {
-    if (!readResult.value) {
+    if (!readResult.hasOwnProperty('value')) {
       throw new Error('no value');
     }
 
     return new AtviseFile({
       path: AtviseFile.pathForReadResult(readResult),
-      contents: AtviseFile.encodeValue(readResult.value, readResult.value.$dataType),
-      _dataType: readResult.value.$dataType,
-      _arrayType: readResult.value.$arrayType,
-      _typeDefinition: readResult.referenceDescription.typeDefinition,
+      contents: AtviseFile.encodeValue(readResult.value, readResult.dataType),
+      _dataType: readResult.dataType,
+      _arrayType: readResult.arrayType,
+      _typeDefinition: readResult.typeDefinition,
       stat: { mtime: readResult.mtime ? this.normalizeMtime(readResult.mtime) : undefined },
     });
   }
@@ -311,13 +322,13 @@ export default class AtviseFile extends File {
 
       Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
         if (!foundAtType && extensions.includes(identifier)) {
-          foundAtType = true;
-          const type = AtviseTypesByIdentifier[identifier];
+        foundAtType = true;
+        const type = AtviseTypesByIdentifier[identifier];
 
-          this._typeDefinition = type.typeDefinition;
-          this._dataType = type.dataType;
-        }
-      });
+        this._typeDefinition = type.typeDefinition;
+        this._dataType = type.dataType;
+      }
+    });
     }
 
     if (!complete()) {
@@ -445,17 +456,17 @@ export default class AtviseFile extends File {
   static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
-        reject(new Error('options.path is required'));
-      } else {
-        readFile(options.path, (err, contents) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(new AtviseFile(Object.assign(options, { contents })));
-          }
-        });
-      }
+      reject(new Error('options.path is required'));
+    } else {
+      readFile(options.path, (err, contents) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(new AtviseFile(Object.assign(options, { contents })));
+    }
     });
+    }
+  });
   }
 
 }

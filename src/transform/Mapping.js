@@ -22,19 +22,6 @@ export default class MappingTransformer extends Transformer {
     try {
       const file = AtviseFile.fromReadResult(readResult);
 
-      if (file.relative.match(/\.var\./)) {
-        const rc = file.clone();
-
-        rc.extname = '';
-        rc.basename = `.${rc.stem}.rc`;
-
-        rc.contents = Buffer.from(JSON.stringify({
-          typeDefinition: file.typeDefinition,
-        }, null, '  '));
-
-        this.push(rc);
-      }
-
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
