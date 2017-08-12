@@ -37,6 +37,7 @@ const AtviseTypes = [
   new AtviseType('ScriptCode', 'script', DataType.XmlElement),
   new AtviseType('Display', 'display', DataType.XmlElement),
   new AtviseType('TranslationTable', 'locs', DataType.XmlElement),
+  new AtviseType('TypeDefinition', 'typeDef', 'typedef', 'json'),
   new AtviseResourceType('Pdf', 'pdf'),
   new AtviseResourceType('Html', 'html'),
   new AtviseResourceType('Javascript', 'js'),
