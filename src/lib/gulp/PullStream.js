@@ -29,7 +29,7 @@ export default class PullStream {
 
     return Transformer.applyTransformers(
       readStream
-        .pipe(mappingStream),
+        .pipe(mappingStream), // pipe output of readstream to mapping stream
       ProjectConfig.useTransformers,
       TransformDirection.FromDB
     )
@@ -43,5 +43,4 @@ export default class PullStream {
         clearInterval(printProgress);
       });
   }
-
 }
