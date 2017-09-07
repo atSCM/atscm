@@ -2,7 +2,7 @@ import QueueStream from './QueueStream';
 import {NodeClass, VariantArrayType} from 'node-opcua';
 import AtviseFile from './AtviseFile'
 
-const AtviseTypes = AtviseFile.getAtviseTypesByValue();
+const TypeDefResourceType = AtviseFile.getAtviseTypesByValue()["Custom.TypeDefinition"];
 
 /**
  * A stream that adds a typedefinition item for the {@link node-opcua~ReferenceDescription}s passed.
@@ -37,6 +37,7 @@ export default class TypeDefStream extends QueueStream {
     });
   }
 
+
   /**
    * Creates type definition object.
    * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to process
@@ -49,7 +50,7 @@ export default class TypeDefStream extends QueueStream {
       nodeId: referenceDescription.nodeId,
       browseName: referenceDescription.browseName.name,
       arrayType: VariantArrayType.Scalar,
-      typeDefinition: AtviseTypes['VariableTypes.ATVISE.TypeDefinition'].typeDefinition
+      typeDefinition: TypeDefResourceType.typeDefinition
     };
   }
 
