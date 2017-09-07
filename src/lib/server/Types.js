@@ -1,10 +1,8 @@
 import { DataType } from 'node-opcua';
 import NodeId from '../server/NodeId';
 
-class AtviseType {
-
-  constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {
-    this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
+class Type {
+  constructor(identifier, dataType, fileExtensionOrKeep) {
     this.identifier = identifier;
     this.dataType = dataType;
     if (fileExtensionOrKeep !== undefined) {
@@ -15,15 +13,26 @@ class AtviseType {
       }
     }
   }
+}
 
+class AtviseType extends Type {
+  constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {
+    super(identifier, dataType, fileExtensionOrKeep);
+    this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
+  }
+}
+
+class CustomResourceType extends Type {
+  constructor(name, identifier, dataType, fileExtensionOrKeep) {
+    super(identifier, dataType, fileExtensionOrKeep);
+    this.typeDefinition = new NodeId(`Custom.${name}`);
+  }
 }
 
 class AtviseResourceType extends AtviseType {
-
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
   }
-
 }
 
 /**
@@ -37,7 +46,6 @@ const AtviseTypes = [
   new AtviseType('ScriptCode', 'script', DataType.XmlElement),
   new AtviseType('Display', 'display', DataType.XmlElement),
   new AtviseType('TranslationTable', 'locs', DataType.XmlElement),
-  new AtviseType('TypeDefinition', 'typeDef', 'typedef', 'json'),
   new AtviseResourceType('Pdf', 'pdf'),
   new AtviseResourceType('Html', 'html'),
   new AtviseResourceType('Javascript', 'js'),
@@ -51,6 +59,7 @@ const AtviseTypes = [
   new AtviseResourceType('Svg', 'svg'),
   new AtviseResourceType('Jpeg', 'jpg'),
   new AtviseResourceType('OctetStream', '*'),
+  new CustomResourceType('TypeDefinition', 'typedef', DataType.String, 'json'),
 ];
 
 export default AtviseTypes;
