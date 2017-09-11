@@ -13,19 +13,19 @@ export default class MappingTransformer extends Transformer {
   /**
    * Writes an {@link AtviseFile} for each {@link ReadStream.ReadResult} read. If a read file has a
    * non-standard type (definition) an additional `.rc` file is pushed holding this type.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * @param {ReadStream.ReadResult} readStreamResult The read result to create the file for.
    * @param {String} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
-  transformFromDB(readResult, encoding, callback) {
+  transformFromDB(readStreamResult, encoding, callback) {
     try {
-      const file = AtviseFile.fromReadResult(readResult);
+      const file = AtviseFile.fromReadResult(readStreamResult);
 
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.toString()}: ${e.message}`
+        `Unable to map ${readStreamResult.nodeId.toString()}: ${e.message}`
       );
       Logger.debug(e);
 
