@@ -159,17 +159,17 @@ export default class AtviseFile extends File {
         keepExtension = atType.keepExtension;
       }
 
-      if (!keepExtension) {
+      if (! keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
 
-    if (arrayType) {
-      // Add "array" or "matrix" extensions for corresponding array types
-      if (arrayType.value !== VariantArrayType.Scalar.value) {
-        path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+      if (arrayType) {
+        // Add "array" or "matrix" extensions for corresponding array types
+        if (arrayType.value !== VariantArrayType.Scalar.value) {
+          path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+        }
       }
     }
-
     return path;
   }
 
@@ -232,21 +232,24 @@ export default class AtviseFile extends File {
 
   /**
    * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * @param {ReadStream.ReadResult} readStreamResult The read result to create the file for.
    * @return {AtviseFile} The resulting file.
    */
-  static fromReadResult(readResult) {
-    if (!readResult.hasOwnProperty('value')) {
-      throw new Error('no value');
+  static fromReadResult(readStreamResult) {
+    let mappingItem = {};
+    if (!readStreamResult) {
+      throw new Error('Read stream result is undefined');
     }
 
+    mappingItem = readStreamResult.mappingItem;
+
     return new AtviseFile({
-      path: AtviseFile.pathForReadResult(readResult),
-      contents: AtviseFile.encodeValue(readResult.value, readResult.dataType),
-      _dataType: readResult.dataType,
-      _arrayType: readResult.arrayType,
-      _typeDefinition: readResult.typeDefinition,
-      stat: { mtime: readResult.mtime ? this.normalizeMtime(readResult.mtime) : undefined },
+      path: AtviseFile.pathForReadResult(mappingItem),
+      contents: AtviseFile.encodeValue(mappingItem.value, mappingItem.dataType),
+      _dataType: mappingItem.dataType,
+      _arrayType: mappingItem.arrayType,
+      _typeDefinition: mappingItem.typeDefinition,
+      stat: { mtime: mappingItem.mtime ? this.normalizeMtime(mappingItem.mtime) : undefined },
     });
   }
 
@@ -457,16 +460,16 @@ export default class AtviseFile extends File {
     return new Promise((resolve, reject) => {
       if (!options.path) {
       reject(new Error('options.path is required'));
-    } else {
-      readFile(options.path, (err, contents) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(new AtviseFile(Object.assign(options, { contents })));
-    }
+      } else {
+        readFile(options.path, (err, contents) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
     });
-    }
-  });
   }
 
 }

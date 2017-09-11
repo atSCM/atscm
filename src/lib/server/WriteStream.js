@@ -23,6 +23,11 @@ export default class WriteStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(file, handleErrors) {
+    console.log("test");
+
+    return;
+
+
     try {
       this.session.writeSingleNode(file.nodeId.toString(), {
         dataType: file.dataType,

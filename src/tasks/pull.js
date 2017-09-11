@@ -1,6 +1,6 @@
 import ProjectConfig from '../config/ProjectConfig';
-import NodeStream from '../lib/server/NodeStream';
-import TypeDefStream from '../lib/server/TypeDefStream';
+import BrowseStream from '../lib/server/BrowseStream';
+import NodeConfigStream from '../lib/server/NodeConfigStream';
 import ReadStream from '../lib/server/ReadStream';
 import PullStream from '../lib/gulp/PullStream';
 
@@ -9,9 +9,9 @@ import PullStream from '../lib/gulp/PullStream';
  */
 export default function pull() {
   return new PullStream(
-    (new NodeStream(ProjectConfig.nodes))
-      .pipe(new TypeDefStream())
-      .pipe(new ReadStream()) // pipe output of nodestream to input of readstream
+    (new BrowseStream(ProjectConfig.nodes))
+      .pipe(new NodeConfigStream())
+      .pipe(new ReadStream())
   );
 }
 
