@@ -220,6 +220,7 @@ export class WatchTask {
         });
 
         fileWatcher.on('change', this.handleFileChange.bind(this));
+        // Rename von Files, Anlegen von neuen Files usw hier hinzufügen
         serverWatcher.on('change', this.handleServerChange.bind(this));
 
         this.initBrowserSync();
