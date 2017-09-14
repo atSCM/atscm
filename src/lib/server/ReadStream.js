@@ -1,5 +1,6 @@
 import QueueStream from './QueueStream';
 import Logger from 'gulplog';
+import { StatusCodes } from 'node-opcua';
 
 /**
  * A stream that reads atvise server nodes for the {@link node-opcua~ReferenceDescription}s passed.
@@ -29,7 +30,7 @@ export default class ReadStream extends QueueStream {
 
     if (!mappingItem.isReadNodeConfig) {
       this.push(mappingItem);
-      this._processNextChunk(mappingItem);
+      handleErrors(err, StatusCodes.Good, done => done());
     } else {
 
       this.session.read([{nodeId}], (err, nodesToRead, results) => {
