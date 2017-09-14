@@ -11,7 +11,7 @@ const TypeDefinitionResourceId = new NodeId("Custom.TypeDefinition");
 /**
  * Custom Atvise File Type for references
  */
-const ReferenceTypeResourceId = new NodeId("Custom.References");
+const ReferenceTypeResourceId = new NodeId("Custom.AtvReferences");
 
 
 /**
