@@ -59,7 +59,8 @@ const AtviseTypes = [
   new AtviseResourceType('Svg', 'svg'),
   new AtviseResourceType('Jpeg', 'jpg'),
   new AtviseResourceType('OctetStream', '*'),
-  new CustomResourceType('NodeConfig', 'nodeconfig', DataType.String, 'json'),
+  new CustomResourceType('TypeDefinition', 'typedef', DataType.String, 'json'),
+  new CustomResourceType('References', 'references', DataType.String, 'json')
 ];
 
 export default AtviseTypes;

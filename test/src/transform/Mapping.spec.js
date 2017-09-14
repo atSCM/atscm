@@ -22,7 +22,7 @@ describe('MappingTransformer', function() {
 
   /** @test {MappingTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
-    context('when AtviseFile.fromReadResult returns error', function() {
+    context('when AtviseFile.fromMappingItem returns error', function() {
       let warnListener;
       let debugListener;
 
@@ -35,7 +35,7 @@ describe('MappingTransformer', function() {
       });
 
       afterEach(() => {
-        AtviseFile.fromReadResult.restore();
+        AtviseFile.fromMappingItem.restore();
         Logger.removeListener('warn', warnListener);
         Logger.removeListener('debug', debugListener);
       });
@@ -61,7 +61,7 @@ describe('MappingTransformer', function() {
       });
     });
 
-    context('when AtviseFile.fromReadResult returns "no value" error', function() {
+    context('when AtviseFile.fromMappingItem returns "no value" error', function() {
       let warnListener;
       let debugListener;
 
@@ -74,7 +74,7 @@ describe('MappingTransformer', function() {
       });
 
       afterEach(() => {
-        AtviseFile.fromReadResult.restore();
+        AtviseFile.fromMappingItem.restore();
         Logger.removeListener('warn', warnListener);
         Logger.removeListener('debug', debugListener);
       });
