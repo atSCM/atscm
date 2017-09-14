@@ -1,6 +1,6 @@
 import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
 import QueueStream from './QueueStream';
-import BrowseStreamResult from './BrowseStreamResult';
+import MappingItem from './MappingItem';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
 import Logger from 'gulplog';
@@ -36,8 +36,7 @@ const BrowseReferenceTypes = [
  * List of reference types that are used for node metadata
  * @type {node-opcua~ReferenceTypeId{}}
  */
-const NodeConfigTypes = [
-  ReferenceTypeIds.HasTypeDefinition,
+const AtviseReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
@@ -116,31 +115,63 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference points to a child node of the browsed nodeId
+   * Checks if the given non atvise reference should be pushed to browse stream output or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
-   * @return {Boolean} reference reference points to a child node(=true) or not(=false)
+   * @return {Boolean} reference should be pushed(=true) or not(=false)
+   */
+  static shouldBePushed(ref, nodeId) {
+    return (BrowseStream.isChildNodeRef(ref, nodeId) && BrowseStream.shouldBeRead(ref)) ||
+      BrowseStream.isTypeDefinitionRef(ref);
+  }
+
+  /**
+   * Checks if the given reference should be pushed to NodeStream input or not
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param{node-opcua~NodeId} nodeId The browsed nodeId
+   * @return {Boolean} reference should be pushed(=true) or not(=false)
+   */
+  static shouldBeBrowsed(ref, nodeId) {
+    return BrowseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1 &&
+      BrowseStream.isChildNodeRef(ref, nodeId);
+  }
+
+  /**
+   * Checks if the given reference points to a child node reference or not
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param{node-opcua~NodeId} nodeId The browsed nodeId
+   * @return {Boolean} reference points to a child node(=true) or not(=false)
    */
   static isChildNodeRef(ref, nodeId) {
     return ref.nodeId.toString().split(nodeId.value).length > 1;
   }
 
+
   /**
-   * Checks if the given reference should be used
+   * Checks if the given reference is a valid browse stream reference or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be used(=true) or not(=false)
+   * @return {Boolean} reference is valid(=true) or not(=false)
    */
-  static useRef(ref) {
+  static isValidRef(ref) {
     return ValidReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
-   * Checks if the given reference is a node config reference or not
+   * Checks if the given reference is an atvise specific reference or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference belongs to node config list(=true) or not(=false)
+   * @return {Boolean} reference is an atvise specific reference(=true) or not(=false)
    */
-  static isNodeConfigRef(ref) {
-    return NodeConfigTypes.indexOf(ref.referenceTypeId.value) > -1;
+  static isAtviseRef(ref) {
+    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+  }
+
+  /**
+   * Checks if the given reference should be read or not
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @return {Boolean} reference should be read(=true) or not(=false)
+   */
+  static shouldBeRead(ref) {
+    return ref.$nodeClass.value == NodeClass.Variable;
   }
 
   /**
@@ -148,35 +179,17 @@ export default class BrowseStream extends QueueStream {
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @return {Boolean} reference is a type definition(=true) or not(=false)
    */
-  static isTypeDefinitionNode(ref) {
-    return TypeDefinitionNodeClasses.indexOf(ref.$nodeClass) > -1;
+  static isTypeDefinitionRef(ref) {
+    return ref.referenceTypeId.value == ReferenceTypeIds.HasTypeDefinition;
   }
 
   /**
-   * Checks if the given reference should be pushed to NodeStream input or not
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be pushed(=true) or not(=false)
-   */
-  static shouldBeBrowsed(ref) {
-    return BrowseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
-  }
-
-  /**
-   * "Casts the nodeId object of the given reference description to a NodeId object"
+   * Casts the nodeId object of the given reference description to a NodeId object
    * @param{node-opcua~ReferenceDescription} ref The reference description to cast
    */
-  static castRef(ref) {
+  static opcNodeIdToExpandedNodeId(ref) {
     // "cast" reference nodeId to NodeId
     Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
-  }
-
-  /**
-   * Checks if the given reference should be should be read or not
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be read(=true) or not(=false)
-   */
-  static shouldBeRead(ref) {
-    return ref.$nodeClass == NodeClass.Variable;
   }
 
   /**
@@ -195,9 +208,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference matches browse filters(=true) or not(=false)
    */
   matchesFilter(ref, nodeId) {
-    // Only let valid reference types and object and variable types pass
-    return BrowseStream.useRef(ref) && (BrowseStream.isTypeDefinitionNode(ref)
-      || BrowseStream.isChildNodeRef(ref, nodeId)) && !this.isIgnored(ref);
+    return BrowseStream.isValidRef(ref) && !this.isIgnored(ref);
   }
 
   /**
@@ -216,7 +227,7 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Returns {BrowseStreamResult.BrowseStreamResult}s for the given browse node id.
+   * Returns {MappingItem}s for the given browse node id.
    * @param {NodeId} nodeId The node id to browse.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -233,7 +244,7 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          let nodeConfigReferences = [];
+          let atvReferences = [];
 
           Promise.all(
             results[0].references
@@ -241,19 +252,16 @@ export default class BrowseStream extends QueueStream {
               .filter(ref => this.matchesFilter(ref, nodeId))
               // Push variable and object nodes, recurse
               .map(ref => {
-                let browseRef = BrowseStream.shouldBeBrowsed(ref),
-                    addToNodeConfig = BrowseStream.isNodeConfigRef(ref);
+                BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                BrowseStream.castRef(ref);
-
-                if (addToNodeConfig) {
-                  nodeConfigReferences.push(ref);
-                } else if (BrowseStream.shouldBeRead(ref)) {
-                    this.push(new BrowseStreamResult(false, nodeId, [ref]));
+                if(BrowseStream.isAtviseRef(ref)) {
+                  atvReferences.push(ref);
+                } else if (BrowseStream.shouldBePushed(ref, nodeId)) {
+                  this.push(new MappingItem(nodeId, ref));
                 }
 
                 // Only browse variable types and objects recursively
-                if (this.recursive && browseRef) {
+                if (this.recursive && BrowseStream.shouldBeBrowsed(ref, nodeId)) {
                   return new Promise((resolve) => {
                     this.write(ref.nodeId, null, resolve);
                   });
@@ -261,8 +269,8 @@ export default class BrowseStream extends QueueStream {
               })
           )
             .then(result => {
-              if (nodeConfigReferences) {
-                this.push(new BrowseStreamResult(true, nodeId, nodeConfigReferences));
+              if (atvReferences.length > 0) {
+                this.push(new MappingItem(nodeId, atvReferences));
               }
               done();
             });
