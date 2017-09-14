@@ -131,15 +131,15 @@ function extensionForDataType(dataType) {
 export default class AtviseFile extends File {
 
   /**
-   * Returns a storage path for a {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readResult The read result to get a path for.
+   * Returns a storage path for a {@link MappingItem.itemToProcess}.
+   * @param {MappingItem} itemToProcess The item to process.
    */
-  static pathForReadResult(readResult) {
-    let path = `${readResult.nodeId.filePath}/${readResult.nodeId.browseName}`;
+  static pathForProcessingItem(itemToProcess) {
+    let path = `${itemToProcess.nodeId.filePath}/${itemToProcess.nodeId.browseName}`;
 
-    const dataType = readResult.dataType;
-    const arrayType = readResult.arrayType;
-    const typeDefinition = readResult.typeDefinition;
+    const dataType = itemToProcess.dataType;
+    const arrayType = itemToProcess.arrayType;
+    const typeDefinition = itemToProcess.typeDefinition;
 
 
     if (typeDefinition.value === VariableTypeDefinition.value) {
@@ -233,25 +233,30 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readStreamResult The read result to create the file for.
+   * Creates a new {@link AtviseFile} for the given {@link MappingItem}.
+   * @param {MappingItem} mappingItem The read result to create the file for.
    * @return {AtviseFile} The resulting file.
    */
-  static fromReadResult(readStreamResult) {
-    let mappingItem = {};
-    if (!readStreamResult) {
-      throw new Error('Read stream result is undefined');
+  static fromMappingItem(mappingItem) {
+    let itemToProcess = {};
+
+    if (!mappingItem) {
+      throw new Error('Mapping item is undefined');
     }
 
-    mappingItem = readStreamResult.mappingItem;
+    itemToProcess = mappingItem.itemToProcess;
+
+    if (itemToProcess.value == null) {
+      throw new Error('Mapping item is undefined');
+    }
 
     return new AtviseFile({
-      path: AtviseFile.pathForReadResult(mappingItem),
-      contents: AtviseFile.encodeValue(mappingItem.value, mappingItem.dataType),
-      _dataType: mappingItem.dataType,
-      _arrayType: mappingItem.arrayType,
-      _typeDefinition: mappingItem.typeDefinition,
-      stat: { mtime: mappingItem.mtime ? this.normalizeMtime(mappingItem.mtime) : undefined },
+      path: AtviseFile.pathForProcessingItem(itemToProcess),
+      contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType),
+      _dataType: itemToProcess.dataType,
+      _arrayType: itemToProcess.arrayType,
+      _typeDefinition: itemToProcess.typeDefinition,
+      stat: { mtime: itemToProcess.mtime ? this.normalizeMtime(itemToProcess.mtime) : undefined },
     });
   }
 
@@ -400,6 +405,14 @@ export default class AtviseFile extends File {
    */
   get isQuickDynamic() {
     return this.typeDefinition.value === 'VariableTypes.ATVISE.QuickDynamic';
+  }
+
+  /**
+   * `true` for files containing node configurations.
+   * @type {Boolean}
+   */
+  get isNodeConfiguration() {
+    return this.typeDefinition.value === 'Custom.NodeConfig';
   }
 
   /**
