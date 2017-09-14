@@ -111,11 +111,11 @@ describe('AtviseFile', function() {
       }))
   );
 
-  /** @test {AtviseFile.pathForReadResult} */
-  describe('.pathForReadResult', function() {
+  /** @test {AtviseFile.pathForProcessingItem} */
+  describe('.pathForProcessingItem', function() {
     tests.forEach(test => {
       it(test.name, function() {
-        expect(AtviseFile.pathForReadResult({
+        expect(AtviseFile.pathForProcessingItem({
           nodeId: test.nodeId,
           value: {
             $dataType: test.dataType,
@@ -129,7 +129,7 @@ describe('AtviseFile', function() {
     });
 
     it('should store custom typed variables with a ".var" extension', function() {
-      expect(AtviseFile.pathForReadResult({
+      expect(AtviseFile.pathForProcessingItem({
         nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
         value: {
           $dataType: DataType.Boolean,
@@ -213,16 +213,16 @@ describe('AtviseFile', function() {
     });
   });
 
-  /** @test {AtviseFile.fromReadResult} */
-  describe('.fromReadResult', function() {
+  /** @test {AtviseFile.fromMappingItem} */
+  describe('.fromMappingItem', function() {
     it('should fail without value', function() {
-      expect(() => AtviseFile.fromReadResult({}), 'to throw', 'no value');
+      expect(() => AtviseFile.fromMappingItem({}), 'to throw', 'no value');
     });
 
     it('should return a new instance with valid readResult', function() {
       const nodeId = new NodeId('AGENT.DISPLAYS.Main');
 
-      expect(AtviseFile.fromReadResult({
+      expect(AtviseFile.fromMappingItem({
         nodeId,
         value: {
           value: '<svg></svg>',
@@ -240,7 +240,7 @@ describe('AtviseFile', function() {
     it('should use undefined as mtime if not provided', function() {
       const nodeId = new NodeId('AGENT.DISPLAYS.Main');
 
-      const file = AtviseFile.fromReadResult({
+      const file = AtviseFile.fromMappingItem({
         nodeId,
         value: {
           value: '<svg></svg>',

@@ -1,6 +1,5 @@
 import ProjectConfig from '../config/ProjectConfig';
 import BrowseStream from '../lib/server/BrowseStream';
-import NodeConfigStream from '../lib/server/NodeConfigStream';
 import ReadStream from '../lib/server/ReadStream';
 import PullStream from '../lib/gulp/PullStream';
 
@@ -10,8 +9,7 @@ import PullStream from '../lib/gulp/PullStream';
 export default function pull() {
   return new PullStream(
     (new BrowseStream(ProjectConfig.nodes))
-      .pipe(new NodeConfigStream())
-      .pipe(new ReadStream())
+     .pipe(new ReadStream())
   );
 }
 

@@ -6,7 +6,7 @@ import {
   StatusCodes,
 } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
-import NodeStream from './NodeStream';
+import BrowseStream from './BrowseStream';
 import QueueStream from './QueueStream';
 import Session from './Session';
 
@@ -161,10 +161,10 @@ export default class Watcher extends Emitter {
     super();
 
     /**
-     * The node stream that discovers the nodes to watch.
-     * @type {NodeStream}
+     * The browse stream that discovers the nodes to watch.
+     * @type {BrowseStream}
      */
-    this._nodeStream = new NodeStream(nodes)
+    this._browseStream = new BrowseStream(nodes)
       .on('error', err => this.emit('error', err));
 
     /**
@@ -174,7 +174,7 @@ export default class Watcher extends Emitter {
     this._subscribeStream = new SubscribeStream()
       .on('error', err => this.emit('error', err));
 
-    this._nodeStream.pipe(this._subscribeStream);
+    this._browseStream.pipe(this._subscribeStream);
 
     this._subscribeStream.on('finish', () => this.emit('ready'));
     this._subscribeStream.on('change', event => this.emit('change', event));
