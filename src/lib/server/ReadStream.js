@@ -31,7 +31,6 @@ export default class ReadStream extends QueueStream {
       this.push(mappingItem);
       this._processNextChunk(mappingItem);
     } else {
-      console.log(nodeId);
 
       this.session.read([{nodeId}], (err, nodesToRead, results) => {
         if(! err && (! results || results.length === 0)) {
