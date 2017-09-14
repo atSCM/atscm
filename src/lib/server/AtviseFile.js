@@ -407,11 +407,19 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * `true` for files containing node configurations.
+   * `true` for files containing type definitions.
    * @type {Boolean}
    */
-  get isNodeConfiguration() {
-    return this.typeDefinition.value === 'Custom.NodeConfig';
+  get isTypeDefinition() {
+    return this.typeDefinition.value === 'Custom.TypeDefinition';
+  }
+
+  /**
+   * `true` for files containing type definitions.
+   * @type {Boolean}
+   */
+  get isAtviseReferenceConfig() {
+    return this.typeDefinition.value === 'Custom.AtvReferences';
   }
 
   /**
