@@ -8,13 +8,13 @@ import { StatusCodes } from 'node-opcua';
 export default class ReadStream extends QueueStream {
 
   /**
-   * Returns an error message specifically for the given reference description.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
+   * Returns an error message specifically for the given mapping item.
+   * @param {MappingItem} mappingItem The reference description to get
    * the error message for.
    * @return {String} The specific error message.
    */
-  processErrorMessage(referenceDescription) {
-    return `Error reading node ${referenceDescription.nodeId.toString()}`;
+  processErrorMessage(mappingItem) {
+    return `Error processing item with  ${mappingItem.nodeId.toString()}`;
   }
 
   /**
@@ -30,7 +30,7 @@ export default class ReadStream extends QueueStream {
 
     if (!mappingItem.isReadNodeConfig) {
       this.push(mappingItem);
-      handleErrors(err, StatusCodes.Good, done => done());
+      handleErrors(null, StatusCodes.Good, done => done());
     } else {
 
       this.session.read([{nodeId}], (err, nodesToRead, results) => {
