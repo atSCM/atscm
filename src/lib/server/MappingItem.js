@@ -56,6 +56,12 @@ export default class MappingItem {
     this.browseNodeId = browseNodeId;
 
     /**
+     * The nodeId the reference is pointing at
+     * @type {node-opcua~NodeId}
+     */
+    this.refNodeId = referenceConfig.nodeId;
+
+    /**
      * References description for non node config items
      * @type {node-opcua~ReferenceDescription}
      */
@@ -90,7 +96,8 @@ export default class MappingItem {
         let typeDefConfig = this.createRefInfo(referenceConfig, this.browseNodeId);
 
         this.itemType = TypeDefConfigName;
-        this.typeDefinitionConfig = this.createNodeConfigItem(typeDefConfig, TypeDefinitionResourceId);
+        this.typeDefinitionConfig = this.createNodeConfigItem(typeDefConfig, TypeDefinitionResourceId,
+          MappingItem.isObjectTypeDefinition(referenceConfig));
       } else if (MappingItem.isVarTypeNodeRef(referenceConfig)) {
         this.itemType = ReadNodeConfigName;
         this.readNodeConfig.nodeId = referenceConfig.nodeId;
@@ -107,7 +114,19 @@ export default class MappingItem {
    * @return {Bool} reference is a type definition reference(=true) or not(=false)
    */
   static isTypeDefinitionRef(ref) {
-    return ref.referenceTypeId.value === ReferenceTypeIds.HasTypeDefinition;
+    let referenceType = ref.referenceTypeId.value;
+
+    return referenceType == ReferenceTypeIds.HasTypeDefinition ||
+      referenceType == ReferenceTypeIds.HasSubtype;
+  }
+
+  /**
+   * Checks if the given reference is a object type definition
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @return {Bool} reference is a object type definition(=true) or not(=false)
+   */
+  static isObjectTypeDefinition(ref) {
+    return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -173,7 +192,7 @@ export default class MappingItem {
       typeDefinition = referenceDescription.typeDefinition;
 
     return {
-      browseNodeId: browseNodeId,
+      sourceNodeId: browseNodeId,
       nodeClass: referenceDescription.nodeClass.key,
       nodeId: {
         identifierType: nodeId.identifierType.key,
@@ -215,10 +234,11 @@ export default class MappingItem {
    * Creates a node configuration object for type definitions and atvise reference types
    * @param {*} value The object that contains node configuration
    * @param {node-opcua~NodeId} typeDefinition The type definition for the node config item
+   * @param {Boolean} isObjectTypeDefinition If the given type definition config belongs to an object type or not
    */
-  createNodeConfigItem (value, typeDefinition) {
+  createNodeConfigItem (value, typeDefinition, isObjectTypeDefinition = false) {
     return {
-      nodeId: this.browseNodeId,
+      nodeId: isObjectTypeDefinition ? this.refNodeId : this.browseNodeId,
       dataType : DataType.String,
       arrayType : VariantArrayType.Scalar,
       dataType : DataType.String,
