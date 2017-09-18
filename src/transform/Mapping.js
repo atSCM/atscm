@@ -50,25 +50,7 @@ export default class MappingTransformer extends Transformer {
         contents: file.contents,
       });
 
-      if (file.relative.match(/\.var\./)) {
-        const rcFile = file.clone({ contents: false });
-        rcFile.extname = '';
-        rcFile.basename = `.${rcFile.stem}.rc`;
-
-        readFile(rcFile.path, 'utf8', (err, data) => {
-          try {
-            const rc = JSON.parse(data);
-            atFile._typeDefinition = new NodeId(rc.typeDefinition);
-
-            callback(null, atFile);
-          } catch (e) {
-            Logger.error(`Unable to get runtime configuration for ${file.relative}`);
-            callback(err || e);
-          }
-        });
-      } else {
         callback(null, atFile);
-      }
     }
   }
 
