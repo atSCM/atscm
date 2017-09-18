@@ -1,4 +1,5 @@
 import { readFile } from 'fs';
+import {dirname, join, relative} from 'path';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import AtviseTypes from './Types';
@@ -23,6 +24,13 @@ const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
   [type.identifier]: type,
 }), {});
+
+
+/**
+ * Source directory path
+ * @type {String}
+ */
+const SrcPath = join(process.cwd(), 'src');
 
 /**
  * A map providing shorter extensions for data types
@@ -273,13 +281,14 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     let extensions = [];
-    const m = this.relative.match(ExtensionRegExp);
+    const relPath = this.relativeFilePath;
+    const m = relPath.match(ExtensionRegExp);
     if (m) {
       extensions = m[1].split('.');
     }
 
     // For split files, add the directory name extension
-    const dirnameExts = this.dirname.split('.');
+    const dirnameExts = dirname(relPath).split('.');
     if (dirnameExts.length > 1) {
       extensions.unshift(dirnameExts[dirnameExts.length - 1]);
     }
@@ -326,6 +335,10 @@ export default class AtviseFile extends File {
       this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
     });
 
+    ifLastExtensionMatches(ext => ext === 'var', () => {
+      this._typeDefinition = new NodeId("Custom.VarResourceType");
+    });
+
     if (!complete()) {
       // Handle atvise types
       let foundAtType = false;
@@ -345,6 +358,15 @@ export default class AtviseFile extends File {
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
     }
+  }
+
+
+  /**
+   * The file's relative path (base = 'src' folder)
+   * @type {String}
+   */
+  get relativeFilePath() {
+    return relative(SrcPath, this.path);
   }
 
   /**
@@ -448,15 +470,7 @@ export default class AtviseFile extends File {
    * @type {NodeId} The file's node id.
    */
   get nodeId() {
-    const atType = AtviseTypesByValue[this.typeDefinition.value];
-    let idPath = this.relative;
-
-    if (!atType || !atType.keepExtension) {
-      const exts = idPath.match(ExtensionRegExp)[1];
-      idPath = idPath.split(`.${exts}`)[0];
-    }
-
-    return NodeId.fromFilePath(idPath);
+    return NodeId.fromFilePath(dirname(this.relativeFilePath));
   }
 
   /**
@@ -494,5 +508,4 @@ export default class AtviseFile extends File {
       }
     });
   }
-
 }
