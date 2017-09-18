@@ -8,47 +8,52 @@ import QueueStream from './QueueStream';
 export default class WriteStream extends QueueStream {
 
   /**
-   * The error message to use when writing a file fails.
-   * @param {AtviseFile} file The file being processed.
-   * @return {String} The error message to use.
+   * Returns an error message specifically for the given combined file.
+   * @param {CombinedNodeFile} combinedNodeFile The combined file to process
+   * the error message for.
+   * @return {String} The specific error message.
    */
-  processErrorMessage(file) {
-    return `Error writing ${file.nodeId.toString()}`;
+  processErrorMessage(combinedNodeFile) {
+    return `Error processing file:  ${combinedNodeFile.contentFile.nodeId.toString()}`;
   }
 
   /**
-   * Writes an {@link AtviseFile} to it's corresponding node on atvise server.
-   * @param {AtviseFile} file The file to write.
+   * Writes an {@link CombinedNodeFile.contentFile} to it's corresponding node on atvise server.
+   * @param {CombinedNodeFile} file The combined file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk(file, handleErrors) {
-    console.log('test');
+  processChunk(combinedNodeFile, handleErrors) {
 
-    return;
-
+    const contentFile = combinedNodeFile.contentFile;
 
     try {
-      this.session.writeSingleNode(file.nodeId.toString(), {
-        dataType: file.dataType,
-        arrayType: file.arrayType,
-        value: file.value,
+      this.session.writeSingleNode(contentFile.nodeId.toString(), {
+        dataType: contentFile.dataType,
+        arrayType: contentFile.arrayType,
+        value: contentFile.value,
       }, (err, statusCode) => {
         if (statusCode === StatusCodes.BadUserAccessDenied) {
           Logger.warn(`Error writing node ${
-            file.nodeId.toString()
+            contentFile.nodeId.toString()
           }: Make sure it is not opened in atvise builder`);
+
           handleErrors(err, StatusCodes.Good, done => done());
-        } else {
+        } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
+          Logger.warn(`Error writing node ${
+            contentFile.nodeId.toString()
+          }: NodeId does not exist`);
+
           handleErrors(err, statusCode, done => {
-            this.push(file);
+            this.push(contentFile);
             done();
           });
+        } else {
+          handleErrors(err, StatusCodes.Good, done => done());
         }
       });
     } catch (e) {
       handleErrors(e);
     }
-  }
-
+  };
 }
