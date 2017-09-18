@@ -115,14 +115,14 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given non atvise reference should be pushed to browse stream output or not
+   * Checks if the given non atvise reference should be mapped or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
    * @return {Boolean} reference should be pushed(=true) or not(=false)
    */
-  static shouldBePushed(ref, nodeId) {
-    return (BrowseStream.isChildNodeRef(ref, nodeId) && BrowseStream.shouldBeRead(ref)) ||
-      BrowseStream.isTypeDefinitionRef(ref);
+  static shouldBeMappedAsFile(ref, nodeId) {
+    return (BrowseStream.isChildNodeRef(ref, nodeId) && BrowseStream.shouldBeMappedAsContentFile(ref)) ||
+      BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref);
   }
 
   /**
@@ -157,30 +157,33 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference is an atvise specific reference or not
+   * Checks if the given reference should be mapped as atvise reference file
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference is an atvise specific reference(=true) or not(=false)
+   * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
-  static isAtviseRef(ref) {
+  static shouldBeMappedAsAtviseReferenceFile(ref) {
     return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
   }
 
   /**
-   * Checks if the given reference should be read or not
+   * Checks if the given reference should be mapped as content file or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be read(=true) or not(=false)
+   * @return {Boolean} reference should be mapped as content file(=true) or not(=false)
    */
-  static shouldBeRead(ref) {
+  static shouldBeMappedAsContentFile(ref) {
     return ref.$nodeClass.value == NodeClass.Variable;
   }
 
   /**
-   * Checks if the given reference is a typedefinition or not
+   * Checks if the given reference should be mapped as type definition file or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference is a type definition(=true) or not(=false)
+   * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
    */
-  static isTypeDefinitionRef(ref) {
-    return ref.referenceTypeId.value == ReferenceTypeIds.HasTypeDefinition;
+  static shouldBeMappedAsTypeDefinitionFile(ref) {
+    let referenceType = ref.referenceTypeId.value;
+
+    return referenceType == ReferenceTypeIds.HasTypeDefinition ||
+      referenceType == ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -212,7 +215,7 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given rference description is ignored
+   * Checks if the given reference description is ignored
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @return {Boolean} The given reference description should be ignored(=true) or not(=false)
    */
@@ -254,9 +257,9 @@ export default class BrowseStream extends QueueStream {
               .map(ref => {
                 BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                if(BrowseStream.isAtviseRef(ref)) {
+                if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
-                } else if (BrowseStream.shouldBePushed(ref, nodeId)) {
+                } else if (BrowseStream.shouldBeMappedAsFile(ref, nodeId)) {
                   this.push(new MappingItem(nodeId, ref));
                 }
 
