@@ -17,32 +17,44 @@ export default class WriteStream extends QueueStream {
   }
 
   /**
-   * Writes an {@link AtviseFile} to it's corresponding node on atvise server.
-   * @param {AtviseFile} file The file to write.
+   * Writes {@link CombinedNodeFile.contentFile}'s values to the corresponding nodes on the atvise server.
+   * @param {CombinedNodeFile} file The combined file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk(file, handleErrors) {
-    try {
-      this.session.writeSingleNode(file.nodeId.toString(), {
-        dataType: file.dataType,
-        arrayType: file.arrayType,
-        value: file.value,
-      }, (err, statusCode) => {
-        if (statusCode === StatusCodes.BadUserAccessDenied) {
-          Logger.warn(`Error writing node ${
-            file.nodeId.toString()
-          }: Make sure it is not opened in atvise builder`);
-          handleErrors(err, StatusCodes.Good, done => done());
-        } else {
-          handleErrors(err, statusCode, done => {
-            this.push(file);
-            done();
-          });
-        }
-      });
-    } catch (e) {
-      handleErrors(e);
+  processChunk(combinedNodeFile, handleErrors) {
+    const contentFile = combinedNodeFile.contentFile;
+
+    if (combinedNodeFile.isTypeDefOnlyFile) {
+      this.push(combinedNodeFile);
+      handleErrors(err, StatusCodes.Good, done => done());
+    } else {
+      try {
+        this.session.writeSingleNode(contentFile.nodeId.toString(), {
+          dataType: contentFile.dataType,
+          arrayType: contentFile.arrayType,
+          value: contentFile.value,
+        }, (err, statusCode) => {
+          if (statusCode === StatusCodes.BadUserAccessDenied) {
+            Logger.warn(`Error writing node ${
+              contentFile.nodeId.toString()
+            }: Make sure it is not opened in atvise builder`);
+
+            handleErrors(err, StatusCodes.Good, done => done());
+          } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
+            Logger.warn(`Node ${
+              contentFile.nodeId.toString()
+              }: does not exist. Combined node file is pushed to CreateNode stream`);
+
+            this.push(combinedNodeFile);
+            handleErrors(err, StatusCodes.Good, done => done());
+          } else {
+            handleErrors(err, StatusCodes.Good, done => done());
+          }
+        });
+      } catch (e) {
+        handleErrors(e);
+      }
     }
   }
 
