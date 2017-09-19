@@ -44,12 +44,12 @@ const AtviseReferenceTypes = [
 ];
 
 /**
- * List that contains node classes for type definitions
- * @type {node-opcua~NodeClass{}}
+ * List of reference types that are used for node metadata
+ * @type {node-opcua~ReferenceTypeId{}}
  */
-const TypeDefinitionNodeClasses = [
-  NodeClass.VariableType,
-  NodeClass.ObjectType,
+const TypeDefinitionReferenceTypes = [
+  ReferenceTypeIds.HasTypeDefinition,
+  ReferenceTypeIds.HasModellingRule
 ];
 
 
@@ -115,16 +115,32 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given non atvise reference should be mapped or not
+   * Checks if the given reference should be mapped as content file or not
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
-   * @return {Boolean} reference should be pushed(=true) or not(=false)
+   * @return {Boolean} reference should be mapped as content file(=true) or not(=false)
    */
-  static shouldBeMappedAsFile(ref, nodeId) {
-    return (
-      BrowseStream.isChildNodeRef(ref, nodeId) &&
-      BrowseStream.shouldBeMappedAsContentFile(ref)
-    ) || BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref);
+  static shouldBeMappedAsContentFile(ref, nodeId) {
+    return BrowseStream.isChildNodeRef(ref, nodeId) &&
+      ref.$nodeClass.value == NodeClass.Variable;
+  }
+
+  /**
+   * Checks if the given reference should be mapped as atvise reference file
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
+   */
+  static shouldBeMappedAsAtviseReferenceFile(ref) {
+    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+  }
+
+  /**
+   * Checks if the given reference should be mapped as type definition file or not
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
+   */
+  static shouldBeMappedAsTypeDefinitionFile(ref) {
+    return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
   }
 
   /**
@@ -148,6 +164,15 @@ export default class BrowseStream extends QueueStream {
     return ref.nodeId.toString().split(nodeId.value).length > 1;
   }
 
+  /**
+   * Checks if the given reference is a object type definition
+   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @return {Bool} reference is a object type definition(=true) or not(=false)
+   */
+  static isObjectTypeDefinitionRef(ref) {
+    return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
+  }
+
 
   /**
    * Checks if the given reference is a valid browse stream reference or not
@@ -158,35 +183,6 @@ export default class BrowseStream extends QueueStream {
     return ValidReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
-  /**
-   * Checks if the given reference should be mapped as atvise reference file
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
-   */
-  static shouldBeMappedAsAtviseReferenceFile(ref) {
-    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
-  }
-
-  /**
-   * Checks if the given reference should be mapped as content file or not
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be mapped as content file(=true) or not(=false)
-   */
-  static shouldBeMappedAsContentFile(ref) {
-    return ref.$nodeClass.value === NodeClass.Variable;
-  }
-
-  /**
-   * Checks if the given reference should be mapped as type definition file or not
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
-   */
-  static shouldBeMappedAsTypeDefinitionFile(ref) {
-    const referenceType = ref.referenceTypeId.value;
-
-    return referenceType === ReferenceTypeIds.HasTypeDefinition ||
-      referenceType === ReferenceTypeIds.HasSubtype;
-  }
 
   /**
    * Casts the nodeId object of the given reference description to a NodeId object
@@ -248,7 +244,9 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          const atvReferences = [];
+          let atvReferences = [];
+          let typeDefinitionReferences = [];
+          let objTypeReferences = [];
 
           Promise.all(
             results[0].references
@@ -258,10 +256,14 @@ export default class BrowseStream extends QueueStream {
               .map(ref => {
                 BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                if (BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
+                if (BrowseStream.isObjectTypeDefinitionRef(ref)) {
+                  objTypeReferences.push(ref);
+                } else if (BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref)) {
+                  typeDefinitionReferences.push(ref);
+                } else if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
-                } else if (BrowseStream.shouldBeMappedAsFile(ref, nodeId)) {
-                  this.push(new MappingItem(nodeId, ref));
+                } else if (BrowseStream.shouldBeMappedAsContentFile(ref, nodeId)) {
+                  this.push(new MappingItem(nodeId, ref, 'readNodeConfig'));
                 }
 
                 // Only browse variable types and objects recursively
@@ -274,10 +276,18 @@ export default class BrowseStream extends QueueStream {
                 return Promise.resolve();
               })
           )
-            .then(() => {
-              if (atvReferences.length > 0) {
-                this.push(new MappingItem(nodeId, atvReferences));
+            .then(result => {
+              // create type definition item if browsed item has type definition references
+              if (typeDefinitionReferences.length > 0) {
+                this.push(new MappingItem(nodeId, typeDefinitionReferences, 'typeDefConfig'));
               }
+              // create atvise reference item if browsed item has type definition references
+              if (atvReferences.length > 0) {
+                this.push(new MappingItem(nodeId, atvReferences, 'atvRefConfig'));
+              }
+
+              // create type definition items for object types
+              objTypeReferences.map(ref => this.push(new MappingItem(nodeId, [ref], 'typeDefConfig')));
               done();
             });
         });
