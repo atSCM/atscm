@@ -398,7 +398,7 @@ export default class AtviseFile extends File {
    * @type {Boolean}
    */
   get isAtviseReferenceConfig() {
-    return this.typeDefinition.value === 'Custom.AtvReferences';
+    return this.typeDefinition.value === 'Custom.AtvReferenceConfig';
   }
 
   /**
