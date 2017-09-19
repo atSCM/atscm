@@ -52,7 +52,6 @@ const typeExtensions = types.map(t => t.toLowerCase());
 // Cache TypeDefinitions
 const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
-const ObjectTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 1, 0);
 
 // Cache Regular expressions
 const ExtensionRegExp = /\.([^/\\]*)$/;
