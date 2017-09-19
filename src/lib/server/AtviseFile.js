@@ -83,7 +83,6 @@ const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
  * @type {NodeId}
  */
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
-const ObjectTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 1, 0);
 
 // Cache Regular expressions
 /**
