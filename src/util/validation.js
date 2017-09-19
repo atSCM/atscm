@@ -6,7 +6,7 @@
  * to ignore.
  */
 function isUndefinedOrHasWrongType(item, type) {
-  return item === undefined || item == null || !(item instanceof type);
+  return item === undefined || item === null || item.constructor !== type;
 }
 
 /**
