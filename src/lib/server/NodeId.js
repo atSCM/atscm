@@ -103,6 +103,18 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
+   * The parent node id
+   * @type {NodeId}
+   */
+  get parentNodeId() {
+    const lastSeperator = this.value.indexOf('/') > - 1 ?
+      '/' : '.';
+
+    return new NodeId(this.value.substr(0, this.value.lastIndexOf(lastSeperator)));
+  }
+
+
+  /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using node.js's *util.inspect*.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
@@ -116,5 +128,4 @@ export default class NodeId extends OpcNodeId {
       options.stylize(this.value, this.identifierType === Type.NUMERIC ? 'number' : 'string'),
     ].join(' ');
   }
-
 }
