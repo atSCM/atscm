@@ -28,6 +28,22 @@ const CreateNodeScriptId = new NodeId("ns=1;s=SYSTEM.LIBRARY.PROJECT.SERVERSCRIP
  */
 const CreateNodeScriptBaseNodeId = CreateNodeScriptId.parentNodeId;
 
+
+/**
+ * Type definition key for type definition files
+ * @type {String}
+ */
+const TypeDefinitionKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition];
+
+/**
+ * Modelling rule key for type definition files
+ * @type {String}
+ */
+const ModellingRuleKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasModellingRule];
+
+
+
+
 /**
  * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
  */
@@ -50,7 +66,7 @@ export default class WriteStream extends QueueStream {
    * @return {Object} The resulting call script object.
    */
   getCreateNodeCallObject(combinedNodeFile) {
-    let paramObj = this.createParamObj(combinedNodeFile);
+    let configObj = this.createParamObj(combinedNodeFile);
 
     return {
       objectId: CallScriptMethodBaseNodeId.toString(),
@@ -61,12 +77,12 @@ export default class WriteStream extends QueueStream {
         {
           dataType: DataType.String,
           arrayType: VariantArrayType.Array,
-          value: ["configObjString"]
+          value: ["configString"]
         },
         {
           dataType: DataType.Variant,
           arrayType: VariantArrayType.Array,
-          value: [paramObj]
+          value: [configObj]
         }
       ]
     };
@@ -79,30 +95,29 @@ export default class WriteStream extends QueueStream {
    * @return {Object} The resulting call script object.
    */
   createParamObj(combinedNodeFile) {
-    let contentFile = {};
     let typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
     let nodeId = typeDefinitionFile.nodeId;
     let typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
-    let typeDefinition = typeDefinitionConfig.references[ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition]][0];
-    let modellingRule = typeDefinitionConfig.references[ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition]][0];
+    let typeDefinition = typeDefinitionConfig.references[TypeDefinitionKey][0];
+    let modellingRuleRefs = typeDefinitionConfig.references[ModellingRuleKey];
 
-    let paramObj = {
+    let configObj = {
       nodeId: nodeId.toString(),
       parentNodeId: nodeId.parentNodeId.toString(),
       nodeClass: NodeClass[typeDefinition.nodeClass].value,
       typeDefinition: new NodeId(typeDefinition.refNodeId).value,
-      modellingRule: new NodeId(modellingRule.refNodeId).value,
+      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs[0].refNodeId).value : null
     };
 
     if (!combinedNodeFile.isTypeDefOnlyFile) {
-      contentFile = combinedNodeFile.contentFile;
-      paramObj.dataType = contentFile.dataType.value;
-      paramObj.value = contentFile.value;
+      let contentFile = combinedNodeFile.contentFile;
+      configObj.dataType = contentFile.dataType.value;
+      configObj.value = contentFile.value;
     }
 
     return new Variant({
       dataType: DataType.String,
-      value: JSON.stringify(paramObj)
+      value: JSON.stringify(configObj)
     });
   }
 

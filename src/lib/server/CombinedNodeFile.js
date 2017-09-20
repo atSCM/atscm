@@ -4,6 +4,13 @@ import {ReferenceTypeIds, NodeClass} from 'node-opcua';
 import NodeId from './NodeId';
 import ReverseReferenceTypeIds from './ReverseReferenceTypeIds';
 
+/**
+ * Type definition key for type definition files
+ * @type {String}
+ */
+const TypeDefinitionKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition];
+
+
 export default class CombinedNodeFile {
 
   /**
@@ -62,7 +69,7 @@ export default class CombinedNodeFile {
    */
   get isTypeDefOnlyFile() {
     let typeDefinition = JSON.parse(this.typeDefinitionFile.value)
-      .references[ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition]][0];
+      .references[TypeDefinitionKey][0];
 
     return NodeClass[typeDefinition.nodeClass].value != NodeClass.Variable.value;
   }
