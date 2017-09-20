@@ -96,7 +96,7 @@ export default class CreateNodeStream extends QueueStream {
     let typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
     let nodeId = typeDefinitionFile.nodeId;
     let typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
-    let typeDefinition = typeDefinitionConfig.references[TypeDefinitionKey][0];
+    let typeDefinition = typeDefinitionConfig.references[TypeDefinitionKey].items[0];
     let modellingRuleRefs = typeDefinitionConfig.references[ModellingRuleKey];
 
     let configObj = {
@@ -104,7 +104,7 @@ export default class CreateNodeStream extends QueueStream {
       parentNodeId: nodeId.parentNodeId.toString(),
       nodeClass: NodeClass[typeDefinition.nodeClass].value,
       typeDefinition: new NodeId(typeDefinition.refNodeId).value,
-      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs[0].refNodeId).value : null
+      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs.items[0].refNodeId).value : null,
     };
 
     if (!combinedNodeFile.isTypeDefOnlyFile) {
