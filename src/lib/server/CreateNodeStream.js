@@ -64,7 +64,7 @@ export default class CreateNodeStream extends QueueStream {
    * @return {Object} The resulting call script object.
    */
   getCreateNodeCallObject(combinedNodeFile) {
-    let configObj = this.createParamObj(combinedNodeFile);
+    let paramObj = this.createParamObj(combinedNodeFile);
 
     return {
       objectId: CallScriptMethodBaseNodeId.toString(),
@@ -75,12 +75,12 @@ export default class CreateNodeStream extends QueueStream {
         {
           dataType: DataType.String,
           arrayType: VariantArrayType.Array,
-          value: ["configString"]
+          value: ["paramObjString"]
         },
         {
           dataType: DataType.Variant,
           arrayType: VariantArrayType.Array,
-          value: [configObj]
+          value: [paramObj]
         }
       ]
     };
