@@ -42,12 +42,10 @@ const TypeDefinitionKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefini
 const ModellingRuleKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasModellingRule];
 
 
-
-
 /**
  * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
  */
-export default class WriteStream extends QueueStream {
+export default class CreateNodeStream extends QueueStream {
 
   /**
    * Returns an error message specifically for the given combined file.
