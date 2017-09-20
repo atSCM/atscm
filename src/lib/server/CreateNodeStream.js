@@ -56,7 +56,7 @@ export default class WriteStream extends QueueStream {
    * @return {String} The specific error message.
    */
   processErrorMessage(combinedNodeFile) {
-    return `Error processing file:  ${combinedNodeFile.contentFile.nodeId.toString()}`;
+    return `Error creating node:  ${combinedNodeFile.contentFile.nodeId.toString()}`;
   }
 
   /**
