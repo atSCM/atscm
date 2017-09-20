@@ -28,7 +28,7 @@ export default class WriteStream extends QueueStream {
 
     if (combinedNodeFile.isTypeDefOnlyFile) {
       this.push(combinedNodeFile);
-      handleErrors(err, StatusCodes.Good, done => done());
+      handleErrors(null, StatusCodes.Good, done => done());
     } else {
       try {
         this.session.writeSingleNode(contentFile.nodeId.toString(), {
