@@ -148,7 +148,6 @@ export default class AtviseFile extends File {
     const arrayType = itemToProcess.arrayType;
     const typeDefinition = itemToProcess.typeDefinition;
 
-
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
       path += `.${extensionForDataType(dataType)}`;
@@ -171,14 +170,15 @@ export default class AtviseFile extends File {
       if (! keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
+    }
 
-      if (arrayType) {
-        // Add "array" or "matrix" extensions for corresponding array types
-        if (arrayType.value !== VariantArrayType.Scalar.value) {
-          path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
-        }
+    if (arrayType) {
+      // Add "array" or "matrix" extensions for corresponding array types
+      if (arrayType.value !== VariantArrayType.Scalar.value) {
+        path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
       }
     }
+
     return path;
   }
 
