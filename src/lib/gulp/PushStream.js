@@ -6,6 +6,7 @@ import MappingTransformer from '../../transform/Mapping';
 import WriteStream from '../server/WriteStream';
 import NodeFileStream from '../server/NodeFileStream';
 import CreateNodeStream from '../server/CreateNodeStream';
+import AddReferenceStream from '../server/AddReferenceStream';
 import filter from 'gulp-filter';
 
 /**
@@ -22,6 +23,7 @@ export default class PushStream {
     const writeStream = new WriteStream();
     const nodeFileStream = new NodeFileStream();
     const createNodeStream = new CreateNodeStream();
+    const addReferenceStream = new AddReferenceStream();
     const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
 
@@ -47,13 +49,17 @@ export default class PushStream {
     .pipe(writeStream)
     .pipe(createNodeStream)
     .on('finish', () => {
-      if (Logger.listenerCount('info') > 0) {
-        readline.cursorTo(process.stdout, 0);
-        readline.clearLine(process.stdout);
-      }
 
-        clearInterval(printProgress);
-      });
+      atvReferenceFilter.restore.pipe(addReferenceStream)
+        .on('finish', () => {
+          if (Logger.listenerCount('info') > 0) {
+            readline.cursorTo(process.stdout, 0);
+            readline.clearLine(process.stdout);
+          }
+
+          clearInterval(printProgress);
+        })
+    });
   }
 
 }
