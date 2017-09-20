@@ -53,20 +53,21 @@ export default class NodeFileStream extends QueueStream {
 
       if (!combinedFile.addFile(file)) {
         handleErrors(new Error(`NodeFileStream: Duplicate file:  ${nodeId.toString()}`));
-      };
-
-      if (combinedFile.isComplete) {
-        handleErrors(null, StatusCodes.Good, done => {
-          this.push(combinedFile);
-          delete this.combinedFilesCache[nodeId];
-          done();
-        });
       }
+
     } else {
+      this.combinedFilesCache[nodeId] = new CombinedNodeFile(file);
+      combinedFile = this.combinedFilesCache[nodeId];
+    }
+
+    if (combinedFile.isComplete) {
       handleErrors(null, StatusCodes.Good, done => {
-        this.combinedFilesCache[nodeId] = new CombinedNodeFile(file);
+        this.push(combinedFile);
+        delete this.combinedFilesCache[nodeId];
         done();
       });
+    } else {
+      handleErrors(null, StatusCodes.Good, done => done());
     }
   }
 }
