@@ -113,6 +113,7 @@ export default class WriteStream extends QueueStream {
       let contentFile = combinedNodeFile.contentFile;
       configObj.dataType = contentFile.dataType.value;
       configObj.value = contentFile.value;
+      configObj.valueRank = contentFile.arrayType.value;
     }
 
     return new Variant({
