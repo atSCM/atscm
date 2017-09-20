@@ -42,9 +42,9 @@ export default class WriteStream extends QueueStream {
 
             handleErrors(err, StatusCodes.Good, done => done());
           } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
-            Logger.warn(`Node ${
+            Logger.debug(`Node ${
               contentFile.nodeId.toString()
-              }: does not exist. Combined node file is pushed to CreateNode stream`);
+              }: does not exist in atvise server address space`);
 
             this.push(combinedNodeFile);
             handleErrors(err, StatusCodes.Good, done => done());
