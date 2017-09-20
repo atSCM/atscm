@@ -64,7 +64,7 @@ export default class CombinedNodeFile {
     }
 
     return this.isTypeDefOnlyFile ? typeDefFileComplete :
-      checkType(this.typeDefinitionFile, AtviseFile) && typeDefFileComplete;
+      checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
   }
 
   /**
