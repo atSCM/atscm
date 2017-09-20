@@ -131,13 +131,28 @@ export default class WriteStream extends QueueStream {
   processChunk(combinedNodeFile, handleErrors) {
     let callObj = this.getCreateNodeCallObject(combinedNodeFile);
 
-    this.session.call([callObj], function (err, results) {
-      console.log(results);
+    this.session.call([callObj], (err, results) => {
+      if (err) {
+        handleErrors(err);
+      } else {
+        let outputArguments = results[0].outputArguments;
+
+        if (outputArguments[0].value.value != StatusCodes.Good.value) {
+         handleErrors(new Error(outputArguments[1].value.value));
+        } else {
+         if (outputArguments[3].value[0].value != StatusCodes.Good.value) {
+           Logger.warn(`Node ${
+             combinedNodeFile.typeDefinitionFile.nodeId.toString()
+           }: Creating node failed`);
+         } else {
+           Logger.debug(`Created node:  ${
+             combinedNodeFile.typeDefinitionFile.nodeId.toString()
+           }`);
+           handleErrors(err, StatusCodes.Good, done => done());
+         }
+        }
+      }
     });
-
-
-    handleErrors(null, StatusCodes.Good, done => done());
-
   }
 }
 
