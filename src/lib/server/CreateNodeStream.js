@@ -137,18 +137,22 @@ export default class CreateNodeStream extends QueueStream {
         let outputArguments = results[0].outputArguments;
 
         if (outputArguments[0].value.value != StatusCodes.Good.value) {
-         handleErrors(new Error(outputArguments[1].value.value));
+         handleErrors(new Error(outputArguments[1].value));
         } else {
-         if (outputArguments[3].value[0].value != StatusCodes.Good.value) {
-           Logger.warn(`Node ${
-             combinedNodeFile.typeDefinitionFile.nodeId.toString()
-           }: Creating node failed`);
-         } else {
-           Logger.debug(`Created node:  ${
-             combinedNodeFile.typeDefinitionFile.nodeId.toString()
-           }`);
-           handleErrors(err, StatusCodes.Good, done => done());
-         }
+          let createdNode = outputArguments[3].value[0].value;
+          let creatingNodeFailed = outputArguments[3].value[1].value;
+
+          if (creatingNodeFailed) {
+            Logger.warn(`Node ${
+              combinedNodeFile.typeDefinitionFile.nodeId.toString()
+            }: Creating node failed`);
+          } else if (createdNode) {
+            Logger.info(`Created node:  ${
+              combinedNodeFile.typeDefinitionFile.nodeId.toString()
+            }`);
+          }
+
+          handleErrors(err, StatusCodes.Good, done => done());
         }
       }
     });
