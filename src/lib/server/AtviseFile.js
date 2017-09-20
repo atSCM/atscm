@@ -133,10 +133,6 @@ export default class AtviseFile extends File {
   static pathForReadResult(readResult) {
     let path = readResult.nodeId.filePath;
 
-    const dataType = readResult.value.$dataType;
-    const arrayType = readResult.value.$arrayType;
-    const typeDefinition = readResult.referenceDescription.typeDefinition;
-
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
       path += `.${extensionForDataType(dataType)}`;
@@ -161,10 +157,15 @@ export default class AtviseFile extends File {
       }
     }
 
-    // Add "array" or "matrix" extensions for corresponding array types
-    if (arrayType.value !== VariantArrayType.Scalar.value) {
-      path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+    if (arrayType) {
+      // Add "array" or "matrix" extensions for corresponding array types
+      if (arrayType.value !== VariantArrayType.Scalar.value) {
+        path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+      }
     }
+
+    return path;
+  }
 
     return path;
   }
