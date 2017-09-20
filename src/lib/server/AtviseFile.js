@@ -189,21 +189,32 @@ export default class AtviseFile extends File {
    * Decodes a file's contents to a node's value
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
+   * @param {node-opcua~VariantArrayType} arrayType The {@link node-opcua~DataType} to decode the contents
    * for.
    * @return {?*} The decoded node value or null.
    */
-  static decodeValue(buffer, dataType) {
+  static decodeValue(buffer, dataType, arrayType) {
+    const decoder = Decoder[dataType];
+    let bufferValue = "";
+
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    const decoder = Decoder[dataType];
+    bufferValue = buffer.toString();
 
-    if (decoder) {
-      return decoder(buffer.toString());
+    if (arrayType == VariantArrayType.Array) {
+      let arrayValue = bufferValue.split(",");
+
+      return arrayValue.map(item => decoder ? decoder(item): item);
+
+    } else {
+      if (decoder) {
+        return decoder(bufferValue);
+      }
+
+      return bufferValue;
     }
-
-    return buffer;
   }
 
   /**
@@ -403,7 +414,7 @@ export default class AtviseFile extends File {
    * @type {?*} The file's decoded value.
    */
   get value() {
-    return AtviseFile.decodeValue(this.contents, this.dataType);
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType);
   }
 
   /**
