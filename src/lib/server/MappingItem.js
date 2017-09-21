@@ -74,9 +74,9 @@ export default class MappingItem {
   constructor(sourceNodeId, referenceConfig, itemType) {
     if (!checkType(sourceNodeId, NodeId) || !checkType(referenceConfig, BrowseService.ReferenceDescription) ||
         !checkType(itemType, String)) {
-      throw new Error("Class MappingItem: Can not parse given arguments!");
+      throw new Error("MappingItem#constructor: Can not parse given arguments!");
     } else if (!MappingItem.hasValidItemType(itemType)) {
-      throw new Error("Class MappingItem: Item type is not valid!");
+      throw new Error("MappingItem#constructor: Item type is not valid!");
     }
 
     /**
