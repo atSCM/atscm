@@ -235,10 +235,14 @@ export default class AtviseFile extends File {
    * @param {ReadStream.ReadResult} readResult The read result to create the file for.
    * @return {AtviseFile} The resulting file.
    */
-  static fromReadResult(readResult) {
-    if (!readResult.value) {
-      throw new Error('no value');
+  static fromMappingItem(mappingItem) {
+    let itemToProcess = {};
+
+    if (!mappingItem) {
+      throw new Error('Mapping item is undefined');
     }
+
+    itemToProcess = mappingItem.itemToProcess;
 
     return new AtviseFile({
       path: AtviseFile.pathForReadResult(readResult),
