@@ -1,32 +1,8 @@
 import Logger from 'gulplog';
-import { ReferenceTypeIds, StatusCodes, DataType, NodeClass, VariantArrayType, Variant} from 'node-opcua';
-import QueueStream from './QueueStream';
+import {ReferenceTypeIds, StatusCodes, DataType, NodeClass, VariantArrayType, Variant} from 'node-opcua';
+import CallScriptStream from './CallScriptStream';
 import NodeId from './NodeId';
 import ReverseReferenceTypeIds from './ReverseReferenceTypeIds';
-
-/**
- * Call script node id
- * @type {node-opcua~NodeId}
- */
-const CallScriptMethodId = new NodeId("ns=1;s=AGENT.SCRIPT.METHODS.callScript");
-
-/**
- * Base node id for callscript node
- * @type {node-opcua~NodeId}
- */
-const CallScriptMethodBaseNodeId = CallScriptMethodId.parentNodeId;
-
-/**
- * Create node script id
- * @type {node-opcua~NodeId}
- */
-const CreateNodeScriptId = new NodeId("ns=1;s=SYSTEM.LIBRARY.PROJECT.SERVERSCRIPTS.atscm.CreateNode");
-
-/**
- * Base node id for create node script
- * @type {node-opcua~NodeId}
- */
-const CreateNodeScriptBaseNodeId = CreateNodeScriptId.parentNodeId;
 
 
 /**
@@ -43,9 +19,24 @@ const ModellingRuleKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasModellingRu
 
 
 /**
- * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
+ * Definition for the parameter name of the CreateNode script
+ * @type {Array}
  */
-export default class CreateNodeStream extends QueueStream {
+const CreateNodeScriptParameterName = "paramObjString";
+
+
+/**
+ * A stream that creates atvise server nodes for the given{@link CombinedNodeFiles}s
+ */
+export default class CreateNodeStream extends CallScriptStream {
+
+  /**
+   * Creates a new CreateNodeStream
+   */
+  constructor() {
+    super(new NodeId("ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode"));
+  }
+
 
   /**
    * Returns an error message specifically for the given combined file.
@@ -54,54 +45,28 @@ export default class CreateNodeStream extends QueueStream {
    * @return {String} The specific error message.
    */
   processErrorMessage(combinedNodeFile) {
-    return `Error creating node:  ${combinedNodeFile.contentFile.nodeId.toString()}`;
+    return `Error creating node:  ${combinedNodeFile.typeDefinitionFile.nodeId.toString()}`;
   }
 
-  /**
-   * Returns an error message specifically for the given combined file.
-   * @param {CombinedNodeFile} combinedNodeFile The combined file to process
-   * the error message for.
-   * @return {Object} The resulting call script object.
-   */
-  getCreateNodeCallObject(combinedNodeFile) {
-    let paramObj = this.createParamObj(combinedNodeFile);
-
-    return {
-      objectId: CallScriptMethodBaseNodeId.toString(),
-      methodId: CallScriptMethodId.toString(),
-      inputArguments: [
-        {dataType: DataType.NodeId, value: CreateNodeScriptId},
-        {dataType: DataType.NodeId, value: CreateNodeScriptBaseNodeId},
-        {
-          dataType: DataType.String,
-          arrayType: VariantArrayType.Array,
-          value: ["paramObjString"]
-        },
-        {
-          dataType: DataType.Variant,
-          arrayType: VariantArrayType.Array,
-          value: [paramObj]
-        }
-      ]
-    };
-  }
 
   /**
    * Creates the parameter object for creating nodes
-   * @param {CombinedNodeFile} combinedNodeFile The combined file to process
+   * @param {CombinedNodeFile} combinedNodeFile The combined node file to process
    * the error message for.
-   * @return {Object} The resulting call script object.
+   * @return {Object} The resulting parameter object.
    */
-  createParamObj(combinedNodeFile) {
+  createParameters(combinedNodeFile) {
     let typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
     let nodeId = typeDefinitionFile.nodeId;
     let typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
     let typeDefinition = typeDefinitionConfig.references[TypeDefinitionKey].items[0];
     let modellingRuleRefs = typeDefinitionConfig.references[ModellingRuleKey];
+    let paramObjString = new Variant({dataType: DataType.String, value: ""})
 
     let configObj = {
-      nodeId: nodeId.toString(),
-      parentNodeId: nodeId.parentNodeId.toString(),
+      nodeId: nodeId.value,
+      parentNodeId: nodeId.parentNodeId.value,
+      browseName: nodeId.browseName,
       nodeClass: NodeClass[typeDefinition.nodeClass].value,
       typeDefinition: new NodeId(typeDefinition.refNodeId).value,
       modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs.items[0].refNodeId).value : null,
@@ -109,53 +74,60 @@ export default class CreateNodeStream extends QueueStream {
 
     if (!combinedNodeFile.isTypeDefOnlyFile) {
       let contentFile = combinedNodeFile.contentFile;
-      configObj.dataType = contentFile.dataType.value;
-      configObj.value = contentFile.value;
+      let dataType = contentFile.dataType.value;
+
+      configObj.dataType = dataType;
+      configObj.value = dataType == DataType.ByteString ? contentFile.value.toString('binary') :
+        contentFile.value;
       configObj.valueRank = contentFile.arrayType.value;
     }
 
-    return new Variant({
-      dataType: DataType.String,
-      value: JSON.stringify(configObj)
-    });
+    paramObjString.value = JSON.stringify(configObj)
+
+    return {paramNames: [CreateNodeScriptParameterName], paramValues: [paramObjString]};
   }
 
 
   /**
-   * Creates nodes for the given {@link CombinedNodeFile}'s
-   * @param {CombinedNodeFile} file The combined file to process.
+   * Converts a buffer to a byte array
+   * @param {Buffer} buffer The buffer being converted
+   * @return {Number[]} The resulting byte array.
+   */
+  getByteArrayFromBuffer (buffer) {
+    let byteArray = []
+    for (const value of buffer) {
+      byteArray.push(value)
+    }
+    return byteArray;
+  }
+
+  /**
+   * Handles the call script methods callback
+   * @param {Array} result The result of the call
+   * @param {CombinedNodeFile} combinedNodeFile The combined file to process
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk(combinedNodeFile, handleErrors) {
-    let callObj = this.getCreateNodeCallObject(combinedNodeFile);
+  handleCallback(results, combinedNodeFile, handleErrors) {
+    let outputArguments = results[0].outputArguments;
 
-    this.session.call([callObj], (err, results) => {
-      if (err) {
-        handleErrors(err);
-      } else {
-        let outputArguments = results[0].outputArguments;
+    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+      handleErrors(new Error(outputArguments[1].value));
+    } else {
+      let createdNode = outputArguments[3].value[0].value;
+      let creatingNodeFailed = outputArguments[3].value[1].value;
 
-        if (outputArguments[0].value.value != StatusCodes.Good.value) {
-         handleErrors(new Error(outputArguments[1].value));
-        } else {
-          let createdNode = outputArguments[3].value[0].value;
-          let creatingNodeFailed = outputArguments[3].value[1].value;
-
-          if (creatingNodeFailed) {
-            Logger.warn(`Node ${
-              combinedNodeFile.typeDefinitionFile.nodeId.toString()
-            }: Creating node failed`);
-          } else if (createdNode) {
-            Logger.info(`Created node:  ${
-              combinedNodeFile.typeDefinitionFile.nodeId.toString()
-            }`);
-          }
-
-          handleErrors(err, StatusCodes.Good, done => done());
-        }
+      if (creatingNodeFailed) {
+        Logger.error(`Node ${
+          combinedNodeFile.typeDefinitionFile.nodeId.toString()
+          }: Creating node failed`);
+      } else if (createdNode) {
+        Logger.info(`Created node:  ${
+          combinedNodeFile.typeDefinitionFile.nodeId.toString()
+          }`);
       }
-    });
+      handleErrors(null, StatusCodes.Good, done => done());
+    }
   }
 }
 
