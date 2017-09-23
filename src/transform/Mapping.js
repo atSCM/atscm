@@ -24,7 +24,7 @@ export default class MappingTransformer extends Transformer {
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${mappingItem.nodeId.toString()}: ${e.message}`
+        `Unable to map ${mappingItem.sourceNodeId.toString()}: ${e.message}`
       );
       Logger.debug(e);
 
@@ -50,7 +50,7 @@ export default class MappingTransformer extends Transformer {
         contents: file.contents,
       });
 
-        callback(null, atFile);
+      callback(null, atFile);
     }
   }
 
