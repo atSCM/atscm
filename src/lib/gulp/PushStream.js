@@ -3,6 +3,7 @@ import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
+import CombinedStream from 'combined-stream';
 import WriteStream from '../server/WriteStream';
 import NodeFileStream from '../server/NodeFileStream';
 import CreateNodeStream from '../server/CreateNodeStream';
@@ -19,6 +20,7 @@ export default class PushStream {
    * @param {Stream} srcStream The file stream to read from.
    */
   constructor(srcStream) {
+    const combinedStream = new CombinedStream;
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
     const writeStream = new WriteStream();
     const nodeFileStream = new NodeFileStream();
@@ -27,9 +29,9 @@ export default class PushStream {
     const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
 
-    const printProgress = setInterval(() => {
+    this.printProgress = setInterval(() => {
       Logger.info(
-        `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
+      `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
       );
 
       if (Logger.listenerCount('info') > 0) {
@@ -38,29 +40,45 @@ export default class PushStream {
       }
     }, 1000);
 
-    return Transformer.applyTransformers(
+
+    const pushStream = Transformer.applyTransformers(
       srcStream
         .pipe(mappingStream)
         .pipe(typeDefinitionFilter)
         .pipe(atvReferenceFilter),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
-    )
-    .pipe(typeDefinitionFilter.restore)
-    .pipe(nodeFileStream)
-    .pipe(writeStream)
-    .pipe(createNodeStream)
-    .on('finish', () => {
+      )
+      .pipe(typeDefinitionFilter.restore)
+      .pipe(nodeFileStream)
+      .pipe(writeStream)
+      .pipe(createNodeStream)
 
-      atvReferenceFilter.restore.pipe(addReferenceStream)
-        .on('finish', () => {
-          if (Logger.listenerCount('info') > 0) {
-            readline.cursorTo(process.stdout, 0);
-            readline.clearLine(process.stdout);
-          }
+      pushStream.once('finish', () => {
+        Logger.debug('Writing and creating nodes finished. Adding references...');
 
-          clearInterval(printProgress);
-        })
-    });
+        if (atvReferenceFilter.restore._readableState.buffer.length > 0) {
+          pushStream.pipe(atvReferenceFilter.restore)
+            .pipe(addReferenceStream)
+            .on('finish', () => this.endPushTask());
+        } else {
+          this.endPushTask();
+        }
+      });
+
+    return pushStream;
+  }
+
+  /**
+   * Stops the print progress when push stream has finished and stops the push task process
+   */
+  endPushTask() {
+    if (Logger.listenerCount('info') > 0) {
+      readline.cursorTo(process.stdout, 0);
+      readline.clearLine(process.stdout);
+    }
+
+    clearInterval(this.printProgress);
+    process.exit();
   }
 }
