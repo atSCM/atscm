@@ -72,6 +72,8 @@ class AtviseResourceType extends AtviseType {
  * @type {AtviseType[]}
  */
 const AtviseTypes = [
+  new CustomResourceType('TypeDefinition', 'typedef', DataType.String, 'json'),
+  new CustomResourceType('AtvReferenceConfig', 'references', DataType.String, 'json'),
   new AtviseType('HtmlHelp', 'help', DataType.ByteString, 'html'),
   new AtviseType('QuickDynamic', 'qd', DataType.XmlElement),
   new AtviseType('ScriptCode', 'script', DataType.XmlElement),
@@ -89,7 +91,7 @@ const AtviseTypes = [
   new AtviseResourceType('Css', 'css'),
   new AtviseResourceType('Svg', 'svg'),
   new AtviseResourceType('Jpeg', 'jpg'),
-  new AtviseResourceType('OctetStream', '*'),
+  new AtviseResourceType('OctetStream', '*')
 ];
 
 export default AtviseTypes;
