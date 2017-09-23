@@ -38,7 +38,7 @@ export default class MappingTransformer extends Transformer {
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.toString()}: ${e.message}`
+        `Unable to map ${mappingItem.sourceNodeId.toString()}: ${e.message}`
       );
       Logger.debug(e);
 
@@ -64,25 +64,7 @@ export default class MappingTransformer extends Transformer {
         contents: file.contents,
       });
 
-      if (file.relative.match(/\.var\./)) {
-        const rcFile = file.clone({ contents: false });
-        rcFile.extname = '';
-        rcFile.basename = `.${rcFile.stem}.rc`;
-
-        readFile(rcFile.path, 'utf8', (err, data) => {
-          try {
-            const rc = JSON.parse(data);
-            atFile._typeDefinition = new NodeId(rc.typeDefinition);
-
-            callback(null, atFile);
-          } catch (e) {
-            Logger.error(`Unable to get runtime configuration for ${file.relative}`);
-            callback(err || e);
-          }
-        });
-      } else {
-        callback(null, atFile);
-      }
+      callback(null, atFile);
     }
   }
 
