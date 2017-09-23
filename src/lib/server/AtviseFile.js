@@ -264,10 +264,6 @@ export default class AtviseFile extends File {
 
     itemToProcess = mappingItem.itemToProcess;
 
-    if (itemToProcess.value == null) {
-      throw new Error('Mapping item is undefined');
-    }
-
     return new AtviseFile({
       path: AtviseFile.pathForProcessingItem(itemToProcess),
       contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType),
