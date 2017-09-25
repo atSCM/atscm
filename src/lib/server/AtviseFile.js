@@ -30,6 +30,13 @@ const AtviseTypesByIdentifier = AtviseTypes
  * Source directory path
  * @type {String}
  */
+const ArrayValueSeperator = '@atscmUaNodeArraySeperator@';
+
+
+/**
+ * Source directory path
+ * @type {String}
+ */
 const SrcPath = join(process.cwd(), 'src');
 
 /**
@@ -97,7 +104,7 @@ const ExtensionRegExp = /\.([^/\\]*)$/;
  * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
  */
 const Decoder = {
-  [DataType.Boolean]: stringValue => stringValue === 'true',
+    [DataType.Boolean]: stringValue => stringValue === 'true',
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
@@ -111,7 +118,7 @@ const Decoder = {
  * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
-  [DataType.DateTime]: date => date.getTime().toString(),
+    [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
   [DataType.Int64]: int32Array => JSON.stringify(int32Array),
   [DataType.ByteString]: byteString => new Buffer(byteString, 'binary')
@@ -195,14 +202,22 @@ export default class AtviseFile extends File {
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type
    * @return {?Buffer} The encoded file contents or null.
    */
-  static encodeValue(value, dataType) {
+  static encodeValue(value, dataType, arrayType) {
     if (value === null) {
       return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
+
+    if (arrayType == VariantArrayType.Array) {
+      let arrayContent = value.map(item => encoder ? encoder(item): item).join(ArrayValueSeperator);
+      return Buffer.from(arrayContent);
+    }
+
+
     return Buffer.from(encoder ? encoder(value) : value.toString().trim());
   }
 
@@ -210,7 +225,7 @@ export default class AtviseFile extends File {
    * Decodes a file's contents to a node's value
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
-   * @param {node-opcua~VariantArrayType} arrayType The {@link node-opcua~DataType} to decode the contents
+   * @param {node-opcua~VariantArrayType} arrayType The files array type
    * for.
    * @return {?*} The decoded node value or null.
    */
@@ -225,7 +240,7 @@ export default class AtviseFile extends File {
     bufferValue = buffer.toString();
 
     if (arrayType == VariantArrayType.Array) {
-      let arrayValue = bufferValue.split(",");
+      let arrayValue = bufferValue.split(ArrayValueSeperator);
 
       return arrayValue.map(item => decoder ? decoder(item): item);
 
@@ -267,7 +282,7 @@ export default class AtviseFile extends File {
 
     return new AtviseFile({
       path: AtviseFile.pathForProcessingItem(itemToProcess),
-      contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType),
+      contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType, itemToProcess.arrayType),
       _dataType: itemToProcess.dataType,
       _arrayType: itemToProcess.arrayType,
       _typeDefinition: itemToProcess.typeDefinition,
@@ -461,7 +476,7 @@ export default class AtviseFile extends File {
      * The file's contents.
      * @type {?Buffer}
      */
-    this.contents = AtviseFile.encodeValue(newValue, this.dataType);
+    this.contents = AtviseFile.encodeValue(newValue, this.dataType, this.arrayType);
   }
 
   /**
@@ -504,15 +519,15 @@ export default class AtviseFile extends File {
     return new Promise((resolve, reject) => {
       if (!options.path) {
       reject(new Error('options.path is required'));
-      } else {
-        readFile(options.path, (err, contents) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(new AtviseFile(Object.assign(options, { contents })));
-          }
-        });
-      }
+    } else {
+      readFile(options.path, (err, contents) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(new AtviseFile(Object.assign(options, { contents })));
+    }
     });
+    }
+  });
   }
 }
