@@ -152,7 +152,7 @@ if (!node.exists()) {
         nodeObj.reference = UaNode.HASCOMPONENT;
 
         if (nodeClass == UaNode.NODECLASS_VARIABLE) {
-            nodeObj.valueRank = paramObj.valueRank;
+						nodeObj.valuerank = paramObj.valueRank >= 1 ? paramObj.valueRank : -1;
             nodeObj.value = paramObj.value;
             nodeObj.datattype = paramObj.dataType;
         }
@@ -162,7 +162,7 @@ if (!node.exists()) {
         if (nodeClass == UaNode.NODECLASS_VARIABLETYPE) {
             nodeObj.valueRank = UaNode.VALUERANK_SCALARORONEDIMENSION;
             nodeObj.value = "";
-            nodeObj.datattype = UaNode.STRING;
+            nodeObj.datatype = UaNode.STRING;
         }
 
     } else {
