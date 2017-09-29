@@ -41,7 +41,7 @@ export default class PushStream {
     }, 1000);
 
 
-    const pushStream = Transformer.applyTransformers(
+    this.pushStream = Transformer.applyTransformers(
       srcStream
         .pipe(mappingStream)
         .pipe(typeDefinitionFilter)
@@ -54,31 +54,30 @@ export default class PushStream {
       .pipe(writeStream)
       .pipe(createNodeStream)
 
-      pushStream.once('finish', () => {
-        Logger.debug('Writing and creating nodes finished. Adding references...');
+    this.pushStream.on('finish', () => {
+      Logger.debug('Writing and creating nodes finished. Adding references...');
 
-        if (atvReferenceFilter.restore._readableState.buffer.length > 0) {
-          pushStream.pipe(atvReferenceFilter.restore)
-            .pipe(addReferenceStream)
-            .on('finish', () => this.endPushTask());
-        } else {
-          this.endPushTask();
-        }
-      });
+      if (atvReferenceFilter.restore._readableState.buffer.length > 0) {
+        this.pushStream.pipe(atvReferenceFilter.restore)
+          .pipe(addReferenceStream)
+          .on('finish', () => this.endStream());
+      } else {
+        this.endStream();
+      }
+    });
 
-    return pushStream;
+    return this.pushStream;
   }
 
   /**
    * Stops the print progress when push stream has finished and stops the push task process
    */
-  endPushTask() {
+  endStream() {
     if (Logger.listenerCount('info') > 0) {
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout);
     }
 
     clearInterval(this.printProgress);
-    process.exit();
   }
 }
