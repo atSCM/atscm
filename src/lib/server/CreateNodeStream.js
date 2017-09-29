@@ -87,20 +87,6 @@ export default class CreateNodeStream extends CallScriptStream {
     return {paramNames: [CreateNodeScriptParameterName], paramValues: [paramObjString]};
   }
 
-
-  /**
-   * Converts a buffer to a byte array
-   * @param {Buffer} buffer The buffer being converted
-   * @return {Number[]} The resulting byte array.
-   */
-  getByteArrayFromBuffer (buffer) {
-    let byteArray = []
-    for (const value of buffer) {
-      byteArray.push(value)
-    }
-    return byteArray;
-  }
-
   /**
    * Handles the call script methods callback
    * @param {Array} result The result of the call
