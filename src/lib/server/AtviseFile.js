@@ -3,6 +3,7 @@ import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import AtviseTypes from './Types';
 import NodeId from './NodeId';
+import Int64 from 'node-int64';
 
 // Path related cache
 
@@ -26,7 +27,7 @@ const AtviseTypesByIdentifier = AtviseTypes
 
 
 /**
- * Source directory path
+ * Seperator for array values
  * @type {String}
  */
 const ArrayValueSeperator = '@atscmUaNodeArraySeperator@';
@@ -103,12 +104,18 @@ const ExtensionRegExp = /\.([^/\\]*)$/;
  * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
  */
 const Decoder = {
-    [DataType.Boolean]: stringValue => stringValue === 'true',
+  [DataType.Boolean]: stringValue => stringValue === 'true',
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
-  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
-  [DataType.Int64]: stringValue => JSON.parse(stringValue),
+  [DataType.UInt64]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int64]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int32]: stringValue => parseInt(stringValue, 10),
+  [DataType.SByte]: stringValue => parseInt(stringValue, 10),
+  [DataType.Byte]: stringValue => parseInt(stringValue, 10),
+  [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
+  [DataType.Double]: stringValue => parseFloat(stringValue, 10),
+  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
   [DataType.ByteString]: byteString => new Buffer(byteString, 'binary')
 };
 
@@ -117,9 +124,9 @@ const Decoder = {
  * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
-    [DataType.DateTime]: date => date.getTime().toString(),
-  [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
-  [DataType.Int64]: int32Array => JSON.stringify(int32Array),
+  [DataType.DateTime]: date => date.getTime().toString(),
+  [DataType.UInt64]: uInt32Array => new Int64(uInt32Array[0], uInt32Array[1]).toString(),
+  [DataType.Int64]: int32Array => new Int64(int32Array[0], int32Array[1]).toString(),
   [DataType.ByteString]: byteString => new Buffer(byteString, 'binary')
 };
 
@@ -232,7 +239,7 @@ export default class AtviseFile extends File {
     if (arrayType == VariantArrayType.Array) {
       let arrayValue = bufferValue.split(ArrayValueSeperator);
 
-      return arrayValue.map(item => decoder ? decoder(item): item);
+      return (arrayValue.map(item => decoder ? decoder(item): item));
 
     } else {
       if (decoder) {
