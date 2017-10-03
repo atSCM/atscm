@@ -6,11 +6,20 @@ import ProjectConfig from '../config/ProjectConfig';
 /**
  * Pushes {@link AtviseFile}s to atvise server.
  */
-export default function push() {
+export default function push(callback) {
   const combinedSrcStream = CombinedStream.create();
 
   ProjectConfig.nodes.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
-  return new PushStream(combinedSrcStream);
+
+  const pushStream = new PushStream(combinedSrcStream);
+
+  // workaround because process does not finish after task completion
+  pushStream.on("pushStreamFinished", () => {
+    callback();
+    process.exit();
+  });
+
+  return pushStream;
 }
 
 push.description = 'Push all stored nodes to atvise server';

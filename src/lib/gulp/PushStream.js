@@ -79,5 +79,6 @@ export default class PushStream {
     }
 
     clearInterval(this.printProgress);
+    this.pushStream.emit("pushStreamFinished");
   }
 }
