@@ -150,6 +150,7 @@ export default class SplittingTransformer extends PartialTransformer {
 
     newFile.basename = `${newFile.stem}/${newFile.stem}`;
     newFile.extname = newExtension;
+    newFile.contents = Buffer.from('');
 
     return newFile;
   }
