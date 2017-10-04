@@ -374,6 +374,16 @@ export default class AtviseFile extends File {
     }
   }
 
+
+  /**
+   * The file's relative path (base = 'src' folder)
+   * @type {String}
+   */
+  get relativeFilePath() {
+    const path = this.path;
+    return path.indexOf(SrcPath) > -1 ? relative(SrcPath, this.path) : path;
+  }
+
   /**
    * The file's {@link node-opcua~DataType}.
    * @type {node-opcua~DataType}
