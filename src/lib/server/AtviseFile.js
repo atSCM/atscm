@@ -352,7 +352,8 @@ export default class AtviseFile extends File {
    * @type {String}
    */
   get relativeFilePath() {
-    return relative(SrcPath, this.path);
+    const path = this.path;
+    return path.indexOf(SrcPath) > -1 ? relative(SrcPath, this.path) : path;
   }
 
   /**
