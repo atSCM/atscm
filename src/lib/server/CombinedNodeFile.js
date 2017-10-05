@@ -72,8 +72,14 @@ export default class CombinedNodeFile {
    * @type {Boolean}
    */
   get isTypeDefOnlyFile() {
-    let typeDefinition = JSON.parse(this.typeDefinitionFile.value)
-      .references[TypeDefinitionKey].items[0];
+    let typeDefinitionContent = JSON.parse(this.typeDefinitionFile.value)
+    let typeDefinition = {};
+
+    if (this.typeDefinitionFile.isBaseTypeDefinition) {
+      typeDefinition = typeDefinitionContent;
+    } else {
+      typeDefinition = typeDefinitionContent[TypeDefinitionKey].items[0];
+    }
 
     return NodeClass[typeDefinition.nodeClass].value != NodeClass.Variable.value;
   }
