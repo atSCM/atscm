@@ -1,6 +1,10 @@
 import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
 import QueueStream from './QueueStream';
-import MappingItem from './MappingItem';
+import ReadNodeMappingItem from '../mapping/ReadNodeItem';
+import InstanceTypeDefinitionItem from '../mapping/InstanceTypeDefinitionItem';
+import AtviseReferenceItem from '../mapping/AtviseReferenceItem';
+import BaseTypeDefinitionItem from '../mapping/BaseTypeDefinitionItem';
+import ReadNodeItem from '../mapping/ReadNodeItem';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
 import Logger from 'gulplog';
@@ -169,11 +173,9 @@ export default class BrowseStream extends QueueStream {
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
-  static isObjectTypeDefinitionRef(ref) {
+  static isObjectOrVarTypeDefinitionRef(ref) {
     return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
   }
-
-
 
   /**
    * Checks if the given reference is a valid browse stream reference or not
@@ -248,7 +250,7 @@ export default class BrowseStream extends QueueStream {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
           let atvReferences = [];
           let typeDefinitionReferences = [];
-          let objTypeReferences = [];
+          let objOrVarTypeReferences = [];
 
           Promise.all(
             results[0].references
@@ -258,14 +260,14 @@ export default class BrowseStream extends QueueStream {
               .map(ref => {
                 BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                if (BrowseStream.isObjectTypeDefinitionRef(ref)) {
-                  objTypeReferences.push(ref);
+                if (BrowseStream.isObjectOrVarTypeDefinitionRef(ref)) {
+                  objOrVarTypeReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref)) {
                   typeDefinitionReferences.push(ref);
                 } else if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsContentFile(ref, nodeId)) {
-                  this.push(new MappingItem(nodeId, ref, 'readNodeConfig'));
+                  this.push(new ReadNodeItem(nodeId, ref));
                 }
 
                 // Only browse variable types and objects recursively
@@ -279,15 +281,15 @@ export default class BrowseStream extends QueueStream {
             .then(result => {
               // create type definition item if browsed item has type definition references
               if (typeDefinitionReferences.length > 0) {
-                this.push(new MappingItem(nodeId, typeDefinitionReferences, 'typeDefConfig'));
+                this.push(new InstanceTypeDefinitionItem(nodeId, typeDefinitionReferences));
               }
               // create atvise reference item if browsed item has type definition references
               if (atvReferences.length > 0) {
-                this.push(new MappingItem(nodeId, atvReferences, 'atvRefConfig'));
+                this.push(new AtviseReferenceItem(nodeId, atvReferences));
               }
 
               // create type definition items for object types
-              objTypeReferences.map(ref => this.push(new MappingItem(nodeId, [ref], 'typeDefConfig')));
+              objOrVarTypeReferences.map(ref => this.push(new BaseTypeDefinitionItem(nodeId, ref)));
               done();
             });
         });
