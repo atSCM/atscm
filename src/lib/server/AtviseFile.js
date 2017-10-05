@@ -1,5 +1,6 @@
 import { readFile } from 'fs';
 import File from 'vinyl';
+import Logger from 'gulplog';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import AtviseTypes from './Types';
 import NodeId from './NodeId';
@@ -152,11 +153,15 @@ function extensionForDataType(dataType) {
 export default class AtviseFile extends File {
 
   /**
-   * Returns a storage path for a {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readResult The read result to get a path for.
+   * Returns a storage path for a {@link MappingItem.configObj}.
+   * @param {Object} config The config to create the path for
    */
-  static pathForReadResult(readResult) {
-    let path = readResult.nodeId.filePath;
+  static pathForItemConfig(config) {
+    let path = `${config.nodeId.filePath}/${config.nodeId.browseName}`;
+
+    const dataType = config.dataType;
+    const arrayType = config.arrayType;
+    const typeDefinition = config.typeDefinition;
 
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
@@ -269,21 +274,21 @@ export default class AtviseFile extends File {
    * @return {AtviseFile} The resulting file.
    */
   static fromMappingItem(mappingItem) {
-    let itemToProcess = {};
+    let configObj = {};
 
     if (!mappingItem) {
       throw new Error('Mapping item is undefined');
     }
 
-    itemToProcess = mappingItem.itemToProcess;
+    configObj = mappingItem.configObj;
 
     return new AtviseFile({
-      path: AtviseFile.pathForProcessingItem(itemToProcess),
-      contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType, itemToProcess.arrayType),
-      _dataType: itemToProcess.dataType,
-      _arrayType: itemToProcess.arrayType,
-      _typeDefinition: itemToProcess.typeDefinition,
-      stat: { mtime: itemToProcess.mtime ? this.normalizeMtime(itemToProcess.mtime) : undefined },
+      path: AtviseFile.pathForItemConfig(configObj),
+      contents: AtviseFile.encodeValue(configObj.value, configObj.dataType, configObj.arrayType),
+      _dataType: configObj.dataType,
+      _arrayType: configObj.arrayType,
+      _typeDefinition: configObj.typeDefinition,
+      stat: { mtime: configObj.mtime ? this.normalizeMtime(configObj.mtime) : undefined },
     });
   }
 
@@ -442,6 +447,39 @@ export default class AtviseFile extends File {
    */
   get isQuickDynamic() {
     return this.typeDefinition.value === 'VariableTypes.ATVISE.QuickDynamic';
+  }
+
+  /**
+   * `true` for files containing type definitions.
+   * @type {Boolean}
+   */
+  get isTypeDefinition() {
+    return this.isBaseTypeDefinition || this.isInstanceTypeDefinition;
+  }
+
+
+  /**
+   * `true` for files containing instance type definitions.
+   * @type {Boolean}
+   */
+  get isInstanceTypeDefinition() {
+    return this.typeDefinition.value === 'Custom.InstanceTypeDefinition';
+  }
+
+  /**
+   * `true` for files containing base type definitions.
+   * @type {Boolean}
+   */
+  get isBaseTypeDefinition() {
+    return this.typeDefinition.value === 'Custom.BaseTypeDefinition';
+  }
+
+  /**
+   * `true` for files containing type definitions.
+   * @type {Boolean}
+   */
+  get isAtviseReferenceConfig() {
+    return this.typeDefinition.value === 'Custom.AtvReferenceConfig';
   }
 
   /**

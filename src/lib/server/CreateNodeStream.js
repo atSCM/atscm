@@ -59,9 +59,16 @@ export default class CreateNodeStream extends CallScriptStream {
     let typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
     let nodeId = typeDefinitionFile.nodeId;
     let typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
-    let typeDefinition = typeDefinitionConfig.references[TypeDefinitionKey].items[0];
-    let modellingRuleRefs = typeDefinitionConfig.references[ModellingRuleKey];
-    let paramObjString = new Variant({dataType: DataType.String, value: ""})
+    let paramObjString = new Variant({dataType: DataType.String, value: ""});
+    let typeDefinition = {};
+    let modellingRuleRefs;
+
+    if (typeDefinitionFile.isBaseTypeDefinition) {
+      typeDefinition = typeDefinitionConfig;
+    } else {
+      typeDefinition = typeDefinitionConfig[TypeDefinitionKey].items[0];
+      modellingRuleRefs = typeDefinitionConfig[ModellingRuleKey];
+    }
 
     let configObj = {
       nodeId: nodeId.value,
