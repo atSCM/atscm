@@ -116,8 +116,7 @@ const Decoder = {
   [DataType.Byte]: stringValue => parseInt(stringValue, 10),
   [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
   [DataType.Double]: stringValue => parseFloat(stringValue, 10),
-  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
-  [DataType.ByteString]: byteString => new Buffer(byteString, 'binary')
+  [DataType.Float]: stringValue => parseFloat(stringValue, 10)
 };
 
 /**
@@ -126,9 +125,9 @@ const Decoder = {
  */
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
-  [DataType.UInt64]: uInt32Array => new Int64(uInt32Array[0], uInt32Array[1]).toString(),
-  [DataType.Int64]: int32Array => new Int64(int32Array[0], int32Array[1]).toString(),
-  [DataType.ByteString]: byteString => new Buffer(byteString, 'binary')
+  [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
+  [DataType.Int64]: int32Array => AtviseFile.uint32ArraysToInt64(int32Array[0], int32Array[1]),
+  [DataType.ByteString]: byteString => new Buffer(byteString)
 };
 
 /**
@@ -201,6 +200,22 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * Converts safely two uint32 array to an int64 number type.
+   * @param {Number} lowerRangeValue The value for the lower 32 bits of the int 64 value
+   * @param {Number} higherRangeValue The value for the higher 32 bits of the int 64 value
+   * @returns {Number} The resulting int64 value
+   */
+  static uint32ArraysToInt64 (lowerRangeValue, higherRangeValue) {
+    const int64 = new Int64(lowerRangeValue, higherRangeValue);
+
+    if (!isFinite(int64)) {
+      throw new Error('Value is too big for Javascript Number type');
+    }
+
+    return int64.toString();
+  }
+
+  /**
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
@@ -233,25 +248,25 @@ export default class AtviseFile extends File {
    */
   static decodeValue(buffer, dataType, arrayType) {
     const decoder = Decoder[dataType];
-    let bufferValue = "";
+    let bufferString = "";
 
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    bufferValue = buffer.toString();
+    bufferString = buffer.toString();
 
     if (arrayType == VariantArrayType.Array) {
-      let arrayValue = bufferValue.split(ArrayValueSeperator);
+      let arrayValue = bufferString.split(ArrayValueSeperator);
 
       return (arrayValue.map(item => decoder ? decoder(item): item));
 
     } else {
       if (decoder) {
-        return decoder(bufferValue);
+        return decoder(bufferString);
       }
 
-      return bufferValue;
+      return buffer;
     }
   }
 
