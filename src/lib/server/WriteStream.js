@@ -3,9 +3,26 @@ import { StatusCodes } from 'node-opcua';
 import QueueStream from './QueueStream';
 
 /**
- * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
+ * A stream that writes all read {@link CombinedNodeFiles}s to their corresponding nodes on atvise server.
  */
 export default class WriteStream extends QueueStream {
+
+
+  /**
+   * Creates a new WriteStream based on a source file stream.
+   * @param {Object} options The stream configuration options.
+   */
+  constructor(options = {}) {
+
+    super();
+
+    /**
+     * Defines wether the stream works with {CombinedNodeFiles} or {AtviseFile}s.
+     * @type {Boolean}
+     */
+    this.createNodes = options.createNodes || false;
+  }
+
 
   /**
    * The error message to use when writing a file fails.
@@ -42,11 +59,18 @@ export default class WriteStream extends QueueStream {
 
             handleErrors(err, StatusCodes.Good, done => done());
           } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
-            Logger.debug(`Node ${
-              contentFile.nodeId.toString()
-              }: does not exist in atvise server address space`);
+            if (this.createNodes) {
+              Logger.info(`Node ${
+                contentFile.nodeId.toString()
+                }: does not exist in atvise server address space`);
+            } else {
+              Logger.debug(`Node ${
+                contentFile.nodeId.toString()
+                }: does not exist and is pushed to create node stream`);
 
-            this.push(combinedNodeFile);
+              this.push(contentFile);
+            }
+
             handleErrors(err, StatusCodes.Good, done => done());
           } else {
             handleErrors(err, StatusCodes.Good, done => done());

@@ -9,7 +9,7 @@ export default function push(callback) {
 
   ProjectConfig.nodes.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
 
-  const pushStream = new PushStream(combinedSrcStream);
+  const pushStream = new PushStream(combinedSrcStream, {createNodes: true});
 
   // workaround because process does not finish after task completion
   pushStream.on("pushStreamFinished", () => {

@@ -17,8 +17,8 @@ export default class CombinedNodeFile {
    * Creates a new CombinedNodeFile based on given atvise File.
    * @param {AtviseFile} file The file to add in first place
    */
-  constructor(file) {
-    if (!checkType(file, AtviseFile)) {
+  constructor(file, createNodes) {
+    if (!checkType(file, AtviseFile) || !checkType(createNodes, Boolean)) {
       throw new Error("Class CombinedNodeFile: Can not parse given argument!");
     } else if (!CombinedNodeFile.hasValidType(file)) {
       throw new Error("Class CombinedNodeFile: File has wrong type!");
@@ -29,6 +29,14 @@ export default class CombinedNodeFile {
      * @type {AtviseFile}
      */
     this.contentFile = {};
+
+
+    /**
+     * Defines wether the stream works with {CombinedNodeFiles} or {AtviseFile}s.
+     * @type {Boolean}
+     */
+    this.createNodes = createNodes;
+
 
     /**
      * The type definition atvise file
@@ -63,8 +71,12 @@ export default class CombinedNodeFile {
       return false;
     }
 
-    return this.isTypeDefOnlyFile ? typeDefFileComplete :
-      checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
+    if (this.createNodes) {
+      return this.isTypeDefOnlyFile ? typeDefFileComplete :
+        checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
+    } else {
+      return checkType(this.contentFile, AtviseFile);
+    }
   }
 
   /**
