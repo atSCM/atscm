@@ -78,7 +78,8 @@ const Decoder = {
   [DataType.Byte]: stringValue => parseInt(stringValue, 10),
   [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
   [DataType.Double]: stringValue => parseFloat(stringValue, 10),
-  [DataType.Float]: stringValue => parseFloat(stringValue, 10)
+  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
+  [DataType.XmlElement]: stringValue => stringValue,
 };
 
 const Encoder = {
@@ -240,10 +241,9 @@ export default class AtviseFile extends File {
    * @return {Date} The normalized mtime.
    */
   static normalizeMtime(date) {
-    const result = date;
-    result.setMilliseconds(0);
+    date.setMilliseconds(0);
 
-    return result;
+    return date;
   }
 
   /**

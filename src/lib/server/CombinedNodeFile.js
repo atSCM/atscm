@@ -67,11 +67,11 @@ export default class CombinedNodeFile {
   get isComplete() {
     let typeDefFileComplete = checkType(this.typeDefinitionFile, AtviseFile);
 
-    if (!typeDefFileComplete) {
-      return false;
-    }
-
     if (this.createNodes) {
+      if (!typeDefFileComplete) {
+        return false;
+      }
+
       return this.isTypeDefOnlyFile ? typeDefFileComplete :
         checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
     } else {
