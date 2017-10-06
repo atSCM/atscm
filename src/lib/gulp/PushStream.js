@@ -18,16 +18,23 @@ export default class PushStream {
   /**
    * Creates a new PushSteam based on a source file stream.
    * @param {Stream} srcStream The file stream to read from.
+   * @param {Object} options The stream configuration options.
    */
-  constructor(srcStream) {
-    const combinedStream = new CombinedStream;
+  constructor(srcStream, options = {}) {
+
+    /**
+     * Defines wether the stream should create nodes or not.
+     * @type {Boolean}
+     */
+    this.createNodes = options.createNodes || false;
+
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
-    const writeStream = new WriteStream();
     const nodeFileStream = new NodeFileStream();
     const createNodeStream = new CreateNodeStream();
     const addReferenceStream = new AddReferenceStream();
     const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
+    const writeStream = new WriteStream({createNodes: this.createNodes});
 
     this.printProgress = setInterval(() => {
       Logger.info(
@@ -48,16 +55,18 @@ export default class PushStream {
         .pipe(atvReferenceFilter),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
-      )
+    )
       .pipe(typeDefinitionFilter.restore)
       .pipe(nodeFileStream)
       .pipe(writeStream)
-      .pipe(createNodeStream)
+      .pipe(createNodeStream);
 
-    this.pushStream.on('finish', () => {
+    this.pushStream.once('finish', () => {
       Logger.debug('Writing and creating nodes finished. Adding references...');
 
-      if (atvReferenceFilter.restore._readableState.buffer.length > 0) {
+      if (this.createNodes && atvReferenceFilter.restore._readableState.buffer.length > 0) {
+        const addReferenceStream = new AddReferenceStream();
+
         this.pushStream.pipe(atvReferenceFilter.restore)
           .pipe(addReferenceStream)
           .on('finish', () => this.endStream());
