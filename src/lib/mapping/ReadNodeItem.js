@@ -28,6 +28,13 @@ export default class ReadNodeItem extends MappingItem {
      * @type {node-opcua~ReferenceDescription}
      */
     this.source = reference;
+
+
+    /**
+     * 'true' for read node items that already contain a read datavalue info
+     * @type {node-opcua~ReferenceDescription}
+     */
+    this.dataValueAdded = false;
   }
 
   /**
@@ -48,6 +55,8 @@ export default class ReadNodeItem extends MappingItem {
     const config = this.config;
     const variant = dataValue.value;
     const source = this.source;
+
+    this.dataValueAdded = true;
 
     config.nodeId = source.nodeId;
     config.typeDefinition = source.typeDefinition;

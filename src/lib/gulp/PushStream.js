@@ -29,7 +29,7 @@ export default class PushStream {
     this.createNodes = options.createNodes || false;
 
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
-    const nodeFileStream = new NodeFileStream();
+    const nodeFileStream = new NodeFileStream({createNodes: this.createNodes});
     const createNodeStream = new CreateNodeStream();
     const addReferenceStream = new AddReferenceStream();
     const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
