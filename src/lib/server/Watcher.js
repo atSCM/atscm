@@ -60,22 +60,27 @@ export class SubscribeStream extends QueueStream {
 
   /**
    * Returns an error message specifically for the given reference description.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
+   * @param {MappingItem} mappingItem The mappingItem to process
    * the error message for.
    * @return {String} The specific error message.
    */
-  processErrorMessage(referenceDescription) {
-    return `Error reading node ${referenceDescription.nodeId.toString()}`;
+  processErrorMessage(mappingItem) {
+    return `Error reading node ${mappingItem.sourceNodeId.toString()}`;
   }
 
   /**
-   * Monitors the nodes specified by a {@link node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The refernce description to use.
+   * Monitors the nodes specified by the given {MappingItem}s.
+   * @param {MappingItem} mappingItem The mappingItem to process
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk(referenceDescription, handleErrors) {
-    const nodeId = referenceDescription.nodeId;
+  processChunk(mappingItem, handleErrors) {
+    const nodeId = mappingItem.nodeId;
+
+    if (!mappingItem.shouldBeRead) {
+      handleErrors(null, StatusCodes.Good, done => done());
+      return;
+    }
 
     const item = this.subscription.monitor({
       nodeId,
@@ -91,12 +96,8 @@ export class SubscribeStream extends QueueStream {
       if (!this._trackChanges) {
         handleErrors(null, StatusCodes.Good, done => done()); // Ignore first notification
       } else {
-        this.emit('change', {
-          nodeId,
-          value: dataValue.value,
-          referenceDescription,
-          mtime: dataValue.serverTimestamp,
-        });
+        mappingItem.createConfigItemFromDataValue(dataValue);
+        this.emit('change', mappingItem);
       }
     });
 
@@ -157,7 +158,7 @@ export default class Watcher extends Emitter {
    * Creates a new Watcher with the given nodes.
    * @param {NodeId[]} nodes The nodes to watch (recursively).
    */
-  constructor(nodes = ProjectConfig.nodesToWatch) {
+  constructor(nodes = ProjectConfig.nodes) {
     super();
 
     /**

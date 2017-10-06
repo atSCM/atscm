@@ -26,7 +26,8 @@ export default class ReadStream extends QueueStream {
   processChunk(mappingItem, handleErrors) {
     let nodeId = mappingItem.nodeId;
 
-    if (!mappingItem.shouldBeRead) {
+    // skip reference and type definition files and read node files that already contain a config
+    if (!mappingItem.shouldBeRead || mappingItem.dataValueAdded) {
       this.push(mappingItem);
       handleErrors(null, StatusCodes.Good, done => done());
     } else {

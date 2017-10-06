@@ -42,7 +42,7 @@ export default class WriteStream extends QueueStream {
   processChunk(combinedNodeFile, handleErrors) {
     const contentFile = combinedNodeFile.contentFile;
 
-    if (combinedNodeFile.isTypeDefOnlyFile) {
+    if (this.createNodes && combinedNodeFile.isTypeDefOnlyFile) {
       this.push(combinedNodeFile);
       handleErrors(null, StatusCodes.Good, done => done());
     } else {
@@ -60,15 +60,15 @@ export default class WriteStream extends QueueStream {
             handleErrors(err, StatusCodes.Good, done => done());
           } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
             if (this.createNodes) {
-              Logger.info(`Node ${
-                contentFile.nodeId.toString()
-                }: does not exist in atvise server address space`);
-            } else {
               Logger.debug(`Node ${
                 contentFile.nodeId.toString()
                 }: does not exist and is pushed to create node stream`);
 
-              this.push(contentFile);
+              this.push(combinedNodeFile);
+            } else {
+              Logger.info(`Node ${
+                contentFile.nodeId.toString()
+                }: does not exist in atvise server address space`);
             }
 
             handleErrors(err, StatusCodes.Good, done => done());

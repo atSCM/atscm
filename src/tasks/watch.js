@@ -168,25 +168,25 @@ export class WatchTask {
 
   /**
    * Handles an atvise server change.
-   * @param {ReadStream.ReadResult} readResult The read result of the modification.
+   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping item of the modification.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a pull operation,
    * with `false` otherwise.
    */
-  handleServerChange(readResult) {
+  handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
       if (!this._pushing) {
-        if (readResult.nodeId.toString() !== this._lastPushed) {
+        if (readNodeMappingItem.nodeId.toString() !== this._lastPushed) {
           this._pulling = true;
-          Logger.info(readResult.nodeId.toString(), 'changed');
+          Logger.info(readNodeMappingItem.nodeId.toString(), 'changed');
 
           const readStream = createStream();
-          readStream.write(readResult);
+          readStream.write(readNodeMappingItem);
           readStream.end();
 
           (new PullStream(readStream))
             .on('end', () => {
               this._pulling = false;
-              this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
+              this._lastPull = AtviseFile.normalizeMtime(readNodeMappingItem.configObj.mtime);
               this.browserSyncInstance.reload();
 
               resolve(true);
@@ -216,7 +216,7 @@ export class WatchTask {
       .then(([fileWatcher, serverWatcher]) => {
         this.browserSyncInstance.emitter.on('service:running', () => {
           Logger.info('Watching for changes...');
-          Logger.debug('Press Ctrl-C to exit');
+          Logger.info('Press Ctrl-C to exit');
         });
 
         fileWatcher.on('change', this.handleFileChange.bind(this));
@@ -233,7 +233,7 @@ export class WatchTask {
  * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
  * initialized.
  */
-export default function watch() {
+export default function watch(callback) {
   return (new WatchTask()).run();
 }
 
