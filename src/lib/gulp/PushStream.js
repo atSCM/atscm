@@ -31,7 +31,6 @@ export default class PushStream {
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
     const nodeFileStream = new NodeFileStream({createNodes: this.createNodes});
     const createNodeStream = new CreateNodeStream();
-    const addReferenceStream = new AddReferenceStream();
     const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
     const writeStream = new WriteStream({createNodes: this.createNodes});
@@ -88,6 +87,5 @@ export default class PushStream {
     }
 
     clearInterval(this.printProgress);
-    this.pushStream.emit("pushStreamFinished");
   }
 }
