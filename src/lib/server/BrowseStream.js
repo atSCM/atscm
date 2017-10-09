@@ -224,7 +224,7 @@ export default class BrowseStream extends QueueStream {
     let refNodeId = ref.nodeId.value.toString();
 
     if (refNodeId.match(this.ignoredRegExp)) {
-      Logger.info(`Ignored node: ${refNodeId}`);
+      Logger.debug(`Ignored node: ${refNodeId}`);
       return true;
     }
     return false;
