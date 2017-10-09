@@ -111,11 +111,11 @@ describe('AtviseFile', function() {
       }))
   );
 
-  /** @test {AtviseFile.pathForReadResult} */
-  describe('.pathForReadResult', function() {
+  /** @test {AtviseFile.pathForItemConfig} */
+  describe('.pathForItemConfig', function() {
     tests.forEach(test => {
       it(test.name, function() {
-        expect(AtviseFile.pathForReadResult({
+        expect(AtviseFile.pathForItemConfig({
           nodeId: test.nodeId,
           value: {
             $dataType: test.dataType,
@@ -129,7 +129,7 @@ describe('AtviseFile', function() {
     });
 
     it('should store custom typed variables with a ".var" extension', function() {
-      expect(AtviseFile.pathForReadResult({
+      expect(AtviseFile.pathForItemConfig({
         nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
         value: {
           $dataType: DataType.Boolean,
