@@ -81,8 +81,8 @@ export default class AddReferenceStream extends CallScriptStream {
           Logger.debug(`Successfully created references for ${nodeId}`);
         }
       }
+      handleErrors(null, StatusCodes.Good, done => done());
     }
-    handleErrors(err, StatusCodes.Good, done => done());
   }
 }
 
