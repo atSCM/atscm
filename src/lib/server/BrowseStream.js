@@ -173,7 +173,7 @@ export default class BrowseStream extends QueueStream {
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
-  static isObjectOrVarTypeDefinitionRef(ref) {
+  static isBaseTypeRef(ref) {
     return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
   }
 
@@ -250,7 +250,7 @@ export default class BrowseStream extends QueueStream {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
           let atvReferences = [];
           let typeDefinitionReferences = [];
-          let objOrVarTypeReferences = [];
+          let baseTypeReferences = [];
 
           Promise.all(
             results[0].references
@@ -260,8 +260,8 @@ export default class BrowseStream extends QueueStream {
               .map(ref => {
                 BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                if (BrowseStream.isObjectOrVarTypeDefinitionRef(ref)) {
-                  objOrVarTypeReferences.push(ref);
+                if (BrowseStream.isBaseTypeRef(ref)) {
+                  baseTypeReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref)) {
                   typeDefinitionReferences.push(ref);
                 } else if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
@@ -289,7 +289,7 @@ export default class BrowseStream extends QueueStream {
               }
 
               // create type definition items for object types
-              objOrVarTypeReferences.map(ref => this.push(new BaseTypeDefinitionItem(nodeId, ref)));
+              baseTypeReferences.map(ref => this.push(new BaseTypeDefinitionItem(nodeId, ref)));
               done();
             });
         });
