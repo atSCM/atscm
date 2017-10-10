@@ -1,9 +1,7 @@
 import readline from 'readline';
 import { dest } from 'gulp';
 import Logger from 'gulplog';
-import ProjectConfig from '../../config/ProjectConfig';
-import Transformer, { TransformDirection } from '../transform/Transformer';
-import MappingTransformer from '../../transform/Mapping';
+import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
 
 /**
  * A stream that transforms read {@link ReadStream.ReadResult}s and stores the on the filesystem.
@@ -11,12 +9,20 @@ import MappingTransformer from '../../transform/Mapping';
 export default class PullStream {
 
   /**
-   * Creates a new PullStream based on a stream that writes {@link ReadStream.ReadResult} which may
-   * be an instance of {@link ReadStream}.
-   * @param {ReadStream} readStream The stream to read from.
+   * Creates a new PullStream based on the given options.
+   * @param {Object} options The stream configuration options.
+   * @param {NodeId[]} [options.nodesToPull] The nodes to push.
    */
-  constructor(readStream) {
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
+  constructor(options = {}) {
+
+    /**
+     * The nodes to pull
+     * @type {NodeId[]}
+     */
+    const nodesToPull = options.nodesToPull || [];
+
+    const fileTransformer = new UaNodeToAtviseFileTransformer({nodesToTransform: nodesToPull});
+    const readStream = fileTransformer.readStream;
 
     const printProgress = setInterval(() => {
       Logger.info(`Pulled: ${readStream.processed} (${readStream.opsPerSecond.toFixed(1)} ops/s)`);
@@ -27,12 +33,7 @@ export default class PullStream {
       }
     }, 1000);
 
-    return Transformer.applyTransformers(
-      readStream
-        .pipe(mappingStream), // pipe output of readstream to mapping stream
-      ProjectConfig.useTransformers,
-      TransformDirection.FromDB
-    )
+    return fileTransformer.stream
       .pipe(dest('./src'))
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
