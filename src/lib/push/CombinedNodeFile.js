@@ -1,8 +1,8 @@
 import checkType from '../../util/validation';
-import AtviseFile from './AtviseFile';
+import AtviseFile from '../mapping/AtviseFile';
 import {ReferenceTypeIds, NodeClass} from 'node-opcua';
-import NodeId from './NodeId';
-import ReverseReferenceTypeIds from './ReverseReferenceTypeIds';
+import NodeId from '../ua/NodeId';
+import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 /**
  * Type definition key for type definition files

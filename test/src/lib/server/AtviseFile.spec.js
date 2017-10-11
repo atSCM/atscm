@@ -3,9 +3,9 @@ import { Buffer } from 'buffer';
 import File from 'vinyl';
 import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
-import AtviseTypes from '../../../../src/lib/server/Types';
-import NodeId from '../../../../src/lib/server/NodeId';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
+import AtviseTypes from '../../../../src/lib/mapping/Types';
+import NodeId from '../../../../src/lib/ua/NodeId';
 
 /** @test {AtviseFile} */
 describe('AtviseFile', function() {

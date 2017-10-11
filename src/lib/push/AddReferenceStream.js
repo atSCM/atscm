@@ -1,7 +1,7 @@
 import Logger from 'gulplog';
 import { StatusCodes, DataType, Variant} from 'node-opcua';
-import CallScriptStream from './CallScriptStream';
-import NodeId from './NodeId';
+import CallScriptStream from '../script/CallScriptStream';
+import NodeId from '../ua/NodeId';
 
 
 /**

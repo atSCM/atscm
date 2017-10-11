@@ -2,10 +2,10 @@ import readline from 'readline';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
-import NodeFileStream from '../server/NodeFileStream';
-import WriteStream from '../server/WriteStream';
-import CreateNodeStream from '../server/CreateNodeStream';
-import AddReferenceStream from '../server/AddReferenceStream';
+import NodeFileStream from '../push/NodeFileStream';
+import WriteStream from '../push/WriteStream';
+import CreateNodeStream from '../push/CreateNodeStream';
+import AddReferenceStream from '../push/AddReferenceStream';
 import filter from 'gulp-filter';
 
 /**

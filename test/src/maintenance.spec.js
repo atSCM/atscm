@@ -1,4 +1,4 @@
-import Session from '../../src/lib/server/Session';
+import Session from '../../src/lib/ua/Session';
 
 process.on('unhandledRejection', e => {
   process.emit('error', e);

@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import expect from 'unexpected';
 import { TransformDirection } from '../../src/lib/transform/Transformer';
-import AtviseFile from '../../src/lib/server/AtviseFile';
+import AtviseFile from '../../src/lib/mapping/AtviseFile';
 
 export default class TransformerHelper {
 
