@@ -2,8 +2,8 @@ import { src } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
-import BrowseStream from '../lib/server/BrowseStream';
-import ReadStream from '../lib/server/ReadStream';
+import BrowseStream from '../lib/pull/BrowseStream';
+import ReadStream from '../lib/pull/ReadStream';
 
 /**
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s
@@ -62,7 +62,11 @@ export default class UaNodeToAtviseFileTransformer {
         .pipe(this.readStream)
     }
 
-    return Transformer.applyTransformers(
+    /**
+     * Stream that creates {AtviseFiles} from browses {node-opcua~ReferenceDescriptions}.
+     * @type {Stream}
+     */
+    this.stream = Transformer.applyTransformers(
       inputStream.pipe(mappingStream),
       ProjectConfig.useTransformers,
       TransformDirection.FromDB

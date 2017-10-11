@@ -4,7 +4,7 @@ import File from 'vinyl';
 import Logger from 'gulplog';
 import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
 import AtviseTypes from './Types';
-import NodeId from './NodeId';
+import NodeId from '../ua/NodeId';
 import Int64 from 'node-int64';
 
 // Path related cache

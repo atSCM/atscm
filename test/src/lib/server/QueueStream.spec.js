@@ -1,7 +1,7 @@
 import { StatusCodes } from 'node-opcua';
 import { spy, stub } from 'sinon';
 import expect from '../../../expect';
-import QueueStream from '../../../../src/lib/server/QueueStream';
+import QueueStream from '../../../../src/lib/stream/QueueStream';
 
 function fakeQueueStream(
   err = null, status = StatusCodes.Good, onSuccess = done => done(), options = {}

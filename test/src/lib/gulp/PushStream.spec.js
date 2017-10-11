@@ -5,7 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../../expect';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 
 const StubTransformer = {

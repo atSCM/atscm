@@ -1,9 +1,9 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import MappingItem from './MappingItem';
 import {browse_service as BrowseService, ReferenceTypeIds, DataType, VariantArrayType} from 'node-opcua';
-import ReverseReferenceTypeIds from '../server/ReverseReferenceTypeIds';
+import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 /**
  * Mapping item for node type definitions and other reference types

@@ -1,5 +1,5 @@
 import { DataType } from 'node-opcua';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 
 class Type {
   /**

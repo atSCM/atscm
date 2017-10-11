@@ -1,5 +1,5 @@
 import { ctor as throughStreamClass } from 'through2';
-import Session from './Session';
+import Session from '../ua/Session';
 
 /**
  * An object transform stream connected to atvise server.

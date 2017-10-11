@@ -6,10 +6,10 @@ import Logger from 'gulplog';
 import { obj as createStream } from 'through2';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/server/AtviseFile';
-import ServerWatcher from '../lib/server/Watcher';
+import AtviseFile from '../lib/mapping/AtviseFile';
+import ServerWatcher from '../lib/watch/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
-import NodeId from '../lib/server/NodeId';
+import NodeId from '../lib/ua/NodeId';
 import { validateDirectoryExists } from '../util/fs';
 
 /**

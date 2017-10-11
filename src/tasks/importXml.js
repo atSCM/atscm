@@ -1,4 +1,4 @@
-import ImportXmlStream from '../lib/server/ImportXmlStream';
+import ImportXmlStream from '../lib/gulp/ImportXmlStream';
 import { src } from 'gulp';
 
 /**

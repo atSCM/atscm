@@ -1,6 +1,6 @@
 import {DataType, NodeClass, StatusCodes, VariantArrayType, Variant} from 'node-opcua';
-import QueueStream from './QueueStream';
-import NodeId from './NodeId';
+import QueueStream from '../stream/QueueStream';
+import NodeId from '../ua/NodeId';
 import checkType from '../../util/validation';
 import Logger from 'gulplog';
 

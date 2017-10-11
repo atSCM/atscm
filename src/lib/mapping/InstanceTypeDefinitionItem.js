@@ -1,6 +1,6 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import {NodeClass, browse_service as BrowseService} from 'node-opcua';
 import InstanceReferenceItem from './InstanceReferenceItem';
 
