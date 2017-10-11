@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import Logger from 'gulplog';
-import AtviseFile from '../lib/server/AtviseFile';
+import AtviseFile from '../lib/mapping/AtviseFile';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,

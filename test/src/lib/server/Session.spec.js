@@ -3,8 +3,8 @@ import proxyquire from 'proxyquire';
 import { ClientSession, StatusCodes } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
-import Session from '../../../../src/lib/server/Session';
-import Client from '../../../../src/lib/server/Client';
+import Session from '../../../../src/lib/ua/Session';
+import Client from '../../../../src/lib/ua/Client';
 
 function sessionWithLogin(login) {
   return proxyquire('../../../../src/lib/server/Session', {
