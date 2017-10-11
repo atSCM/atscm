@@ -150,7 +150,7 @@ for (refName in references) {
     refType = refGroupItem.referenceIdValue;
 
     for (refIndex = 0; refIndex < refItems.length; refIndex ++) {
-        targetNodeId = refItems[refIndex].refNodeId;
+        targetNodeId = refItems[refIndex];
         targetNode = new UaNode(targetNodeId);
 
         if (!targetNode.exists()) {
