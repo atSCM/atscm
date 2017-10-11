@@ -1,7 +1,7 @@
 import { readFile } from 'fs';
 import File from 'vinyl';
 import Logger from 'gulplog';
-import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
+import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
 import AtviseTypes from './Types';
 import NodeId from './NodeId';
 import Int64 from 'node-int64';
@@ -118,6 +118,7 @@ const Decoder = {
   [DataType.Double]: stringValue => parseFloat(stringValue, 10),
   [DataType.Float]: stringValue => parseFloat(stringValue, 10),
   [DataType.XmlElement]: stringValue => stringValue,
+  [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1])
 };
 
 /**
