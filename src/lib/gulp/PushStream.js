@@ -6,6 +6,7 @@ import NodeFileStream from '../server/NodeFileStream';
 import WriteStream from '../server/WriteStream';
 import CreateNodeStream from '../server/CreateNodeStream';
 import AddReferenceStream from '../server/AddReferenceStream';
+import filter from 'gulp-filter';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -33,6 +34,7 @@ export default class PushStream {
     const nodesToPush = options.nodesToPush || [];
 
     const fileTransformer = new FileToAtviseFileTransformer({nodesToTransform: nodesToPush});
+    const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
     const nodeFileStream = new NodeFileStream({createNodes: createNodes});
     const createNodeStream = new CreateNodeStream();
     const writeStream = new WriteStream({createNodes: createNodes});
@@ -48,17 +50,16 @@ export default class PushStream {
       }
     }, 1000);
 
-    this.pushStream = fileTransformer.stream
-      .pipe(fileTransformer.typeDefinitionFilter.restore)
+    this.pushStream = fileTransformer
+      .pipe(atvReferenceFilter)
       .pipe(nodeFileStream)
       .pipe(writeStream)
       .pipe(createNodeStream);
 
     this.pushStream.once('finish', () => {
-      const atvReferenceFilter = fileTransformer.atvReferenceFilter;
       Logger.debug('Writing and creating nodes finished. Adding references...');
 
-      if (this.createNodes && atvReferenceFilter.restore._readableState.buffer.length > 0) {
+      if (createNodes && atvReferenceFilter.restore._readableState.buffer.length > 0) {
         const addReferenceStream = new AddReferenceStream();
 
         this.pushStream.pipe(atvReferenceFilter.restore)

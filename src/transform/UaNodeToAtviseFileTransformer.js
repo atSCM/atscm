@@ -62,11 +62,7 @@ export default class UaNodeToAtviseFileTransformer {
         .pipe(this.readStream)
     }
 
-    /**
-     * Stream containing atvise files.
-     * @type {Stream}
-     */
-    this.stream = Transformer.applyTransformers(
+    return Transformer.applyTransformers(
       inputStream.pipe(mappingStream),
       ProjectConfig.useTransformers,
       TransformDirection.FromDB

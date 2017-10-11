@@ -1,6 +1,5 @@
 import { src } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
-import filter from 'gulp-filter';
 import CombinedStream from 'combined-stream';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
@@ -36,29 +35,11 @@ export default class FileToAtviseFileTransformer {
      */
     const nodesToTransform = options.nodesToTransform || [];
 
-    /**
-     * Stream containing all type definition files.
-     * @type {Stream}
-     */
-    this.typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
-
-    /**
-     * Stream containing all atvise Reference files.
-     * @type {Stream}
-     */
-    this.atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
-
     nodesToTransform.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
 
-    /**
-     * Stream containing all atvise content files.
-     * @type {Stream}
-     */
-    this.stream = Transformer.applyTransformers(
+    return Transformer.applyTransformers(
       combinedSrcStream
-        .pipe(mappingStream)
-        .pipe(this.typeDefinitionFilter)
-        .pipe(this.atvReferenceFilter),
+        .pipe(mappingStream),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
     )
