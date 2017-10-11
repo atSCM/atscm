@@ -1,11 +1,11 @@
 import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
 import ReadNodeMappingItem from '../mapping/ReadNodeItem';
 import InstanceTypeDefinitionItem from '../mapping/InstanceTypeDefinitionItem';
 import AtviseReferenceItem from '../mapping/AtviseReferenceItem';
 import BaseTypeDefinitionItem from '../mapping/BaseTypeDefinitionItem';
 import ReadNodeItem from '../mapping/ReadNodeItem';
-import NodeId from './NodeId';
+import NodeId from '../ua/NodeId';
 import Project from '../../config/ProjectConfig';
 import Logger from 'gulplog';
 

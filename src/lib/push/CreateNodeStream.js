@@ -1,8 +1,8 @@
 import Logger from 'gulplog';
 import {ReferenceTypeIds, StatusCodes, DataType, NodeClass, VariantArrayType, Variant} from 'node-opcua';
-import CallScriptStream from './CallScriptStream';
-import NodeId from './NodeId';
-import ReverseReferenceTypeIds from './ReverseReferenceTypeIds';
+import CallScriptStream from '../script/CallScriptStream';
+import NodeId from '../ua/NodeId';
+import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 
 /**

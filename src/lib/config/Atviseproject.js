@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
 

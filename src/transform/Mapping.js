@@ -2,8 +2,8 @@ import { Buffer } from 'buffer';
 import { readFile } from 'fs';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
-import AtviseFile from '../lib/server/AtviseFile';
-import NodeId from '../lib/server/NodeId';
+import AtviseFile from '../lib/mapping/AtviseFile';
+import NodeId from '../lib/ua/NodeId';
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.

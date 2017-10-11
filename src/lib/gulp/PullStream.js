@@ -41,7 +41,7 @@ export default class PullStream {
       }
     }, 1000);
 
-    return fileTransformer
+    return fileTransformer.stream
       .pipe(dest('./src'))
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
