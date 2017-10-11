@@ -5,8 +5,8 @@ import proxyquire from 'proxyquire';
 import { resolveNodeId, DataType, StatusCodes, Variant } from 'node-opcua';
 import { obj as createTransformSteam } from 'through2';
 import expect from '../../../expect';
-import ReadStream from '../../../../src/lib/server/ReadStream';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
+import ReadStream from '../../../../src/lib/pull/ReadStream';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 
 const StubTransformer = {

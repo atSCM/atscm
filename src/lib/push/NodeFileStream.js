@@ -1,4 +1,4 @@
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
 import Logger from 'gulplog';
 import CombinedNodeFile from './CombinedNodeFile';
 import { StatusCodes } from 'node-opcua';

@@ -1,6 +1,6 @@
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
 
 /**
  * A stream that writes all read {@link CombinedNodeFiles}s to their corresponding nodes on atvise server.

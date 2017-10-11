@@ -3,8 +3,8 @@ import { spy } from 'sinon';
 import { Stream as CoreStream } from 'stream';
 import { ClientSession } from 'node-opcua';
 import expect from '../../../expect';
-import Stream from '../../../../src/lib/server/Stream';
-import Session from '../../../../src/lib/server/Session';
+import Stream from '../../../../src/lib/stream/Stream';
+import Session from '../../../../src/lib/ua/Session';
 
 /** @test {Stream} */
 describe('Stream', function() {

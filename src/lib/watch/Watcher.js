@@ -6,9 +6,9 @@ import {
   StatusCodes,
 } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
-import NodeStream from './NodeStream';
-import QueueStream from './QueueStream';
-import Session from './Session';
+import BrowseStream from '../pull/BrowseStream';
+import QueueStream from '../stream/QueueStream';
+import Session from '../ua/Session';
 
 /**
  * A stream that monitors changes in the read nodes.

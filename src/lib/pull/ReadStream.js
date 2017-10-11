@@ -1,4 +1,6 @@
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
+import Logger from 'gulplog';
+import { StatusCodes } from 'node-opcua';
 
 /**
  * A stream that reads atvise server nodes for the {@link node-opcua~ReferenceDescription}s passed.

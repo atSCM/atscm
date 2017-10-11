@@ -1,6 +1,6 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import {browse_service as BrowseService, DataType, VariantArrayType} from 'node-opcua';
 import MappingItem from './MappingItem';
 
