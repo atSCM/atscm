@@ -1,4 +1,4 @@
-import { join } from 'path';
+import {dirname} from 'path';
 import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
@@ -9,6 +9,7 @@ import PullStream from '../lib/gulp/PullStream';
 import AtviseFile from '../lib/server/AtviseFile';
 import ServerWatcher from '../lib/server/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
+import NodeId from '../lib/server/NodeId';
 import { validateDirectoryExists } from '../util/fs';
 
 /**
@@ -111,8 +112,10 @@ export class WatchTask {
    */
   initBrowserSync() {
     this.browserSyncInstance.init({
-      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-      ws: true,
+      proxy: {
+        target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+        ws: true
+      }
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
     });
@@ -150,9 +153,12 @@ export class WatchTask {
         this._pushing = true;
         Logger.info(path, 'changed');
 
-        const source = src(join(root, path), { base: root });
+        const pushStream = new PushStream({
+          nodesToPush: [NodeId.fromFilePath(dirname(path))],
+          createNodes: true
+        });
 
-        (new PushStream(source))
+        pushStream
           .on('data', file => (this._lastPushed = file.nodeId.toString()))
           .on('end', () => {
             this._pushing = false;
@@ -183,7 +189,12 @@ export class WatchTask {
           readStream.write(readNodeMappingItem);
           readStream.end();
 
-          (new PullStream(readStream))
+          const pullStream = new PullStream({
+            useInputStream: true,
+            inputStream: readStream
+          });
+
+          pullStream
             .on('end', () => {
               this._pulling = false;
               this._lastPull = AtviseFile.normalizeMtime(readNodeMappingItem.configObj.mtime);
