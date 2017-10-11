@@ -6,6 +6,7 @@ export { default as pull } from './tasks/pull';
 export { default as push } from './tasks/push';
 export { default as watch } from './tasks/watch';
 export { default as importXml } from './tasks/importXml';
+export { default as diff } from './tasks/diff';
 
 // Register cleanup
 /* istanbul ignore if */
