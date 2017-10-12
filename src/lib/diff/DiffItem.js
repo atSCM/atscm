@@ -27,6 +27,12 @@ export default class DiffItem {
     this.fsFile = {};
 
     /**
+     * The items's nodeId
+     * @type {NodeId}
+     */
+    this.nodeId = file.nodeId;
+
+    /**
      * The file's path
      * @type {vinyl~path}
      */
