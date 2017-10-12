@@ -1,3 +1,4 @@
+import ProjectConfig from '../../config/ProjectConfig';
 import { readFile } from 'fs';
 import {dirname, join, relative} from 'path';
 import File from 'vinyl';
@@ -24,13 +25,6 @@ const AtviseTypesByIdentifier = AtviseTypes
  * @type {String}
  */
 const ArrayValueSeperator = '@atscmUaNodeArraySeperator@';
-
-
-/**
- * Source directory path
- * @type {String}
- */
-const SrcPath = join(process.cwd(), 'src');
 
 /**
  * A map providing shorter extensions for data types
@@ -88,7 +82,8 @@ const Encoder = {
   [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
   [DataType.Int64]: int32Array => AtviseFile.uint32ArraysToInt64(int32Array[0], int32Array[1]),
   [DataType.ByteString]: byteString => new Buffer(byteString)
-};
+}
+
 
 /**
  * Returns the extension for a specific {@link node-opcua~DataType}.
@@ -370,7 +365,10 @@ export default class AtviseFile extends File {
    */
   get relativeFilePath() {
     const path = this.path;
-    return path.indexOf(SrcPath) > -1 ? relative(SrcPath, this.path) : path;
+    // build source path here because Project config is undefined when AtviseFile is loaded
+    const srcPath = join(process.cwd(), ProjectConfig.RelativeSourceDirectoryPath);
+
+    return path.indexOf(srcPath) > -1 ? relative(srcPath, this.path) : path;
   }
 
   /**
