@@ -8,7 +8,7 @@ export default function diff () {
 
   return new DiffStream({
     nodesToDiff: ProjectConfig.nodes,
-    filePath: 'test.log'
+    filePath: ProjectConfig.DiffFileName
   })
 }
 

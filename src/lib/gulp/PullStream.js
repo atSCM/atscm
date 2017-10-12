@@ -2,6 +2,7 @@ import readline from 'readline';
 import { dest } from 'gulp';
 import Logger from 'gulplog';
 import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
+import ProjectConfig from '../../config/ProjectConfig';
 
 /**
  * A stream that transforms read {@link ReadStream.ReadResult}s and stores the on the filesystem.
@@ -42,7 +43,7 @@ export default class PullStream {
     }, 1000);
 
     return fileTransformer.stream
-      .pipe(dest('./src'))
+      .pipe(dest(ProjectConfig.RelativeSourceDirectoryPath))
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.clearLine(process.stdout, 0);
