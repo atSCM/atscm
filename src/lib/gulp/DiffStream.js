@@ -1,10 +1,12 @@
 import readline from 'readline';
 import Logger from 'gulplog';
 import { src } from 'gulp';
+import filter from 'gulp-filter';
 import DiffResultStream from '../diff/DiffResultStream';
 import DiffItemStream from '../diff/DiffItemStream';
 import DiffFileStream from '../diff/DiffFileStream';
 import DiffFile from '../diff/DiffFile';
+import DiffItem from '../diff/DiffItem';
 import CombinedStream from 'combined-stream';
 import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
@@ -46,8 +48,12 @@ export default class DiffStream {
     // diff file processors
     const diffItemStream = new DiffItemStream();
     const diffResultStream = new DiffResultStream({filePath: filePath});
+    const equalFilesFilter = filter(diffItem => diffItem.state.value != DiffItem.DiffStates.Equal.value);
+    const logger = diffResultStream.logger;
 
     const combinedStream = new CombinedStream({pauseStreams: false});
+
+    logger.write('Modified:\n');
 
     combinedStream.append(fsFileStream);
     combinedStream.append(serverFileStream);
@@ -66,17 +72,33 @@ export default class DiffStream {
 
     return combinedStream
       .pipe(diffItemStream)
+      .pipe(equalFilesFilter)
       .pipe(diffResultStream)
       .once('finish', () => {
-        const itemsCache = diffItemStream.itemsCache;
+        const itemsCache = Object.values(diffItemStream.itemsCache);
+        const states = DiffItem.DiffStates;
+        const addedItems = [];
+        const deletedItems = [];
 
-        if (Object.keys(itemsCache).lenght > 0) {
+        if (itemsCache.length > 0) {
           diffResultStream.once('drained', () => {
             clearInterval(printProgress);
           });
 
-          Object.values(diffItemStream.itemsCache)
-            .forEach(file => diffResultStream.write(file));
+          itemsCache.forEach(diffItem => {
+            if (diffItem.state.value == states.Added.value) {
+              addedItems.push(diffItem);
+            } else if (diffItem.state.value == states.Deleted.value){
+              deletedItems.push(diffItem);
+            }
+          });
+
+          logger.write('\nAdded:\n');
+          addedItems.forEach(file => diffResultStream.write(file));
+
+          logger.write('\nDeleted:\n');
+          deletedItems.forEach(file => diffResultStream.write(file));
+
         } else {
          clearInterval(printProgress);
         }
