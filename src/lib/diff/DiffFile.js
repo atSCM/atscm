@@ -30,6 +30,12 @@ export default class DiffFile {
     this.value = file.value.toString();
 
     /**
+     * The files's nodeId
+     * @type {NodeId}
+     */
+    this.nodeId = file.nodeId;
+
+    /**
      * The files relative path
      * @type {vinyl~path}
      */

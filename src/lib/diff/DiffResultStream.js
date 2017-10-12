@@ -3,6 +3,7 @@ import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
 import DiffItem from './DiffItem';
 import { createWriteStream } from 'fs';
+import { dirname } from 'path';
 
 /**
  * The possible diff states
@@ -53,7 +54,7 @@ export default class DiffResultStream extends QueueStream {
 
   processChunk(diffItem, handleErrors) {
     handleErrors(null, StatusCodes.Good, done => {
-      this.logger.write(`${diffItem.state.text} ${diffItem.path}\n`);
+      this.logger.write(`${diffItem.state.text} filePath=${diffItem.path}, nodeFilePath=${dirname(diffItem.path)}, nodeId=${diffItem.nodeId.value}\n`);
       done();
     });
   }
