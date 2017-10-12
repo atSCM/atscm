@@ -53,14 +53,6 @@ export class WatchTask {
   }
 
   /**
-   * The directory to watch.
-   * @type {string}
-   */
-  get directoryToWatch() {
-    return './src';
-  }
-
-  /**
    * Waits for a watcher (which can actually be any kind of {@link events~Emitter}) to emit a
    * "ready" event.
    * @param {events~Emitter} watcher The watcher to wait for.
@@ -80,19 +72,19 @@ export class WatchTask {
    * rejected with the error that occurred while starting the watcher.
    */
   startFileWatcher() {
-    return validateDirectoryExists(this.directoryToWatch)
+    return validateDirectoryExists(ProjectConfig.RelativeSourceDirectoryPath)
       .catch(err => {
         if (err.code === 'ENOENT') {
-          Logger.info(`Create a directory at ${this.directoryToWatch} or run \`atscm pull\` first`);
+          Logger.info(`Create a directory at ${ProjectConfig.RelativeSourceDirectoryPath} or run \`atscm pull\` first`);
 
           Object.assign(err, {
-            message: `Directory ${this.directoryToWatch} does not exist`,
+            message: `Directory ${ProjectConfig.RelativeSourceDirectoryPath} does not exist`,
           });
         }
 
         throw err;
       })
-      .then(() => this._waitForWatcher(sane(this.directoryToWatch, {
+      .then(() => this._waitForWatcher(sane(ProjectConfig.RelativeSourceDirectoryPath, {
         glob: '**/*.*',
         watchman: process.platform === 'darwin',
       })));

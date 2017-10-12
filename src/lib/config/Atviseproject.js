@@ -42,6 +42,43 @@ export default class Atviseproject {
   }
 
   /**
+   * The source directory path.
+   * @type {String}
+   */
+  static get RelativeSourceDirectoryPath() {
+    return './src';
+  }
+
+  /**
+   * The diff file path.
+   * @type {String}
+   */
+  static get DiffFileName() {
+    return 'diff.log';
+  }
+
+  /**
+   * The delete file paths.
+   * @type {Object}
+   * @property {String} server The server delete file name.
+   * @property {String} fs The file system delete file name.
+   */
+  static get DeleteFileNames() {
+    return {
+      server: 'deleteServer.txt',
+      fs: 'deleteFs.txt'
+    }
+  }
+
+  /**
+   * The xml resource directory path.
+   * @type {String}
+   */
+  static get RelativeXmlResourcesPath() {
+    return './node_modules/atscm/xml_resources/**/*.xml';
+  }
+
+  /**
    * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
    * @type {Transformer[]}
    */
@@ -63,18 +100,6 @@ export default class Atviseproject {
       new NodeId('SYSTEM'),
       new NodeId('ObjectTypes.PROJECT'),
       new NodeId('VariableTypes.PROJECT'),
-    ];
-  }
-
-  /**
-   * The atvise-server nodes to watch in the corresponding tasks. Defaults to all nodes containing
-   * displays.
-   * @type {String[]|NodeId[]}
-   */
-  static get nodesToWatch() {
-    return [
-      new NodeId('AGENT.DISPLAYS'),
-      new NodeId('SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS'),
     ];
   }
 

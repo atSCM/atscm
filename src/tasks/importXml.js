@@ -1,11 +1,12 @@
 import ImportXmlStream from '../lib/gulp/ImportXmlStream';
 import { src } from 'gulp';
+import ProjectConfig from '../config/ProjectConfig';
 
 /**
  * Imports all xml files needed for atscm usage.
  */
 export default function importXml () {
-  const srcStream = src('./node_modules/atscm/xml_resources/**/*.xml');
+  const srcStream = src(ProjectConfig.RelativeXmlResourcesPath);
 
   return srcStream
     .pipe(new ImportXmlStream())
