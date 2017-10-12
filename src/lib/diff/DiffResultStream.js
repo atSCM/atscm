@@ -53,12 +53,7 @@ export default class DiffResultStream extends QueueStream {
 
   processChunk(diffItem, handleErrors) {
     handleErrors(null, StatusCodes.Good, done => {
-      const state = diffItem.state;
-
-      if (state != states.Equal) {
-        this.logger.write(`${state} | ${diffItem.path}\n`);
-      }
-
+      this.logger.write(`${diffItem.state.text} ${diffItem.path}\n`);
       done();
     });
   }

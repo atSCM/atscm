@@ -50,14 +50,14 @@ export default class DiffItem {
 
   /**
    * The possible diff states
-   * @type {{Equal:String, New: String, Modified: String, Deleted: String}}
+   * @type {{Equal:Object, Added: Object, Modified: Object, Deleted: Object}}
    */
   static get DiffStates () {
     return {
-      Equal: 'Equal',
-      New: 'New',
-      Modified: 'Modified',
-      Deleted: 'Deleted'
+      Equal: {text: 'Equ', value: 0},
+      Added: {text: 'Add', value: 1},
+      Modified: {text: 'Mod', value: 2},
+      Deleted: {text: 'Del', value: 3}
     }
   };
 
@@ -97,7 +97,7 @@ export default class DiffItem {
     } else if (!checkType(this.serverFile, DiffFile)) {
       state = states.Deleted;
     } else if (!checkType(this.fsFile, DiffFile)) {
-      state = states.New;
+      state = states.Added;
     }
 
     return state;
