@@ -65,6 +65,7 @@ const Decoder = {
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
+  [DataType.DateTime]: stringValue => new Date(stringValue),
   [DataType.UInt64]: stringValue => parseInt(stringValue, 10),
   [DataType.Int64]: stringValue => parseInt(stringValue, 10),
   [DataType.Int32]: stringValue => parseInt(stringValue, 10),
@@ -78,7 +79,6 @@ const Decoder = {
 };
 
 const Encoder = {
-  [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
   [DataType.Int64]: int32Array => AtviseFile.uint32ArraysToInt64(int32Array[0], int32Array[1]),
   [DataType.ByteString]: byteString => new Buffer(byteString)
