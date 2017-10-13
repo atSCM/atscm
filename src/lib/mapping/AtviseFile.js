@@ -64,7 +64,6 @@ const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
-  [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
   [DataType.DateTime]: stringValue => new Date(stringValue),
   [DataType.UInt64]: stringValue => parseInt(stringValue, 10),
   [DataType.Int64]: stringValue => parseInt(stringValue, 10),
@@ -77,6 +76,13 @@ const Decoder = {
   [DataType.XmlElement]: stringValue => stringValue,
   [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1])
 };
+
+// Value encoding related cache for types that need a special format in create node serverscript
+const CreateNodeDecoder = {
+  [DataType.ByteString]: buffer => buffer.toString('binary'),
+  [DataType.DateTime]: buffer => new Date(buffer.toString()).getTime(),
+};
+
 
 const Encoder = {
   [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
@@ -203,32 +209,39 @@ export default class AtviseFile extends File {
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
    * @param {node-opcua~VariantArrayType} arrayType The files array type
-   * for.
+   * @param {Boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite the existing decoders
    * @return {?*} The decoded node value or null.
    */
-  static decodeValue(buffer, dataType, arrayType) {
-    const decoder = Decoder[dataType];
-    let bufferString = "";
+  static decodeValue(buffer, dataType, arrayType, useCreateNodeEncoding) {
+    let decoder = Decoder[dataType];
+    let bufferValue;
 
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    bufferString = buffer.toString();
+    if (useCreateNodeEncoding && CreateNodeDecoder[dataType]) {
+      decoder = CreateNodeDecoder[dataType];
+      bufferValue = buffer;
+    } else {
+      bufferValue = buffer.toString();
+    }
 
     if (arrayType == VariantArrayType.Array) {
-      let arrayValue = bufferString.split(ArrayValueSeperator);
+      const arrayValue = bufferValue.toString().split(ArrayValueSeperator);
 
       return (arrayValue.map(item => decoder ? decoder(item): item));
 
     } else {
       if (decoder) {
-        return decoder(bufferString);
+        return decoder(bufferValue);
       }
 
       return buffer;
     }
   }
+
+
 
   /**
    * As file mtimes do not support millisecond resolution these must be removed before storing
@@ -482,6 +495,14 @@ export default class AtviseFile extends File {
    */
   get value() {
     return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType);
+  }
+
+  /**
+   * Returns the decoded node value for create node serverscript.
+   * @type {?*} The file's decoded value.
+   */
+  get createNodeValue() {
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType, true);
   }
 
   /**

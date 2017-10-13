@@ -84,9 +84,8 @@ export default class CreateNodeStream extends CallScriptStream {
       let dataType = contentFile.dataType.value;
 
       configObj.dataType = dataType;
-      configObj.value = dataType == DataType.ByteString ? contentFile.value.toString('binary') :
-        contentFile.value;
       configObj.valueRank = contentFile.arrayType.value;
+      configObj.value = contentFile.createNodeValue;
     }
 
     paramObjString.value = JSON.stringify(configObj)
