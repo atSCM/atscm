@@ -1,8 +1,7 @@
 import { EOL } from 'os';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
-import {parse as xmlStringToObj, serialize as objToXmlString} from 'xamel';
-import * as xmlLib from 'xamel/lib/xml';
+import {parse as xmlStringToObj, serialize as objToXmlString, xml} from '../xml/xamel';
 
 /**
  * Definition for default xml header
@@ -38,7 +37,7 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {xamel~Tag[]} scriptCode The script code to store
    */
   createNodeSet(nodes) {
-    return new xmlLib.NodeSet(nodes);
+    return new xml.NodeSet(nodes);
   }
 
   /**
@@ -50,10 +49,10 @@ export default class XMLTransformer extends SplittingTransformer {
    */
   createTag(tagName, attributes, parentTag, initialChildNode) {
     const sortedAttr = Object.keys(attributes).sort().forEach(key => attributes[key])
-    const tag = new xmlLib.Tag(tagName, attributes, parentTag);
+    const tag = new xml.Tag(tagName, attributes, parentTag);
 
     if (initialChildNode) {
-      if (initialChildNode instanceof xmlLib.Tag) {
+      if (initialChildNode instanceof xml.Tag) {
         initialChildNode.parent = tag;
       }
       tag.append(initialChildNode);
@@ -68,7 +67,7 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {String} scriptCode The script code to store
    */
   createCData(scriptCode) {
-    return new xmlLib.CData(scriptCode);
+    return new xml.CData(scriptCode);
   }
 
   /**
