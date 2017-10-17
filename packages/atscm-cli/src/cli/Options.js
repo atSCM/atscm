@@ -14,6 +14,7 @@ import Option from '../lib/cli/Option';
  * @property {Option} remote Open hosted documentation.
  * @property {Option} silent Supress all logging.
  * @property {Option} version Print version.
+ * @property {Option} beta Use atscm beta resources.
  */
 const Options = {
   browser: Option.string('Which browser to open in.'),
@@ -44,6 +45,7 @@ const Options = {
   'tasks-simple': Option.boolean('Print a plaintext list of tasks.'),
   'tasks-json': Option.boolean('Print the task dependency tree, in JSON format.'),
   version: Option.boolean('Print version.', { alias: 'v' }),
+  beta: Option.boolean('Use atscm beta resources.'),
 };
 
 export default Options;
@@ -60,5 +62,6 @@ export const GlobalOptions = {
   version: Options.version,
   help: Options.help,
   silent: Options.silent,
+  beta: Options.beta,
   'log-level': Options['log-level'],
 };
