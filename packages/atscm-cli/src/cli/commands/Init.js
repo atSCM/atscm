@@ -119,11 +119,15 @@ export default class InitCommand extends Command {
    * @param {String} path The path to install the module at.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
-  installLocal(path) {
+  installLocal(path, useBetaRelease) {
     Logger.info('Installing latest version of atscm...');
 
+    if (useBetaRelease) {
+      Logger.debug(Logger.colors.gray('Using beta release'));
+    }
+
     // FIXME: call with (path, 'atscm') once atscm is published
-    return this.install(path, 'atscm');
+    return this.install(path, useBetaRelease ? 'atscm@beta' : 'atscm');
   }
 
   /**
@@ -197,7 +201,7 @@ export default class InitCommand extends Command {
     return cli.getEnvironment(false)
       .then(env => this.checkDirectory(env.cwd, cli.options.force))
       .then(() => this.createEmptyPackage(cli.environment.cwd))
-      .then(() => this.installLocal(cli.environment.cwd))
+      .then(() => this.installLocal(cli.environment.cwd, cli.options.beta))
       .then(() => cli.getEnvironment(false))
       .then(env => this.checkCliVersion(env))
       .then(env => process.chdir(env.cwd))
