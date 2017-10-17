@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="">
+  <title data-ice="title">Test | atscm-cli API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm-cli" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Commands">Commands</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GlobalOptions">GlobalOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Options">Options</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli/commands</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html">UpdateCommand</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/cli</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/error</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/ExternalCommand.js~ExternalCommand.html">ExternalCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Liftoff.Environment">Liftoff.Environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/js-cli/js-liftoff">Liftoff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/chalk/chalk">chalk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/gulplog">gulplog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/child_process.html#child_process_class_childprocess">node.ChildProcess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/stream.html#stream_class_stream_readable">node.stream.Readable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://yargs.js.org">yargs</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1>Test</h1>
+<table class="test-summary">
+  <thead>
+    <tr>
+      <td class="test-description">Description</td>
+      <td class="test-target">Identifier</td>
+      <td class="test-count">Count</td>
+    </tr>
+  </thead>
+
+  <tbody data-ice="tests">
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber31"><p>AtSCMCli</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></td>
+  <td data-ice="testCount">34</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber41"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-constructor-constructor">AtSCMCli#constructor</a></span></td>
+  <td data-ice="testCount">7</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber42"><p>should throw UsageError with invalid options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber46"><p>should create an instance of Liftoff</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber50"><p>should not add run argument if valid command is given</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber54"><p>should not add run argument if --help is given</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber58"><p>should not add run argument if --version is given</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber62"><p>should add run argument if no command is given</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber66"><p>should set runViaCli</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber73"><p>#_exposeOverride</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-_exposeOverride">AtSCMCli#_exposeOverride</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber74"><p>should set single options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber81"><p>should set object options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber88"><p>should use default base</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber99"><p>#parseArguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-parseArguments">AtSCMCli#parseArguments</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber102"><p>should fail with UsageError with an unknown argument</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber106"><p>should report the invalid argument</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber112"><p>should return options with valid arguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber118"><p>should set AtSCMCli#options with valid arguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber125"><p>should set AtSCMCli#command with valid command</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber132"><p>should expose project options as environment variables</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber141"><p>#getEnvironment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-getEnvironment">AtSCMCli#getEnvironment</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber150"><p>should call Liftoff#launch with cwd and projectfile option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber161"><p>should set AtSCMCli#environment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber172"><p>when not looking up parent directories</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber173"><p>should resolve to initial cwd</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber180"><p>should resolve to initial cwd in project child directories</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber187"><p>should ignore --projectfile option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber198"><p>#requireEnvironment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-requireEnvironment">AtSCMCli#requireEnvironment</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber199"><p>should fail without local module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber204"><p>should return environment if successful</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber213"><p>#getVersion</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-getVersion">AtSCMCli#getVersion</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber214"><p>should return cli version without local module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber219"><p>should even return cli version with invalid cwd</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber224"><p>should return local version with local module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber231"><p>#printVersion</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-printVersion">AtSCMCli#printVersion</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber232"><p>should print cli version only without local module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber241"><p>should print cli and local version with local module</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber252"><p>#runCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-runCommand">AtSCMCli#runCommand</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber253"><p>should print version if --version is used</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber265"><p>should run command if used</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber277"><p>should warn if no command is used</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber289"><p>#launch</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html#instance-method-launch">AtSCMCli#launch</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber290"><p>should call AtSCMCli#parseArguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber302"><p>should handle all exceptions if run via cli</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/AtSCMCli.spec.js.html#lineNumber310"><p>should report help on usage errors if run via cli</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/bin/atscm.spec.js.html#lineNumber4"><p>bin</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span><a href="test-file/test/bin/atscm.spec.js.html#lineNumber34"><p>should call launch</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber9"><p>ConfigCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber11"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html#instance-method-run">ConfigCommand#run</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber24"><p>when overrides are available (atscm &gt;= v0.4)</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber25"><p>should print local module&apos;s ProjectConfig class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber41"><p>when overrides are not available (atscm &lt; v0.4)</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber42"><p>should print local module&apos;s Atviseproject class</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/cli/commands/Config.spec.js.html#lineNumber57"><p>should warn that overrides are not available</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber12"><p>DocsCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></td>
+  <td data-ice="testCount">19</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber16"><p>#localDocsPath</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html#instance-method-localDocsPath">DocsCommand#localDocsPath</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber17"><p>should be local api docs by default</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber29"><p>should be cli api docs with --cli option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber40"><p>#remoteDocsUrl</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html#instance-method-remoteDocsUrl">DocsCommand#remoteDocsUrl</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber41"><p>should return path to atscm docs by default</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber46"><p>should return path to atscm-cli docs with <code>--cli</code> option passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber53"><p>#addressToOpen</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html#instance-method-addressToOpen">DocsCommand#addressToOpen</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber54"><p>should return local path if not remote option was passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber64"><p>should return local path if remote option was set to false</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber73"><p>should return remote url if remote was set to true</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber82"><p>should return remote url if cli.env.modulePath is undefined</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber91"><p>should return local path if cli option was set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber102"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html#instance-method-run">DocsCommand#run</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber105"><p>should open local api docs by default</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber119"><p>should open cli api docs with --cli option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber133"><p>should open in specific browser with --browser option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber150"><p>should call AtSCMCli#getEnvironment if no environment was passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber172"><p>should open remote docs with --remote option passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber189"><p>#requiresEnvironment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html#instance-method-requiresEnvironment">DocsCommand#requiresEnvironment</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber190"><p>should return false if <code>--cli</code> is used</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber194"><p>should return false if <code>--remote</code></p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber198"><p>should return false if no <code>--remote</code> option is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber202"><p>should return false if <code>--no-remote</code> and <code>--cli</code> option is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Docs.spec.js.html#lineNumber209"><p>should return true if <code>--no-remote</code> and no <code>--cli</code> option is passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber73"><p>InitCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></td>
+  <td data-ice="testCount">26</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber77"><p>#checkDirectory</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-checkDirectory">InitCommand#checkDirectory</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber79"><p>should fail if directory does not exist</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber84"><p>should fail if path is not a directory</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber89"><p>should fail if directory is not empty</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber94"><p>should work with empty dir</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber98"><p>should work in non-empty dir with overwrite set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber105"><p>when non-ENOENT and ENOTDIR occurres</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber111"><p>should fail with original error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber120"><p>#createEmptyPackage</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-createEmptyPackage">InitCommand#createEmptyPackage</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber122"><p>should fail with invalid path</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber127"><p>should work in empty directory</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber140"><p>#install</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-install">InitCommand#install</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber143"><p>should run which for npm</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber160"><p>should forward errors occuring in npm</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber173"><p>should report error if npm fails</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber186"><p>when npm is not installed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber192"><p>should fail</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber204"><p>#installLocal</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-installLocal">InitCommand#installLocal</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber208"><p>should call InitCommand#install</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber220"><p>#checkCliVersion</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-checkCliVersion">InitCommand#checkCliVersion</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber221"><p>should throw error if version does not match</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber233"><p>#getOptions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-getOptions">InitCommand#getOptions</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber234"><p>should run inquirer</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber247"><p>#writeFiles</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-writeFiles">InitCommand#writeFiles</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber248"><p>should call local package init script</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber261"><p>#installDependencies</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-installDependencies">InitCommand#installDependencies</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber265"><p>should run install with given deps</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber278"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-run">InitCommand#run</a></span></td>
+  <td data-ice="testCount">8</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber318"><p>should call AtSCMCli#getEnvironment twice</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber322"><p>should not search in parent directories</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber327"><p>should call InitCommand#createEmptyPackage</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber331"><p>should call InitCommand#installLocal</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber335"><p>should call process.chdir</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber339"><p>should call InitCommand#getOptions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber343"><p>should call InitCommand#writeFiles</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber347"><p>should call InitCommand#installDependencies</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber353"><p>#requiresEnvironment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Init.js~InitCommand.html#instance-method-requiresEnvironment">InitCommand#requiresEnvironment</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Init.spec.js.html#lineNumber354"><p>should return false</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Run.spec.js.html#lineNumber12"><p>RunCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Run.spec.js.html#lineNumber16"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Run.js~RunCommand.html#instance-method-run">RunCommand#run</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Run.spec.js.html#lineNumber35"><p>should run gulp-cli</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber19"><p>UpdateCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html">UpdateCommand</a></span></td>
+  <td data-ice="testCount">8</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber26"><p>#getLatestVersion</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html#instance-method-getLatestVersion">UpdateCommand#getLatestVersion</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber27"><p>should call npm api</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber34"><p>#updateNeeded</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html#instance-method-updateNeeded">UpdateCommand#updateNeeded</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber35"><p>should return false if latest is older than current version</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber39"><p>should return false if latest equals current version</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber43"><p>should return latest version if latest is newer than current version</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber49"><p>#update</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html#instance-method-update">UpdateCommand#update</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber50"><p>should run npm install</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber65"><p>#requiresEnvironment</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html#instance-method-requiresEnvironment">UpdateCommand#requiresEnvironment</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber66"><p>should always return true</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber72"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html#instance-method-run">UpdateCommand#run</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber75"><p>should not call #update if not required</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/cli/commands/Update.spec.js.html#lineNumber86"><p>should call #update if required</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber7"><p>Command</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></td>
+  <td data-ice="testCount">11</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber14"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html#instance-constructor-constructor">Command#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber15"><p>should fail if options.maxArguments is less than options.maxArguments</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber23"><p>should store name, description and options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber33"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html#instance-method-run">Command#run</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber34"><p>must be implmented by all subclasses</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber41"><p>#usage</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html#instance-get-usage">Command#usage</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber42"><p>should be only name with no options.arguments set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber46"><p>should be name followed by arguments with options.arguments set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber53"><p>#options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html#instance-get-options">Command#options</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber54"><p>should be empty object if options.options were not set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber58"><p>should return all options passed as options.options</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber67"><p>#demandCommand</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Command.js~Command.html#instance-get-demandCommand">Command#demandCommand</a></span></td>
+  <td data-ice="testCount">4</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber68"><p>should default to [0]</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber72"><p>should be use options.maxArguments if set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber77"><p>should be use options.minArguments if set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Command.spec.js.html#lineNumber82"><p>should be use options.minArguments and options.maxArguments if set</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber6"><p>Option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></td>
+  <td data-ice="testCount">8</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber8"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Option.js~Option.html#instance-constructor-constructor">Option#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber9"><p>should store description</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber13"><p>should store all options passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber21"><p>.boolean</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Option.js~Option.html#static-method-boolean">Option.boolean</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber22"><p>should return an option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber26"><p>should set type to boolean</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber30"><p>should store all options passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber38"><p>.string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/cli/Option.js~Option.html#static-method-string">Option.string</a></span></td>
+  <td data-ice="testCount">3</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber39"><p>should return an option</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber43"><p>should set type to string</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/cli/Option.spec.js.html#lineNumber47"><p>should store all options passed</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/error/UsageError.spec.js.html#lineNumber6"><p>UsageError</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/error/UsageError.spec.js.html#lineNumber11"><p>#constructor</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/error/UsageError.js~UsageError.html#instance-constructor-constructor">UsageError#constructor</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/error/UsageError.spec.js.html#lineNumber12"><p>should create an instance of Error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/error/UsageError.spec.js.html#lineNumber16"><p>should create a stack trace</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber22"><p>External</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/ExternalCommand.js~ExternalCommand.html">ExternalCommand</a></span></td>
+  <td data-ice="testCount">10</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber29"><p>#resolveBin</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>ExternalCommand#resolveBin</span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber30"><p>should be fulfilled with which results</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber40"><p>should reject on which error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber52"><p>#spawn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>ExternalCommand#spawn</span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber53"><p>should be rejected on spawn error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber61"><p>should be rejected on non-zero exit code</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber69"><p>should be fulfill with trimmed stdout data</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber78"><p>should pass args to spawn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber88"><p>should pass options.spawn to spawn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber98"><p>should call options.onspawn after spawn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber111"><p>#run</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span>ExternalCommand#run</span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber112"><p>should call #resolveBin with name</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/ExternalCommand.spec.js.html#lineNumber122"><p>should call #spawn with which results and other args</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber11"><p>LogFormat</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></td>
+  <td data-ice="testCount">5</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber23"><p>.path</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~LogFormat.html#static-method-path">LogFormat.path</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber24"><p>should change color to magenta</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber28"><p>should prettify user path</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber34"><p>.command</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~LogFormat.html#static-method-command">LogFormat.command</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber35"><p>should return bold text</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber41"><p>.value</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~LogFormat.html#static-method-value">LogFormat.value</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber42"><p>should return cyan colored text</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber48"><p>.number</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~LogFormat.html#static-method-number">LogFormat.number</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber49"><p>should return magenta colored text</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="0">
+  <td data-ice="testDescription" style="padding-left: 10px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber56"><p>Logger</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></td>
+  <td data-ice="testCount">12</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber81"><p>.debug</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-debug">Logger.debug</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber82"><p>should call gulplog.debug</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber92"><p>.info</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-info">Logger.info</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber93"><p>should call gulplog.info</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber103"><p>.warn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-warn">Logger.warn</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber104"><p>should call gulplog.warn</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber114"><p>.error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-warn">Logger.warn</a></span></td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber115"><p>should call gulplog.error</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber126"><p>.applyOptions</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-applyOptions">Logger.applyOptions</a></span></td>
+  <td data-ice="testCount">6</td>
+</tr>
+
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber137"><p>when using option &quot;silent&quot;</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber138"><p>should only add a noop listener for &quot;error&quot; events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber145"><p>when using &quot;logLevel&quot; 0</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber146"><p>should only add a noop listener for &quot;error&quot; events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber153"><p>when using &quot;logLevel&quot; 1</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber154"><p>should only add a listener for &quot;error&quot; events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber161"><p>when using &quot;logLevel&quot; 2</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber162"><p>should add listeners for &quot;error&quot; and &quot;warn&quot; events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber169"><p>when using &quot;logLevel&quot; 3</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber170"><p>should add listeners for &quot;error&quot;, &quot;warn&quot; and &quot;info&quot; events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber177"><p>when using &quot;logLevel&quot; 4</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td data-ice="testCount">1</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="3">
+  <td data-ice="testDescription" style="padding-left: 40px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber178"><p>should add listeners for all events</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+
+<tr class="test-describe" data-ice="testDescribe" style="display: none;" data-test-depth="1">
+  <td data-ice="testDescription" style="padding-left: 20px"><span class="toggle closed"></span><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber187"><p>.pipeLastLine</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target"><span><a href="class/src/lib/util/Logger.js~Logger.html#static-method-pipeLastLine">Logger.pipeLastLine</a></span></td>
+  <td data-ice="testCount">2</td>
+</tr>
+
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber188"><p>should print last line of each chunk</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+<tr data-ice="testIt" style="display: none;" data-test-depth="2">
+  <td data-ice="testDescription" style="padding-left: 30px"><span><a href="test-file/test/lib/util/Logger.spec.js.html#lineNumber206"><p>should ignore empty lines</p>
+</a></span></td>
+  <td data-ice="testTarget" class="test-target">-</td>
+  <td></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

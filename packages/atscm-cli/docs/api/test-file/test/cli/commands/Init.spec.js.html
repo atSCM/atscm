@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">test/cli/commands/Init.spec.js | atscm-cli API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm-cli" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Commands">Commands</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GlobalOptions">GlobalOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Options">Options</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli/commands</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html">UpdateCommand</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/cli</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/error</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/ExternalCommand.js~ExternalCommand.html">ExternalCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Liftoff.Environment">Liftoff.Environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/js-cli/js-liftoff">Liftoff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/chalk/chalk">chalk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/gulplog">gulplog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/child_process.html#child_process_class_childprocess">node.ChildProcess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/stream.html#stream_class_stream_readable">node.stream.Readable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://yargs.js.org">yargs</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/cli/commands/Init.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { readdir, writeFileSync } from &apos;fs&apos;;
+import { join } from &apos;path&apos;;
+import Emitter from &apos;events&apos;;
+import expect from &apos;unexpected&apos;;
+import { spy, stub } from &apos;sinon&apos;;
+import proxyquire from &apos;proxyquire&apos;;
+import inTmpDir from &apos;../../helpers/inTmpDir&apos;;
+import atscmPkg from &apos;../../fixtures/node_modules/atscm/package.json&apos;;
+
+class StubPipe extends Emitter {}
+
+class StubProcess extends Emitter {
+
+  constructor() {
+    super();
+
+    this.stdout = new StubPipe();
+  }
+
+  close(code) {
+    this.emit(&apos;close&apos;, code);
+  }
+
+}
+
+const stubModulePath = join(__dirname, &apos;stub.js&apos;);
+
+function createImportStub(func, noCallThru = true) {
+  return {
+    __esModule: true,
+    default: spy(func),
+    &apos;@noCallThru&apos;: noCallThru,
+  };
+}
+
+const stubProcessEmitter = new Emitter();
+const spawnStub = spy(() =&gt; {
+  const process = new StubProcess();
+
+  stubProcessEmitter.emit(&apos;new&apos;, process);
+
+  return process;
+});
+
+const fsStub = {
+  readdir: spy(readdir),
+};
+let whichStub = createImportStub((name, cb) =&gt; cb(null, name));
+const initStub = createImportStub(() =&gt; Promise.resolve());
+const promptSpy = spy(() =&gt; Promise.resolve({}));
+const stubInitOptions = {};
+
+const InitCommand = proxyquire(&apos;../../../src/cli/commands/Init&apos;, {
+  fs: fsStub,
+  inquirer: {
+    prompt: promptSpy,
+  },
+  child_process: {
+    __esModule: true,
+    spawn: spawnStub,
+    &apos;@noCallThru&apos;: true,
+  },
+  which: whichStub,
+  [join(stubModulePath, &apos;../init/options&apos;)]: {
+    __esModule: true,
+    default: stubInitOptions,
+    &apos;@noCallThru&apos;: true,
+  },
+  [join(stubModulePath, &apos;../init/init&apos;)]: initStub,
+}).default;
+
+/** @test {InitCommand} */
+describe(&apos;InitCommand&apos;, function() {
+  const command = new InitCommand(&apos;init&apos;, &apos;Creates a new project.&apos;);
+
+  /** @test {InitCommand#checkDirectory} */
+  describe(&apos;#checkDirectory&apos;, function() {
+    inTmpDir(path =&gt; {
+      it(&apos;should fail if directory does not exist&apos;, function() {
+        return expect(command.checkDirectory(&apos;./not/existant&apos;),
+          &apos;to be rejected with&apos;, /does not exist$/);
+      });
+
+      it(&apos;should fail if path is not a directory&apos;, function() {
+        return expect(command.checkDirectory(join(__dirname, &apos;./Init.spec.js&apos;)),
+          &apos;to be rejected with&apos;, /is not a directory$/);
+      });
+
+      it(&apos;should fail if directory is not empty&apos;, function() {
+        return expect(command.checkDirectory(__dirname),
+          &apos;to be rejected with&apos;, /is not empty$/);
+      });
+
+      it(&apos;should work with empty dir&apos;, function() {
+        return expect(command.checkDirectory(path), &apos;to be fulfilled&apos;);
+      });
+
+      it(&apos;should work in non-empty dir with overwrite set&apos;, function() {
+        writeFileSync(join(path, &apos;file.txt&apos;), &apos;data&apos;);
+
+        return expect(command.checkDirectory(path, true), &apos;to be fulfilled&apos;);
+      });
+    });
+
+    context(&apos;when non-ENOENT and ENOTDIR occurres&apos;, function() {
+      const orgReaddir = fsStub.readdir;
+
+      before(() =&gt; (fsStub.readdir = spy((path, cb) =&gt; cb(new Error(&apos;Any other error&apos;)))));
+      after(() =&gt; (fsStub.readdir = orgReaddir));
+
+      it(&apos;should fail with original error&apos;, function() {
+        return expect(command.checkDirectory(&apos;path&apos;),
+          &apos;to be rejected with&apos;, &apos;Any other error&apos;
+        );
+      });
+    });
+  });
+
+  /** @test {InitCommand#createEmptyPackage} */
+  describe(&apos;#createEmptyPackage&apos;, function() {
+    inTmpDir(path =&gt; {
+      it(&apos;should fail with invalid path&apos;, function() {
+        return expect(command.createEmptyPackage(&apos;path/that/does/not/exist&apos;),
+          &apos;to be rejected with&apos;, /^Unable to create package.json at/);
+      });
+
+      it(&apos;should work in empty directory&apos;, function() {
+        return expect(command.createEmptyPackage(path), &apos;to be fulfilled&apos;)
+          .then(() =&gt; {
+            let pkg;
+            expect(() =&gt; (pkg = require(join(path, &apos;package.json&apos;))), &apos;not to throw&apos;);
+            expect(pkg, &apos;to equal&apos;, {});
+
+          });
+      });
+    });
+  });
+
+  /** @test {InitCommand#install} */
+  describe(&apos;#install&apos;, function() {
+    beforeEach(() =&gt; whichStub.default.reset());
+
+    it(&apos;should run which for npm&apos;, function() {
+      const deps = [&apos;dep1&apos;, &apos;dep2&apos;];
+
+      stubProcessEmitter.once(&apos;new&apos;, proc =&gt; {
+        setTimeout(() =&gt; proc.close(0), 10);
+      });
+
+      return expect(
+        command.install(stubModulePath, deps),
+        &apos;to be fulfilled&apos;
+      )
+        .then(() =&gt; {
+          expect(whichStub.default.calledOnce, &apos;to be&apos;, true);
+          expect(whichStub.default.lastCall.args[0], &apos;to equal&apos;, &apos;npm&apos;);
+        });
+    });
+
+    it(&apos;should forward errors occuring in npm&apos;, function() {
+      const error = new Error(&apos;Test&apos;);
+
+      stubProcessEmitter.once(&apos;new&apos;, proc =&gt; {
+        setTimeout(() =&gt; proc.emit(&apos;error&apos;, error), 10);
+      });
+
+      return expect(
+        command.install(stubModulePath, [&apos;dep&apos;]),
+        &apos;to be rejected with&apos;, error
+      );
+    });
+
+    it(&apos;should report error if npm fails&apos;, function() {
+      const code = Math.round(Math.random() * 100) + 1;
+
+      stubProcessEmitter.once(&apos;new&apos;, proc =&gt; {
+        setTimeout(() =&gt; proc.close(code), 10);
+      });
+
+      return expect(
+        command.install(stubModulePath, [&apos;dep&apos;]),
+        &apos;to be rejected with&apos;, `npm install returned code ${code}`
+      );
+    });
+
+    context(&apos;when npm is not installed&apos;, function() {
+      const orgWhichStub = whichStub.default;
+
+      before(() =&gt; (whichStub.default = spy((name, cb) =&gt; cb(new Error(&apos;A which error&apos;)))));
+      after(() =&gt; (whichStub.default = orgWhichStub));
+
+      it(&apos;should fail&apos;, function() {
+        whichStub = spy((name, cb) =&gt; cb(new Error(&apos;A which error&apos;)));
+
+        return expect(
+          command.install(stubModulePath, [&apos;dep&apos;]),
+          &apos;to be rejected with&apos;, &apos;A which error&apos;
+        );
+      });
+    });
+  });
+
+  /** @test {InitCommand#installLocal} */
+  describe(&apos;#installLocal&apos;, function() {
+    beforeEach(() =&gt; stub(command, &apos;install&apos;).callsFake(() =&gt; Promise.resolve(true)));
+    afterEach(() =&gt; command.install.restore());
+
+    it(&apos;should call InitCommand#install&apos;, function() {
+      return expect(command.installLocal(stubModulePath), &apos;to be fulfilled&apos;)
+        .then(() =&gt; {
+          expect(command.install.calledOnce, &apos;to be true&apos;);
+          expect(command.install.lastCall.args[0], &apos;to equal&apos;, stubModulePath);
+          // FIXME: Uncomment once atscm is published
+          // expect(command.install.lastCall.args[1], &apos;to equal&apos;, &apos;atscm&apos;);
+        });
+    });
+  });
+
+  /** @test {InitCommand#checkCliVersion} */
+  describe(&apos;#checkCliVersion&apos;, function() {
+    it(&apos;should throw error if version does not match&apos;, function() {
+      expect(() =&gt; command.checkCliVersion({
+        modulePackage: {
+          engines: {
+            &apos;atscm-cli&apos;: &apos;&lt;0.1.0&apos;,
+          },
+        },
+      }), &apos;to throw error&apos;, &apos;Invalid atscm-cli version: &lt;0.1.0 required.&apos;);
+    });
+  });
+
+  /** @test {InitCommand#getOptions} */
+  describe(&apos;#getOptions&apos;, function() {
+    it(&apos;should run inquirer&apos;, function() {
+      return expect(
+        command.getOptions(stubModulePath),
+        &apos;to be fulfilled&apos;
+      )
+        .then(() =&gt; {
+          expect(promptSpy.calledOnce, &apos;to be true&apos;);
+          expect(promptSpy.lastCall.args[0], &apos;to be&apos;, stubInitOptions);
+        });
+    });
+  });
+
+  /** @test {InitCommand#writeFiles} */
+  describe(&apos;#writeFiles&apos;, function() {
+    it(&apos;should call local package init script&apos;, function() {
+      const options = { test: 123 };
+
+      return expect(command.writeFiles(stubModulePath, options),
+          &apos;to be fulfilled&apos;)
+        .then(() =&gt; {
+          expect(initStub.default.calledOnce, &apos;to be&apos;, true);
+          expect(initStub.default.lastCall.args[0], &apos;to be&apos;, options);
+        });
+    });
+  });
+
+  /** @test {InitCommand#installDependencies} */
+  describe(&apos;#installDependencies&apos;, function() {
+    beforeEach(() =&gt; stub(command, &apos;install&apos;).callsFake(() =&gt; Promise.resolve(true)));
+    afterEach(() =&gt; command.install.restore());
+
+    it(&apos;should run install with given deps&apos;, function() {
+      const deps = [&apos;dep1&apos;, &apos;dep2&apos;];
+
+      return expect(command.installDependencies(stubModulePath, deps), &apos;to be fulfilled&apos;)
+        .then(() =&gt; {
+          expect(command.install.calledOnce, &apos;to be true&apos;);
+          expect(command.install.lastCall.args[0], &apos;to equal&apos;, stubModulePath);
+          expect(command.install.lastCall.args[1], &apos;to equal&apos;, deps);
+        });
+    });
+  });
+
+  /** @test {InitCommand#run} */
+  describe(&apos;#run&apos;, function() {
+    const deps = [&apos;dep1&apos;, &apos;dep2&apos;];
+    const cli = {
+      environment: {
+        cwd: stubModulePath,
+      },
+      options: {
+        force: false,
+      },
+      getEnvironment: spy(() =&gt; Promise.resolve({
+        cwd: stubModulePath,
+        modulePackage: atscmPkg,
+      })),
+    };
+
+    beforeEach(() =&gt; {
+      stub(command, &apos;checkDirectory&apos;).callsFake(() =&gt; Promise.resolve());
+      stub(command, &apos;createEmptyPackage&apos;).callsFake(() =&gt; Promise.resolve());
+      stub(command, &apos;installLocal&apos;).callsFake(() =&gt; Promise.resolve());
+      stub(process, &apos;chdir&apos;);
+      stub(command, &apos;getOptions&apos;).callsFake(() =&gt; Promise.resolve());
+      stub(command, &apos;writeFiles&apos;).callsFake(() =&gt; Promise.resolve({ dependencies: deps }));
+      stub(command, &apos;installDependencies&apos;).callsFake(() =&gt; Promise.resolve());
+    });
+
+    afterEach(() =&gt; {
+      command.checkDirectory.restore();
+      command.createEmptyPackage.restore();
+      command.installLocal.restore();
+      process.chdir.restore();
+      command.getOptions.restore();
+      command.writeFiles.restore();
+      command.installDependencies.restore();
+    });
+
+    function expectCalled(method, count = 1) {
+      return expect(command.run(cli), &apos;to be fulfilled&apos;)
+        .then(() =&gt; expect(method.callCount, &apos;to equal&apos;, count));
+    }
+
+    it(&apos;should call AtSCMCli#getEnvironment twice&apos;, function() {
+      return expectCalled(cli.getEnvironment, 2);
+    });
+
+    it(&apos;should not search in parent directories&apos;, function() {
+      return expect(command.run(cli), &apos;to be fulfilled&apos;)
+        .then(() =&gt; expect(cli.getEnvironment.alwaysCalledWith(false), &apos;to equal&apos;, true));
+    });
+
+    it(&apos;should call InitCommand#createEmptyPackage&apos;, function() {
+      return expectCalled(command.createEmptyPackage);
+    });
+
+    it(&apos;should call InitCommand#installLocal&apos;, function() {
+      return expectCalled(command.installLocal);
+    });
+
+    it(&apos;should call process.chdir&apos;, function() {
+      return expectCalled(process.chdir);
+    });
+
+    it(&apos;should call InitCommand#getOptions&apos;, function() {
+      return expectCalled(command.getOptions);
+    });
+
+    it(&apos;should call InitCommand#writeFiles&apos;, function() {
+      return expectCalled(command.writeFiles);
+    });
+
+    it(&apos;should call InitCommand#installDependencies&apos;, function() {
+      return expectCalled(command.installDependencies);
+    });
+  });
+
+  /** @test {InitCommand#requiresEnvironment} */
+  describe(&apos;#requiresEnvironment&apos;, function() {
+    it(&apos;should return false&apos;, function() {
+      expect(command.requiresEnvironment(), &apos;to equal&apos;, false);
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
