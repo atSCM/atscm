@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">atscm-cli API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm-cli" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Commands">Commands</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GlobalOptions">GlobalOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Options">Options</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli/commands</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html">UpdateCommand</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/cli</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/error</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/ExternalCommand.js~ExternalCommand.html">ExternalCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Liftoff.Environment">Liftoff.Environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/js-cli/js-liftoff">Liftoff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/chalk/chalk">chalk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/gulplog">gulplog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/child_process.html#child_process_class_childprocess">node.ChildProcess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/stream.html#stream_class_stream_readable">node.stream.Readable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://yargs.js.org">yargs</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><p><!-- WARNING: This file is automatically generated. -->
+</p>
+<p><!-- Changes will be overwritten. -->
+</p>
+<h1 id="atscm-cli">atscm-cli</h1>
+<blockquote>
+<p><a href="https://github.com/atSCM/atscm">atSCM</a> command line interface</p>
+</blockquote>
+<p><a href="https://circleci.com/gh/atSCM/atscm-cli"><img src="https://circleci.com/gh/atSCM/atscm-cli.svg?style=shield" alt="CircleCI"></a>
+<a href="https://ci.appveyor.com/project/LukasHechenberger/atscm-cli"><img src="https://ci.appveyor.com/api/projects/status/m7dy3spqfg4b2d9f?svg=true&amp;pendingText=windows%20tests%20pending&amp;passingText=windows%20tests%20passing&amp;failingText=windows%20tests%20failing" alt="AppVeyor"></a>
+<a href="https://codecov.io/gh/atSCM/atscm-cli"><img src="https://codecov.io/gh/atSCM/atscm-cli/branch/master/graph/badge.svg" alt="codecov"></a>
+<a href="https://doc.esdoc.org/github.com/atSCM/atscm-cli"><img src="./badge.svg" alt="ESDoc"></a></p>
+<h2 id="installation">Installation</h2>
+<p>This module can be installed via <a href="https://www.npmjs.com">npm</a>. With <a href="https://nodejs.org/en/">node.js</a> <strong>version 6 or later</strong> installed run:</p>
+<pre><code class="lang-bash"><code class="source-code prettyprint"># Install atscm-cli globally
+npm install -g atscm-cli</code>
+</code></pre>
+<p><em>You may have to run this command as an administrator.</em></p>
+<h2 id="basic-usage">Basic usage</h2>
+<blockquote>
+<p>You can find more detailed usage information in the <a href="./manual/usage/CLI.html">usage manuals</a>.</p>
+</blockquote>
+<h3 id="creating-a-new-atscm-project">Creating a new <em>atSCM</em> project</h3>
+<p>Running <code>atscm init</code> will prompt you for a project name, description, etc. and create a new <em>atSCM</em> project.</p>
+<p>For more detailed information on the init command look at the <a href="./manual/index.html">manuals</a>.</p>
+<h3 id="running-tasks">Running tasks</h3>
+<p>Run tasks by typing <code>atscm [task]</code> inside a project directory.</p>
+<p>Lookup the tasks available in <a href="https://doc.esdoc.org/github.com/atSCM/atscm/manual/index.html">the atscm manuals</a> or by running <code>atscm --tasks</code>.</p>
+<h3 id="open-documentation">Open documentation</h3>
+<p>Running <code>atscm docs</code> will open the API documentation of the <em>atscm</em> module, running <code>atscm docs --cli</code> will open the documentation of this module.</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

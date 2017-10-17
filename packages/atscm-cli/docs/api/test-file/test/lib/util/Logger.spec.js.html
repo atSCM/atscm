@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">test/lib/util/Logger.spec.js | atscm-cli API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <a data-ice="repoURL" href="https://github.com/atSCM/atscm-cli" class="repo-url-github">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/AtSCMCli.js~AtSCMCli.html">AtSCMCli</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli</div><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Commands">Commands</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GlobalOptions">GlobalOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Options">Options</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">cli/commands</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Config.js~ConfigCommand.html">ConfigCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Docs.js~DocsCommand.html">DocsCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Init.js~InitCommand.html">InitCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Run.js~RunCommand.html">RunCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cli/commands/Update.js~UpdateCommand.html">UpdateCommand</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/cli</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Command.js~Command.html">Command</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/cli/Option.js~Option.html">Option</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/error</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/error/UsageError.js~UsageError.html">UsageError</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">lib/util</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/ExternalCommand.js~ExternalCommand.html">ExternalCommand</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~LogFormat.html">LogFormat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/util/Logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">typedef</div><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Liftoff.Environment">Liftoff.Environment</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/js-cli/js-liftoff">Liftoff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/chalk/chalk">chalk</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/gulplog">gulplog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/child_process.html#child_process_class_childprocess">node.ChildProcess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/stream.html#stream_class_stream_readable">node.stream.Readable</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://yargs.js.org">yargs</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/lib/util/Logger.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-disable no-console */
+import expect from &apos;unexpected&apos;;
+import { stub, spy } from &apos;sinon&apos;;
+
+import gulplog from &apos;gulplog&apos;;
+import { obj as createStream } from &apos;through2&apos;;
+
+import Logger from &apos;../../../src/lib/util/Logger&apos;;
+
+/** @test {LogFormat} */
+describe(&apos;LogFormat&apos;, function() {
+  const text = &apos;Test string&apos;;
+
+  const orgEnabled = Logger.colors.supportsColor;
+  before(() =&gt; (Logger.colors.enabled = true));
+  after(() =&gt; (Logger.colors.enabled = orgEnabled));
+
+  function expectStyle(styledText, style) {
+    expect(styledText, &apos;to equal&apos;, `${style.open}${text}${style.close}`);
+  }
+
+  /** @test {LogFormat.path} */
+  describe(&apos;.path&apos;, function() {
+    it(&apos;should change color to magenta&apos;, function() {
+      expectStyle(Logger.format.path(text), Logger.colors.styles.magenta);
+    });
+
+    it(&apos;should prettify user path&apos;, function() {
+      expect(Logger.format.path(process.env.HOME), &apos;to contain&apos;, &apos;~&apos;);
+    });
+  });
+
+  /** @test {LogFormat.command} */
+  describe(&apos;.command&apos;, function() {
+    it(&apos;should return bold text&apos;, function() {
+      expectStyle(Logger.format.command(text), Logger.colors.styles.bold);
+    });
+  });
+
+  /** @test {LogFormat.value} */
+  describe(&apos;.value&apos;, function() {
+    it(&apos;should return cyan colored text&apos;, function() {
+      expectStyle(Logger.format.value(text), Logger.colors.styles.cyan);
+    });
+  });
+
+  /** @test {LogFormat.number} */
+  describe(&apos;.number&apos;, function() {
+    it(&apos;should return magenta colored text&apos;, function() {
+      expectStyle(Logger.format.number(text), Logger.colors.styles.magenta);
+    });
+  });
+});
+
+/** @test {Logger} */
+describe(&apos;Logger&apos;, function() {
+  function getText() {
+    return `Text ${(new Date())}`;
+  }
+
+  let debugSpy;
+  let infoSpy;
+  let warnSpy;
+  let errorSpy;
+
+  beforeEach(function() {
+    debugSpy = stub(gulplog, &apos;debug&apos;);
+    infoSpy = stub(gulplog, &apos;info&apos;);
+    warnSpy = stub(gulplog, &apos;warn&apos;);
+    errorSpy = stub(gulplog, &apos;error&apos;);
+  });
+
+  afterEach(function() {
+    gulplog.debug.restore();
+    gulplog.info.restore();
+    gulplog.warn.restore();
+    gulplog.error.restore();
+  });
+
+  /** @test {Logger.debug} */
+  describe(&apos;.debug&apos;, function() {
+    it(&apos;should call gulplog.debug&apos;, function() {
+      const t = getText();
+      Logger.debug(t);
+
+      expect(debugSpy.calledOnce, &apos;to be&apos;, true);
+      expect(debugSpy.lastCall.args, &apos;to equal&apos;, [t]);
+    });
+  });
+
+  /** @test {Logger.info} */
+  describe(&apos;.info&apos;, function() {
+    it(&apos;should call gulplog.info&apos;, function() {
+      const t = getText();
+      Logger.info(t);
+
+      expect(infoSpy.calledOnce, &apos;to be&apos;, true);
+      expect(infoSpy.lastCall.args, &apos;to equal&apos;, [t]);
+    });
+  });
+
+  /** @test {Logger.warn} */
+  describe(&apos;.warn&apos;, function() {
+    it(&apos;should call gulplog.warn&apos;, function() {
+      const t = getText();
+      Logger.warn(t);
+
+      expect(warnSpy.calledOnce, &apos;to be&apos;, true);
+      expect(warnSpy.lastCall.args, &apos;to equal&apos;, [t]);
+    });
+  });
+
+  /** @test {Logger.warn} */
+  describe(&apos;.error&apos;, function() {
+    it(&apos;should call gulplog.error&apos;, function() {
+      const t = getText();
+      Logger.error(t);
+
+      expect(errorSpy.calledOnce, &apos;to be&apos;, true);
+
+      expect(errorSpy.lastCall.args, &apos;to equal&apos;, [t]);
+    });
+  });
+
+  /** @test {Logger.applyOptions} */
+  describe(&apos;.applyOptions&apos;, function() {
+    afterEach(() =&gt; {
+      Logger.types.forEach(name =&gt; gulplog.removeAllListeners(name));
+    });
+
+    function expectListeners(levels) {
+      Logger.types.forEach((name, i) =&gt; {
+        expect(gulplog.listenerCount(name), &apos;to equal&apos;, levels[i] ? 1 : 0);
+      });
+    }
+
+    context(&apos;when using option &quot;silent&quot;&apos;, function() {
+      it(&apos;should only add a noop listener for &quot;error&quot; events&apos;, function() {
+        Logger.applyOptions({ silent: true });
+
+        expectListeners([true, false, false, false]);
+      });
+    });
+
+    context(&apos;when using &quot;logLevel&quot; 0&apos;, function() {
+      it(&apos;should only add a noop listener for &quot;error&quot; events&apos;, function() {
+        Logger.applyOptions({ logLevel: 0 });
+
+        expectListeners([true, false, false, false]);
+      });
+    });
+
+    context(&apos;when using &quot;logLevel&quot; 1&apos;, function() {
+      it(&apos;should only add a listener for &quot;error&quot; events&apos;, function() {
+        Logger.applyOptions({ logLevel: 1 });
+
+        expectListeners([true, false, false, false]);
+      });
+    });
+
+    context(&apos;when using &quot;logLevel&quot; 2&apos;, function() {
+      it(&apos;should add listeners for &quot;error&quot; and &quot;warn&quot; events&apos;, function() {
+        Logger.applyOptions({ logLevel: 2 });
+
+        expectListeners([true, true, false, false]);
+      });
+    });
+
+    context(&apos;when using &quot;logLevel&quot; 3&apos;, function() {
+      it(&apos;should add listeners for &quot;error&quot;, &quot;warn&quot; and &quot;info&quot; events&apos;, function() {
+        Logger.applyOptions({ logLevel: 3 });
+
+        expectListeners([true, true, true, false]);
+      });
+    });
+
+    context(&apos;when using &quot;logLevel&quot; 4&apos;, function() {
+      it(&apos;should add listeners for all events&apos;, function() {
+        Logger.applyOptions({ logLevel: 4 });
+
+        expectListeners([true, true, true, true]);
+      });
+    });
+  });
+
+  /** @test {Logger.pipeLastLine} */
+  describe(&apos;.pipeLastLine&apos;, function() {
+    it(&apos;should print last line of each chunk&apos;, function(done) {
+      const stream = createStream((c, e, cb) =&gt; cb(null, c));
+
+      Logger.pipeLastLine(stream);
+
+      stream.on(&apos;end&apos;, () =&gt; {
+        expect(gulplog.info.callCount, &apos;to be&apos;, 2);
+        expect(gulplog.info.getCall(0).args[0], &apos;to match&apos;, /last 1$/);
+        expect(gulplog.info.lastCall.args[0], &apos;to match&apos;, /last 2$/);
+
+        done();
+      });
+
+      stream.push(&apos;first\nlast 1&apos;); // should log [HH:MM:SS] last 1
+      stream.push(&apos;first\nlast 2&apos;); // should log [HH:MM:SS] last 2
+      stream.end();
+    });
+
+    it(&apos;should ignore empty lines&apos;, function(done) {
+      const stream = createStream((c, e, cb) =&gt; cb(null, c));
+
+      Logger.pipeLastLine(stream);
+
+      stream.on(&apos;end&apos;, () =&gt; {
+        expect(gulplog.info.callCount, &apos;to be&apos;, 2);
+        expect(gulplog.info.getCall(0).args[0], &apos;to match&apos;, /last 1$/);
+        expect(gulplog.info.lastCall.args[0], &apos;to match&apos;, /last 2$/);
+
+        done();
+      });
+
+      stream.push(&apos;first\nlast 1\n&apos;); // should log [HH:MM:SS] last 1
+      stream.push(&apos;first\nlast 2\n &apos;); // should log [HH:MM:SS] last 2
+      stream.end();
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
