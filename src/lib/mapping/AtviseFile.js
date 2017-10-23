@@ -14,11 +14,10 @@ const AtviseTypesByValue = AtviseTypes
   [type.typeDefinition.value]: type,
 }), {});
 
-const AtviseTypesByIdentifier = AtviseTypes
+export const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
   [type.identifier]: type,
 }), {});
-
 
 /**
  * Seperator for array values

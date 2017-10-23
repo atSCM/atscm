@@ -1,4 +1,4 @@
-import {dirname} from 'path';
+import {dirname, extname} from 'path';
 import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
@@ -6,7 +6,7 @@ import Logger from 'gulplog';
 import { obj as createStream } from 'through2';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/mapping/AtviseFile';
+import AtviseFile, {AtviseTypesByIdentifier, ExtensionForDataType} from '../lib/mapping/AtviseFile';
 import ServerWatcher from '../lib/watch/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
 import NodeId from '../lib/ua/NodeId';
@@ -142,11 +142,19 @@ export class WatchTask {
   handleFileChange(path, root, stats) {
     return new Promise(resolve => {
       if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
+        let nodePath = dirname(path);
+
         this._pushing = true;
         Logger.info(path, 'changed');
 
+        const extension = extname(nodePath).replace('.', '');
+
+        if (AtviseTypesByIdentifier[extension]) {
+          nodePath = dirname(nodePath);
+        }
+
         const pushStream = new PushStream({
-          nodesToPush: [NodeId.fromFilePath(dirname(path))],
+          nodesToPush: [NodeId.fromFilePath(nodePath)],
           createNodes: true
         });
 
