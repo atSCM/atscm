@@ -1,9 +1,12 @@
 import readline from 'readline';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
-import Transformer, { TransformDirection } from '../transform/Transformer';
-import MappingTransformer from '../../transform/Mapping';
-import WriteStream from '../server/WriteStream';
+import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
+import NodeFileStream from '../push/NodeFileStream';
+import WriteStream from '../push/WriteStream';
+import CreateNodeStream from '../push/CreateNodeStream';
+import AddReferenceStream from '../push/AddReferenceStream';
+import filter from 'gulp-filter';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -11,16 +14,34 @@ import WriteStream from '../server/WriteStream';
 export default class PushStream {
 
   /**
-   * Creates a new PushSteam based on a source file stream.
-   * @param {Stream} srcStream The file stream to read from.
+   * Creates a new PushSteam based on the given options.
+   * @param {Object} options The stream configuration options.
+   * @param {NodeId[]} [options.nodesToPush] The nodes to push.
+   * @param {Boolean} [options.createNodes] Defines if nodes shall be created or not.
    */
-  constructor(srcStream) {
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
-    const writeStream = new WriteStream();
+  constructor(options = {}) {
 
-    const printProgress = setInterval(() => {
+    /**
+     * Defines shall be created or not.
+     * @type {Boolean}
+     */
+    const createNodes = options.createNodes || false;
+
+    /**
+     * The nodes to push
+     * @type {NodeId[]}
+     */
+    const nodesToPush = options.nodesToPush || [];
+
+    const fileTransformer = new FileToAtviseFileTransformer({nodesToTransform: nodesToPush});
+    const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
+    const nodeFileStream = new NodeFileStream({createNodes: createNodes});
+    const createNodeStream = new CreateNodeStream();
+    const writeStream = new WriteStream({createNodes: createNodes});
+
+    this.printProgress = setInterval(() => {
       Logger.info(
-        `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
+      `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
       );
 
       if (Logger.listenerCount('info') > 0) {
@@ -29,21 +50,38 @@ export default class PushStream {
       }
     }, 1000);
 
-    return Transformer.applyTransformers(
-      srcStream
-        .pipe(mappingStream),
-      ProjectConfig.useTransformers,
-      TransformDirection.FromFilesystem
-    )
+    this.pushStream = fileTransformer
+      .pipe(atvReferenceFilter)
+      .pipe(nodeFileStream)
       .pipe(writeStream)
-      .on('finish', () => {
-        if (Logger.listenerCount('info') > 0) {
-          readline.cursorTo(process.stdout, 0);
-          readline.clearLine(process.stdout);
-        }
+      .pipe(createNodeStream);
 
-        clearInterval(printProgress);
-      });
+    this.pushStream.once('finish', () => {
+      Logger.debug('Writing and creating nodes finished. Adding references...');
+
+      if (createNodes && atvReferenceFilter.restore._readableState.buffer.length > 0) {
+        const addReferenceStream = new AddReferenceStream();
+
+        this.pushStream.pipe(atvReferenceFilter.restore)
+          .pipe(addReferenceStream)
+          .on('finish', () => this.endStream());
+      } else {
+        this.endStream();
+      }
+    });
+
+    return this.pushStream;
   }
 
+  /**
+   * Stops the print progress when push stream has finished and stops the push task process
+   */
+  endStream() {
+    if (Logger.listenerCount('info') > 0) {
+      readline.cursorTo(process.stdout, 0);
+      readline.clearLine(process.stdout);
+    }
+
+    clearInterval(this.printProgress);
+  }
 }

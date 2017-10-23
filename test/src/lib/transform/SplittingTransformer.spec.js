@@ -4,7 +4,7 @@ import proxyquire from 'proxyquire';
 
 import File from 'vinyl';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
 import SplittingTransformer, {
   CombineFilesCache,
 } from '../../../../src/lib/transform/SplittingTransformer';

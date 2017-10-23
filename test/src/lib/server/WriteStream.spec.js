@@ -2,8 +2,8 @@ import { spy } from 'sinon';
 import { StatusCodes, resolveNodeId } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
-import WriteStream from '../../../../src/lib/server/WriteStream';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
+import WriteStream from '../../../../src/lib/push/WriteStream';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
 
 /** @test {WriteStream} */
 describe('WriteStream', function() {

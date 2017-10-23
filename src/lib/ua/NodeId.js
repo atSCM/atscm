@@ -83,6 +83,30 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
+   * The node id's browsename as string
+   * @type {String}
+   */
+  get browseName() {
+    const lastSeperator = this.value.indexOf('/') > - 1 ?
+      '/' : '.';
+
+    let test = this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
+    return this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
+  }
+
+  /**
+   * The parent node id
+   * @type {NodeId}
+   */
+  get parentNodeId() {
+    const lastSeperator = this.value.indexOf('/') > - 1 ?
+      '/' : '.';
+
+    return new NodeId(this.value.substr(0, this.value.lastIndexOf(lastSeperator)));
+  }
+
+
+  /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using node.js's *util.inspect*.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
@@ -96,5 +120,4 @@ export default class NodeId extends OpcNodeId {
       options.stylize(this.value, this.identifierType === Type.NUMERIC ? 'number' : 'string'),
     ].join(' ');
   }
-
 }

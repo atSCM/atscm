@@ -1,10 +1,8 @@
 import { DataType } from 'node-opcua';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 
-class AtviseType {
-
-  constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {
-    this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
+class Type {
+  constructor(identifier, dataType, fileExtensionOrKeep) {
     this.identifier = identifier;
     this.dataType = dataType;
     if (fileExtensionOrKeep !== undefined) {
@@ -15,15 +13,26 @@ class AtviseType {
       }
     }
   }
+}
 
+class AtviseType extends Type {
+  constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {
+    super(identifier, dataType, fileExtensionOrKeep);
+    this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
+  }
+}
+
+class CustomResourceType extends Type {
+  constructor(name, identifier, dataType, fileExtensionOrKeep) {
+    super(identifier, dataType, fileExtensionOrKeep);
+    this.typeDefinition = new NodeId(`Custom.${name}`);
+  }
 }
 
 class AtviseResourceType extends AtviseType {
-
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
   }
-
 }
 
 /**
@@ -32,6 +41,9 @@ class AtviseResourceType extends AtviseType {
  * @type {AtviseType[]}
  */
 const AtviseTypes = [
+  new CustomResourceType('BaseTypeDefinition', 'basetypedef', DataType.String, 'json'),
+  new CustomResourceType('InstanceTypeDefinition', 'instancetypedef', DataType.String, 'json'),
+  new CustomResourceType('AtvReferenceConfig', 'references', DataType.String, 'json'),
   new AtviseType('HtmlHelp', 'help', DataType.ByteString, 'html'),
   new AtviseType('QuickDynamic', 'qd', DataType.XmlElement),
   new AtviseType('ScriptCode', 'script', DataType.XmlElement),
@@ -49,7 +61,7 @@ const AtviseTypes = [
   new AtviseResourceType('Css', 'css'),
   new AtviseResourceType('Svg', 'svg'),
   new AtviseResourceType('Jpeg', 'jpg'),
-  new AtviseResourceType('OctetStream', '*'),
+  new AtviseResourceType('OctetStream', '*')
 ];
 
 export default AtviseTypes;

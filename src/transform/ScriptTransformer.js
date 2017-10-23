@@ -25,69 +25,80 @@ export default class ScriptTransformer extends XMLTransformer {
    * while transforming the script, or the file passed through.
    */
   transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+    this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        callback(err);
+        Logger.error(`Display ${file.nodeId}: Error parsing script content. Check if script content is empty or broken`);
+        callback(null);
+      } else if (xmlObj.children.length == 0 || xmlObj.children[0].name != 'script') {
+        Logger.error(`Script ${file.nodeId}: Can not decode script. Missing 'script' tag`);
+        callback(null);
       } else {
-        if (!results || results.script === undefined) {
-          Logger.warn(`Empty document at ${file.relative}`);
-        }
 
-        const document = results && results.script ? results.script : {};
+        const configFile = ScriptTransformer.splitFile(file, '.json');
+        const scriptFile = ScriptTransformer.splitFile(file, '.js');
 
-        const config = {};
-        let code = '';
+        const config = {parameters: []};
+        const document = xmlObj && xmlObj.script ? xmlObj.script : {};
+
+        // Filter for metadata tags in script
+        const metadata = xmlObj.find('*/metadata').children;
+
+        // Filter for parameters in script
+        const parameters = xmlObj.find('*/parameter').children;
+
+        // Filter for code tags
+        let code = xmlObj.find('*/code').children;
+
 
         // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
-          // TODO: Warn on multiple metadata tags
+        if (metadata.length > 0) {
+          const meta = metadata[0];
+          config.metadata = [];
 
-          const meta = document.metadata[0];
-
-          // - Icon
-          if (this.tagNotEmpty(meta.icon)) {
-            const icon = meta.icon[0];
-            config.icon = icon.$ || {};
-            config.icon.content = icon._ || '';
+          if (metadata.length > 1) {
+            Logger.warn(`Script ${file.nodeId}: atscm only supports one metadata tag per script`);
           }
 
-          // - Visible
-          if (this.tagNotEmpty(meta.visible)) {
-            config.visible = Boolean(meta.visible[0]);
-          }
-
-          // - Title
-          if (this.tagNotEmpty(meta.title)) {
-            config.title = meta.title[0];
-          }
-
-          // - Description
-          if (this.tagNotEmpty(meta.description)) {
-            config.description = meta.description[0];
-          }
+          meta.forEach(tag => config.metadata.push({name: tag.name, attrs: tag.attrs, value: tag.text()}));
         }
 
         // Extract Parameters
-        if (this.tagNotEmpty(document.parameter)) {
-          config.parameters = [];
-          document.parameter.forEach(param => config.parameters.push(param.$));
+        if (parameters.length > 0) {
+          parameters.forEach(param => {
+            let paramObj = param.attrs;
+
+            if (paramObj.relative === "true") {
+              let targetName = param.find('*/*/*/TargetName');
+
+              if (targetName.children.length > 0) {
+                let nameSpaceIndex = targetName.find('*/NamespaceIndex').eq(0);
+                let nodePath = targetName.find('*/Name').eq(0);
+
+                // add relative path information
+                paramObj.relPath = {
+                  nameSpaceIndex: nameSpaceIndex.text(),
+                  nodePath: nodePath.text()
+                };
+              }
+            }
+            config.parameters.push(paramObj);
+          });
+        }
+
+
+        if (code.length == 0) {
+          Logger.warn(`Script ${file.nodeId}: No script content defined`);
         }
 
         // Extract JavaScript
-        if (this.tagNotEmpty(document.code)) {
-          code = document.code[0];
-        }
+        code = code.toString();
 
-        // Write config file
-        const configFile = ScriptTransformer.splitFile(file, '.json');
+        // Write config and script file
         configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
-        this.push(configFile);
-
-        // Write script file
-        const scriptFile = ScriptTransformer.splitFile(file, '.js');
         scriptFile.contents = Buffer.from(code);
-        this.push(scriptFile);
 
+        this.push(configFile);
+        this.push(scriptFile);
         callback(null);
       }
     });
@@ -102,78 +113,65 @@ export default class ScriptTransformer extends XMLTransformer {
    */
   createCombinedFile(files, lastFile, callback) {
     const configFile = files['.json'];
+    const scriptFile = files['.js'];
+
+    const parameters = [];
     let config = {};
+    let xmlObj = {};
+
+    const script = this.createTag('script', {}, xmlObj);
+    const metadata = this.createTag('metadata', {}, script);
+    const code = this.createTag('code', {}, script);
+    const combinedFile = ScriptTransformer.combineFiles(
+      Object.keys(files).map(ext => files[ext]),
+      '.xml'
+    );
 
     if (configFile) {
       try {
         config = JSON.parse(configFile.contents.toString());
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
+        Logger.warn(`Script ${configFile.nodeId}: Error paring config file`);
+        callback(null);
         return;
       }
     }
 
-    const scriptFile = files['.js'];
-    let code = '';
+    // Add metadata to script
+    if (config.metadata) {
+      config.metadata.forEach(tag => metadata.append(this.createTag(tag.name, tag.attrs, metadata, tag.value)));
+      script.append(metadata);
+    }
 
+    // Add parameters to script
+    if (config.parameters) {
+      config.parameters.forEach(param => {
+        let relPath;
+
+        if (param.relative == "true") {
+          relPath = this.createRelPathTag(param.relPath);
+          delete param.relPath;
+        }
+
+        script.append(this.createTag('parameter', param, script, relPath));
+      });
+    }
+
+    // Add CData content to script
     if (scriptFile) {
-      code = scriptFile.contents.toString();
+      code.append(this.createCData(scriptFile.contents.toString()));
+      script.append(code);
     }
 
-    const result = {
-      script: { },
-    };
 
-    // Insert metadata
-    if (lastFile.isQuickDynamic) {
-      const meta = {};
-
-      // - Icon
-      if (config.icon) {
-        const icon = config.icon.content;
-        delete config.icon.content;
-
-        meta.icon = {
-          $: config.icon,
-          _: icon,
-        };
-      }
-
-      // - Other fields
-      if (config.visible !== undefined) {
-        meta.visible = config.visible ? 1 : 0;
-      }
-
-      if (config.title !== undefined) {
-        meta.title = config.title;
-      }
-
-      if (config.description !== undefined) {
-        meta.description = config.description;
-      }
-
-      result.script.metadata = meta;
-    }
-
-    // Insert parameters
-    result.script.parameter = config.parameters ?
-      config.parameters.map(param => ({ $: param })) :
-      [];
-
-    result.script.code = ScriptTransformer.forceCData(code);
-
-    const script = ScriptTransformer.combineFiles(
-      Object.keys(files).map(ext => files[ext]),
-      '.xml'
-    );
-
-    this.encodeContents(result, (encodeErr, xmlString) => {
+    this.encodeContents(this.createNodeSet(script), (encodeErr, xmlString) => {
       if (encodeErr) {
-        callback(encodeErr);
+        Logger.error(`Script ${combinedFile.nodeId}: Could not encode script file`);
+        callback(null);
       } else {
-        script.contents = Buffer.from(xmlString);
+        combinedFile.contents = Buffer.from(xmlString);
 
-        callback(null, script);
+        callback(null, combinedFile);
       }
     });
   }

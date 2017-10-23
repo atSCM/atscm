@@ -2,7 +2,7 @@ import expect from 'unexpected';
 
 import * as globalExports from '../../src/index';
 import Atviseproject from '../../src/lib/config/Atviseproject';
-import NodeId from '../../src/lib/server/NodeId';
+import NodeId from '../../src/lib/ua/NodeId';
 import Transformer, { TransformDirection } from '../../src/lib/transform/Transformer';
 import PartialTransformer from '../../src/lib/transform/PartialTransformer';
 import SplittingTransformer from '../../src/lib/transform/SplittingTransformer';
