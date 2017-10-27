@@ -33,8 +33,22 @@ Before you submit your Pull Request (PR) consider the following guidelines:
  - Create your patch, **including appropriate test cases**.
  - Run the full test suite and ensure all tests pass.
  - Commit your changes using a descriptive commit message that follows our commit message conventions. Adherence to these conventions is necessary because release notes are automatically generated from these messages.
- - Push your branch to GitHub and create a pull request.
- 
+ - Push your branch to GitHub and create a pull request **to merge back to the beta branch**.
+ - Once we reviewed your changes, we'll merge your pull request.
+
+> **Merge strategy (Maintainers only)**
+> - Accepted changes from fix/feature branches **should always be squash-merged** to beta.
+> - Once beta is stable **create a regular merge commit** to merge back to master.
+> - After merging to master, changes should be synced back to the beta branch. To do so, run:
+>   ```bash
+>   git checkout beta
+>   git fetch
+>   git rebase origin/master
+>   # Solve conflicts if any, accepting changes from master
+>   git commit -m 'chore: Update from master'
+>   git push
+>   ```
+
 ## Code quality control
 
 > All files inside this project are automatically built, linted and tested by [CircleCI](https://circleci.com/gh/atSCM/atscm).
