@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0-beta.0"></a>
+# [0.4.0-beta.0](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.0) (2017-10-27)
+
+
+### Bug Fixes
+
+* **init:** Do not escape author field in package.json ([#55](https://github.com/atSCM/atscm/issues/55)) ([160fffc](https://github.com/atSCM/atscm/commit/160fffc)), closes [#52](https://github.com/atSCM/atscm/issues/52)
+* **watch:** Warn if `src` directory does not exist ([1bb0d75](https://github.com/atSCM/atscm/commit/1bb0d75))
+* **watch:** Warn if `src` directory does not exist ([2992025](https://github.com/atSCM/atscm/commit/2992025)), closes [#47](https://github.com/atSCM/atscm/issues/47)
+
+
+### Features
+
+* Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/atSCM/atscm/compare/v0.2.4...v0.3.0) (2017-05-08)
 
