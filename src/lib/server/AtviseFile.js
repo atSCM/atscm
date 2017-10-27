@@ -98,7 +98,7 @@ const Decoder = {
 
 /**
  * A set of functions that encode node values before storing them.
- * @type {Map<node-opcua~DataType, function(rawValue: *): String>}
+ * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
