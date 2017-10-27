@@ -72,7 +72,7 @@ jobs:
       - deploy:
           branches:
             only:
-              - beta-deployment
+              - beta
               - master
           command: |
             echo "Setting up git user"
