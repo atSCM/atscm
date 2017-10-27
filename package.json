@@ -15,7 +15,7 @@
     "docs:coverage": "esdoc-coverage -c esdoc.json",
     "lint": "eslint src",
     "lint:test": "eslint test",
-    "prepublish": "npm run compile && npm run docs",
+    "prepublishOnly": "npm run compile && npm run docs",
     "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --require ./test/prepare --timeout 10000",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
