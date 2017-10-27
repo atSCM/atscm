@@ -1,5 +1,5 @@
-<a name="0.4.0-beta.2"></a>
-# [0.4.0-beta.2](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.2) (2017-10-27)
+<a name="0.4.0-beta.3"></a>
+# [0.4.0-beta.3](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.3) (2017-10-27)
 
 
 ### Bug Fixes
@@ -11,7 +11,7 @@
 ### Features
 
 * Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
-* **ci:** Automatically release master and beta branches ([def957a](https://github.com/atSCM/atscm/commit/def957a))
+* **ci:** Automated release ([#65](https://github.com/atSCM/atscm/issues/65)) ([dcf48b7](https://github.com/atSCM/atscm/commit/dcf48b7))
 
 
 
