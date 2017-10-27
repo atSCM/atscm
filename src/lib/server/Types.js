@@ -1,16 +1,48 @@
 import { DataType } from 'node-opcua';
 import NodeId from '../server/NodeId';
 
+/**
+ * Special, atvise releated OPC-UA type.
+ */
 class AtviseType {
 
+  /**
+   * Creates a new atvise type.
+   * @param {String} nodeIdValue The type's OPC-UA node id value.
+   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
+   * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
+   * or `false` indicating if the extension should be kept.
+   */
   constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {
+    /**
+     * Node id of the type's definition
+     * @type {node-opcua~NodeId}
+     */
     this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
+
+    /**
+     * Atscm's identifier for the type.
+     * @type {String}
+     */
     this.identifier = identifier;
+    /**
+     * The type's parent OPC-UA type.
+     * @type {node-opcua~DataType}
+     */
     this.dataType = dataType;
     if (fileExtensionOrKeep !== undefined) {
       if (typeof fileExtensionOrKeep === 'string') {
+        /**
+         * The file extension to use when storing.
+         * @type {String}
+         */
         this.fileExtension = fileExtensionOrKeep;
       } else {
+        /**
+         * If the extension should be kept when storing.
+         * @type {Boolean}
+         */
         this.keepExtension = fileExtensionOrKeep;
       }
     }
@@ -18,8 +50,16 @@ class AtviseType {
 
 }
 
+/**
+ * An atvise-related resource type.
+ */
 class AtviseResourceType extends AtviseType {
 
+  /**
+   * Creates a new resource type.
+   * @param {String} name The type's OPC-UA node id value.
+   * @param {String} identifier Atscm's identifier for the new type.
+   */
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
   }
