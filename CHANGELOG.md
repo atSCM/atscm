@@ -1,5 +1,5 @@
-<a name="0.4.0-beta.6"></a>
-# [0.4.0-beta.6](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.6) (2017-10-27)
+<a name="0.4.0-beta.7"></a>
+# [0.4.0-beta.7](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.7) (2017-10-27)
 
 
 ### Bug Fixes
@@ -13,6 +13,7 @@
 
 * Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
 * **ci:** Automated release ([#65](https://github.com/atSCM/atscm/issues/65)) ([dcf48b7](https://github.com/atSCM/atscm/commit/dcf48b7))
+* **debugging:** Generate source-map ([84e23dc](https://github.com/atSCM/atscm/commit/84e23dc))
 
 
 
