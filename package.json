@@ -1,6 +1,6 @@
 {
   "name": "atscm",
-  "version": "0.3.0",
+  "version": "0.4.0-beta.2",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
   "engines": {
@@ -12,9 +12,10 @@
     "compile:watch": "npm run compile -- --watch",
     "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
+    "docs:coverage": "esdoc-coverage -c esdoc.json",
     "lint": "eslint src",
     "lint:test": "eslint test",
-    "prepublish": "npm run compile && npm run docs",
+    "prepublishOnly": "npm run compile && npm run docs",
     "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --require ./test/prepare --timeout 10000",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
@@ -31,26 +32,31 @@
   },
   "homepage": "https://github.com/atSCM/atscm#readme",
   "devDependencies": {
-    "@lhechenberger/automated-release": "^0.1.19",
+    "@ls-age/esdoc-coverage": "^0.1.6",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.22.1",
     "babel-plugin-istanbul": "^3.0.0",
     "babel-preset-node6": "^11.0.0",
     "babel-register": "^6.18.0",
     "broken-link-checker-local": "^0.1.1",
+    "codecov": "^3.0.0",
     "coffee-script": "^1.12.3",
+    "conventional-changelog-cli": "^1.3.4",
     "conventional-changelog-lint": "^1.1.9",
+    "conventional-github-releaser": "^1.1.10",
     "cross-env": "^3.2.3",
-    "esdoc": "^0.5.2",
-    "esdoc-plugin-require-coverage": "^0.1.2",
+    "esdoc": "^1.0.3",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^3.11.1",
     "eslint-config-lsage": "^0.1.0",
     "eval": "^0.1.2",
     "husky": "^0.13.3",
     "mocha": "^3.2.0",
-    "nyc": "^10.0.0",
+    "mocha-circleci-reporter": "0.0.2",
+    "nyc": "^10.3.2",
     "proxyquire": "^1.7.11",
     "sinon": "^2.3.4",
+    "standard-version": "^4.2.0",
     "typescript": "^2.1.5",
     "unexpected": "^10.20.0",
     "unexpected-sinon": "^10.7.0",
@@ -102,5 +108,14 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "tag": true
+    },
+    "scripts": {
+      "postbump": "./node_modules/.bin/conventional-changelog -r 0 -i CHANGELOG.md --same-file --preset angular"
+    }
   }
 }

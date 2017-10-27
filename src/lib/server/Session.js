@@ -4,8 +4,22 @@ import Logger from 'gulplog';
 import Client from './Client';
 import ProjectConfig from '../../config/ProjectConfig';
 
+/**
+ * The global EventEmitter used to emit events.
+ * @type {events~Emitter}
+ */
 const emitter = new Emitter();
+
+/**
+ * The currently open sessions.
+ * @type {node-opcua~ClientSession[]}
+ */
 const openSessions = [];
+
+/**
+ * The number of session currently being opened.
+ * @type {Number}
+ */
 let openingSessions = 0;
 
 /**
