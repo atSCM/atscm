@@ -108,5 +108,14 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
+  },
+  "standard-version": {
+    "skip": {
+      "changelog": true,
+      "tag": true
+    },
+    "scripts": {
+      "postbump": "./node_modules/.bin/conventional-changelog -r 0 -i CHANGELOG.md --same-file --preset angular"
+    }
   }
 }
