@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/transform/DisplayTransformer.js | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#config">config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/ProjectConfig.js~ProjectConfig.html">ProjectConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#init">init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-init">lib/init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-server">lib/server</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeId.js~NodeId.html">NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html">NodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/QueueStream.js~QueueStream.html">QueueStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/ReadStream.js~ReadStream.html">ReadStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Session.js~Session.html">Session</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Stream.js~Stream.html">Stream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~Watcher.html">Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-transform">lib/transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#tasks">tasks</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/watch.js~WatchTask.html">WatchTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef-external">typedef/external</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/lib/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanup">cleanup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStat">getStat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateDirectoryExists">validateDirectoryExists</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/transform/DisplayTransformer.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Buffer } from &apos;buffer&apos;;
+import XMLTransformer from &apos;../lib/transform/XMLTransformer&apos;;
+
+/**
+ * Splits read atvise display XML nodes into their SVG and JavaScript sources,
+ * alongside with a .json file containing the display&apos;s parameters.
+ */
+export default class DisplayTransformer extends XMLTransformer {
+
+  /**
+   * Returns true for all files containing atvise displays.
+   * @param {AtviseFile} file The file to check.
+   * @return {Boolean} `true` for all atvise display files.
+   */
+  shouldBeTransformed(file) {
+    return file.isDisplay;
+  }
+
+  /**
+   * Splits any read files containing atvise displays into their SVG and JavaScript sources,
+   * alongside with a .json file containing the display&apos;s parameters.
+   * @param {AtviseFile} file The display file to split.
+   * @param {String} enc The encoding used.
+   * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
+   * while transforming the display, or the file passed through.
+   */
+  transformFromDB(file, enc, callback) {
+    this.decodeContents(file, (err, results) =&gt; {
+      if (err) {
+        callback(err);
+      } else if (!results || results.svg === undefined) {
+        callback(new Error(&apos;Error parsing display: No `svg` tag&apos;));
+      } else {
+        const xml = results;
+        const document = results.svg;
+
+        const config = {};
+
+        // Extract JavaScript
+        if (this.tagNotEmpty(document.script)) {
+          document.script.forEach(script =&gt; {
+            if (script.$ &amp;&amp; (script.$.src || script.$[&apos;xlink:href&apos;])) {
+              if (!config.dependencies) {
+                config.dependencies = [];
+              }
+
+              config.dependencies.push(script.$.src || script.$[&apos;xlink:href&apos;]);
+            } else {
+              // TODO: Warn on multiple inline scripts
+
+              const scriptFile = DisplayTransformer.splitFile(file, &apos;.js&apos;);
+              const scriptText = (typeof script === &apos;string&apos;) ?
+                script : script._ || &apos;&apos;;
+
+              scriptFile.contents = Buffer.from(scriptText);
+              this.push(scriptFile);
+            }
+          });
+
+          delete xml.svg.script;
+        }
+
+        // Extract metadata
+        if (this.tagNotEmpty(document.metadata)) {
+          // TODO: Warn on multiple metadata tags
+
+          const meta = document.metadata[0];
+
+          // - Parameters
+          if (this.tagNotEmpty(meta[&apos;atv:parameter&apos;])) {
+            config.parameters = [];
+            meta[&apos;atv:parameter&apos;].forEach(param =&gt; config.parameters.push(param.$));
+
+            delete xml.svg.metadata[0][&apos;atv:parameter&apos;];
+          }
+        }
+
+        const configFile = DisplayTransformer.splitFile(file, &apos;.json&apos;);
+
+        configFile.contents = Buffer.from(JSON.stringify(config, null, &apos;  &apos;));
+        this.push(configFile);
+
+        const svgFile = DisplayTransformer.splitFile(file, &apos;.svg&apos;);
+
+        this.encodeContents(xml, (encodeErr, stringValue) =&gt; {
+          if (encodeErr) {
+            callback(encodeErr);
+          } else {
+            svgFile.contents = Buffer.from(stringValue);
+            this.push(svgFile);
+
+            callback(null);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Creates a display from the collected files.
+   * @param {Map&lt;String, vinyl~File&gt;} files The collected files, stored against their extension.
+   * @param {vinyl~File} lastFile The last file read. *Used for error messages only*.
+   * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
+   * while creating the display or the resulting file.
+   */
+  createCombinedFile(files, lastFile, callback) {
+    const configFile = files[&apos;.json&apos;];
+    let config = {};
+
+    if (configFile) {
+      try {
+        config = JSON.parse(configFile.contents.toString());
+      } catch (e) {
+        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
+        return;
+      }
+    }
+
+    const svgFile = files[&apos;.svg&apos;];
+    if (!svgFile) {
+      callback(new Error(`No display SVG in ${lastFile.dirname}`));
+      return;
+    }
+
+    const scriptFile = files[&apos;.js&apos;];
+    let inlineScript = &apos;&apos;;
+    if (scriptFile) {
+      inlineScript = scriptFile.contents.toString();
+    }
+
+    this.decodeContents(svgFile, (err, xml) =&gt; {
+      if (err) {
+        callback(err);
+      } else if (!xml || xml.svg === undefined) {
+        callback(new Error(&apos;Error parsing display SVG: No `svg` tag&apos;));
+      } else {
+        const result = xml;
+
+        // Handle empty svg tag
+        if (typeof result.svg === &apos;string&apos;) {
+          result.svg = {};
+        }
+
+        // Insert dependencies
+        result.svg.script = [];
+        if (config.dependencies) {
+          config.dependencies.forEach(p =&gt; result.svg.script.push({
+            $: { &apos;xlink:href&apos;: p },
+          }));
+        }
+
+        // Insert script
+        // FIXME: Import order is not preserved!
+        if (scriptFile) {
+          result.svg.script.push({
+            $: { type: &apos;text/ecmascript&apos; },
+            _: XMLTransformer.forceCData(inlineScript),
+          });
+        }
+
+        // Insert metadata
+        // - Parameters
+        if (config.parameters &amp;&amp; config.parameters.length &gt; 0) {
+          if (!result.svg.metadata || !result.svg.metadata[0]) {
+            result.svg.metadata = [{}];
+          }
+          if (!result.svg.metadata[0][&apos;atv:parameter&apos;]) {
+            result.svg.metadata[0][&apos;atv:parameter&apos;] = [];
+          }
+
+          // FIXME: Parameters should come before `atv:gridconfig` and `atv:snapconfig`
+          config.parameters
+            .forEach(param =&gt; result.svg.metadata[0][&apos;atv:parameter&apos;].push({ $: param }));
+        }
+
+        const display = DisplayTransformer.combineFiles(
+          Object.keys(files).map(ext =&gt; files[ext]),
+          &apos;.xml&apos;
+        );
+
+        this.encodeContents(result, (encodeErr, xmlString) =&gt; {
+          if (encodeErr) {
+            callback(encodeErr);
+          } else {
+            display.contents = Buffer.from(xmlString);
+
+            callback(null, display);
+          }
+        });
+      }
+    });
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
