@@ -1,0 +1,116 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: Installing npm dependencies
+          command: npm install
+      - run:
+          name: Resetting package-lock changes
+          command: git checkout -- package-lock.json
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      # Code Quality checks
+      # TODO: Lint commit message
+      # with git log --format=%B -n 1 $CIRCLE_SHA1 | npx commitlint
+      - run:
+          name: Linting source files
+          command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
+
+      # Build
+      - run:
+          name: Transpiling source code
+          command: npm run compile
+      - run:
+          name: Creating API documentation
+          command: npm run docs
+
+      # Test
+      - run:
+          name: Running tests
+          command: node_modules/.bin/nyc npm test -- --reporter mocha-circleci-reporter
+          environment:
+            NODE_ENV: test
+            MOCHA_FILE: ../reports/mocha.xml
+      - run: ls ~/reports && ls .
+      - run:
+          name: Checking documentation for broken links (SKIPPED)
+          command: echo "Skipped for now as ESDoc hosting service is down regularly" # npm run test:docs
+
+      # Coverage checks
+      - run:
+          name: Checking test coverage
+          command: node_modules/.bin/nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
+      - run:
+          name: Reporting test coverage
+          command: node_modules/.bin/nyc report --reporter=lcov > coverage.lcov | node_modules/.bin/codecov
+      - run:
+          name: Check documentation coverage
+          command: npm run docs:coverage
+
+      - run: git status
+
+      # Store Results
+      - store_test_results:
+          path: ~/reports
+          when: always
+      - store_artifacts:
+          path: ~/reports
+          when: always
+
+      # Deployment
+      - add_ssh_keys
+      - deploy:
+          branches:
+            only:
+              - beta-deployment
+              - master
+          command: |
+            echo "Setting up git user"
+            git config --global user.email circleci@circleci && git config --global user.name CircleCI && git remote --v
+
+            echo " Adding github.com to list of known hosts"
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+            echo "Logging in to npm"
+            echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
+
+            echo "Bumping version number"
+            if [ $CIRCLE_BRANCH = 'master' ]; then
+              ./node_modules/.bin/standard-version --message "chore(release): Release %s [ci skip]"
+            else
+              ./node_modules/.bin/standard-version --message "chore(release): Release %s [ci skip]" --prerelease beta;
+            fi
+
+            echo "Pushing version bump"
+            git push origin $CIRCLE_BRANCH
+
+            echo "Creating git tag"
+            version=$(node -e "console.log(require('./package.json').version)")
+            git add -f out;
+            git add -f docs/api;
+            git checkout -b release-$(git rev-parse HEAD);
+            git commit -m "chore(release): Add v$version release files [ci skip]";
+            git tag -a "v$version" -m "chore(release): Add v$version release tag [ci skip]";
+
+            echo "Publishing to npm"
+            if [ $CIRCLE_BRANCH = 'master' ]; then
+              npm publish --access public
+            else
+              npm publish --tag beta --access public
+            fi
+
+            echo "Uploading new tag"
+            git push --tags
+
+            echo "Creating GitHub release"
+            CONVENTIONAL_GITHUB_RELEASER_TOKEN=$RELEASE_GITHUB_TOKEN ./node_modules/.bin/conventional-github-releaser -p angular --verbose
