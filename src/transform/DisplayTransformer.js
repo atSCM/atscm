@@ -31,7 +31,7 @@ export default class DisplayTransformer extends XMLTransformer {
       if (err) {
         Logger.error(`Display ${file.nodeId}: Error parsing display content. Check if display content is broken`);
         callback(null);
-      } else if (xmlObj.children[0].name != 'svg') {
+      } else if (xmlObj.children.length == 0 || xmlObj.children[0].name != 'svg') {
         Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
         callback(null);
       } else {
@@ -167,8 +167,8 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Insert dependencies
           if (config.dependencies && config.dependencies.length > 0) {
-            config.dependencies.forEach(dependency => displayContent.children
-              .push(this.createTag('script', {'xlink:href': dependency}, metadata)));
+            config.dependencies.reverse().forEach(dependency => displayContent.children
+              .push(this.createTag('script', {'xlink:href': dependency, type: 'text/ecmascript'}, metadata)));
           }
 
           // Insert script
