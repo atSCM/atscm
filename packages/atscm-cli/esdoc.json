@@ -1,23 +1,26 @@
 {
-  "title": "atscm-cli",
   "source": "./src",
   "destination": "./docs/api",
-  "access": ["public", "package", "private"],
-  "test": {
-    "type": "mocha",
-    "source": "./test"
-  },
-  "index": "./docs/README.md",
-  "manual": {
-    "usage": [
-      "docs/manual/usage/CLI.md",
-      "docs/manual/usage/API.md"
-    ],
-    "changelog": ["./CHANGELOG.md"]
-  },
   "plugins": [
     {
-      "name": "esdoc-plugin-require-coverage"
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "brand": {
+          "title": "atscm-cli"
+        },
+        "accessor": { "access": ["public", "package", "private"] },
+        "manual": {
+          "files": [
+            "./docs/manual/usage/CLI.md",
+            "./docs/manual/usage/API.md",
+            "./.github/CONTRIBUTING.md",
+            "./CHANGELOG.md"
+          ]
+        },
+        "test": {
+          "source": "./test"
+        }
+      }
     }
   ]
 }

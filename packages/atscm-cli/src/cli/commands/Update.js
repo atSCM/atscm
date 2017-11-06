@@ -3,6 +3,7 @@ import { gt } from 'semver';
 import Logger from '../../lib/util/Logger';
 import Command from '../../lib/cli/Command';
 import ExternalCommand from '../../lib/util/ExternalCommand';
+import CliOptions from '../Options';
 
 /**
  * The command invoked by running "update".
@@ -10,12 +11,26 @@ import ExternalCommand from '../../lib/util/ExternalCommand';
 export default class UpdateCommand extends Command {
 
   /**
+   * Creates a new {@link UpdateCommand} with the specified name and description.
+   * @param {String} name The command's name.
+   * @param {String} description The command's description.
+   */
+  constructor(name, description) {
+    super(name, description, {
+      options: {
+        beta: CliOptions.beta,
+      },
+    });
+  }
+
+  /**
    * Checks atscm's dist-tags in the npm registry and resolves with the latest version available.
+   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<string>} Fulfilled with the latest atscm version available.
    */
-  getLatestVersion() {
+  getLatestVersion(useBetaRelease = false) {
     return get('https://registry.npmjs.org/-/package/atscm/dist-tags')
-      .then(res => res.data.latest);
+      .then(res => res.data[useBetaRelease ? 'beta' : 'latest']);
   }
 
   /**
@@ -35,15 +50,18 @@ export default class UpdateCommand extends Command {
   /**
    * Runs `npm install --save-dev atscm@latest` in a separate process.
    * @param {AtSCMCli} cli The cli instance used.
+   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<string, Error>} Fulfilled with npm's stdout or rejected with a spawn error or
    * error code.
    */
-  update(cli) {
-    return ExternalCommand.run('npm', ['install', '--save-dev', 'atscm@latest'], {
-      spawn: {
-        cwd: cli.environment.cwd,
-      },
-    });
+  update(cli, useBetaRelease = false) {
+    return ExternalCommand.run('npm',
+      ['install', '--save-dev', `atscm@${useBetaRelease ? 'beta' : 'latest'}`],
+      {
+        spawn: {
+          cwd: cli.environment.cwd,
+        },
+      });
   }
 
   /**
@@ -54,7 +72,7 @@ export default class UpdateCommand extends Command {
    */
   run(cli) {
     return Promise.all([
-      this.getLatestVersion(),
+      this.getLatestVersion(cli.options.beta),
       Promise.resolve(cli.environment.modulePackage.version),
     ])
       .then(versions => this.updateNeeded(...versions))
@@ -62,7 +80,7 @@ export default class UpdateCommand extends Command {
         if (needed) {
           Logger.info('Updating to version', Logger.format.value(needed));
 
-          return this.update(cli)
+          return this.update(cli, cli.options.beta)
             .then(() => Logger.info('Done.'));
         }
 

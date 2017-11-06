@@ -25,6 +25,7 @@ export default class InitCommand extends Command {
     super(name, description, {
       options: {
         force: CliOptions.force,
+        beta: CliOptions.beta,
       },
     });
   }
@@ -117,9 +118,10 @@ export default class InitCommand extends Command {
   /**
    * Installs the local atscm module at the given path.
    * @param {String} path The path to install the module at.
+   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
-  installLocal(path, useBetaRelease) {
+  installLocal(path, useBetaRelease = false) {
     Logger.info('Installing latest version of atscm...');
 
     if (useBetaRelease) {
@@ -141,7 +143,7 @@ export default class InitCommand extends Command {
     Logger.debug('Checking atscm-cli version...');
 
     const required = env.modulePackage.engines['atscm-cli'];
-    if (!validVersion(pkg.version, required)) {
+    if (!validVersion(pkg.version.split('-beta')[0], required)) {
       Logger.info('Your version of atscm-cli is not compatible with the latest version atscm.');
       Logger.info('Please run', Logger.format.command('npm install -g atscm-cli'), 'to update.');
 
