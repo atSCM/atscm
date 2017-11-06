@@ -1,5 +1,5 @@
-<a name="0.4.0-beta.9"></a>
-# [0.4.0-beta.9](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.9) (2017-10-27)
+<a name="0.4.0-beta.10"></a>
+# [0.4.0-beta.10](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.10) (2017-11-06)
 
 
 ### Bug Fixes
