@@ -1,5 +1,5 @@
-<a name="0.3.0-beta.7"></a>
-# [0.3.0-beta.7](https://github.com/atSCM/atscm-cli/compare/v0.2.4...v0.3.0-beta.7) (2017-10-27)
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/atSCM/atscm-cli/compare/v0.2.4...v0.3.0) (2017-11-06)
 
 
 ### Bug Fixes
