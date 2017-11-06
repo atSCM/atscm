@@ -79,7 +79,7 @@ jobs:
               ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
               echo "Logging in to npm"
-              echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
+              echo "$NPM_TOKEN" > ./.npmrc
 
               echo "Bumping version number"
               if [ $CIRCLE_BRANCH = 'master' ]; then
