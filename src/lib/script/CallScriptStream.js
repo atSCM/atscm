@@ -81,10 +81,10 @@ export default class CallScriptStream extends QueueStream {
   /**
    * Handles the node-opcua call script method callback
    * @param {Error} err If the call throw an error or not
-   * @param {Array} result The result of the call
-   * @param {*} chunk The chunk being processed.
+   * @param {Array} results The result of the call
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @abstract
    */
   handleCallback(err, results, handleErrors) {
     throw new Error('CallScriptStream#handleCallback must be implemented by all subclasses');
