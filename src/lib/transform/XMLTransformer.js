@@ -34,7 +34,7 @@ export default class XMLTransformer extends SplittingTransformer {
 
   /**
    * Creates a new {xamel~NodeSet}
-   * @param {xamel~Tag[]} scriptCode The script code to store
+   * @param {xamel~Tag[]} nodes The nodes to store in the created NodeSet
    */
   createNodeSet(nodes) {
     return new xml.NodeSet(nodes);
@@ -72,7 +72,7 @@ export default class XMLTransformer extends SplittingTransformer {
 
   /**
    * Creates a new <RelativePath> tag
-   * @param {Object} config The relative path elements configuration object
+   * @param {Object} configObj The relative path elements configuration object
    * @param {xamel~Tag} parentTag The parent tag the relative path tag belongs to
    */
   createRelPathTag(configObj, parentTag) {

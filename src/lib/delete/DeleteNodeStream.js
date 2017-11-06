@@ -51,7 +51,7 @@ export default class DeleteNodeStream extends CallScriptStream {
 
   /**
    * Handles the call script methods callback
-   * @param {Array} result The result of the call
+   * @param {Array} results The result of the call
    * @param {node} nodeId The nodeId to process
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
