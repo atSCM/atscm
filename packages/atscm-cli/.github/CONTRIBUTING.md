@@ -38,5 +38,29 @@ Test coverage can be checked by running `npm run test:coverage`.
 
 Run `npm run docs` to create [ESDoc](https://esdoc.org) API documentation.
 
+## Providing fixes / adding features
+
+Take the following steps:
+
+- Create a new branch / fork of the **[beta branch](https://github.com/LukasHechenberger/utils-test/tree/beta)**, which is our development branch
+- Make your changes
+- Make sure [CI tests](https://circleci.com/gh/LukasHechenberger/workflows/utils-test) pass
+- Send a pull request to merge back to *beta*
+
+Once we reviewed your changes, we'll merge your pull request.
+
+> **Merge strategy (Maintainers only)**
+> - Accepted changes from fix/feature branches **should always be squash-merged** to beta.
+> - Once beta is stable **create a regular merge commit** to merge back to master.
+> - After merging to master, changes should be synced back to the beta branch. To do so, run:
+>   ```bash
+>   git checkout beta
+>   git fetch
+>   git rebase origin/master
+>   # Solve conflicts if any, accepting changes from master
+>   git commit -m 'chore: Update from master'
+>   git push
+>   ```
+
 <!-- TODO: Add steps for creating good issues -->
 <!-- TODO: Add links to documentation and manuals -->

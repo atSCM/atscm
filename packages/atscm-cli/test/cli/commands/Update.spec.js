@@ -2,7 +2,7 @@ import expect from 'unexpected';
 import { stub } from 'sinon';
 import proxyquire from 'proxyquire';
 
-const get = stub().resolves({ data: { latest: '0.3.0' } });
+const get = stub().resolves({ data: { latest: '0.3.0', beta: '0.4.0-beta.3' } });
 const run = stub().resolves(`+ atscm@0.3.0
 updated 1 package and moved 3 packages in 16.652s`);
 
@@ -26,6 +26,12 @@ describe('UpdateCommand', function() {
   describe('#getLatestVersion', function() {
     it('should call npm api', function() {
       return expect(UpdateCommand.prototype.getLatestVersion(), 'to be fulfilled with', '0.3.0')
+        .then(() => expect(get.calledOnce, 'to be', true));
+    });
+
+    it('should return beta versions with `useBetaRelease`', function() {
+      return expect(UpdateCommand.prototype.getLatestVersion(true), 'to be fulfilled')
+        .then(version => expect(version, 'to match', /.*-beta.[0-9]+/))
         .then(() => expect(get.calledOnce, 'to be', true));
     });
   });
@@ -59,6 +65,19 @@ describe('UpdateCommand', function() {
             },
           }]));
     });
+
+    it('should install beta with `useBetaRelease`', function() {
+      return expect(UpdateCommand.prototype.update({ environment: {
+        cwd: 'test cwd',
+      } }, true), 'to be fulfilled')
+        .then(() => expect(run.calledOnce, 'to be', true))
+        .then(() => expect(run.lastCall.args, 'to equal',
+          ['npm', ['install', '--save-dev', 'atscm@beta'], {
+            spawn: {
+              cwd: 'test cwd',
+            },
+          }]));
+    });
   });
 
   /** @test {UpdateCommand#requiresEnvironment} */
@@ -79,6 +98,7 @@ describe('UpdateCommand', function() {
             version: '0.3.0',
           },
         },
+        options: {},
       }), 'to be fulfilled')
         .then(() => expect(run.callCount, 'to equal', 0));
     });
@@ -90,6 +110,7 @@ describe('UpdateCommand', function() {
             version: '0.2.0',
           },
         },
+        options: {},
       }), 'to be fulfilled')
         .then(() => expect(run.calledOnce, 'to be', true));
     });

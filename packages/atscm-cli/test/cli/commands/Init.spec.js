@@ -210,8 +210,16 @@ describe('InitCommand', function() {
         .then(() => {
           expect(command.install.calledOnce, 'to be true');
           expect(command.install.lastCall.args[0], 'to equal', stubModulePath);
-          // FIXME: Uncomment once atscm is published
-          // expect(command.install.lastCall.args[1], 'to equal', 'atscm');
+          expect(command.install.lastCall.args[1], 'to equal', 'atscm');
+        });
+    });
+
+    it('should install beta version with `useBetaVersion`', function() {
+      return expect(command.installLocal(stubModulePath, true), 'to be fulfilled')
+        .then(() => {
+          expect(command.install.calledOnce, 'to be true');
+          expect(command.install.lastCall.args[0], 'to equal', stubModulePath);
+          expect(command.install.lastCall.args[1], 'to equal', 'atscm@beta');
         });
     });
   });
