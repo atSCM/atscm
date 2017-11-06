@@ -62,6 +62,5 @@ export const GlobalOptions = {
   version: Options.version,
   help: Options.help,
   silent: Options.silent,
-  beta: Options.beta,
   'log-level': Options['log-level'],
 };
