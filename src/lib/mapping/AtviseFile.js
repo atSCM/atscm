@@ -303,6 +303,7 @@ export default class AtviseFile extends File {
     return date;
   }
 
+
   /**
    * Creates a new {@link AtviseFile} for the given {@link MappingItem}.
    * @param {MappingItem} mappingItem The read result to create the file for.
