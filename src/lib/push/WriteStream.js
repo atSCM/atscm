@@ -74,6 +74,7 @@ export default class WriteStream extends QueueStream {
 
             handleErrors(err, StatusCodes.Good, done => done());
           } else {
+            this.emit("write-successful", contentFile);
             handleErrors(err, StatusCodes.Good, done => done());
           }
         });

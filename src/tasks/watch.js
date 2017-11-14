@@ -1,4 +1,4 @@
-import {dirname} from 'path';
+import {dirname, extname} from 'path';
 import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
@@ -142,22 +142,37 @@ export class WatchTask {
   handleFileChange(path, root, stats) {
     return new Promise(resolve => {
       if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
-        this._pushing = true;
-        Logger.info(path, 'changed');
+        let nodePath = dirname(path);
+        let nodeId = {};
+        const extension = extname(nodePath).replace('.', '');
 
-        const pushStream = new PushStream({
-          nodesToPush: [NodeId.fromFilePath(dirname(path))],
-          createNodes: true
-        });
+        // step one directory outside for split files
+        if (extension == 'script' || extension == 'display' || extension == 'qd') {
+          nodePath = dirname(nodePath);
+        }
 
-        pushStream
-          .on('data', file => (this._lastPushed = file.nodeId.toString()))
-          .on('end', () => {
-            this._pushing = false;
-            this.browserSyncInstance.reload();
+        nodeId = NodeId.fromFilePath(nodePath);
 
-            resolve(true);
+        if (nodeId.toString() != this._lastPulled) {
+          const pushStream = new PushStream({
+            nodesToPush: [nodeId],
+            createNodes: false
           });
+
+          this._pushing = true;
+          Logger.info('File change:', path, 'changed');
+
+          pushStream
+            .on('write-successful', file => {
+              this._lastPushed = file.nodeId.toString();
+            })
+            .on('finish', () => {
+              this._pushing = false;
+              this.browserSyncInstance.reload();
+
+              resolve(true);
+            });
+        }
       } else {
         resolve(false);
       }
@@ -172,10 +187,16 @@ export class WatchTask {
    */
   handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
+
       if (!this._pushing) {
-        if (readNodeMappingItem.nodeId.toString() !== this._lastPushed) {
+
+        let nodeId = readNodeMappingItem.nodeId.toString();
+
+        if (nodeId !== this._lastPushed) {
+
           this._pulling = true;
-          Logger.info(readNodeMappingItem.nodeId.toString(), 'changed');
+
+          Logger.info('Server change:', nodeId, 'changed');
 
           const readStream = createStream();
           readStream.write(readNodeMappingItem);
