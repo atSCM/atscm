@@ -297,6 +297,7 @@ export default class AtviseFile extends File {
     return date;
   }
 
+
   /**
    * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
    * @param {ReadStream.ReadResult} readResult The read result to create the file for.

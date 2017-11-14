@@ -54,7 +54,10 @@ export default class PushStream {
       .pipe(atvReferenceFilter)
       .pipe(nodeFileStream)
       .pipe(writeStream)
-      .pipe(createNodeStream);
+
+     if (createNodes) {
+      this.pushStream.pipe(createNodeStream);
+     }
 
     this.pushStream.once('finish', () => {
       Logger.debug('Writing and creating nodes finished. Adding references...');
@@ -81,7 +84,7 @@ export default class PushStream {
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout);
     }
-
+    
     clearInterval(this.printProgress);
   }
 }
