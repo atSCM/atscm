@@ -1,9 +1,10 @@
-<a name="0.4.0-beta.10"></a>
-# [0.4.0-beta.10](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.10) (2017-11-06)
+<a name="0.4.0-beta.11"></a>
+# [0.4.0-beta.11](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.11) (2017-11-16)
 
 
 ### Bug Fixes
 
+* **AtviseFile:** Add encoding for byte strings ([#72](https://github.com/atSCM/atscm/issues/72)) ([9cd9a60](https://github.com/atSCM/atscm/commit/9cd9a60)), closes [#62](https://github.com/atSCM/atscm/issues/62)
 * **ci:** Deploy master and beta only ([1f38ea1](https://github.com/atSCM/atscm/commit/1f38ea1))
 * **docs:** Document deployment process ([#67](https://github.com/atSCM/atscm/issues/67)) ([998e195](https://github.com/atSCM/atscm/commit/998e195))
 * **init:** Do not escape author field in package.json ([#55](https://github.com/atSCM/atscm/issues/55)) ([160fffc](https://github.com/atSCM/atscm/commit/160fffc)), closes [#52](https://github.com/atSCM/atscm/issues/52)
