@@ -162,7 +162,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
   static shouldBeMappedAsAtviseReferenceFile(ref) {
-    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
@@ -180,7 +180,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
    */
   static shouldBeMappedAsTypeDefinitionFile(ref) {
-    let referenceType = ref.referenceTypeId.value;
+    const referenceType = ref.referenceTypeId.value;
 
     return referenceType == ReferenceTypeIds.HasTypeDefinition ||
       referenceType == ReferenceTypeIds.HasSubtype;
@@ -247,7 +247,7 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          let atvReferences = [];
+          const atvReferences = [];
 
           Promise.all(
             results[0].references
@@ -257,7 +257,7 @@ export default class BrowseStream extends QueueStream {
               .map(ref => {
                 BrowseStream.opcNodeIdToExpandedNodeId(ref);
 
-                if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
+                if (BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsFile(ref, nodeId)) {
                   this.push(new MappingItem(nodeId, ref));

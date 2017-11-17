@@ -1,17 +1,17 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from './NodeId';
-import {ReferenceTypeIds, DataType, VariantArrayType, NodeClass, browse_service as BrowseService} from 'node-opcua';
+import { ReferenceTypeIds, DataType, VariantArrayType, NodeClass, browse_service as BrowseService } from 'node-opcua';
 
 /**
  * Custom Atvise File Type for type definitions
  */
-const TypeDefinitionResourceId = new NodeId("Custom.TypeDefinition");
+const TypeDefinitionResourceId = new NodeId('Custom.TypeDefinition');
 
 /**
  * Custom Atvise File Type for references
  */
-const ReferenceTypeResourceId = new NodeId("Custom.AtvReferences");
+const ReferenceTypeResourceId = new NodeId('Custom.AtvReferences');
 
 
 /**
@@ -46,7 +46,7 @@ export default class MappingItem {
    */
   constructor(browseNodeId, referenceConfig) {
     if (!checkType(browseNodeId, NodeId) || !checkType(referenceConfig, BrowseService.ReferenceDescription)) {
-      throw new Error("Class MappingItem: Can not parse given arguments!");
+      throw new Error('Class MappingItem: Can not parse given arguments!');
     }
 
     /**
@@ -84,27 +84,25 @@ export default class MappingItem {
      * Defines if the objects holds a node configuration or not.
      * @type {String}
      */
-    this.itemType = "";
+    this.itemType = '';
 
     if (referenceConfig instanceof Array) {
-      let atvReferences = referenceConfig.map(ref => this.createRefInfo(ref, this.browseNodeId));
+      const atvReferences = referenceConfig.map(ref => this.createRefInfo(ref, this.browseNodeId));
 
       this.itemType = AtvReferenceConfigName;
       this.atvReferenceConfig = this.createNodeConfigItem(atvReferences, ReferenceTypeResourceId);
-    } else {
-      if (MappingItem.isTypeDefinitionRef(referenceConfig)) {
-        let typeDefConfig = this.createRefInfo(referenceConfig, this.browseNodeId);
+    } else if (MappingItem.isTypeDefinitionRef(referenceConfig)) {
+      const typeDefConfig = this.createRefInfo(referenceConfig, this.browseNodeId);
 
-        this.itemType = TypeDefConfigName;
-        this.typeDefinitionConfig = this.createNodeConfigItem(typeDefConfig, TypeDefinitionResourceId,
+      this.itemType = TypeDefConfigName;
+      this.typeDefinitionConfig = this.createNodeConfigItem(typeDefConfig, TypeDefinitionResourceId,
           MappingItem.isObjectTypeDefinition(referenceConfig));
-      } else if (MappingItem.isVarTypeNodeRef(referenceConfig)) {
-        this.itemType = ReadNodeConfigName;
-        this.readNodeConfig.nodeId = referenceConfig.nodeId;
-        this.readNodeConfig.typeDefinition =  referenceConfig.typeDefinition;
-      } else {
-        throw new Error("Class MappingItem: Given reference description has wrong type!");
-      }
+    } else if (MappingItem.isVarTypeNodeRef(referenceConfig)) {
+      this.itemType = ReadNodeConfigName;
+      this.readNodeConfig.nodeId = referenceConfig.nodeId;
+      this.readNodeConfig.typeDefinition = referenceConfig.typeDefinition;
+    } else {
+      throw new Error('Class MappingItem: Given reference description has wrong type!');
     }
   }
 
@@ -114,7 +112,7 @@ export default class MappingItem {
    * @return {Bool} reference is a type definition reference(=true) or not(=false)
    */
   static isTypeDefinitionRef(ref) {
-    let referenceType = ref.referenceTypeId.value;
+    const referenceType = ref.referenceTypeId.value;
 
     return referenceType == ReferenceTypeIds.HasTypeDefinition ||
       referenceType == ReferenceTypeIds.HasSubtype;
@@ -167,7 +165,7 @@ export default class MappingItem {
    * @type {*}
    */
   get itemToProcess() {
-    switch(this.itemType) {
+    switch (this.itemType) {
       case AtvReferenceConfigName:
         return this.atvReferenceConfig;
         break;
@@ -197,16 +195,16 @@ export default class MappingItem {
       nodeId: {
         identifierType: nodeId.identifierType.key,
         namespaceIndex: nodeId.namespace,
-        value: nodeId.value
+        value: nodeId.value,
       },
       referenceType: {
         identifierType: referenceType.identifierType.key,
-        value: referenceType.value
+        value: referenceType.value,
       },
       typeDefinition: {
         identifierType: typeDefinition.identifierType.key,
-        value: typeDefinition.value
-      }
+        value: typeDefinition.value,
+      },
     };
   }
 
@@ -215,8 +213,8 @@ export default class MappingItem {
    * options.
    * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node config
    */
-  addDataValueToReadNodeConfig (dataValue) {
-    let variant = dataValue.value;
+  addDataValueToReadNodeConfig(dataValue) {
+    const variant = dataValue.value;
 
     if (variant == null) {
       return false;
@@ -236,14 +234,14 @@ export default class MappingItem {
    * @param {node-opcua~NodeId} typeDefinition The type definition for the node config item
    * @param {Boolean} isObjectTypeDefinition If the given type definition config belongs to an object type or not
    */
-  createNodeConfigItem (value, typeDefinition, isObjectTypeDefinition = false) {
+  createNodeConfigItem(value, typeDefinition, isObjectTypeDefinition = false) {
     return {
       nodeId: isObjectTypeDefinition ? this.refNodeId : this.browseNodeId,
-      dataType : DataType.String,
-      arrayType : VariantArrayType.Scalar,
-      dataType : DataType.String,
-      value : JSON.stringify(value),
-      typeDefinition : typeDefinition
-    }
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      dataType: DataType.String,
+      value: JSON.stringify(value),
+      typeDefinition,
+    };
   }
 }
