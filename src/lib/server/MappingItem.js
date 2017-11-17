@@ -1,7 +1,9 @@
-import Logger from 'gulplog';
+import {
+  ReferenceTypeIds, DataType, VariantArrayType, NodeClass,
+  browse_service as BrowseService,
+} from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from './NodeId';
-import { ReferenceTypeIds, DataType, VariantArrayType, NodeClass, browse_service as BrowseService } from 'node-opcua';
 
 /**
  * Custom Atvise File Type for type definitions
@@ -41,11 +43,13 @@ export default class MappingItem {
    * Creates a new NodeStream based on the nodes to start browsing with and some options.
    * @param {Boolean} isNodeConfig If the created object is a node configuration or not
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
-   * @param {node-opcua~ReferenceDescription[] or node-opcua~ReferenceDescription[]} referenceConfig An array of {@link node-opcua~ReferenceDescription}s
+   * @param {node-opcua~ReferenceDescription[]} referenceConfig An array of
+   * {@link node-opcua~ReferenceDescription}s
    * to ignore.
    */
   constructor(browseNodeId, referenceConfig) {
-    if (!checkType(browseNodeId, NodeId) || !checkType(referenceConfig, BrowseService.ReferenceDescription)) {
+    if (!checkType(browseNodeId, NodeId) ||
+      !checkType(referenceConfig, BrowseService.ReferenceDescription)) {
       throw new Error('Class MappingItem: Can not parse given arguments!');
     }
 
@@ -114,8 +118,8 @@ export default class MappingItem {
   static isTypeDefinitionRef(ref) {
     const referenceType = ref.referenceTypeId.value;
 
-    return referenceType == ReferenceTypeIds.HasTypeDefinition ||
-      referenceType == ReferenceTypeIds.HasSubtype;
+    return referenceType === ReferenceTypeIds.HasTypeDefinition ||
+      referenceType === ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -124,7 +128,7 @@ export default class MappingItem {
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
   static isObjectTypeDefinition(ref) {
-    return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
+    return ref.referenceTypeId.value === ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -133,7 +137,7 @@ export default class MappingItem {
    * @return {Bool} reference belongs to a variable node(=true) or not(=false)
    */
   static isVarTypeNodeRef(ref) {
-    return ref.$nodeClass == NodeClass.Variable;
+    return ref.$nodeClass === NodeClass.Variable;
   }
 
   /**
@@ -168,26 +172,26 @@ export default class MappingItem {
     switch (this.itemType) {
       case AtvReferenceConfigName:
         return this.atvReferenceConfig;
-        break;
       case TypeDefConfigName:
         return this.typeDefinitionConfig;
-        break;
       case ReadNodeConfigName:
         return this.readNodeConfig;
-        break;
+      default:
+        return undefined;
     }
   }
 
   /**
    * Returns type info for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to process
+   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to
+   * process.
    * @param {node-opcua~ReferenceDescription} browseNodeId The source node id
    * @return {String} The JSON string containing the type definition.
    */
   createRefInfo(referenceDescription, browseNodeId) {
-    let nodeId = referenceDescription.nodeId,
-      referenceType = referenceDescription.referenceTypeId,
-      typeDefinition = referenceDescription.typeDefinition;
+    const nodeId = referenceDescription.nodeId;
+    const referenceType = referenceDescription.referenceTypeId;
+    const typeDefinition = referenceDescription.typeDefinition;
 
     return {
       sourceNodeId: browseNodeId,
@@ -211,12 +215,13 @@ export default class MappingItem {
   /**
    * Adds the given data value to the read node config object
    * options.
-   * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node config
+   * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node
+   * config.
    */
   addDataValueToReadNodeConfig(dataValue) {
     const variant = dataValue.value;
 
-    if (variant == null) {
+    if (variant === null) {
       return false;
     }
 
@@ -232,14 +237,14 @@ export default class MappingItem {
    * Creates a node configuration object for type definitions and atvise reference types
    * @param {*} value The object that contains node configuration
    * @param {node-opcua~NodeId} typeDefinition The type definition for the node config item
-   * @param {Boolean} isObjectTypeDefinition If the given type definition config belongs to an object type or not
+   * @param {Boolean} isObjectTypeDefinition If the given type definition config belongs to an
+   * object type or not.
    */
   createNodeConfigItem(value, typeDefinition, isObjectTypeDefinition = false) {
     return {
       nodeId: isObjectTypeDefinition ? this.refNodeId : this.browseNodeId,
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
-      dataType: DataType.String,
       value: JSON.stringify(value),
       typeDefinition,
     };

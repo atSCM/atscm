@@ -121,8 +121,10 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be pushed(=true) or not(=false)
    */
   static shouldBeMappedAsFile(ref, nodeId) {
-    return (BrowseStream.isChildNodeRef(ref, nodeId) && BrowseStream.shouldBeMappedAsContentFile(ref)) ||
-      BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref);
+    return (
+      BrowseStream.isChildNodeRef(ref, nodeId) &&
+      BrowseStream.shouldBeMappedAsContentFile(ref)
+    ) || BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref);
   }
 
   /**
@@ -171,7 +173,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as content file(=true) or not(=false)
    */
   static shouldBeMappedAsContentFile(ref) {
-    return ref.$nodeClass.value == NodeClass.Variable;
+    return ref.$nodeClass.value === NodeClass.Variable;
   }
 
   /**
@@ -182,8 +184,8 @@ export default class BrowseStream extends QueueStream {
   static shouldBeMappedAsTypeDefinitionFile(ref) {
     const referenceType = ref.referenceTypeId.value;
 
-    return referenceType == ReferenceTypeIds.HasTypeDefinition ||
-      referenceType == ReferenceTypeIds.HasSubtype;
+    return referenceType === ReferenceTypeIds.HasTypeDefinition ||
+      referenceType === ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -207,10 +209,9 @@ export default class BrowseStream extends QueueStream {
   /**
    * Checks if the given reference matches the defined browse Filters
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @param{node-opcua~NodeId} nodeId The browsed nodeId
    * @return {Boolean} reference matches browse filters(=true) or not(=false)
    */
-  matchesFilter(ref, nodeId) {
+  matchesFilter(ref) {
     return BrowseStream.isValidRef(ref) && !this.isIgnored(ref);
   }
 
@@ -273,7 +274,7 @@ export default class BrowseStream extends QueueStream {
                 return Promise.resolve();
               })
           )
-            .then(result => {
+            .then(() => {
               if (atvReferences.length > 0) {
                 this.push(new MappingItem(nodeId, atvReferences));
               }

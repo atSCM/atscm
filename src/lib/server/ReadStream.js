@@ -1,6 +1,6 @@
-import QueueStream from './QueueStream';
-import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
+import Logger from 'gulplog';
+import QueueStream from './QueueStream';
 
 /**
  * A stream that reads atvise server nodes for the {@link node-opcua~ReferenceDescription}s passed.
@@ -20,11 +20,11 @@ export default class ReadStream extends QueueStream {
   /**
    * Adds the data of read {node-opcua~DataValue}s for given {@link MappingItem}s.
    * @param {MappingItem} mappingItem The mappingItem to process
-   * If the proccessed item is not a type definition, the node value will be read from the atvise server
+   * If the proccessed item is not a type definition, the node value will be read from the atvise
+   * server.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-
   processChunk(mappingItem, handleErrors) {
     const nodeId = mappingItem.readNodeConfig.nodeId;
 
