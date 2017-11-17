@@ -1,5 +1,4 @@
 import QueueStream from './QueueStream';
-import { StatusCodes, NodeClass } from 'node-opcua';
 import ReadStreamResult from './ReadStreamResult';
 
 /**
@@ -19,8 +18,9 @@ export default class ReadStream extends QueueStream {
 
   /**
    * Returns a {ReadStream.ReadResult} for the given reference description.
-   * @param {node-opcua~ReferenceDescription} typeDefResult The type definition stream result to process
-   * If the proccessed item is not a type definition, the node value will be read from the atvise server
+   * @param {node-opcua~ReferenceDescription} typeDefResult The type definition stream result to
+   * process. If the proccessed item is not a type definition, the node value will be read from the
+   * atvise server.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */

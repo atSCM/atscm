@@ -1,5 +1,4 @@
 import { ReferenceTypeIds } from 'node-opcua';
-import Logger from 'gulplog';
 import BrowseStreamResult from './BrowseStreamResult';
 import checkType from '../../util/validation';
 
@@ -95,13 +94,14 @@ export default class NodeConfigStreamResult {
 
   /**
    * Returns type info for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to process
+   * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to
+   * process.
    * @return {String} The JSON string containing the type definition.
    */
   createRefInfo(referenceDescription) {
-    let nodeId = referenceDescription.nodeId,
-      referenceType = referenceDescription.referenceTypeId,
-      typeDefinition = referenceDescription.typeDefinition;
+    const nodeId = referenceDescription.nodeId;
+    const referenceType = referenceDescription.referenceTypeId;
+    const typeDefinition = referenceDescription.typeDefinition;
 
     return {
       nodeClass: referenceDescription.nodeClass.key,

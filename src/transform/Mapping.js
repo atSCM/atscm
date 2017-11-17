@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer';
 import { readFile } from 'fs';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
