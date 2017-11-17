@@ -26,19 +26,18 @@ export default class ReadStream extends QueueStream {
    */
 
   processChunk(mappingItem, handleErrors) {
-    let nodeId = mappingItem.readNodeConfig.nodeId;
+    const nodeId = mappingItem.readNodeConfig.nodeId;
 
     if (!mappingItem.isReadNodeConfig) {
       this.push(mappingItem);
       handleErrors(null, StatusCodes.Good, done => done());
     } else {
-
-      this.session.read([{nodeId}], (err, nodesToRead, results) => {
-        if(! err && (! results || results.length === 0)) {
+      this.session.read([{ nodeId }], (err, nodesToRead, results) => {
+        if (!err && (!results || results.length === 0)) {
           handleErrors(new Error('No results'));
         } else {
           handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-            let dataValue = results[0];
+            const dataValue = results[0];
 
             if (dataValue.value == null) {
               Logger.warn(`Unable to read value of node:  ${nodeId.toString()}`);
