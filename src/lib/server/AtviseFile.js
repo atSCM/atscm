@@ -94,6 +94,7 @@ const Decoder = {
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
   [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.Int64]: stringValue => JSON.parse(stringValue),
 };
 
 /**
@@ -103,6 +104,7 @@ const Decoder = {
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
+  [DataType.Int64]: int32Array => JSON.stringify(int32Array),
   [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
 };
 
