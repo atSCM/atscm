@@ -1,4 +1,4 @@
-import {ReferenceTypeIds, VariantArrayType, DataType} from 'node-opcua';
+import { ReferenceTypeIds, VariantArrayType, DataType } from 'node-opcua';
 import Logger from 'gulplog';
 import BrowseStreamResult from './BrowseStreamResult';
 import NodeConfigStreamResult from './NodeConfigStreamResult';
@@ -8,7 +8,7 @@ import AtviseFile from './AtviseFile';
 /**
  * Custom Atvise File Type for node configurations for later handling in type definition {NodeStream.ReadResult}
  */
-const NodeConfigResourceType = AtviseFile.getAtviseTypesByValue()["Custom.NodeConfig"];
+const NodeConfigResourceType = AtviseFile.getAtviseTypesByValue()['Custom.NodeConfig'];
 
 /**
  * Contains a the node configuration of an atvise node including the type definition
@@ -25,7 +25,7 @@ export default class ReadStreamResult {
    */
   constructor(nodeConfigStreamResult, readValue = {}) {
     if (!checkType(nodeConfigStreamResult, NodeConfigStreamResult)) {
-      throw new Error("Class ReadStreamResult: Can not parse given arguments!");
+      throw new Error('Class ReadStreamResult: Can not parse given arguments!');
     }
 
     /**
@@ -42,10 +42,10 @@ export default class ReadStreamResult {
    * @param {BrowseStream.BrowseResult} browseStreamResult The browseStreamResult to process
    * @param {node-opcua~DataValue} readValue The read value for variable nodes
    */
-  createMappingItem (nodeConfigStreamResult, readResult = {}) {
+  createMappingItem(nodeConfigStreamResult, readResult = {}) {
     let readValue = {};
-    let mappingItem = {
-      nodeId: nodeConfigStreamResult.sourceNodeId
+    const mappingItem = {
+      nodeId: nodeConfigStreamResult.sourceNodeId,
     };
 
     if (nodeConfigStreamResult.isNodeConfig) {

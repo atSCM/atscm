@@ -1,4 +1,4 @@
-import {ReferenceTypeIds} from 'node-opcua';
+import { ReferenceTypeIds } from 'node-opcua';
 import Logger from 'gulplog';
 import BrowseStreamResult from './BrowseStreamResult';
 import checkType from '../../util/validation';
@@ -6,7 +6,7 @@ import checkType from '../../util/validation';
 /**
  * Type definition key for node config object
  */
-const TypeDefinitionKey = "HasTypeDefinition";
+const TypeDefinitionKey = 'HasTypeDefinition';
 
 /**
  * Contains a the node configuration of an atvise node including the type definition
@@ -21,7 +21,7 @@ export default class NodeConfigStreamResult {
    */
   constructor(browseStreamResult) {
     if (!checkType(browseStreamResult, BrowseStreamResult)) {
-      throw new Error("Class NodeConfigStreamResult: Can not parse given arguments!");
+      throw new Error('Class NodeConfigStreamResult: Can not parse given arguments!');
     }
 
     /**
@@ -86,10 +86,10 @@ export default class NodeConfigStreamResult {
    * @param{node-opcua~ReferenceDescription} ref The reference description to add
    * @return {Boolean} reference is a type definition reference(=true) or not(=false)
    */
-  addRefToConfig (nodeConfig, ref) {
-    let refInfo = this.createRefInfo(ref);
+  addRefToConfig(nodeConfig, ref) {
+    const refInfo = this.createRefInfo(ref);
 
-    NodeConfigStreamResult.isTypeDefinitionRef(ref) ? nodeConfig[TypeDefinitionKey] = refInfo:
+    NodeConfigStreamResult.isTypeDefinitionRef(ref) ? nodeConfig[TypeDefinitionKey] = refInfo :
       nodeConfig.atvReferences.push(refInfo);
   }
 
@@ -108,16 +108,16 @@ export default class NodeConfigStreamResult {
       nodeId: {
         identifierType: nodeId.identifierType.key,
         namespaceIndex: nodeId.namespace,
-        value: nodeId.value
+        value: nodeId.value,
       },
       referenceType: {
         identifierType: referenceType.identifierType.key,
-        value: referenceType.value
+        value: referenceType.value,
       },
       typeDefinition: {
         identifierType: typeDefinition.identifierType.key,
-        value: typeDefinition.value
-      }
+        value: typeDefinition.value,
+      },
     };
   }
 }

@@ -2,7 +2,7 @@ import NodeConfigStreamResult from './NodeConfigStreamResult';
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from './NodeId';
-import {StatusCodes, NodeClass, browse_service as BrowseService} from 'node-opcua';
+import { StatusCodes, NodeClass, browse_service as BrowseService } from 'node-opcua';
 
 /**
  * An object that contains the result of a browsed node.
@@ -17,7 +17,7 @@ export default class BrowseStreamResult {
    */
   constructor(isNodeConfig, browseNodeId, references) {
     if (!checkType(isNodeConfig, Boolean) || !checkType(browseNodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {
-      throw new Error("Class BrowseStreamResult: Can not parse given arguments!");
+      throw new Error('Class BrowseStreamResult: Can not parse given arguments!');
     }
 
     /**

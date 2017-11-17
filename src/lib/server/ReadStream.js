@@ -1,5 +1,5 @@
 import QueueStream from './QueueStream';
-import {StatusCodes, NodeClass} from 'node-opcua';
+import { StatusCodes, NodeClass } from 'node-opcua';
 import ReadStreamResult from './ReadStreamResult';
 
 /**
@@ -31,8 +31,8 @@ export default class ReadStream extends QueueStream {
       this.push(new ReadStreamResult(nodeConfigStreamResult));
       this._processNextChunk(nodeConfigStreamResult);
     } else {
-      this.session.read([{nodeId}], (err, nodesToRead, results) => {
-        if(! err && (! results || results.length === 0)) {
+      this.session.read([{ nodeId }], (err, nodesToRead, results) => {
+        if (!err && (!results || results.length === 0)) {
           handleErrors(new Error('No results'));
         } else {
           handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
