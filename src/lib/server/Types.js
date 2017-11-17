@@ -11,7 +11,6 @@ class Type {
    * @abstract
    */
   constructor(identifier, dataType, fileExtensionOrKeep) {
-
     /**
      * Atscm's identifier for the type.
      * @type {String}

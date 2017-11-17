@@ -23,7 +23,7 @@ export default class WriteStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(file, handleErrors) {
-    console.log("test");
+    console.log('test');
 
     return;
 

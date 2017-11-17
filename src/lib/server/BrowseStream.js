@@ -1,4 +1,4 @@
-import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
+import { browse_service as BrowseService, NodeClass, ReferenceTypeIds } from 'node-opcua';
 import QueueStream from './QueueStream';
 import BrowseStreamResult from './BrowseStreamResult';
 import NodeId from './NodeId';
@@ -17,7 +17,7 @@ const ValidReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.HasModellingRule
+  ReferenceTypeIds.HasModellingRule,
 ];
 
 /**
@@ -41,7 +41,7 @@ const NodeConfigTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.Organizes
+  ReferenceTypeIds.Organizes,
 ];
 
 /**
@@ -50,7 +50,7 @@ const NodeConfigTypes = [
  */
 const TypeDefinitionNodeClasses = [
   NodeClass.VariableType,
-  NodeClass.ObjectType
+  NodeClass.ObjectType,
 ];
 
 
@@ -206,7 +206,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} The given reference description should be ignored(=true) or not(=false)
    */
   isIgnored(ref) {
-    let refNodeId = ref.nodeId.value.toString();
+    const refNodeId = ref.nodeId.value.toString();
 
     if (refNodeId.match(this.ignoredRegExp)) {
       Logger.info(`Ignored node: ${refNodeId}`);
@@ -233,7 +233,7 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          let nodeConfigReferences = [];
+          const nodeConfigReferences = [];
 
           Promise.all(
             results[0].references
@@ -242,14 +242,14 @@ export default class BrowseStream extends QueueStream {
               // Push variable and object nodes, recurse
               .map(ref => {
                 let browseRef = BrowseStream.shouldBeBrowsed(ref),
-                    addToNodeConfig = BrowseStream.isNodeConfigRef(ref);
+                  addToNodeConfig = BrowseStream.isNodeConfigRef(ref);
 
                 BrowseStream.castRef(ref);
 
                 if (addToNodeConfig) {
                   nodeConfigReferences.push(ref);
                 } else if (BrowseStream.shouldBeRead(ref)) {
-                    this.push(new BrowseStreamResult(false, nodeId, [ref]));
+                  this.push(new BrowseStreamResult(false, nodeId, [ref]));
                 }
 
                 // Only browse variable types and objects recursively

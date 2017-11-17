@@ -12,8 +12,8 @@ import NodeId from './NodeId';
  */
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-  [type.typeDefinition.value]: type,
-}), {});
+    [type.typeDefinition.value]: type,
+  }), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
@@ -21,8 +21,8 @@ const AtviseTypesByValue = AtviseTypes
  */
 const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-  [type.identifier]: type,
-}), {});
+    [type.identifier]: type,
+  }), {});
 
 /**
  * A map providing shorter extensions for data types
@@ -41,8 +41,8 @@ export const ExtensionForDataType = {
 function reverseObject(obj) {
   return Object.keys(obj)
     .reduce((result, key) => Object.assign(result, {
-    [obj[key]]: key,
-  }), {});
+      [obj[key]]: key,
+    }), {});
 }
 
 /**
@@ -161,7 +161,7 @@ export default class AtviseFile extends File {
         keepExtension = atType.keepExtension;
       }
 
-      if (! keepExtension) {
+      if (!keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
 
@@ -327,13 +327,13 @@ export default class AtviseFile extends File {
 
       Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
         if (!foundAtType && extensions.includes(identifier)) {
-        foundAtType = true;
-        const type = AtviseTypesByIdentifier[identifier];
+          foundAtType = true;
+          const type = AtviseTypesByIdentifier[identifier];
 
-        this._typeDefinition = type.typeDefinition;
-        this._dataType = type.dataType;
-      }
-    });
+          this._typeDefinition = type.typeDefinition;
+          this._dataType = type.dataType;
+        }
+      });
     }
 
     if (!complete()) {
@@ -461,7 +461,7 @@ export default class AtviseFile extends File {
   static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
-      reject(new Error('options.path is required'));
+        reject(new Error('options.path is required'));
       } else {
         readFile(options.path, (err, contents) => {
           if (err) {

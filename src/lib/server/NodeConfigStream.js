@@ -1,5 +1,5 @@
 import QueueStream from './QueueStream';
-import {NodeClass, VariantArrayType, ReferenceTypeIds} from 'node-opcua';
+import { NodeClass, VariantArrayType, ReferenceTypeIds } from 'node-opcua';
 import NodeConfigStreamResult from './NodeConfigStreamResult';
 import Logger from 'gulplog';
 
@@ -15,7 +15,7 @@ export default class NodeConfigStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   _processChunk(browseStreamResult) {
-    let nodeConfigStreamResult = new NodeConfigStreamResult(browseStreamResult);
+    const nodeConfigStreamResult = new NodeConfigStreamResult(browseStreamResult);
 
     this._processed++;
     this.push(nodeConfigStreamResult);
