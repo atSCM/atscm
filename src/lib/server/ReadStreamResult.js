@@ -1,12 +1,11 @@
-import { ReferenceTypeIds, VariantArrayType, DataType } from 'node-opcua';
-import Logger from 'gulplog';
-import BrowseStreamResult from './BrowseStreamResult';
+import { VariantArrayType, DataType } from 'node-opcua';
 import NodeConfigStreamResult from './NodeConfigStreamResult';
 import checkType from '../../util/validation';
 import AtviseFile from './AtviseFile';
 
 /**
- * Custom Atvise File Type for node configurations for later handling in type definition {NodeStream.ReadResult}
+ * Custom Atvise File Type for node configurations for later handling in type definition
+ * {NodeStream.ReadResult}.
  */
 const NodeConfigResourceType = AtviseFile.getAtviseTypesByValue()['Custom.NodeConfig'];
 
@@ -18,8 +17,8 @@ const NodeConfigResourceType = AtviseFile.getAtviseTypesByValue()['Custom.NodeCo
 export default class ReadStreamResult {
 
   /**
-   * Creates a new Read stream result object based on the given {NodeConfigStreamResult.NodeConfigStreamResult} and other
-   * options.
+   * Creates a new Read stream result object based on the given {@link NodeConfigStreamResult} and
+   * other options.
    * @param {BrowseStream.BrowseResult} browseStreamResult The browseStreamResult to process
    * @param {node-opcua~DataValue} readValue The read value for variable nodes
    */
@@ -37,9 +36,9 @@ export default class ReadStreamResult {
 
 
   /**
-   * Creates a new Read stream result object based on the given {NodeConfigStreamResult.NodeConfigStreamResult} and other
-   * options.
-   * @param {BrowseStream.BrowseResult} browseStreamResult The browseStreamResult to process
+   * Creates a new Read stream result object based on the given {@link NodeConfigStreamResult} and
+   * other options.
+   * @param {BrowseStreamResult} browseStreamResult The browseStreamResult to process
    * @param {node-opcua~DataValue} readValue The read value for variable nodes
    */
   createMappingItem(nodeConfigStreamResult, readResult = {}) {

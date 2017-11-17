@@ -1,9 +1,9 @@
 import { browse_service as BrowseService, NodeClass, ReferenceTypeIds } from 'node-opcua';
+import Logger from 'gulplog';
 import QueueStream from './QueueStream';
 import BrowseStreamResult from './BrowseStreamResult';
 import NodeId from './NodeId';
 import Project from '../../config/ProjectConfig';
-import Logger from 'gulplog';
 
 /**
  * List of valid reference types
@@ -176,7 +176,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be read(=true) or not(=false)
    */
   static shouldBeRead(ref) {
-    return ref.$nodeClass == NodeClass.Variable;
+    return ref.$nodeClass === NodeClass.Variable;
   }
 
   /**
@@ -241,8 +241,8 @@ export default class BrowseStream extends QueueStream {
               .filter(ref => this.matchesFilter(ref, nodeId))
               // Push variable and object nodes, recurse
               .map(ref => {
-                let browseRef = BrowseStream.shouldBeBrowsed(ref),
-                  addToNodeConfig = BrowseStream.isNodeConfigRef(ref);
+                const browseRef = BrowseStream.shouldBeBrowsed(ref);
+                const addToNodeConfig = BrowseStream.isNodeConfigRef(ref);
 
                 BrowseStream.castRef(ref);
 
@@ -258,9 +258,11 @@ export default class BrowseStream extends QueueStream {
                     this.write(ref.nodeId, null, resolve);
                   });
                 }
+
+                return Promise.resolve();
               })
           )
-            .then(result => {
+            .then(() => {
               if (nodeConfigReferences) {
                 this.push(new BrowseStreamResult(true, nodeId, nodeConfigReferences));
               }

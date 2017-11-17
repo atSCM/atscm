@@ -98,7 +98,6 @@ export default class NodeId extends OpcNodeId {
     const lastSeperator = this.value.indexOf('/') > -1 ?
       '/' : '.';
 
-    const test = this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
     return this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
   }
 
