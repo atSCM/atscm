@@ -94,7 +94,7 @@ const Decoder = {
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
   [DataType.UInt64]: stringValue => JSON.parse(stringValue),
-  [DataType.Int64]: stringValue => JSON.parse(stringValue)
+  [DataType.Int64]: stringValue => JSON.parse(stringValue),
 };
 
 /**
