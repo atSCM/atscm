@@ -1,5 +1,5 @@
-<a name="0.4.0-beta.12"></a>
-# [0.4.0-beta.12](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.12) (2017-11-17)
+<a name="0.4.0-beta.13"></a>
+# [0.4.0-beta.13](https://github.com/atSCM/atscm/compare/v0.3.0...v0.4.0-beta.13) (2017-11-17)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 * **docs:** Document deployment process ([#67](https://github.com/atSCM/atscm/issues/67)) ([998e195](https://github.com/atSCM/atscm/commit/998e195))
 * **init:** Do not escape author field in package.json ([#55](https://github.com/atSCM/atscm/issues/55)) ([160fffc](https://github.com/atSCM/atscm/commit/160fffc)), closes [#52](https://github.com/atSCM/atscm/issues/52)
 * **watch:** Warn if `src` directory does not exist ([2992025](https://github.com/atSCM/atscm/commit/2992025)), closes [#47](https://github.com/atSCM/atscm/issues/47)
+* Add Int64 variable support ([#76](https://github.com/atSCM/atscm/issues/76)) ([b2a583e](https://github.com/atSCM/atscm/commit/b2a583e))
 
 
 ### Features
