@@ -116,7 +116,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => new StubMonitoredItem());
+        stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem());
       });
 
       return expect([{ nodeId }], 'when piped through', stream,
@@ -132,7 +132,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => new StubMonitoredItem(new Error('item error')));
+        stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem(new Error('item error')));
       });
 
       return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
@@ -143,7 +143,7 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => new StubMonitoredItem('item error'));
+        stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem('item error'));
       });
 
       return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
@@ -163,7 +163,7 @@ describe('SubscribeStream', function() {
       let item;
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor', () => {
+        stub(subscription, 'monitor').callsFake(() => {
           item = new StubMonitoredItem(false);
           return item;
         });
@@ -190,7 +190,7 @@ describe('SubscribeStream', function() {
 
     it('should call enqueue immediately if subscription started', function(done) {
       const stream = new SubscribeStream();
-      stub(stream, '_enqueueChunk', () => {});
+      stub(stream, '_enqueueChunk').callsFake(() => {});
       stream.once('subscription-started', subscription => {
         expect(stream.subscription, 'to be', subscription);
 
@@ -204,7 +204,7 @@ describe('SubscribeStream', function() {
 
     it('should wait for subscription to start before calling enqueue', function(done) {
       const stream = new SubscribeStream();
-      stub(stream, '_enqueueChunk', () => {});
+      stub(stream, '_enqueueChunk').callsFake(() => {});
       stream._transform(chunk, 'utf8', () => {});
 
       expect(stream._enqueueChunk, 'was not called');

@@ -191,8 +191,8 @@ ${xmlString}`),
     });
 
     context('when encoding fails', function() {
-      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents',
-        (obj, cb) => cb(new Error('Encode error'))));
+      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents')
+        .callsFake((obj, cb) => cb(new Error('Encode error'))));
       afterEach(() => DisplayTransformer.prototype.encodeContents.restore());
 
       it('should forward encode error', function() {
@@ -339,8 +339,8 @@ ${xmlString}`.replace(/\r?\n|\r/g, '\r\n'));
     });
 
     context('when encoding fails', function() {
-      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents',
-        (obj, cb) => cb(new Error('Encode error'))));
+      beforeEach(() => stub(DisplayTransformer.prototype, 'encodeContents')
+        .callsFake((obj, cb) => cb(new Error('Encode error'))));
       afterEach(() => DisplayTransformer.prototype.encodeContents.restore());
 
       it('should forward encode error', function() {

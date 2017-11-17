@@ -27,7 +27,7 @@ describe('MappingTransformer', function() {
       let debugListener;
 
       beforeEach(() => {
-        stub(AtviseFile, 'fromReadResult', () => {
+        stub(AtviseFile, 'fromReadResult').callsFake(() => {
           throw new Error('Test');
         });
         Logger.on('warn', (warnListener = spy()));
@@ -66,7 +66,7 @@ describe('MappingTransformer', function() {
       let debugListener;
 
       beforeEach(() => {
-        stub(AtviseFile, 'fromReadResult', () => {
+        stub(AtviseFile, 'fromReadResult').callsFake(() => {
           throw new Error('no value');
         });
         Logger.on('warn', (warnListener = spy()));
@@ -195,7 +195,7 @@ describe('MappingTransformer', function() {
       });
 
       context('when .rc file cannot be read', function() {
-        beforeEach(() => stub(fs, 'readFile', (path, enc, cb) => cb(new Error('Test'))));
+        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(new Error('Test'))));
         afterEach(() => fs.readFile.restore());
 
         it('should forward error', function() {
@@ -211,7 +211,7 @@ describe('MappingTransformer', function() {
       });
 
       context('when .rc file cannot be parsed', function() {
-        beforeEach(() => stub(fs, 'readFile', (path, enc, cb) => cb(null, 'invalid')));
+        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(null, 'invalid')));
         afterEach(() => fs.readFile.restore());
 
         it('should forward error', function() {

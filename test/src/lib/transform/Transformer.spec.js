@@ -49,8 +49,8 @@ describe('Transformer', function() {
 
     beforeEach(() => {
       transformer = new Transformer();
-      stub(transformer, 'transformFromDB', (c, e, cb) => cb(null));
-      stub(transformer, 'transformFromFilesystem', (c, e, cb) => cb(null));
+      stub(transformer, 'transformFromDB').callsFake((c, e, cb) => cb(null));
+      stub(transformer, 'transformFromFilesystem').callsFake((c, e, cb) => cb(null));
     });
 
     it('should fail without direction', function() {
