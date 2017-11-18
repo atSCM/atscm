@@ -242,7 +242,7 @@ export default class AtviseFile extends File {
 
     const encoder = Encoder[dataType];
 
-    if (arrayType == VariantArrayType.Array) {
+    if (arrayType === VariantArrayType.Array) {
       const arrayContent = value.map(item => encoder ? encoder(item) : item).join(ArrayValueSeperator);
       return Buffer.from(arrayContent);
     }
@@ -274,7 +274,7 @@ export default class AtviseFile extends File {
       bufferValue = buffer.toString();
     }
 
-    if (arrayType == VariantArrayType.Array) {
+    if (arrayType === VariantArrayType.Array) {
       const arrayValue = bufferValue.toString().split(ArrayValueSeperator);
 
       return (arrayValue.map(item => decoder ? decoder(item) : item));

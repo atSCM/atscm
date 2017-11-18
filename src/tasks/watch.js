@@ -147,13 +147,13 @@ export class WatchTask {
         const extension = extname(nodePath).replace('.', '');
 
         // step one directory outside for split files
-        if (extension == 'script' || extension == 'display' || extension == 'qd') {
+        if (extension === 'script' || extension === 'display' || extension === 'qd') {
           nodePath = dirname(nodePath);
         }
 
         nodeId = NodeId.fromFilePath(nodePath);
 
-        if (nodeId.toString() != this._lastPulled) {
+        if (nodeId.toString() !== this._lastPulled) {
           const pushStream = new PushStream({
             nodesToPush: [nodeId],
             createNodes: false,

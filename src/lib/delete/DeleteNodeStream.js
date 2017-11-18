@@ -58,10 +58,10 @@ export default class DeleteNodeStream extends CallScriptStream {
   handleCallback(results, nodeId, handleErrors) {
     const outputArguments = results[0].outputArguments;
 
-    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+    if (outputArguments[0].value.value !== StatusCodes.Good.value) {
       handleErrors(new Error(outputArguments[1].value));
     } else {
-      const deleteSuccessful = outputArguments[3].value[0].value == StatusCodes.Good.value;
+      const deleteSuccessful = outputArguments[3].value[0].value === StatusCodes.Good.value;
 
       if (deleteSuccessful) {
         Logger.debug(`Successfully deleted node ${nodeId.toString()}`);

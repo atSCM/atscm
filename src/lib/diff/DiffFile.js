@@ -58,7 +58,7 @@ export default class DiffFile {
    * @type {Bool}
    */
   get isServerFile() {
-    return this.fileType == DiffFile.FileType.ServerFile;
+    return this.fileType === DiffFile.FileType.ServerFile;
   }
 
   /**
@@ -66,7 +66,7 @@ export default class DiffFile {
    * @type {Bool}
    */
   get isFsFile() {
-    return this.fileType == DiffFile.FileType.FsFile;
+    return this.fileType === DiffFile.FileType.FsFile;
   }
 
 

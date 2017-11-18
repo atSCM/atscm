@@ -126,7 +126,7 @@ export default class BrowseStream extends QueueStream {
    */
   static shouldBeMappedAsContentFile(ref, nodeId) {
     return BrowseStream.isChildNodeRef(ref, nodeId) &&
-      ref.$nodeClass.value == NodeClass.Variable;
+      ref.$nodeClass.value === NodeClass.Variable;
   }
 
   /**
@@ -174,7 +174,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
   static isBaseTypeRef(ref) {
-    return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
+    return ref.referenceTypeId.value === ReferenceTypeIds.HasSubtype;
   }
 
   /**

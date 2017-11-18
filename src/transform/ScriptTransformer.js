@@ -29,7 +29,7 @@ export default class ScriptTransformer extends XMLTransformer {
       if (err) {
         Logger.error(`Display ${file.nodeId}: Error parsing script content. Check if script content is empty or broken`);
         callback(null);
-      } else if (xmlObj.children.length == 0 || xmlObj.children[0].name != 'script') {
+      } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'script') {
         Logger.error(`Script ${file.nodeId}: Can not decode script. Missing 'script' tag`);
         callback(null);
       } else {
@@ -85,7 +85,7 @@ export default class ScriptTransformer extends XMLTransformer {
         }
 
 
-        if (code.length == 0) {
+        if (code.length === 0) {
           Logger.warn(`Script ${file.nodeId}: No script content defined`);
         }
 
@@ -147,7 +147,7 @@ export default class ScriptTransformer extends XMLTransformer {
       config.parameters.forEach(param => {
         let relPath;
 
-        if (param.relative == 'true') {
+        if (param.relative === 'true') {
           relPath = this.createRelPathTag(param.relPath);
           delete param.relPath;
         }

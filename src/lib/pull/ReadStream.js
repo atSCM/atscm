@@ -40,7 +40,7 @@ export default class ReadStream extends QueueStream {
           handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
             const dataValue = results[0];
 
-            if (dataValue.value == null) {
+            if (dataValue.value === null) {
               Logger.error(`Unable to read value of node:  ${nodeId.toString()}`);
             } else {
               mappingItem.createConfigItemFromDataValue(dataValue);

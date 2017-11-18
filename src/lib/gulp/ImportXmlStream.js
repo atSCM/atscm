@@ -68,7 +68,7 @@ export default class ImportXmlStream extends QueueStream {
       this.session.call([callObj], (err, results) => {
         if (err) {
           handleErrors(err);
-        } else if (results[0].statusCode.value != StatusCodes.Good.value) {
+        } else if (results[0].statusCode.value !== StatusCodes.Good.value) {
           handleErrors(err, results[0].statusCode, done => done());
         } else {
           const importSuccessFull = results[0].outputArguments[0].value;

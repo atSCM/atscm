@@ -67,7 +67,7 @@ export default class AddReferenceStream extends CallScriptStream {
     const nodeId = referenceConfigFile.nodeId;
     const outputArguments = results[0].outputArguments;
 
-    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+    if (outputArguments[0].value.value !== StatusCodes.Good.value) {
       handleErrors(new Error(outputArguments[1].value));
     } else {
       const failedAttempts = outputArguments[3].value[0].value;

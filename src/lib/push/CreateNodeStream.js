@@ -103,7 +103,7 @@ export default class CreateNodeStream extends CallScriptStream {
   handleCallback(results, combinedNodeFile, handleErrors) {
     const outputArguments = results[0].outputArguments;
 
-    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+    if (outputArguments[0].value.value !== StatusCodes.Good.value) {
       handleErrors(new Error(outputArguments[1].value));
     } else {
       const createdNode = outputArguments[3].value[0].value;

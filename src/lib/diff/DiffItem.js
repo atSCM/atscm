@@ -84,7 +84,7 @@ export default class DiffItem {
       return false;
     }
 
-    return this.fsFile.value == this.serverFile.value;
+    return this.fsFile.value === this.serverFile.value;
   }
 
 

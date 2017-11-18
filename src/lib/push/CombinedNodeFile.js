@@ -92,7 +92,7 @@ export default class CombinedNodeFile {
       typeDefinition = typeDefinitionContent[TypeDefinitionKey].items[0];
     }
 
-    return NodeClass[typeDefinition.nodeClass].value != NodeClass.Variable.value;
+    return NodeClass[typeDefinition.nodeClass].value !== NodeClass.Variable.value;
   }
 
   /**

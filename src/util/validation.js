@@ -26,5 +26,5 @@ export default function checkType(param, type) {
  * to ignore.
  */
 function isUndefinedOrHasWrongType(item, type) {
-  return item == undefined || item == null || item.constructor != type;
+  return item === undefined || item === null || item.constructor !== type;
 }

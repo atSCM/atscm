@@ -47,7 +47,7 @@ export default class DiffStream {
     // diff file processors
     const diffItemStream = new DiffItemStream();
     const diffResultStream = new DiffResultStream({ filePath });
-    const equalFilesFilter = filter(diffItem => diffItem.state.value != DiffItem.DiffStates.Equal.value);
+    const equalFilesFilter = filter(diffItem => diffItem.state.value !== DiffItem.DiffStates.Equal.value);
     const logger = diffResultStream.logger;
 
     const combinedStream = new CombinedStream({ pauseStreams: false });
@@ -85,9 +85,9 @@ export default class DiffStream {
           });
 
           itemsCache.forEach(diffItem => {
-            if (diffItem.state.value == states.Added.value) {
+            if (diffItem.state.value === states.Added.value) {
               addedItems.push(diffItem);
-            } else if (diffItem.state.value == states.Deleted.value) {
+            } else if (diffItem.state.value === states.Deleted.value) {
               deletedItems.push(diffItem);
             }
           });
