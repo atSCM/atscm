@@ -1,7 +1,7 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import {browse_service as BrowseService} from 'node-opcua';
+import { browse_service as BrowseService } from 'node-opcua';
 import InstanceReferenceItem from './InstanceReferenceItem';
 
 
@@ -9,7 +9,7 @@ import InstanceReferenceItem from './InstanceReferenceItem';
  * Custom Atvise File Type for node configurations
  * @type {node-opcua~NodeId}
  */
-const AtviseReferenceConfigResourceId = new NodeId("Custom.AtvReferenceConfig");
+const AtviseReferenceConfigResourceId = new NodeId('Custom.AtvReferenceConfig');
 
 
 /**
@@ -26,11 +26,10 @@ export default class AtviseReferenceItem extends InstanceReferenceItem {
    */
   constructor(nodeId, references) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {
-      throw new Error("AtviseReferenceMappingItem#constructor: Can not parse given arguments!");
+      throw new Error('AtviseReferenceMappingItem#constructor: Can not parse given arguments!');
     }
 
     super(nodeId, references, AtviseReferenceConfigResourceId);
-
   }
 
   /**
@@ -39,6 +38,6 @@ export default class AtviseReferenceItem extends InstanceReferenceItem {
    * @return {String} The configuration object for the given reference
    */
   createRefConfig(ref) {
-    return ref.nodeId.toString()
+    return ref.nodeId.toString();
   }
 }

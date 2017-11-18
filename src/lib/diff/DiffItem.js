@@ -11,7 +11,7 @@ export default class DiffItem {
    */
   constructor(file) {
     if (!checkType(file, DiffFile)) {
-      throw new Error("DiffItem#constructor: Can not parse given argument!");
+      throw new Error('DiffItem#constructor: Can not parse given argument!');
     }
 
     /**
@@ -58,14 +58,14 @@ export default class DiffItem {
    * The possible diff states
    * @type {{Equal:Object, Added: Object, Modified: Object, Deleted: Object}}
    */
-  static get DiffStates () {
+  static get DiffStates() {
     return {
-      Equal: {text: 'Equ', value: 0},
-      Added: {text: 'Add', value: 1},
-      Modified: {text: 'Mod', value: 2},
-      Deleted: {text: 'Del', value: 3}
-    }
-  };
+      Equal: { text: 'Equ', value: 0 },
+      Added: { text: 'Add', value: 1 },
+      Modified: { text: 'Mod', value: 2 },
+      Deleted: { text: 'Del', value: 3 },
+    };
+  }
 
   /**
    * `true` for diff items that already contain an file system and an server resource.

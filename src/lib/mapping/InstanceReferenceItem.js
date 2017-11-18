@@ -2,7 +2,7 @@ import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
 import MappingItem from './MappingItem';
-import {browse_service as BrowseService, ReferenceTypeIds, DataType, VariantArrayType} from 'node-opcua';
+import { browse_service as BrowseService, ReferenceTypeIds, DataType, VariantArrayType } from 'node-opcua';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 /**
@@ -19,7 +19,7 @@ export default class InstanceReferenceItem extends MappingItem {
   constructor(nodeId, references, itemTypeDefinition) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription) ||
       !checkType(itemTypeDefinition, NodeId)) {
-      throw new Error("InstanceReferenceItem#constructor: Can not parse given arguments!");
+      throw new Error('InstanceReferenceItem#constructor: Can not parse given arguments!');
     }
 
     super(nodeId);
@@ -66,17 +66,16 @@ export default class InstanceReferenceItem extends MappingItem {
    * @param {Object} refConfig The reference object to add the given reference
    */
   addRefToConfig(ref, refConfig) {
-    let referenceName = ReverseReferenceTypeIds[ref.referenceTypeId.value];
+    const referenceName = ReverseReferenceTypeIds[ref.referenceTypeId.value];
 
     if (refConfig.hasOwnProperty(referenceName)) {
       refConfig[referenceName].items.push(this.createRefConfig(ref));
     } else {
       refConfig[referenceName] = {
         referenceIdValue: ReferenceTypeIds[referenceName],
-        items: [this.createRefConfig(ref)]
+        items: [this.createRefConfig(ref)],
       };
     }
-
   }
 
 
@@ -84,14 +83,14 @@ export default class InstanceReferenceItem extends MappingItem {
    * Creates a node configuration object for type definitions and atvise reference types
    * @param {Object} config The object that contains the reference configuration
    */
-  createConfigItem (config) {
+  createConfigItem(config) {
     return {
       nodeId: this.nodeId,
-      dataType : DataType.String,
-      arrayType : VariantArrayType.Scalar,
-      dataType : DataType.String,
-      value : JSON.stringify(config),
-      typeDefinition : this.itemTypeDefinition
-    }
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      dataType: DataType.String,
+      value: JSON.stringify(config),
+      typeDefinition: this.itemTypeDefinition,
+    };
   }
 }

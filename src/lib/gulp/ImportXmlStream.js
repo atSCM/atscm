@@ -1,4 +1,4 @@
-import {DataType, NodeClass, StatusCodes, VariantArrayType, Variant} from 'node-opcua';
+import { DataType, NodeClass, StatusCodes, VariantArrayType, Variant } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 import NodeId from '../ua/NodeId';
 import checkType from '../../util/validation';
@@ -8,7 +8,7 @@ import Logger from 'gulplog';
  * Call script node id
  * @type {node-opcua~NodeId}
  */
-const ImportNodesMethodId = new NodeId("ns=1;s=AGENT.OPCUA.METHODS.importNodes");
+const ImportNodesMethodId = new NodeId('ns=1;s=AGENT.OPCUA.METHODS.importNodes');
 
 /**
  * Base node id for callscript node
@@ -34,13 +34,13 @@ export default class ImportXmlStream extends QueueStream {
       inputArguments: [
         {
           dataType: DataType.NodeId,
-          value: new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0) // absolute import
+          value: new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0), // absolute import
         },
         {
           dataType: DataType.XmlElement,
-          value: file.contents
-        }
-      ]
+          value: file.contents,
+        },
+      ],
     };
   }
 

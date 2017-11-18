@@ -1,4 +1,4 @@
-import {DataType, NodeClass, StatusCodes, VariantArrayType, Variant} from 'node-opcua';
+import { DataType, NodeClass, StatusCodes, VariantArrayType, Variant } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 import NodeId from '../ua/NodeId';
 import checkType from '../../util/validation';
@@ -7,7 +7,7 @@ import checkType from '../../util/validation';
  * Call script node id
  * @type {node-opcua~NodeId}
  */
-const CallScriptMethodId = new NodeId("ns=1;s=AGENT.SCRIPT.METHODS.callScript");
+const CallScriptMethodId = new NodeId('ns=1;s=AGENT.SCRIPT.METHODS.callScript');
 
 /**
  * Base node id for callscript node
@@ -24,7 +24,7 @@ export default class CallScriptStream extends QueueStream {
 
   constructor(targetScriptId) {
     if (!checkType(targetScriptId, NodeId)) {
-      throw new Error("CallScriptStream#constructor: Given targetScriptId is undefined or has invalid type!");
+      throw new Error('CallScriptStream#constructor: Given targetScriptId is undefined or has invalid type!');
     }
 
     super();
@@ -39,7 +39,7 @@ export default class CallScriptStream extends QueueStream {
    * @return {Object} The resulting call script object.
    */
   createCallObject(combinedNodeFile) {
-    let parameters = this.createParameters(combinedNodeFile);
+    const parameters = this.createParameters(combinedNodeFile);
 
     return {
       objectId: CallScriptMethodBaseNodeId.toString(),
@@ -47,23 +47,23 @@ export default class CallScriptStream extends QueueStream {
       inputArguments: [
         {
           dataType: DataType.NodeId,
-          value: this.targetScriptId
+          value: this.targetScriptId,
         },
         {
           dataType: DataType.NodeId,
-          value: this.targetScriptBaseId
+          value: this.targetScriptBaseId,
         },
         {
           dataType: DataType.String,
           arrayType: VariantArrayType.Array,
-          value: parameters.paramNames
+          value: parameters.paramNames,
         },
         {
           dataType: DataType.Variant,
           arrayType: VariantArrayType.Array,
-          value: parameters.paramValues
-        }
-      ]
+          value: parameters.paramValues,
+        },
+      ],
     };
   }
 
@@ -97,7 +97,7 @@ export default class CallScriptStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(chunk, handleErrors) {
-    let callObj = this.createCallObject(chunk);
+    const callObj = this.createCallObject(chunk);
 
     try {
       this.session.call([callObj], (err, results) => {
@@ -106,7 +106,7 @@ export default class CallScriptStream extends QueueStream {
         } else if (results[0].statusCode.value != StatusCodes.Good.value) {
           handleErrors(err, results[0].statusCode, done => done());
         } else {
-        this.handleCallback(results, chunk, handleErrors);
+          this.handleCallback(results, chunk, handleErrors);
         }
       });
     } catch (e) {

@@ -1,7 +1,7 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import {browse_service as BrowseService} from 'node-opcua';
+import { browse_service as BrowseService } from 'node-opcua';
 import MappingItem from './MappingItem';
 
 /**
@@ -18,7 +18,7 @@ export default class ReadNodeItem extends MappingItem {
    */
   constructor(nodeId, reference) {
     if (!checkType(nodeId, NodeId) || !checkType(reference, BrowseService.ReferenceDescription)) {
-      throw new Error("MappingItem#constructor: Can not parse given arguments!");
+      throw new Error('MappingItem#constructor: Can not parse given arguments!');
     }
 
     super(reference.nodeId);
@@ -51,7 +51,7 @@ export default class ReadNodeItem extends MappingItem {
    * options.
    * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node config
    */
-  createConfigItemFromDataValue (dataValue) {
+  createConfigItemFromDataValue(dataValue) {
     const config = this.config;
     const variant = dataValue.value;
     const source = this.source;

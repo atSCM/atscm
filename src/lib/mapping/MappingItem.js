@@ -16,7 +16,7 @@ export default class MappingItem {
    */
   constructor(nodeId) {
     if (!checkType(nodeId, NodeId)) {
-      throw new Error("MappingItem#constructor: Can not parse given arguments!");
+      throw new Error('MappingItem#constructor: Can not parse given arguments!');
     }
 
     /**
@@ -36,7 +36,6 @@ export default class MappingItem {
      * @type {node-opcua~ReferenceDescription or node-opcua~ReferenceDescription[]}
      */
     this.source = undefined;
-
   }
 
   /**

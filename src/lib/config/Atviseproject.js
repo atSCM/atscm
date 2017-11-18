@@ -66,8 +66,8 @@ export default class Atviseproject {
   static get DeleteFileNames() {
     return {
       server: 'deleteServer.txt',
-      fs: 'deleteFs.txt'
-    }
+      fs: 'deleteFs.txt',
+    };
   }
 
   /**
@@ -124,7 +124,7 @@ export default class Atviseproject {
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
-      new NodeId('SYSTEM\.LIBRARY\.ATVISE\.SERVERSCRIPTS\.atscm')
+      new NodeId('SYSTEM\.LIBRARY\.ATVISE\.SERVERSCRIPTS\.atscm'),
     ];
   }
 

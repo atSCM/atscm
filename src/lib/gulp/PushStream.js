@@ -20,7 +20,6 @@ export default class PushStream {
    * @param {Boolean} [options.createNodes] Defines if nodes shall be created or not.
    */
   constructor(options = {}) {
-
     /**
      * Defines shall be created or not.
      * @type {Boolean}
@@ -33,11 +32,11 @@ export default class PushStream {
      */
     const nodesToPush = options.nodesToPush || [];
 
-    const fileTransformer = new FileToAtviseFileTransformer({nodesToTransform: nodesToPush});
+    const fileTransformer = new FileToAtviseFileTransformer({ nodesToTransform: nodesToPush });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
-    const nodeFileStream = new NodeFileStream({createNodes: createNodes});
+    const nodeFileStream = new NodeFileStream({ createNodes });
     const createNodeStream = new CreateNodeStream();
-    const writeStream = new WriteStream({createNodes: createNodes});
+    const writeStream = new WriteStream({ createNodes });
 
     this.printProgress = setInterval(() => {
       Logger.info(
@@ -53,11 +52,11 @@ export default class PushStream {
     this.pushStream = fileTransformer
       .pipe(atvReferenceFilter)
       .pipe(nodeFileStream)
-      .pipe(writeStream)
+      .pipe(writeStream);
 
-     if (createNodes) {
+    if (createNodes) {
       this.pushStream.pipe(createNodeStream);
-     }
+    }
 
     this.pushStream.once('finish', () => {
       Logger.debug('Writing and creating nodes finished. Adding references...');
@@ -84,7 +83,7 @@ export default class PushStream {
       readline.cursorTo(process.stdout, 0);
       readline.clearLine(process.stdout);
     }
-    
+
     clearInterval(this.printProgress);
   }
 }

@@ -1,6 +1,6 @@
 import ProjectConfig from '../../config/ProjectConfig';
 import { readFile } from 'fs';
-import {dirname, join, relative} from 'path';
+import { dirname, join, relative } from 'path';
 import File from 'vinyl';
 import Logger from 'gulplog';
 import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
@@ -16,8 +16,8 @@ import Int64 from 'node-int64';
  */
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-  [type.typeDefinition.value]: type,
-}), {});
+    [type.typeDefinition.value]: type,
+  }), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
@@ -25,8 +25,8 @@ const AtviseTypesByValue = AtviseTypes
  */
 const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-  [type.identifier]: type,
-}), {});
+    [type.identifier]: type,
+  }), {});
 
 
 /**
@@ -52,8 +52,8 @@ export const ExtensionForDataType = {
 function reverseObject(obj) {
   return Object.keys(obj)
     .reduce((result, key) => Object.assign(result, {
-    [obj[key]]: key,
-  }), {});
+      [obj[key]]: key,
+    }), {});
 }
 
 /**
@@ -113,9 +113,8 @@ const Decoder = {
   [DataType.Double]: stringValue => parseFloat(stringValue, 10),
   [DataType.Float]: stringValue => parseFloat(stringValue, 10),
   [DataType.XmlElement]: stringValue => stringValue,
-  [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1])
+  [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1]),
 };
-
 
 
 /**
@@ -135,8 +134,8 @@ const CreateNodeDecoder = {
 const Encoder = {
   [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
   [DataType.Int64]: int32Array => AtviseFile.uint32ArraysToInt64(int32Array[0], int32Array[1]),
-  [DataType.ByteString]: byteString => new Buffer(byteString)
-}
+  [DataType.ByteString]: byteString => new Buffer(byteString),
+};
 
 
 /**
@@ -190,7 +189,7 @@ export default class AtviseFile extends File {
         keepExtension = atType.keepExtension;
       }
 
-      if (! keepExtension) {
+      if (!keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
     }
@@ -219,7 +218,7 @@ export default class AtviseFile extends File {
    * @param {Number} higherRangeValue The value for the higher 32 bits of the int 64 value
    * @returns {Number} The resulting int64 value
    */
-  static uint32ArraysToInt64 (lowerRangeValue, higherRangeValue) {
+  static uint32ArraysToInt64(lowerRangeValue, higherRangeValue) {
     const int64 = new Int64(lowerRangeValue, higherRangeValue);
 
     if (!isFinite(int64)) {
@@ -244,7 +243,7 @@ export default class AtviseFile extends File {
     const encoder = Encoder[dataType];
 
     if (arrayType == VariantArrayType.Array) {
-      let arrayContent = value.map(item => encoder ? encoder(item): item).join(ArrayValueSeperator);
+      const arrayContent = value.map(item => encoder ? encoder(item) : item).join(ArrayValueSeperator);
       return Buffer.from(arrayContent);
     }
 
@@ -278,17 +277,14 @@ export default class AtviseFile extends File {
     if (arrayType == VariantArrayType.Array) {
       const arrayValue = bufferValue.toString().split(ArrayValueSeperator);
 
-      return (arrayValue.map(item => decoder ? decoder(item): item));
-
-    } else {
-      if (decoder) {
-        return decoder(bufferValue);
-      }
-
-      return buffer;
+      return (arrayValue.map(item => decoder ? decoder(item) : item));
     }
-  }
+    if (decoder) {
+      return decoder(bufferValue);
+    }
 
+    return buffer;
+  }
 
 
   /**
@@ -396,7 +392,7 @@ export default class AtviseFile extends File {
     });
 
     ifLastExtensionMatches(ext => ext === 'var', () => {
-      this._typeDefinition = new NodeId("Custom.VarResourceType");
+      this._typeDefinition = new NodeId('Custom.VarResourceType');
     });
 
     if (!complete()) {
@@ -405,13 +401,13 @@ export default class AtviseFile extends File {
 
       Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
         if (!foundAtType && extensions.includes(identifier)) {
-        foundAtType = true;
-        const type = AtviseTypesByIdentifier[identifier];
+          foundAtType = true;
+          const type = AtviseTypesByIdentifier[identifier];
 
-        this._typeDefinition = type.typeDefinition;
-        this._dataType = type.dataType;
-      }
-    });
+          this._typeDefinition = type.typeDefinition;
+          this._dataType = type.dataType;
+        }
+      });
     }
 
     if (!complete()) {
@@ -585,16 +581,16 @@ export default class AtviseFile extends File {
   static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
-      reject(new Error('options.path is required'));
-    } else {
-      readFile(options.path, (err, contents) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(new AtviseFile(Object.assign(options, { contents })));
-    }
+        reject(new Error('options.path is required'));
+      } else {
+        readFile(options.path, (err, contents) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
     });
-    }
-  });
   }
 }

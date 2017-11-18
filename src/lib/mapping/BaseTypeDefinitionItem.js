@@ -1,7 +1,7 @@
 import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import {browse_service as BrowseService, DataType, VariantArrayType} from 'node-opcua';
+import { browse_service as BrowseService, DataType, VariantArrayType } from 'node-opcua';
 import MappingItem from './MappingItem';
 
 
@@ -9,7 +9,7 @@ import MappingItem from './MappingItem';
  * Custom Atvise File Type for base type definitions
  * @type {node-opcua~NodeId}
  */
-const BaseTypeDefinitionResourceId = new NodeId("Custom.BaseTypeDefinition");
+const BaseTypeDefinitionResourceId = new NodeId('Custom.BaseTypeDefinition');
 
 
 /**
@@ -26,7 +26,7 @@ export default class BaseTypeDefinitionItem extends MappingItem {
    */
   constructor(nodeId, reference) {
     if (!checkType(nodeId, NodeId) || !checkType(reference, BrowseService.ReferenceDescription)) {
-      throw new Error("BaseTypeDefinitionItem#constructor: Can not parse given arguments!");
+      throw new Error('BaseTypeDefinitionItem#constructor: Can not parse given arguments!');
     }
 
     super(reference.nodeId);
@@ -39,12 +39,12 @@ export default class BaseTypeDefinitionItem extends MappingItem {
 
     this.config = {
       nodeId: reference.nodeId,
-      dataType : DataType.String,
-      arrayType : VariantArrayType.Scalar,
-      dataType : DataType.String,
-      value : JSON.stringify(this.createRefConfigObj(reference)),
-      typeDefinition : BaseTypeDefinitionResourceId
-    }
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      dataType: DataType.String,
+      value: JSON.stringify(this.createRefConfigObj(reference)),
+      typeDefinition: BaseTypeDefinitionResourceId,
+    };
   }
 
   /**
@@ -63,7 +63,7 @@ export default class BaseTypeDefinitionItem extends MappingItem {
   createRefConfigObj(ref) {
     return {
       nodeClass: ref.$nodeClass.key,
-      refNodeId: ref.typeDefinition.toString()
-    }
+      refNodeId: ref.typeDefinition.toString(),
+    };
   }
 }
