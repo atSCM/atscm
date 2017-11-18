@@ -37,7 +37,7 @@ export default class DisplayTransformer extends XMLTransformer {
       } else {
         try {
           let scriptFileAdded = false;
-          const config = {parameters: [], dependencies: []};
+          const config = { parameters: [], dependencies: [] };
           const displayContent = xmlObj.children[0].children;
 
           const scriptFile = DisplayTransformer.splitFile(file, '.js');
@@ -73,8 +73,8 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Extract display parameters
           if (metadata.length > 0) {
-            let meta = metadata[0].children;
-            let nonParameterTags = [];
+            const meta = metadata[0].children;
+            const nonParameterTags = [];
 
             if (metadata.length > 1) {
               Logger.warn(`Display ${file.nodeId}: atscm only supports one metadata tag per display`);
@@ -160,7 +160,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Insert parameters
           if (parameters && parameters.length > 0) {
-            let meta = metadata.children[0].children;
+            const meta = metadata.children[0].children;
 
             parameters.forEach(param => meta.unshift(this.createTag('atv:parameter', param, metadata)));
           }
@@ -168,12 +168,12 @@ export default class DisplayTransformer extends XMLTransformer {
           // Insert dependencies
           if (config.dependencies && config.dependencies.length > 0) {
             config.dependencies.reverse().forEach(dependency => displayContent.children
-              .push(this.createTag('script', {'xlink:href': dependency, type: 'text/ecmascript'}, metadata)));
+              .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' }, metadata)));
           }
 
           // Insert script
           if (scriptFile) {
-            let script = this.createTag('script', {type: 'text/ecmascript'}, displayContent);
+            const script = this.createTag('script', { type: 'text/ecmascript' }, displayContent);
 
             script.append(this.createCData(inlineScript));
             displayContent.children.push(script);

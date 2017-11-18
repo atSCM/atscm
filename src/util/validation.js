@@ -6,11 +6,11 @@
  * @return {Boolean} parameter is valid(=true) or not(=false)
  * to ignore.
  */
-export default function checkType (param, type) {
+export default function checkType(param, type) {
   let isValid = true;
 
   if (param instanceof Array) {
-    param.map(item => {if(isUndefinedOrHasWrongType(item, type)) isValid = false;});
+    param.map(item => { if (isUndefinedOrHasWrongType(item, type)) isValid = false; });
   } else {
     isValid = !isUndefinedOrHasWrongType(param, type);
   }
@@ -25,6 +25,6 @@ export default function checkType (param, type) {
  * @return {Boolean} parameter is valid(=true) or not(=false)
  * to ignore.
  */
-function isUndefinedOrHasWrongType (item, type) {
+function isUndefinedOrHasWrongType(item, type) {
   return item == undefined || item == null || item.constructor != type;
 }

@@ -13,7 +13,6 @@ export default class WriteStream extends QueueStream {
    * @param {Object} options The stream configuration options.
    */
   constructor(options = {}) {
-
     super();
 
     /**
@@ -74,7 +73,7 @@ export default class WriteStream extends QueueStream {
 
             handleErrors(err, StatusCodes.Good, done => done());
           } else {
-            this.emit("write-successful", contentFile);
+            this.emit('write-successful', contentFile);
             handleErrors(err, StatusCodes.Good, done => done());
           }
         });
@@ -82,5 +81,5 @@ export default class WriteStream extends QueueStream {
         handleErrors(e);
       }
     }
-  };
+  }
 }

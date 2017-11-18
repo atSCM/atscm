@@ -17,7 +17,6 @@ export default class PullStream {
    * @param {Stream} [options.inputStream] The input stream to use.
    */
   constructor(options = {}) {
-
     /**
      * The nodes to pull
      * @type {NodeId[]}
@@ -28,7 +27,7 @@ export default class PullStream {
     const fileTransformer = new UaNodeToAtviseFileTransformer({
       nodesToTransform: nodesToPull,
       useInputStream: options.useInputStream,
-      inputStream: options.inputStream
+      inputStream: options.inputStream,
     });
 
     const readStream = fileTransformer.readStream;

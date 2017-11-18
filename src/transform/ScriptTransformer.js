@@ -33,11 +33,10 @@ export default class ScriptTransformer extends XMLTransformer {
         Logger.error(`Script ${file.nodeId}: Can not decode script. Missing 'script' tag`);
         callback(null);
       } else {
-
         const configFile = ScriptTransformer.splitFile(file, '.json');
         const scriptFile = ScriptTransformer.splitFile(file, '.js');
 
-        const config = {parameters: []};
+        const config = { parameters: [] };
         const document = xmlObj && xmlObj.script ? xmlObj.script : {};
 
         // Filter for metadata tags in script
@@ -59,25 +58,25 @@ export default class ScriptTransformer extends XMLTransformer {
             Logger.warn(`Script ${file.nodeId}: atscm only supports one metadata tag per script`);
           }
 
-          meta.forEach(tag => config.metadata.push({name: tag.name, attrs: tag.attrs, value: tag.text()}));
+          meta.forEach(tag => config.metadata.push({ name: tag.name, attrs: tag.attrs, value: tag.text() }));
         }
 
         // Extract Parameters
         if (parameters.length > 0) {
           parameters.forEach(param => {
-            let paramObj = param.attrs;
+            const paramObj = param.attrs;
 
-            if (paramObj.relative === "true") {
-              let targetName = param.find('*/*/*/TargetName');
+            if (paramObj.relative === 'true') {
+              const targetName = param.find('*/*/*/TargetName');
 
               if (targetName.children.length > 0) {
-                let nameSpaceIndex = targetName.find('*/NamespaceIndex').eq(0);
-                let nodePath = targetName.find('*/Name').eq(0);
+                const nameSpaceIndex = targetName.find('*/NamespaceIndex').eq(0);
+                const nodePath = targetName.find('*/Name').eq(0);
 
                 // add relative path information
                 paramObj.relPath = {
                   nameSpaceIndex: nameSpaceIndex.text(),
-                  nodePath: nodePath.text()
+                  nodePath: nodePath.text(),
                 };
               }
             }
@@ -117,7 +116,7 @@ export default class ScriptTransformer extends XMLTransformer {
 
     const parameters = [];
     let config = {};
-    let xmlObj = {};
+    const xmlObj = {};
 
     const script = this.createTag('script', {}, xmlObj);
     const metadata = this.createTag('metadata', {}, script);
@@ -148,7 +147,7 @@ export default class ScriptTransformer extends XMLTransformer {
       config.parameters.forEach(param => {
         let relPath;
 
-        if (param.relative == "true") {
+        if (param.relative == 'true') {
           relPath = this.createRelPathTag(param.relPath);
           delete param.relPath;
         }

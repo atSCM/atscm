@@ -1,5 +1,5 @@
 import Logger from 'gulplog';
-import { StatusCodes, DataType, Variant} from 'node-opcua';
+import { StatusCodes, DataType, Variant } from 'node-opcua';
 import CallScriptStream from '../script/CallScriptStream';
 import NodeId from '../ua/NodeId';
 
@@ -8,7 +8,7 @@ import NodeId from '../ua/NodeId';
  * Definition for the parameter name of the Delete node script
  * @type {String}
  */
-const DeleteNodeScriptParameterName = "nodeId";
+const DeleteNodeScriptParameterName = 'nodeId';
 
 
 /**
@@ -20,7 +20,7 @@ export default class DeleteNodeStream extends CallScriptStream {
    * Creates a new CreateNodeStream
    */
   constructor() {
-    super(new NodeId("ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.DeleteNode"));
+    super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.DeleteNode'));
   }
 
 
@@ -40,13 +40,12 @@ export default class DeleteNodeStream extends CallScriptStream {
    * @return {Object} The resulting parameter object.
    */
   createParameters(nodeId) {
-
-    let paramValue = new Variant({
+    const paramValue = new Variant({
       dataType: DataType.String,
-      value: nodeId.toString()
+      value: nodeId.toString(),
     });
 
-    return {paramNames: [DeleteNodeScriptParameterName], paramValues: [paramValue]};
+    return { paramNames: [DeleteNodeScriptParameterName], paramValues: [paramValue] };
   }
 
   /**

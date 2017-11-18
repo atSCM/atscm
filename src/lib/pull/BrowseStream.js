@@ -1,4 +1,4 @@
-import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
+import { browse_service as BrowseService, NodeClass, ReferenceTypeIds } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 import ReadNodeMappingItem from '../mapping/ReadNodeItem';
 import InstanceTypeDefinitionItem from '../mapping/InstanceTypeDefinitionItem';
@@ -21,7 +21,7 @@ const ValidReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.HasModellingRule
+  ReferenceTypeIds.HasModellingRule,
 ];
 
 /**
@@ -44,7 +44,7 @@ const AtviseReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.Organizes
+  ReferenceTypeIds.Organizes,
 ];
 
 /**
@@ -53,7 +53,7 @@ const AtviseReferenceTypes = [
  */
 const TypeDefinitionReferenceTypes = [
   ReferenceTypeIds.HasTypeDefinition,
-  ReferenceTypeIds.HasModellingRule
+  ReferenceTypeIds.HasModellingRule,
 ];
 
 
@@ -135,7 +135,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
   static shouldBeMappedAsAtviseReferenceFile(ref) {
-    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
@@ -144,7 +144,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
    */
   static shouldBeMappedAsTypeDefinitionFile(ref) {
-    return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+    return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
@@ -221,7 +221,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} The given reference description should be ignored(=true) or not(=false)
    */
   isIgnored(ref) {
-    let refNodeId = ref.nodeId.value.toString();
+    const refNodeId = ref.nodeId.value.toString();
 
     if (refNodeId.match(this.ignoredRegExp)) {
       Logger.debug(`Ignored node: ${refNodeId}`);
@@ -248,9 +248,9 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          let atvReferences = [];
-          let typeDefinitionReferences = [];
-          let baseTypeReferences = [];
+          const atvReferences = [];
+          const typeDefinitionReferences = [];
+          const baseTypeReferences = [];
 
           Promise.all(
             results[0].references
@@ -264,7 +264,7 @@ export default class BrowseStream extends QueueStream {
                   baseTypeReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref)) {
                   typeDefinitionReferences.push(ref);
-                } else if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
+                } else if (BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsContentFile(ref, nodeId)) {
                   this.push(new ReadNodeItem(nodeId, ref));

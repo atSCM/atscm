@@ -16,7 +16,6 @@ export default class FileToAtviseFileTransformer {
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
    */
   constructor(options = {}) {
-
     /**
      * Combined stream instance.
      * @type {CombinedStream}
@@ -42,6 +41,6 @@ export default class FileToAtviseFileTransformer {
         .pipe(mappingStream),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
-    )
+    );
   }
 }

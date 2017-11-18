@@ -95,10 +95,10 @@ export default class NodeId extends OpcNodeId {
    * @type {String}
    */
   get browseName() {
-    const lastSeperator = this.value.indexOf('/') > - 1 ?
+    const lastSeperator = this.value.indexOf('/') > -1 ?
       '/' : '.';
 
-    let test = this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
+    const test = this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
     return this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
   }
 
@@ -107,7 +107,7 @@ export default class NodeId extends OpcNodeId {
    * @type {NodeId}
    */
   get parentNodeId() {
-    const lastSeperator = this.value.indexOf('/') > - 1 ?
+    const lastSeperator = this.value.indexOf('/') > -1 ?
       '/' : '.';
 
     return new NodeId(this.value.substr(0, this.value.lastIndexOf(lastSeperator)));

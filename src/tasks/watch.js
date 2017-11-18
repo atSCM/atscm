@@ -1,4 +1,4 @@
-import {dirname, extname} from 'path';
+import { dirname, extname } from 'path';
 import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
@@ -106,8 +106,8 @@ export class WatchTask {
     this.browserSyncInstance.init({
       proxy: {
         target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-        ws: true
-      }
+        ws: true,
+      },
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
     });
@@ -156,7 +156,7 @@ export class WatchTask {
         if (nodeId.toString() != this._lastPulled) {
           const pushStream = new PushStream({
             nodesToPush: [nodeId],
-            createNodes: false
+            createNodes: false,
           });
 
           this._pushing = true;
@@ -187,13 +187,10 @@ export class WatchTask {
    */
   handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
-
       if (!this._pushing) {
-
-        let nodeId = readNodeMappingItem.nodeId.toString();
+        const nodeId = readNodeMappingItem.nodeId.toString();
 
         if (nodeId !== this._lastPushed) {
-
           this._pulling = true;
 
           Logger.info('Server change:', nodeId, 'changed');
@@ -204,7 +201,7 @@ export class WatchTask {
 
           const pullStream = new PullStream({
             useInputStream: true,
-            inputStream: readStream
+            inputStream: readStream,
           });
 
           pullStream

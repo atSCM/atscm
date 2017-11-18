@@ -10,11 +10,10 @@ export default class DiffFile {
    * @param {AtviseFile} file The file to add in first place
    */
   constructor(file, fileType) {
-
     if (!checkType(file, AtviseFile) || !checkType(fileType, String)) {
-      throw new Error("DiffFile#constructor: Can not parse given argument!");
+      throw new Error('DiffFile#constructor: Can not parse given argument!');
     } else if (!DiffFile.isValidFileType(fileType)) {
-      throw new Error("DiffFile#constructor: File has wrong item type!");
+      throw new Error('DiffFile#constructor: File has wrong item type!');
     }
 
     /**
@@ -40,34 +39,33 @@ export default class DiffFile {
      * @type {vinyl~path}
      */
     this.path = file.relativeFilePath;
-
   }
 
   /**
    * The directions a transformer can be run in.
    * @type {{DBToServer: String, ServerToDB: String}}
    */
-  static get FileType () {
+  static get FileType() {
     return {
       ServerFile: 'ServerFile',
       FsFile: 'FsFile',
-    }
-  };
+    };
+  }
 
 
   /**
    * 'true' for {AtviseFiles}'s created from atvise server resources
    * @type {Bool}
    */
-   get isServerFile () {
-     return this.fileType == DiffFile.FileType.ServerFile;
-   }
+  get isServerFile() {
+    return this.fileType == DiffFile.FileType.ServerFile;
+  }
 
   /**
    * 'true' for {AtviseFiles}'s created from file system resources
    * @type {Bool}
    */
-  get isFsFile () {
+  get isFsFile() {
     return this.fileType == DiffFile.FileType.FsFile;
   }
 

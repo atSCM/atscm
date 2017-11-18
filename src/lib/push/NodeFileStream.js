@@ -13,7 +13,6 @@ export default class NodeFileStream extends QueueStream {
    * Creates a new NodeFileStream.
    */
   constructor(options = {}) {
-
     super();
 
 
@@ -62,7 +61,6 @@ export default class NodeFileStream extends QueueStream {
       if (!combinedFile.addFile(file)) {
         handleErrors(new Error(`NodeFileStream: Duplicate file:  ${nodeId.toString()}`));
       }
-
     } else {
       this.combinedFilesCache[nodeId] = new CombinedNodeFile(file, this.createNodes);
       combinedFile = this.combinedFilesCache[nodeId];

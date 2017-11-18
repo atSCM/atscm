@@ -21,7 +21,6 @@ export default class DiffItemStream extends QueueStream {
      * @type {Map<vinyl~path, DiffItem>}
      */
     this.itemsCache = {};
-
   }
 
   /**
