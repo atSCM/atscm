@@ -1,7 +1,6 @@
-import Logger from 'gulplog';
+import { browse_service as BrowseService } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import { browse_service as BrowseService } from 'node-opcua';
 import MappingItem from './MappingItem';
 
 /**
@@ -49,7 +48,8 @@ export default class ReadNodeItem extends MappingItem {
   /**
    * Creates the config object from the given {node-opcua~DataValue}
    * options.
-   * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node config
+   * @param {node-opcua~DataValue} dataValue The data value object that is added to the read node
+   * config.
    */
   createConfigItemFromDataValue(dataValue) {
     const config = this.config;

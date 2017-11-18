@@ -1,4 +1,3 @@
-import { src } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
@@ -12,10 +11,11 @@ export default class UaNodeToAtviseFileTransformer {
 
   /**
    * Creates a new FileToAtviseFileTransformer
-   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor} for available
-   * options.
+   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor}
+   * for available options.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
-   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be used for mapping.
+   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be used for
+   * mapping.
    * @param {Stream} [options.inputStream] The input stream to use.
    */
   constructor(options = {}) {

@@ -1,13 +1,11 @@
-import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
 
-
 /**
- * Contains the configuration object for atvise nodes and references tht are mapped on the file system
+ * Contains the configuration object for atvise nodes and references tht are mapped on the file
+ * system.
  * @abstract
  */
-
 export default class MappingItem {
 
   /**

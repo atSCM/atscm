@@ -1,8 +1,8 @@
-import Logger from 'gulplog';
+import { browse_service as BrowseService, ReferenceTypeIds, DataType,
+  VariantArrayType } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
 import MappingItem from './MappingItem';
-import { browse_service as BrowseService, ReferenceTypeIds, DataType, VariantArrayType } from 'node-opcua';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 /**
@@ -55,8 +55,8 @@ export default class InstanceReferenceItem extends MappingItem {
    * @param {node-opcua~ReferenceDescription} ref The reference description to process
    * @return {*} The configuration for the given reference
    */
-  createRefConfig(ref) {
-    throw new Error('InstanceReferenceItem#createRefConfigObj must be implemented by all subclasses');
+  createRefConfig(ref) { // eslint-disable-line no-unused-vars
+    throw new Error('InstanceReferenceItem#createRefConfig must be implemented by all subclasses');
   }
 
 
@@ -68,13 +68,15 @@ export default class InstanceReferenceItem extends MappingItem {
   addRefToConfig(ref, refConfig) {
     const referenceName = ReverseReferenceTypeIds[ref.referenceTypeId.value];
 
-    if (refConfig.hasOwnProperty(referenceName)) {
+    if (Object.prototype.hasOwnProperty.call(refConfig, referenceName)) {
       refConfig[referenceName].items.push(this.createRefConfig(ref));
     } else {
-      refConfig[referenceName] = {
-        referenceIdValue: ReferenceTypeIds[referenceName],
-        items: [this.createRefConfig(ref)],
-      };
+      Object.assign(refConfig, {
+        [referenceName]: {
+          referenceIdValue: ReferenceTypeIds[referenceName],
+          items: [this.createRefConfig(ref)],
+        },
+      });
     }
   }
 
@@ -88,7 +90,6 @@ export default class InstanceReferenceItem extends MappingItem {
       nodeId: this.nodeId,
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
-      dataType: DataType.String,
       value: JSON.stringify(config),
       typeDefinition: this.itemTypeDefinition,
     };

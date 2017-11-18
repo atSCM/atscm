@@ -1,7 +1,6 @@
-import Logger from 'gulplog';
+import { NodeClass, browse_service as BrowseService } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import { NodeClass, browse_service as BrowseService } from 'node-opcua';
 import InstanceReferenceItem from './InstanceReferenceItem';
 
 /**
@@ -30,8 +29,8 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
   /**
    * Creates a new InstanceTypeDefinitionItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
-   * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription} to create the
-   * type definition item for
+   * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription}
+   * to create the type definition item for.
    */
   constructor(nodeId, references) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {

@@ -27,7 +27,9 @@ export default class ScriptTransformer extends XMLTransformer {
   transformFromDB(file, enc, callback) {
     this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing script content. Check if script content is empty or broken`);
+        Logger.error(`Display ${
+          file.nodeId
+        }: Error parsing script content. Check if script content is empty or broken`);
         callback(null);
       } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'script') {
         Logger.error(`Script ${file.nodeId}: Can not decode script. Missing 'script' tag`);
@@ -37,7 +39,6 @@ export default class ScriptTransformer extends XMLTransformer {
         const scriptFile = ScriptTransformer.splitFile(file, '.js');
 
         const config = { parameters: [] };
-        const document = xmlObj && xmlObj.script ? xmlObj.script : {};
 
         // Filter for metadata tags in script
         const metadata = xmlObj.find('*/metadata').children;
@@ -58,7 +59,11 @@ export default class ScriptTransformer extends XMLTransformer {
             Logger.warn(`Script ${file.nodeId}: atscm only supports one metadata tag per script`);
           }
 
-          meta.forEach(tag => config.metadata.push({ name: tag.name, attrs: tag.attrs, value: tag.text() }));
+          meta.forEach(({ name, attrs, text }) => config.metadata.push({
+            name,
+            attrs,
+            value: text(),
+          }));
         }
 
         // Extract Parameters
@@ -114,7 +119,6 @@ export default class ScriptTransformer extends XMLTransformer {
     const configFile = files['.json'];
     const scriptFile = files['.js'];
 
-    const parameters = [];
     let config = {};
     const xmlObj = {};
 
@@ -138,7 +142,8 @@ export default class ScriptTransformer extends XMLTransformer {
 
     // Add metadata to script
     if (config.metadata) {
-      config.metadata.forEach(tag => metadata.append(this.createTag(tag.name, tag.attrs, metadata, tag.value)));
+      config.metadata
+        .forEach(tag => metadata.append(this.createTag(tag.name, tag.attrs, metadata, tag.value)));
       script.append(metadata);
     }
 

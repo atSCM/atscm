@@ -1,7 +1,6 @@
-import Logger from 'gulplog';
+import { browse_service as BrowseService, DataType, VariantArrayType } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import { browse_service as BrowseService, DataType, VariantArrayType } from 'node-opcua';
 import MappingItem from './MappingItem';
 
 
@@ -41,7 +40,6 @@ export default class BaseTypeDefinitionItem extends MappingItem {
       nodeId: reference.nodeId,
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
-      dataType: DataType.String,
       value: JSON.stringify(this.createRefConfigObj(reference)),
       typeDefinition: BaseTypeDefinitionResourceId,
     };

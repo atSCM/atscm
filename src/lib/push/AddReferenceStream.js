@@ -12,7 +12,8 @@ const AddReferencesScriptParameterName = 'paramObjString';
 
 
 /**
- * A stream that adds node references for the given reference config {AtviseFile}'s on the atvise server.
+ * A stream that adds node references for the given reference config {AtviseFile}'s on the atvise
+ * server.
  */
 export default class AddReferenceStream extends CallScriptStream {
 
@@ -74,7 +75,7 @@ export default class AddReferenceStream extends CallScriptStream {
 
       if (failedAttempts) {
         if (failedAttempts.length > 0) {
-          failedAttempts.map(targetNodeId => {
+          failedAttempts.forEach(targetNodeId => {
             Logger.error(`Adding reference from ${nodeId} to ${targetNodeId} failed`);
           });
         } else {

@@ -1,11 +1,10 @@
-import QueueStream from '../stream/QueueStream';
-import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
+import QueueStream from '../stream/QueueStream';
 import DiffFile from './DiffFile';
 
 /**
- * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem, depending on the
- * stream direction
+ * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem,
+ * depending on the stream direction
  */
 export default class DiffFileStream extends QueueStream {
 

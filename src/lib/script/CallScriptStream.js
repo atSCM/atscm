@@ -1,4 +1,4 @@
-import { DataType, NodeClass, StatusCodes, VariantArrayType, Variant } from 'node-opcua';
+import { DataType, StatusCodes, VariantArrayType } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 import NodeId from '../ua/NodeId';
 import checkType from '../../util/validation';

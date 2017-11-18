@@ -11,8 +11,8 @@ export default class FileToAtviseFileTransformer {
 
   /**
    * Creates a new FileToAtviseFileTransformer
-   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor} for available
-   * options.
+   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor}
+   * for available options.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
    */
   constructor(options = {}) {
@@ -34,7 +34,8 @@ export default class FileToAtviseFileTransformer {
      */
     const nodesToTransform = options.nodesToTransform || [];
 
-    nodesToTransform.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
+    nodesToTransform
+      .map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
 
     return Transformer.applyTransformers(
       combinedSrcStream

@@ -1,19 +1,11 @@
-import QueueStream from '../stream/QueueStream';
-import Logger from 'gulplog';
-import { StatusCodes } from 'node-opcua';
-import DiffItem from './DiffItem';
 import { createWriteStream } from 'fs';
 import { dirname } from 'path';
+import { StatusCodes } from 'node-opcua';
+import QueueStream from '../stream/QueueStream';
 
 /**
- * The possible diff states
- * @type {DiffItem.DiffStates}
- */
-const states = DiffItem.DiffStates;
-
-/**
- * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem, depending on the
- * stream direction
+ * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem,
+ * depending on the stream direction
  */
 export default class DiffResultStream extends QueueStream {
 
@@ -46,7 +38,8 @@ export default class DiffResultStream extends QueueStream {
 
 
   /**
-   * Diffs the given {AtviseFile} with the corresponding atvise server resource or file systsem resource.
+   * Diffs the given {AtviseFile} with the corresponding atvise server resource or file system
+   * resource.
    * @param {DiffItem} diffItem The diffItem to process
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -54,7 +47,8 @@ export default class DiffResultStream extends QueueStream {
 
   processChunk(diffItem, handleErrors) {
     handleErrors(null, StatusCodes.Good, done => {
-      this.logger.write(`${diffItem.state.text} filePath=${diffItem.path}, nodeFilePath=${dirname(diffItem.path)}, nodeId=${diffItem.nodeId.value}\n`);
+      this.logger.write(`${diffItem.state.text} filePath=${diffItem.path}, nodeFilePath=${
+        dirname(diffItem.path)}, nodeId=${diffItem.nodeId.value}\n`);
       done();
     });
   }

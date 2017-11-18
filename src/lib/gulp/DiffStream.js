@@ -1,13 +1,12 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import { src } from 'gulp';
 import filter from 'gulp-filter';
+import CombinedStream from 'combined-stream';
 import DiffResultStream from '../diff/DiffResultStream';
 import DiffItemStream from '../diff/DiffItemStream';
 import DiffFileStream from '../diff/DiffFileStream';
 import DiffFile from '../diff/DiffFile';
 import DiffItem from '../diff/DiffItem';
-import CombinedStream from 'combined-stream';
 import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
 
@@ -39,7 +38,9 @@ export default class DiffStream {
     const fsFileStream = new FileToAtviseFileTransformer({ nodesToTransform: nodesToDiff })
       .pipe(new DiffFileStream({ fileType: DiffFile.FileType.FsFile }));
 
-    const serverFileTransformer = new UaNodeToAtviseFileTransformer({ nodesToTransform: nodesToDiff });
+    const serverFileTransformer = new UaNodeToAtviseFileTransformer({
+      nodesToTransform: nodesToDiff,
+    });
 
     const serverFileStream = serverFileTransformer.stream
       .pipe(new DiffFileStream({ fileType: DiffFile.FileType.ServerFile }));
@@ -47,7 +48,7 @@ export default class DiffStream {
     // diff file processors
     const diffItemStream = new DiffItemStream();
     const diffResultStream = new DiffResultStream({ filePath });
-    const equalFilesFilter = filter(diffItem => diffItem.state.value !== DiffItem.DiffStates.Equal.value);
+    const equalFilesFilter = filter(({ state }) => state.value !== DiffItem.DiffStates.Equal.value);
     const logger = diffResultStream.logger;
 
     const combinedStream = new CombinedStream({ pauseStreams: false });

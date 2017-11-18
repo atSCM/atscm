@@ -1,5 +1,3 @@
-import { EOL } from 'os';
-import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 import { parse as xmlStringToObj, serialize as objToXmlString, xml } from '../xml/xamel';
 
@@ -25,14 +23,6 @@ const RelativePathElements = [
 export default class XMLTransformer extends SplittingTransformer {
 
   /**
-   * Creates a new XMLTransformer based on some options.
-   * @param {Object} options The options to use.
-   */
-  constructor(options) {
-    super(options);
-  }
-
-  /**
    * Creates a new {xamel~NodeSet}
    * @param {xamel~Tag[]} nodes The nodes to store in the created NodeSet
    */
@@ -48,12 +38,11 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {*} initialChildNode The tags child item
    */
   createTag(tagName, attributes, parentTag, initialChildNode) {
-    const sortedAttr = Object.keys(attributes).sort().forEach(key => attributes[key]);
     const tag = new xml.Tag(tagName, attributes, parentTag);
 
     if (initialChildNode) {
       if (initialChildNode instanceof xml.Tag) {
-        initialChildNode.parent = tag;
+        Object.assign(initialChildNode, { parent: tag });
       }
       tag.append(initialChildNode);
     }

@@ -1,12 +1,11 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import ProjectConfig from '../../config/ProjectConfig';
+import filter from 'gulp-filter';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
 import NodeFileStream from '../push/NodeFileStream';
 import WriteStream from '../push/WriteStream';
 import CreateNodeStream from '../push/CreateNodeStream';
 import AddReferenceStream from '../push/AddReferenceStream';
-import filter from 'gulp-filter';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.

@@ -1,5 +1,5 @@
 import Logger from 'gulplog';
-import { ReferenceTypeIds, StatusCodes, DataType, NodeClass, VariantArrayType, Variant } from 'node-opcua';
+import { ReferenceTypeIds, StatusCodes, DataType, NodeClass, Variant } from 'node-opcua';
 import CallScriptStream from '../script/CallScriptStream';
 import NodeId from '../ua/NodeId';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
@@ -76,7 +76,9 @@ export default class CreateNodeStream extends CallScriptStream {
       browseName: nodeId.browseName,
       nodeClass: NodeClass[typeDefinition.nodeClass].value,
       typeDefinition: new NodeId(typeDefinition.refNodeId).value,
-      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs.items[0].refNodeId).value : null,
+      modellingRule: modellingRuleRefs ?
+        new NodeId(modellingRuleRefs.items[0].refNodeId).value :
+        null,
     };
 
     if (!combinedNodeFile.isTypeDefOnlyFile) {

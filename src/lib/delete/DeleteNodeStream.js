@@ -66,7 +66,9 @@ export default class DeleteNodeStream extends CallScriptStream {
       if (deleteSuccessful) {
         Logger.debug(`Successfully deleted node ${nodeId.toString()}`);
       } else {
-        Logger.error(`Error deleting node ${nodeId.toString()}. Node does not exist in atvise server address space`);
+        Logger.error(`Error deleting node ${
+          nodeId.toString()
+        }. Node does not exist in atvise server address space`);
       }
     }
     handleErrors(null, StatusCodes.Good, done => done());

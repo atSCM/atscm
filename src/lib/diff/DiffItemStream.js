@@ -1,11 +1,10 @@
-import QueueStream from '../stream/QueueStream';
-import Logger from 'gulplog';
-import DiffItem from './DiffItem';
 import { StatusCodes } from 'node-opcua';
+import QueueStream from '../stream/QueueStream';
+import DiffItem from './DiffItem';
 
 /**
- * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem, depending on the
- * stream direction
+ * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem,
+ * depending on the stream direction.
  */
 export default class DiffItemStream extends QueueStream {
 
@@ -14,7 +13,7 @@ export default class DiffItemStream extends QueueStream {
    * @param {Object} The options to use.
    */
   constructor(options = {}) {
-    super();
+    super(options);
 
     /**
      * The diff item cache
@@ -45,7 +44,7 @@ export default class DiffItemStream extends QueueStream {
       const path = file.path;
       const itemsCache = this.itemsCache;
 
-      if (itemsCache.hasOwnProperty(path)) {
+      if (Object.hasOwnProperty.call(itemsCache, path)) {
         const diffItem = itemsCache[path];
 
         diffItem.addFile(file);

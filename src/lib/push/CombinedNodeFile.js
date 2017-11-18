@@ -105,8 +105,11 @@ export default class CombinedNodeFile {
       return false;
     }
 
-    file.isTypeDefinition ? this.typeDefinitionFile = file :
+    if (file.isTypeDefinition) {
+      this.typeDefinitionFile = file;
+    } else {
       this.contentFile = file;
+    }
 
     return true;
   }

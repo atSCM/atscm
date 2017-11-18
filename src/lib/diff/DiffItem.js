@@ -1,7 +1,5 @@
 import checkType from '../../util/validation';
 import DiffFile from '../diff/DiffFile';
-import AtviseFile from '../mapping/AtviseFile';
-
 
 export default class DiffItem {
 
@@ -87,7 +85,6 @@ export default class DiffItem {
     return this.fsFile.value === this.serverFile.value;
   }
 
-
   /**
    * The diff items state
    * @type {DiffItem.DiffStates}
@@ -119,7 +116,11 @@ export default class DiffItem {
       throw new Error(`DiffItem#addFile: File ${file.path} was already added`);
     }
 
-    file.isServerFile ? this.serverFile = file : this.fsFile = file;
+    if (file.isServerFile) {
+      this.serverFile = file;
+    } else {
+      this.fsFile = file;
+    }
   }
 
   /**

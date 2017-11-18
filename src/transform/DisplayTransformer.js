@@ -1,7 +1,6 @@
 import { Buffer } from 'buffer';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import Logger from 'gulplog';
-import AtviseFile from '../lib/mapping/AtviseFile';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -29,7 +28,9 @@ export default class DisplayTransformer extends XMLTransformer {
   transformFromDB(file, enc, callback) {
     this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing display content. Check if display content is broken`);
+        Logger.error(
+          `Display ${file.nodeId}: Error parsing display content.Check if display content is broken`
+        );
         callback(null);
       } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'svg') {
         Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
@@ -57,13 +58,17 @@ export default class DisplayTransformer extends XMLTransformer {
           const metadata = xmlObj.find('*/metadata').children;
 
           // Extract JavaScript
-          scripts.map((script, index) => {
+          scripts.forEach(script => {
             const attributes = script.attrs;
 
-            if (attributes.hasOwnProperty('src') || attributes.hasOwnProperty('xlink:href')) {
+            const hasAttribute = Object.prototype.hasOwnProperty.bind(attributes);
+
+            if (hasAttribute('src') || hasAttribute('xlink:href')) {
               config.dependencies.push(attributes.src || attributes['xlink:href']);
             } else if (scriptFileAdded) {
-              Logger.warn(`Display ${file.nodeId}: atscm only supports one inline script per display`);
+              Logger.warn(
+                `Display ${file.nodeId}: atscm only supports one inline script per display`
+              );
             } else {
               scriptFileAdded = true;
               scriptFile.contents = Buffer.from(script.toString());
@@ -77,15 +82,18 @@ export default class DisplayTransformer extends XMLTransformer {
             const nonParameterTags = [];
 
             if (metadata.length > 1) {
-              Logger.warn(`Display ${file.nodeId}: atscm only supports one metadata tag per display`);
+              Logger.warn(
+                `Display ${file.nodeId}: atscm only supports one metadata tag per display`
+              );
               metadata.splice(1, metadata.length);
             }
 
-            meta.forEach(tag => tag.name === 'atv:parameter' ? config.parameters.push(tag.attrs) :
-              nonParameterTags.push(tag));
+            meta.forEach(tag => (tag.name === 'atv:parameter' ?
+              config.parameters.push(tag.attrs) :
+              nonParameterTags.push(tag)));
 
-            // overwrite meta data tag items, deleting items directly in metadata tag made serialize function ignore
-            // the remaining entries
+            // overwrite meta data tag items, deleting items directly in metadata tag made serialize
+            // function ignore the remaining entries
             metadata[0].children = nonParameterTags;
           }
 
@@ -145,14 +153,14 @@ export default class DisplayTransformer extends XMLTransformer {
 
     this.decodeContents(svgFile, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing display content.\nMessage: ${err.message}`);
+        Logger.error(`Display ${svgFile.nodeId}: Error parsing display content.
+Message: ${err.message}`);
         callback(null);
       } else {
         try {
           const displayContent = xmlObj.children[0];
           const metadata = xmlObj.find('*/metadata');
           const parameters = config.parameters.reverse();
-          const dependencies = config.dependencies.reverse();
           const display = DisplayTransformer.combineFiles(
             Object.keys(files).map(ext => files[ext]),
             '.xml'
@@ -162,13 +170,18 @@ export default class DisplayTransformer extends XMLTransformer {
           if (parameters && parameters.length > 0) {
             const meta = metadata.children[0].children;
 
-            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter', param, metadata)));
+            parameters.forEach(param => meta.unshift(
+              this.createTag('atv:parameter', param, metadata)
+            ));
           }
 
           // Insert dependencies
           if (config.dependencies && config.dependencies.length > 0) {
             config.dependencies.reverse().forEach(dependency => displayContent.children
-              .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' }, metadata)));
+              .push(this.createTag('script', {
+                'xlink:href': dependency,
+                type: 'text/ecmascript',
+              }, metadata)));
           }
 
           // Insert script

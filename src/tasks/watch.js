@@ -1,5 +1,4 @@
 import { dirname, extname } from 'path';
-import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
@@ -75,7 +74,8 @@ export class WatchTask {
     return validateDirectoryExists(ProjectConfig.RelativeSourceDirectoryPath)
       .catch(err => {
         if (err.code === 'ENOENT') {
-          Logger.info(`Create a directory at ${ProjectConfig.RelativeSourceDirectoryPath} or run \`atscm pull\` first`);
+          Logger.info(`Create a directory at ${
+            ProjectConfig.RelativeSourceDirectoryPath} or run \`atscm pull\` first`);
 
           Object.assign(err, {
             message: `Directory ${ProjectConfig.RelativeSourceDirectoryPath} does not exist`,
@@ -181,7 +181,8 @@ export class WatchTask {
 
   /**
    * Handles an atvise server change.
-   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping item of the modification.
+   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping item of the
+   * modification.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a pull operation,
    * with `false` otherwise.
    */

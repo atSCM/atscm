@@ -1,7 +1,6 @@
-import Logger from 'gulplog';
+import { browse_service as BrowseService } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import { browse_service as BrowseService } from 'node-opcua';
 import InstanceReferenceItem from './InstanceReferenceItem';
 
 
@@ -21,7 +20,8 @@ export default class AtviseReferenceItem extends InstanceReferenceItem {
   /**
    * Creates a new InstanceAtviseReferenceItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
-   * @param {node-opcua~ReferenceDescription[]} references An array of {@link node-opcua~ReferenceDescription}s
+   * @param {node-opcua~ReferenceDescription[]} references An array of
+   * {@link node-opcua~ReferenceDescription}s
    * to create the atvise reference config item for
    */
   constructor(nodeId, references) {

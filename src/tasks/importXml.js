@@ -1,5 +1,5 @@
-import ImportXmlStream from '../lib/gulp/ImportXmlStream';
 import { src } from 'gulp';
+import ImportXmlStream from '../lib/gulp/ImportXmlStream';
 import ProjectConfig from '../config/ProjectConfig';
 
 /**

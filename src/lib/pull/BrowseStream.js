@@ -1,13 +1,12 @@
 import { browse_service as BrowseService, NodeClass, ReferenceTypeIds } from 'node-opcua';
+import Logger from 'gulplog';
 import QueueStream from '../stream/QueueStream';
-import ReadNodeMappingItem from '../mapping/ReadNodeItem';
 import InstanceTypeDefinitionItem from '../mapping/InstanceTypeDefinitionItem';
 import AtviseReferenceItem from '../mapping/AtviseReferenceItem';
 import BaseTypeDefinitionItem from '../mapping/BaseTypeDefinitionItem';
 import ReadNodeItem from '../mapping/ReadNodeItem';
 import NodeId from '../ua/NodeId';
 import Project from '../../config/ProjectConfig';
-import Logger from 'gulplog';
 
 /**
  * List of valid reference types
@@ -276,9 +275,11 @@ export default class BrowseStream extends QueueStream {
                     this.write(ref.nodeId, null, resolve);
                   });
                 }
+
+                return Promise.resolve();
               })
           )
-            .then(result => {
+            .then(() => {
               // create type definition item if browsed item has type definition references
               if (typeDefinitionReferences.length > 0) {
                 this.push(new InstanceTypeDefinitionItem(nodeId, typeDefinitionReferences));

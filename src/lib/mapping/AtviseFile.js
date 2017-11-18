@@ -1,12 +1,11 @@
-import ProjectConfig from '../../config/ProjectConfig';
 import { readFile } from 'fs';
 import { dirname, join, relative } from 'path';
-import File from 'vinyl';
-import Logger from 'gulplog';
 import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
+import File from 'vinyl';
+import Int64 from 'node-int64';
+import ProjectConfig from '../../config/ProjectConfig';
 import AtviseTypes from './Types';
 import NodeId from '../ua/NodeId';
-import Int64 from 'node-int64';
 
 // Path related cache
 
@@ -243,7 +242,8 @@ export default class AtviseFile extends File {
     const encoder = Encoder[dataType];
 
     if (arrayType === VariantArrayType.Array) {
-      const arrayContent = value.map(item => encoder ? encoder(item) : item).join(ArrayValueSeperator);
+      const arrayContent = value.map(item => (encoder ? encoder(item) : item))
+        .join(ArrayValueSeperator);
       return Buffer.from(arrayContent);
     }
 
@@ -256,7 +256,8 @@ export default class AtviseFile extends File {
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
    * @param {node-opcua~VariantArrayType} arrayType The files array type
-   * @param {Boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite the existing decoders
+   * @param {Boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite
+   * the existing decoders.
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType, arrayType, useCreateNodeEncoding) {
@@ -277,7 +278,7 @@ export default class AtviseFile extends File {
     if (arrayType === VariantArrayType.Array) {
       const arrayValue = bufferValue.toString().split(ArrayValueSeperator);
 
-      return (arrayValue.map(item => decoder ? decoder(item) : item));
+      return (arrayValue.map(item => (decoder ? decoder(item) : item)));
     }
     if (decoder) {
       return decoder(bufferValue);

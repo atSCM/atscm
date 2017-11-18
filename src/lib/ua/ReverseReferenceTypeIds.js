@@ -5,7 +5,8 @@ import { ReferenceTypeIds } from 'node-opcua';
  * @type {Object}
  */
 const ReverseReferenceTypeIds = (function() {
-  Object.entries(ReferenceTypeIds).map(keyValuePair => this[keyValuePair[1]] = keyValuePair[0]);
+  Object.entries(ReferenceTypeIds)
+    .forEach(([key, value]) => (this[key] = value));
   return this;
 }).bind({})();
 

@@ -1,11 +1,7 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import { src } from 'gulp';
-import { join, dirname } from 'path';
-import { remove, existsSync, createReadStream, readdirSync } from 'fs-extra';
-import CombinedStream from 'combined-stream';
-import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
-import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
+import { join } from 'path';
+import { remove, existsSync, createReadStream } from 'fs-extra';
 import ProjectConfig from '../../config/ProjectConfig';
 
 /**
@@ -26,7 +22,6 @@ export default class DeleteFsStream {
     const deleteFileName = options.deleteFileName || 'deleteFs.txt';
 
     const processed = 0;
-    const config = ProjectConfig.RelativeSourceDirectoryPath;
     const base = join(process.cwd(), ProjectConfig.RelativeSourceDirectoryPath);
 
     const lineReader = readline.createInterface({
@@ -43,7 +38,8 @@ export default class DeleteFsStream {
     }, 1000);
 
     lineReader.on('line', line => {
-      const filePath = line.indexOf('nodeFilePath=') > -1 ? line.split('nodeFilePath=')[1].split(', nodeId=')[0].trim() :
+      const filePath = ~line.indexOf('nodeFilePath=') > -1 ?
+        line.split('nodeFilePath=')[1].split(', nodeId=')[0].trim() :
         line.trim();
 
       const path = join(base, filePath);
