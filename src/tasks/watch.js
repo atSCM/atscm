@@ -1,4 +1,4 @@
-import { dirname, extname } from 'path';
+import { dirname } from 'path';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
@@ -144,14 +144,8 @@ export class WatchTask {
   handleFileChange(path, root, stats) {
     return new Promise(resolve => {
       if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
-        let nodePath = dirname(path);
+        const nodePath = dirname(path);
         let nodeId = {};
-        const extension = extname(nodePath).replace('.', '');
-
-        // step one directory outside for split files
-        if (extension === 'script' || extension === 'display' || extension === 'qd') {
-          nodePath = dirname(nodePath);
-        }
 
         nodeId = NodeId.fromFilePath(nodePath);
 
