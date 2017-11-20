@@ -35,12 +35,16 @@ export default class DiffStream {
     const diffFilePath = options.filePath || 'diff.log';
 
     // diff file streams
-    const fsFileStream = new FileToAtviseFileTransformer({ nodesToTransform: nodesToDiff })
+    const fsFileStream = new FileToAtviseFileTransformer(
+      {
+        nodesToTransform: nodesToDiff,
+        applyTransformers: false,
+      })
       .pipe(new DiffFileStream({ fileType: DiffFile.FileType.FsFile }));
 
     const serverFileTransformer = new UaNodeToAtviseFileTransformer(
         { nodesToTransform: nodesToDiff }
-      );
+    );
 
     const serverFileStream = serverFileTransformer.stream
       .pipe(new DiffFileStream({ fileType: DiffFile.FileType.ServerFile }));

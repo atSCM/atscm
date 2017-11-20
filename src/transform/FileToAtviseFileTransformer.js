@@ -14,6 +14,8 @@ export default class FileToAtviseFileTransformer {
    * @param {Object} options The options to use. See
    * {@link FileToAtviseFileTransformer#constructor} for available
    * options.
+   * @param {Boolean} [options.applyTransformers] Defines whether transformer
+   * should be applied or not
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
    */
   constructor(options = {}) {
@@ -39,6 +41,11 @@ export default class FileToAtviseFileTransformer {
 
     nodesToTransform.map(nodeId => combinedSrcStream
       .append(src(`./src/${nodeId.filePath}/**/*.*`)));
+
+    if (options.applyTransformers !== undefined && options.applyTransformers === false) {
+      return combinedSrcStream
+        .pipe(mappingStream);
+    }
 
     return Transformer.applyTransformers(
       combinedSrcStream
