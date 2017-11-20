@@ -1,8 +1,6 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import {join, dirname} from 'path';
-import {createReadStream} from 'fs';
-import ProjectConfig from '../../config/ProjectConfig';
+import { createReadStream } from 'fs';
 import DeleteNodeStream from '../delete/DeleteNodeStream';
 import NodeId from '../ua/NodeId';
 
@@ -17,7 +15,6 @@ export default class DeleteFsStream {
    * @param {String} [options.deleteFileName] The delete file name.
    */
   constructor(options = {}) {
-
     /**
      * The delete file name
      * @type {String}
@@ -25,13 +22,16 @@ export default class DeleteFsStream {
     const deleteFileName = options.deleteFileName || 'deleteServer.txt';
 
     const lineReader = readline.createInterface({
-      input: createReadStream(deleteFileName)
+      input: createReadStream(deleteFileName),
     });
 
     const deleteNodeStream = new DeleteNodeStream();
 
     const printProgress = setInterval(() => {
-      Logger.info(`Deleted: ${deleteNodeStream.processed} (${deleteNodeStream.opsPerSecond.toFixed(1)} ops/s)`);
+      Logger.info(
+        `Deleted: ${deleteNodeStream.processed}`,
+        `(${deleteNodeStream.opsPerSecond.toFixed(1)} ops/s)`
+      );
 
       if (Logger.listenerCount('info') > 0) {
         readline.cursorTo(process.stdout, 0);

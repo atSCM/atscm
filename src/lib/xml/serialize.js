@@ -1,3 +1,4 @@
+/*eslint-disable */
 var XMLWriter = require('xml-writer'),
     xml = require('./xml'),
     NodeSet = xml.NodeSet,
@@ -80,3 +81,4 @@ function serialize(nset, options) {
 module.exports = {
     serialize : serialize
 };
+/*eslint-enable */

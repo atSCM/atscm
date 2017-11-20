@@ -1,7 +1,6 @@
-import QueueStream from '../stream/QueueStream';
-import Logger from 'gulplog';
-import CombinedNodeFile from './CombinedNodeFile';
 import { StatusCodes } from 'node-opcua';
+import QueueStream from '../stream/QueueStream';
+import CombinedNodeFile from './CombinedNodeFile';
 
 /**
  * A stream that combines content {@link AtviseFile}s with type definition {@link AtviseFile}s
@@ -13,9 +12,7 @@ export default class NodeFileStream extends QueueStream {
    * Creates a new NodeFileStream.
    */
   constructor(options = {}) {
-
     super();
-
 
     /**
      * Defines wether the stream works with {CombinedNodeFiles} or {AtviseFile}s.
@@ -42,7 +39,8 @@ export default class NodeFileStream extends QueueStream {
   }
 
   /**
-   * Mapps the given content {@link AtviseFiles}s with the given type definition{@link AtviseFiles}s.
+   * Mapps the given content {@link AtviseFiles}s with the given type
+   * definition{@link AtviseFiles}s.
    * @param {AtviseFile} file The file to process
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -56,13 +54,12 @@ export default class NodeFileStream extends QueueStream {
       handleErrors(new Error(`NodeFileStream: File has invalid type:  ${nodeId.toString()}`));
     }
 
-    if (this.combinedFilesCache.hasOwnProperty(nodeId)) {
+    if (this.combinedFilesCache[nodeId]) {
       combinedFile = this.combinedFilesCache[nodeId];
 
       if (!combinedFile.addFile(file)) {
         handleErrors(new Error(`NodeFileStream: Duplicate file:  ${nodeId.toString()}`));
       }
-
     } else {
       this.combinedFilesCache[nodeId] = new CombinedNodeFile(file, this.createNodes);
       combinedFile = this.combinedFilesCache[nodeId];

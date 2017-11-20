@@ -1,7 +1,7 @@
 import validatePackageName from 'validate-npm-package-name';
 
 /**
- * A static class containing validators for the options used when running "atscm init".
+ * A static class containing validators for the options used when running 'atscm init'.
  */
 export default class InitOptionsValidator {
 

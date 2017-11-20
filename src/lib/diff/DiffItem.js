@@ -1,7 +1,5 @@
 import checkType from '../../util/validation';
 import DiffFile from '../diff/DiffFile';
-import AtviseFile from '../mapping/AtviseFile';
-
 
 export default class DiffItem {
 
@@ -11,7 +9,7 @@ export default class DiffItem {
    */
   constructor(file) {
     if (!checkType(file, DiffFile)) {
-      throw new Error("DiffItem#constructor: Can not parse given argument!");
+      throw new Error('DiffItem#constructor: Can not parse given argument!');
     }
 
     /**
@@ -58,14 +56,14 @@ export default class DiffItem {
    * The possible diff states
    * @type {{Equal:Object, Added: Object, Modified: Object, Deleted: Object}}
    */
-  static get DiffStates () {
+  static get DiffStates() {
     return {
-      Equal: {text: 'Equ', value: 0},
-      Added: {text: 'Add', value: 1},
-      Modified: {text: 'Mod', value: 2},
-      Deleted: {text: 'Del', value: 3}
-    }
-  };
+      Equal: { text: 'Equ', value: 0 },
+      Added: { text: 'Add', value: 1 },
+      Modified: { text: 'Mod', value: 2 },
+      Deleted: { text: 'Del', value: 3 },
+    };
+  }
 
   /**
    * `true` for diff items that already contain an file system and an server resource.
@@ -84,7 +82,7 @@ export default class DiffItem {
       return false;
     }
 
-    return this.fsFile.value == this.serverFile.value;
+    return this.fsFile.value === this.serverFile.value;
   }
 
 
@@ -119,7 +117,11 @@ export default class DiffItem {
       throw new Error(`DiffItem#addFile: File ${file.path} was already added`);
     }
 
-    file.isServerFile ? this.serverFile = file : this.fsFile = file;
+    if (file.isServerFile) {
+      this.serverFile = file;
+    } else {
+      this.fsFile = file;
+    }
   }
 
   /**
@@ -128,7 +130,10 @@ export default class DiffItem {
    * @return {Bool} file type was already added(=true) or not(=false)
    */
   fileTypeWasAlreadyAdded(file) {
-    return file.isServerFile ? checkType(this.serverFile, DiffFile) :
-      checkType(this.fsFile, DiffFile);
+    if (file.isServerFile) {
+      return checkType(this.serverFile, DiffFile);
+    }
+
+    return checkType(this.fsFile, DiffFile);
   }
 }

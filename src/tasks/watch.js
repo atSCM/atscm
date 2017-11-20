@@ -1,5 +1,4 @@
-import {dirname, extname} from 'path';
-import { src } from 'gulp';
+import { dirname, extname } from 'path';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
@@ -54,7 +53,7 @@ export class WatchTask {
 
   /**
    * Waits for a watcher (which can actually be any kind of {@link events~Emitter}) to emit a
-   * "ready" event.
+   * 'ready' event.
    * @param {events~Emitter} watcher The watcher to wait for.
    * @return {Promise<events~Emitter, Error>} Fulfilled with the set up watcher or rejected with the
    * watcher error that occurred while waiting for it to get ready.
@@ -75,7 +74,10 @@ export class WatchTask {
     return validateDirectoryExists(ProjectConfig.RelativeSourceDirectoryPath)
       .catch(err => {
         if (err.code === 'ENOENT') {
-          Logger.info(`Create a directory at ${ProjectConfig.RelativeSourceDirectoryPath} or run \`atscm pull\` first`);
+          Logger.info(
+            `Create a directory at ${ProjectConfig.RelativeSourceDirectoryPath}`,
+            'or run "atscm pull" first'
+          );
 
           Object.assign(err, {
             message: `Directory ${ProjectConfig.RelativeSourceDirectoryPath} does not exist`,
@@ -106,8 +108,8 @@ export class WatchTask {
     this.browserSyncInstance.init({
       proxy: {
         target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-        ws: true
-      }
+        ws: true,
+      },
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
     });
@@ -147,16 +149,16 @@ export class WatchTask {
         const extension = extname(nodePath).replace('.', '');
 
         // step one directory outside for split files
-        if (extension == 'script' || extension == 'display' || extension == 'qd') {
+        if (extension === 'script' || extension === 'display' || extension === 'qd') {
           nodePath = dirname(nodePath);
         }
 
         nodeId = NodeId.fromFilePath(nodePath);
 
-        if (nodeId.toString() != this._lastPulled) {
+        if (nodeId.toString() !== this._lastPulled) {
           const pushStream = new PushStream({
             nodesToPush: [nodeId],
-            createNodes: false
+            createNodes: false,
           });
 
           this._pushing = true;
@@ -178,33 +180,29 @@ export class WatchTask {
       }
     });
   }
-
   /**
    * Handles an atvise server change.
-   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping item of the modification.
+   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping
+   * item of the modification.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a pull operation,
    * with `false` otherwise.
    */
   handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
-
       if (!this._pushing) {
-
-        let nodeId = readNodeMappingItem.nodeId.toString();
+        const nodeId = readNodeMappingItem.nodeId.toString();
 
         if (nodeId !== this._lastPushed) {
-
+          const readStream = createStream();
           this._pulling = true;
 
           Logger.info('Server change:', nodeId, 'changed');
-
-          const readStream = createStream();
           readStream.write(readNodeMappingItem);
           readStream.end();
 
           const pullStream = new PullStream({
             useInputStream: true,
-            inputStream: readStream
+            inputStream: readStream,
           });
 
           pullStream
@@ -258,7 +256,7 @@ export class WatchTask {
  * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
  * initialized.
  */
-export default function watch(callback) {
+export default function watch() {
   return (new WatchTask()).run();
 }
 

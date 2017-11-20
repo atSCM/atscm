@@ -1,11 +1,10 @@
-import QueueStream from '../stream/QueueStream';
-import Logger from 'gulplog';
-import DiffItem from './DiffItem';
 import { StatusCodes } from 'node-opcua';
+import QueueStream from '../stream/QueueStream';
+import DiffItem from './DiffItem';
 
 /**
- * A stream checks if the given {@link NodeId}s exist on the atvise server or on the filesystem, depending on the
- * stream direction
+ * A stream checks if the given {@link NodeId}s exist on the atvise server
+ * or on the filesystem, depending on the stream direction
  */
 export default class DiffItemStream extends QueueStream {
 
@@ -13,7 +12,7 @@ export default class DiffItemStream extends QueueStream {
    * Creates a new DiffItemStream.
    * @param {Object} The options to use.
    */
-  constructor(options = {}) {
+  constructor() {
     super();
 
     /**
@@ -21,7 +20,6 @@ export default class DiffItemStream extends QueueStream {
      * @type {Map<vinyl~path, DiffItem>}
      */
     this.itemsCache = {};
-
   }
 
   /**
@@ -32,7 +30,6 @@ export default class DiffItemStream extends QueueStream {
   processErrorMessage(file) {
     return `DiffStream#processErrorMessage: Error processing item ${file.toString()}`;
   }
-
 
   /**
    * Combines the given DiffFiles to DiffItems.
@@ -46,7 +43,7 @@ export default class DiffItemStream extends QueueStream {
       const path = file.path;
       const itemsCache = this.itemsCache;
 
-      if (itemsCache.hasOwnProperty(path)) {
+      if (typeof itemsCache[path] !== 'undefined') {
         const diffItem = itemsCache[path];
 
         diffItem.addFile(file);

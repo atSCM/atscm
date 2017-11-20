@@ -1,4 +1,3 @@
-import { src } from 'gulp';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
@@ -12,14 +11,14 @@ export default class UaNodeToAtviseFileTransformer {
 
   /**
    * Creates a new FileToAtviseFileTransformer
-   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor} for available
-   * options.
+   * @param {Object} options The options to use. See
+   * {@link FileToAtviseFileTransformer#constructor} for available options.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
-   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be used for mapping.
+   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be
+   * used for mapping.
    * @param {Stream} [options.inputStream] The input stream to use.
    */
   constructor(options = {}) {
-
     /**
      * Stream containing all type definition files.
      * @type {NodeId[]}
@@ -30,7 +29,7 @@ export default class UaNodeToAtviseFileTransformer {
      * Stream that creates atvise files.
      * @type {MappingTransformer}
      */
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB});
+    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
     /**
      * Defines if the given input stream should be used for mapping
@@ -52,14 +51,14 @@ export default class UaNodeToAtviseFileTransformer {
 
 
     if (useInputStream) {
-      if(!options.inputStream) {
-        throw new Error('UaNodeToAtviseFileTransformer#constructor: Input stream is missing')
+      if (!options.inputStream) {
+        throw new Error('UaNodeToAtviseFileTransformer#constructor: Input stream is missing');
       } else {
         inputStream = options.inputStream;
       }
     } else {
       inputStream = (new BrowseStream(nodesToTransform))
-        .pipe(this.readStream)
+        .pipe(this.readStream);
     }
 
     /**

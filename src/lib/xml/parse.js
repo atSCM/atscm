@@ -1,3 +1,4 @@
+/*eslint-disable */
 var sax = require('sax'),
     xml = require('./xml'),
     NodeSet = xml.NodeSet,
@@ -131,3 +132,4 @@ module.exports = function parse(xml, options, callback) {
 
     parser.write(xml).close();
 };
+/*eslint-enable */

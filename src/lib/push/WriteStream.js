@@ -3,7 +3,8 @@ import { StatusCodes } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 
 /**
- * A stream that writes all read {@link CombinedNodeFiles}s to their corresponding nodes on atvise server.
+ * A stream that writes all read {@link CombinedNodeFiles}s to their corresponding
+ * nodes on atvise server.
  */
 export default class WriteStream extends QueueStream {
 
@@ -13,7 +14,6 @@ export default class WriteStream extends QueueStream {
    * @param {Object} options The stream configuration options.
    */
   constructor(options = {}) {
-
     super();
 
     /**
@@ -35,7 +35,8 @@ export default class WriteStream extends QueueStream {
   }
 
   /**
-   * Writes {@link CombinedNodeFile.contentFile}'s values to the corresponding nodes on the atvise server.
+   * Writes {@link CombinedNodeFile.contentFile}'s values to the corresponding nodes on
+   * the atvise server.
    * @param {CombinedNodeFile} combinedNodeFile The combined file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -53,7 +54,7 @@ export default class WriteStream extends QueueStream {
           arrayType: contentFile.arrayType,
           value: contentFile.value,
         }, (err, statusCode) => {
-          if (statusCode === StatusCodes.BadUserAccessDenied) {
+          if (statusCode.value === StatusCodes.BadUserAccessDenied.value) {
             Logger.warn(`Error writing node ${
               contentFile.nodeId.toString()
             }: Make sure it is not opened in atvise builder`);
@@ -74,7 +75,7 @@ export default class WriteStream extends QueueStream {
 
             handleErrors(err, StatusCodes.Good, done => done());
           } else {
-            this.emit("write-successful", contentFile);
+            this.emit('write-successful', contentFile);
             handleErrors(err, StatusCodes.Good, done => done());
           }
         });
@@ -82,5 +83,5 @@ export default class WriteStream extends QueueStream {
         handleErrors(e);
       }
     }
-  };
+  }
 }

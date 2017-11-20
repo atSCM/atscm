@@ -139,7 +139,7 @@ export default class QueueStream extends Stream {
    *   ...
    *   processChunk(chunk, handle) {
    *     client.session.doSomething((err, result, statusCode) => {
-   *       if (statusCode === StatusCodes.BadUserAccessDenied) {
+   *       if (statusCode.value === StatusCodes.BadUserAccessDenied.value) {
    *         Logger.warn(`Ignored invalid status: ${statusCode.description}`);
    *         handle(err, StatusCodes.Good, done => done());
    *       } else {
@@ -177,8 +177,9 @@ export default class QueueStream extends Stream {
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
       if (err) {
         this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${err.message}`));
-      } else if (statusCode !== StatusCodes.Good) {
-        this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
+      } else if (statusCode.value !== StatusCodes.Good.value) {
+        this.emit('error', new Error(`${this.processErrorMessage(chunk)}:`,
+          `${statusCode.description}`));
       } else {
         onSuccess(() => this._processNextChunk(chunk));
       }
