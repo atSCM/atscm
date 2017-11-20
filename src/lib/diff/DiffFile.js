@@ -10,11 +10,24 @@ export default class DiffFile {
    * @param {AtviseFile} file The file to add in first place
    */
   constructor(file, fileType) {
+    let fileValue = file.value;
+
     if (!checkType(file, AtviseFile) || !checkType(fileType, String)) {
       throw new Error('DiffFile#constructor: Can not parse given argument!');
     } else if (!DiffFile.isValidFileType(fileType)) {
       throw new Error('DiffFile#constructor: File has wrong item type!');
     }
+
+
+    // handle empty an undefined file values
+    if (fileValue === null) {
+      fileValue = 'null';
+    } else if (fileValue === undefined) {
+      fileValue = 'undefined';
+    } else {
+      fileValue = fileValue.toString();
+    }
+
 
     /**
      * Defines wether the given file is a fs resource or a atvise server resource.
@@ -23,10 +36,10 @@ export default class DiffFile {
     this.fileType = fileType;
 
     /**
-     * The resource file
+     * The file's value
      * @type {AtviseFile}
      */
-    this.value = file.value.toString();
+    this.value = fileValue;
 
     /**
      * The files's nodeId
