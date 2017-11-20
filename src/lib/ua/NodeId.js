@@ -1,4 +1,4 @@
-import { sep } from 'path';
+import { sep, extname, dirname } from 'path';
 import { NodeId as OpcNodeId } from 'node-opcua';
 
 /**
@@ -6,6 +6,12 @@ import { NodeId as OpcNodeId } from 'node-opcua';
  * @type {Map<String, node-opcua~NodeIdType>}
  */
 const Type = OpcNodeId.NodeIdType;
+
+/**
+ * File extensions to remove
+ * @type {String[]}
+ */
+const ExtensionsToRemove = ['.script', '.display', '.qd'];
 
 /**
  * OPC-UA node id types mapped against node-id identifiers (e.g. i, s ...).
@@ -65,6 +71,14 @@ export default class NodeId extends OpcNodeId {
    */
   static fromFilePath(path) {
     let separator = '.';
+    const extension = extname(path);
+
+    // step one directory outside for split files
+    if (ExtensionsToRemove.indexOf(extension) > -1) {
+      // eslint-disable-next-line no-param-reassign
+      path = dirname(path);
+    }
+
     const value = path.split(sep)
       .reduce((result, current) => {
         const next = `${result}${separator}${current}`;
