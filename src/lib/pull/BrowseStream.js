@@ -249,6 +249,7 @@ export default class BrowseStream extends QueueStream {
           const atvReferences = [];
           const typeDefinitionReferences = [];
           const baseTypeReferences = [];
+          const nodesToBrowse = [];
 
           Promise.all(
             results[0].references
@@ -269,7 +270,10 @@ export default class BrowseStream extends QueueStream {
                 }
 
                 // Only browse variable types and objects recursively
-                if (this.recursive && BrowseStream.shouldBeBrowsed(ref, nodeId)) {
+                if (this.recursive && BrowseStream.shouldBeBrowsed(ref, nodeId) &&
+                  nodesToBrowse.indexOf(ref.nodeId.value) < 0) {
+                  nodesToBrowse.push(ref.nodeId.value);
+
                   return new Promise((resolve) => {
                     this.write(ref.nodeId, null, resolve);
                   });
