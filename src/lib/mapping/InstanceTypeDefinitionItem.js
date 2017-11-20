@@ -1,14 +1,13 @@
-import Logger from 'gulplog';
+import { NodeClass, browse_service as BrowseService } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import {NodeClass, browse_service as BrowseService} from 'node-opcua';
 import InstanceReferenceItem from './InstanceReferenceItem';
 
 /**
  * Custom Atvise File Type for instance type definitions
  * @type {node-opcua~NodeId}
  */
-const InstanceTypeDefinitionConfigResourceId = new NodeId("Custom.InstanceTypeDefinition");
+const InstanceTypeDefinitionConfigResourceId = new NodeId('Custom.InstanceTypeDefinition');
 
 /**
  * Map to translate type node classes to the corresponding instance node classes
@@ -16,7 +15,7 @@ const InstanceTypeDefinitionConfigResourceId = new NodeId("Custom.InstanceTypeDe
  */
 const InstanceNodeClasses = {
   [NodeClass.ObjectType]: NodeClass.Object,
-  [NodeClass.VariableType]: NodeClass.Variable
+  [NodeClass.VariableType]: NodeClass.Variable,
 };
 
 
@@ -30,16 +29,15 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
   /**
    * Creates a new InstanceTypeDefinitionItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
-   * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription} to create the
-   * type definition item for
+   * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription}
+   * to create the type definition item for
    */
   constructor(nodeId, references) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {
-      throw new Error("InstanceTypeDefinitionItem#constructor: Can not parse given arguments!");
+      throw new Error('InstanceTypeDefinitionItem#constructor: Can not parse given arguments!');
     }
 
     super(nodeId, references, InstanceTypeDefinitionConfigResourceId);
-
   }
 
   /**
@@ -48,10 +46,10 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
    * @param {NodeId} nodeId browsed nodeId
    * @return {Object} The configuration object for the given reference
    */
-  createRefConfig(ref, nodeId) {
+  createRefConfig(ref, nodeId) { // eslint-disable-line no-unused-vars
     return {
       refNodeId: ref.nodeId.toString(),
       nodeClass: InstanceNodeClasses[ref.$nodeClass],
-    }
+    };
   }
 }

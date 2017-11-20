@@ -1,3 +1,4 @@
+/*eslint-disable */
 var util = require('util'),
     xml = {};
 
@@ -161,7 +162,7 @@ NodeSet.prototype.hasAttr = function(name) {
 };
 
 /**
- * @param {String} name Element ("tag") attribute name.
+ * @param {String} name Element ('tag') attribute name.
  * @param {String|null} value Attribute value or null if attribute must absent.
  * @returns {NodeSet} of tags which attribute `name` equals `value`.
  */
@@ -180,7 +181,7 @@ NodeSet.prototype.eq = function(index) {
 };
 
 /**
- * Represents XML element ("tag").
+ * Represents XML element ('tag').
  *
  * @param {String} name Tag name
  * @param {Object} [attrs] Tag attributes hash
@@ -371,3 +372,4 @@ xml.getXMLType = function(obj) {
 };
 
 module.exports = xml;
+/*eslint-enable */

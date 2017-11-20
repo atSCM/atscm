@@ -15,7 +15,7 @@ export const ConfigLangs = {
 };
 
 /**
- * Options available for the "atscm init" command.
+ * Options available for the 'atscm init' command.
  * @type {Object}
  * @property {InitOption<input>} name The new project's name.
  * @property {InitOption<input>} description The new project's description.

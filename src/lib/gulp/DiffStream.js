@@ -1,13 +1,12 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import { src } from 'gulp';
 import filter from 'gulp-filter';
+import CombinedStream from 'combined-stream';
 import DiffResultStream from '../diff/DiffResultStream';
 import DiffItemStream from '../diff/DiffItemStream';
 import DiffFileStream from '../diff/DiffFileStream';
 import DiffFile from '../diff/DiffFile';
 import DiffItem from '../diff/DiffItem';
-import CombinedStream from 'combined-stream';
 import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
 
@@ -23,7 +22,6 @@ export default class DiffStream {
    * @param {String|Path|Buffer} [options.filePath] The diff files path.
    */
   constructor(options = {}) {
-
     /**
      * The nodes to diff
      * @type {NodeId[]}
@@ -34,24 +32,29 @@ export default class DiffStream {
      * The diff file path
      * @type {String|Path|Buffer}
      */
-    const filePath = options.filePath || 'diff.log';
+    const diffFilePath = options.filePath || 'diff.log';
 
     // diff file streams
-    const fsFileStream = new FileToAtviseFileTransformer({nodesToTransform: nodesToDiff})
-      .pipe(new DiffFileStream({fileType: DiffFile.FileType.FsFile}));
+    const fsFileStream = new FileToAtviseFileTransformer({ nodesToTransform: nodesToDiff })
+      .pipe(new DiffFileStream({ fileType: DiffFile.FileType.FsFile }));
 
-    const serverFileTransformer = new UaNodeToAtviseFileTransformer({nodesToTransform: nodesToDiff});
+    const serverFileTransformer = new UaNodeToAtviseFileTransformer(
+        { nodesToTransform: nodesToDiff }
+      );
 
     const serverFileStream = serverFileTransformer.stream
-      .pipe(new DiffFileStream({fileType: DiffFile.FileType.ServerFile}));
+      .pipe(new DiffFileStream({ fileType: DiffFile.FileType.ServerFile }));
 
     // diff file processors
     const diffItemStream = new DiffItemStream();
-    const diffResultStream = new DiffResultStream({filePath: filePath});
-    const equalFilesFilter = filter(diffItem => diffItem.state.value != DiffItem.DiffStates.Equal.value);
+
+    const diffResultStream = new DiffResultStream({ filePath: diffFilePath });
+    const equalFilesFilter = filter(
+      diffItem => diffItem.state.value !== DiffItem.DiffStates.Equal.value
+    );
     const logger = diffResultStream.logger;
 
-    const combinedStream = new CombinedStream({pauseStreams: false});
+    const combinedStream = new CombinedStream({ pauseStreams: false });
 
     logger.write('Modified:\n');
 
@@ -86,21 +89,19 @@ export default class DiffStream {
           });
 
           itemsCache.forEach(diffItem => {
-            if (diffItem.state.value == states.Added.value) {
+            if (diffItem.state.value === states.Added.value) {
               addedItems.push(diffItem);
-            } else if (diffItem.state.value == states.Deleted.value){
+            } else if (diffItem.state.value === states.Deleted.value) {
               deletedItems.push(diffItem);
             }
           });
 
           logger.write('\nAdded:\n');
           addedItems.forEach(file => diffResultStream.write(file));
-
           logger.write('\nDeleted:\n');
           deletedItems.forEach(file => diffResultStream.write(file));
-
         } else {
-         clearInterval(printProgress);
+          clearInterval(printProgress);
         }
       });
   }

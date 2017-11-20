@@ -1,5 +1,11 @@
 import Logger from 'gulplog';
-import {ReferenceTypeIds, StatusCodes, DataType, NodeClass, VariantArrayType, Variant} from 'node-opcua';
+import {
+  ReferenceTypeIds,
+  StatusCodes,
+  DataType,
+  NodeClass,
+  Variant,
+} from 'node-opcua';
 import CallScriptStream from '../script/CallScriptStream';
 import NodeId from '../ua/NodeId';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
@@ -22,7 +28,7 @@ const ModellingRuleKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasModellingRu
  * Definition for the parameter name of the CreateNode script
  * @type {Array}
  */
-const CreateNodeScriptParameterName = "paramObjString";
+const CreateNodeScriptParameterName = 'paramObjString';
 
 
 /**
@@ -34,7 +40,7 @@ export default class CreateNodeStream extends CallScriptStream {
    * Creates a new CreateNodeStream
    */
   constructor() {
-    super(new NodeId("ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode"));
+    super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'));
   }
 
 
@@ -56,10 +62,10 @@ export default class CreateNodeStream extends CallScriptStream {
    * @return {Object} The resulting parameter object.
    */
   createParameters(combinedNodeFile) {
-    let typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
-    let nodeId = typeDefinitionFile.nodeId;
-    let typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
-    let paramObjString = new Variant({dataType: DataType.String, value: ""});
+    const typeDefinitionFile = combinedNodeFile.typeDefinitionFile;
+    const nodeId = typeDefinitionFile.nodeId;
+    const typeDefinitionConfig = JSON.parse(typeDefinitionFile.value);
+    const paramObjString = new Variant({ dataType: DataType.String, value: '' });
     let typeDefinition = {};
     let modellingRuleRefs;
 
@@ -70,27 +76,28 @@ export default class CreateNodeStream extends CallScriptStream {
       modellingRuleRefs = typeDefinitionConfig[ModellingRuleKey];
     }
 
-    let configObj = {
+    const configObj = {
       nodeId: nodeId.value,
       parentNodeId: nodeId.parentNodeId.value,
       browseName: nodeId.browseName,
       nodeClass: NodeClass[typeDefinition.nodeClass].value,
       typeDefinition: new NodeId(typeDefinition.refNodeId).value,
-      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs.items[0].refNodeId).value : null,
+      modellingRule: modellingRuleRefs ? new NodeId(modellingRuleRefs.items[0].refNodeId).value :
+        null,
     };
 
     if (!combinedNodeFile.isTypeDefOnlyFile) {
-      let contentFile = combinedNodeFile.contentFile;
-      let dataType = contentFile.dataType.value;
+      const contentFile = combinedNodeFile.contentFile;
+      const dataType = contentFile.dataType.value;
 
       configObj.dataType = dataType;
       configObj.valueRank = contentFile.arrayType.value;
       configObj.value = contentFile.createNodeValue;
     }
 
-    paramObjString.value = JSON.stringify(configObj)
+    paramObjString.value = JSON.stringify(configObj);
 
-    return {paramNames: [CreateNodeScriptParameterName], paramValues: [paramObjString]};
+    return { paramNames: [CreateNodeScriptParameterName], paramValues: [paramObjString] };
   }
 
   /**
@@ -101,13 +108,13 @@ export default class CreateNodeStream extends CallScriptStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   handleCallback(results, combinedNodeFile, handleErrors) {
-    let outputArguments = results[0].outputArguments;
+    const outputArguments = results[0].outputArguments;
 
-    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+    if (outputArguments[0].value.value !== StatusCodes.Good.value) {
       handleErrors(new Error(outputArguments[1].value));
     } else {
-      let createdNode = outputArguments[3].value[0].value;
-      let creatingNodeFailed = outputArguments[3].value[1].value;
+      const createdNode = outputArguments[3].value[0].value;
+      const creatingNodeFailed = outputArguments[3].value[1].value;
 
       if (creatingNodeFailed) {
         Logger.error(`Node ${
@@ -122,4 +129,3 @@ export default class CreateNodeStream extends CallScriptStream {
     }
   }
 }
-

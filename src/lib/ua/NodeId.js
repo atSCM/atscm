@@ -95,10 +95,9 @@ export default class NodeId extends OpcNodeId {
    * @type {String}
    */
   get browseName() {
-    const lastSeperator = this.value.indexOf('/') > - 1 ?
+    const lastSeperator = this.value.indexOf('/') > -1 ?
       '/' : '.';
 
-    let test = this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
     return this.value.substr(this.value.lastIndexOf(lastSeperator) + 1);
   }
 
@@ -107,7 +106,7 @@ export default class NodeId extends OpcNodeId {
    * @type {NodeId}
    */
   get parentNodeId() {
-    const lastSeperator = this.value.indexOf('/') > - 1 ?
+    const lastSeperator = this.value.indexOf('/') > -1 ?
       '/' : '.';
 
     return new NodeId(this.value.substr(0, this.value.lastIndexOf(lastSeperator)));
@@ -115,12 +114,12 @@ export default class NodeId extends OpcNodeId {
 
 
   /**
-   * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
+   * Returns a string in the format 'namespace value' that is printed when inspecting the NodeId
    * using node.js's *util.inspect*.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
    * @param {Number} depth The depth to inspect.
    * @param {Object} options The options to use.
-   * @return {String} A string in the format "namespace value".
+   * @return {String} A string in the format 'namespace value'.
    */
   inspect(depth, options) {
     return [

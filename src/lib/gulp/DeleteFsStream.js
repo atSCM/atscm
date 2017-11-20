@@ -1,11 +1,7 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import { src } from 'gulp';
-import {join, dirname} from 'path';
-import {remove, existsSync, createReadStream, readdirSync} from 'fs-extra';
-import CombinedStream from 'combined-stream';
-import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
-import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
+import { join } from 'path';
+import { remove, existsSync, createReadStream } from 'fs-extra';
 import ProjectConfig from '../../config/ProjectConfig';
 
 /**
@@ -19,7 +15,6 @@ export default class DeleteFsStream {
    * @param {String} [options.deleteFileName] The delete file name.
    */
   constructor(options = {}) {
-
     /**
      * The delete file name
      * @type {String}
@@ -27,11 +22,10 @@ export default class DeleteFsStream {
     const deleteFileName = options.deleteFileName || 'deleteFs.txt';
 
     let processed = 0;
-    const config = ProjectConfig.RelativeSourceDirectoryPath;
     const base = join(process.cwd(), ProjectConfig.RelativeSourceDirectoryPath);
 
     const lineReader = readline.createInterface({
-      input: createReadStream(deleteFileName)
+      input: createReadStream(deleteFileName),
     });
 
     const printProgress = setInterval(() => {
@@ -44,14 +38,17 @@ export default class DeleteFsStream {
     }, 1000);
 
     lineReader.on('line', line => {
-      const filePath = line.indexOf('nodeFilePath=') > -1 ? line.split('nodeFilePath=')[1].split(', nodeId=')[0].trim() :
+      const filePath = line.indexOf('nodeFilePath=') > -1 ?
+        line.split('nodeFilePath=')[1].split(', nodeId=')[0].trim() :
         line.trim();
 
       const path = join(base, filePath);
 
+      processed++;
+
       if (existsSync(path)) {
         remove(path)
-          .catch(err => Logger.error(`Error removing file: '${path}', message: ${err.message}`))
+          .catch(err => Logger.error(`Error removing file: '${path}', message: ${err.message}`));
       } else {
         Logger.error(`File '${path}' does not exist`);
       }

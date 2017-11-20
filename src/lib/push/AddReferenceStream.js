@@ -1,5 +1,5 @@
 import Logger from 'gulplog';
-import { StatusCodes, DataType, Variant} from 'node-opcua';
+import { StatusCodes, DataType, Variant } from 'node-opcua';
 import CallScriptStream from '../script/CallScriptStream';
 import NodeId from '../ua/NodeId';
 
@@ -8,19 +8,19 @@ import NodeId from '../ua/NodeId';
  * Definition for the parameter name of the CreateNode script
  * @type {Array}
  */
-const AddReferencesScriptParameterName = "paramObjString";
+const AddReferencesScriptParameterName = 'paramObjString';
 
 
 /**
- * A stream that adds node references for the given reference config {AtviseFile}'s on the atvise server.
+ * A stream that adds node references for the given reference config {AtviseFile}'s
+ * on the atvise server.
  */
 export default class AddReferenceStream extends CallScriptStream {
-
   /**
    * Creates a new CreateNodeStream
    */
   constructor() {
-    super(new NodeId("ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences"));
+    super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences'));
   }
 
 
@@ -44,15 +44,15 @@ export default class AddReferenceStream extends CallScriptStream {
   createParameters(referenceConfigFile) {
     const paramObj = {
       nodeId: referenceConfigFile.nodeId,
-      references: JSON.parse(referenceConfigFile.value)
+      references: JSON.parse(referenceConfigFile.value),
     };
 
-    let paramValue = new Variant({
+    const paramValue = new Variant({
       dataType: DataType.String,
-      value: JSON.stringify(paramObj)
+      value: JSON.stringify(paramObj),
     });
 
-    return {paramNames: [AddReferencesScriptParameterName], paramValues: [paramValue]};
+    return { paramNames: [AddReferencesScriptParameterName], paramValues: [paramValue] };
   }
 
 
@@ -65,17 +65,18 @@ export default class AddReferenceStream extends CallScriptStream {
    */
   handleCallback(results, referenceConfigFile, handleErrors) {
     const nodeId = referenceConfigFile.nodeId;
-    let outputArguments = results[0].outputArguments;
+    const outputArguments = results[0].outputArguments;
 
-    if (outputArguments[0].value.value != StatusCodes.Good.value) {
+    if (outputArguments[0].value.value !== StatusCodes.Good.value) {
       handleErrors(new Error(outputArguments[1].value));
     } else {
-      let failedAttempts = outputArguments[3].value[0].value;
+      const failedAttempts = outputArguments[3].value[0].value;
 
       if (failedAttempts) {
         if (failedAttempts.length > 0) {
           failedAttempts.map(targetNodeId => {
             Logger.error(`Adding reference from ${nodeId} to ${targetNodeId} failed`);
+            return false;
           });
         } else {
           Logger.debug(`Successfully created references for ${nodeId}`);

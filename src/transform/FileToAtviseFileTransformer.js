@@ -1,6 +1,6 @@
 import { src } from 'gulp';
-import ProjectConfig from '../config/ProjectConfig';
 import CombinedStream from 'combined-stream';
+import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
 
@@ -11,12 +11,12 @@ export default class FileToAtviseFileTransformer {
 
   /**
    * Creates a new FileToAtviseFileTransformer
-   * @param {Object} options The options to use. See {@link FileToAtviseFileTransformer#constructor} for available
+   * @param {Object} options The options to use. See
+   * {@link FileToAtviseFileTransformer#constructor} for available
    * options.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
    */
   constructor(options = {}) {
-
     /**
      * Combined stream instance.
      * @type {CombinedStream}
@@ -27,7 +27,9 @@ export default class FileToAtviseFileTransformer {
      * Stream that creates atvise files.
      * @type {MappingTransformer}
      */
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+    const mappingStream = new MappingTransformer(
+      { direction: TransformDirection.FromFilesystem }
+    );
 
     /**
      * Stream containing all type definition files.
@@ -35,13 +37,14 @@ export default class FileToAtviseFileTransformer {
      */
     const nodesToTransform = options.nodesToTransform || [];
 
-    nodesToTransform.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
+    nodesToTransform.map(nodeId => combinedSrcStream
+      .append(src(`./src/${nodeId.filePath}/**/*.*`)));
 
     return Transformer.applyTransformers(
       combinedSrcStream
         .pipe(mappingStream),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
-    )
+    );
   }
 }

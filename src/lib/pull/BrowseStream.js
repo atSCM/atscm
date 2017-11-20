@@ -1,13 +1,12 @@
-import { browse_service as BrowseService, NodeClass, ReferenceTypeIds} from 'node-opcua';
+import Logger from 'gulplog';
+import { browse_service as BrowseService, NodeClass, ReferenceTypeIds } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
-import ReadNodeMappingItem from '../mapping/ReadNodeItem';
 import InstanceTypeDefinitionItem from '../mapping/InstanceTypeDefinitionItem';
 import AtviseReferenceItem from '../mapping/AtviseReferenceItem';
 import BaseTypeDefinitionItem from '../mapping/BaseTypeDefinitionItem';
 import ReadNodeItem from '../mapping/ReadNodeItem';
 import NodeId from '../ua/NodeId';
 import Project from '../../config/ProjectConfig';
-import Logger from 'gulplog';
 
 /**
  * List of valid reference types
@@ -21,7 +20,7 @@ const ValidReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.HasModellingRule
+  ReferenceTypeIds.HasModellingRule,
 ];
 
 /**
@@ -44,7 +43,7 @@ const AtviseReferenceTypes = [
   ReferenceTypeIds.HasEventSource,
   ReferenceTypeIds.HasNotifier,
   ReferenceTypeIds.HasHistoricalConfiguration,
-  ReferenceTypeIds.Organizes
+  ReferenceTypeIds.Organizes,
 ];
 
 /**
@@ -53,7 +52,7 @@ const AtviseReferenceTypes = [
  */
 const TypeDefinitionReferenceTypes = [
   ReferenceTypeIds.HasTypeDefinition,
-  ReferenceTypeIds.HasModellingRule
+  ReferenceTypeIds.HasModellingRule,
 ];
 
 
@@ -126,7 +125,7 @@ export default class BrowseStream extends QueueStream {
    */
   static shouldBeMappedAsContentFile(ref, nodeId) {
     return BrowseStream.isChildNodeRef(ref, nodeId) &&
-      ref.$nodeClass.value == NodeClass.Variable;
+      ref.$nodeClass.value === NodeClass.Variable.value;
   }
 
   /**
@@ -135,7 +134,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
   static shouldBeMappedAsAtviseReferenceFile(ref) {
-    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+    return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
@@ -144,7 +143,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
    */
   static shouldBeMappedAsTypeDefinitionFile(ref) {
-    return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > - 1;
+    return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
@@ -174,7 +173,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
   static isBaseTypeRef(ref) {
-    return ref.referenceTypeId.value == ReferenceTypeIds.HasSubtype;
+    return ref.referenceTypeId.value === ReferenceTypeIds.HasSubtype;
   }
 
   /**
@@ -192,7 +191,7 @@ export default class BrowseStream extends QueueStream {
    * @param{node-opcua~ReferenceDescription} ref The reference description to cast
    */
   static opcNodeIdToExpandedNodeId(ref) {
-    // "cast" reference nodeId to NodeId
+    // 'cast' reference nodeId to NodeId
     Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
   }
 
@@ -208,10 +207,9 @@ export default class BrowseStream extends QueueStream {
   /**
    * Checks if the given reference matches the defined browse Filters
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @param{node-opcua~NodeId} nodeId The browsed nodeId
    * @return {Boolean} reference matches browse filters(=true) or not(=false)
    */
-  matchesFilter(ref, nodeId) {
+  matchesFilter(ref) {
     return BrowseStream.isValidRef(ref) && !this.isIgnored(ref);
   }
 
@@ -221,7 +219,7 @@ export default class BrowseStream extends QueueStream {
    * @return {Boolean} The given reference description should be ignored(=true) or not(=false)
    */
   isIgnored(ref) {
-    let refNodeId = ref.nodeId.value.toString();
+    const refNodeId = ref.nodeId.value.toString();
 
     if (refNodeId.match(this.ignoredRegExp)) {
       Logger.debug(`Ignored node: ${refNodeId}`);
@@ -248,9 +246,9 @@ export default class BrowseStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          let atvReferences = [];
-          let typeDefinitionReferences = [];
-          let baseTypeReferences = [];
+          const atvReferences = [];
+          const typeDefinitionReferences = [];
+          const baseTypeReferences = [];
 
           Promise.all(
             results[0].references
@@ -264,7 +262,7 @@ export default class BrowseStream extends QueueStream {
                   baseTypeReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsTypeDefinitionFile(ref)) {
                   typeDefinitionReferences.push(ref);
-                } else if(BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
+                } else if (BrowseStream.shouldBeMappedAsAtviseReferenceFile(ref)) {
                   atvReferences.push(ref);
                 } else if (BrowseStream.shouldBeMappedAsContentFile(ref, nodeId)) {
                   this.push(new ReadNodeItem(nodeId, ref));
@@ -276,9 +274,11 @@ export default class BrowseStream extends QueueStream {
                     this.write(ref.nodeId, null, resolve);
                   });
                 }
+
+                return false;
               })
           )
-            .then(result => {
+            .then(() => {
               // create type definition item if browsed item has type definition references
               if (typeDefinitionReferences.length > 0) {
                 this.push(new InstanceTypeDefinitionItem(nodeId, typeDefinitionReferences));

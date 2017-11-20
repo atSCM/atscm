@@ -1,7 +1,6 @@
+import { ReferenceTypeIds, NodeClass } from 'node-opcua';
 import checkType from '../../util/validation';
 import AtviseFile from '../mapping/AtviseFile';
-import {ReferenceTypeIds, NodeClass} from 'node-opcua';
-import NodeId from '../ua/NodeId';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 
 /**
@@ -19,9 +18,9 @@ export default class CombinedNodeFile {
    */
   constructor(file, createNodes) {
     if (!checkType(file, AtviseFile) || !checkType(createNodes, Boolean)) {
-      throw new Error("Class CombinedNodeFile: Can not parse given argument!");
+      throw new Error('Class CombinedNodeFile: Can not parse given argument!');
     } else if (!CombinedNodeFile.hasValidType(file)) {
-      throw new Error("Class CombinedNodeFile: File has wrong type!");
+      throw new Error('Class CombinedNodeFile: File has wrong type!');
     }
 
     /**
@@ -65,7 +64,7 @@ export default class CombinedNodeFile {
    * @type {Boolean}
    */
   get isComplete() {
-    let typeDefFileComplete = checkType(this.typeDefinitionFile, AtviseFile);
+    const typeDefFileComplete = checkType(this.typeDefinitionFile, AtviseFile);
 
     if (this.createNodes) {
       if (!typeDefFileComplete) {
@@ -74,9 +73,9 @@ export default class CombinedNodeFile {
 
       return this.isTypeDefOnlyFile ? typeDefFileComplete :
         checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
-    } else {
-      return checkType(this.contentFile, AtviseFile);
     }
+
+    return checkType(this.contentFile, AtviseFile);
   }
 
   /**
@@ -84,7 +83,7 @@ export default class CombinedNodeFile {
    * @type {Boolean}
    */
   get isTypeDefOnlyFile() {
-    let typeDefinitionContent = JSON.parse(this.typeDefinitionFile.value)
+    const typeDefinitionContent = JSON.parse(this.typeDefinitionFile.value);
     let typeDefinition = {};
 
     if (this.typeDefinitionFile.isBaseTypeDefinition) {
@@ -93,7 +92,7 @@ export default class CombinedNodeFile {
       typeDefinition = typeDefinitionContent[TypeDefinitionKey].items[0];
     }
 
-    return NodeClass[typeDefinition.nodeClass].value != NodeClass.Variable.value;
+    return NodeClass[typeDefinition.nodeClass].value !== NodeClass.Variable.value;
   }
 
   /**
@@ -106,8 +105,11 @@ export default class CombinedNodeFile {
       return false;
     }
 
-    file.isTypeDefinition ? this.typeDefinitionFile = file :
+    if (file.isTypeDefinition) {
+      this.typeDefinitionFile = file;
+    } else {
       this.contentFile = file;
+    }
 
     return true;
   }

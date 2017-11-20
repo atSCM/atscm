@@ -6,7 +6,7 @@ import PullStream from '../lib/gulp/PullStream';
  */
 export default function pull() {
   return new PullStream({
-    nodesToPull: ProjectConfig.nodes
+    nodesToPull: ProjectConfig.nodes,
   });
 }
 
