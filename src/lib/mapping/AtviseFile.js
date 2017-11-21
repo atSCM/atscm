@@ -1,31 +1,29 @@
+import Int64 from 'node-int64';
 import { readFile } from 'fs';
-import {dirname, join, relative} from 'path';
-import File from 'vinyl';
-import Logger from 'gulplog';
+import { dirname, join, relative } from 'path';
 import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
+import File from 'vinyl';
+import ProjectConfig from '../../config/ProjectConfig';
 import AtviseTypes from './Types';
 import NodeId from '../ua/NodeId';
-import Int64 from 'node-int64';
-
-// Path related cache
 
 /**
  * A map of AtviseTypes against their definition id's value.
  * @type {Map<String, AtivseType>}
  */
 const AtviseTypesByValue = AtviseTypes
-  .reduce((result, type) => Object.assign(result, {
-  [type.typeDefinition.value]: type,
-}), {});
+    .reduce((result, type) => Object.assign(result, {
+      [type.typeDefinition.value]: type,
+    }), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
  * @type {Map<String, AtivseType>}
  */
 const AtviseTypesByIdentifier = AtviseTypes
-  .reduce((result, type) => Object.assign(result, {
-  [type.identifier]: type,
-}), {});
+    .reduce((result, type) => Object.assign(result, {
+      [type.identifier]: type,
+    }), {});
 
 
 /**
@@ -33,13 +31,6 @@ const AtviseTypesByIdentifier = AtviseTypes
  * @type {String}
  */
 const ArrayValueSeperator = '@atscmUaNodeArraySeperator@';
-
-
-/**
- * Source directory path
- * @type {String}
- */
-const SrcPath = join(process.cwd(), 'src');
 
 /**
  * A map providing shorter extensions for data types
@@ -51,15 +42,15 @@ export const ExtensionForDataType = {
 };
 
 /**
- * Switches keys and values in an object. E.g.: { "a": 1 } becomes { 1: "a" }
+ * Switches keys and values in an object. E.g.: { 'a': 1 } becomes { 1: 'a' }
  * @param {Object} obj The object to reverse.
  * @return {Object} The reversed object.
  */
 function reverseObject(obj) {
   return Object.keys(obj)
-    .reduce((result, key) => Object.assign(result, {
-    [obj[key]]: key,
-  }), {});
+      .reduce((result, key) => Object.assign(result, {
+        [obj[key]]: key,
+      }), {});
 }
 
 /**
@@ -109,7 +100,7 @@ const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
-  [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
+  [DataType.DateTime]: stringValue => new Date(stringValue),
   [DataType.UInt64]: stringValue => parseInt(stringValue, 10),
   [DataType.Int64]: stringValue => parseInt(stringValue, 10),
   [DataType.Int32]: stringValue => parseInt(stringValue, 10),
@@ -119,19 +110,47 @@ const Decoder = {
   [DataType.Double]: stringValue => parseFloat(stringValue, 10),
   [DataType.Float]: stringValue => parseFloat(stringValue, 10),
   [DataType.XmlElement]: stringValue => stringValue,
-  [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1])
+  [DataType.LocalizedText]: stringValue => coerceLocalizedText(stringValue.split('text=')[1]),
 };
+
+
+/**
+ * A set of functions that decode node values create node script.
+ * @type {Map<node-opcua~DataType, function(value: *): String>}
+ */
+const CreateNodeDecoder = {
+  [DataType.ByteString]: buffer => buffer.toString('binary'),
+  [DataType.DateTime]: buffer => new Date(buffer.toString()).getTime(),
+};
+
+
+/**
+ * Converts safely two uint32 array to an int64 number type.
+ * @param {Number} lowerRangeValue The value for the lower 32 bits of the int 64 value
+ * @param {Number} higherRangeValue The value for the higher 32 bits of the int 64 value
+ * @returns {Number} The resulting int64 value
+ */
+function uint32ArraysToInt64(lowerRangeValue, higherRangeValue) {
+  const int64 = new Int64(lowerRangeValue, higherRangeValue);
+
+  if (!isFinite(int64)) {
+    throw new Error('Value is too big for Javascript Number type');
+  }
+
+  return int64.toString();
+}
+
 
 /**
  * A set of functions that encode node values before storing them.
  * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
-  [DataType.DateTime]: date => date.getTime().toString(),
-  [DataType.UInt64]: uInt32Array => AtviseFile.uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
-  [DataType.Int64]: int32Array => AtviseFile.uint32ArraysToInt64(int32Array[0], int32Array[1]),
-  [DataType.ByteString]: byteString => new Buffer(byteString)
+  [DataType.UInt64]: uInt32Array => uint32ArraysToInt64(uInt32Array[0], uInt32Array[1]),
+  [DataType.Int64]: int32Array => uint32ArraysToInt64(int32Array[0], int32Array[1]),
+  [DataType.ByteString]: byteString => new Buffer(byteString),
 };
+
 
 /**
  * Returns the extension for a specific {@link node-opcua~DataType}.
@@ -169,7 +188,7 @@ export default class AtviseFile extends File {
       // Variable nodes are stored with their lowercase datatype as an extension
       path += `.${extensionForDataType(dataType)}`;
     } else if (typeDefinition.value === PropertyTypeDefinition.value) {
-      // Property nodes are stored with ".prop" and their lowercase datatype as an extension
+      // Property nodes are stored with '.prop' and their lowercase datatype as an extension
       path += `.prop.${extensionForDataType(dataType)}`;
     } else {
       // Handle custom types
@@ -184,15 +203,15 @@ export default class AtviseFile extends File {
         keepExtension = atType.keepExtension;
       }
 
-      if (! keepExtension) {
+      if (!keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
     }
 
     if (arrayType) {
-      // Add "array" or "matrix" extensions for corresponding array types
+      // Add 'array' or 'matrix' extensions for corresponding array types
       if (arrayType.value !== VariantArrayType.Scalar.value) {
-        path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+        path += `.${arrayType.value === VariantArrayType.Array.value ? 'array' : 'matrix'}`;
       }
     }
 
@@ -205,22 +224,6 @@ export default class AtviseFile extends File {
    */
   static getAtviseTypesByValue() {
     return AtviseTypesByValue;
-  }
-
-  /**
-   * Converts safely two uint32 array to an int64 number type.
-   * @param {Number} lowerRangeValue The value for the lower 32 bits of the int 64 value
-   * @param {Number} higherRangeValue The value for the higher 32 bits of the int 64 value
-   * @returns {Number} The resulting int64 value
-   */
-  static uint32ArraysToInt64 (lowerRangeValue, higherRangeValue) {
-    const int64 = new Int64(lowerRangeValue, higherRangeValue);
-
-    if (!isFinite(int64)) {
-      throw new Error('Value is too big for Javascript Number type');
-    }
-
-    return int64.toString();
   }
 
   /**
@@ -237,11 +240,18 @@ export default class AtviseFile extends File {
 
     const encoder = Encoder[dataType];
 
-    if (arrayType == VariantArrayType.Array) {
-      let arrayContent = value.map(item => encoder ? encoder(item): item).join(ArrayValueSeperator);
+    if (arrayType === VariantArrayType.Array) {
+      const arrayContent = value.map(item => {
+        if (encoder) {
+          return encoder(item);
+        }
+
+        return item;
+      })
+        .join(ArrayValueSeperator);
+
       return Buffer.from(arrayContent);
     }
-
 
     return Buffer.from(encoder ? encoder(value) : value.toString().trim());
   }
@@ -251,31 +261,40 @@ export default class AtviseFile extends File {
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
    * @param {node-opcua~VariantArrayType} arrayType The files array type
-   * for.
+   * @param {Boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite
+   * the existing decoders
    * @return {?*} The decoded node value or null.
    */
-  static decodeValue(buffer, dataType, arrayType) {
-    const decoder = Decoder[dataType];
-    let bufferString = "";
+  static decodeValue(buffer, dataType, arrayType, useCreateNodeEncoding) {
+    let decoder = Decoder[dataType];
+    let bufferValue;
 
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    bufferString = buffer.toString();
-
-    if (arrayType == VariantArrayType.Array) {
-      let arrayValue = bufferString.split(ArrayValueSeperator);
-
-      return (arrayValue.map(item => decoder ? decoder(item): item));
-
+    if (useCreateNodeEncoding && CreateNodeDecoder[dataType]) {
+      decoder = CreateNodeDecoder[dataType];
+      bufferValue = buffer;
     } else {
-      if (decoder) {
-        return decoder(bufferString);
-      }
-
-      return buffer;
+      bufferValue = buffer.toString();
     }
+
+    if (arrayType === VariantArrayType.Array) {
+      const arrayValue = bufferValue.toString().split(ArrayValueSeperator);
+
+      return arrayValue.map(item => {
+        if (decoder) {
+          return decoder(item);
+        }
+
+        return item;
+      });
+    } else if (decoder) {
+      return decoder(bufferValue);
+    }
+
+    return buffer;
   }
 
   /**
@@ -289,6 +308,7 @@ export default class AtviseFile extends File {
 
     return date;
   }
+
 
   /**
    * Creates a new {@link AtviseFile} for the given {@link MappingItem}.
@@ -364,7 +384,7 @@ export default class AtviseFile extends File {
       this._dataType = DataType[types[typeExtensions.indexOf(ext)]];
     });
 
-    // Handle wrapped data types (e.g. "bool" for DataType.Boolean)
+    // Handle wrapped data types (e.g. 'bool' for DataType.Boolean)
     ifLastExtensionMatches(ext => DataTypeForExtension[ext], ext => {
       this._dataType = DataType[DataTypeForExtension[ext]];
     });
@@ -382,7 +402,7 @@ export default class AtviseFile extends File {
     });
 
     ifLastExtensionMatches(ext => ext === 'var', () => {
-      this._typeDefinition = new NodeId("Custom.VarResourceType");
+      this._typeDefinition = new NodeId('Custom.VarResourceType');
     });
 
     if (!complete()) {
@@ -391,13 +411,13 @@ export default class AtviseFile extends File {
 
       Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
         if (!foundAtType && extensions.includes(identifier)) {
-        foundAtType = true;
-        const type = AtviseTypesByIdentifier[identifier];
+          foundAtType = true;
+          const type = AtviseTypesByIdentifier[identifier];
 
-        this._typeDefinition = type.typeDefinition;
-        this._dataType = type.dataType;
-      }
-    });
+          this._typeDefinition = type.typeDefinition;
+          this._dataType = type.dataType;
+        }
+      });
     }
 
     if (!complete()) {
@@ -406,14 +426,16 @@ export default class AtviseFile extends File {
     }
   }
 
-
   /**
    * The file's relative path (base = 'src' folder)
    * @type {String}
    */
   get relativeFilePath() {
     const path = this.path;
-    return path.indexOf(SrcPath) > -1 ? relative(SrcPath, this.path) : path;
+    // build source path here because Project config is undefined when AtviseFile is loaded
+    const srcPath = join(process.cwd(), ProjectConfig.RelativeSourceDirectoryPath);
+
+    return path.indexOf(srcPath) > -1 ? relative(srcPath, this.path) : path;
   }
 
   /**
@@ -530,6 +552,14 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * Returns the decoded node value for create node serverscript.
+   * @type {?*} The file's decoded value.
+   */
+  get createNodeValue() {
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType, true);
+  }
+
+  /**
    * Returns the node id associated with the file.
    * @type {NodeId} The file's node id.
    */
@@ -560,16 +590,16 @@ export default class AtviseFile extends File {
   static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
-      reject(new Error('options.path is required'));
-    } else {
-      readFile(options.path, (err, contents) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(new AtviseFile(Object.assign(options, { contents })));
-    }
+        reject(new Error('options.path is required'));
+      } else {
+        readFile(options.path, (err, contents) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
     });
-    }
-  });
   }
 }

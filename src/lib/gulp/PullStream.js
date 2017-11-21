@@ -2,6 +2,7 @@ import readline from 'readline';
 import { dest } from 'gulp';
 import Logger from 'gulplog';
 import UaNodeToAtviseFileTransformer from '../../transform/UaNodeToAtviseFileTransformer';
+import ProjectConfig from '../../config/ProjectConfig';
 
 /**
  * A stream that transforms read {@link ReadStream.ReadResult}s and stores the on the filesystem.
@@ -12,22 +13,21 @@ export default class PullStream {
    * Creates a new PullStream based on the given options.
    * @param {Object} options The stream configuration options.
    * @param {NodeId[]} [options.nodesToPull] The nodes to push.
-   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be used for mapping.
+   * @param {Boolean} [options.useInputStream] Defines if the given input
+   * stream should be used for mapping.
    * @param {Stream} [options.inputStream] The input stream to use.
    */
   constructor(options = {}) {
-
     /**
      * The nodes to pull
      * @type {NodeId[]}
      */
     const nodesToPull = options.nodesToPull || [];
 
-
     const fileTransformer = new UaNodeToAtviseFileTransformer({
       nodesToTransform: nodesToPull,
       useInputStream: options.useInputStream,
-      inputStream: options.inputStream
+      inputStream: options.inputStream,
     });
 
     const readStream = fileTransformer.readStream;
@@ -42,7 +42,7 @@ export default class PullStream {
     }, 1000);
 
     return fileTransformer.stream
-      .pipe(dest('./src'))
+      .pipe(dest(ProjectConfig.RelativeSourceDirectoryPath))
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.clearLine(process.stdout, 0);

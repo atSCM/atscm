@@ -1,7 +1,6 @@
 import { Buffer } from 'buffer';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import Logger from 'gulplog';
-import AtviseFile from '../lib/mapping/AtviseFile';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -29,15 +28,16 @@ export default class DisplayTransformer extends XMLTransformer {
   transformFromDB(file, enc, callback) {
     this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing display content. Check if display content is broken`);
+        Logger.error(`Display ${file.nodeId}: Error parsing display content.`,
+          'Check if display content is broken');
         callback(null);
-      } else if (xmlObj.children[0].name != 'svg') {
+      } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'svg') {
         Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
         callback(null);
       } else {
         try {
           let scriptFileAdded = false;
-          const config = {parameters: [], dependencies: []};
+          const config = { parameters: [], dependencies: [] };
           const displayContent = xmlObj.children[0].children;
 
           const scriptFile = DisplayTransformer.splitFile(file, '.js');
@@ -46,7 +46,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Filter for script tags in display
           const scripts = displayContent.filter((tag, index) => {
-            if (tag.name == 'script') {
+            if (tag.name === 'script') {
               delete displayContent[index];
               return true;
             }
@@ -57,34 +57,44 @@ export default class DisplayTransformer extends XMLTransformer {
           const metadata = xmlObj.find('*/metadata').children;
 
           // Extract JavaScript
-          scripts.map((script, index) => {
+          scripts.map((script) => {
             const attributes = script.attrs;
 
-            if (attributes.hasOwnProperty('src') || attributes.hasOwnProperty('xlink:href')) {
+            if (attributes.src || attributes['xlink:href']) {
               config.dependencies.push(attributes.src || attributes['xlink:href']);
             } else if (scriptFileAdded) {
-              Logger.warn(`Display ${file.nodeId}: atscm only supports one inline script per display`);
+              Logger.warn(`Display ${file.nodeId}:`,
+                'atscm only supports one inline script per display');
             } else {
               scriptFileAdded = true;
               scriptFile.contents = Buffer.from(script.toString());
             }
+
+            return false;
           });
 
 
           // Extract display parameters
           if (metadata.length > 0) {
-            let meta = metadata[0].children;
-            let nonParameterTags = [];
+            const meta = metadata[0].children;
+            const nonParameterTags = [];
 
             if (metadata.length > 1) {
-              Logger.warn(`Display ${file.nodeId}: atscm only supports one metadata tag per display`);
+              Logger.warn(`Display ${file.nodeId}:`,
+                'atscm only supports one metadata tag per display');
               metadata.splice(1, metadata.length);
             }
 
-            meta.forEach(tag => tag.name == 'atv:parameter' ? config.parameters.push(tag.attrs) :
-              nonParameterTags.push(tag));
+            meta.forEach(tag => {
+              if (tag.name === 'atv:parameter') {
+                config.parameters.push(tag.attrs);
+              } else {
+                nonParameterTags.push(tag);
+              }
+            });
 
-            // overwrite meta data tag items, deleting items directly in metadata tag made serialize function ignore
+            // overwrite meta data tag items, deleting items directly in metadata
+            // tag made serialize function ignore
             // the remaining entries
             metadata[0].children = nonParameterTags;
           }
@@ -145,7 +155,8 @@ export default class DisplayTransformer extends XMLTransformer {
 
     this.decodeContents(svgFile, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing display content.\nMessage: ${err.message}`);
+        Logger.error(`Display ${svgFile.nodeId}: Error parsing display content.
+          Message: ${err.message}`);
         callback(null);
       } else {
         try {
@@ -160,20 +171,22 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Insert parameters
           if (parameters && parameters.length > 0) {
-            let meta = metadata.children[0].children;
+            const meta = metadata.children[0].children;
 
-            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter', param, metadata)));
+            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
+              param, metadata)));
           }
 
           // Insert dependencies
-          if (config.dependencies && config.dependencies.length > 0) {
-            config.dependencies.forEach(dependency => displayContent.children
-              .push(this.createTag('script', {'xlink:href': dependency}, metadata)));
+          if (dependencies && dependencies.length > 0) {
+            dependencies.forEach(dependency => displayContent.children
+              .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' },
+                metadata)));
           }
 
           // Insert script
           if (scriptFile) {
-            let script = this.createTag('script', {type: 'text/ecmascript'}, displayContent);
+            const script = this.createTag('script', { type: 'text/ecmascript' }, displayContent);
 
             script.append(this.createCData(inlineScript));
             displayContent.children.push(script);

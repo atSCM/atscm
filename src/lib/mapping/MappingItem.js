@@ -1,22 +1,20 @@
-import Logger from 'gulplog';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
 
 
 /**
- * Contains the configuration object for atvise nodes and references tht are mapped on the file system
+ * Contains the configuration object for atvise nodes and references tht
+ * are mapped on the file system
  * @abstract
  */
-
 export default class MappingItem {
-
   /**
    * Creates a new MappingItem
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    */
   constructor(nodeId) {
     if (!checkType(nodeId, NodeId)) {
-      throw new Error("MappingItem#constructor: Can not parse given arguments!");
+      throw new Error('MappingItem#constructor: Can not parse given arguments!');
     }
 
     /**
@@ -36,7 +34,6 @@ export default class MappingItem {
      * @type {node-opcua~ReferenceDescription or node-opcua~ReferenceDescription[]}
      */
     this.source = undefined;
-
   }
 
   /**

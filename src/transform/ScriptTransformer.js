@@ -27,18 +27,17 @@ export default class ScriptTransformer extends XMLTransformer {
   transformFromDB(file, enc, callback) {
     this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        Logger.error(`Display ${file.nodeId}: Error parsing script content. Check if script content is empty or broken`);
+        Logger.error(`Display ${file.nodeId}: Error parsing script content.`,
+          'Check if script content is empty or broken');
         callback(null);
-      } else if (xmlObj.children[0].name != 'script') {
+      } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'script') {
         Logger.error(`Script ${file.nodeId}: Can not decode script. Missing 'script' tag`);
         callback(null);
       } else {
-
         const configFile = ScriptTransformer.splitFile(file, '.json');
         const scriptFile = ScriptTransformer.splitFile(file, '.js');
 
-        const config = {parameters: []};
-        const document = xmlObj && xmlObj.script ? xmlObj.script : {};
+        const config = { parameters: [] };
 
         // Filter for metadata tags in script
         const metadata = xmlObj.find('*/metadata').children;
@@ -56,28 +55,30 @@ export default class ScriptTransformer extends XMLTransformer {
           config.metadata = [];
 
           if (metadata.length > 1) {
-            Logger.warn(`Script ${file.nodeId}: atscm only supports one metadata tag per script`);
+            Logger.warn(`Script ${file.nodeId}: `,
+              'atscm only supports one metadata tag per script');
           }
 
-          meta.forEach(tag => config.metadata.push({name: tag.name, attrs: tag.attrs, value: tag.text()}));
+          meta.forEach(tag => config.metadata
+            .push({ name: tag.name, attrs: tag.attrs, value: tag.text() }));
         }
 
         // Extract Parameters
         if (parameters.length > 0) {
           parameters.forEach(param => {
-            let paramObj = param.attrs;
+            const paramObj = param.attrs;
 
-            if (paramObj.relative === "true") {
-              let targetName = param.find('*/*/*/TargetName');
+            if (paramObj.relative === 'true') {
+              const targetName = param.find('*/*/*/TargetName');
 
               if (targetName.children.length > 0) {
-                let nameSpaceIndex = targetName.find('*/NamespaceIndex').eq(0);
-                let nodePath = targetName.find('*/Name').eq(0);
+                const nameSpaceIndex = targetName.find('*/NamespaceIndex').eq(0);
+                const nodePath = targetName.find('*/Name').eq(0);
 
                 // add relative path information
                 paramObj.relPath = {
                   nameSpaceIndex: nameSpaceIndex.text(),
-                  nodePath: nodePath.text()
+                  nodePath: nodePath.text(),
                 };
               }
             }
@@ -86,7 +87,7 @@ export default class ScriptTransformer extends XMLTransformer {
         }
 
 
-        if (code.length == 0) {
+        if (code.length === 0) {
           Logger.warn(`Script ${file.nodeId}: No script content defined`);
         }
 
@@ -115,9 +116,8 @@ export default class ScriptTransformer extends XMLTransformer {
     const configFile = files['.json'];
     const scriptFile = files['.js'];
 
-    const parameters = [];
     let config = {};
-    let xmlObj = {};
+    const xmlObj = {};
 
     const script = this.createTag('script', {}, xmlObj);
     const metadata = this.createTag('metadata', {}, script);
@@ -139,7 +139,9 @@ export default class ScriptTransformer extends XMLTransformer {
 
     // Add metadata to script
     if (config.metadata) {
-      config.metadata.forEach(tag => metadata.append(this.createTag(tag.name, tag.attrs, metadata, tag.value)));
+      config.metadata.forEach(tag => metadata.append(
+        this.createTag(tag.name, tag.attrs, metadata, tag.value)
+      ));
       script.append(metadata);
     }
 
@@ -148,8 +150,9 @@ export default class ScriptTransformer extends XMLTransformer {
       config.parameters.forEach(param => {
         let relPath;
 
-        if (param.relative == "true") {
+        if (param.relative === 'true') {
           relPath = this.createRelPathTag(param.relPath);
+          // eslint-disable-next-line no-param-reassign
           delete param.relPath;
         }
 
