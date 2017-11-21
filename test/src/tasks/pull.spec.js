@@ -3,7 +3,7 @@ import proxyquire from 'proxyquire';
 
 import { Stream } from 'stream';
 import { ctor as throughStreamClass } from 'through2';
-import NodeId from '../../../src/lib/server/NodeId';
+import NodeId from '../../../src/lib/ua/NodeId';
 
 const pull = proxyquire('../../../src/tasks/pull', {
   '../lib/server/NodeStream': {

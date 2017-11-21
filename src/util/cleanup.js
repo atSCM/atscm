@@ -1,6 +1,6 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import Session from '../lib/server/Session';
+import Session from '../lib/ua/Session';
 
 /**
  * Cleans up after the app ended with the specified code or signal.

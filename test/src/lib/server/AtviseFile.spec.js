@@ -3,9 +3,9 @@ import { Buffer } from 'buffer';
 import File from 'vinyl';
 import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
-import AtviseTypes from '../../../../src/lib/server/Types';
-import NodeId from '../../../../src/lib/server/NodeId';
+import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
+import AtviseTypes from '../../../../src/lib/mapping/Types';
+import NodeId from '../../../../src/lib/ua/NodeId';
 
 /** @test {AtviseFile} */
 describe('AtviseFile', function() {
@@ -111,11 +111,11 @@ describe('AtviseFile', function() {
       }))
   );
 
-  /** @test {AtviseFile.pathForProcessingItem} */
-  describe('.pathForProcessingItem', function() {
+  /** @test {AtviseFile.pathForItemConfig} */
+  describe('.pathForItemConfig', function() {
     tests.forEach(test => {
       it(test.name, function() {
-        expect(AtviseFile.pathForProcessingItem({
+        expect(AtviseFile.pathForItemConfig({
           nodeId: test.nodeId,
           value: {
             $dataType: test.dataType,
@@ -129,7 +129,7 @@ describe('AtviseFile', function() {
     });
 
     it('should store custom typed variables with a ".var" extension', function() {
-      expect(AtviseFile.pathForProcessingItem({
+      expect(AtviseFile.pathForItemConfig({
         nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
         value: {
           $dataType: DataType.Boolean,

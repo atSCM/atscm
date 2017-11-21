@@ -1,8 +1,8 @@
 import { resolveNodeId, StatusCodes, NodeClass } from 'node-opcua';
 import { spy } from 'sinon';
 import expect from '../../../expect';
-import NodeStream from '../../../../src/lib/server/NodeStream';
-import NodeId from '../../../../src/lib/server/NodeId';
+import NodeStream from '../../../../src/lib/stream/NodeStream';
+import NodeId from '../../../../src/lib/ua/NodeId';
 
 class StubNodeStream extends NodeStream {
   _transform(chunk, enc, callback) {

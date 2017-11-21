@@ -2,8 +2,8 @@ import { Buffer } from 'buffer';
 import { readFile } from 'fs';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
-import AtviseFile from '../lib/server/AtviseFile';
-import NodeId from '../lib/server/NodeId';
+import AtviseFile from '../lib/mapping/AtviseFile';
+import NodeId from '../lib/ua/NodeId';
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
@@ -23,11 +23,8 @@ export default class MappingTransformer extends Transformer {
 
       callback(null, file);
     } catch (e) {
-      Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${mappingItem.sourceNodeId.toString()}: ${e.message}`
-      );
+      Logger.error(`Unable to map ${mappingItem.nodeId.toString()}: ${e.message}`);
       Logger.debug(e);
-
       callback(null);
     }
   }

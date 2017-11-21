@@ -1,5 +1,5 @@
 import { DataType } from 'node-opcua';
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 
 class Type {
   /**
@@ -93,7 +93,8 @@ class AtviseResourceType extends AtviseType {
  * @type {AtviseType[]}
  */
 const AtviseTypes = [
-  new CustomResourceType('TypeDefinition', 'typedef', DataType.String, 'json'),
+  new CustomResourceType('BaseTypeDefinition', 'basetypedef', DataType.String, 'json'),
+  new CustomResourceType('InstanceTypeDefinition', 'instancetypedef', DataType.String, 'json'),
   new CustomResourceType('AtvReferenceConfig', 'references', DataType.String, 'json'),
   new AtviseType('HtmlHelp', 'help', DataType.ByteString, 'html'),
   new AtviseType('QuickDynamic', 'qd', DataType.XmlElement),

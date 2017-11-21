@@ -1,4 +1,4 @@
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
 
@@ -14,7 +14,7 @@ export default class ReadStream extends QueueStream {
    * @return {String} The specific error message.
    */
   processErrorMessage(mappingItem) {
-    return `Error processing item with  ${mappingItem.sourceNodeId.toString()}`;
+    return `ReadStream#processErrorMessage: Error processing item ${mappingItem.nodeId.toString()}`;
   }
 
   /**
@@ -26,9 +26,10 @@ export default class ReadStream extends QueueStream {
    */
 
   processChunk(mappingItem, handleErrors) {
-    let nodeId = mappingItem.readNodeConfig.nodeId;
+    let nodeId = mappingItem.nodeId;
 
-    if (!mappingItem.isReadNodeConfig) {
+    // skip reference and type definition files and read node files that already contain a config
+    if (!mappingItem.shouldBeRead || mappingItem.dataValueAdded) {
       this.push(mappingItem);
       handleErrors(null, StatusCodes.Good, done => done());
     } else {
@@ -41,9 +42,9 @@ export default class ReadStream extends QueueStream {
             let dataValue = results[0];
 
             if (dataValue.value == null) {
-              Logger.warn(`Unable to read value of node:  ${nodeId.toString()}`);
+              Logger.error(`Unable to read value of node:  ${nodeId.toString()}`);
             } else {
-              mappingItem.addDataValueToReadNodeConfig(dataValue);
+              mappingItem.createConfigItemFromDataValue(dataValue);
               this.push(mappingItem);
             }
 

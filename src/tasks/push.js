@@ -1,25 +1,15 @@
-import { src } from 'gulp';
 import PushStream from '../lib/gulp/PushStream';
-import CombinedStream from 'combined-stream';
 import ProjectConfig from '../config/ProjectConfig';
 
 /**
  * Pushes {@link AtviseFile}s to atvise server.
  */
-export default function push(callback) {
-  const combinedSrcStream = CombinedStream.create();
+export default function push() {
 
-  ProjectConfig.nodes.map(nodeId => combinedSrcStream.append(src(`./src/${nodeId.filePath}/**/*.*`)));
-
-  const pushStream = new PushStream(combinedSrcStream);
-
-  // workaround because process does not finish after task completion
-  pushStream.on("pushStreamFinished", () => {
-    callback();
-    process.exit();
+  return new PushStream({
+    nodesToPush: ProjectConfig.nodes,
+    createNodes: true
   });
-
-  return pushStream;
 }
 
 push.description = 'Push all stored nodes to atvise server';
