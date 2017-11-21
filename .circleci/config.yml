@@ -69,10 +69,6 @@ jobs:
           path: ~/reports
           when: always
 
-      - run:
-          name: Fail test
-          command: exit 13
-
       # Deployment
       - add_ssh_keys
       - run:
