@@ -4,6 +4,8 @@ import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
 import WriteStream from '../server/WriteStream';
+import NodeFileStream from '../server/NodeFileStream';
+import filter from 'gulp-filter';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -17,6 +19,9 @@ export default class PushStream {
   constructor(srcStream) {
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
     const writeStream = new WriteStream();
+    const nodeFileStream = new NodeFileStream();
+    const typeDefinitionFilter = filter(file => !file.isTypeDefinition, { restore: true });
+    const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
 
     const printProgress = setInterval(() => {
       Logger.info(
@@ -31,19 +36,22 @@ export default class PushStream {
 
     return Transformer.applyTransformers(
       srcStream
-        .pipe(mappingStream),
+        .pipe(mappingStream)
+        .pipe(typeDefinitionFilter)
+        .pipe(atvReferenceFilter),
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
     )
-      .pipe(writeStream)
-      .on('finish', () => {
-        if (Logger.listenerCount('info') > 0) {
-          readline.cursorTo(process.stdout, 0);
-          readline.clearLine(process.stdout);
-        }
+    .pipe(typeDefinitionFilter.restore)
+    .pipe(nodeFileStream)
+    .pipe(writeStream)
+    .on('finish', () => {
+      if (Logger.listenerCount('info') > 0) {
+        readline.cursorTo(process.stdout, 0);
+        readline.clearLine(process.stdout);
+      }
 
-        clearInterval(printProgress);
-      });
+      clearInterval(printProgress);
+    });
   }
-
 }

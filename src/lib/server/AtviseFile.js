@@ -1,4 +1,5 @@
 import { readFile } from 'fs';
+import {dirname, join, relative} from 'path';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import AtviseTypes from './Types';
@@ -12,8 +13,8 @@ import NodeId from './NodeId';
  */
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-    [type.typeDefinition.value]: type,
-  }), {});
+  [type.typeDefinition.value]: type,
+}), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
@@ -21,8 +22,15 @@ const AtviseTypesByValue = AtviseTypes
  */
 const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
-    [type.identifier]: type,
-  }), {});
+  [type.identifier]: type,
+}), {});
+
+
+/**
+ * Source directory path
+ * @type {String}
+ */
+const SrcPath = join(process.cwd(), 'src');
 
 /**
  * A map providing shorter extensions for data types
@@ -41,8 +49,8 @@ export const ExtensionForDataType = {
 function reverseObject(obj) {
   return Object.keys(obj)
     .reduce((result, key) => Object.assign(result, {
-      [obj[key]]: key,
-    }), {});
+    [obj[key]]: key,
+  }), {});
 }
 
 /**
@@ -130,15 +138,16 @@ function extensionForDataType(dataType) {
 export default class AtviseFile extends File {
 
   /**
-   * Returns a storage path for a {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readResult The read result to get a path for.
+   * Returns a storage path for a {@link MappingItem.itemToProcess}.
+   * @param {MappingItem} itemToProcess The item to process.
    */
-  static pathForReadResult(readResult) {
-    let path = readResult.nodeId.filePath;
+  static pathForProcessingItem(itemToProcess) {
+    let path = `${itemToProcess.nodeId.filePath}/${itemToProcess.nodeId.browseName}`;
 
-    const dataType = readResult.value.$dataType;
-    const arrayType = readResult.value.$arrayType;
-    const typeDefinition = readResult.referenceDescription.typeDefinition;
+    const dataType = itemToProcess.dataType;
+    const arrayType = itemToProcess.arrayType;
+    const typeDefinition = itemToProcess.typeDefinition;
+
 
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
@@ -159,17 +168,26 @@ export default class AtviseFile extends File {
         keepExtension = atType.keepExtension;
       }
 
-      if (!keepExtension) {
+      if (! keepExtension) {
         path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
       }
-    }
 
-    // Add "array" or "matrix" extensions for corresponding array types
-    if (arrayType.value !== VariantArrayType.Scalar.value) {
-      path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+      if (arrayType) {
+        // Add "array" or "matrix" extensions for corresponding array types
+        if (arrayType.value !== VariantArrayType.Scalar.value) {
+          path += `.${arrayType === VariantArrayType.Array ? 'array' : 'matrix'}`;
+        }
+      }
     }
-
     return path;
+  }
+
+  /**
+   * Returns an atvise type with type definition as accessor
+   * @return {AtviseTypes{}} Object containing atvise types
+   */
+  static getAtviseTypesByValue() {
+    return AtviseTypesByValue;
   }
 
   /**
@@ -179,12 +197,12 @@ export default class AtviseFile extends File {
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType) {
-    if (value.value === null) {
+    if (value === null) {
       return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
+    return Buffer.from(encoder ? encoder(value) : value.toString().trim());
   }
 
   /**
@@ -222,22 +240,30 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * Creates a new {@link AtviseFile} for the given {@link MappingItem}.
+   * @param {MappingItem} mappingItem The read result to create the file for.
    * @return {AtviseFile} The resulting file.
    */
-  static fromReadResult(readResult) {
-    if (!readResult.value) {
-      throw new Error('no value');
+  static fromMappingItem(mappingItem) {
+    let itemToProcess = {};
+
+    if (!mappingItem) {
+      throw new Error('Mapping item is undefined');
+    }
+
+    itemToProcess = mappingItem.itemToProcess;
+
+    if (itemToProcess.value == null) {
+      throw new Error('Mapping item is undefined');
     }
 
     return new AtviseFile({
-      path: AtviseFile.pathForReadResult(readResult),
-      contents: AtviseFile.encodeValue(readResult.value, readResult.value.$dataType),
-      _dataType: readResult.value.$dataType,
-      _arrayType: readResult.value.$arrayType,
-      _typeDefinition: readResult.referenceDescription.typeDefinition,
-      stat: { mtime: readResult.mtime ? this.normalizeMtime(readResult.mtime) : undefined },
+      path: AtviseFile.pathForProcessingItem(itemToProcess),
+      contents: AtviseFile.encodeValue(itemToProcess.value, itemToProcess.dataType),
+      _dataType: itemToProcess.dataType,
+      _arrayType: itemToProcess.arrayType,
+      _typeDefinition: itemToProcess.typeDefinition,
+      stat: { mtime: itemToProcess.mtime ? this.normalizeMtime(itemToProcess.mtime) : undefined },
     });
   }
 
@@ -254,13 +280,14 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     let extensions = [];
-    const m = this.relative.match(ExtensionRegExp);
+    const relPath = this.relativeFilePath;
+    const m = relPath.match(ExtensionRegExp);
     if (m) {
       extensions = m[1].split('.');
     }
 
     // For split files, add the directory name extension
-    const dirnameExts = this.dirname.split('.');
+    const dirnameExts = dirname(relPath).split('.');
     if (dirnameExts.length > 1) {
       extensions.unshift(dirnameExts[dirnameExts.length - 1]);
     }
@@ -307,25 +334,38 @@ export default class AtviseFile extends File {
       this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
     });
 
+    ifLastExtensionMatches(ext => ext === 'var', () => {
+      this._typeDefinition = new NodeId("Custom.VarResourceType");
+    });
+
     if (!complete()) {
       // Handle atvise types
       let foundAtType = false;
 
       Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
         if (!foundAtType && extensions.includes(identifier)) {
-          foundAtType = true;
-          const type = AtviseTypesByIdentifier[identifier];
+        foundAtType = true;
+        const type = AtviseTypesByIdentifier[identifier];
 
-          this._typeDefinition = type.typeDefinition;
-          this._dataType = type.dataType;
-        }
-      });
+        this._typeDefinition = type.typeDefinition;
+        this._dataType = type.dataType;
+      }
+    });
     }
 
     if (!complete()) {
       this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
       this._dataType = DataType.ByteString;
     }
+  }
+
+
+  /**
+   * The file's relative path (base = 'src' folder)
+   * @type {String}
+   */
+  get relativeFilePath() {
+    return relative(SrcPath, this.path);
   }
 
   /**
@@ -389,6 +429,22 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * `true` for files containing type definitions.
+   * @type {Boolean}
+   */
+  get isTypeDefinition() {
+    return this.typeDefinition.value === 'Custom.TypeDefinition';
+  }
+
+  /**
+   * `true` for files containing type definitions.
+   * @type {Boolean}
+   */
+  get isAtviseReferenceConfig() {
+    return this.typeDefinition.value === 'Custom.AtvReferenceConfig';
+  }
+
+  /**
    * Sets the node value for the file.
    * @param {?*} newValue The value to set.
    */
@@ -413,15 +469,7 @@ export default class AtviseFile extends File {
    * @type {NodeId} The file's node id.
    */
   get nodeId() {
-    const atType = AtviseTypesByValue[this.typeDefinition.value];
-    let idPath = this.relative;
-
-    if (!atType || !atType.keepExtension) {
-      const exts = idPath.match(ExtensionRegExp)[1];
-      idPath = idPath.split(`.${exts}`)[0];
-    }
-
-    return NodeId.fromFilePath(idPath);
+    return NodeId.fromFilePath(dirname(this.relativeFilePath));
   }
 
   /**
@@ -447,7 +495,7 @@ export default class AtviseFile extends File {
   static read(options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.path) {
-        reject(new Error('options.path is required'));
+      reject(new Error('options.path is required'));
       } else {
         readFile(options.path, (err, contents) => {
           if (err) {
@@ -459,5 +507,4 @@ export default class AtviseFile extends File {
       }
     });
   }
-
 }

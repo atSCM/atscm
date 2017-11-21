@@ -11,34 +11,20 @@ import NodeId from '../lib/server/NodeId';
 export default class MappingTransformer extends Transformer {
 
   /**
-   * Writes an {@link AtviseFile} for each {@link ReadStream.ReadResult} read. If a read file has a
-   * non-standard type (definition) an additional `.rc` file is pushed holding this type.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * Writes an {@link AtviseFile} for each given {@link MappingItem}.
+   * @param {MappingItem} mappingItem The mapping item to create the file for.
    * @param {String} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
-  transformFromDB(readResult, encoding, callback) {
+  transformFromDB(mappingItem, encoding, callback) {
     try {
-      const file = AtviseFile.fromReadResult(readResult);
-
-      if (file.relative.match(/\.var\./)) {
-        const rc = file.clone();
-
-        rc.extname = '';
-        rc.basename = `.${rc.stem}.rc`;
-
-        rc.contents = Buffer.from(JSON.stringify({
-          typeDefinition: file.typeDefinition,
-        }, null, '  '));
-
-        this.push(rc);
-      }
+      const file = AtviseFile.fromMappingItem(mappingItem);
 
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.toString()}: ${e.message}`
+        `Unable to map ${mappingItem.nodeId.toString()}: ${e.message}`
       );
       Logger.debug(e);
 
@@ -64,25 +50,7 @@ export default class MappingTransformer extends Transformer {
         contents: file.contents,
       });
 
-      if (file.relative.match(/\.var\./)) {
-        const rcFile = file.clone({ contents: false });
-        rcFile.extname = '';
-        rcFile.basename = `.${rcFile.stem}.rc`;
-
-        readFile(rcFile.path, 'utf8', (err, data) => {
-          try {
-            const rc = JSON.parse(data);
-            atFile._typeDefinition = new NodeId(rc.typeDefinition);
-
-            callback(null, atFile);
-          } catch (e) {
-            Logger.error(`Unable to get runtime configuration for ${file.relative}`);
-            callback(err || e);
-          }
-        });
-      } else {
         callback(null, atFile);
-      }
     }
   }
 
