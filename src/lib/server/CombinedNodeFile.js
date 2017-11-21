@@ -1,5 +1,15 @@
 import checkType from '../../util/validation';
 import AtviseFile from './AtviseFile';
+import {ReferenceTypeIds, NodeClass} from 'node-opcua';
+import NodeId from './NodeId';
+import ReverseReferenceTypeIds from './ReverseReferenceTypeIds';
+
+/**
+ * Type definition key for type definition files
+ * @type {String}
+ */
+const TypeDefinitionKey = ReverseReferenceTypeIds[ReferenceTypeIds.HasTypeDefinition];
+
 
 export default class CombinedNodeFile {
 
@@ -43,12 +53,29 @@ export default class CombinedNodeFile {
   }
 
   /**
-   * `true` for files that already contain a content file and a type definition file.
+   * `true` for files that already contain necessary information.
    * @type {Boolean}
    */
   get isComplete() {
-    return checkType(this.contentFile, AtviseFile) &&
-      checkType(this.typeDefinitionFile, AtviseFile);
+    let typeDefFileComplete = checkType(this.typeDefinitionFile, AtviseFile);
+
+    if (!typeDefFileComplete) {
+      return false;
+    }
+
+    return this.isTypeDefOnlyFile ? typeDefFileComplete :
+      checkType(this.contentFile, AtviseFile) && typeDefFileComplete;
+  }
+
+  /**
+   * `true` for files that contain type definitions.
+   * @type {Boolean}
+   */
+  get isTypeDefOnlyFile() {
+    let typeDefinition = JSON.parse(this.typeDefinitionFile.value)
+      .references[TypeDefinitionKey].items[0];
+
+    return NodeClass[typeDefinition.nodeClass].value != NodeClass.Variable.value;
   }
 
   /**

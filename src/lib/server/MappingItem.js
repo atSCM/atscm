@@ -74,9 +74,9 @@ export default class MappingItem {
   constructor(sourceNodeId, referenceConfig, itemType) {
     if (!checkType(sourceNodeId, NodeId) || !checkType(referenceConfig, BrowseService.ReferenceDescription) ||
         !checkType(itemType, String)) {
-      throw new Error("Class MappingItem: Can not parse given arguments!");
+      throw new Error("MappingItem#constructor: Can not parse given arguments!");
     } else if (!MappingItem.hasValidItemType(itemType)) {
-      throw new Error("Class MappingItem: Item type is not valid!");
+      throw new Error("MappingItem#constructor: Item type is not valid!");
     }
 
     /**
@@ -207,9 +207,12 @@ export default class MappingItem {
     }
 
     if (refConfig.hasOwnProperty(referenceName)) {
-      refConfig[referenceName].push(this.createRefConfigObj(ref, isObjOrVarTypeRef));
+      refConfig[referenceName].items.push(this.createRefConfigObj(ref, isObjOrVarTypeRef));
     } else {
-      refConfig[referenceName] = [this.createRefConfigObj(ref, isObjOrVarTypeRef)];
+      refConfig[referenceName] = {
+        referenceIdValue: ReferenceTypeIds[referenceName],
+        items: [this.createRefConfigObj(ref, isObjOrVarTypeRef)]
+      };
     }
   }
 
@@ -224,7 +227,7 @@ export default class MappingItem {
 
     return {
       refNodeId: refNodeId.toString(),
-      nodeClass: isObjOrVarTypeRef ? ref.nodeClass.key: InstanceNodeClasses[ref.nodeClass],
+      nodeClass: isObjOrVarTypeRef ? ref.$nodeClass.key : InstanceNodeClasses[ref.$nodeClass],
       typeDefinition: ref.typeDefinition.toString()
     }
   }
