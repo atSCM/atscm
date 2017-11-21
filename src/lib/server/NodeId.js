@@ -1,8 +1,16 @@
 import { sep } from 'path';
 import { NodeId as OpcNodeId } from 'node-opcua';
 
+/**
+ * OPC-UA node id types.
+ * @type {Map<String, node-opcua~NodeIdType>}
+ */
 const Type = OpcNodeId.NodeIdType;
 
+/**
+ * OPC-UA node id types mapped against node-id identifiers (e.g. i, s ...).
+ * @type {Map<String, node-opcua~NodeIdType>}
+ */
 const TypeForIdentifier = {
   i: Type.NUMERIC,
   s: Type.STRING,

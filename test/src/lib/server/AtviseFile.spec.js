@@ -287,7 +287,7 @@ describe('AtviseFile', function() {
   });
 
   function testMetaGetter(name) {
-    beforeEach(() => stub(AtviseFile.prototype, '_getMetadata', () => {}));
+    beforeEach(() => stub(AtviseFile.prototype, '_getMetadata').callsFake(() => {}));
     afterEach(() => AtviseFile.prototype._getMetadata.restore());
 
     it('should call _getMetadata if not present', function() {
@@ -359,8 +359,8 @@ describe('AtviseFile', function() {
     const val = new Buffer('test');
 
     before(() => {
-      stub(AtviseFile, 'decodeValue', () => true);
-      stub(AtviseFile, 'encodeValue', () => val);
+      stub(AtviseFile, 'decodeValue').callsFake(() => true);
+      stub(AtviseFile, 'encodeValue').callsFake(() => val);
     });
 
     after(() => {

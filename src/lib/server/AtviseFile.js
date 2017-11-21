@@ -5,11 +5,20 @@ import AtviseTypes from './Types';
 import NodeId from './NodeId';
 
 // Path related cache
+
+/**
+ * A map of AtviseTypes against their definition id's value.
+ * @type {Map<String, AtivseType>}
+ */
 const AtviseTypesByValue = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
     [type.typeDefinition.value]: type,
   }), {});
 
+/**
+ * A map of AtviseTypes against their identifiers.
+ * @type {Map<String, AtivseType>}
+ */
 const AtviseTypesByIdentifier = AtviseTypes
   .reduce((result, type) => Object.assign(result, {
     [type.identifier]: type,
@@ -24,6 +33,11 @@ export const ExtensionForDataType = {
   [DataType.XmlElement]: 'xml',
 };
 
+/**
+ * Switches keys and values in an object. E.g.: { "a": 1 } becomes { 1: "a" }
+ * @param {Object} obj The object to reverse.
+ * @return {Object} The reversed object.
+ */
 function reverseObject(obj) {
   return Object.keys(obj)
     .reduce((result, key) => Object.assign(result, {
@@ -38,28 +52,60 @@ function reverseObject(obj) {
 export const DataTypeForExtension = reverseObject(ExtensionForDataType);
 
 // Cache DataType
+/**
+ * OPC-UA data type names.
+ * @type {String[]}
+ */
 const types = Object.keys(DataType);
+
+/**
+ * OPC-UA data type extensions.
+ * @type {String[]}
+ */
 const typeExtensions = types.map(t => t.toLowerCase());
 
 // Cache TypeDefinitions
+/**
+ * Variable data type definition node id.
+ * @type {NodeId}
+ */
 const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
+/**
+ * Property data type definition node id.
+ * @type {NodeId}
+ */
 const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
 
 // Cache Regular expressions
+/**
+ * A regular expression picking file extensions from file names.
+ * @type {RegExp}
+ */
 const ExtensionRegExp = /\.([^/\\]*)$/;
 
 // Value encoding related cache
+/**
+ * A set of functions that decode raw stored node values to their original value.
+ * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
+ */
 const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
   [DataType.String]: stringValue => stringValue,
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
   [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
   [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.Int64]: stringValue => JSON.parse(stringValue),
 };
 
+/**
+ * A set of functions that encode node values before storing them.
+ * @type {Map<node-opcua~DataType, function(value: *): String>}
+ */
 const Encoder = {
   [DataType.DateTime]: date => date.getTime().toString(),
   [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
+  [DataType.Int64]: int32Array => JSON.stringify(int32Array),
+  [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
 };
 
 /**

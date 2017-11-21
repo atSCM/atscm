@@ -3,7 +3,16 @@ import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
+/**
+ * A special token used to encode CData section beginnings.
+ * @type {String}
+ */
 const START_CDATA = 'STARTCDATA';
+
+/**
+ * A special token used to encode CData section endings.
+ * @type {String}
+ */
 const END_CDATA = 'ENDCDATA';
 
 /**
