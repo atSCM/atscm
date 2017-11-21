@@ -160,6 +160,17 @@ export default class QueueStream extends Stream {
    * @param {*} chunk The chunk to process.
    * @emits {*} Emits a `processed-chunk` event once a chunk was processed.
    */
+  _processNextChunk(chunk) {
+    this._processing--;
+    this._processed++;
+    this.emit('processed-chunk', chunk);
+  }
+
+  /**
+   * Calls {@link QueueStream#processChunk} and handles errors and invalid status codes.
+   * @param {*} chunk The chunk to process.
+   * @emits {*} Calls {@link QueueStream#_processNextChunk} event once a chunk was processed.
+   */
   _processChunk(chunk) {
     this._processing++;
 
@@ -170,11 +181,7 @@ export default class QueueStream extends Stream {
         this.emit('error',
           new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
       } else {
-        onSuccess(() => {
-          this._processing--;
-          this._processed++;
-          this.emit('processed-chunk', chunk);
-        });
+        onSuccess(() => this._processNextChunk(chunk));
       }
     });
   }
