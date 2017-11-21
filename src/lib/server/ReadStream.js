@@ -14,7 +14,7 @@ export default class ReadStream extends QueueStream {
    * @return {String} The specific error message.
    */
   processErrorMessage(mappingItem) {
-    return `Error processing item with  ${mappingItem.nodeId.toString()}`;
+    return `Error processing item with  ${mappingItem.sourceNodeId.toString()}`;
   }
 
   /**
