@@ -31,10 +31,10 @@
 
 ### Features
 
-* Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commits/8798d4e))
-* **ci:** Automated release ([#65](https://github.com/atSCM/atscm/issues/65)) ([dcf48b7](https://github.com/atSCM/atscm/commits/dcf48b7))
-* **debugging:** Generate source maps for generated files ([#69](https://github.com/atSCM/atscm/issues/69)) ([369db82](https://github.com/atSCM/atscm/commits/369db82))
-
+* Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
+* **ci:** Automated release ([#65](https://github.com/atSCM/atscm/issues/65)) ([dcf48b7](https://github.com/atSCM/atscm/commit/dcf48b7))
+* **ci:** Deploy beta releases even on failure ([#78](https://github.com/atSCM/atscm/issues/78)) ([ca1f571](https://github.com/atSCM/atscm/commit/ca1f571))
+* **debugging:** Generate source maps for generated files ([#69](https://github.com/atSCM/atscm/issues/69)) ([369db82](https://github.com/atSCM/atscm/commit/369db82))
 
 
 
