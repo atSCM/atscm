@@ -6,8 +6,8 @@ import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
-import NodeId from '../../../src/lib/server/NodeId';
-import AtviseFile from '../../../src/lib/server/AtviseFile';
+import NodeId from '../../../src/lib/ua/NodeId';
+import AtviseFile from '../../../src/lib/mapping/AtviseFile';
 
 const readFile = (path, enc, cb) => cb(null, JSON.stringify({
   typeDefinition: 'ns=1;s=VariableTypes.PROJECT.Custom',
@@ -22,7 +22,7 @@ describe('MappingTransformer', function() {
 
   /** @test {MappingTransformer#transformFromDB} */
   describe('#transformFromDB', function() {
-    context('when AtviseFile.fromReadResult returns error', function() {
+    context('when AtviseFile.fromMappingItem returns error', function() {
       let warnListener;
       let debugListener;
 
@@ -35,7 +35,7 @@ describe('MappingTransformer', function() {
       });
 
       afterEach(() => {
-        AtviseFile.fromReadResult.restore();
+        AtviseFile.fromMappingItem.restore();
         Logger.removeListener('warn', warnListener);
         Logger.removeListener('debug', debugListener);
       });
@@ -61,7 +61,7 @@ describe('MappingTransformer', function() {
       });
     });
 
-    context('when AtviseFile.fromReadResult returns "no value" error', function() {
+    context('when AtviseFile.fromMappingItem returns "no value" error', function() {
       let warnListener;
       let debugListener;
 
@@ -74,7 +74,7 @@ describe('MappingTransformer', function() {
       });
 
       afterEach(() => {
-        AtviseFile.fromReadResult.restore();
+        AtviseFile.fromMappingItem.restore();
         Logger.removeListener('warn', warnListener);
         Logger.removeListener('debug', debugListener);
       });

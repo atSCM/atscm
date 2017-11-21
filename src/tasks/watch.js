@@ -1,14 +1,14 @@
-import { join } from 'path';
-import { src } from 'gulp';
+import { dirname } from 'path';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
 import { obj as createStream } from 'through2';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/server/AtviseFile';
-import ServerWatcher from '../lib/server/Watcher';
+import AtviseFile from '../lib/mapping/AtviseFile';
+import ServerWatcher from '../lib/watch/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
+import NodeId from '../lib/ua/NodeId';
 import { validateDirectoryExists } from '../util/fs';
 
 /**
@@ -52,16 +52,8 @@ export class WatchTask {
   }
 
   /**
-   * The directory to watch.
-   * @type {string}
-   */
-  get directoryToWatch() {
-    return './src';
-  }
-
-  /**
    * Waits for a watcher (which can actually be any kind of {@link events~Emitter}) to emit a
-   * "ready" event.
+   * 'ready' event.
    * @param {events~Emitter} watcher The watcher to wait for.
    * @return {Promise<events~Emitter, Error>} Fulfilled with the set up watcher or rejected with the
    * watcher error that occurred while waiting for it to get ready.
@@ -79,19 +71,22 @@ export class WatchTask {
    * rejected with the error that occurred while starting the watcher.
    */
   startFileWatcher() {
-    return validateDirectoryExists(this.directoryToWatch)
+    return validateDirectoryExists(ProjectConfig.RelativeSourceDirectoryPath)
       .catch(err => {
         if (err.code === 'ENOENT') {
-          Logger.info(`Create a directory at ${this.directoryToWatch} or run \`atscm pull\` first`);
+          Logger.info(
+            `Create a directory at ${ProjectConfig.RelativeSourceDirectoryPath}`,
+            'or run "atscm pull" first'
+          );
 
           Object.assign(err, {
-            message: `Directory ${this.directoryToWatch} does not exist`,
+            message: `Directory ${ProjectConfig.RelativeSourceDirectoryPath} does not exist`,
           });
         }
 
         throw err;
       })
-      .then(() => this._waitForWatcher(sane(this.directoryToWatch, {
+      .then(() => this._waitForWatcher(sane(ProjectConfig.RelativeSourceDirectoryPath, {
         glob: '**/*.*',
         watchman: process.platform === 'darwin',
       })));
@@ -111,8 +106,10 @@ export class WatchTask {
    */
   initBrowserSync() {
     this.browserSyncInstance.init({
-      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-      ws: true,
+      proxy: {
+        target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+        ws: true,
+      },
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
     });
@@ -147,46 +144,65 @@ export class WatchTask {
   handleFileChange(path, root, stats) {
     return new Promise(resolve => {
       if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
-        this._pushing = true;
-        Logger.info(path, 'changed');
+        const nodePath = dirname(path);
+        let nodeId = {};
 
-        const source = src(join(root, path), { base: root });
+        nodeId = NodeId.fromFilePath(nodePath);
 
-        (new PushStream(source))
-          .on('data', file => (this._lastPushed = file.nodeId.toString()))
-          .on('end', () => {
-            this._pushing = false;
-            this.browserSyncInstance.reload();
-
-            resolve(true);
+        if (nodeId.toString() !== this._lastPulled) {
+          const pushStream = new PushStream({
+            nodesToPush: [nodeId],
+            createNodes: false,
           });
+
+          this._pushing = true;
+          Logger.info('File change:', path, 'changed');
+
+          pushStream
+            .on('write-successful', file => {
+              this._lastPushed = file.nodeId.toString();
+            })
+            .on('finish', () => {
+              this._pushing = false;
+              this.browserSyncInstance.reload();
+
+              resolve(true);
+            });
+        }
       } else {
         resolve(false);
       }
     });
   }
-
   /**
    * Handles an atvise server change.
-   * @param {ReadStream.ReadResult} readResult The read result of the modification.
+   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping
+   * item of the modification.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a pull operation,
    * with `false` otherwise.
    */
-  handleServerChange(readResult) {
+  handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
       if (!this._pushing) {
-        if (readResult.nodeId.toString() !== this._lastPushed) {
-          this._pulling = true;
-          Logger.info(readResult.nodeId.toString(), 'changed');
+        const nodeId = readNodeMappingItem.nodeId.toString();
 
+        if (nodeId !== this._lastPushed) {
           const readStream = createStream();
-          readStream.write(readResult);
+          this._pulling = true;
+
+          Logger.info('Server change:', nodeId, 'changed');
+          readStream.write(readNodeMappingItem);
           readStream.end();
 
-          (new PullStream(readStream))
+          const pullStream = new PullStream({
+            useInputStream: true,
+            inputStream: readStream,
+          });
+
+          pullStream
             .on('end', () => {
               this._pulling = false;
-              this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
+              this._lastPull = AtviseFile.normalizeMtime(readNodeMappingItem.configObj.mtime);
               this.browserSyncInstance.reload();
 
               resolve(true);
@@ -216,10 +232,11 @@ export class WatchTask {
       .then(([fileWatcher, serverWatcher]) => {
         this.browserSyncInstance.emitter.on('service:running', () => {
           Logger.info('Watching for changes...');
-          Logger.debug('Press Ctrl-C to exit');
+          Logger.info('Press Ctrl-C to exit');
         });
 
         fileWatcher.on('change', this.handleFileChange.bind(this));
+        // Rename von Files, Anlegen von neuen Files usw hier hinzufügen
         serverWatcher.on('change', this.handleServerChange.bind(this));
 
         this.initBrowserSync();

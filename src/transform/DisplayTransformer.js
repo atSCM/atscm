@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
@@ -25,73 +26,96 @@ export default class DisplayTransformer extends XMLTransformer {
    * while transforming the display, or the file passed through.
    */
   transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+    this.decodeContents(file, (err, xmlObj) => {
       if (err) {
-        callback(err);
-      } else if (!results || results.svg === undefined) {
-        callback(new Error('Error parsing display: No `svg` tag'));
+        Logger.error(`Display ${file.nodeId}: Error parsing display content.`,
+          'Check if display content is broken');
+        callback(null);
+      } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'svg') {
+        Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
+        callback(null);
       } else {
-        const xml = results;
-        const document = results.svg;
+        try {
+          let scriptFileAdded = false;
+          const config = { parameters: [], dependencies: [] };
+          const displayContent = xmlObj.children[0].children;
 
-        const config = {};
+          const scriptFile = DisplayTransformer.splitFile(file, '.js');
+          const configFile = DisplayTransformer.splitFile(file, '.json');
+          const svgFile = DisplayTransformer.splitFile(file, '.svg');
 
-        // Extract JavaScript
-        if (this.tagNotEmpty(document.script)) {
-          document.script.forEach(script => {
-            if (script.$ && (script.$.src || script.$['xlink:href'])) {
-              if (!config.dependencies) {
-                config.dependencies = [];
-              }
-
-              config.dependencies.push(script.$.src || script.$['xlink:href']);
-            } else {
-              // TODO: Warn on multiple inline scripts
-
-              const scriptFile = DisplayTransformer.splitFile(file, '.js');
-              const scriptText = (typeof script === 'string') ?
-                script : script._ || '';
-
-              scriptFile.contents = Buffer.from(scriptText);
-              this.push(scriptFile);
+          // Filter for script tags in display
+          const scripts = displayContent.filter((tag, index) => {
+            if (tag.name === 'script') {
+              delete displayContent[index];
+              return true;
             }
+            return false;
           });
 
-          delete xml.svg.script;
-        }
+          // Filter for metadata tags in display
+          const metadata = xmlObj.find('*/metadata').children;
 
-        // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
-          // TODO: Warn on multiple metadata tags
+          // Extract JavaScript
+          scripts.map((script) => {
+            const attributes = script.attrs;
 
-          const meta = document.metadata[0];
+            if (attributes.src || attributes['xlink:href']) {
+              config.dependencies.push(attributes.src || attributes['xlink:href']);
+            } else if (scriptFileAdded) {
+              Logger.warn(`Display ${file.nodeId}:`,
+                'atscm only supports one inline script per display');
+            } else {
+              scriptFileAdded = true;
+              scriptFile.contents = Buffer.from(script.toString());
+            }
 
-          // - Parameters
-          if (this.tagNotEmpty(meta['atv:parameter'])) {
-            config.parameters = [];
-            meta['atv:parameter'].forEach(param => config.parameters.push(param.$));
+            return false;
+          });
 
-            delete xml.svg.metadata[0]['atv:parameter'];
+
+          // Extract display parameters
+          if (metadata.length > 0) {
+            const meta = metadata[0].children;
+            const nonParameterTags = [];
+
+            if (metadata.length > 1) {
+              Logger.warn(`Display ${file.nodeId}:`,
+                'atscm only supports one metadata tag per display');
+              metadata.splice(1, metadata.length);
+            }
+
+            meta.forEach(tag => {
+              if (tag.name === 'atv:parameter') {
+                config.parameters.push(tag.attrs);
+              } else {
+                nonParameterTags.push(tag);
+              }
+            });
+
+            // overwrite meta data tag items, deleting items directly in metadata
+            // tag made serialize function ignore
+            // the remaining entries
+            metadata[0].children = nonParameterTags;
           }
-        }
 
-        const configFile = DisplayTransformer.splitFile(file, '.json');
+          configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
 
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
-        this.push(configFile);
-
-        const svgFile = DisplayTransformer.splitFile(file, '.svg');
-
-        this.encodeContents(xml, (encodeErr, stringValue) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            svgFile.contents = Buffer.from(stringValue);
-            this.push(svgFile);
+          this.encodeContents(xmlObj, (encodeError, xmlString) => {
+            if (encodeError) {
+              Logger.error(`Display ${file.nodeId}: Could not encode svg file`);
+            } else {
+              svgFile.contents = Buffer.from(xmlString);
+              this.push(svgFile);
+              this.push(configFile);
+              this.push(scriptFile);
+            }
 
             callback(null);
-          }
-        });
+          });
+        } catch (e) {
+          callback(e);
+        }
       }
     });
   }
@@ -104,8 +128,17 @@ export default class DisplayTransformer extends XMLTransformer {
    * while creating the display or the resulting file.
    */
   createCombinedFile(files, lastFile, callback) {
+    const svgFile = files['.svg'];
     const configFile = files['.json'];
+    const scriptFile = files['.js'];
+
     let config = {};
+    let inlineScript = '';
+
+    if (!svgFile) {
+      callback(new Error(`No display SVG in ${lastFile.dirname}`));
+      return;
+    }
 
     if (configFile) {
       try {
@@ -116,77 +149,61 @@ export default class DisplayTransformer extends XMLTransformer {
       }
     }
 
-    const svgFile = files['.svg'];
-    if (!svgFile) {
-      callback(new Error(`No display SVG in ${lastFile.dirname}`));
-      return;
-    }
-
-    const scriptFile = files['.js'];
-    let inlineScript = '';
     if (scriptFile) {
       inlineScript = scriptFile.contents.toString();
     }
 
-    this.decodeContents(svgFile, (err, xml) => {
+    this.decodeContents(svgFile, (err, xmlObj) => {
       if (err) {
-        callback(err);
-      } else if (!xml || xml.svg === undefined) {
-        callback(new Error('Error parsing display SVG: No `svg` tag'));
+        Logger.error(`Display ${svgFile.nodeId}: Error parsing display content.
+          Message: ${err.message}`);
+        callback(null);
       } else {
-        const result = xml;
+        try {
+          const displayContent = xmlObj.children[0];
+          const metadata = xmlObj.find('*/metadata');
+          const parameters = config.parameters.reverse();
+          const dependencies = config.dependencies.reverse();
+          const display = DisplayTransformer.combineFiles(
+            Object.keys(files).map(ext => files[ext]),
+            '.xml'
+          );
 
-        // Handle empty svg tag
-        if (typeof result.svg === 'string') {
-          result.svg = {};
-        }
+          // Insert parameters
+          if (parameters && parameters.length > 0) {
+            const meta = metadata.children[0].children;
 
-        // Insert dependencies
-        result.svg.script = [];
-        if (config.dependencies) {
-          config.dependencies.forEach(p => result.svg.script.push({
-            $: { 'xlink:href': p },
-          }));
-        }
+            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
+              param, metadata)));
+          }
 
-        // Insert script
-        // FIXME: Import order is not preserved!
-        if (scriptFile) {
-          result.svg.script.push({
-            $: { type: 'text/ecmascript' },
-            _: XMLTransformer.forceCData(inlineScript),
+          // Insert dependencies
+          if (dependencies && dependencies.length > 0) {
+            dependencies.forEach(dependency => displayContent.children
+              .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' },
+                metadata)));
+          }
+
+          // Insert script
+          if (scriptFile) {
+            const script = this.createTag('script', { type: 'text/ecmascript' }, displayContent);
+
+            script.append(this.createCData(inlineScript));
+            displayContent.children.push(script);
+          }
+
+          this.encodeContents(xmlObj, (encodeError, xmlString) => {
+            if (encodeError) {
+              Logger.error(`Display ${svgFile.nodeId}: Could not encode svg file`);
+              callback(null);
+            } else {
+              display.contents = Buffer.from(xmlString);
+              callback(null, display);
+            }
           });
+        } catch (e) {
+          callback(e);
         }
-
-        // Insert metadata
-        // - Parameters
-        if (config.parameters && config.parameters.length > 0) {
-          if (!result.svg.metadata || !result.svg.metadata[0]) {
-            result.svg.metadata = [{}];
-          }
-          if (!result.svg.metadata[0]['atv:parameter']) {
-            result.svg.metadata[0]['atv:parameter'] = [];
-          }
-
-          // FIXME: Parameters should come before `atv:gridconfig` and `atv:snapconfig`
-          config.parameters
-            .forEach(param => result.svg.metadata[0]['atv:parameter'].push({ $: param }));
-        }
-
-        const display = DisplayTransformer.combineFiles(
-          Object.keys(files).map(ext => files[ext]),
-          '.xml'
-        );
-
-        this.encodeContents(result, (encodeErr, xmlString) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            display.contents = Buffer.from(xmlString);
-
-            callback(null, display);
-          }
-        });
       }
     });
   }

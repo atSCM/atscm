@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
 
@@ -42,6 +42,43 @@ export default class Atviseproject {
   }
 
   /**
+   * The source directory path.
+   * @type {String}
+   */
+  static get RelativeSourceDirectoryPath() {
+    return './src';
+  }
+
+  /**
+   * The diff file path.
+   * @type {String}
+   */
+  static get DiffFileName() {
+    return 'diff.log';
+  }
+
+  /**
+   * The delete file paths.
+   * @type {Object}
+   * @property {String} server The server delete file name.
+   * @property {String} fs The file system delete file name.
+   */
+  static get DeleteFileNames() {
+    return {
+      server: 'deleteServer.txt',
+      fs: 'deleteFs.txt',
+    };
+  }
+
+  /**
+   * The xml resource directory path.
+   * @type {String}
+   */
+  static get RelativeXmlResourcesPath() {
+    return './node_modules/atscm/xml_resources/**/*.xml';
+  }
+
+  /**
    * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
    * @type {Transformer[]}
    */
@@ -62,18 +99,7 @@ export default class Atviseproject {
       new NodeId('AGENT'),
       new NodeId('SYSTEM'),
       new NodeId('ObjectTypes.PROJECT'),
-    ];
-  }
-
-  /**
-   * The atvise-server nodes to watch in the corresponding tasks. Defaults to all nodes containing
-   * displays.
-   * @type {String[]|NodeId[]}
-   */
-  static get nodesToWatch() {
-    return [
-      new NodeId('AGENT.DISPLAYS'),
-      new NodeId('SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS'),
+      new NodeId('VariableTypes.PROJECT'),
     ];
   }
 
@@ -95,10 +121,10 @@ export default class Atviseproject {
   static get ServerRelatedNodes() {
     return [
       // eslint-disable-next-line max-len
-      new NodeId('AGENT\.HISTORY\..*\.(Stepped|PercentData(Good|Bad)|TreatUncertainAsBad|UseSlopedExtrapolation)'),
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
+      new NodeId('SYSTEM\.LIBRARY\.ATVISE\.SERVERSCRIPTS\.atscm'),
     ];
   }
 

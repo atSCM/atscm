@@ -139,7 +139,7 @@ export default class QueueStream extends Stream {
    *   ...
    *   processChunk(chunk, handle) {
    *     client.session.doSomething((err, result, statusCode) => {
-   *       if (statusCode === StatusCodes.BadUserAccessDenied) {
+   *       if (statusCode.value === StatusCodes.BadUserAccessDenied.value) {
    *         Logger.warn(`Ignored invalid status: ${statusCode.description}`);
    *         handle(err, StatusCodes.Good, done => done());
    *       } else {
@@ -160,21 +160,28 @@ export default class QueueStream extends Stream {
    * @param {*} chunk The chunk to process.
    * @emits {*} Emits a `processed-chunk` event once a chunk was processed.
    */
+  _processNextChunk(chunk) {
+    this._processing--;
+    this._processed++;
+    this.emit('processed-chunk', chunk);
+  }
+
+  /**
+   * Calls {@link QueueStream#processChunk} and handles errors and invalid status codes.
+   * @param {*} chunk The chunk to process.
+   * @emits {*} Calls {@link QueueStream#_processNextChunk} event once a chunk was processed.
+   */
   _processChunk(chunk) {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
       if (err) {
         this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${err.message}`));
-      } else if (statusCode !== StatusCodes.Good) {
-        this.emit('error',
-          new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
+      } else if (statusCode.value !== StatusCodes.Good.value) {
+        this.emit('error', new Error(`${this.processErrorMessage(chunk)}:`,
+          `${statusCode.description}`));
       } else {
-        onSuccess(() => {
-          this._processing--;
-          this._processed++;
-          this.emit('processed-chunk', chunk);
-        });
+        onSuccess(() => this._processNextChunk(chunk));
       }
     });
   }

@@ -2,7 +2,7 @@ import { readdir } from 'fs';
 import { extname, basename, join } from 'path';
 import Logger from 'gulplog';
 import PartialTransformer from './PartialTransformer';
-import AtviseFile from '../server/AtviseFile';
+import AtviseFile from '../mapping/AtviseFile';
 
 /**
  * Determines which files are needed to create a combined file and stores these files as long as
@@ -140,16 +140,17 @@ export default class SplittingTransformer extends PartialTransformer {
    * @param {?String} newExtension The extension the resulting file gets.
    * @return {vinyl~File} The resulting file.
    * @example
-   * // Assuming that `original` is a File with the path "path/to/file.type.xml":
+   * // Assuming that `original` is a File with the path 'path/to/file.type.xml':
    * const result = SplittingTransformer.splitFile(original, '.another');
    * // `result` is a new File, with the contents of `original` and the path
-   * // "path/to/file.type/file.another"
+   * // 'path/to/file.type/file.another'
    */
   static splitFile(file, newExtension) {
     const newFile = file.clone();
 
     newFile.basename = `${newFile.stem}/${newFile.stem}`;
     newFile.extname = newExtension;
+    newFile.contents = Buffer.from('');
 
     return newFile;
   }
