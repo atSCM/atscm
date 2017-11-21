@@ -1,14 +1,11 @@
-import { EOL } from 'os';
-import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
-import {parse as xmlStringToObj, serialize as objToXmlString} from 'xamel';
-import * as xmlLib from 'xamel/lib/xml';
+import { parse as xmlStringToObj, serialize as objToXmlString, xml } from '../xml/xamel';
 
 /**
  * Definition for default xml header
  * @type {String}
  */
-const XmlHeader = `<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n`;
+const XmlHeader = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n';
 
 /**
  * List of XML Tags needed for relative node addresses
@@ -17,28 +14,19 @@ const XmlHeader = `<?xml version='1.0' encoding='UTF-8' standalone='no'?>\n`;
 const RelativePathElements = [
   'Elements',
   'RelativePathElement',
-  'TargetName'
+  'TargetName',
 ];
 
 /**
  * A transformer used to transform XML documents.
  */
 export default class XMLTransformer extends SplittingTransformer {
-
-  /**
-   * Creates a new XMLTransformer based on some options.
-   * @param {Object} options The options to use.
-   */
-  constructor(options) {
-    super(options);
-  }
-
   /**
    * Creates a new {xamel~NodeSet}
-   * @param {xamel~Tag[]} scriptCode The script code to store
+   * @param {xamel~Tag[]} nodes The nodes to store in the created NodeSet
    */
   createNodeSet(nodes) {
-    return new xmlLib.NodeSet(nodes);
+    return new xml.NodeSet(nodes);
   }
 
   /**
@@ -49,11 +37,11 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {*} initialChildNode The tags child item
    */
   createTag(tagName, attributes, parentTag, initialChildNode) {
-    const sortedAttr = Object.keys(attributes).sort().forEach(key => attributes[key])
-    const tag = new xmlLib.Tag(tagName, attributes, parentTag);
+    const tag = new xml.Tag(tagName, attributes, parentTag);
 
     if (initialChildNode) {
-      if (initialChildNode instanceof xmlLib.Tag) {
+      if (initialChildNode instanceof xml.Tag) {
+        // eslint-disable-next-line no-param-reassign
         initialChildNode.parent = tag;
       }
       tag.append(initialChildNode);
@@ -62,18 +50,17 @@ export default class XMLTransformer extends SplittingTransformer {
     return tag;
   }
 
-
   /**
    * Creates a new {xamel~CData}
    * @param {String} scriptCode The script code to store
    */
   createCData(scriptCode) {
-    return new xmlLib.CData(scriptCode);
+    return new xml.CData(scriptCode);
   }
 
   /**
    * Creates a new <RelativePath> tag
-   * @param {Object} config The relative path elements configuration object
+   * @param {Object} configObj The relative path elements configuration object
    * @param {xamel~Tag} parentTag The parent tag the relative path tag belongs to
    */
   createRelPathTag(configObj, parentTag) {
@@ -84,7 +71,7 @@ export default class XMLTransformer extends SplittingTransformer {
 
       // Build relative path element structure
       RelativePathElements.forEach(tagName => {
-        let tag = this.createTag(tagName, {}, currParentTag);
+        const tag = this.createTag(tagName, {}, currParentTag);
         currParentTag.append(tag);
         currParentTag = tag;
       });
@@ -93,7 +80,6 @@ export default class XMLTransformer extends SplittingTransformer {
       currParentTag
         .append(this.createTag('NamespaceIndex', {}, currParentTag, configObj.nameSpaceIndex))
         .append(this.createTag('Name', {}, currParentTag, configObj.nodePath));
-
     } else {
       relPathTag.append(this.createTag('Elements', {}, relPathTag));
     }
@@ -108,13 +94,15 @@ export default class XMLTransformer extends SplittingTransformer {
    * parse error that occurred.
    */
   decodeContents(file, callback) {
-    xmlStringToObj(file.contents.toString(),
-     {
-       cdata: true,
-       strictEntities: true,
-       normalize: true
-     },
-     callback);
+    xmlStringToObj(
+      file.contents.toString(),
+      {
+        cdata: true,
+        strictEntities: true,
+        normalize: true,
+      },
+      callback
+    );
   }
 
   /**
@@ -125,11 +113,12 @@ export default class XMLTransformer extends SplittingTransformer {
    */
   encodeContents(xmlObj, callback) {
     try {
-      callback(null, `${XmlHeader}${objToXmlString(xmlObj, 
+      callback(null, `${XmlHeader}${objToXmlString(xmlObj,
         {
           pretty: true,
-          header: false
-        })}`);
+          header: false,
+        })
+      }`);
     } catch (e) {
       callback(e);
     }

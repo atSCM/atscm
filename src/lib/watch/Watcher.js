@@ -8,7 +8,7 @@ import {
 import ProjectConfig from '../../config/ProjectConfig';
 import BrowseStream from '../pull/BrowseStream';
 import QueueStream from '../stream/QueueStream';
-import Session from '../ua/Session';
+import { Session } from '../ua/Session';
 
 /**
  * A stream that monitors changes in the read nodes.

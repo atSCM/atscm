@@ -1,5 +1,5 @@
 /**
- * An option the "atscm init" command handles.
+ * An option the 'atscm init' command handles.
  * TODO: Support function values for name, message, default, choices...
  */
 export default class InitOption {

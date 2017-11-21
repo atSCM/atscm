@@ -1,12 +1,11 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import ProjectConfig from '../../config/ProjectConfig';
+import filter from 'gulp-filter';
 import FileToAtviseFileTransformer from '../../transform/FileToAtviseFileTransformer';
 import NodeFileStream from '../push/NodeFileStream';
 import WriteStream from '../push/WriteStream';
 import CreateNodeStream from '../push/CreateNodeStream';
 import AddReferenceStream from '../push/AddReferenceStream';
-import filter from 'gulp-filter';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -20,12 +19,11 @@ export default class PushStream {
    * @param {Boolean} [options.createNodes] Defines if nodes shall be created or not.
    */
   constructor(options = {}) {
-
     /**
      * Defines shall be created or not.
      * @type {Boolean}
      */
-    const createNodes = options.createNodes || false;
+    const createNodesOnPush = options.createNodes || false;
 
     /**
      * The nodes to push
@@ -33,11 +31,11 @@ export default class PushStream {
      */
     const nodesToPush = options.nodesToPush || [];
 
-    const fileTransformer = new FileToAtviseFileTransformer({nodesToTransform: nodesToPush});
+    const fileTransformer = new FileToAtviseFileTransformer({ nodesToTransform: nodesToPush });
     const atvReferenceFilter = filter(file => !file.isAtviseReferenceConfig, { restore: true });
-    const nodeFileStream = new NodeFileStream({createNodes: createNodes});
+    const nodeFileStream = new NodeFileStream({ createNodes: createNodesOnPush });
     const createNodeStream = new CreateNodeStream();
-    const writeStream = new WriteStream({createNodes: createNodes});
+    const writeStream = new WriteStream({ createNodes: createNodesOnPush });
 
     this.printProgress = setInterval(() => {
       Logger.info(
@@ -53,13 +51,16 @@ export default class PushStream {
     this.pushStream = fileTransformer
       .pipe(atvReferenceFilter)
       .pipe(nodeFileStream)
-      .pipe(writeStream)
-      .pipe(createNodeStream);
+      .pipe(writeStream);
+
+    if (createNodesOnPush) {
+      this.pushStream.pipe(createNodeStream);
+    }
 
     this.pushStream.once('finish', () => {
       Logger.debug('Writing and creating nodes finished. Adding references...');
 
-      if (createNodes && atvReferenceFilter.restore._readableState.buffer.length > 0) {
+      if (createNodesOnPush && atvReferenceFilter.restore._readableState.buffer.length > 0) {
         const addReferenceStream = new AddReferenceStream();
 
         this.pushStream.pipe(atvReferenceFilter.restore)

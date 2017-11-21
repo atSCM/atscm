@@ -11,7 +11,6 @@ class Type {
    * @abstract
    */
   constructor(identifier, dataType, fileExtensionOrKeep) {
-
     /**
      * Atscm's identifier for the type.
      * @type {String}
@@ -113,7 +112,7 @@ const AtviseTypes = [
   new AtviseResourceType('Css', 'css'),
   new AtviseResourceType('Svg', 'svg'),
   new AtviseResourceType('Jpeg', 'jpg'),
-  new AtviseResourceType('OctetStream', '*')
+  new AtviseResourceType('OctetStream', '*'),
 ];
 
 export default AtviseTypes;

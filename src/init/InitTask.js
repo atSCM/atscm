@@ -6,7 +6,7 @@ import streamToPromise from 'stream-to-promise';
 import deps from '../../res/init/templates/dependencies.json';
 
 /**
- * The action run when running "atscm init".
+ * The action run when running 'atscm init'.
  */
 export default class InitTask {
 
