@@ -88,7 +88,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "Deploy release"
-              echo "master" > /deploy
+              echo "master" > ~/deploy
             fi
       - run:
           name: Deploying changes
