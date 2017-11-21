@@ -31,10 +31,15 @@
 
 ### Features
 
-* Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
 * **ci:** Automated release ([#65](https://github.com/atSCM/atscm/issues/65)) ([dcf48b7](https://github.com/atSCM/atscm/commit/dcf48b7))
 * **ci:** Deploy beta releases even on failure ([#78](https://github.com/atSCM/atscm/issues/78)) ([ca1f571](https://github.com/atSCM/atscm/commit/ca1f571))
 * **debugging:** Generate source maps for generated files ([#69](https://github.com/atSCM/atscm/issues/69)) ([369db82](https://github.com/atSCM/atscm/commit/369db82))
+* Add `diff` task ([#84](https://github.com/atSCM/atscm/issues/84)) ([d2ca6f8](https://github.com/atSCM/atscm/commit/d2ca6f8))
+* Add `importXml` task ([#83](https://github.com/atSCM/atscm/issues/83)) ([b558999](https://github.com/atSCM/atscm/commit/b558999))
+* change xml parser to maintain element order ([#82](https://github.com/atSCM/atscm/issues/82)) ([ba1b813](https://github.com/atSCM/atscm/commit/ba1b813)), closes [#46](https://github.com/atSCM/atscm/issues/46)
+* Create and delete atvise server nodes ([#81](https://github.com/atSCM/atscm/issues/81)) ([52242d1](https://github.com/atSCM/atscm/commit/52242d1))
+* Override project configuration with `ATSCM_PROJECT` env variables ([8798d4e](https://github.com/atSCM/atscm/commit/8798d4e))
+* Store type definitions to files ([#71](https://github.com/atSCM/atscm/issues/71)) ([6d95627](https://github.com/atSCM/atscm/commit/6d95627))
 
 
 
