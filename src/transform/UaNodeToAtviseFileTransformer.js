@@ -8,7 +8,6 @@ import ReadStream from '../lib/pull/ReadStream';
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s
  */
 export default class UaNodeToAtviseFileTransformer {
-
   /**
    * Creates a new FileToAtviseFileTransformer
    * @param {Object} options The options to use. See

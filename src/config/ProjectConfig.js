@@ -4,7 +4,6 @@
  */
 export const path = process.env.ATSCM_CONFIG_PATH;
 
-
 /**
  * The current project's configuration.
  * @type {Atviseproject}
