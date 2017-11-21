@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:8
     steps:
       - checkout
+      - add_ssh_keys
       - restore_cache:
           keys:
             - v1-npm-deps-{{ checksum "package-lock.json" }}
@@ -70,7 +71,6 @@ jobs:
           when: always
 
       # Deployment
-      - add_ssh_keys
       - run:
           name: Checking prerelease deployment
           command: |
