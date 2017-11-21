@@ -74,7 +74,7 @@ jobs:
       - run:
           name: Checking prerelease deployment
           command: |
-            if [ "${CIRCLE_BRANCH}" == "ci-beta-deployment-on-failure" ]; then
+            if [ "${CIRCLE_BRANCH}" == "beta" ]; then
               echo "Deploy beta"
               echo "beta" > ~/deploy
             fi
@@ -94,9 +94,8 @@ jobs:
               exit 0;
             fi
 
-            DEPLOYMENT=$(cat ~/deploy)
-            echo ">> Deploy $DEPLOYMENT <<"
-            exit 0;
+            DEPLOYMENT_TARGET=$(cat ~/deploy)
+            echo ">> Deploying $DEPLOYMENT_TARGET <<"
 
             echo "Setting up git user"
             git config --global user.email circleci@circleci && git config --global user.name CircleCI && git remote --v
