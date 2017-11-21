@@ -1,7 +1,7 @@
 import Logger from 'gulplog';
 import { StatusCodes, DataType, Variant} from 'node-opcua';
-import CallScriptStream from './CallScriptStream';
-import NodeId from './NodeId';
+import CallScriptStream from '../script/CallScriptStream';
+import NodeId from '../ua/NodeId';
 
 
 /**
@@ -42,9 +42,14 @@ export default class AddReferenceStream extends CallScriptStream {
    * @return {Object} The resulting parameter object.
    */
   createParameters(referenceConfigFile) {
+    const paramObj = {
+      nodeId: referenceConfigFile.nodeId,
+      references: JSON.parse(referenceConfigFile.value)
+    };
+
     let paramValue = new Variant({
       dataType: DataType.String,
-      value: referenceConfigFile.value
+      value: JSON.stringify(paramObj)
     });
 
     return {paramNames: [AddReferencesScriptParameterName], paramValues: [paramValue]};
@@ -76,8 +81,8 @@ export default class AddReferenceStream extends CallScriptStream {
           Logger.debug(`Successfully created references for ${nodeId}`);
         }
       }
+      handleErrors(null, StatusCodes.Good, done => done());
     }
-    handleErrors(err, StatusCodes.Good, done => done());
   }
 }
 

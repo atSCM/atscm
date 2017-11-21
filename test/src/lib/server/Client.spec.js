@@ -2,7 +2,7 @@ import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 
 import { OPCUAClient } from 'node-opcua';
-import Client from '../../../../src/lib/server/Client';
+import Client from '../../../../src/lib/ua/Client';
 
 const InvalidHostClient = proxyquire('../../../../src/lib/server/Client', {
   '../../config/ProjectConfig': {

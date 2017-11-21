@@ -1,4 +1,4 @@
-import { join } from 'path';
+import {dirname} from 'path';
 import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
@@ -6,9 +6,10 @@ import Logger from 'gulplog';
 import { obj as createStream } from 'through2';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/server/AtviseFile';
-import ServerWatcher from '../lib/server/Watcher';
+import AtviseFile from '../lib/mapping/AtviseFile';
+import ServerWatcher from '../lib/watch/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
+import NodeId from '../lib/ua/NodeId';
 import { validateDirectoryExists } from '../util/fs';
 
 /**
@@ -111,8 +112,10 @@ export class WatchTask {
    */
   initBrowserSync() {
     this.browserSyncInstance.init({
-      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-      ws: true,
+      proxy: {
+        target: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+        ws: true
+      }
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
     });
@@ -150,9 +153,12 @@ export class WatchTask {
         this._pushing = true;
         Logger.info(path, 'changed');
 
-        const source = src(join(root, path), { base: root });
+        const pushStream = new PushStream({
+          nodesToPush: [NodeId.fromFilePath(dirname(path))],
+          createNodes: true
+        });
 
-        (new PushStream(source))
+        pushStream
           .on('data', file => (this._lastPushed = file.nodeId.toString()))
           .on('end', () => {
             this._pushing = false;
@@ -168,25 +174,30 @@ export class WatchTask {
 
   /**
    * Handles an atvise server change.
-   * @param {ReadStream.ReadResult} readResult The read result of the modification.
+   * @param {ReadNodeItem} readNodeMappingItem The resultung rad node mapping item of the modification.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a pull operation,
    * with `false` otherwise.
    */
-  handleServerChange(readResult) {
+  handleServerChange(readNodeMappingItem) {
     return new Promise(resolve => {
       if (!this._pushing) {
-        if (readResult.nodeId.toString() !== this._lastPushed) {
+        if (readNodeMappingItem.nodeId.toString() !== this._lastPushed) {
           this._pulling = true;
-          Logger.info(readResult.nodeId.toString(), 'changed');
+          Logger.info(readNodeMappingItem.nodeId.toString(), 'changed');
 
           const readStream = createStream();
-          readStream.write(readResult);
+          readStream.write(readNodeMappingItem);
           readStream.end();
 
-          (new PullStream(readStream))
+          const pullStream = new PullStream({
+            useInputStream: true,
+            inputStream: readStream
+          });
+
+          pullStream
             .on('end', () => {
               this._pulling = false;
-              this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
+              this._lastPull = AtviseFile.normalizeMtime(readNodeMappingItem.configObj.mtime);
               this.browserSyncInstance.reload();
 
               resolve(true);
@@ -216,7 +227,7 @@ export class WatchTask {
       .then(([fileWatcher, serverWatcher]) => {
         this.browserSyncInstance.emitter.on('service:running', () => {
           Logger.info('Watching for changes...');
-          Logger.debug('Press Ctrl-C to exit');
+          Logger.info('Press Ctrl-C to exit');
         });
 
         fileWatcher.on('change', this.handleFileChange.bind(this));
@@ -234,7 +245,7 @@ export class WatchTask {
  * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
  * initialized.
  */
-export default function watch() {
+export default function watch(callback) {
   return (new WatchTask()).run();
 }
 

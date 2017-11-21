@@ -4,7 +4,7 @@ import proxyquire from 'proxyquire';
 import { resolveNodeId } from 'node-opcua';
 import { ctor as throughStreamClass } from 'through2';
 import expect from '../../../expect';
-import Watcher, { SubscribeStream } from '../../../../src/lib/server/Watcher';
+import Watcher, { SubscribeStream } from '../../../../src/lib/watch/Watcher';
 
 class StubMonitoredItem extends Emitter {
 

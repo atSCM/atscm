@@ -1,7 +1,7 @@
 import { StatusCodes } from 'node-opcua';
 import expect from '../../../expect';
-import NodeId from '../../../../src/lib/server/NodeId';
-import ReadStream from '../../../../src/lib/server/ReadStream';
+import NodeId from '../../../../src/lib/ua/NodeId';
+import ReadStream from '../../../../src/lib/pull/ReadStream';
 
 /** @test {ReadStream} */
 describe('ReadStream', function() {

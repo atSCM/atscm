@@ -136,7 +136,7 @@ try {
     throw new Error("Parsing paramObjString failed!");
 }
 
-node = new UaNode(paramObj.sourceNodeId);
+node = new UaNode(paramObj.nodeId);
 
 if (!node.exists()) {
     throw new Error("Base node does not exist!");
@@ -150,7 +150,7 @@ for (refName in references) {
     refType = refGroupItem.referenceIdValue;
 
     for (refIndex = 0; refIndex < refItems.length; refIndex ++) {
-        targetNodeId = refItems[refIndex].refNodeId;
+        targetNodeId = refItems[refIndex];
         targetNode = new UaNode(targetNodeId);
 
         if (!targetNode.exists()) {

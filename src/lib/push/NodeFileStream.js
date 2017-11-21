@@ -1,4 +1,4 @@
-import QueueStream from './QueueStream';
+import QueueStream from '../stream/QueueStream';
 import Logger from 'gulplog';
 import CombinedNodeFile from './CombinedNodeFile';
 import { StatusCodes } from 'node-opcua';
@@ -12,13 +12,21 @@ export default class NodeFileStream extends QueueStream {
   /**
    * Creates a new NodeFileStream.
    */
-  constructor() {
+  constructor(options = {}) {
 
     super();
 
+
+    /**
+     * Defines wether the stream works with {CombinedNodeFiles} or {AtviseFile}s.
+     * @type {Boolean}
+     */
+    this.createNodes = options.createNodes || false;
+
+
     /**
      * The file cache
-     * @type {Map<node-opcua~NodeId, AtviseFile>}
+     * @type {Map<node-opcua~NodeId, CombinedNodeFile>}
      */
     this.combinedFilesCache = {};
   }
@@ -56,7 +64,7 @@ export default class NodeFileStream extends QueueStream {
       }
 
     } else {
-      this.combinedFilesCache[nodeId] = new CombinedNodeFile(file);
+      this.combinedFilesCache[nodeId] = new CombinedNodeFile(file, this.createNodes);
       combinedFile = this.combinedFilesCache[nodeId];
     }
 

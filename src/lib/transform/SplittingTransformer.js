@@ -2,7 +2,7 @@ import { readdir } from 'fs';
 import { extname, basename, join } from 'path';
 import Logger from 'gulplog';
 import PartialTransformer from './PartialTransformer';
-import AtviseFile from '../server/AtviseFile';
+import AtviseFile from '../mapping/AtviseFile';
 
 /**
  * Determines which files are needed to create a combined file and stores these files as long as

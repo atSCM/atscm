@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-escape */
 
-import NodeId from '../server/NodeId';
+import NodeId from '../ua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
 
@@ -62,6 +62,7 @@ export default class Atviseproject {
       new NodeId('AGENT'),
       new NodeId('SYSTEM'),
       new NodeId('ObjectTypes.PROJECT'),
+      new NodeId('VariableTypes.PROJECT'),
     ];
   }
 
@@ -98,6 +99,7 @@ export default class Atviseproject {
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
+      new NodeId('SYSTEM\.LIBRARY\.ATVISE\.SERVERSCRIPTS\.atscm')
     ];
   }
 
