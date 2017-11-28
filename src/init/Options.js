@@ -1,6 +1,6 @@
 import { basename } from 'path';
 import InitOption from '../lib/init/Option';
-import Atviseproject from '../lib/config/Atviseproject';
+import defaults from '../lib/config/defaults';
 import Validator from './OptionsValidator';
 
 /**
@@ -36,9 +36,9 @@ export const InitOptions = {
   }),
   description: new InitOption('Project description'),
   author: new InitOption('Project author'),
-  atviseHost: new InitOption('Atvise server host', Atviseproject.host),
-  atvisePortOpc: new InitOption('Atvise OPC port', Atviseproject.port.opc),
-  atvisePortHttp: new InitOption('Atvise HTTP port', Atviseproject.port.http),
+  atviseHost: new InitOption('Atvise server host', defaults.host),
+  atvisePortOpc: new InitOption('Atvise OPC port', defaults.port.opc),
+  atvisePortHttp: new InitOption('Atvise HTTP port', defaults.port.http),
   useLogin: new InitOption({
     message: 'Does your atvise server require login',
     type: 'confirm',
