@@ -3,6 +3,7 @@
 import NodeId from '../ua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
+import defaults from './defaults';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -15,7 +16,7 @@ export default class Atviseproject {
    * @type {String}
    */
   static get host() {
-    return 'localhost';
+    return defaults.host;
   }
 
   /**
@@ -26,8 +27,8 @@ export default class Atviseproject {
    */
   static get port() {
     return {
-      opc: 4840,
-      http: 80,
+      opc: defaults.port.opc,
+      http: defaults.port.http,
     };
   }
 
