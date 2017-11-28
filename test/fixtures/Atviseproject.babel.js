@@ -1,6 +1,4 @@
-import Atviseproject from '../../src/lib/config/Atviseproject';
-
-export default class TestProject extends Atviseproject {
+export default class TestProject {
 
   static get host() {
     return '185.67.228.66';
