@@ -84,7 +84,7 @@ jobs:
             git add .
             git commit -m 'docs: Update GitHub pages [ci skip]'
             git push origin gh-pages
-            cd $CIRCLE_WORKING_DIRECTORY
+            cd ../project
 
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "beta" ]; then
               echo "Setting up git user"
