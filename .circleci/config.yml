@@ -74,6 +74,18 @@ jobs:
       - deploy:
           name: Deploy changes
           command: |
+            git config --global user.email circleci@circleci && git config --global user.name CircleCI && git remote --v
+            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+            echo "Update GitHub pages"
+            git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
+            cp -r docs/api/* ../pages
+            cd ../pages
+            git add .
+            git commit -m 'docs: Update GitHub pages [ci skip]'
+            git push origin gh-pages
+            cd $CIRCLE_WORKING_DIRECTORY
+
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "beta" ]; then
               echo "Setting up git user"
               git config --global user.email circleci@circleci && git config --global user.name CircleCI && git remote --v
