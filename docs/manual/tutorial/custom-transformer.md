@@ -26,12 +26,12 @@ As for now the atvise library is written in old ES5 JavaScript, we'll ignore it 
 
 export default class MyProject extends Atviseproject {
   ...
-  
+
   static get ignoreNodes() {
     return super.ignoreNodes
       .concat(['ns=1;s=SYSTEM.LIBRARY.ATVISE']);
   }
-  
+
 }
 ```
 
@@ -55,8 +55,8 @@ Make sure the `./src` directory contains at least the *default Main display* whi
 
 ## Step 1: Import *PartialTransformer* class
 
-As we don't want to implement things twice we'll subclass *atscm*'s [Transformer class](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html). As our transformer shall only be used for JavaScript source files we can even use the [PartialTransformer class](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html) which supports filtering source files out of the box. As both of these classes are exported from *atscm*'s main file, importing them is pretty straightforward. Inside the *BabelTransformer.js* file add:
- 
+As we don't want to implement things twice we'll subclass *atscm*'s [Transformer class](https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html). As our transformer shall only be used for JavaScript source files we can even use the [PartialTransformer class](https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html) which supports filtering source files out of the box. As both of these classes are exported from *atscm*'s main file, importing them is pretty straightforward. Inside the *BabelTransformer.js* file add:
+
 ```javascript
 // atscm/BabelTransformer.js
 
@@ -73,11 +73,11 @@ The next step is to create and export our Transformer class:
 import { PartialTransformer } from 'atscm';
 
 export default class BabelTransformer extends PartialTransformer {
-  
+
 }
 ```
 
-We just created a *PartialTransformer* subclass that is exported as the file's default export. For more detailed information on ES2015's module system [take a look at the docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export). 
+We just created a *PartialTransformer* subclass that is exported as the file's default export. For more detailed information on ES2015's module system [take a look at the docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export).
 
 ## Step 3: Use *BabelTransformer*
 
@@ -103,12 +103,12 @@ Now we override the *Atviseproject.useTransformers* [getter](https://developer.m
 
 export default class MyProject extends Atviseproject {
   ...
-  
+
   static get useTransformers() {
     return super.useTransformers
       .concat(new BabelTransformer());
   }
-  
+
 }
 ```
 
@@ -118,12 +118,12 @@ To verify everything worked so far run `atscm config`. Our new Transformer shoul
 
 ```
 $ atscm config
-[08:38:16] Configuration at ~/custom-transformer/Atviseproject.babel.js 
+[08:38:16] Configuration at ~/custom-transformer/Atviseproject.babel.js
 { host: '10.211.55.4',
-  port: 
+  port:
    { opc: 4840,
      http: 80 },
-  useTransformers: 
+  useTransformers:
    [ DisplayTransformer<>,
      ScriptTransformer<>,
      BabelTransformer<> ],
@@ -132,8 +132,8 @@ $ atscm config
 
 ## Step 4: Implement *PartialTransformer#shouldBeTransformed*
 
-[PartialTransformer#shouldBeTransformed](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-shouldBeTransformed) is responsible for filtering the files we want to transform. Returning `true` means the piped file will be transformed, `false` bypasses the file.
- 
+[PartialTransformer#shouldBeTransformed](https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-shouldBeTransformed) is responsible for filtering the files we want to transform. Returning `true` means the piped file will be transformed, `false` bypasses the file.
+
 In out case we want to edit all JavaScript source files. Therefore we return true for all files with the extension `.js`. Edit *BabelTransformer.js* accordingly:
 
 ```javascript
@@ -152,7 +152,7 @@ export default class BabelTransformer extends PartialTransformer {
 
 ## Step 5: Implement *Transformer#transformFromFilesystem*
 
-Implementing [Transformer#transformFromFilesystem](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromFilesystem) is probably the most important part of this tutorial. In here we define the logic that actually creates ES5 code from ES2015 sources.
+Implementing [Transformer#transformFromFilesystem](https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromFilesystem) is probably the most important part of this tutorial. In here we define the logic that actually creates ES5 code from ES2015 sources.
 
 First of all, we need to **install additional dependencies** required. Running
 
@@ -181,9 +181,9 @@ The import order follows a pretty usual convention:
  1. Core **node.js modules** (*buffer* in our case)
  2. Other **external modules** (*babel-core* and *atscm* in our case)
  3. **Relative modules** (*./atscm/BabelTransformer.js* inside *Atviseproject.babel.js* in our case)
- 
+
 Now we're ready to implement *Transformer#transformFromFilesystem*. What we're about to do is pretty simple:
- 
+
  - We'll transpile the contents of the passed file with babels *transform* method
  - We clone the passed file and set it's contents to a Buffer containing the resulting code
  - We pass the resulting file to other streams
@@ -192,23 +192,23 @@ Now we're ready to implement *Transformer#transformFromFilesystem*. What we're a
 import ...
 
 export default class BabelTransformer extends PartialTransformer {
-  
+
   static shouldBeTransformed(file) { ... }
-  
+
   transformFromFilesystem(file, enc, callback) {
     // Create ES5 code
     const { code } = transform(file.contents, {
       presets: ['es2015']
     });
-    
+
     // Create new file with ES5 content
     const result = file.clone();
     result.contents = Buffer.from(code);
-    
+
     // We're done, pass the new file to other streams
     callback(null, result);
   }
-  
+
 }
 ```
 
@@ -217,7 +217,7 @@ export default class BabelTransformer extends PartialTransformer {
 ## Step 6: Test *BabelTransformer*
 
 It's time to check if everything works as expected. Create a script file for the Main display containing ES2015 JavaScript:
- 
+
 ```javascript
 // src/AGENT/DISPLAYS/Main.display/Main.js
 
@@ -242,8 +242,8 @@ Run `atscm push` to upload the new display script to atvise server. Open your at
 ## Step 7: Implement *Transformer#transformFromDB*
 
 As said at the beginning, atscm transformers allow transformation from and to the filesystem. A babel transpilation is a one-way process, meaning you cannot create ES2015 source code from the resulting ES5 code. Therefore the only thing we can do when transforming from atvise server to the filesystem is to prevent an override.
-  
-We do so by implementing [Transformer#transformFromDB](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromDB):
+
+We do so by implementing [Transformer#transformFromDB](https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromDB):
 
 ```javascript
 // atscm/BabelTransformer.js
@@ -251,7 +251,7 @@ We do so by implementing [Transformer#transformFromDB](https://doc.esdoc.org/git
 
 export default class BabelTransformer extends PartialTransfromer {
   ...
-  
+
   transformFromDB(file, enc, callback) {
     // Optionally, we could print a warning here
     callback(null); // Ignore file, remove it from the stream
@@ -306,7 +306,7 @@ We just created a custom Transformer in no time. It transpiles ES2015 code on pu
 Of course there are many ways to improve the transformer, for example:
 
  - Handle options to configure how babel transpiles the source code
- 
+
 ## Further reading
 
  - [babeljs.io](http://babeljs.io/learn-es2015/) provides a nice overview of ES2015 features. You can also use the [REPL](http://babeljs.io/repl/) to try out these features.

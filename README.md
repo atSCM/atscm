@@ -5,7 +5,7 @@
 [![CircleCI](https://circleci.com/gh/atSCM/atscm.svg?style=shield)](https://circleci.com/gh/atSCM/atscm)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/d9e5vi6a7ygisjsr?svg=true&pendingText=windows%20tests%20pending&passingText=windows%20tests%20passing&failingText=windows%20tests%20failing)](https://ci.appveyor.com/project/LukasHechenberger/atscm)
 [![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
-[![ESDoc](https://doc.esdoc.org/github.com/atSCM/atscm/badge.svg)](https://doc.esdoc.org/github.com/atSCM/atscm/)
+[![ESDoc](https://atscm.github.io/atscm/badge.svg)](https://atscm.github.io/atscm)
 
 *atscm* is a [node.js](https://nodejs.org) based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:
 
@@ -53,4 +53,4 @@ After running `atscm watch` files and atvise server nodes are watched for change
 
 ## Project configuration
 
-An atscm project's configuration is stored inside the *Atviseproject* file inside your project root. See the [Atviseproject class reference](https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html) for available options.
+An atscm project's configuration is stored inside the *Atviseproject* file inside your project root. See the [Atviseproject class reference](https://atscm.github.io/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html) for available options.
