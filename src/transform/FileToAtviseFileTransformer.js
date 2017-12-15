@@ -1,8 +1,9 @@
 import { src } from 'gulp';
 import CombinedStream from 'combined-stream';
-import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
+import ScriptTransformer from './DisplayTransformer';
+import DisplayTransformer from './ScriptTransformer';
 
 /**
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s
@@ -20,8 +21,8 @@ export default class FileToAtviseFileTransformer {
    */
   constructor(options = {}) {
     /**
-     * Combined stream instance.
-     * @type {CombinedStream}
+     * The resulting stream.
+     * @type {Stream}
      */
     const combinedSrcStream = CombinedStream.create();
 
@@ -41,6 +42,14 @@ export default class FileToAtviseFileTransformer {
 
     nodesToTransform.map(nodeId => combinedSrcStream
       .append(src(`./src/${nodeId.filePath}/**/*.*`)));
+    /**
+     * The streams to apply.
+     * @type {Transformer[]}
+     */
+    const applyTransformers = [
+      new DisplayTransformer(),
+      new ScriptTransformer()
+    ];
 
     if (options.applyTransformers !== undefined && options.applyTransformers === false) {
       return combinedSrcStream
@@ -49,9 +58,9 @@ export default class FileToAtviseFileTransformer {
 
     return Transformer.applyTransformers(
       combinedSrcStream
-        .pipe(mappingStream),
-      ProjectConfig.useTransformers,
-      TransformDirection.FromFilesystem
-    );
-  }
+          .pipe(mappingStream),
+        applyTransformers,
+        TransformDirection.FromFilesystem
+      );
+    }
 }

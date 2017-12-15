@@ -1,9 +1,5 @@
 /* eslint-disable no-useless-escape */
-
 import NodeId from '../ua/NodeId';
-import DisplayTransformer from '../../transform/DisplayTransformer';
-import ScriptTransformer from '../../transform/ScriptTransformer';
-import defaults from './defaults';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -80,17 +76,6 @@ export default class Atviseproject {
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
-   * @type {Transformer[]}
-   */
-  static get useTransformers() {
-    return [
-      new DisplayTransformer(),
-      new ScriptTransformer(),
-    ];
-  }
-
-  /**
    * The atvise-server nodes that atvise-scm should sync. Defaults to
    * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM', 'ns=1;s=ObjectTypes.PROJECT']`
    * @type {String[]|NodeId[]}
@@ -151,7 +136,6 @@ export default class Atviseproject {
       login: this.login,
       useTransformers: this.useTransformers,
       nodes: this.nodes,
-      nodesToWatch: this.nodesToWatch,
       ignoreNodes: this.ignoreNodes,
     };
   }

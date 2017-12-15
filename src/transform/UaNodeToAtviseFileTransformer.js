@@ -1,8 +1,9 @@
-import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
 import MappingTransformer from './Mapping';
 import BrowseStream from '../lib/pull/BrowseStream';
 import ReadStream from '../lib/pull/ReadStream';
+import ScriptTransformer from './DisplayTransformer';
+import DisplayTransformer from './ScriptTransformer';
 
 /**
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s
@@ -37,37 +38,60 @@ export default class UaNodeToAtviseFileTransformer {
     const useInputStream = options.useInputStream || false;
 
     /**
-     * Stream to use as input for mapping stream.
+     * The streams to apply.
+     * @type {Transformer[]}
+     */
+    const applyTransformers = [
+      new DisplayTransformer(),
+      new ScriptTransformer()
+    ];
+
+    /**
+     * The resulting output stream
      * @type {Stream}
      */
-    let inputStream = null;
+    this.outStream = null;
 
     /**
      * Stream that reads atvise server nodes.
      * @type {ReadStream}
      */
-    this.readStream = new ReadStream();
-
+    this.readNodeStream = new ReadStream();
 
     if (useInputStream) {
       if (!options.inputStream) {
         throw new Error('UaNodeToAtviseFileTransformer#constructor: Input stream is missing');
       } else {
-        inputStream = options.inputStream;
+        this.outStream = options.inputStream;
       }
     } else {
-      inputStream = (new BrowseStream(nodesToTransform))
-        .pipe(this.readStream);
+      this.outStream = (new BrowseStream(nodesToTransform))
+        .pipe(this.readNodeStream);
     }
 
-    /**
-     * Stream that creates {AtviseFiles} from browses {node-opcua~ReferenceDescriptions}.
-     * @type {Stream}
-     */
-    this.stream = Transformer.applyTransformers(
-      inputStream.pipe(mappingStream),
-      ProjectConfig.useTransformers,
+    this.outStream = Transformer.applyTransformers(
+      this.outStream
+        .pipe(mappingStream),
+      applyTransformers,
       TransformDirection.FromDB
     );
   }
+
+  /**
+   * The used {ReadStream}
+   * @type {ReadStream}
+   */
+  get readStream () {
+    return this.readNodeStream;
+  }
+
+  /**
+   * The resulting output stream
+   * @type {Stream}
+   */
+  get stream () {
+    return this.outStream;
+  }
 }
+
+
