@@ -4807,7 +4807,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~datatype",
-    "https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js",
+    "https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js",
     "src/typedef/external/node-opcua.js~node-opcua~DataType",
     "external"
   ],
@@ -4843,13 +4843,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~statuscodes",
-    "https://github.com/node-opcua/node-opcua/blob/master/lib/raw_status_codes.js",
+    "https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js",
     "src/typedef/external/node-opcua.js~node-opcua~StatusCodes",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~variantarraytype",
-    "https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js",
+    "https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js",
     "src/typedef/external/node-opcua.js~node-opcua~VariantArrayType",
     "external"
   ],

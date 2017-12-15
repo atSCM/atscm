@@ -75,14 +75,14 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/lib/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
@@ -101,7 +101,7 @@
 <p><a href="https://circleci.com/gh/atSCM/atscm"><img src="https://circleci.com/gh/atSCM/atscm.svg?style=shield" alt="CircleCI"></a>
 <a href="https://ci.appveyor.com/project/LukasHechenberger/atscm"><img src="https://ci.appveyor.com/api/projects/status/d9e5vi6a7ygisjsr?svg=true&amp;pendingText=windows%20tests%20pending&amp;passingText=windows%20tests%20passing&amp;failingText=windows%20tests%20failing" alt="AppVeyor"></a>
 <a href="https://codecov.io/gh/atSCM/atscm"><img src="https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg" alt="codecov"></a>
-<a href="https://doc.esdoc.org/github.com/atSCM/atscm/"><img src="https://doc.esdoc.org/github.com/atSCM/atscm/badge.svg" alt="ESDoc"></a></p>
+<a href="https://atscm.github.io/atscm"><img src="https://atscm.github.io/atscm/badge.svg" alt="ESDoc"></a></p>
 <p><em>atscm</em> is a <a href="https://nodejs.org">node.js</a> based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:</p>
 <ul>
 <li>atvise project can be put under source control (e.g. using <em>git</em>)</li>
@@ -135,7 +135,7 @@
 <p><strong>Automatically watching for changes</strong></p>
 <p>After running <code>atscm watch</code> files and atvise server nodes are watched for changes. If a file changes, the file is pushed, if a node changes this node is pulled.</p>
 <p><code>atscm watch</code> is very useful if you want edit source files in an external editor but still have the ability to use <em>atvise builder</em>&apos;s drag and drop functionality.</p>
-<h2 id="project-configuration">Project configuration</h2><p>An atscm project&apos;s configuration is stored inside the <em>Atviseproject</em> file inside your project root. See the <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject class reference</a> for available options.</p>
+<h2 id="project-configuration">Project configuration</h2><p>An atscm project&apos;s configuration is stored inside the <em>Atviseproject</em> file inside your project root. See the <a href="https://atscm.github.io/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject class reference</a> for available options.</p>
 </div>
 </div>
 

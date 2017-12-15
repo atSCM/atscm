@@ -109,10 +109,10 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="guide--gulp-js-plugins">Guide: gulp.js plugins</h1><blockquote>
-<p><strong>Please note:</strong> This guide assumes you have a basic knowledge on how gulp.js and custom <em>atscm</em> transformers work. You may go through <a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">gulp&apos;s getting started guide</a> or the <a href="https://doc.esdoc.org/github.com/atSCM/atscm/manual/tutorial/custom-transformer.html">custom transformer tutorial</a> first otherwise.   </p>
+<p><strong>Please note:</strong> This guide assumes you have a basic knowledge on how gulp.js and custom <em>atscm</em> transformers work. You may go through <a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">gulp&apos;s getting started guide</a> or the <a href="https://atscm.github.io/atscm/manual/tutorial/custom-transformer.html">custom transformer tutorial</a> first otherwise.</p>
 </blockquote>
 <p><em>atscm</em> heavily relies on the <a href="http://gulpjs.com">gulp.js</a> build tool. Therefore it&apos;s pretty easy to integrate existing <a href="http://gulpjs.com/plugins/">gulp plugins</a> into <em>atscm</em> transformers.</p>
-<h2 id="using--em-transformer--em--class">Using <em>Transformer</em> class</h2><p>Basically, the only Transformer method you have to override is <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-applyToStream">Transformer#applyToStream</a>. In there, you can pipe your gulp plugin just as you would do in a regular gulp project. The only difference is, that you have to handle the current transform direction as well:</p>
+<h2 id="using--em-transformer--em--class">Using <em>Transformer</em> class</h2><p>Basically, the only Transformer method you have to override is <a href="https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-applyToStream">Transformer#applyToStream</a>. In there, you can pipe your gulp plugin just as you would do in a regular gulp project. The only difference is, that you have to handle the current transform direction as well:</p>
 <p><strong>A basic example:</strong></p>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">import { Transformer, TransformDirection } from &apos;atscm&apos;;
 import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
@@ -130,7 +130,7 @@ class MyTransformer extends Transformer {
 
 }</code>
 </code></pre>
-<h2 id="using--em-partialtransformer--em--class">Using <em>PartialTransformer</em> class</h2><p>In most cases you&apos;ll have to transform only parts of the piped files. This can be done by inheriting from <a href="https://doc.esdoc.org/github.com/atSCM/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransfomer class</a>:</p>
+<h2 id="using--em-partialtransformer--em--class">Using <em>PartialTransformer</em> class</h2><p>In most cases you&apos;ll have to transform only parts of the piped files. This can be done by inheriting from <a href="https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransfomer class</a>:</p>
 <p><strong>Transforming only JavaScript files:</strong></p>
 <pre><code class="lang-javascript"><code class="source-code prettyprint">import { PartialTransformer, TransformDirection } from &apos;atscm&apos;;
 import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
