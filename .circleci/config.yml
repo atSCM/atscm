@@ -80,4 +80,4 @@ jobs:
             echo "Logging in to npm"
             echo "$NPM_TOKEN" > ~/.npmrc
 
-            npx bump-version release --release-files out docs/api
+            npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
