@@ -84,6 +84,7 @@ jobs:
 
             if [ $CIRCLE_BRANCH = 'master' ]; then
               echo "Update GitHub pages"
+              version=$(node -e "console.log(require('./package.json').version)")
               git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
               cp -r docs/api/* ../pages
               cd ../pages
