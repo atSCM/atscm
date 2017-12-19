@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
 import expect from 'unexpected';
-import { stub, spy } from 'sinon';
-
+import { stub } from 'sinon';
 import gulplog from 'gulplog';
 import { obj as createStream } from 'through2';
-
 import Logger from '../../../src/lib/util/Logger';
 
 /** @test {LogFormat} */
@@ -16,13 +14,14 @@ describe('LogFormat', function() {
   after(() => (Logger.colors.enabled = orgEnabled));
 
   function expectStyle(styledText, style) {
-    expect(styledText, 'to equal', `${style.open}${text}${style.close}`);
+    const { open, close } = style._styles[0];
+    expect(styledText, 'to equal', `${open}${text}${close}`);
   }
 
   /** @test {LogFormat.path} */
   describe('.path', function() {
     it('should change color to magenta', function() {
-      expectStyle(Logger.format.path(text), Logger.colors.styles.magenta);
+      expectStyle(Logger.format.path(text), Logger.colors.magenta);
     });
 
     it('should prettify user path', function() {
@@ -33,21 +32,21 @@ describe('LogFormat', function() {
   /** @test {LogFormat.command} */
   describe('.command', function() {
     it('should return bold text', function() {
-      expectStyle(Logger.format.command(text), Logger.colors.styles.bold);
+      expectStyle(Logger.format.command(text), Logger.colors.bold);
     });
   });
 
   /** @test {LogFormat.value} */
   describe('.value', function() {
     it('should return cyan colored text', function() {
-      expectStyle(Logger.format.value(text), Logger.colors.styles.cyan);
+      expectStyle(Logger.format.value(text), Logger.colors.cyan);
     });
   });
 
   /** @test {LogFormat.number} */
   describe('.number', function() {
     it('should return magenta colored text', function() {
-      expectStyle(Logger.format.number(text), Logger.colors.styles.magenta);
+      expectStyle(Logger.format.number(text), Logger.colors.magenta);
     });
   });
 });

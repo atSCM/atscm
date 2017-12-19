@@ -23,17 +23,20 @@ const Options = {
   cwd: Option.string('Manually set the CWD.'),
   force: Option.boolean('Overwrite existing files.'),
   help: Option.boolean('Show this help.'),
-  'log-level': new Option('Set the Logger level. ' +
-    '-L for least verbose and -LLLL for most verbose. -LLL is default.', {
+  'log-level': new Option(
+    'Set the Logger level. -L for least verbose and -LLLL for most verbose. -LLL is default.',
+    {
       alias: 'L',
       count: true,
       default: 3,
     }
   ),
   project: new Option('Override Atviseproject values.', { default: {} }),
-  projectfile: Option.string('Manually set path of Atviseproject file to use. ' +
+  projectfile: Option.string(
+    'Manually set path of Atviseproject file to use. ' +
     'This will set the CWD to the Atviseproject file\'s directory as well.',
-    { alias: 'p' }),
+    { alias: 'p' }
+  ),
   require: Option.string('Will require a module before running atscm.'),
   remote: Option.boolean('Open hosted documentation.', {
     default: undefined,

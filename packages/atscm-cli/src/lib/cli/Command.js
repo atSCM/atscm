@@ -6,18 +6,18 @@ export default class Command {
 
   /**
    * Creates a new Command with the given name and options.
-   * @param {String} name The command's name.
-   * @param {String} description The command's description.
+   * @param {string} name The command's name.
+   * @param {string} description The command's description.
    * @param {Object} options The options to apply.
    * @param {Map<String, Option>} options.options The options available for this command.
-   * @param {String} [options.arguments] The command's argument string. See
-   * [yargs' documentation](http://yargs.js.org/docs/#methods-commandmodule-positional-arguments)
+   * @param {string} [options.arguments] The command's argument string. See yargs' documentation
    * for details.
-   * @param {Number} [options.minArguments] The minimum number or (non-option) arguments the command
+   * @param {number} [options.minArguments] The minimum number or (non-option) arguments the command
    * requires.
-   * @param {Number} [options.maxArguments] The maximum number or (non-option) arguments the command
+   * @param {number} [options.maxArguments] The maximum number or (non-option) arguments the command
    * requires.
    * @throws {Error} Throws an error if options.maxArguments is less than options.minArguments.
+   * @see {@link yargs}
    */
   constructor(name, description, options = {}) {
     /**
@@ -47,7 +47,7 @@ export default class Command {
 
   /**
    * Runs the command with the current Cli instance. **Asynchronous commands should return a Promise
-   * here.**
+   * here.**.
    * @param {AtSCMCli} cli The current cli instance.
    */
   run(cli) { // eslint-disable-line no-unused-vars
@@ -57,7 +57,7 @@ export default class Command {
   /**
    * Returns `true` if the command requires a {@link Liftoff.Environment} before it can be run.
    * @param {AtSCMCli} cli The current cli instance.
-   * @return {Boolean} `true` if the command requires a {@link Liftoff.Environment}.
+   * @return {boolean} `true` if the command requires a {@link Liftoff.Environment}.
    */
   requiresEnvironment(cli) { // eslint-disable-line no-unused-vars
     return true;
@@ -65,7 +65,7 @@ export default class Command {
 
   /**
    * Returns the usage string for the command. Something like "{name} {arguments}".
-   * @type {String}
+   * @type {string}
    */
   get usage() {
     if (this._options.arguments) {
