@@ -5,10 +5,10 @@ export default class Option {
 
   /**
    * Creates a new {@link Option} based on a description and some options.
-   * @param {String} desc A string describing the option. Used for help texts.
+   * @param {string} desc A string describing the option. Used for help texts.
    * @param {Object} [options={}] The options to create the {@link Option} with. Refer to
-   * [yarg's documentation](http://yargs.js.org/docs/#methods-optionskey-opt) in order to know what
-   * options can be used here.
+   * yarg's documentation in order to know what options can be used here.
+   * @see {@link yargs}
    */
   constructor(desc, options = {}) {
     /**
@@ -23,7 +23,7 @@ export default class Option {
 
   /**
    * Shorthand to create an {@link Option} with type boolean.
-   * @param {String} desc A string describing the option. Used for help texts.
+   * @param {string} desc A string describing the option. Used for help texts.
    * @param {Object} [options={type: 'boolean'}] The options to create the {@link Option} with.
    * @return {Option} An {@link Option} with type boolean.
    */
@@ -33,7 +33,7 @@ export default class Option {
 
   /**
    * Shorthand to create an {@link Option} with type string.
-   * @param {String} desc A string describing the option. Used for help texts.
+   * @param {string} desc A string describing the option. Used for help texts.
    * @param {Object} [options={type: 'string', requiresArg: true}] The options to create the
    * {@link Option} with.
    * @return {Option} An {@link Option} with type string.

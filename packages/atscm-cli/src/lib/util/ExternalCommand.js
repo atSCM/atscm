@@ -26,9 +26,8 @@ export default class ExternalCommand {
   }
 
   /**
-   * Spawns an executable with the given args and options. See the [node.js docs on the
-   * `child_process` module](https://nodejs.org/api/child_process.html#child_process_child_process)
-   * for all available spawn options.
+   * Spawns an executable with the given args and options. See the node docs on the `child_process`
+   * module for all available spawn options.
    * @param {string} bin Path to the executable to run.
    * @param {string[]} [args=[]] The arguments to use.
    * @param {Object} [options] The options to use.
@@ -37,6 +36,7 @@ export default class ExternalCommand {
    * process was created. Useful for handling stdio events etc.
    * @return {Promise<string, Error>} Fulfilled with the child process' stdout or rejected with a
    * spawn error or non-zero exit code.
+   * @see {@link node.ChildProcess}
    */
   static spawn(bin, args = [], options = {}) {
     return new Promise((resolve, reject) => {
@@ -63,9 +63,7 @@ export default class ExternalCommand {
 
   /**
    * Resolves the executable for the given command and runs it with the arguments and options given.
-   * See the [node.js docs on the
-   * `child_process` module](https://nodejs.org/api/child_process.html#child_process_child_process)
-   * for all available spawn options.
+   * See the node docs on the `child_process` module for all available spawn options.
    * @param {string} name The command to run.
    * @param {string[]} [args] The arguments to use.
    * @param {Object} [options] The options to use.
@@ -74,6 +72,7 @@ export default class ExternalCommand {
    * process was created. Useful for handling stdio events etc.
    * @return {Promise<string, Error>} Fulfilled with the child process' stdout or rejected with a
    * spawn error, a non-zero exit code or an error that occured while running `which`.
+   * @see {@link node.ChildProcess}
    */
   static run(name, args, options) {
     return this.resolveBin(name)

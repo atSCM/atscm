@@ -12,8 +12,8 @@ export default class UpdateCommand extends Command {
 
   /**
    * Creates a new {@link UpdateCommand} with the specified name and description.
-   * @param {String} name The command's name.
-   * @param {String} description The command's description.
+   * @param {string} name The command's name.
+   * @param {string} description The command's description.
    */
   constructor(name, description) {
     super(name, description, {
@@ -25,7 +25,7 @@ export default class UpdateCommand extends Command {
 
   /**
    * Checks atscm's dist-tags in the npm registry and resolves with the latest version available.
-   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
+   * @param {boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<string>} Fulfilled with the latest atscm version available.
    */
   getLatestVersion(useBetaRelease = false) {
@@ -50,7 +50,7 @@ export default class UpdateCommand extends Command {
   /**
    * Runs `npm install --save-dev atscm@latest` in a separate process.
    * @param {AtSCMCli} cli The cli instance used.
-   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
+   * @param {boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<string, Error>} Fulfilled with npm's stdout or rejected with a spawn error or
    * error code.
    */
