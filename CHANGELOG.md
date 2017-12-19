@@ -1,3 +1,14 @@
+<a name="0.4.2"></a>
+## 0.4.2 (2017-12-19)
+
+
+### Bug Fixes
+
+* **test:** Compile sources before running windows tests ([#103](https://github.com/atSCM/atscm/issues/103)) ([b79a45d](https://github.com/atSCM/atscm/commits/b79a45d)), closes [#74](https://github.com/atSCM/atscm/issues/74)
+
+
+
+
 <a name="0.4.1"></a>
 ## 0.4.1 (2017-12-18)
 
