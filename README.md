@@ -1,5 +1,7 @@
 # atscm
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/atSCM/atscm.svg)](https://greenkeeper.io/)
+
 > Source code management utilities for atvise
 
 [![CircleCI](https://circleci.com/gh/atSCM/atscm.svg?style=shield)](https://circleci.com/gh/atSCM/atscm)
