@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -96,10 +97,13 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/lib/server/NodeStream.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { browse_service as BrowseService, NodeClass } from &apos;node-opcua&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
+import { browse_service as BrowseService, NodeClass } from &apos;node-opcua&apos;;
+import Project from &apos;../../config/ProjectConfig&apos;;
 import QueueStream from &apos;./QueueStream&apos;;
 import NodeId from &apos;./NodeId&apos;;
-import Project from &apos;../../config/ProjectConfig&apos;;
 
 /**
  * A stream that browses the nodes specified and (if *recursive* option is set) it&apos;s child nodes.
@@ -110,7 +114,7 @@ export default class NodeStream extends QueueStream {
    * Creates a new NodeStream based on the nodes to start browsing with and some options.
    * @param {NodeId[]} nodesToBrowse The nodes to start browsing with.
    * @param {Object} [options] The options to use.
-   * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
+   * @param {boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
    * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
    * to ignore.
    */
@@ -164,7 +168,7 @@ export default class NodeStream extends QueueStream {
   /**
    * Returns an error message specifically for the given nodeId.
    * @param {NodeId} nodeId The node id to get the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(nodeId) {
     return `Error browsing ${nodeId.toString()}`;

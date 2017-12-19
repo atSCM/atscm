@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -132,7 +133,7 @@ export const ExtensionForDataType = {
 };
 
 /**
- * Switches keys and values in an object. E.g.: { &quot;a&quot;: 1 } becomes { 1: &quot;a&quot; }
+ * Switches keys and values in an object. E.G.: { &quot;a&quot;: 1 } becomes { 1: &quot;a&quot; }.
  * @param {Object} obj The object to reverse.
  * @return {Object} The reversed object.
  */
@@ -212,7 +213,7 @@ const Encoder = {
  *   - if the type has a shortened extension defined in {@link ExtensionForDataType}, return it.
  *   - else return the DataType&apos;s name, in lowercase letters.
  * @param {node-opcua~DataType} dataType The datatype to get the extension for.
- * @return {String} The resulting extension.
+ * @return {string} The resulting extension.
  */
 function extensionForDataType(dataType) {
   return ExtensionForDataType[dataType] || dataType.toString().toLowerCase();
@@ -286,7 +287,7 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * Decodes a file&apos;s contents to a node&apos;s value
+   * Decodes a file&apos;s contents to a node&apos;s value.
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
    * for.
@@ -341,7 +342,7 @@ export default class AtviseFile extends File {
 
   /**
    * Recalculates {@link AtviseFile#dataType}, {@link AtviseFile#arrayType} and
-   * {@link AtviseFile#typeDefinition}. **Never call this method directly.**
+   * {@link AtviseFile#typeDefinition}. **Never call this method directly.**.
    */
   _getMetadata() {
     // Set default metadata
@@ -464,7 +465,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise displays.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isDisplay() {
     return this.typeDefinition.value === &apos;VariableTypes.ATVISE.Display&apos;;
@@ -472,7 +473,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise scripts.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isScript() {
     return this.typeDefinition.value === &apos;VariableTypes.ATVISE.ScriptCode&apos;;
@@ -480,7 +481,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise quick dynamics.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isQuickDynamic() {
     return this.typeDefinition.value === &apos;VariableTypes.ATVISE.QuickDynamic&apos;;
@@ -524,9 +525,9 @@ export default class AtviseFile extends File {
 
   /**
    * Returns a new file with all attributes of the current file.
-   * @param {Object} options See https://github.com/gulpjs/vinyl#filecloneoptions for all options
-   * available.
+   * @param {Object} options See the {@link vinyl~File} docs for all options available.
    * @return {AtviseFile} The cloned file.
+   * @see https://github.com/gulpjs/vinyl#filecloneoptions
    */
   clone(options) {
     const clonedFile = super.clone(options);

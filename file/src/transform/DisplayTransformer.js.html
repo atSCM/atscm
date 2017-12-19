@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -108,7 +109,7 @@ export default class DisplayTransformer extends XMLTransformer {
   /**
    * Returns true for all files containing atvise displays.
    * @param {AtviseFile} file The file to check.
-   * @return {Boolean} `true` for all atvise display files.
+   * @return {boolean} `true` for all atvise display files.
    */
   shouldBeTransformed(file) {
     return file.isDisplay;
@@ -116,9 +117,9 @@ export default class DisplayTransformer extends XMLTransformer {
 
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
-   * alongside with a .json file containing the display&apos;s parameters.
+   * alongside with a json file containing the display&apos;s parameters.
    * @param {AtviseFile} file The display file to split.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
    * while transforming the display, or the file passed through.
    */

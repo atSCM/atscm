@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -96,7 +97,13 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/lib/server/Watcher.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Emitter from &apos;events&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* eslint-plugin-jsdoc does not recognize the &quot;emits&quot; tag */
+/* eslint-disable jsdoc/check-tag-names */
+
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
+import Emitter from &apos;events&apos;;
 import {
   ClientSubscription,
   AttributeIds,
@@ -160,7 +167,7 @@ export class SubscribeStream extends QueueStream {
    * Returns an error message specifically for the given reference description.
    * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(referenceDescription) {
     return `Error reading node ${referenceDescription.nodeId.toString()}`;
@@ -216,7 +223,7 @@ export class SubscribeStream extends QueueStream {
    * Buffers all read node descriptions until the subscription started, then calls
    * {@link QueueStream#_enqueueChunk} with them.
    * @param {node-opcua~ReferenceDescription} desc Reference description of the node to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error)} callback Called with the error that occured while trying to
    * monitor the given node.
    */

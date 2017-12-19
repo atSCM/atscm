@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -107,7 +108,7 @@ export default class InitOption {
    * options.
    * @param {String|Object} messageOrOptions The message or options to use.
    * @param {inquirer~PromptType} [messageOrOptions.type] The option&apos;s type.
-   * @param {String} messageOrOptions.message The option&apos;s message. Required if `messageOrOptions`
+   * @param {string} messageOrOptions.message The option&apos;s message. Required if `messageOrOptions`
    * is an object.
    * @param {String|Number} [messageOrOptions.default] The options&apos;s default value.
    * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.
@@ -175,7 +176,7 @@ export default class InitOption {
 
   /**
    * The default {@link inquirer~PromptType} to use. Equals &apos;input&apos;.
-   * @return {inquirer~PromptType}
+   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.
    */
   static get DefaultType() {
     return &apos;input&apos;;

@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 2825,
+  "end": 2826,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 2825,
+    "end": 2826,
     "loc": {
       "start": {
         "line": 1,
@@ -187,7 +187,7 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 159,
-        "end": 2824,
+        "end": 2825,
         "loc": {
           "start": {
             "line": 8,
@@ -201,7 +201,7 @@
         "declaration": {
           "type": "ClassDeclaration",
           "start": 174,
-          "end": 2824,
+          "end": 2825,
           "loc": {
             "start": {
               "line": 8,
@@ -250,7 +250,7 @@
           "body": {
             "type": "ClassBody",
             "start": 219,
-            "end": 2824,
+            "end": 2825,
             "loc": {
               "start": {
                 "line": 8,
@@ -997,7 +997,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
+                    "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
                     "start": 932,
                     "end": 1288,
                     "loc": {
@@ -1472,7 +1472,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
+                    "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
                     "start": 932,
                     "end": 1288,
                     "loc": {
@@ -1490,9 +1490,9 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
+                    "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
                     "start": 1466,
-                    "end": 1973,
+                    "end": 1974,
                     "loc": {
                       "start": {
                         "line": 49,
@@ -1508,8 +1508,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 1976,
-                "end": 2229,
+                "start": 1977,
+                "end": 2230,
                 "loc": {
                   "start": {
                     "line": 59,
@@ -1523,8 +1523,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 1976,
-                  "end": 1989,
+                  "start": 1977,
+                  "end": 1990,
                   "loc": {
                     "start": {
                       "line": 59,
@@ -1548,8 +1548,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 1990,
-                    "end": 1996,
+                    "start": 1991,
+                    "end": 1997,
                     "loc": {
                       "start": {
                         "line": 59,
@@ -1565,8 +1565,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 1998,
-                    "end": 2007,
+                    "start": 1999,
+                    "end": 2008,
                     "loc": {
                       "start": {
                         "line": 59,
@@ -1583,8 +1583,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 2009,
-                  "end": 2229,
+                  "start": 2010,
+                  "end": 2230,
                   "loc": {
                     "start": {
                       "line": 59,
@@ -1598,8 +1598,8 @@
                   "body": [
                     {
                       "type": "VariableDeclaration",
-                      "start": 2015,
-                      "end": 2063,
+                      "start": 2016,
+                      "end": 2064,
                       "loc": {
                         "start": {
                           "line": 60,
@@ -1613,8 +1613,8 @@
                       "declarations": [
                         {
                           "type": "VariableDeclarator",
-                          "start": 2021,
-                          "end": 2062,
+                          "start": 2022,
+                          "end": 2063,
                           "loc": {
                             "start": {
                               "line": 60,
@@ -1627,8 +1627,8 @@
                           },
                           "id": {
                             "type": "Identifier",
-                            "start": 2021,
-                            "end": 2035,
+                            "start": 2022,
+                            "end": 2036,
                             "loc": {
                               "start": {
                                 "line": 60,
@@ -1644,8 +1644,8 @@
                           },
                           "init": {
                             "type": "CallExpression",
-                            "start": 2038,
-                            "end": 2062,
+                            "start": 2039,
+                            "end": 2063,
                             "loc": {
                               "start": {
                                 "line": 60,
@@ -1658,8 +1658,8 @@
                             },
                             "callee": {
                               "type": "MemberExpression",
-                              "start": 2038,
-                              "end": 2049,
+                              "start": 2039,
+                              "end": 2050,
                               "loc": {
                                 "start": {
                                   "line": 60,
@@ -1672,8 +1672,8 @@
                               },
                               "object": {
                                 "type": "Identifier",
-                                "start": 2038,
-                                "end": 2044,
+                                "start": 2039,
+                                "end": 2045,
                                 "loc": {
                                   "start": {
                                     "line": 60,
@@ -1689,8 +1689,8 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 2045,
-                                "end": 2049,
+                                "start": 2046,
+                                "end": 2050,
                                 "loc": {
                                   "start": {
                                     "line": 60,
@@ -1709,8 +1709,8 @@
                             "arguments": [
                               {
                                 "type": "MemberExpression",
-                                "start": 2050,
-                                "end": 2061,
+                                "start": 2051,
+                                "end": 2062,
                                 "loc": {
                                   "start": {
                                     "line": 60,
@@ -1723,8 +1723,8 @@
                                 },
                                 "object": {
                                   "type": "ThisExpression",
-                                  "start": 2050,
-                                  "end": 2054,
+                                  "start": 2051,
+                                  "end": 2055,
                                   "loc": {
                                     "start": {
                                       "line": 60,
@@ -1738,8 +1738,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 2055,
-                                  "end": 2061,
+                                  "start": 2056,
+                                  "end": 2062,
                                   "loc": {
                                     "start": {
                                       "line": 60,
@@ -1763,8 +1763,8 @@
                     },
                     {
                       "type": "ReturnStatement",
-                      "start": 2069,
-                      "end": 2225,
+                      "start": 2070,
+                      "end": 2226,
                       "loc": {
                         "start": {
                           "line": 62,
@@ -1777,8 +1777,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 2076,
-                        "end": 2224,
+                        "start": 2077,
+                        "end": 2225,
                         "loc": {
                           "start": {
                             "line": 62,
@@ -1791,8 +1791,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 2076,
-                          "end": 2203,
+                          "start": 2077,
+                          "end": 2204,
                           "loc": {
                             "start": {
                               "line": 62,
@@ -1805,8 +1805,8 @@
                           },
                           "object": {
                             "type": "LogicalExpression",
-                            "start": 2077,
-                            "end": 2190,
+                            "start": 2078,
+                            "end": 2191,
                             "loc": {
                               "start": {
                                 "line": 62,
@@ -1819,8 +1819,8 @@
                             },
                             "left": {
                               "type": "CallExpression",
-                              "start": 2077,
-                              "end": 2130,
+                              "start": 2078,
+                              "end": 2131,
                               "loc": {
                                 "start": {
                                   "line": 62,
@@ -1833,8 +1833,8 @@
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 2077,
-                                "end": 2103,
+                                "start": 2078,
+                                "end": 2104,
                                 "loc": {
                                   "start": {
                                     "line": 62,
@@ -1847,8 +1847,8 @@
                                 },
                                 "object": {
                                   "type": "ThisExpression",
-                                  "start": 2077,
-                                  "end": 2081,
+                                  "start": 2078,
+                                  "end": 2082,
                                   "loc": {
                                     "start": {
                                       "line": 62,
@@ -1862,8 +1862,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 2082,
-                                  "end": 2103,
+                                  "start": 2083,
+                                  "end": 2104,
                                   "loc": {
                                     "start": {
                                       "line": 62,
@@ -1882,8 +1882,8 @@
                               "arguments": [
                                 {
                                   "type": "Identifier",
-                                  "start": 2104,
-                                  "end": 2118,
+                                  "start": 2105,
+                                  "end": 2119,
                                   "loc": {
                                     "start": {
                                       "line": 62,
@@ -1899,8 +1899,8 @@
                                 },
                                 {
                                   "type": "Identifier",
-                                  "start": 2120,
-                                  "end": 2129,
+                                  "start": 2121,
+                                  "end": 2130,
                                   "loc": {
                                     "start": {
                                       "line": 62,
@@ -1919,8 +1919,8 @@
                             "operator": "||",
                             "right": {
                               "type": "CallExpression",
-                              "start": 2140,
-                              "end": 2190,
+                              "start": 2141,
+                              "end": 2191,
                               "loc": {
                                 "start": {
                                   "line": 63,
@@ -1933,8 +1933,8 @@
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 2140,
-                                "end": 2159,
+                                "start": 2141,
+                                "end": 2160,
                                 "loc": {
                                   "start": {
                                     "line": 63,
@@ -1947,8 +1947,8 @@
                                 },
                                 "object": {
                                   "type": "Identifier",
-                                  "start": 2140,
-                                  "end": 2154,
+                                  "start": 2141,
+                                  "end": 2155,
                                   "loc": {
                                     "start": {
                                       "line": 63,
@@ -1964,8 +1964,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 2155,
-                                  "end": 2159,
+                                  "start": 2156,
+                                  "end": 2160,
                                   "loc": {
                                     "start": {
                                       "line": 63,
@@ -1984,8 +1984,8 @@
                               "arguments": [
                                 {
                                   "type": "CallExpression",
-                                  "start": 2160,
-                                  "end": 2189,
+                                  "start": 2161,
+                                  "end": 2190,
                                   "loc": {
                                     "start": {
                                       "line": 63,
@@ -1998,8 +1998,8 @@
                                   },
                                   "callee": {
                                     "type": "MemberExpression",
-                                    "start": 2160,
-                                    "end": 2178,
+                                    "start": 2161,
+                                    "end": 2179,
                                     "loc": {
                                       "start": {
                                         "line": 63,
@@ -2012,8 +2012,8 @@
                                     },
                                     "object": {
                                       "type": "ThisExpression",
-                                      "start": 2160,
-                                      "end": 2164,
+                                      "start": 2161,
+                                      "end": 2165,
                                       "loc": {
                                         "start": {
                                           "line": 63,
@@ -2027,8 +2027,8 @@
                                     },
                                     "property": {
                                       "type": "Identifier",
-                                      "start": 2165,
-                                      "end": 2178,
+                                      "start": 2166,
+                                      "end": 2179,
                                       "loc": {
                                         "start": {
                                           "line": 63,
@@ -2047,8 +2047,8 @@
                                   "arguments": [
                                     {
                                       "type": "Identifier",
-                                      "start": 2179,
-                                      "end": 2188,
+                                      "start": 2180,
+                                      "end": 2189,
                                       "loc": {
                                         "start": {
                                           "line": 63,
@@ -2068,13 +2068,13 @@
                             },
                             "extra": {
                               "parenthesized": true,
-                              "parenStart": 2076
+                              "parenStart": 2077
                             }
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 2199,
-                            "end": 2203,
+                            "start": 2200,
+                            "end": 2204,
                             "loc": {
                               "start": {
                                 "line": 64,
@@ -2093,8 +2093,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 2204,
-                            "end": 2223,
+                            "start": 2205,
+                            "end": 2224,
                             "loc": {
                               "start": {
                                 "line": 64,
@@ -2107,8 +2107,8 @@
                             },
                             "object": {
                               "type": "MemberExpression",
-                              "start": 2204,
-                              "end": 2215,
+                              "start": 2205,
+                              "end": 2216,
                               "loc": {
                                 "start": {
                                   "line": 64,
@@ -2121,8 +2121,8 @@
                               },
                               "object": {
                                 "type": "ThisExpression",
-                                "start": 2204,
-                                "end": 2208,
+                                "start": 2205,
+                                "end": 2209,
                                 "loc": {
                                   "start": {
                                     "line": 64,
@@ -2136,8 +2136,8 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 2209,
-                                "end": 2215,
+                                "start": 2210,
+                                "end": 2216,
                                 "loc": {
                                   "start": {
                                     "line": 64,
@@ -2155,8 +2155,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 2216,
-                              "end": 2223,
+                              "start": 2217,
+                              "end": 2224,
                               "loc": {
                                 "start": {
                                   "line": 64,
@@ -2182,9 +2182,9 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
+                    "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
                     "start": 1466,
-                    "end": 1973,
+                    "end": 1974,
                     "loc": {
                       "start": {
                         "line": 49,
@@ -2200,9 +2200,9 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
-                    "start": 2233,
-                    "end": 2716,
+                    "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
+                    "start": 2234,
+                    "end": 2717,
                     "loc": {
                       "start": {
                         "line": 67,
@@ -2218,8 +2218,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 2719,
-                "end": 2821,
+                "start": 2720,
+                "end": 2822,
                 "loc": {
                   "start": {
                     "line": 75,
@@ -2233,8 +2233,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 2719,
-                  "end": 2740,
+                  "start": 2720,
+                  "end": 2741,
                   "loc": {
                     "start": {
                       "line": 75,
@@ -2258,8 +2258,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 2741,
-                    "end": 2747,
+                    "start": 2742,
+                    "end": 2748,
                     "loc": {
                       "start": {
                         "line": 75,
@@ -2275,8 +2275,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 2749,
-                    "end": 2758,
+                    "start": 2750,
+                    "end": 2759,
                     "loc": {
                       "start": {
                         "line": 75,
@@ -2293,8 +2293,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 2760,
-                  "end": 2821,
+                  "start": 2761,
+                  "end": 2822,
                   "loc": {
                     "start": {
                       "line": 75,
@@ -2308,8 +2308,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 2804,
-                      "end": 2817,
+                      "start": 2805,
+                      "end": 2818,
                       "loc": {
                         "start": {
                           "line": 76,
@@ -2322,8 +2322,8 @@
                       },
                       "argument": {
                         "type": "BooleanLiteral",
-                        "start": 2811,
-                        "end": 2816,
+                        "start": 2812,
+                        "end": 2817,
                         "loc": {
                           "start": {
                             "line": 76,
@@ -2341,8 +2341,8 @@
                         {
                           "type": "CommentLine",
                           "value": " eslint-disable-line no-unused-vars",
-                          "start": 2762,
-                          "end": 2799,
+                          "start": 2763,
+                          "end": 2800,
                           "loc": {
                             "start": {
                               "line": 75,
@@ -2362,9 +2362,9 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
-                    "start": 2233,
-                    "end": 2716,
+                    "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
+                    "start": 2234,
+                    "end": 2717,
                     "loc": {
                       "start": {
                         "line": 67,
@@ -2505,7 +2505,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
+      "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
       "start": 932,
       "end": 1288,
       "loc": {
@@ -2521,9 +2521,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
+      "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
       "start": 1466,
-      "end": 1973,
+      "end": 1974,
       "loc": {
         "start": {
           "line": 49,
@@ -2537,9 +2537,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
-      "start": 2233,
-      "end": 2716,
+      "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
+      "start": 2234,
+      "end": 2717,
       "loc": {
         "start": {
           "line": 67,
@@ -2554,8 +2554,8 @@
     {
       "type": "CommentLine",
       "value": " eslint-disable-line no-unused-vars",
-      "start": 2762,
-      "end": 2799,
+      "start": 2763,
+      "end": 2800,
       "loc": {
         "start": {
           "line": 75,
@@ -4375,7 +4375,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
+      "value": "*\n   * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.\n   * @param {AtviseFile} file The file to transform.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured\n   * while transforming or (optionally) the transformed file.\n   ",
       "start": 932,
       "end": 1288,
       "loc": {
@@ -5477,9 +5477,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
+      "value": "*\n   * Applies the transformer to the given stream. It does so by running the following steps:\n   *  - Pipe the {@link PartialTransformer#filter} stream\n   *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.\n   *  - Otherwise pipe {@link Transformer#withDirection}.\n   *  - Restore the filter stream.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {Stream} The resulting stream.\n   ",
       "start": 1466,
-      "end": 1973,
+      "end": 1974,
       "loc": {
         "start": {
           "line": 49,
@@ -5504,8 +5504,8 @@
         "binop": null
       },
       "value": "applyToStream",
-      "start": 1976,
-      "end": 1989,
+      "start": 1977,
+      "end": 1990,
       "loc": {
         "start": {
           "line": 59,
@@ -5529,8 +5529,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 1989,
-      "end": 1990,
+      "start": 1990,
+      "end": 1991,
       "loc": {
         "start": {
           "line": 59,
@@ -5555,8 +5555,8 @@
         "binop": null
       },
       "value": "stream",
-      "start": 1990,
-      "end": 1996,
+      "start": 1991,
+      "end": 1997,
       "loc": {
         "start": {
           "line": 59,
@@ -5581,8 +5581,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 1996,
-      "end": 1997,
+      "start": 1997,
+      "end": 1998,
       "loc": {
         "start": {
           "line": 59,
@@ -5607,8 +5607,8 @@
         "binop": null
       },
       "value": "direction",
-      "start": 1998,
-      "end": 2007,
+      "start": 1999,
+      "end": 2008,
       "loc": {
         "start": {
           "line": 59,
@@ -5632,8 +5632,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2007,
-      "end": 2008,
+      "start": 2008,
+      "end": 2009,
       "loc": {
         "start": {
           "line": 59,
@@ -5657,8 +5657,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2009,
-      "end": 2010,
+      "start": 2010,
+      "end": 2011,
       "loc": {
         "start": {
           "line": 59,
@@ -5685,8 +5685,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 2015,
-      "end": 2020,
+      "start": 2016,
+      "end": 2021,
       "loc": {
         "start": {
           "line": 60,
@@ -5711,8 +5711,8 @@
         "binop": null
       },
       "value": "filteredStream",
-      "start": 2021,
-      "end": 2035,
+      "start": 2022,
+      "end": 2036,
       "loc": {
         "start": {
           "line": 60,
@@ -5738,8 +5738,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 2036,
-      "end": 2037,
+      "start": 2037,
+      "end": 2038,
       "loc": {
         "start": {
           "line": 60,
@@ -5764,8 +5764,8 @@
         "binop": null
       },
       "value": "stream",
-      "start": 2038,
-      "end": 2044,
+      "start": 2039,
+      "end": 2045,
       "loc": {
         "start": {
           "line": 60,
@@ -5790,8 +5790,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2044,
-      "end": 2045,
+      "start": 2045,
+      "end": 2046,
       "loc": {
         "start": {
           "line": 60,
@@ -5816,8 +5816,8 @@
         "binop": null
       },
       "value": "pipe",
-      "start": 2045,
-      "end": 2049,
+      "start": 2046,
+      "end": 2050,
       "loc": {
         "start": {
           "line": 60,
@@ -5841,8 +5841,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2049,
-      "end": 2050,
+      "start": 2050,
+      "end": 2051,
       "loc": {
         "start": {
           "line": 60,
@@ -5869,8 +5869,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 2050,
-      "end": 2054,
+      "start": 2051,
+      "end": 2055,
       "loc": {
         "start": {
           "line": 60,
@@ -5895,8 +5895,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2054,
-      "end": 2055,
+      "start": 2055,
+      "end": 2056,
       "loc": {
         "start": {
           "line": 60,
@@ -5921,8 +5921,8 @@
         "binop": null
       },
       "value": "filter",
-      "start": 2055,
-      "end": 2061,
+      "start": 2056,
+      "end": 2062,
       "loc": {
         "start": {
           "line": 60,
@@ -5946,8 +5946,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2061,
-      "end": 2062,
+      "start": 2062,
+      "end": 2063,
       "loc": {
         "start": {
           "line": 60,
@@ -5972,8 +5972,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2062,
-      "end": 2063,
+      "start": 2063,
+      "end": 2064,
       "loc": {
         "start": {
           "line": 60,
@@ -6000,8 +6000,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 2069,
-      "end": 2075,
+      "start": 2070,
+      "end": 2076,
       "loc": {
         "start": {
           "line": 62,
@@ -6025,8 +6025,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2076,
-      "end": 2077,
+      "start": 2077,
+      "end": 2078,
       "loc": {
         "start": {
           "line": 62,
@@ -6053,8 +6053,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 2077,
-      "end": 2081,
+      "start": 2078,
+      "end": 2082,
       "loc": {
         "start": {
           "line": 62,
@@ -6079,8 +6079,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2081,
-      "end": 2082,
+      "start": 2082,
+      "end": 2083,
       "loc": {
         "start": {
           "line": 62,
@@ -6105,8 +6105,8 @@
         "binop": null
       },
       "value": "applyToFilteredStream",
-      "start": 2082,
-      "end": 2103,
+      "start": 2083,
+      "end": 2104,
       "loc": {
         "start": {
           "line": 62,
@@ -6130,8 +6130,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2103,
-      "end": 2104,
+      "start": 2104,
+      "end": 2105,
       "loc": {
         "start": {
           "line": 62,
@@ -6156,8 +6156,8 @@
         "binop": null
       },
       "value": "filteredStream",
-      "start": 2104,
-      "end": 2118,
+      "start": 2105,
+      "end": 2119,
       "loc": {
         "start": {
           "line": 62,
@@ -6182,8 +6182,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2118,
-      "end": 2119,
+      "start": 2119,
+      "end": 2120,
       "loc": {
         "start": {
           "line": 62,
@@ -6208,8 +6208,8 @@
         "binop": null
       },
       "value": "direction",
-      "start": 2120,
-      "end": 2129,
+      "start": 2121,
+      "end": 2130,
       "loc": {
         "start": {
           "line": 62,
@@ -6233,8 +6233,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2129,
-      "end": 2130,
+      "start": 2130,
+      "end": 2131,
       "loc": {
         "start": {
           "line": 62,
@@ -6260,8 +6260,8 @@
         "updateContext": null
       },
       "value": "||",
-      "start": 2131,
-      "end": 2133,
+      "start": 2132,
+      "end": 2134,
       "loc": {
         "start": {
           "line": 62,
@@ -6286,8 +6286,8 @@
         "binop": null
       },
       "value": "filteredStream",
-      "start": 2140,
-      "end": 2154,
+      "start": 2141,
+      "end": 2155,
       "loc": {
         "start": {
           "line": 63,
@@ -6312,8 +6312,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2154,
-      "end": 2155,
+      "start": 2155,
+      "end": 2156,
       "loc": {
         "start": {
           "line": 63,
@@ -6338,8 +6338,8 @@
         "binop": null
       },
       "value": "pipe",
-      "start": 2155,
-      "end": 2159,
+      "start": 2156,
+      "end": 2160,
       "loc": {
         "start": {
           "line": 63,
@@ -6363,8 +6363,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2159,
-      "end": 2160,
+      "start": 2160,
+      "end": 2161,
       "loc": {
         "start": {
           "line": 63,
@@ -6391,8 +6391,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 2160,
-      "end": 2164,
+      "start": 2161,
+      "end": 2165,
       "loc": {
         "start": {
           "line": 63,
@@ -6417,8 +6417,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2164,
-      "end": 2165,
+      "start": 2165,
+      "end": 2166,
       "loc": {
         "start": {
           "line": 63,
@@ -6443,8 +6443,8 @@
         "binop": null
       },
       "value": "withDirection",
-      "start": 2165,
-      "end": 2178,
+      "start": 2166,
+      "end": 2179,
       "loc": {
         "start": {
           "line": 63,
@@ -6468,8 +6468,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2178,
-      "end": 2179,
+      "start": 2179,
+      "end": 2180,
       "loc": {
         "start": {
           "line": 63,
@@ -6494,8 +6494,8 @@
         "binop": null
       },
       "value": "direction",
-      "start": 2179,
-      "end": 2188,
+      "start": 2180,
+      "end": 2189,
       "loc": {
         "start": {
           "line": 63,
@@ -6519,8 +6519,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2188,
-      "end": 2189,
+      "start": 2189,
+      "end": 2190,
       "loc": {
         "start": {
           "line": 63,
@@ -6544,8 +6544,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2189,
-      "end": 2190,
+      "start": 2190,
+      "end": 2191,
       "loc": {
         "start": {
           "line": 63,
@@ -6569,8 +6569,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2190,
-      "end": 2191,
+      "start": 2191,
+      "end": 2192,
       "loc": {
         "start": {
           "line": 63,
@@ -6595,8 +6595,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2198,
-      "end": 2199,
+      "start": 2199,
+      "end": 2200,
       "loc": {
         "start": {
           "line": 64,
@@ -6621,8 +6621,8 @@
         "binop": null
       },
       "value": "pipe",
-      "start": 2199,
-      "end": 2203,
+      "start": 2200,
+      "end": 2204,
       "loc": {
         "start": {
           "line": 64,
@@ -6646,8 +6646,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2203,
-      "end": 2204,
+      "start": 2204,
+      "end": 2205,
       "loc": {
         "start": {
           "line": 64,
@@ -6674,8 +6674,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 2204,
-      "end": 2208,
+      "start": 2205,
+      "end": 2209,
       "loc": {
         "start": {
           "line": 64,
@@ -6700,8 +6700,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2208,
-      "end": 2209,
+      "start": 2209,
+      "end": 2210,
       "loc": {
         "start": {
           "line": 64,
@@ -6726,8 +6726,8 @@
         "binop": null
       },
       "value": "filter",
-      "start": 2209,
-      "end": 2215,
+      "start": 2210,
+      "end": 2216,
       "loc": {
         "start": {
           "line": 64,
@@ -6752,8 +6752,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2215,
-      "end": 2216,
+      "start": 2216,
+      "end": 2217,
       "loc": {
         "start": {
           "line": 64,
@@ -6778,8 +6778,8 @@
         "binop": null
       },
       "value": "restore",
-      "start": 2216,
-      "end": 2223,
+      "start": 2217,
+      "end": 2224,
       "loc": {
         "start": {
           "line": 64,
@@ -6803,8 +6803,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2223,
-      "end": 2224,
+      "start": 2224,
+      "end": 2225,
       "loc": {
         "start": {
           "line": 64,
@@ -6829,8 +6829,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2224,
-      "end": 2225,
+      "start": 2225,
+      "end": 2226,
       "loc": {
         "start": {
           "line": 64,
@@ -6854,8 +6854,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2228,
-      "end": 2229,
+      "start": 2229,
+      "end": 2230,
       "loc": {
         "start": {
           "line": 65,
@@ -6869,9 +6869,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
-      "start": 2233,
-      "end": 2716,
+      "value": "*\n   * Applies a stream transformer to the given, already filtered stream. Override this method if you\n   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes\n   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.\n   * @param {Stream} stream The stream to apply the transformer to.\n   * @param {TransformDirection} direction The direction to use.\n   * @return {?Stream} The resulting stream.\n   ",
+      "start": 2234,
+      "end": 2717,
       "loc": {
         "start": {
           "line": 67,
@@ -6896,8 +6896,8 @@
         "binop": null
       },
       "value": "applyToFilteredStream",
-      "start": 2719,
-      "end": 2740,
+      "start": 2720,
+      "end": 2741,
       "loc": {
         "start": {
           "line": 75,
@@ -6921,8 +6921,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2740,
-      "end": 2741,
+      "start": 2741,
+      "end": 2742,
       "loc": {
         "start": {
           "line": 75,
@@ -6947,8 +6947,8 @@
         "binop": null
       },
       "value": "stream",
-      "start": 2741,
-      "end": 2747,
+      "start": 2742,
+      "end": 2748,
       "loc": {
         "start": {
           "line": 75,
@@ -6973,8 +6973,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2747,
-      "end": 2748,
+      "start": 2748,
+      "end": 2749,
       "loc": {
         "start": {
           "line": 75,
@@ -6999,8 +6999,8 @@
         "binop": null
       },
       "value": "direction",
-      "start": 2749,
-      "end": 2758,
+      "start": 2750,
+      "end": 2759,
       "loc": {
         "start": {
           "line": 75,
@@ -7024,8 +7024,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2758,
-      "end": 2759,
+      "start": 2759,
+      "end": 2760,
       "loc": {
         "start": {
           "line": 75,
@@ -7049,8 +7049,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2760,
-      "end": 2761,
+      "start": 2761,
+      "end": 2762,
       "loc": {
         "start": {
           "line": 75,
@@ -7065,8 +7065,8 @@
     {
       "type": "CommentLine",
       "value": " eslint-disable-line no-unused-vars",
-      "start": 2762,
-      "end": 2799,
+      "start": 2763,
+      "end": 2800,
       "loc": {
         "start": {
           "line": 75,
@@ -7093,8 +7093,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 2804,
-      "end": 2810,
+      "start": 2805,
+      "end": 2811,
       "loc": {
         "start": {
           "line": 76,
@@ -7121,8 +7121,8 @@
         "updateContext": null
       },
       "value": "false",
-      "start": 2811,
-      "end": 2816,
+      "start": 2812,
+      "end": 2817,
       "loc": {
         "start": {
           "line": 76,
@@ -7147,8 +7147,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2816,
-      "end": 2817,
+      "start": 2817,
+      "end": 2818,
       "loc": {
         "start": {
           "line": 76,
@@ -7172,8 +7172,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2820,
-      "end": 2821,
+      "start": 2821,
+      "end": 2822,
       "loc": {
         "start": {
           "line": 77,
@@ -7197,8 +7197,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2823,
-      "end": 2824,
+      "start": 2824,
+      "end": 2825,
       "loc": {
         "start": {
           "line": 79,
@@ -7223,8 +7223,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2825,
-      "end": 2825,
+      "start": 2826,
+      "end": 2826,
       "loc": {
         "start": {
           "line": 80,

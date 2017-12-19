@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -132,7 +133,7 @@ export default class PartialTransformer extends Transformer {
   /**
    * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.
    * @param {AtviseFile} file The file to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured
    * while transforming or (optionally) the transformed file.
    */
@@ -149,7 +150,7 @@ export default class PartialTransformer extends Transformer {
    *  - Pipe the {@link PartialTransformer#filter} stream
    *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.
    *  - Otherwise pipe {@link Transformer#withDirection}.
-   *  - Restore the filter stream
+   *  - Restore the filter stream.
    * @param {Stream} stream The stream to apply the transformer to.
    * @param {TransformDirection} direction The direction to use.
    * @return {Stream} The resulting stream.
@@ -164,7 +165,7 @@ export default class PartialTransformer extends Transformer {
 
   /**
    * Applies a stream transformer to the given, already filtered stream. Override this method if you
-   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes
+   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes
    * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.
    * @param {Stream} stream The stream to apply the transformer to.
    * @param {TransformDirection} direction The direction to use.

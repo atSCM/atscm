@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -151,7 +152,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
-   * Returns the Transformer with the given direction
+   * Returns the Transformer with the given direction.
    * @param {TransformDirection} direction The direction to use.
    * @return {Transformer} Itself, to be chainable.
    * @throws {Error} Throws an error if the given direction is invalid.
@@ -169,7 +170,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * Calls {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}
    * based on the transformer&apos;s direction.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    * @throws {Error} Throws an error if the transformer has no valid direction.
@@ -188,7 +189,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * **Must be overridden by all subclasses:** Transforms the given chunk when using
    * {@link TransformDirection.FromDB}.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    */
@@ -200,7 +201,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * **Must be overridden by all subclasses:** Transforms the given chunk when using
    * {@link TransformDirection.FromFilesystem}.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    */
@@ -244,9 +245,8 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   /**
    * Prints the transformer.
    * @param {?Number} depth The depth to inspect.
-   * @param {Object} options See https://nodejs.org/api/util.html#util_util_inspect_object_options
-   * for details
-   * @return {String} A string representation of the transformer.
+   * @param {Object} options See {@link util~inspect} for details.
+   * @return {string} A string representation of the transformer.
    */
   inspect(depth, options) {
     const newOptions = options;

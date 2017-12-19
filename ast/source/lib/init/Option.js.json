@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 2860,
+  "end": 2908,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 2860,
+    "end": 2908,
     "loc": {
       "start": {
         "line": 1,
@@ -31,7 +31,7 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 127,
-        "end": 2859,
+        "end": 2907,
         "loc": {
           "start": {
             "line": 5,
@@ -45,7 +45,7 @@
         "declaration": {
           "type": "ClassDeclaration",
           "start": 142,
-          "end": 2859,
+          "end": 2907,
           "loc": {
             "start": {
               "line": 5,
@@ -78,7 +78,7 @@
           "body": {
             "type": "ClassBody",
             "start": 159,
-            "end": 2859,
+            "end": 2907,
             "loc": {
               "start": {
                 "line": 5,
@@ -2442,7 +2442,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {String} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
+                    "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {string} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
                     "start": 164,
                     "end": 1051,
                     "loc": {
@@ -2460,9 +2460,9 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType}\n   ",
+                    "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.\n   ",
                     "start": 2690,
-                    "end": 2803,
+                    "end": 2851,
                     "loc": {
                       "start": {
                         "line": 78,
@@ -2478,8 +2478,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 2806,
-                "end": 2856,
+                "start": 2854,
+                "end": 2904,
                 "loc": {
                   "start": {
                     "line": 82,
@@ -2493,8 +2493,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 2817,
-                  "end": 2828,
+                  "start": 2865,
+                  "end": 2876,
                   "loc": {
                     "start": {
                       "line": 82,
@@ -2517,8 +2517,8 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 2831,
-                  "end": 2856,
+                  "start": 2879,
+                  "end": 2904,
                   "loc": {
                     "start": {
                       "line": 82,
@@ -2532,8 +2532,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 2837,
-                      "end": 2852,
+                      "start": 2885,
+                      "end": 2900,
                       "loc": {
                         "start": {
                           "line": 83,
@@ -2546,8 +2546,8 @@
                       },
                       "argument": {
                         "type": "StringLiteral",
-                        "start": 2844,
-                        "end": 2851,
+                        "start": 2892,
+                        "end": 2899,
                         "loc": {
                           "start": {
                             "line": 83,
@@ -2571,9 +2571,9 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType}\n   ",
+                    "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.\n   ",
                     "start": 2690,
-                    "end": 2803,
+                    "end": 2851,
                     "loc": {
                       "start": {
                         "line": 78,
@@ -2650,7 +2650,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {String} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
+      "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {string} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
       "start": 164,
       "end": 1051,
       "loc": {
@@ -2762,9 +2762,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType}\n   ",
+      "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.\n   ",
       "start": 2690,
-      "end": 2803,
+      "end": 2851,
       "loc": {
         "start": {
           "line": 78,
@@ -2931,7 +2931,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {String} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
+      "value": "*\n   * Creates a new option based either on a message and (optionally) a default value or some\n   * options.\n   * @param {String|Object} messageOrOptions The message or options to use.\n   * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.\n   * @param {string} messageOrOptions.message The option's message. Required if `messageOrOptions`\n   * is an object.\n   * @param {String|Number} [messageOrOptions.default] The options's default value.\n   * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.\n   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list\n   * types only.\n   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to\n   * prompt this option.\n   * @param {String|Number} [defaultOrUndefined] The default value to use.\n   ",
       "start": 164,
       "end": 1051,
       "loc": {
@@ -7189,9 +7189,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType}\n   ",
+      "value": "*\n   * The default {@link inquirer~PromptType} to use. Equals 'input'.\n   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.\n   ",
       "start": 2690,
-      "end": 2803,
+      "end": 2851,
       "loc": {
         "start": {
           "line": 78,
@@ -7216,8 +7216,8 @@
         "binop": null
       },
       "value": "static",
-      "start": 2806,
-      "end": 2812,
+      "start": 2854,
+      "end": 2860,
       "loc": {
         "start": {
           "line": 82,
@@ -7242,8 +7242,8 @@
         "binop": null
       },
       "value": "get",
-      "start": 2813,
-      "end": 2816,
+      "start": 2861,
+      "end": 2864,
       "loc": {
         "start": {
           "line": 82,
@@ -7268,8 +7268,8 @@
         "binop": null
       },
       "value": "DefaultType",
-      "start": 2817,
-      "end": 2828,
+      "start": 2865,
+      "end": 2876,
       "loc": {
         "start": {
           "line": 82,
@@ -7293,8 +7293,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2828,
-      "end": 2829,
+      "start": 2876,
+      "end": 2877,
       "loc": {
         "start": {
           "line": 82,
@@ -7318,8 +7318,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2829,
-      "end": 2830,
+      "start": 2877,
+      "end": 2878,
       "loc": {
         "start": {
           "line": 82,
@@ -7343,8 +7343,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2831,
-      "end": 2832,
+      "start": 2879,
+      "end": 2880,
       "loc": {
         "start": {
           "line": 82,
@@ -7371,8 +7371,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 2837,
-      "end": 2843,
+      "start": 2885,
+      "end": 2891,
       "loc": {
         "start": {
           "line": 83,
@@ -7398,8 +7398,8 @@
         "updateContext": null
       },
       "value": "input",
-      "start": 2844,
-      "end": 2851,
+      "start": 2892,
+      "end": 2899,
       "loc": {
         "start": {
           "line": 83,
@@ -7424,8 +7424,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2851,
-      "end": 2852,
+      "start": 2899,
+      "end": 2900,
       "loc": {
         "start": {
           "line": 83,
@@ -7449,8 +7449,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2855,
-      "end": 2856,
+      "start": 2903,
+      "end": 2904,
       "loc": {
         "start": {
           "line": 84,
@@ -7474,8 +7474,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 2858,
-      "end": 2859,
+      "start": 2906,
+      "end": 2907,
       "loc": {
         "start": {
           "line": 86,
@@ -7500,8 +7500,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 2860,
-      "end": 2860,
+      "start": 2908,
+      "end": 2908,
       "loc": {
         "start": {
           "line": 87,

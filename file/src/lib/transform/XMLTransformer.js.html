@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -194,7 +195,7 @@ export default class XMLTransformer extends SplittingTransformer {
   /**
    * Helper function: Returns `true` if the given tag exists and is not empty.
    * @param {Object} tag A tag in a parsed xml document.
-   * @return {Boolean} `true` if the given tag exists and is not empty.
+   * @return {boolean} `true` if the given tag exists and is not empty.
    */
   tagNotEmpty(tag) {
     return Boolean(tag &amp;&amp; tag.length &gt; 0);
@@ -202,8 +203,8 @@ export default class XMLTransformer extends SplittingTransformer {
 
   /**
    * Forces `string`, when assigned as textContent to a node, to be wrapped in a CDATA-section.
-   * @param {String} string The string to force a CDATA-section for.
-   * @return {String} The string to assign as textContent to a node.
+   * @param {string} string The string to force a CDATA-section for.
+   * @return {string} The string to assign as textContent to a node.
    */
   static forceCData(string) {
     return `${START_CDATA}${string}${END_CDATA}`;

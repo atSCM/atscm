@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -99,8 +100,8 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Emitter from &apos;events&apos;;
 import { StatusCodes, ClientSession } from &apos;node-opcua&apos;;
 import Logger from &apos;gulplog&apos;;
-import Client from &apos;./Client&apos;;
 import ProjectConfig from &apos;../../config/ProjectConfig&apos;;
+import Client from &apos;./Client&apos;;
 
 /**
  * The global EventEmitter used to emit events.
@@ -179,7 +180,7 @@ export default class Session {
   /**
    * Closes the given session.
    * @param {node-opcua~ClientSession} session The session to close.
-   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
+   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
    * @return {Promise&lt;node-opcua~ClientSession, Error&gt;} Fulfilled with the (now closed!) session or
    * rejected with the error that occured while closing.
    */

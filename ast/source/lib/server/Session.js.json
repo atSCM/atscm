@@ -304,7 +304,7 @@
       {
         "type": "ImportDeclaration",
         "start": 117,
-        "end": 147,
+        "end": 172,
         "loc": {
           "start": {
             "line": 4,
@@ -312,104 +312,35 @@
           },
           "end": {
             "line": 4,
-            "column": 30
-          }
-        },
-        "specifiers": [
-          {
-            "type": "ImportDefaultSpecifier",
-            "start": 124,
-            "end": 130,
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 7
-              },
-              "end": {
-                "line": 4,
-                "column": 13
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 124,
-              "end": 130,
-              "loc": {
-                "start": {
-                  "line": 4,
-                  "column": 7
-                },
-                "end": {
-                  "line": 4,
-                  "column": 13
-                },
-                "identifierName": "Client"
-              },
-              "name": "Client"
-            }
-          }
-        ],
-        "source": {
-          "type": "StringLiteral",
-          "start": 136,
-          "end": 146,
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 19
-            },
-            "end": {
-              "line": 4,
-              "column": 29
-            }
-          },
-          "extra": {
-            "rawValue": "./Client",
-            "raw": "'./Client'"
-          },
-          "value": "./Client"
-        }
-      },
-      {
-        "type": "ImportDeclaration",
-        "start": 148,
-        "end": 203,
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 0
-          },
-          "end": {
-            "line": 5,
             "column": 55
           }
         },
         "specifiers": [
           {
             "type": "ImportDefaultSpecifier",
-            "start": 155,
-            "end": 168,
+            "start": 124,
+            "end": 137,
             "loc": {
               "start": {
-                "line": 5,
+                "line": 4,
                 "column": 7
               },
               "end": {
-                "line": 5,
+                "line": 4,
                 "column": 20
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 155,
-              "end": 168,
+              "start": 124,
+              "end": 137,
               "loc": {
                 "start": {
-                  "line": 5,
+                  "line": 4,
                   "column": 7
                 },
                 "end": {
-                  "line": 5,
+                  "line": 4,
                   "column": 20
                 },
                 "identifierName": "ProjectConfig"
@@ -420,15 +351,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 174,
-          "end": 202,
+          "start": 143,
+          "end": 171,
           "loc": {
             "start": {
-              "line": 5,
+              "line": 4,
               "column": 26
             },
             "end": {
-              "line": 5,
+              "line": 4,
               "column": 54
             }
           },
@@ -437,6 +368,75 @@
             "raw": "'../../config/ProjectConfig'"
           },
           "value": "../../config/ProjectConfig"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "start": 173,
+        "end": 203,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 30
+          }
+        },
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "start": 180,
+            "end": 186,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 13
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 180,
+              "end": 186,
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 7
+                },
+                "end": {
+                  "line": 5,
+                  "column": 13
+                },
+                "identifierName": "Client"
+              },
+              "name": "Client"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 192,
+          "end": 202,
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 19
+            },
+            "end": {
+              "line": 5,
+              "column": 29
+            }
+          },
+          "extra": {
+            "rawValue": "./Client",
+            "raw": "'./Client'"
+          },
+          "value": "./Client"
         },
         "trailingComments": [
           {
@@ -3217,7 +3217,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
+                    "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
                     "start": 2280,
                     "end": 2645,
                     "loc": {
@@ -6698,7 +6698,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
+                    "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
                     "start": 2280,
                     "end": 2645,
                     "loc": {
@@ -8204,7 +8204,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
+      "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
       "start": 2280,
       "end": 2645,
       "loc": {
@@ -8809,9 +8809,9 @@
         "postfix": false,
         "binop": null
       },
-      "value": "Client",
+      "value": "ProjectConfig",
       "start": 124,
-      "end": 130,
+      "end": 137,
       "loc": {
         "start": {
           "line": 4,
@@ -8819,7 +8819,7 @@
         },
         "end": {
           "line": 4,
-          "column": 13
+          "column": 20
         }
       }
     },
@@ -8836,16 +8836,16 @@
         "binop": null
       },
       "value": "from",
-      "start": 131,
-      "end": 135,
+      "start": 138,
+      "end": 142,
       "loc": {
         "start": {
           "line": 4,
-          "column": 14
+          "column": 21
         },
         "end": {
           "line": 4,
-          "column": 18
+          "column": 25
         }
       }
     },
@@ -8862,17 +8862,17 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "./Client",
-      "start": 136,
-      "end": 146,
+      "value": "../../config/ProjectConfig",
+      "start": 143,
+      "end": 171,
       "loc": {
         "start": {
           "line": 4,
-          "column": 19
+          "column": 26
         },
         "end": {
           "line": 4,
-          "column": 29
+          "column": 54
         }
       }
     },
@@ -8889,16 +8889,16 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 146,
-      "end": 147,
+      "start": 171,
+      "end": 172,
       "loc": {
         "start": {
           "line": 4,
-          "column": 29
+          "column": 54
         },
         "end": {
           "line": 4,
-          "column": 30
+          "column": 55
         }
       }
     },
@@ -8917,8 +8917,8 @@
         "updateContext": null
       },
       "value": "import",
-      "start": 148,
-      "end": 154,
+      "start": 173,
+      "end": 179,
       "loc": {
         "start": {
           "line": 5,
@@ -8942,9 +8942,9 @@
         "postfix": false,
         "binop": null
       },
-      "value": "ProjectConfig",
-      "start": 155,
-      "end": 168,
+      "value": "Client",
+      "start": 180,
+      "end": 186,
       "loc": {
         "start": {
           "line": 5,
@@ -8952,7 +8952,7 @@
         },
         "end": {
           "line": 5,
-          "column": 20
+          "column": 13
         }
       }
     },
@@ -8969,16 +8969,16 @@
         "binop": null
       },
       "value": "from",
-      "start": 169,
-      "end": 173,
+      "start": 187,
+      "end": 191,
       "loc": {
         "start": {
           "line": 5,
-          "column": 21
+          "column": 14
         },
         "end": {
           "line": 5,
-          "column": 25
+          "column": 18
         }
       }
     },
@@ -8995,17 +8995,17 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "../../config/ProjectConfig",
-      "start": 174,
+      "value": "./Client",
+      "start": 192,
       "end": 202,
       "loc": {
         "start": {
           "line": 5,
-          "column": 26
+          "column": 19
         },
         "end": {
           "line": 5,
-          "column": 54
+          "column": 29
         }
       }
     },
@@ -9027,11 +9027,11 @@
       "loc": {
         "start": {
           "line": 5,
-          "column": 54
+          "column": 29
         },
         "end": {
           "line": 5,
-          "column": 55
+          "column": 30
         }
       }
     },
@@ -14857,7 +14857,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
+      "value": "*\n   * Closes the given session.\n   * @param {node-opcua~ClientSession} session The session to close.\n   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.\n   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or\n   * rejected with the error that occured while closing.\n   ",
       "start": 2280,
       "end": 2645,
       "loc": {

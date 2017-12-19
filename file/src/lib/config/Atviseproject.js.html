@@ -85,6 +85,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
@@ -110,7 +111,7 @@ export default class Atviseproject {
 
   /**
    * The atvise-server&apos;s host. Defaults to *localhost*.
-   * @type {String}
+   * @type {string}
    */
   static get host() {
     return &apos;localhost&apos;;
@@ -119,8 +120,8 @@ export default class Atviseproject {
   /**
    * The atvise-server ports to use.
    * @type {Object}
-   * @property {Number} [opc=4840] The OPC-UA port the atvise-server runs on.
-   * @property {Number} [http=80] The HTTP port the atvise-server can be reached at.
+   * @property {number} [opc=4840] The OPC-UA port the atvise-server runs on.
+   * @property {number} [http=80] The HTTP port the atvise-server can be reached at.
    */
   static get port() {
     return {
@@ -132,15 +133,15 @@ export default class Atviseproject {
   /**
    * The login to use. Return `false` if no login is required (default).
    * @type {Boolean|Object}
-   * @property {String} username The username to log in with.
-   * @property {String} password The password to log in with.
+   * @property {string} username The username to log in with.
+   * @property {string} password The password to log in with.
    */
   static get login() {
     return false;
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
+   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}.
    * @type {Transformer[]}
    */
   static get useTransformers() {
@@ -152,7 +153,7 @@ export default class Atviseproject {
 
   /**
    * The atvise-server nodes that atvise-scm should sync. Defaults to
-   * `[&apos;ns=1;s=AGENT&apos;, &apos;ns=1;s=SYSTEM&apos;, &apos;ns=1;s=ObjectTypes.PROJECT&apos;]`
+   * `[&apos;ns=1;s=AGENT&apos;, &apos;ns=1;s=SYSTEM&apos;, &apos;ns=1;s=ObjectTypes.PROJECT&apos;]`.
    * @type {String[]|NodeId[]}
    */
   static get nodes() {

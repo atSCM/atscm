@@ -1177,13 +1177,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber108",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber124",
     "InitTask .run ",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber124",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber108",
     "InitTask .run ",
     "test"
   ],
@@ -3931,13 +3931,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
@@ -4869,6 +4869,12 @@ window.esdocSearchIndex = [
     "src/typedef/external/node.js~fs~stats",
     "https://nodejs.org/api/fs.html#fs_class_fs_stats",
     "src/typedef/external/node.js~fs~Stats",
+    "external"
+  ],
+  [
+    "src/typedef/external/node.js~util~inspect",
+    "https://nodejs.org/api/util.html#util_util_inspect_object_options",
+    "src/typedef/external/node.js~util~inspect",
     "external"
   ],
   [

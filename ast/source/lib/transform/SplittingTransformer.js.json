@@ -370,7 +370,7 @@
       {
         "type": "ImportDeclaration",
         "start": 108,
-        "end": 162,
+        "end": 154,
         "loc": {
           "start": {
             "line": 4,
@@ -378,104 +378,35 @@
           },
           "end": {
             "line": 4,
-            "column": 54
-          }
-        },
-        "specifiers": [
-          {
-            "type": "ImportDefaultSpecifier",
-            "start": 115,
-            "end": 133,
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 7
-              },
-              "end": {
-                "line": 4,
-                "column": 25
-              }
-            },
-            "local": {
-              "type": "Identifier",
-              "start": 115,
-              "end": 133,
-              "loc": {
-                "start": {
-                  "line": 4,
-                  "column": 7
-                },
-                "end": {
-                  "line": 4,
-                  "column": 25
-                },
-                "identifierName": "PartialTransformer"
-              },
-              "name": "PartialTransformer"
-            }
-          }
-        ],
-        "source": {
-          "type": "StringLiteral",
-          "start": 139,
-          "end": 161,
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 31
-            },
-            "end": {
-              "line": 4,
-              "column": 53
-            }
-          },
-          "extra": {
-            "rawValue": "./PartialTransformer",
-            "raw": "'./PartialTransformer'"
-          },
-          "value": "./PartialTransformer"
-        }
-      },
-      {
-        "type": "ImportDeclaration",
-        "start": 163,
-        "end": 209,
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 0
-          },
-          "end": {
-            "line": 5,
             "column": 46
           }
         },
         "specifiers": [
           {
             "type": "ImportDefaultSpecifier",
-            "start": 170,
-            "end": 180,
+            "start": 115,
+            "end": 125,
             "loc": {
               "start": {
-                "line": 5,
+                "line": 4,
                 "column": 7
               },
               "end": {
-                "line": 5,
+                "line": 4,
                 "column": 17
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 170,
-              "end": 180,
+              "start": 115,
+              "end": 125,
               "loc": {
                 "start": {
-                  "line": 5,
+                  "line": 4,
                   "column": 7
                 },
                 "end": {
-                  "line": 5,
+                  "line": 4,
                   "column": 17
                 },
                 "identifierName": "AtviseFile"
@@ -486,15 +417,15 @@
         ],
         "source": {
           "type": "StringLiteral",
-          "start": 186,
-          "end": 208,
+          "start": 131,
+          "end": 153,
           "loc": {
             "start": {
-              "line": 5,
+              "line": 4,
               "column": 23
             },
             "end": {
-              "line": 5,
+              "line": 4,
               "column": 45
             }
           },
@@ -503,6 +434,75 @@
             "raw": "'../server/AtviseFile'"
           },
           "value": "../server/AtviseFile"
+        }
+      },
+      {
+        "type": "ImportDeclaration",
+        "start": 155,
+        "end": 209,
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 54
+          }
+        },
+        "specifiers": [
+          {
+            "type": "ImportDefaultSpecifier",
+            "start": 162,
+            "end": 180,
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 7
+              },
+              "end": {
+                "line": 5,
+                "column": 25
+              }
+            },
+            "local": {
+              "type": "Identifier",
+              "start": 162,
+              "end": 180,
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 7
+                },
+                "end": {
+                  "line": 5,
+                  "column": 25
+                },
+                "identifierName": "PartialTransformer"
+              },
+              "name": "PartialTransformer"
+            }
+          }
+        ],
+        "source": {
+          "type": "StringLiteral",
+          "start": 186,
+          "end": 208,
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 31
+            },
+            "end": {
+              "line": 5,
+              "column": 53
+            }
+          },
+          "extra": {
+            "rawValue": "./PartialTransformer",
+            "raw": "'./PartialTransformer'"
+          },
+          "value": "./PartialTransformer"
         },
         "trailingComments": [
           {
@@ -917,7 +917,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {String} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
+                    "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {string} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
                     "start": 681,
                     "end": 877,
                     "loc": {
@@ -1478,7 +1478,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {String} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
+                    "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {string} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
                     "start": 681,
                     "end": 877,
                     "loc": {
@@ -4445,7 +4445,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
+                    "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
                     "start": 3363,
                     "end": 3776,
                     "loc": {
@@ -5157,7 +5157,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
+                    "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
                     "start": 3363,
                     "end": 3776,
                     "loc": {
@@ -5811,7 +5811,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {String} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
+                    "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {string} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
                     "start": 4849,
                     "end": 5075,
                     "loc": {
@@ -6334,7 +6334,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {String} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
+                    "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {string} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
                     "start": 4849,
                     "end": 5075,
                     "loc": {
@@ -10553,7 +10553,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {String} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
+      "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {string} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
       "start": 681,
       "end": 877,
       "loc": {
@@ -10665,7 +10665,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
+      "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
       "start": 3363,
       "end": 3776,
       "loc": {
@@ -10697,7 +10697,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {String} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
+      "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {string} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
       "start": 4849,
       "end": 5075,
       "loc": {
@@ -11372,9 +11372,9 @@
         "postfix": false,
         "binop": null
       },
-      "value": "PartialTransformer",
+      "value": "AtviseFile",
       "start": 115,
-      "end": 133,
+      "end": 125,
       "loc": {
         "start": {
           "line": 4,
@@ -11382,7 +11382,7 @@
         },
         "end": {
           "line": 4,
-          "column": 25
+          "column": 17
         }
       }
     },
@@ -11399,16 +11399,16 @@
         "binop": null
       },
       "value": "from",
-      "start": 134,
-      "end": 138,
+      "start": 126,
+      "end": 130,
       "loc": {
         "start": {
           "line": 4,
-          "column": 26
+          "column": 18
         },
         "end": {
           "line": 4,
-          "column": 30
+          "column": 22
         }
       }
     },
@@ -11425,17 +11425,17 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "./PartialTransformer",
-      "start": 139,
-      "end": 161,
+      "value": "../server/AtviseFile",
+      "start": 131,
+      "end": 153,
       "loc": {
         "start": {
           "line": 4,
-          "column": 31
+          "column": 23
         },
         "end": {
           "line": 4,
-          "column": 53
+          "column": 45
         }
       }
     },
@@ -11452,16 +11452,16 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 161,
-      "end": 162,
+      "start": 153,
+      "end": 154,
       "loc": {
         "start": {
           "line": 4,
-          "column": 53
+          "column": 45
         },
         "end": {
           "line": 4,
-          "column": 54
+          "column": 46
         }
       }
     },
@@ -11480,8 +11480,8 @@
         "updateContext": null
       },
       "value": "import",
-      "start": 163,
-      "end": 169,
+      "start": 155,
+      "end": 161,
       "loc": {
         "start": {
           "line": 5,
@@ -11505,8 +11505,8 @@
         "postfix": false,
         "binop": null
       },
-      "value": "AtviseFile",
-      "start": 170,
+      "value": "PartialTransformer",
+      "start": 162,
       "end": 180,
       "loc": {
         "start": {
@@ -11515,7 +11515,7 @@
         },
         "end": {
           "line": 5,
-          "column": 17
+          "column": 25
         }
       }
     },
@@ -11537,11 +11537,11 @@
       "loc": {
         "start": {
           "line": 5,
-          "column": 18
+          "column": 26
         },
         "end": {
           "line": 5,
-          "column": 22
+          "column": 30
         }
       }
     },
@@ -11558,17 +11558,17 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "../server/AtviseFile",
+      "value": "./PartialTransformer",
       "start": 186,
       "end": 208,
       "loc": {
         "start": {
           "line": 5,
-          "column": 23
+          "column": 31
         },
         "end": {
           "line": 5,
-          "column": 45
+          "column": 53
         }
       }
     },
@@ -11590,11 +11590,11 @@
       "loc": {
         "start": {
           "line": 5,
-          "column": 45
+          "column": 53
         },
         "end": {
           "line": 5,
-          "column": 46
+          "column": 54
         }
       }
     },
@@ -12263,7 +12263,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {String} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
+      "value": "*\n   * Returns the extensions of the missing files for the given `dirname`.\n   * @param {string} dirname The cache key to look for.\n   * @return {String[]} Extensions of the missing files.\n   ",
       "start": 681,
       "end": 877,
       "loc": {
@@ -19257,7 +19257,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {String} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
+      "value": "*\n   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are\n   * required files are cached.\n   * @param {AtviseFile} file The read file.\n   * @param {string} enc The encoding used.\n   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while\n   * caching files or creating the combined file or optionally the resulting combined file.\n   ",
       "start": 3363,
       "end": 3776,
       "loc": {
@@ -22187,7 +22187,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {String} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
+      "value": "*\n   * Combines split files to a single one.\n   * @param {vinyl~File[]} files The files to combine.\n   * @param {string} newExtension The extension the resulting file gets.\n   * @return {vinyl~File} The resulting file.\n   ",
       "start": 4849,
       "end": 5075,
       "loc": {
