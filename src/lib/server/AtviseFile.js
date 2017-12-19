@@ -34,7 +34,7 @@ export const ExtensionForDataType = {
 };
 
 /**
- * Switches keys and values in an object. E.g.: { "a": 1 } becomes { 1: "a" }
+ * Switches keys and values in an object. E.G.: { "a": 1 } becomes { 1: "a" }.
  * @param {Object} obj The object to reverse.
  * @return {Object} The reversed object.
  */
@@ -114,7 +114,7 @@ const Encoder = {
  *   - if the type has a shortened extension defined in {@link ExtensionForDataType}, return it.
  *   - else return the DataType's name, in lowercase letters.
  * @param {node-opcua~DataType} dataType The datatype to get the extension for.
- * @return {String} The resulting extension.
+ * @return {string} The resulting extension.
  */
 function extensionForDataType(dataType) {
   return ExtensionForDataType[dataType] || dataType.toString().toLowerCase();
@@ -188,7 +188,7 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * Decodes a file's contents to a node's value
+   * Decodes a file's contents to a node's value.
    * @param {Buffer} buffer The file contents to decode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
    * for.
@@ -243,7 +243,7 @@ export default class AtviseFile extends File {
 
   /**
    * Recalculates {@link AtviseFile#dataType}, {@link AtviseFile#arrayType} and
-   * {@link AtviseFile#typeDefinition}. **Never call this method directly.**
+   * {@link AtviseFile#typeDefinition}. **Never call this method directly.**.
    */
   _getMetadata() {
     // Set default metadata
@@ -366,7 +366,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise displays.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isDisplay() {
     return this.typeDefinition.value === 'VariableTypes.ATVISE.Display';
@@ -374,7 +374,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise scripts.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isScript() {
     return this.typeDefinition.value === 'VariableTypes.ATVISE.ScriptCode';
@@ -382,7 +382,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing atvise quick dynamics.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isQuickDynamic() {
     return this.typeDefinition.value === 'VariableTypes.ATVISE.QuickDynamic';
@@ -426,9 +426,9 @@ export default class AtviseFile extends File {
 
   /**
    * Returns a new file with all attributes of the current file.
-   * @param {Object} options See https://github.com/gulpjs/vinyl#filecloneoptions for all options
-   * available.
+   * @param {Object} options See the {@link vinyl~File} docs for all options available.
    * @return {AtviseFile} The cloned file.
+   * @see https://github.com/gulpjs/vinyl#filecloneoptions
    */
   clone(options) {
     const clonedFile = super.clone(options);

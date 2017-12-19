@@ -7,7 +7,7 @@ export default class InitOptionsValidator {
 
   /**
    * Validates a project name to be a valid npm package name.
-   * @param {String} value The name to validate.
+   * @param {string} value The name to validate.
    * @return {Boolean|String} Returns true if `value` is a valid npm package name, or an error
    * message otherwise.
    */

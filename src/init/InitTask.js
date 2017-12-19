@@ -12,7 +12,7 @@ export default class InitTask {
 
   /**
    * Returns the globs of the processed files for the given config lanugage.
-   * @param {String} langId The configuration language used.
+   * @param {string} langId The configuration language used.
    * @return {String[]} Globs of the files to handle.
    */
   static filesToHandle(langId) {

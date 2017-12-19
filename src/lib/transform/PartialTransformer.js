@@ -34,7 +34,7 @@ export default class PartialTransformer extends Transformer {
   /**
    * Transforms a file if {@link PartialTransformer#shouldBeTransformed} returns `true`.
    * @param {AtviseFile} file The file to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occured
    * while transforming or (optionally) the transformed file.
    */
@@ -51,7 +51,7 @@ export default class PartialTransformer extends Transformer {
    *  - Pipe the {@link PartialTransformer#filter} stream
    *  - If PartialTransformer#applyToFilteredStream is overrridden, apply it.
    *  - Otherwise pipe {@link Transformer#withDirection}.
-   *  - Restore the filter stream
+   *  - Restore the filter stream.
    * @param {Stream} stream The stream to apply the transformer to.
    * @param {TransformDirection} direction The direction to use.
    * @return {Stream} The resulting stream.
@@ -66,7 +66,7 @@ export default class PartialTransformer extends Transformer {
 
   /**
    * Applies a stream transformer to the given, already filtered stream. Override this method if you
-   * want to pipe streams directly. Returning a falsy value (e.g. false, null, undefined) invokes
+   * want to pipe streams directly. Returning a falsy value (false, null, undefined, ...) invokes
    * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem} instead.
    * @param {Stream} stream The stream to apply the transformer to.
    * @param {TransformDirection} direction The direction to use.

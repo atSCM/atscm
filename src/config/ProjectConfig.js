@@ -18,7 +18,7 @@ export default class ProjectConfig extends Config {
 
   /**
    * Return the project configuration override for the given name if available.
-   * @param {string} name The variable to return
+   * @param {string} name The variable to return.
    * @type {string|undefined} The variables's value or `undefined`.
    */
   static _env(name) {

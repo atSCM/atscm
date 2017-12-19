@@ -1,3 +1,6 @@
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
 import QueueStream from './QueueStream';
 
 /**
@@ -9,7 +12,7 @@ export default class ReadStream extends QueueStream {
    * Returns an error message specifically for the given reference description.
    * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(referenceDescription) {
     return `Error reading node ${referenceDescription.nodeId.toString()}`;

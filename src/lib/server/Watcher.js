@@ -1,3 +1,9 @@
+/* eslint-plugin-jsdoc does not recognize the "emits" tag */
+/* eslint-disable jsdoc/check-tag-names */
+
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
 import Emitter from 'events';
 import {
   ClientSubscription,
@@ -62,7 +68,7 @@ export class SubscribeStream extends QueueStream {
    * Returns an error message specifically for the given reference description.
    * @param {node-opcua~ReferenceDescription} referenceDescription The reference description to get
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(referenceDescription) {
     return `Error reading node ${referenceDescription.nodeId.toString()}`;
@@ -118,7 +124,7 @@ export class SubscribeStream extends QueueStream {
    * Buffers all read node descriptions until the subscription started, then calls
    * {@link QueueStream#_enqueueChunk} with them.
    * @param {node-opcua~ReferenceDescription} desc Reference description of the node to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error)} callback Called with the error that occured while trying to
    * monitor the given node.
    */

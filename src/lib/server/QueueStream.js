@@ -1,3 +1,6 @@
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
 import { StatusCodes } from 'node-opcua';
 import Stream from './Stream';
 
@@ -9,8 +12,8 @@ export default class QueueStream extends Stream {
 
   /**
    * Creates a new QueueStream with the given options.
-   * @param {Object} [options] The options to use
-   * @param {Number} [options.maxParallel] The maximum of parallel tasks to execute.
+   * @param {Object} [options] The options to use.
+   * @param {number} [options.maxParallel] The maximum of parallel tasks to execute.
    */
   constructor(options = {}) {
     const maxParallel = options.maxParallel || 250;
@@ -57,15 +60,15 @@ export default class QueueStream extends Stream {
 
   /**
    * `true` if there are queued operations or an operation is running right now.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get hasPending() {
     return this._processing > 0 || this._queued.length > 0;
   }
 
   /**
-   * `true` if there are no queued operations
-   * @type {Boolean}
+   * `true` if there are no queued operations.
+   * @type {boolean}
    */
   get queueEmpty() {
     return this._queued.length === 0;
@@ -73,7 +76,7 @@ export default class QueueStream extends Stream {
 
   /**
    * The number of chunks already processed.
-   * @type {Number}
+   * @type {number}
    */
   get processed() {
     return this._processed;
@@ -81,7 +84,7 @@ export default class QueueStream extends Stream {
 
   /**
    * The number of processed chunks per second.
-   * @type {Number}
+   * @type {number}
    */
   get opsPerSecond() {
     return (this._processed / (((new Date()).getTime() - this._start) / 1000)) || 0;
@@ -89,9 +92,9 @@ export default class QueueStream extends Stream {
 
   /**
    * The error message to use when processing a chunk fails. **Must be overridden by all
-   * subclasses!**
+   * subclasses!**.
    * @param {*} chunk The chunk being processed.
-   * @return {String} The error message to use.
+   * @return {string} The error message to use.
    * @abstract
    */
   processErrorMessage(chunk) { // eslint-disable-line no-unused-vars
@@ -100,13 +103,13 @@ export default class QueueStream extends Stream {
 
   /**
    * The function to call when a chunk is ready to be processed. **Must be overridden by all
-   * subclasses.**
+   * subclasses.**.
    * @param {*} chunk The chunk to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors Call this function to handle errors and bad status codes. When no error occured
    * and the status code received is fine, `onSuccess` is called. Further processing of valid
-   * chunks, e.g. recursions should happen in `onSuccess`. **Note that `onSuccess` is an
-   * asynchronous function with a callback as an argument.**
+   * chunks, for example Recursions should happen in `onSuccess`. **Note that `onSuccess` is an
+   * asynchronous function with a callback as an argument.**.
    * @example <caption>Basic implementation</caption>
    * class MyQueueStream extends QueueStream {
    *   ...
@@ -194,8 +197,8 @@ export default class QueueStream extends Stream {
   /**
    * Calls {@link QueueStream#_enqueueChunk} as soon as the stream's session is opened.
    * @param {*} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
-   * @param {function} callback Called once the chunk has been enqueued.
+   * @param {string} enc The encoding used.
+   * @param {Function} callback Called once the chunk has been enqueued.
    */
   _transform(chunk, enc, callback) {
     if (this.session) {
@@ -211,7 +214,7 @@ export default class QueueStream extends Stream {
 
   /**
    * Waits for pending operations to complete.
-   * @param {function} callback Called once all queued chunks have been processed.
+   * @param {Function} callback Called once all queued chunks have been processed.
    */
   _flush(callback) {
     if (this.hasPending) {

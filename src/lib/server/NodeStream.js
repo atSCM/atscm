@@ -1,7 +1,10 @@
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
+import Project from '../../config/ProjectConfig';
 import QueueStream from './QueueStream';
 import NodeId from './NodeId';
-import Project from '../../config/ProjectConfig';
 
 /**
  * A stream that browses the nodes specified and (if *recursive* option is set) it's child nodes.
@@ -12,7 +15,7 @@ export default class NodeStream extends QueueStream {
    * Creates a new NodeStream based on the nodes to start browsing with and some options.
    * @param {NodeId[]} nodesToBrowse The nodes to start browsing with.
    * @param {Object} [options] The options to use.
-   * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
+   * @param {boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
    * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
    * to ignore.
    */
@@ -66,7 +69,7 @@ export default class NodeStream extends QueueStream {
   /**
    * Returns an error message specifically for the given nodeId.
    * @param {NodeId} nodeId The node id to get the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(nodeId) {
     return `Error browsing ${nodeId.toString()}`;

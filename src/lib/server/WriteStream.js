@@ -1,3 +1,6 @@
+/* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
+/* eslint-disable jsdoc/check-param-names */
+
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua';
 import QueueStream from './QueueStream';
@@ -10,7 +13,7 @@ export default class WriteStream extends QueueStream {
   /**
    * The error message to use when writing a file fails.
    * @param {AtviseFile} file The file being processed.
-   * @return {String} The error message to use.
+   * @return {string} The error message to use.
    */
   processErrorMessage(file) {
     return `Error writing ${file.nodeId.toString()}`;

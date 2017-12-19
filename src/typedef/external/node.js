@@ -5,3 +5,7 @@
 /**
  * @external {fs~Stats} https://nodejs.org/api/fs.html#fs_class_fs_stats
  */
+
+/**
+ * @external {util~inspect} https://nodejs.org/api/util.html#util_util_inspect_object_options
+ */
