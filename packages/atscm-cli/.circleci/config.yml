@@ -86,7 +86,7 @@ jobs:
               cp -r docs/api/* ../pages
               cd ../pages
               git add .
-              git commit -m 'docs(gh-pages): Update for release v$version [ci skip]'
+              git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
               git push origin gh-pages
               cd ../project
             fi
