@@ -14,6 +14,9 @@ jobs:
       - run:
           name: Resetting package-lock changes
           command: git checkout -- package-lock.json
+      - run:
+          name: Preparing lockfile update
+          command: $(npm bin)/greenkeeper-lockfile-update
       - save_cache:
           key: v1-npm-deps-{{ checksum "package-lock.json" }}
           paths:
@@ -71,6 +74,11 @@ jobs:
 
       # Deployment
       - add_ssh_keys
+      - deploy:
+          name: Updating lockfile
+          command: $(npm bin)/greenkeeper-lockfile-upload
+          environment:
+            GH_TOKEN: $RELEASE_GITHUB_TOKEN
       - deploy:
           name: Deploy changes
           command: |
