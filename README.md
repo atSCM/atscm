@@ -1,13 +1,12 @@
 # atscm
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/atSCM/atscm.svg)](https://greenkeeper.io/)
-
 > Source code management utilities for atvise
 
 [![CircleCI](https://circleci.com/gh/atSCM/atscm.svg?style=shield)](https://circleci.com/gh/atSCM/atscm)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/d9e5vi6a7ygisjsr?svg=true&pendingText=windows%20tests%20pending&passingText=windows%20tests%20passing&failingText=windows%20tests%20failing)](https://ci.appveyor.com/project/LukasHechenberger/atscm)
 [![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
 [![ESDoc](https://atscm.github.io/atscm/badge.svg)](https://atscm.github.io/atscm)
+[![Greenkeeper badge](https://badges.greenkeeper.io/atSCM/atscm.svg)](https://greenkeeper.io/)
 
 *atscm* is a [node.js](https://nodejs.org) based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:
 
