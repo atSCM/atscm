@@ -72,14 +72,6 @@ jobs:
 
       # Deployment
       - run:
-          name: Checking prerelease deployment
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "beta" ]; then
-              echo "Deploy beta"
-              echo "beta" > ~/deploy
-            fi
-          when: always
-      - run:
           name: Deploy changes
           command: |
             echo "Setting up git user"
