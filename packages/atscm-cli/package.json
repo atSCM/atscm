@@ -1,6 +1,6 @@
 {
   "name": "atscm-cli",
-  "version": "0.3.0",
+  "version": "0.3.1-beta.1",
   "description": "atSCM command line interface",
   "main": "out/AtSCMCli.js",
   "bin": {
@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/atSCM/atscm-cli#readme",
   "devDependencies": {
+    "@ls-age/bump-version": "^0.1.2",
     "@ls-age/esdoc-coverage": "^0.1.6",
     "babel-cli": "^6.18.0",
     "babel-plugin-istanbul": "^3.0.0",
@@ -41,8 +42,6 @@
     "babel-register": "^6.22.0",
     "broken-link-checker-local": "^0.1.1",
     "codecov": "^3.0.0",
-    "conventional-changelog-cli": "^1.3.4",
-    "conventional-github-releaser": "^1.1.10",
     "esdoc": "^1.0.3",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^3.12.0",
@@ -53,7 +52,6 @@
     "proxyquire": "^1.7.10",
     "rimraf": "^2.5.4",
     "sinon": "^2.3.2",
-    "standard-version": "^4.2.0",
     "through2": "^2.0.3",
     "unexpected": "^10.20.0"
   },
@@ -98,14 +96,5 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
-  },
-  "standard-version": {
-    "skip": {
-      "changelog": true,
-      "tag": true
-    },
-    "scripts": {
-      "postbump": "./node_modules/.bin/conventional-changelog -r 0 -i CHANGELOG.md --same-file --preset angular"
-    }
   }
 }
