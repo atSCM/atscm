@@ -16,7 +16,7 @@
     "lint": "eslint src",
     "lint:test": "eslint test",
     "prepublishOnly": "npm run compile && npm run docs",
-    "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --require ./test/prepare --timeout 10000",
+    "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register \"test/src/**/*.spec.js\" --require ./test/prepare --timeout 10000 --exit",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
