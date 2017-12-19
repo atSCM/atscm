@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">test/src/transform/ScriptTransformer.spec.js | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#config">config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/ProjectConfig.js~ProjectConfig.html">ProjectConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#init">init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-delete">lib/delete</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/delete/DeleteNodeStream.js~DeleteNodeStream.html">DeleteNodeStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-diff">lib/diff</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffFile.js~DiffFile.html">DiffFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffFileStream.js~DiffFileStream.html">DiffFileStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffItem.js~DiffItem.html">DiffItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffItemStream.js~DiffItemStream.html">DiffItemStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffResultStream.js~DiffResultStream.html">DiffResultStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DeleteFsStream.js~DeleteFsStream.html">DeleteFsStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DeleteServerStream.js~DeleteFsStream.html">DeleteFsStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DiffStream.js~DiffStream.html">DiffStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportXmlStream.js~ImportXmlStream.html">ImportXmlStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-init">lib/init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-mapping">lib/mapping</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/AtviseReferenceItem.js~AtviseReferenceItem.html">AtviseReferenceItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/BaseTypeDefinitionItem.js~BaseTypeDefinitionItem.html">BaseTypeDefinitionItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/InstanceReferenceItem.js~InstanceReferenceItem.html">InstanceReferenceItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/InstanceTypeDefinitionItem.js~InstanceTypeDefinitionItem.html">InstanceTypeDefinitionItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/MappingItem.js~MappingItem.html">MappingItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/ReadNodeItem.js~ReadNodeItem.html">ReadNodeItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-pull">lib/pull</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/pull/BrowseStream.js~BrowseStream.html">BrowseStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/pull/ReadStream.js~ReadStream.html">ReadStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-push">lib/push</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/AddReferenceStream.js~AddReferenceStream.html">AddReferenceStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/CombinedNodeFile.js~CombinedNodeFile.html">CombinedNodeFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/CreateNodeStream.js~CreateNodeStream.html">CreateNodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/NodeFileStream.js~NodeFileStream.html">NodeFileStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/WriteStream.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-script">lib/script</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/script/CallScriptStream.js~CallScriptStream.html">CallScriptStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-stream">lib/stream</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/stream/QueueStream.js~QueueStream.html">QueueStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/stream/Stream.js~Stream.html">Stream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-transform">lib/transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-ua">lib/ua</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/Client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/NodeId.js~NodeId.html">NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/Session.js~Session.html">Session</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReverseReferenceTypeIds">ReverseReferenceTypeIds</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-watch">lib/watch</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/watch/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/watch/Watcher.js~Watcher.html">Watcher</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#tasks">tasks</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/watch.js~WatchTask.html">WatchTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deleteFs">deleteFs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deleteServer">deleteServer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-diff">diff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importXml">importXml</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/FileToAtviseFileTransformer.js~FileToAtviseFileTransformer.html">FileToAtviseFileTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/UaNodeToAtviseFileTransformer.js~UaNodeToAtviseFileTransformer.html">UaNodeToAtviseFileTransformer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef-external">typedef/external</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanup">cleanup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStat">getStat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateDirectoryExists">validateDirectoryExists</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-checkType">checkType</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/src/transform/ScriptTransformer.spec.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Logger from &apos;gulplog&apos;;
+import { spy } from &apos;sinon&apos;;
+import expect from &apos;../../expect&apos;;
+import TransformerHelper from &apos;../../helpers/Transformer&apos;;
+import ScriptTransformer from &apos;../../../src/transform/ScriptTransformer&apos;;
+
+const transformerHelper = new TransformerHelper(ScriptTransformer);
+
+/** @test {ScriptTransformer} */
+describe(&apos;ScriptTransformer&apos;, function() {
+  const ScriptPath = &apos;SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.script&apos;;
+  const QDPath = &apos;SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.qd&apos;;
+
+  /** @test {ScriptTransformer#shouldBeTransformed} */
+  describe(&apos;#shouldBeTransformed&apos;, function() {
+    it(&apos;should return true for ScriptCode type nodes&apos;, function() {
+      expect(ScriptTransformer.prototype.shouldBeTransformed(
+        { isScript: true }
+      ), &apos;to be true&apos;);
+    });
+
+    it(&apos;should return true for QuickDynamic type nodes&apos;, function() {
+      expect(ScriptTransformer.prototype.shouldBeTransformed(
+        { isQuickDynamic: true }
+      ), &apos;to be true&apos;);
+    });
+  });
+
+  /** @test {ScriptTransformer#transformFromDB} */
+  describe(&apos;#transformFromDB&apos;, function() {
+    it(&apos;should forward parse errors&apos;, function() {
+      return expect(transformerHelper.writeXMLToTransformer(ScriptPath, &apos;invalid xml&apos;),
+        &apos;to be rejected with&apos;, /Text data outside of root node/);
+    });
+
+    it(&apos;should warn with invalid xml&apos;, function() {
+      const onWarn = spy();
+      Logger.on(&apos;warn&apos;, onWarn);
+
+      return expect(transformerHelper.writeXMLToTransformer(ScriptPath, &apos;&lt;root&gt;&lt;/root&gt;&apos;),
+        &apos;to be fulfilled&apos;)
+        .then(() =&gt; {
+          expect(onWarn, &apos;was called once&apos;);
+          expect(onWarn, &apos;to have a call satisfying&apos;, { args: [/Empty document/] });
+        });
+    });
+
+    it(&apos;should write empty config file for empty Script&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, &apos;&lt;script&gt;&lt;/script&gt;&apos;)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; {
+          expect(contents[0], &apos;to equal&apos;, &apos;{}&apos;);
+        });
+    });
+
+    it(&apos;should write empty .js file for empty Script&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, &apos;&lt;script&gt;&lt;/script&gt;&apos;)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; {
+          expect(contents[1], &apos;to equal&apos;, &apos;&apos;);
+        });
+    });
+
+    it(&apos;should store icon metadata&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;metadata&gt;
+    &lt;icon type=&quot;image/png&quot;&gt;asdf&lt;/icon&gt;
+  &lt;/metadata&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          icon: {
+            type: &apos;image/png&apos;,
+            content: &apos;asdf&apos;,
+          },
+        }));
+    });
+
+    it(&apos;should store empty icon metadata&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;metadata&gt;
+    &lt;icon&gt;&lt;/icon&gt;
+  &lt;/metadata&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          icon: {
+            content: &apos;&apos;,
+          },
+        }));
+    });
+
+    it(&apos;should store visible metadata&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;metadata&gt;
+    &lt;visible&gt;1&lt;/visible&gt;
+  &lt;/metadata&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          visible: true,
+        }));
+    });
+
+    it(&apos;should store title metadata&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;metadata&gt;
+    &lt;title&gt;script title&lt;/title&gt;
+  &lt;/metadata&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          title: &apos;script title&apos;,
+        }));
+    });
+
+    it(&apos;should store description metadata&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;metadata&gt;
+    &lt;description&gt;script description&lt;/description&gt;
+  &lt;/metadata&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          description: &apos;script description&apos;,
+        }));
+    });
+
+    it(&apos;should store parameters&apos;, function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;parameter name=&quot;paramname&quot;/&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
+          parameters: [
+            { name: &apos;paramname&apos; },
+          ],
+        }));
+    });
+
+    it(&apos;should store code&apos;, function() {
+      const code = &apos;console.log(&quot;called&quot;);&apos;;
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `&lt;script&gt;
+  &lt;code&gt;${code}&lt;/code&gt;
+&lt;/script&gt;`)
+        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then(contents =&gt; expect(contents[1], &apos;to equal&apos;, code));
+    });
+  });
+
+  /** @test {ScriptTransformer#createCombinedFile} */
+  describe(&apos;#createCombinedFile&apos;, function() {
+    it(&apos;should forward config parse errors&apos;, function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
+        &apos;.json&apos;: &apos;&quot;description&quot;: &quot;script description&quot; }&apos;,
+      }), &apos;to call the callback with error&apos;, /Error parsing JSON in /);
+    });
+
+    context(&apos;when called on a quick dynamic&apos;, function() {
+      it(&apos;should store empty metadata&apos;, function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          &apos;.json&apos;: &apos;{ }&apos;,
+        }), &apos;to call the callback&apos;)
+          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;metadata/&gt;&apos;));
+      });
+
+      it(&apos;should insert icon metadata&apos;, function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          &apos;.json&apos;: &apos;{ &quot;icon&quot;: { &quot;type&quot;: &quot;image/png&quot;, &quot;content&quot;: &quot;asdf&quot; } }&apos;,
+        }), &apos;to call the callback&apos;)
+          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then(contents =&gt; expect(contents[0],
+            &apos;to contain&apos;, &apos;&lt;icon type=&quot;image/png&quot;&gt;asdf&lt;/icon&gt;&apos;));
+      });
+
+      it(&apos;should insert visible metadata&apos;, function() {
+        return Promise.all([
+          expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+            &apos;.json&apos;: &apos;{ &quot;visible&quot;: false }&apos;,
+          }), &apos;to call the callback&apos;)
+            .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+            .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;0&lt;/visible&gt;&apos;)),
+          expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+            &apos;.json&apos;: &apos;{ &quot;visible&quot;: true }&apos;,
+          }), &apos;to call the callback&apos;)
+            .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+            .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;1&lt;/visible&gt;&apos;)),
+          ]);
+      });
+
+      it(&apos;should insert title metadata&apos;, function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          &apos;.json&apos;: &apos;{ &quot;title&quot;: &quot;qd title&quot; }&apos;,
+        }), &apos;to call the callback&apos;)
+          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;title&gt;qd title&lt;/title&gt;&apos;));
+      });
+
+      it(&apos;should insert description metadata&apos;, function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          &apos;.json&apos;: &apos;{ &quot;description&quot;: &quot;qd desc&quot; }&apos;,
+        }), &apos;to call the callback&apos;)
+          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then(contents =&gt; expect(contents[0],
+            &apos;to contain&apos;, &apos;&lt;description&gt;qd desc&lt;/description&gt;&apos;));
+      });
+    });
+
+    context(&apos;when called on a script&apos;, function() {
+      it(&apos;should ignore metadata&apos;, function() {
+        return expect(transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
+          &apos;.json&apos;: &apos;{ &quot;icon&quot;: { &quot;type&quot;: &quot;image/png&quot;, &quot;content&quot;: &quot;asdf&quot; } }&apos;,
+        }), &apos;to call the callback&apos;)
+          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then(contents =&gt; expect(contents[0],
+            &apos;not to contain&apos;, &apos;&lt;icon&apos;, &apos;&lt;metadata&apos;));
+      });
+    });
+
+    it(&apos;should insert parameters&apos;, function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        &apos;.json&apos;: &apos;{ &quot;parameters&quot;: [{ &quot;name&quot;: &quot;paramname&quot; }] }&apos;,
+      }), &apos;to call the callback&apos;)
+        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then(contents =&gt; expect(contents[0],
+          &apos;to contain&apos;, &apos;&lt;parameter name=&quot;paramname&quot;/&gt;&apos;));
+    });
+
+    it(&apos;should insert script code&apos;, function() {
+      const code = &apos;console.log(&quot;called&quot;);&apos;;
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        &apos;.js&apos;: code,
+      }), &apos;to call the callback&apos;)
+        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then(contents =&gt; expect(contents[0],
+          &apos;to contain&apos;, `&lt;code&gt;&lt;![CDATA[${code}]]&gt;&lt;/code&gt;`));
+    });
+
+    context(&apos;when encoding fails&apos;, function() {
+      it(&apos;should forward encode errors&apos;, function() {
+        class FailingScriptTransformer extends ScriptTransformer {
+          encodeContents(object, callback) {
+            callback(new Error(&apos;Encode error&apos;));
+          }
+        }
+
+        const helper = new TransformerHelper(FailingScriptTransformer);
+
+        return expect(helper.createCombinedFileWithContents(`${QDPath}/Test`, {
+          &apos;.json&apos;: &apos;{ &quot;parameters&quot;: [{ &quot;name&quot;: &quot;paramname&quot; }] }&apos;,
+        }), &apos;to call the callback with error&apos;, &apos;Encode error&apos;);
+      });
+    });
+  });
+});
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
