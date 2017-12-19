@@ -10,7 +10,7 @@ export default class DisplayTransformer extends XMLTransformer {
   /**
    * Returns true for all files containing atvise displays.
    * @param {AtviseFile} file The file to check.
-   * @return {Boolean} `true` for all atvise display files.
+   * @return {boolean} `true` for all atvise display files.
    */
   shouldBeTransformed(file) {
     return file.isDisplay;
@@ -18,9 +18,9 @@ export default class DisplayTransformer extends XMLTransformer {
 
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
-   * alongside with a .json file containing the display's parameters.
+   * alongside with a json file containing the display's parameters.
    * @param {AtviseFile} file The display file to split.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
    * while transforming the display, or the file passed through.
    */

@@ -8,8 +8,8 @@ class AtviseType {
 
   /**
    * Creates a new atvise type.
-   * @param {String} nodeIdValue The type's OPC-UA node id value.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} nodeIdValue The type's OPC-UA node id value.
+   * @param {string} identifier Atscm's identifier for the new type.
    * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
    * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
    * or `false` indicating if the extension should be kept.
@@ -57,8 +57,8 @@ class AtviseResourceType extends AtviseType {
 
   /**
    * Creates a new resource type.
-   * @param {String} name The type's OPC-UA node id value.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} name The type's OPC-UA node id value.
+   * @param {string} identifier Atscm's identifier for the new type.
    */
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
