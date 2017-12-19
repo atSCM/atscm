@@ -20,8 +20,8 @@ export default class DocsCommand extends Command {
 
   /**
    * Creates a new {@link DocsCommand} with the specified name and description.
-   * @param {String} name The command's name.
-   * @param {String} description The command's description.
+   * @param {string} name The command's name.
+   * @param {string} description The command's description.
    */
   constructor(name, description) {
     super(name, description, {
@@ -102,7 +102,7 @@ export default class DocsCommand extends Command {
   /**
    * Returns `false` if the `--cli` option is used.
    * @param {AtSCMCli} cli The current cli instance.
-   * @return {Boolean} `false` if the `--cli` option is used.
+   * @return {boolean} `false` if the `--cli` option is used.
    */
   requiresEnvironment(cli) {
     return cli.options.remote === false && !cli.options.cli;

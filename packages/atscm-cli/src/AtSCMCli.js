@@ -18,7 +18,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * The name under which the module is available from the command line.
-   * @type {String}
+   * @type {string}
    */
   static get BinName() {
     return Object.keys(pkg.bin)[0];
@@ -26,7 +26,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * The filename used for configuration files.
-   * @type {String}
+   * @type {string}
    */
   static get ConfigName() {
     return 'Atviseproject';
@@ -93,6 +93,8 @@ export default class AtSCMCli extends Liftoff {
      * @type {Object}
      */
     this.options = yargs(argv)
+      .version(false)
+      .help(false)
       .env('ATSCM')
       .option(GlobalOptions)
       .fail((msg, e, y) => {
@@ -188,7 +190,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Returns a {@link Liftoff.Environment} for the Cli.
-   * @param {Boolean} [findUp=false] If the environment should be searched for in parent
+   * @param {boolean} [findUp=false] If the environment should be searched for in parent
    * directories.
    * @return {Promise<Object>} Fulfilled with a {@link Liftoff} environment.
    */
@@ -257,7 +259,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Runs the command specified in the command line arguments ({@link AtSCMCli#_argv}). **Note that
-   * this will only work if {@link AtSCMCli#parseArguments} was called before.**
+   * this will only work if {@link AtSCMCli#parseArguments} was called before.**.
    * @return {Promise<*, Error>} Fulfilled if the command succeeded.
    */
   runCommand() {

@@ -13,8 +13,8 @@ export class LogFormat {
 
   /**
    * Formats a string to represent a path.
-   * @param {String} path The path to format.
-   * @return {String} The formatted string.
+   * @param {string} path The path to format.
+   * @return {string} The formatted string.
    */
   static path(path) {
     return chalk.magenta(tildify(path));
@@ -22,8 +22,8 @@ export class LogFormat {
 
   /**
    * Formats a string to represent a command.
-   * @param {String} command The command to format.
-   * @return {String} The formatted string.
+   * @param {string} command The command to format.
+   * @return {string} The formatted string.
    */
   static command(command) {
     return chalk.bold(command);
@@ -31,8 +31,8 @@ export class LogFormat {
 
   /**
    * Formats a string to represent a value. Use this format for files, module names, etc.
-   * @param {String} value The value to format.
-   * @return {String} The formatted string.
+   * @param {string} value The value to format.
+   * @return {string} The formatted string.
    */
   static value(value) {
     return chalk.cyan(value);
@@ -40,8 +40,8 @@ export class LogFormat {
 
   /**
    * Formats a string to represent a number. Use this format for times, counts, etc.
-   * @param {String} number The value to format.
-   * @return {String} The formatted string.
+   * @param {string} number The value to format.
+   * @return {string} The formatted string.
    */
   static number(number) {
     return chalk.magenta(number);
@@ -73,9 +73,9 @@ export default class Logger {
   }
 
   /**
-   * The prefix added to each log. Should always equal
-   * [fancy-logs prefix](https://github.com/js-cli/fancy-log/blob/master/index.js#L8).
-   * @type {String}
+   * The prefix added to each log. Should always equal fancy-log's prefix.
+   * @type {string}
+   * @see {@link gulplog}
    */
   static get prefix() {
     function pad(val) {
@@ -134,7 +134,7 @@ export default class Logger {
 
   /**
    * Apply options to the logger.
-   * **Should only be called once.**
+   * **Should only be called once.**.
    * @param {Object} options Options passed to {@link gulplog}.
    */
   static applyOptions(options) {

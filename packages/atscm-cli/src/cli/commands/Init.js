@@ -18,8 +18,8 @@ export default class InitCommand extends Command {
 
   /**
    * Creates a new {@link InitCommand} with the specified name and description.
-   * @param {String} name The command's name.
-   * @param {String} description The command's description.
+   * @param {string} name The command's name.
+   * @param {string} description The command's description.
    */
   constructor(name, description) {
     super(name, description, {
@@ -31,10 +31,10 @@ export default class InitCommand extends Command {
   }
 
   /**
-   * Checks if the given path contains an empty directory. OS specific temporary files (.DS_Store
-   * under macOS, thumbs.db under Windows) are ignored.
-   * @param {String} path The path to check.
-   * @param {Boolean} [overwrite=false] If existing files should be overwritten.
+   * Checks if the given path contains an empty directory. OS specific temporary files (*.DS_Store*
+   * under macOS, *thumbs* under Windows) are ignored.
+   * @param {string} path The path to check.
+   * @param {boolean} [overwrite=false] If existing files should be overwritten.
    * @return {Promise<String, Error>} Fulfilled with the valid directory's path, rejected if `path`
    * contains no or a non-empty directory.
    */
@@ -67,8 +67,8 @@ export default class InitCommand extends Command {
   }
 
   /**
-   * Creates a an empty *package.json* file at the given path.
-   * @param {String} path The location to create the package at.
+   * Creates a an empty *package* file at the given path.
+   * @param {string} path The location to create the package at.
    * @return {Promise<undefined, Error>} Rejected if an error occurred while writing the file.
    */
   createEmptyPackage(path) {
@@ -89,7 +89,7 @@ export default class InitCommand extends Command {
 
   /**
    * Runs `npm install --save-dev {packages}` at the given path.
-   * @param {String} path The path to install packages at.
+   * @param {string} path The path to install packages at.
    * @param {String|String[]} packages Names of the packages to install.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
@@ -117,8 +117,8 @@ export default class InitCommand extends Command {
 
   /**
    * Installs the local atscm module at the given path.
-   * @param {String} path The path to install the module at.
-   * @param {Boolean} [useBetaRelease=false] If beta versions should be used.
+   * @param {string} path The path to install the module at.
+   * @param {boolean} [useBetaRelease=false] If beta versions should be used.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
   installLocal(path, useBetaRelease = false) {
@@ -133,8 +133,8 @@ export default class InitCommand extends Command {
   }
 
   /**
-   * Checks the version of this package against the "engines.atscm-cli" field of the newly installed
-   * atscm module's package.json.
+   * Checks the version of this package against the "engines > atscm-cli" field of the newly
+   * installed atscm module's package file.
    * @param {Liftoff.Environment} env The environment to check.
    * @return {Liftoff.Environment} The environment to check.
    * @throws {Error} Throws an error if the atscm-cli version does not match.
@@ -155,8 +155,8 @@ export default class InitCommand extends Command {
 
   /**
    * Resolves the needed options from the local atscm module and asks for them. These options are
-   * stored in the `atscm` module inside `out/init/options.js`.
-   * @param {String} modulePath The path to the local module to use.
+   * stored in the `atscm` module inside `out/init/options`.
+   * @param {string} modulePath The path to the local module to use.
    * @return {Promise<Object, Error>} Resolved with the chosen options.
    */
   getOptions(modulePath) {
@@ -170,8 +170,8 @@ export default class InitCommand extends Command {
 
   /**
    * Runs the local atscm module's init script. This script is stored in the `atscm` module inside
-   * `out/init/init.js`.
-   * @param {String} modulePath The path to the local module to use.
+   * `out/init/init`.
+   * @param {string} modulePath The path to the local module to use.
    * @param {Object} options The options to apply (Received by calling
    * {@link InitCommand#getOptions}).
    * @return {Promise<{install: String[]}, Error>} Resolved with information on the further init
@@ -185,7 +185,7 @@ export default class InitCommand extends Command {
 
   /**
    * Installs any additional dependencies needed after writing files.
-   * @param {String} path The path to install the dependencies at.
+   * @param {string} path The path to install the dependencies at.
    * @param {String[]} deps Names of the packages to install.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
@@ -220,7 +220,7 @@ export default class InitCommand extends Command {
 
   /**
    * This command never requires an {@link Liftoff.Environment}.
-   * @return {Boolean} Always `false`.
+   * @return {boolean} Always `false`.
    */
   requiresEnvironment() {
     return false;
