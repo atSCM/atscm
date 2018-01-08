@@ -20,7 +20,7 @@ describe('RunCommand', function() {
         modulePath: join(__dirname, 'out/index.js'),
       },
       options: {
-        tasks: ['task1', 'task2'],
+        task: ['task1', 'task2'],
         T: 'tasks',
         tasksJson: 'tasks-json',
         tasksSimple: 'tasks-simple',
