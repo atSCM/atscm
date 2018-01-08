@@ -1,13 +1,12 @@
-<a name="0.3.2-beta.1"></a>
-## 0.3.2-beta.1 (2018-01-08)
+<a name="0.3.2"></a>
+## 0.3.2 (2018-01-08)
 
 
 ### Bug Fixes
 
-* **package:** Update gulp-cli and inquirer ([#43](https://github.com/atSCM/atscm-cli/issues/43)) ([5db130a](https://github.com/atSCM/atscm-cli/commits/5db130a))
-* **package:** update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([4f55249](https://github.com/atSCM/atscm-cli/commits/4f55249))
-* **package:** update inquirer to version 5.0.0 ([#42](https://github.com/atSCM/atscm-cli/issues/42)) ([ccfd459](https://github.com/atSCM/atscm-cli/commits/ccfd459))
-* Rename tasks option to prevent name conflict with gulp-cli 2.0 ([c2ef9ed](https://github.com/atSCM/atscm-cli/commits/c2ef9ed))
+* **package:** update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([f4415a9](https://github.com/atSCM/atscm-cli/commits/f4415a9))
+* **package:** update inquirer to version 5.0.0 ([#42](https://github.com/atSCM/atscm-cli/issues/42)) ([09c576c](https://github.com/atSCM/atscm-cli/commits/09c576c))
+* Rename tasks option to prevent name conflict with gulp-cli 2.0 ([4d138be](https://github.com/atSCM/atscm-cli/commits/4d138be))
 
 
 
