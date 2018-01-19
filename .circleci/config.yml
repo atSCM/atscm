@@ -3,15 +3,13 @@ jobs:
   build:
     docker:
       - image: circleci/node:8
+      - image: lukashechenberger/test-atvise-server
+        auth:
+          username: $DOCKER_USER
+          password: $DOCKER_PASS
+        mac-address: $ATSERVER_MAC
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Run test atvise server
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            docker run -d --name atserver --mac-address $ATSERVER_MAC -p "4840:4840" -p "9001:80" lukashechenberger/test-atvise-server
       - restore_cache:
           keys:
             - v1-npm-deps-{{ checksum "package-lock.json" }}

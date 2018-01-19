@@ -3,7 +3,7 @@ import Atviseproject from '../../src/lib/config/Atviseproject';
 export default class TestProject extends Atviseproject {
 
   static get host() {
-    return 'atserver';
+    return 'localhost';
   }
 
   static get port() {
