@@ -8,6 +8,8 @@ jobs:
           username: $DOCKER_USER
           password: $DOCKER_PASS
         mac-address: $ATSERVER_MAC
+        environment:
+          LICENSE: $ATSERVER_LICENSE
     steps:
       - checkout
       - restore_cache:
