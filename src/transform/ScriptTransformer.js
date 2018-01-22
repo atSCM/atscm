@@ -1,5 +1,6 @@
 import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import sortJSON from 'sort-json';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -95,7 +96,9 @@ export default class ScriptTransformer extends XMLTransformer {
         code = code.toString();
 
         // Write config and script file
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+        configFile.contents = Buffer.from(
+          JSON.stringify(sortJSON(config), null, '  ')
+        );
         scriptFile.contents = Buffer.from(code);
 
         this.push(configFile);

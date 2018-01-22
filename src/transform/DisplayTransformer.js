@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
 import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import sortJSON from 'sort-json';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -99,7 +100,9 @@ export default class DisplayTransformer extends XMLTransformer {
             metadata[0].children = nonParameterTags;
           }
 
-          configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+          configFile.contents = Buffer.from(
+            JSON.stringify(sortJSON(config), null, '  ')
+          );
 
           this.encodeContents(xmlObj, (encodeError, xmlString) => {
             if (encodeError) {
@@ -172,10 +175,10 @@ export default class DisplayTransformer extends XMLTransformer {
           // Insert parameters
           if (parameters && parameters.length > 0) {
             if (metadata.children[0]) {
-            const meta = metadata.children[0].children;
+              const meta = metadata.children[0].children;
 
-            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
-              param, metadata)));
+              parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
+                param, metadata)));
             } else {
               Logger.error(`Display ${svgFile.nodeId}: Metadata tag is missing.`,
                 'Can not append parameters');
