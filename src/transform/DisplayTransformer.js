@@ -171,10 +171,15 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Insert parameters
           if (parameters && parameters.length > 0) {
+            if (metadata.children[0]) {
             const meta = metadata.children[0].children;
 
             parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
               param, metadata)));
+            } else {
+              Logger.error(`Display ${svgFile.nodeId}: Metadata tag is missing.`,
+                'Can not append parameters');
+            }
           }
 
           // Insert dependencies
