@@ -1,6 +1,6 @@
 import Logger from 'gulplog';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import sortJSON from 'sort-json';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file

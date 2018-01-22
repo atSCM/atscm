@@ -42,7 +42,7 @@ export default class DeleteFsStream {
     lineReader.on('line', line => {
       const trimmedLine = line.trim();
       const lineArray = trimmedLine.split('nodeId=');
-      let nodeString = "";
+      let nodeString = '';
 
       if (lineArray.length > 1) {
         nodeString = lineArray[1];

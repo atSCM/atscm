@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import Logger from 'gulplog';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import sortJSON from 'sort-json';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,

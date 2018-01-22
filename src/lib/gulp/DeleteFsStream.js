@@ -1,6 +1,6 @@
 import readline from 'readline';
 import Logger from 'gulplog';
-import { join, basename } from 'path';
+import { join } from 'path';
 import { remove, existsSync, createReadStream } from 'fs-extra';
 import ProjectConfig from '../../config/ProjectConfig';
 
@@ -40,7 +40,7 @@ export default class DeleteFsStream {
     lineReader.on('line', line => {
       const trimmedLine = line.trim();
       const lineArray = trimmedLine.split('nodeFilePath=');
-      let filePath = "";
+      let filePath = '';
 
       if (lineArray.length > 1) {
         filePath = lineArray[1];
