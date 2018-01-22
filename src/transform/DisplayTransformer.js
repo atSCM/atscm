@@ -163,7 +163,7 @@ export default class DisplayTransformer extends XMLTransformer {
           const displayContent = xmlObj.children[0];
           const metadata = xmlObj.find('*/metadata');
           const parameters = config.parameters.reverse();
-          const dependencies = config.dependencies.reverse();
+          const dependencies = config.dependencies;
           const display = DisplayTransformer.combineFiles(
             Object.keys(files).map(ext => files[ext]),
             '.xml'
