@@ -1,3 +1,14 @@
+<a name="0.3.4"></a>
+## 0.3.4 (2018-01-25)
+
+
+### Bug Fixes
+
+* **package:** Force gulp-cli version 1.2.2 ([244f9e6](https://github.com/atSCM/atscm-cli/commits/244f9e6)), closes [#52](https://github.com/atSCM/atscm-cli/issues/52)
+
+
+
+
 <a name="0.3.3"></a>
 ## 0.3.3 (2018-01-25)
 
