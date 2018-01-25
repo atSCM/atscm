@@ -1,3 +1,19 @@
+<a name="0.3.3"></a>
+## 0.3.3 (2018-01-25)
+
+
+### Bug Fixes
+
+* Downgrade gulp-cli ([4e61612](https://github.com/atSCM/atscm-cli/commits/4e61612)), closes [#41](https://github.com/atSCM/atscm-cli/issues/41)
+
+
+### Reverts
+
+* fix(package): update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([7ae6b1f](https://github.com/atSCM/atscm-cli/commits/7ae6b1f))
+
+
+
+
 <a name="0.3.2"></a>
 ## 0.3.2 (2018-01-08)
 
