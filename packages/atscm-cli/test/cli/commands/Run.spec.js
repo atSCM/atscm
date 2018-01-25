@@ -5,7 +5,7 @@ import proxyquire from 'proxyquire';
 
 const gulpCli = spy();
 const RunCommand = proxyquire('../../../src/cli/commands/Run', {
-  'gulp-cli/lib/versioned/^4.0.0-alpha.2/': gulpCli,
+  'gulp-cli/lib/versioned/^4.0.0/': gulpCli,
 }).default;
 
 /** @test {RunCommand} */
