@@ -41,7 +41,7 @@ export default class RunCommand extends Command {
     process.env.ATSCM_CONFIG_PATH = cli.environment.configPath;
 
     // eslint-disable-next-line global-require
-    require('gulp-cli/lib/versioned/^4.0.0-alpha.2/')(
+    require('gulp-cli/lib/versioned/^4.0.0/')(
       opts,
       {
         configPath: join(cli.environment.modulePath, '../Gulpfile.js'),

@@ -1,3 +1,17 @@
+<a name="0.3.5-beta.3"></a>
+## 0.3.5-beta.3 (2018-01-25)
+
+
+### Bug Fixes
+
+* **npm:** Update package-lock ([11142f2](https://github.com/atSCM/atscm-cli/commits/11142f2))
+* Disable yargs' version ([8878643](https://github.com/atSCM/atscm-cli/commits/8878643))
+* Update yargs to prevent missing option argument error ([c852fb5](https://github.com/atSCM/atscm-cli/commits/c852fb5))
+* Use non-alpha gulp-cli ([d36c25d](https://github.com/atSCM/atscm-cli/commits/d36c25d))
+
+
+
+
 <a name="0.3.4"></a>
 ## 0.3.4 (2018-01-25)
 
