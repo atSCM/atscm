@@ -73,7 +73,7 @@ jobs:
       - add_ssh_keys
       - deploy:
           name: Updating lockfile
-          command: GH_TOKEN=$RELEASE_GITHUB_TOKEN $(npm bin)/greenkeeper-lockfile-upload
+          command: $(npm bin)/greenkeeper-lockfile-upload
       - deploy:
           name: Deploy changes
           command: |
