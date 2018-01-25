@@ -46,7 +46,7 @@ jobs:
           when: always
       - run:
           name: Checking documentation for broken links (SKIPPED)
-          command: echo "Skipped for now as ESDoc hosting service is down regularly" # npm run test:docs
+          command: npm run test:docs
           when: always
 
       # Coverage checks
@@ -72,68 +72,25 @@ jobs:
 
       # Deployment
       - run:
-          name: Checking prerelease deployment
+          name: Deploy changes
           command: |
-            if [ "${CIRCLE_BRANCH}" == "beta" ]; then
-              echo "Deploy beta"
-              echo "beta" > ~/deploy
-            fi
-          when: always
-      - run:
-          name: Checking release deployment
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo "Deploy release"
-              echo "master" > ~/deploy
-            fi
-      - run:
-          name: Deploying changes
-          command: |
-            if [ ! -f ~/deploy ]; then
-              echo "No deployment needed"
-              exit 0;
-            fi
-
-            DEPLOYMENT_TARGET=$(cat ~/deploy)
-            echo ">> Deploying $DEPLOYMENT_TARGET <<"
-
             echo "Setting up git user"
-            git config --global user.email circleci@circleci && git config --global user.name CircleCI && git remote --v
-
-            echo " Adding github.com to list of known hosts"
-            ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+            git config --global user.email circleci@circleci && git config --global user.name CircleCI
 
             echo "Logging in to npm"
-            echo "$NPM_TOKEN" > ./.npmrc
+            echo "$NPM_TOKEN" > ~/.npmrc
 
-            echo "Bumping version number"
-            if [ $CIRCLE_BRANCH == 'master' ]; then
-              ./node_modules/.bin/standard-version --message "chore(release): Release %s [ci skip]"
-            else
-              ./node_modules/.bin/standard-version --message "chore(release): Release %s [ci skip]" --prerelease beta;
-            fi
+            npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
 
-            echo "Pushing version bump"
-            git push origin $CIRCLE_BRANCH
-
-            echo "Creating git tag"
-            version=$(node -e "console.log(require('./package.json').version)")
-            git add -f out;
-            git add -f docs/api;
-            git checkout -b release-$(git rev-parse HEAD);
-            git commit -m "chore(release): Add v$version release files [ci skip]";
-            git tag -a "v$version" -m "chore(release): Add v$version release tag [ci skip]";
-
-            echo "Publishing to npm"
             if [ $CIRCLE_BRANCH = 'master' ]; then
-              npm publish --access public
-            else
-              npm publish --tag beta --access public
+              echo "Update GitHub pages"
+              version=$(node -e "console.log(require('./package.json').version)")
+              git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
+              cp -r docs/api/* ../pages
+              cd ../pages
+              git add .
+              git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
+              git push origin gh-pages
+              cd ../project
             fi
-
-            echo "Uploading new tag"
-            git push --tags
-
-            echo "Creating GitHub release"
-            CONVENTIONAL_GITHUB_RELEASER_TOKEN=$RELEASE_GITHUB_TOKEN ./node_modules/.bin/conventional-github-releaser -p angular --verbose
           when: always
