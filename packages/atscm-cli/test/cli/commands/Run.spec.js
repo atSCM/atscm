@@ -29,7 +29,7 @@ describe('RunCommand', function() {
     };
 
     afterEach(() => {
-      gulpCli.reset();
+      gulpCli.resetHistory();
     });
 
     it('should run gulp-cli', function() {
