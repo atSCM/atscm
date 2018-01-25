@@ -31,7 +31,7 @@ export default class RunCommand extends Command {
    */
   run(cli) {
     const opts = {
-      _: cli.options.task,
+      _: cli.options.task || [],
       tasks: cli.options.T,
       tasksSimple: cli.options.tasksSimple,
       tasksJson: cli.options.tasksJson,
