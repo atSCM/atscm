@@ -77,8 +77,6 @@ jobs:
       - deploy:
           name: Updating lockfile
           command: $(npm bin)/greenkeeper-lockfile-upload
-          environment:
-            GH_TOKEN: $RELEASE_GITHUB_TOKEN
       - deploy:
           name: Deploy changes
           command: |
