@@ -45,7 +45,7 @@ jobs:
             NODE_ENV: test
             MOCHA_FILE: ../reports/mocha.xml
       - run:
-          name: Checking documentation for broken links (SKIPPED)
+          name: Checking documentation for broken links
           command: npm run test:docs
 
       # Coverage checks
