@@ -47,9 +47,9 @@ export default class DiffResultStream extends QueueStream {
 
   processChunk(diffItem, handleErrors) {
     handleErrors(null, StatusCodes.Good, done => {
-      this.logger.write(`${diffItem.state.text} filePath=${diffItem.path}` +
-        `, nodeFilePath=${dirname(diffItem.path)}` +
-        `, nodeId=${diffItem.nodeId.value}\n`
+      this.logger.write(`${diffItem.state.text} ` +
+        `nodeId=${diffItem.nodeId.value}, ` +
+        `nodeFilePath=${dirname(diffItem.path)}\n`
       );
 
       done();
