@@ -1,3 +1,14 @@
+<a name="0.3.6-beta.0"></a>
+## 0.3.6-beta.0 (2018-01-25)
+
+
+### Bug Fixes
+
+* Allow running without tasks ([#64](https://github.com/atSCM/atscm-cli/issues/64)) ([d102534](https://github.com/atSCM/atscm-cli/commits/d102534)), closes [#62](https://github.com/atSCM/atscm-cli/issues/62)
+
+
+
+
 <a name="0.3.5"></a>
 ## 0.3.5 (2018-01-25)
 
