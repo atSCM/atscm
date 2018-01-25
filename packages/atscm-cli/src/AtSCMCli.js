@@ -142,6 +142,7 @@ export default class AtSCMCli extends Liftoff {
         yargs()
           .env('ATSCM')
           .usage('Usage: $0 [cmd=run]')
+          .version(false)
           .options(GlobalOptions)
           .global(globalOptionNames)
           .strict()
