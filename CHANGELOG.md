@@ -1,21 +1,42 @@
-<a name="0.6.0-beta.0"></a>
-# 0.6.0-beta.0 (2017-12-19)
+<a name="0.7.0-beta.0"></a>
+# 0.7.0-beta.0 (2018-01-26)
+
+
+### Bug Fixes
+
+* **readstream:** remove check for statuscode ([2174a54](https://github.com/atSCM/atscm/commits/2174a54))
+* **transformer:** detect svg files without metadata ([190331b](https://github.com/atSCM/atscm/commits/190331b))
+* **transformer:** preserve dependency tag order ([85d8b89](https://github.com/atSCM/atscm/commits/85d8b89))
+* **transformer:** search root svg correctly ([4146486](https://github.com/atSCM/atscm/commits/4146486))
 
 
 ### Features
 
-* Add `diff` task ([#84](https://github.com/atSCM/atscm/issues/84)) ([d2ca6f8](https://github.com/atSCM/atscm/commits/d2ca6f8))
-* **ci:** Deploy beta releases even on failure ([#78](https://github.com/atSCM/atscm/issues/78)) ([ca1f571](https://github.com/atSCM/atscm/commits/ca1f571))
 * **ci:** Deploy beta releases even on failure ([#78](https://github.com/atSCM/atscm/issues/78)) ([2180da4](https://github.com/atSCM/atscm/commits/2180da4))
+* **ci:** Deploy beta releases even on failure ([#78](https://github.com/atSCM/atscm/issues/78)) ([ca1f571](https://github.com/atSCM/atscm/commits/ca1f571))
+* Add `diff` task ([#84](https://github.com/atSCM/atscm/issues/84)) ([d2ca6f8](https://github.com/atSCM/atscm/commits/d2ca6f8))
+* **DeleteFsStream, DeleteServerStream:** improve string parsing ([8f64746](https://github.com/atSCM/atscm/commits/8f64746))
 * Add `diff` task ([#84](https://github.com/atSCM/atscm/issues/84)) ([701919a](https://github.com/atSCM/atscm/commits/701919a))
 * Add `importXml` task ([#83](https://github.com/atSCM/atscm/issues/83)) ([6013e4b](https://github.com/atSCM/atscm/commits/6013e4b))
 * Add `importXml` task ([#83](https://github.com/atSCM/atscm/issues/83)) ([b558999](https://github.com/atSCM/atscm/commits/b558999))
+* **transformer:** Sort generated JSON files ([a77ef06](https://github.com/atSCM/atscm/commits/a77ef06))
 * change xml parser to maintain element order ([#82](https://github.com/atSCM/atscm/issues/82)) ([cb6f028](https://github.com/atSCM/atscm/commits/cb6f028)), closes [#46](https://github.com/atSCM/atscm/issues/46)
 * change xml parser to maintain element order ([#82](https://github.com/atSCM/atscm/issues/82)) ([ba1b813](https://github.com/atSCM/atscm/commits/ba1b813)), closes [#46](https://github.com/atSCM/atscm/issues/46)
 * Create and delete atvise server nodes ([#81](https://github.com/atSCM/atscm/issues/81)) ([d2e826e](https://github.com/atSCM/atscm/commits/d2e826e))
 * Create and delete atvise server nodes ([#81](https://github.com/atSCM/atscm/issues/81)) ([52242d1](https://github.com/atSCM/atscm/commits/52242d1))
 * Store type definitions to files ([#71](https://github.com/atSCM/atscm/issues/71)) ([823e1fb](https://github.com/atSCM/atscm/commits/823e1fb))
 * Store type definitions to files ([#71](https://github.com/atSCM/atscm/issues/71)) ([6d95627](https://github.com/atSCM/atscm/commits/6d95627))
+
+
+
+
+<a name="0.4.2"></a>
+## 0.4.2 (2017-12-19)
+
+
+### Bug Fixes
+
+* **test:** Compile sources before running windows tests ([#103](https://github.com/atSCM/atscm/issues/103)) ([b79a45d](https://github.com/atSCM/atscm/commits/b79a45d)), closes [#74](https://github.com/atSCM/atscm/issues/74)
 
 
 
