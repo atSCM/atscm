@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/lib/xml/xml.js | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#config">config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/ProjectConfig.js~ProjectConfig.html">ProjectConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#init">init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-delete">lib/delete</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/delete/DeleteNodeStream.js~DeleteNodeStream.html">DeleteNodeStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-diff">lib/diff</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffFile.js~DiffFile.html">DiffFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffFileStream.js~DiffFileStream.html">DiffFileStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffItem.js~DiffItem.html">DiffItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffItemStream.js~DiffItemStream.html">DiffItemStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/diff/DiffResultStream.js~DiffResultStream.html">DiffResultStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DeleteFsStream.js~DeleteFsStream.html">DeleteFsStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DeleteServerStream.js~DeleteFsStream.html">DeleteFsStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/DiffStream.js~DiffStream.html">DiffStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportXmlStream.js~ImportXmlStream.html">ImportXmlStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-init">lib/init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-mapping">lib/mapping</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/AtviseReferenceItem.js~AtviseReferenceItem.html">AtviseReferenceItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/BaseTypeDefinitionItem.js~BaseTypeDefinitionItem.html">BaseTypeDefinitionItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/InstanceReferenceItem.js~InstanceReferenceItem.html">InstanceReferenceItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/InstanceTypeDefinitionItem.js~InstanceTypeDefinitionItem.html">InstanceTypeDefinitionItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/MappingItem.js~MappingItem.html">MappingItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/mapping/ReadNodeItem.js~ReadNodeItem.html">ReadNodeItem</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-pull">lib/pull</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/pull/BrowseStream.js~BrowseStream.html">BrowseStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/pull/ReadStream.js~ReadStream.html">ReadStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-push">lib/push</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/AddReferenceStream.js~AddReferenceStream.html">AddReferenceStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/CombinedNodeFile.js~CombinedNodeFile.html">CombinedNodeFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/CreateNodeStream.js~CreateNodeStream.html">CreateNodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/NodeFileStream.js~NodeFileStream.html">NodeFileStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/push/WriteStream.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-script">lib/script</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/script/CallScriptStream.js~CallScriptStream.html">CallScriptStream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-stream">lib/stream</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/stream/QueueStream.js~QueueStream.html">QueueStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/stream/Stream.js~Stream.html">Stream</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-transform">lib/transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~CombineFilesCache.html">CombineFilesCache</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-ua">lib/ua</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/Client.js~Client.html">Client</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/NodeId.js~NodeId.html">NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/ua/Session.js~Session.html">Session</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReverseReferenceTypeIds">ReverseReferenceTypeIds</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-watch">lib/watch</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/watch/Watcher.js~SubscribeStream.html">SubscribeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/watch/Watcher.js~Watcher.html">Watcher</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#tasks">tasks</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/watch.js~WatchTask.html">WatchTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deleteFs">deleteFs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deleteServer">deleteServer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-diff">diff</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importXml">importXml</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/FileToAtviseFileTransformer.js~FileToAtviseFileTransformer.html">FileToAtviseFileTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ScriptTransformer.html">ScriptTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/UaNodeToAtviseFileTransformer.js~UaNodeToAtviseFileTransformer.html">UaNodeToAtviseFileTransformer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef-external">typedef/external</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/">node-opcua</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanup">cleanup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStat">getStat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateDirectoryExists">validateDirectoryExists</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-checkType">checkType</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/lib/xml/xml.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*eslint-disable */
+var util = require(&apos;util&apos;),
+    xml = {};
+
+/**
+ * Enumeration of all possible XML objects types
+ * @const
+ * @type {{TEXT: string, ELEMENT: string, CDATA: string, COMMENT: string, NODESET: string, UNKNOWN: null}}
+ * @public
+ * @readonly
+ */
+var XML_TYPE = xml.XML_TYPE = {
+    TEXT : &apos;text()&apos;,
+    ELEMENT : &apos;element()&apos;,
+    CDATA : &apos;cdata()&apos;,
+    COMMENT : &apos;comment()&apos;,
+    NODESET : &apos;.&apos;,
+    UNKNOWN : null
+};
+
+/**
+ * Node set
+ * If only one argument is passed and it&apos;s instance of Array,
+ * then its contents will became children of NodeSet,
+ * else all arguments added to new NodeSet as children.
+ *
+ * @param {Array|*} nodes
+ * @constructor
+ */
+var NodeSet = xml.NodeSet = function NodeSet(nodes) {
+    this.children = (arguments.length === 1 &amp;&amp; (Array.isArray(nodes))) ? nodes : Array.apply(Array, arguments);
+};
+
+/**
+ * Serialize NodeSet as Array
+ *
+ * @returns {Array}
+ */
+NodeSet.prototype.toJSON = function() {
+    return this.children;
+};
+
+/**
+ * evaluate to String as Array
+ *
+ * @returns {String}
+ */
+NodeSet.prototype.toString = function() {
+    return this.children.toString();
+};
+
+/**
+ * Expose most of array instance methods to NodeSet instance,
+ * mutators are not exposed to keep `children` safe.
+ */
+[
+    &apos;join&apos;, &apos;indexOf&apos;, &apos;lastIndexOf&apos;, &apos;forEach&apos;, &apos;map&apos;, &apos;reduce&apos;,
+    &apos;reduceRight&apos;, &apos;filter&apos;, &apos;some&apos;, &apos;every&apos;, &apos;concat&apos;, &apos;slice&apos;
+].forEach(function(methodName) {
+        NodeSet.prototype[methodName] = function() {
+            return Array.prototype[methodName].apply(this.children, arguments);
+        };
+    });
+
+/**
+ * Append node to node set.
+ * This method is one and only mutator of the `children`.
+ *
+ * @param {Tag|Comment|String} node
+ * @private
+ */
+NodeSet.prototype.append = function(node) {
+    this.children.push(node);
+    return this;
+};
+
+/**
+ * @property {Number} length
+ */
+NodeSet.prototype.__defineGetter__(&apos;length&apos;, function() {
+    return this.children.length;
+});
+
+/**
+ * @param {String} expr XPath-like expression part
+ * @returns {NodeSet} NodeSet of nodes `expr` can applied for.
+ */
+NodeSet.prototype.get = function(expr) {
+    return new NodeSet(this.filter(is.bind(null, expr)));
+};
+
+/**
+ * @returns {NodeSet|*} of children at one level deeper
+ * @private
+ */
+NodeSet.prototype.explode = function() {
+    return this.reduce(function(result, tag) {
+        if (tag instanceof NodeSet) {
+            result.children = result.children.concat(tag.children);
+        }
+        return result;
+    }, new NodeSet());
+};
+
+/**
+ * Creates node set of nodes meeting the path.
+ *
+ * @param {String|Array} expr XPath-like conditional expression.
+ * @returns {NodeSet|String}
+ */
+NodeSet.prototype.find = function(expr) {
+    var _expr = (typeof expr === &apos;string&apos;) ? expr.split(&apos;/&apos;) : expr,
+        currentExpr = _expr.shift(),
+        matched = this.get(currentExpr);
+
+    return (_expr.length &gt; 0 &amp;&amp; matched.length &gt; 0) ? matched.explode().find(_expr) : matched;
+};
+
+/**
+ * Same as NodeSet#find, but automatically joins results of `text()` expression
+ *
+ * @param {String|Array} expr XPath-like conditional expression.
+ * @returns {NodeSet|String}
+ */
+NodeSet.prototype.$ = function(expr) {
+    var result = this.find(expr);
+
+    return (expr.split(&apos;/&apos;).pop() === XML_TYPE.TEXT) ? result.text() : result;
+};
+
+/**
+ * @param {Boolean} [keepArray=false] if `true` returns Array of strings, else concatenate it
+ * @returns {Array|String} children text nodes
+ */
+NodeSet.prototype.text = function(keepArray) {
+    var result = (function extractNSetText(nset) {
+            var result = [];
+
+            nset
+                .forEach(function(node) {
+                    if (is(XML_TYPE.TEXT, node)) {
+                        result.push(node);
+                    } else if (is(XML_TYPE.ELEMENT, node)) {
+                        result = result.concat(extractNSetText(node));
+                    }
+                });
+
+            return result;
+        })(this);
+
+    return ( ! keepArray) ? result.join(&apos; &apos;) : result;
+};
+
+/**
+ * @param {String} name Attribute name.
+ * @returns {NodeSet} of tags in the ctx which have attribute `name`
+ */
+NodeSet.prototype.hasAttr = function(name) {
+    return new NodeSet(this.filter(function(node) {
+        return (node instanceof Tag) &amp;&amp; node.attr(name) !== null;
+    }));
+};
+
+/**
+ * @param {String} name Element (&apos;tag&apos;) attribute name.
+ * @param {String|null} value Attribute value or null if attribute must absent.
+ * @returns {NodeSet} of tags which attribute `name` equals `value`.
+ */
+NodeSet.prototype.isAttr = function(name, value) {
+    return new NodeSet(this.filter(function(node) {
+        return (node instanceof Tag) &amp;&amp; node.attr(name) === value;
+    }));
+};
+
+/**
+ * @param {Number} index
+ * @returns {Tag|Comment|String} node by `index` or `null` if `index` out of bounds
+ */
+NodeSet.prototype.eq = function(index) {
+    return this.children[index] || null;
+};
+
+/**
+ * Represents XML element (&apos;tag&apos;).
+ *
+ * @param {String} name Tag name
+ * @param {Object} [attrs] Tag attributes hash
+ * @param {NodeSet} [parent] Parent NodeSet
+ * @constructor
+ * @augments NodeSet
+ */
+/* jshint latedef:false */
+var Tag = xml.Tag = function Tag(name, attrs, parent) {
+    var _attrs = attrs || {},
+        _parent = parent;
+
+    NodeSet.call(this);
+
+    // called with two args, there second one is parent, not the attributes hash
+    if (typeof parent === &apos;undefined&apos; &amp;&amp; (attrs instanceof NodeSet)) {
+        _attrs = {};
+        _parent = attrs;
+    }
+
+    this.name = name;
+    this.attrs = _attrs;
+    this.parent = _parent;
+};
+
+/**
+ * Yeah, Tag is NodeSet
+ */
+util.inherits(Tag, NodeSet);
+
+/**
+ * Custom Tag#toJSON()
+ * * doesn&apos;t expose `parent` property to JSON;
+ * * expose non-empty `attrs` and `children` properties;
+ * * if Tag has only one text child, expose it as `text` instead of `children` array.
+ *
+ * @returns {Object}
+ */
+Tag.prototype.toJSON = function() {
+    var jsonTag = { name : this.name };
+
+    if (typeof this.attrs === &apos;object&apos; &amp;&amp; Object.keys(this.attrs).length &gt; 0) {
+        jsonTag.attrs = this.attrs;
+    }
+
+    if (this.length === 1 &amp;&amp; typeof this.children[0] === &apos;string&apos;) {
+        jsonTag.text = this.children[0];
+    } else if (this.length &gt; 0) {
+        jsonTag.children = this.children;
+    }
+
+    return jsonTag;
+};
+
+/**
+ * @param {String} name Attribute name
+ * @returns {String|null} Attribute value or null if no one exists.
+ */
+Tag.prototype.attr = function(name) {
+    return Object.prototype.hasOwnProperty.call(this.attrs, name) ? this.attrs[name] : null;
+};
+
+/**
+ * Extends NodeSet#get with `..` support.
+ *
+ * @param {String} expr
+ * @returns {NodeSet}
+ */
+Tag.prototype.get = function(expr) {
+    return (expr === &apos;..&apos;) ? this.parent : NodeSet.prototype.get.call(this, expr);
+};
+
+/**
+ * Dummy constructor for comments to differ text nodes (String) and comments in the NodeSet.
+ *
+ * @param {String} comment Comment contents
+ * @constructor
+ */
+var Comment = xml.Comment = function Comment(comment) {
+    this.comment = comment;
+};
+
+/**
+ * @returns {String}
+ */
+Comment.prototype.toString = function() {
+    return this.comment;
+};
+
+/**
+ * Dummy constructor for comments to differ text nodes (String) and CData in the NodeSet.
+ *
+ * @param {String} [chunk] chunk of CDATA content
+ * @constructor
+ */
+var CData = xml.CData = function CData(chunk) {
+    this.rawData = [];
+    this.data = &apos;&apos;;
+    this.cached = true;
+
+    if (typeof chunk !== &apos;undefined&apos;) {
+        this.push(chunk);
+    }
+};
+
+/**
+ * Add data chunk to CData object
+ * @param {String} chunk
+ */
+CData.prototype.push = function(chunk) {
+    this.rawData.push(chunk);
+    this.cached = false;
+};
+
+/**
+ * @returns {String}
+ */
+CData.prototype.getData = function() {
+    if ( ! this.cached) {
+        this.data = this.rawData.join(&apos;&apos;);
+        this.cached = true;
+    }
+
+    return this.data;
+};
+
+/**
+ * @returns {String}
+ */
+CData.prototype.toString = function() {
+    return this.getData();
+};
+
+/**
+ * @returns {Object}
+ */
+CData.prototype.toJSON = function() {
+    return { cdata : this.getData() };
+};
+
+/**
+ * @param {String|Comment|CData|Tag|*} node
+ * @returns {Boolean}
+ */
+var isNode = xml.isNode = function(node) {
+    return (typeof node === &apos;string&apos;) ||
+        (node instanceof Comment) ||
+        (node instanceof CData) ||
+        (node instanceof Tag);
+};
+
+/**
+ * Checks expression appliance to node
+ *
+ * @param {String} expr XPath-like expression part
+ * @param {String|Comment|Tag|*} node Node to test
+ * @returns {Boolean}
+ */
+/* jshint latedef:false */
+var is = xml.is = function(expr, node) {
+    return (expr === &apos;node()&apos; &amp;&amp; isNode(node)) ||
+        (expr === XML_TYPE.TEXT &amp;&amp; (typeof node === &apos;string&apos;)) ||
+        (expr === XML_TYPE.COMMENT &amp;&amp; (node instanceof Comment)) ||
+        (expr === XML_TYPE.CDATA &amp;&amp; (node instanceof CData)) ||
+        ((node instanceof Tag) &amp;&amp; (expr === &apos;*&apos; || expr === XML_TYPE.ELEMENT || expr === node.name));
+};
+
+/**
+ * @param {*} obj
+ * @returns {XML_TYPE.*}
+ */
+xml.getXMLType = function(obj) {
+    if (typeof obj === &apos;string&apos;) {
+        return XML_TYPE.TEXT;
+    } else if (typeof obj !== &apos;object&apos; || obj === null) {
+        return XML_TYPE.UNKNOWN;
+    } else if (obj instanceof Tag) {
+        return XML_TYPE.ELEMENT;
+    } else if (obj instanceof CData) {
+        return XML_TYPE.CDATA;
+    } else if (obj instanceof Comment) {
+        return XML_TYPE.COMMENT;
+    } else if (obj instanceof NodeSet) {
+        return XML_TYPE.NODESET;
+    }
+
+    return XML_TYPE.UNKNOWN;
+};
+
+module.exports = xml;
+/*eslint-enable */
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

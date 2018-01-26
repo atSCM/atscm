@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-transformer--em--class" data-ice="link">Using Transformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-partialtransformer--em--class" data-ice="link">Using PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-1--import--em-partialtransformer--em--class" data-ice="link">Step 1: Import PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-2--create-the--em-babeltransformer--em--class" data-ice="link">Step 2: Create the BabelTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-3--use--em-babeltransformer--em-" data-ice="link">Step 3: Use BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-4--implement--em-partialtransformer-shouldbetransformed--em-" data-ice="link">Step 4: Implement PartialTransformer#shouldBeTransformed</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-5--implement--em-transformer-transformfromfilesystem--em-" data-ice="link">Step 5: Implement Transformer#transformFromFilesystem</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-6--test--em-babeltransformer--em-" data-ice="link">Step 6: Test BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-7--implement--em-transformer-transformfromdb--em-" data-ice="link">Step 7: Implement Transformer#transformFromDB</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html" data-ice="link">Contributing</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#found-a-bug-" data-ice="link">Found a bug?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#missing-a-feature-" data-ice="link">Missing a feature?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submission-guidelines" data-ice="link">Submission Guidelines</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-an-issue" data-ice="link">Submitting an issue</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-a-pull-request--pr-" data-ice="link">Submitting a Pull Request (PR)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#code-quality-control" data-ice="link">Code quality control</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#setting-up-the-development-environment" data-ice="link">Setting up the development environment</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#linting-files" data-ice="link">Linting files</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#running-tests" data-ice="link">Running tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#creating-api-documentation" data-ice="link">Creating API documentation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-guideline" data-ice="link">Commit Message Guideline</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-format" data-ice="link">Commit message format</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#type" data-ice="link">Type</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#scope" data-ice="link">Scope</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#body" data-ice="link">Body</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#footer" data-ice="link">Footer</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-linting" data-ice="link">Commit message linting</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-6-0-beta-0--2017-12-19-" data-ice="link">0.6.0-beta.0 (2017-12-19)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-1--2017-12-18-" data-ice="link">0.4.1 (2017-12-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#reverts" data-ice="link">Reverts</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-0--2017-11-21-" data-ice="link">0.4.0 (2017-11-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-3-0--2017-05-08-" data-ice="link">0.3.0 (2017-05-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#reverts" data-ice="link">Reverts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-4--2017-04-05-" data-ice="link">0.2.4 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-3--2017-04-05-" data-ice="link">0.2.3 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-2--2017-03-20-" data-ice="link">0.2.2 (2017-03-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-1--2017-03-13-" data-ice="link">0.2.1 (2017-03-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-0--2017-03-08-" data-ice="link">0.2.0 (2017-03-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-2--2017-02-23-" data-ice="link">0.1.2 (2017-02-23)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-1--2017-02-22-" data-ice="link">0.1.1 (2017-02-22)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-0--2017-02-21-" data-ice="link">0.1.0 (2017-02-21)</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><p><a name="0.6.0-beta.0"></a></p>
+<h1 id="0-6-0-beta-0--2017-12-19-">0.6.0-beta.0 (2017-12-19)</h1><h3 id="features">Features</h3><ul>
+<li>Add <code>diff</code> task (<a href="https://github.com/atSCM/atscm/issues/84">#84</a>) (<a href="https://github.com/atSCM/atscm/commits/d2ca6f8">d2ca6f8</a>)</li>
+<li><strong>ci:</strong> Deploy beta releases even on failure (<a href="https://github.com/atSCM/atscm/issues/78">#78</a>) (<a href="https://github.com/atSCM/atscm/commits/ca1f571">ca1f571</a>)</li>
+<li><strong>ci:</strong> Deploy beta releases even on failure (<a href="https://github.com/atSCM/atscm/issues/78">#78</a>) (<a href="https://github.com/atSCM/atscm/commits/2180da4">2180da4</a>)</li>
+<li>Add <code>diff</code> task (<a href="https://github.com/atSCM/atscm/issues/84">#84</a>) (<a href="https://github.com/atSCM/atscm/commits/701919a">701919a</a>)</li>
+<li>Add <code>importXml</code> task (<a href="https://github.com/atSCM/atscm/issues/83">#83</a>) (<a href="https://github.com/atSCM/atscm/commits/6013e4b">6013e4b</a>)</li>
+<li>Add <code>importXml</code> task (<a href="https://github.com/atSCM/atscm/issues/83">#83</a>) (<a href="https://github.com/atSCM/atscm/commits/b558999">b558999</a>)</li>
+<li>change xml parser to maintain element order (<a href="https://github.com/atSCM/atscm/issues/82">#82</a>) (<a href="https://github.com/atSCM/atscm/commits/cb6f028">cb6f028</a>), closes <a href="https://github.com/atSCM/atscm/issues/46">#46</a></li>
+<li>change xml parser to maintain element order (<a href="https://github.com/atSCM/atscm/issues/82">#82</a>) (<a href="https://github.com/atSCM/atscm/commits/ba1b813">ba1b813</a>), closes <a href="https://github.com/atSCM/atscm/issues/46">#46</a></li>
+<li>Create and delete atvise server nodes (<a href="https://github.com/atSCM/atscm/issues/81">#81</a>) (<a href="https://github.com/atSCM/atscm/commits/d2e826e">d2e826e</a>)</li>
+<li>Create and delete atvise server nodes (<a href="https://github.com/atSCM/atscm/issues/81">#81</a>) (<a href="https://github.com/atSCM/atscm/commits/52242d1">52242d1</a>)</li>
+<li>Store type definitions to files (<a href="https://github.com/atSCM/atscm/issues/71">#71</a>) (<a href="https://github.com/atSCM/atscm/commits/823e1fb">823e1fb</a>)</li>
+<li>Store type definitions to files (<a href="https://github.com/atSCM/atscm/issues/71">#71</a>) (<a href="https://github.com/atSCM/atscm/commits/6d95627">6d95627</a>)</li>
+</ul>
+<p><a name="0.4.1"></a></p>
+<h2 id="0-4-1--2017-12-18-">0.4.1 (2017-12-18)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>gh-pages:</strong> Fix typo (<a href="https://github.com/atSCM/atscm/commits/9d1b1f4">9d1b1f4</a>)</li>
+</ul>
+<h3 id="reverts">Reverts</h3><ul>
+<li>chore(release): Release 0.5.0 [ci skip] (<a href="https://github.com/atSCM/atscm/commits/794b5dd">794b5dd</a>)</li>
+</ul>
+<p><a name="0.4.0"></a></p>
+<h1 id="0-4-0--2017-11-21-">0.4.0 (2017-11-21)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>AtviseFile:</strong> Add encoding for byte strings (<a href="https://github.com/atSCM/atscm/issues/72">#72</a>) (<a href="https://github.com/atSCM/atscm/commits/9cd9a60">9cd9a60</a>), closes <a href="https://github.com/atSCM/atscm/issues/62">#62</a></li>
+<li><strong>ci:</strong> Deploy master and beta only (<a href="https://github.com/atSCM/atscm/commits/1f38ea1">1f38ea1</a>)</li>
+<li><strong>docs:</strong> Document deployment process (<a href="https://github.com/atSCM/atscm/issues/67">#67</a>) (<a href="https://github.com/atSCM/atscm/commits/998e195">998e195</a>)</li>
+<li><strong>init:</strong> Do not escape author field in package.json (<a href="https://github.com/atSCM/atscm/issues/55">#55</a>) (<a href="https://github.com/atSCM/atscm/commits/160fffc">160fffc</a>), closes <a href="https://github.com/atSCM/atscm/issues/52">#52</a></li>
+<li><strong>watch:</strong> Warn if <code>src</code> directory does not exist (<a href="https://github.com/atSCM/atscm/commits/1bb0d75">1bb0d75</a>)</li>
+<li><strong>watch:</strong> Warn if <code>src</code> directory does not exist (<a href="https://github.com/atSCM/atscm/commits/2992025">2992025</a>), closes <a href="https://github.com/atSCM/atscm/issues/47">#47</a></li>
+<li>Add Int64 variable support (<a href="https://github.com/atSCM/atscm/issues/76">#76</a>) (<a href="https://github.com/atSCM/atscm/commits/b2a583e">b2a583e</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li>Override project configuration with <code>ATSCM_PROJECT</code> env variables (<a href="https://github.com/atSCM/atscm/commits/8798d4e">8798d4e</a>)</li>
+<li><strong>ci:</strong> Automated release (<a href="https://github.com/atSCM/atscm/issues/65">#65</a>) (<a href="https://github.com/atSCM/atscm/commits/dcf48b7">dcf48b7</a>)</li>
+<li><strong>debugging:</strong> Generate source maps for generated files (<a href="https://github.com/atSCM/atscm/issues/69">#69</a>) (<a href="https://github.com/atSCM/atscm/commits/369db82">369db82</a>)</li>
+</ul>
+<p><a name="0.3.0"></a></p>
+<h1 id="0-3-0--2017-05-08-">0.3.0 (2017-05-08)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>mapping:</strong> Handle dirnames that contain multiple dots (<a href="https://github.com/atSCM/atscm/issues/43">#43</a>) (<a href="https://github.com/atSCM/atscm/commits/710fa4f">710fa4f</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>transformer:</strong> Use existing gulp plugins to implement custom transformers (<a href="https://github.com/atSCM/atscm/issues/49">#49</a>) (<a href="https://github.com/atSCM/atscm/commits/a6a3f71">a6a3f71</a>)</li>
+<li><strong>Transformer:</strong> Stream based transformers (<a href="https://github.com/atSCM/atscm/commits/96dfd58">96dfd58</a>)</li>
+</ul>
+<h3 id="reverts">Reverts</h3><ul>
+<li>Feature: Stream based transformers (<a href="https://github.com/atSCM/atscm/issues/40">#40</a>) (<a href="https://github.com/atSCM/atscm/commits/6180d83">6180d83</a>)</li>
+</ul>
+<p><a name="0.2.4"></a></p>
+<h2 id="0-2-4--2017-04-05-">0.2.4 (2017-04-05)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>init:</strong> Validate project name starts with a letter (<a href="https://github.com/atSCM/atscm/issues/36">#36</a>) (<a href="https://github.com/atSCM/atscm/commits/1364828">1364828</a>), closes <a href="https://github.com/atSCM/atscm/issues/35">#35</a></li>
+</ul>
+<p><a name="0.2.3"></a></p>
+<h2 id="0-2-3--2017-04-05-">0.2.3 (2017-04-05)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>pull:</strong> Invalid extensions for some help nodes under atvise server v3.1.0 (<a href="https://github.com/atSCM/atscm/issues/34">#34</a>) (<a href="https://github.com/atSCM/atscm/commits/9bc0ba5">9bc0ba5</a>), closes <a href="https://github.com/atSCM/atscm/issues/30979901f57add197b769cc2f0cf2f1896ac05">#30979901f57add197b769cc2f0cf2f1896ac05</a></li>
+</ul>
+<p><a name="0.2.2"></a></p>
+<h2 id="0-2-2--2017-03-20-">0.2.2 (2017-03-20)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>DisplayTransformer:</strong> Link dependencies with <code>xlink:href</code> attribute (<a href="https://github.com/atSCM/atscm/commits/0974c07">0974c07</a>), closes <a href="https://github.com/atSCM/atscm/issues/30">#30</a></li>
+<li><strong>logging:</strong> Use windows-friendly stdout stream (<a href="https://github.com/atSCM/atscm/commits/f8d91a5">f8d91a5</a>)</li>
+<li><strong>mapping:</strong> Replace invalid data type for html help documents (<a href="https://github.com/atSCM/atscm/commits/6344853">6344853</a>)</li>
+<li><strong>NodeStream:</strong> Replace invalid error message on timeout (<a href="https://github.com/atSCM/atscm/commits/5b9368b">5b9368b</a>)</li>
+<li><strong>Pull/PushStream:</strong> Clear line only when written before (<a href="https://github.com/atSCM/atscm/commits/8137eea">8137eea</a>)</li>
+<li><strong>Session:</strong> Fixes an issue where currently opening session are not closed (<a href="https://github.com/atSCM/atscm/commits/4d31d6a">4d31d6a</a>)</li>
+<li><strong>tasks:</strong> Prevent clearing unused lines when using log level &lt; 3 (<a href="https://github.com/atSCM/atscm/commits/c8f26b1">c8f26b1</a>)</li>
+<li><strong>Transformer:</strong> Incorrect depth handling in #inspect (<a href="https://github.com/atSCM/atscm/commits/65a0de1">65a0de1</a>)</li>
+<li><strong>watchForChanges:</strong> Prevent multiple callback calls on multiple errors (<a href="https://github.com/atSCM/atscm/commits/9eee5c2">9eee5c2</a>)</li>
+<li><strong>WriteStream:</strong> Warn if files are open in atvise builder (<a href="https://github.com/atSCM/atscm/issues/31">#31</a>) (<a href="https://github.com/atSCM/atscm/commits/98dcf83">98dcf83</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>mapping:</strong> Support files without extension (<a href="https://github.com/atSCM/atscm/commits/8c729a9">8c729a9</a>)</li>
+<li><strong>Stream:</strong> Add ability to keep session alive through the <code>keepSessionAlive</code> option (<a href="https://github.com/atSCM/atscm/commits/6118656">6118656</a>)</li>
+<li><strong>tasks:</strong> Better progress logging (<a href="https://github.com/atSCM/atscm/commits/bdca246">bdca246</a>)</li>
+<li><strong>XMLTransformer:</strong> Use OS-specific newline (<a href="https://github.com/atSCM/atscm/commits/87935f0">87935f0</a>)</li>
+</ul>
+<h3 id="performance-improvements">Performance Improvements</h3><ul>
+<li><strong>pull:</strong> Browse atvise server nodes in parallel (<a href="https://github.com/atSCM/atscm/commits/2c70013">2c70013</a>)</li>
+<li><strong>pull:</strong> Read atvise server nodes in parallel (<a href="https://github.com/atSCM/atscm/commits/5a34ef0">5a34ef0</a>)</li>
+<li><strong>watch:</strong> Subscribe to atvise server nodes in parallel (<a href="https://github.com/atSCM/atscm/commits/ededfd3">ededfd3</a>)</li>
+</ul>
+<p><a name="0.2.1"></a></p>
+<h2 id="0-2-1--2017-03-13-">0.2.1 (2017-03-13)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>mapping:</strong> Encode/decode UInt64 (<a href="https://github.com/atSCM/atscm/commits/0eef39e">0eef39e</a>), closes <a href="https://github.com/atSCM/atscm/issues/26">#26</a></li>
+<li><strong>mapping:</strong> Fix invalid rc path for array varaiables (<a href="https://github.com/atSCM/atscm/commits/7cda5bb">7cda5bb</a>), closes <a href="https://github.com/atSCM/atscm/issues/25">#25</a></li>
+<li><strong>NodeStream:</strong> Use &quot;maxRetries&quot; option (<a href="https://github.com/atSCM/atscm/commits/42aae0d">42aae0d</a>)</li>
+<li><strong>push:</strong> Prevent memory leak inside <code>glob-stream</code> (<a href="https://github.com/atSCM/atscm/commits/c487a6f">c487a6f</a>)</li>
+<li><strong>ScriptTransformer:</strong> Handle invalid results (<a href="https://github.com/atSCM/atscm/commits/b80be42">b80be42</a>), closes <a href="https://github.com/atSCM/atscm/issues/24">#24</a></li>
+<li><strong>ScriptTransformer:</strong> Warn on empty document (<a href="https://github.com/atSCM/atscm/commits/a0b88df">a0b88df</a>), closes <a href="https://github.com/atSCM/atscm/issues/24">#24</a></li>
+<li><strong>Session:</strong> Resolve with closing session (<a href="https://github.com/atSCM/atscm/commits/7677aba">7677aba</a>)</li>
+<li><strong>tasks:</strong> Prevent node-opcua from logging to console (<a href="https://github.com/atSCM/atscm/issues/27">#27</a>) (<a href="https://github.com/atSCM/atscm/commits/e6c892d">e6c892d</a>)</li>
+<li><strong>test:</strong> Prevent opening to many sessions while testing (<a href="https://github.com/atSCM/atscm/commits/afd3300">afd3300</a>)</li>
+<li><strong>Watcher:</strong> Better error handling (<a href="https://github.com/atSCM/atscm/commits/32b6e6c">32b6e6c</a>)</li>
+<li><strong>Watcher:</strong> Emit error event if close fails (<a href="https://github.com/atSCM/atscm/commits/3be4ddc">3be4ddc</a>)</li>
+</ul>
+<h3 id="chores">Chores</h3><ul>
+<li><strong>release:</strong> Version 0.2.1-alpha.7 (<a href="https://github.com/atSCM/atscm/commits/734e87a">734e87a</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>NodeStream:</strong> Retry failing browse operations (<a href="https://github.com/atSCM/atscm/commits/2b61168">2b61168</a>)</li>
+<li>Cleanup open sessions before exitting (<a href="https://github.com/atSCM/atscm/commits/1818410">1818410</a>)</li>
+</ul>
+<h3 id="performance-improvements">Performance Improvements</h3><ul>
+<li><strong>push:</strong> Skip buffering source files (<a href="https://github.com/atSCM/atscm/commits/48991ed">48991ed</a>)</li>
+</ul>
+<h3 id="breaking-changes">BREAKING CHANGES</h3><ul>
+<li><strong>release:</strong> Requires atscm-cli version &gt;=0.2.0</li>
+</ul>
+<p><a name="0.2.0"></a></p>
+<h1 id="0-2-0--2017-03-08-">0.2.0 (2017-03-08)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li><strong>AtviseFile:</strong> Assign original array type (<a href="https://github.com/atSCM/atscm/commits/c95d6db">c95d6db</a>), closes <a href="https://github.com/atSCM/atscm/issues/18">#18</a></li>
+<li><strong>AtviseFile:</strong> Ignore leading and trailing whitespaces and newlines when encoding (<a href="https://github.com/atSCM/atscm/commits/269564a">269564a</a>), closes <a href="https://github.com/atSCM/atscm/issues/21">#21</a></li>
+<li><strong>MappingTransformer:</strong> Exclude directories from mapping (<a href="https://github.com/atSCM/atscm/commits/167ffe5">167ffe5</a>)</li>
+<li><strong>server~Client:</strong> Reject with Error (<a href="https://github.com/atSCM/atscm/commits/79a3355">79a3355</a>)</li>
+<li><strong>server~Watcher:</strong> Emit browse and subscribe errors (<a href="https://github.com/atSCM/atscm/commits/9b27533">9b27533</a>)</li>
+<li><strong>Syntax:</strong> Fix typo (<a href="https://github.com/atSCM/atscm/commits/fd6cfc1">fd6cfc1</a>)</li>
+<li><strong>test:</strong> Return unexpected Promises in XMLTransformer tests (<a href="https://github.com/atSCM/atscm/commits/0877e3c">0877e3c</a>)</li>
+<li><strong>test:</strong> Support empty mtime field (<a href="https://github.com/atSCM/atscm/commits/03909e1">03909e1</a>)</li>
+<li><strong>Transformer:</strong> Fixes an issue where Transformer#constructor throws with options not containing direction (<a href="https://github.com/atSCM/atscm/commits/022a9bd">022a9bd</a>)</li>
+<li><strong>transformers:</strong> Fixes an issue where Transformer#applyTransformers does not run all transformers (<a href="https://github.com/atSCM/atscm/commits/97c042f">97c042f</a>)</li>
+<li><strong>watch:</strong> Ignore value changes of nodes that were just pushed (<a href="https://github.com/atSCM/atscm/commits/7ccc546">7ccc546</a>), closes <a href="https://github.com/atSCM/atscm/issues/20">#20</a></li>
+<li><strong>watchers:</strong> Handle errors (<a href="https://github.com/atSCM/atscm/commits/13b076c">13b076c</a>)</li>
+<li><strong>WriteStream:</strong> Handle sync errors (<a href="https://github.com/atSCM/atscm/commits/5e0292e">5e0292e</a>)</li>
+<li><strong>XMLTransformer:</strong> Prevent double escaping in CDATA (<a href="https://github.com/atSCM/atscm/commits/246b5b5">246b5b5</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>AtviseFile:</strong> Add AtviseFile.read (<a href="https://github.com/atSCM/atscm/commits/dba5498">dba5498</a>)</li>
+<li><strong>AtviseFile:</strong> Normalize file mtime when created form ReadResult (<a href="https://github.com/atSCM/atscm/commits/bd55033">bd55033</a>)</li>
+<li><strong>AtviseFile:</strong> Store node timestamp as file mtime (<a href="https://github.com/atSCM/atscm/commits/84e2c2a">84e2c2a</a>)</li>
+<li><strong>exports:</strong> Export Transformer class (<a href="https://github.com/atSCM/atscm/commits/af0d288">af0d288</a>), closes <a href="https://github.com/atSCM/atscm/issues/13">#13</a></li>
+<li><strong>mapping:</strong> Handle project ObjectTypes (<a href="https://github.com/atSCM/atscm/commits/5106a61">5106a61</a>)</li>
+<li><strong>mapping:</strong> Support custom variable types (<a href="https://github.com/atSCM/atscm/commits/d7b48d7">d7b48d7</a>), closes <a href="https://github.com/atSCM/atscm/issues/12">#12</a></li>
+<li><strong>mapping:</strong> Support split files (<a href="https://github.com/atSCM/atscm/commits/e1a52fb">e1a52fb</a>)</li>
+<li><strong>Mapping:</strong> Store variables with <code>null</code> value (<a href="https://github.com/atSCM/atscm/commits/1a21d0f">1a21d0f</a>), closes <a href="https://github.com/atSCM/atscm/issues/17">#17</a></li>
+<li><strong>ReadStream:</strong> Store node timestamp as file mtime (<a href="https://github.com/atSCM/atscm/commits/4b8ead4">4b8ead4</a>)</li>
+<li><strong>tasks:</strong> Add <code>watch</code> task (<a href="https://github.com/atSCM/atscm/commits/cf9c8f5">cf9c8f5</a>), closes <a href="https://github.com/atSCM/atscm/issues/11">#11</a></li>
+<li><strong>tasks:</strong> Add watchForFileChanges (<a href="https://github.com/atSCM/atscm/commits/2b2a913">2b2a913</a>)</li>
+<li><strong>tasks:</strong> Add watchForFileChanges gulp task (<a href="https://github.com/atSCM/atscm/commits/3345a25">3345a25</a>)</li>
+<li><strong>tasks:</strong> config: Better Transformer info (<a href="https://github.com/atSCM/atscm/commits/36031e9">36031e9</a>)</li>
+<li><strong>tasks:</strong> Implement server node watcher (<a href="https://github.com/atSCM/atscm/commits/3104c43">3104c43</a>)</li>
+<li><strong>tasks:</strong> Implement server node watcher (<a href="https://github.com/atSCM/atscm/commits/41cef52">41cef52</a>)</li>
+<li><strong>tasks:</strong> Use <a href="https://www.browsersync.io">browser-sync</a> to reload browser on change (<a href="https://github.com/atSCM/atscm/commits/e4d5740">e4d5740</a>)</li>
+<li><strong>transformer:</strong> Use Transformers in tasks (<a href="https://github.com/atSCM/atscm/commits/09f97bf">09f97bf</a>), closes <a href="https://github.com/atSCM/atscm/issues/10">#10</a></li>
+<li>Add AtviseFile#isScript and #isQuickDynamic helpers (<a href="https://github.com/atSCM/atscm/commits/16a4dbe">16a4dbe</a>)</li>
+<li><strong>transformers:</strong> Add <code>DisplayTransformer</code> (<a href="https://github.com/atSCM/atscm/commits/585303d">585303d</a>), closes <a href="https://github.com/atSCM/atscm/issues/9">#9</a></li>
+<li><strong>transformers:</strong> Implement DisplayTransformer (<a href="https://github.com/atSCM/atscm/commits/193c9e7">193c9e7</a>), closes <a href="https://github.com/atSCM/atscm/issues/15">#15</a></li>
+<li><strong>transformers:</strong> Implement DisplayTransformer (<a href="https://github.com/atSCM/atscm/commits/ccbe02b">ccbe02b</a>), closes <a href="https://github.com/atSCM/atscm/issues/8">#8</a></li>
+<li><strong>transformers:</strong> SplittingTransformer now loads missing required files (<a href="https://github.com/atSCM/atscm/commits/615cb73">615cb73</a>)</li>
+<li><strong>XMLTransformer:</strong> Support forced CDATA (<a href="https://github.com/atSCM/atscm/commits/0cb1634">0cb1634</a>)</li>
+<li><strong>XMLTransformer:</strong> Wrap in CDATA (<a href="https://github.com/atSCM/atscm/commits/5583410">5583410</a>)</li>
+</ul>
+<p><a name="0.1.2"></a></p>
+<h2 id="0-1-2--2017-02-23-">0.1.2 (2017-02-23)</h2><p><a name="0.1.1"></a></p>
+<h2 id="0-1-1--2017-02-22-">0.1.1 (2017-02-22)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li>Export NodeId (<a href="https://github.com/atSCM/atscm/issues/2">#2</a>) (<a href="https://github.com/atSCM/atscm/commits/6d9a5e6">6d9a5e6</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>tasks:</strong> Add push task (<a href="https://github.com/atSCM/atscm/commits/adc4b1a">adc4b1a</a>)</li>
+</ul>
+<h3 id="performance-improvements">Performance Improvements</h3><ul>
+<li><strong>mapping:</strong> Cache regular expressions (<a href="https://github.com/atSCM/atscm/commits/0daf35e">0daf35e</a>)</li>
+</ul>
+<p><a name="0.1.0"></a></p>
+<h1 id="0-1-0--2017-02-21-">0.1.0 (2017-02-21)</h1></div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
