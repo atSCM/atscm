@@ -1,4 +1,5 @@
 import Logger from 'gulplog';
+import sortJSON from 'sort-json';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
@@ -95,7 +96,9 @@ export default class ScriptTransformer extends XMLTransformer {
         code = code.toString();
 
         // Write config and script file
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+        configFile.contents = Buffer.from(
+          JSON.stringify(sortJSON(config), null, '  ')
+        );
         scriptFile.contents = Buffer.from(code);
 
         this.push(configFile);

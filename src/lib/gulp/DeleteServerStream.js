@@ -40,12 +40,28 @@ export default class DeleteFsStream {
     }, 1000);
 
     lineReader.on('line', line => {
-      const nodeId = line.indexOf('nodeId=') > -1 ? new NodeId(line.split('nodeId=')[1].trim()) :
-        new NodeId(line.trim());
+      const trimmedLine = line.trim();
+      const lineArray = trimmedLine.split('nodeId=');
+      let nodeString = '';
 
-      deleteNodeStream.write(nodeId);
+      if (lineArray.length > 1) {
+        nodeString = lineArray[1];
+
+        if (nodeString.indexOf(', nodeFilePath=') > -1) {
+          nodeString = nodeString.split(', nodeFilePath=')[0];
+        }
+      } else {
+        nodeString = trimmedLine;
+      }
+
+      if (nodeString) {
+        const nodeId = new NodeId(nodeString);
+
+        if (nodeString !== nodeId.filePath) {
+          deleteNodeStream.write(nodeId);
+        }
+      }
     });
-
 
     deleteNodeStream.on('drained', () => {
       deleteNodeStream._flush(() => {

@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
 import Logger from 'gulplog';
+import sortJSON from 'sort-json';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
@@ -31,90 +32,99 @@ export default class DisplayTransformer extends XMLTransformer {
         Logger.error(`Display ${file.nodeId}: Error parsing display content.`,
           'Check if display content is broken');
         callback(null);
-      } else if (xmlObj.children.length === 0 || xmlObj.children[0].name !== 'svg') {
-        Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
+      } else if (xmlObj.children.length === 0) {
+        Logger.error(`Display ${file.nodeId}: Xml object is empty`);
         callback(null);
       } else {
-        try {
-          let scriptFileAdded = false;
-          const config = { parameters: [], dependencies: [] };
-          const displayContent = xmlObj.children[0].children;
+        const rootSVG = xmlObj.find('svg').children[0];
 
-          const scriptFile = DisplayTransformer.splitFile(file, '.js');
-          const configFile = DisplayTransformer.splitFile(file, '.json');
-          const svgFile = DisplayTransformer.splitFile(file, '.svg');
+        if (rootSVG) {
+          try {
+            let scriptFileAdded = false;
+            const config = { parameters: [], dependencies: [] };
+            const displayContent = rootSVG.children;
 
-          // Filter for script tags in display
-          const scripts = displayContent.filter((tag, index) => {
-            if (tag.name === 'script') {
-              delete displayContent[index];
-              return true;
-            }
-            return false;
-          });
+            const scriptFile = DisplayTransformer.splitFile(file, '.js');
+            const configFile = DisplayTransformer.splitFile(file, '.json');
+            const svgFile = DisplayTransformer.splitFile(file, '.svg');
 
-          // Filter for metadata tags in display
-          const metadata = xmlObj.find('*/metadata').children;
-
-          // Extract JavaScript
-          scripts.map((script) => {
-            const attributes = script.attrs;
-
-            if (attributes.src || attributes['xlink:href']) {
-              config.dependencies.push(attributes.src || attributes['xlink:href']);
-            } else if (scriptFileAdded) {
-              Logger.warn(`Display ${file.nodeId}:`,
-                'atscm only supports one inline script per display');
-            } else {
-              scriptFileAdded = true;
-              scriptFile.contents = Buffer.from(script.toString());
-            }
-
-            return false;
-          });
-
-
-          // Extract display parameters
-          if (metadata.length > 0) {
-            const meta = metadata[0].children;
-            const nonParameterTags = [];
-
-            if (metadata.length > 1) {
-              Logger.warn(`Display ${file.nodeId}:`,
-                'atscm only supports one metadata tag per display');
-              metadata.splice(1, metadata.length);
-            }
-
-            meta.forEach(tag => {
-              if (tag.name === 'atv:parameter') {
-                config.parameters.push(tag.attrs);
-              } else {
-                nonParameterTags.push(tag);
+            // Filter for script tags in display
+            const scripts = displayContent.filter((tag, index) => {
+              if (tag.name === 'script') {
+                delete displayContent[index];
+                return true;
               }
+              return false;
             });
 
-            // overwrite meta data tag items, deleting items directly in metadata
-            // tag made serialize function ignore
-            // the remaining entries
-            metadata[0].children = nonParameterTags;
-          }
+            // Filter for metadata tags in display
+            const metadata = rootSVG.find('metadata').children;
 
-          configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+            // Extract JavaScript
+            scripts.map((script) => {
+              const attributes = script.attrs;
 
-          this.encodeContents(xmlObj, (encodeError, xmlString) => {
-            if (encodeError) {
-              Logger.error(`Display ${file.nodeId}: Could not encode svg file`);
-            } else {
-              svgFile.contents = Buffer.from(xmlString);
-              this.push(svgFile);
-              this.push(configFile);
-              this.push(scriptFile);
+              if (attributes.src || attributes['xlink:href']) {
+                config.dependencies.push(attributes.src || attributes['xlink:href']);
+              } else if (scriptFileAdded) {
+                Logger.warn(`Display ${file.nodeId}:`,
+                  'atscm only supports one inline script per display');
+              } else {
+                scriptFileAdded = true;
+                scriptFile.contents = Buffer.from(script.toString());
+              }
+
+              return false;
+            });
+
+
+            // Extract display parameters
+            if (metadata.length > 0) {
+              const meta = metadata[0].children;
+              const nonParameterTags = [];
+
+              if (metadata.length > 1) {
+                Logger.warn(`Display ${file.nodeId}:`,
+                  'atscm only supports one metadata tag per display');
+                metadata.splice(1, metadata.length);
+              }
+
+              meta.forEach(tag => {
+                if (tag.name === 'atv:parameter') {
+                  config.parameters.push(tag.attrs);
+                } else {
+                  nonParameterTags.push(tag);
+                }
+              });
+
+              // overwrite meta data tag items, deleting items directly in metadata
+              // tag made serialize function ignore
+              // the remaining entries
+              metadata[0].children = nonParameterTags;
             }
 
-            callback(null);
-          });
-        } catch (e) {
-          callback(e);
+            configFile.contents = Buffer.from(
+              JSON.stringify(sortJSON(config), null, '  ')
+            );
+
+            this.encodeContents(xmlObj, (encodeError, xmlString) => {
+              if (encodeError) {
+                Logger.error(`Display ${file.nodeId}: Could not encode svg file`);
+              } else {
+                svgFile.contents = Buffer.from(xmlString);
+                this.push(svgFile);
+                this.push(configFile);
+                this.push(scriptFile);
+              }
+
+              callback(null);
+            });
+          } catch (e) {
+            callback(e);
+          }
+        } else {
+          Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
+          callback(null);
         }
       }
     });
@@ -163,7 +173,7 @@ export default class DisplayTransformer extends XMLTransformer {
           const displayContent = xmlObj.children[0];
           const metadata = xmlObj.find('*/metadata');
           const parameters = config.parameters.reverse();
-          const dependencies = config.dependencies.reverse();
+          const dependencies = config.dependencies;
           const display = DisplayTransformer.combineFiles(
             Object.keys(files).map(ext => files[ext]),
             '.xml'
@@ -171,10 +181,15 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Insert parameters
           if (parameters && parameters.length > 0) {
-            const meta = metadata.children[0].children;
+            if (metadata.children[0]) {
+              const meta = metadata.children[0].children;
 
-            parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
-              param, metadata)));
+              parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
+                param, metadata)));
+            } else {
+              Logger.error(`Display ${svgFile.nodeId}: Metadata tag is missing.`,
+                'Can not append parameters');
+            }
           }
 
           // Insert dependencies

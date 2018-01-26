@@ -38,19 +38,29 @@ export default class DeleteFsStream {
     }, 1000);
 
     lineReader.on('line', line => {
-      const filePath = line.indexOf('nodeFilePath=') > -1 ?
-        line.split('nodeFilePath=')[1].split(', nodeId=')[0].trim() :
-        line.trim();
+      const trimmedLine = line.trim();
+      const lineArray = trimmedLine.split('nodeFilePath=');
+      let filePath = '';
 
-      const path = join(base, filePath);
+      if (lineArray.length > 1) {
+        filePath = lineArray[1];
+
+        if (filePath.indexOf(', nodeId=') > -1) {
+          filePath = filePath.split(', nodeId=')[0];
+        }
+      } else {
+        filePath = trimmedLine;
+      }
 
       processed++;
 
-      if (existsSync(path)) {
-        remove(path)
-          .catch(err => Logger.error(`Error removing file: '${path}', message: ${err.message}`));
-      } else {
-        Logger.error(`File '${path}' does not exist`);
+      if (filePath) {
+        const path = join(base, filePath);
+
+        if (existsSync(path)) {
+          remove(path)
+            .catch(err => Logger.error(`Error removing file: '${path}', message: ${err.message}`));
+        }
       }
     });
 
