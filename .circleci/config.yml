@@ -12,11 +12,30 @@ jobs:
           name: Installing npm dependencies
           command: npm install
       - run:
-          name: Resetting package-lock changes
-          command: git checkout -- package-lock.json
+          name: Setting up deployment environment
+          command: |
+            echo "Setting up git user"
+            git config --global user.email circleci@circleci && git config --global user.name CircleCI
+
+            echo "Logging in to npm"
+            echo "$NPM_TOKEN" > ~/.npmrc
       - run:
-          name: Preparing lockfile update
-          command: $(npm bin)/greenkeeper-lockfile-update
+          name: Handling package-lock changes
+          command: |
+            if git diff --exit-code package-lock.json; then
+              echo "package-lock did not change"
+            else
+              if [[ $CIRCLE_BRANCH = *"greenkeeper/"* ]]; then
+                echo "Committing package-lock changes"
+                git add package-lock.json
+                git commit -m 'chore(package): Update lockfile [ci skip]';
+              else
+                echo "Resetting package-lock changes"
+                git checkout -- package-lock.json
+              fi
+            fi
+
+            echo "Done"
       - save_cache:
           key: v1-npm-deps-{{ checksum "package-lock.json" }}
           paths:
@@ -47,7 +66,7 @@ jobs:
             MOCHA_FILE: ../reports/mocha.xml
           when: always
       - run:
-          name: Checking documentation for broken links (SKIPPED)
+          name: Checking documentation for broken links
           command: npm run test:docs
           when: always
 
@@ -76,16 +95,10 @@ jobs:
       - add_ssh_keys
       - deploy:
           name: Updating lockfile
-          command: $(npm bin)/greenkeeper-lockfile-upload
+          command: git push origin $CIRCLE_BRANCH
       - deploy:
           name: Deploy changes
           command: |
-            echo "Setting up git user"
-            git config --global user.email circleci@circleci && git config --global user.name CircleCI
-
-            echo "Logging in to npm"
-            echo "$NPM_TOKEN" > ~/.npmrc
-
             npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
 
             if [ $CIRCLE_BRANCH = 'master' ]; then
