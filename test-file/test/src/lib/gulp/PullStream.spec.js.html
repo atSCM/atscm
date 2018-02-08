@@ -154,9 +154,9 @@ describe(&apos;PullStream&apos;, function() {
     let logListener;
 
     beforeEach(() =&gt; {
-      StubTransformer.applyTransformers.reset();
-      readline.clearLine.reset();
-      readline.moveCursor.reset();
+      StubTransformer.applyTransformers.resetHistory();
+      readline.clearLine.resetHistory();
+      readline.moveCursor.resetHistory();
 
       if (logListener) {
         Logger.removeListener(&apos;info&apos;, logListener);

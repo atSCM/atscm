@@ -216,7 +216,7 @@ describe(&apos;NodeId&apos;, function() {
       stylize: spy(t =&gt; t),
     };
 
-    beforeEach(() =&gt; opts.stylize.reset());
+    beforeEach(() =&gt; opts.stylize.resetHistory());
 
     it(&apos;should return &quot;namespace value&quot;&apos;, function() {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;, 1);
