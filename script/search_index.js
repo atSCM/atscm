@@ -4789,19 +4789,19 @@ window.esdocSearchIndex = [
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua",
-    "http://node-opcua.github.io/api_doc/",
+    "http://node-opcua.github.io/api_doc/0.1.0/",
     "src/typedef/external/node-opcua.js~node-opcua",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~clientsession",
-    "http://node-opcua.github.io/api_doc/classes/ClientSession.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/ClientSession.html",
     "src/typedef/external/node-opcua.js~node-opcua~ClientSession",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~clientsubscription",
-    "http://node-opcua.github.io/api_doc/classes/ClientSubscription.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/ClientSubscription.html",
     "src/typedef/external/node-opcua.js~node-opcua~ClientSubscription",
     "external"
   ],
@@ -4813,31 +4813,31 @@ window.esdocSearchIndex = [
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~datavalue",
-    "http://node-opcua.github.io/api_doc/classes/DataValue.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/DataValue.html",
     "src/typedef/external/node-opcua.js~node-opcua~DataValue",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~nodeid",
-    "http://node-opcua.github.io/api_doc/classes/NodeId.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/NodeId.html",
     "src/typedef/external/node-opcua.js~node-opcua~NodeId",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~nodeidtype",
-    "http://node-opcua.github.io/api_doc/classes/NodeIdType.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/NodeIdType.html",
     "src/typedef/external/node-opcua.js~node-opcua~NodeIdType",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~opcuaclient",
-    "http://node-opcua.github.io/api_doc/classes/OPCUAClient.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/OPCUAClient.html",
     "src/typedef/external/node-opcua.js~node-opcua~OPCUAClient",
     "external"
   ],
   [
     "src/typedef/external/node-opcua.js~node-opcua~referencedescription",
-    "http://node-opcua.github.io/api_doc/classes/ReferenceDescription.html",
+    "http://node-opcua.github.io/api_doc/0.1.0/classes/ReferenceDescription.html",
     "src/typedef/external/node-opcua.js~node-opcua~ReferenceDescription",
     "external"
   ],
