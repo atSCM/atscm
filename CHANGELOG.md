@@ -1,3 +1,14 @@
+<a name="0.4.3"></a>
+## 0.4.3 (2018-02-08)
+
+
+### Bug Fixes
+
+* **docs:** Update links to node-opcua api docs ([#116](https://github.com/atSCM/atscm/issues/116)) ([a609adb](https://github.com/atSCM/atscm/commits/a609adb))
+
+
+
+
 <a name="0.4.2"></a>
 ## 0.4.2 (2017-12-19)
 
