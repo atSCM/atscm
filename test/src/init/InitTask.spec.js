@@ -49,9 +49,9 @@ describe('InitTask', function() {
   }
 
   beforeEach(() => {
-    srcSpy.reset();
-    destSpy.reset();
-    handlebarsSpy.reset();
+    srcSpy.resetHistory();
+    destSpy.resetHistory();
+    handlebarsSpy.resetHistory();
   });
 
   /** @test {InitTask.filesToHandle} */
