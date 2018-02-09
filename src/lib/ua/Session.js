@@ -1,8 +1,8 @@
 import Emitter from 'events';
 import { StatusCodes, ClientSession } from 'node-opcua';
 import Logger from 'gulplog';
-import Client from './Client';
 import ProjectConfig from '../../config/ProjectConfig';
+import Client from './Client';
 
 /**
  * The global EventEmitter used to emit events.
@@ -81,7 +81,7 @@ export default class Session {
   /**
    * Closes the given session.
    * @param {node-opcua~ClientSession} session The session to close.
-   * @param {Boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
+   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
    * rejected with the error that occured while closing.
    */

@@ -6,6 +6,7 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/d9e5vi6a7ygisjsr?svg=true&pendingText=windows%20tests%20pending&passingText=windows%20tests%20passing&failingText=windows%20tests%20failing)](https://ci.appveyor.com/project/LukasHechenberger/atscm)
 [![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
 [![ESDoc](https://atscm.github.io/atscm/badge.svg)](https://atscm.github.io/atscm)
+[![Greenkeeper badge](https://badges.greenkeeper.io/atSCM/atscm.svg)](https://greenkeeper.io/)
 
 *atscm* is a [node.js](https://nodejs.org) based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:
 
@@ -25,7 +26,7 @@ This module can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli)
 <details>
 <summary><strong>Installing <i>atscm-cli</i></strong></summary>
 
- - Make sure [node.js](https://nodejs.org) (version 6 or later) is installed by running `node --version`.
+ - Make sure [node.js](https://nodejs.org) (version 8 or later) is installed by running `node --version`.
  - Make sure [npm](https://www.npmjs.com) is installed by running `npm --version`.
  - Run `npm install --global atscm-cli` to install *atscm-cli* globally. *You may have to run this command as an administrator.*
 

@@ -53,7 +53,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
-   * Returns the Transformer with the given direction
+   * Returns the Transformer with the given direction.
    * @param {TransformDirection} direction The direction to use.
    * @return {Transformer} Itself, to be chainable.
    * @throws {Error} Throws an error if the given direction is invalid.
@@ -71,7 +71,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * Calls {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}
    * based on the transformer's direction.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    * @throws {Error} Throws an error if the transformer has no valid direction.
@@ -90,7 +90,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * **Must be overridden by all subclasses:** Transforms the given chunk when using
    * {@link TransformDirection.FromDB}.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    */
@@ -102,7 +102,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * **Must be overridden by all subclasses:** Transforms the given chunk when using
    * {@link TransformDirection.FromFilesystem}.
    * @param {Object} chunk The chunk to transform.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
    * transforming or (optionally) the transformed object.
    */
@@ -146,9 +146,8 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   /**
    * Prints the transformer.
    * @param {?Number} depth The depth to inspect.
-   * @param {Object} options See https://nodejs.org/api/util.html#util_util_inspect_object_options
-   * for details
-   * @return {String} A string representation of the transformer.
+   * @param {Object} options See {@link util~inspect} for details.
+   * @return {string} A string representation of the transformer.
    */
   inspect(depth, options) {
     const newOptions = options;

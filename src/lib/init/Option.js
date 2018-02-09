@@ -9,7 +9,7 @@ export default class InitOption {
    * options.
    * @param {String|Object} messageOrOptions The message or options to use.
    * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.
-   * @param {String} messageOrOptions.message The option's message. Required if `messageOrOptions`
+   * @param {string} messageOrOptions.message The option's message. Required if `messageOrOptions`
    * is an object.
    * @param {String|Number} [messageOrOptions.default] The options's default value.
    * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.
@@ -77,7 +77,7 @@ export default class InitOption {
 
   /**
    * The default {@link inquirer~PromptType} to use. Equals 'input'.
-   * @return {inquirer~PromptType}
+   * @return {inquirer~PromptType} The default {@link inquirer~PromptType} to use.
    */
   static get DefaultType() {
     return 'input';

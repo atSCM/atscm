@@ -78,8 +78,8 @@ class CustomResourceType extends Type {
 class AtviseResourceType extends AtviseType {
   /**
    * Creates a new atvise resource type.
-   * @param {String} name The type's name.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} name The type's name.
+   * @param {string} identifier Atscm's identifier for the new type.
    */
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);

@@ -1,8 +1,8 @@
 import { readdir } from 'fs';
 import { extname, basename, join } from 'path';
 import Logger from 'gulplog';
+import AtviseFile from '../server/AtviseFile';
 import PartialTransformer from './PartialTransformer';
-import AtviseFile from '../mapping/AtviseFile';
 
 /**
  * Determines which files are needed to create a combined file and stores these files as long as
@@ -29,7 +29,7 @@ export class CombineFilesCache {
 
   /**
    * Returns the extensions of the missing files for the given `dirname`.
-   * @param {String} dirname The cache key to look for.
+   * @param {string} dirname The cache key to look for.
    * @return {String[]} Extensions of the missing files.
    */
   missingExtensions(dirname) {
@@ -118,7 +118,7 @@ export default class SplittingTransformer extends PartialTransformer {
    * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are
    * required files are cached.
    * @param {AtviseFile} file The read file.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while
    * caching files or creating the combined file or optionally the resulting combined file.
    */
@@ -158,7 +158,7 @@ export default class SplittingTransformer extends PartialTransformer {
   /**
    * Combines split files to a single one.
    * @param {vinyl~File[]} files The files to combine.
-   * @param {String} newExtension The extension the resulting file gets.
+   * @param {string} newExtension The extension the resulting file gets.
    * @return {vinyl~File} The resulting file.
    */
   static combineFiles(files, newExtension) {
@@ -226,4 +226,3 @@ export default class SplittingTransformer extends PartialTransformer {
   }
 
 }
-

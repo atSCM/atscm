@@ -30,6 +30,28 @@
 
 
 
+<a name="0.5.0"></a>
+# 0.5.0 (2018-02-09)
+
+
+### Features
+
+* Update nodejs to version 8 ([#125](https://github.com/atSCM/atscm/issues/125)) ([9455aaf](https://github.com/atSCM/atscm/commits/9455aaf))
+
+
+
+
+<a name="0.4.3"></a>
+## 0.4.3 (2018-02-08)
+
+
+### Bug Fixes
+
+* **docs:** Update links to node-opcua api docs ([#116](https://github.com/atSCM/atscm/issues/116)) ([a609adb](https://github.com/atSCM/atscm/commits/a609adb))
+
+
+
+
 <a name="0.4.2"></a>
 ## 0.4.2 (2017-12-19)
 
@@ -283,6 +305,3 @@
 
 <a name="0.1.0"></a>
 # 0.1.0 (2017-02-21)
-
-
-

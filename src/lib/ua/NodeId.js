@@ -33,10 +33,10 @@ export default class NodeId extends OpcNodeId {
    * Creates a new NodeId. Can be called in multiple ways:
    *  - with a {@link node-opcua~NodeIdType}, a value and a namespace (defaults to 0),
    *  - with a value only (type will be taken from it, namespace defaults to 1) or
-   *  - with a {@link NodeId}s string representation (e.g. `ns=1;s=AGENT.DISPLAYS`).
+   *  - with a {@link NodeId}s string representation (for example `ns=1;s=AGENT.DISPLAYS`).
    * @param {node-opcua~NodeIdType|String|Number} typeOrValue The type or value to use.
    * @param {(Number|String)} [value] The value to use.
-   * @param {Number} [namespace=1] The namespace to use.
+   * @param {number} [namespace=1] The namespace to use.
    */
   constructor(typeOrValue, value, namespace = 1) {
     if (!(Type.get(typeOrValue))) {
@@ -66,7 +66,7 @@ export default class NodeId extends OpcNodeId {
 
   /**
    * Creates a new NodeId based on a file path.
-   * @param {String} path The file path to use.
+   * @param {string} path The file path to use.
    * @return {NodeId} The resulting NodeId.
    */
   static fromFilePath(path) {
@@ -95,7 +95,7 @@ export default class NodeId extends OpcNodeId {
 
   /**
    * The node id's value, encoded to a file path.
-   * @type {String}
+   * @type {string}
    */
   get filePath() {
     const parts = this.value.split('RESOURCES');
@@ -128,12 +128,12 @@ export default class NodeId extends OpcNodeId {
 
 
   /**
-   * Returns a string in the format 'namespace value' that is printed when inspecting the NodeId
-   * using node.js's *util.inspect*.
+   * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
+   * using {@link util~inspect}.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
-   * @param {Number} depth The depth to inspect.
+   * @param {number} depth The depth to inspect.
    * @param {Object} options The options to use.
-   * @return {String} A string in the format 'namespace value'.
+   * @return {string} A string in the format "namespace value".
    */
   inspect(depth, options) {
     return [

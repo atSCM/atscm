@@ -13,7 +13,7 @@ export default class Atviseproject {
 
   /**
    * The atvise-server's host. Defaults to *localhost*.
-   * @type {String}
+   * @type {string}
    */
   static get host() {
     return defaults.host;
@@ -22,8 +22,8 @@ export default class Atviseproject {
   /**
    * The atvise-server ports to use.
    * @type {Object}
-   * @property {Number} [opc=4840] The OPC-UA port the atvise-server runs on.
-   * @property {Number} [http=80] The HTTP port the atvise-server can be reached at.
+   * @property {number} [opc=4840] The OPC-UA port the atvise-server runs on.
+   * @property {number} [http=80] The HTTP port the atvise-server can be reached at.
    */
   static get port() {
     return {
@@ -35,8 +35,8 @@ export default class Atviseproject {
   /**
    * The login to use. Return `false` if no login is required (default).
    * @type {Boolean|Object}
-   * @property {String} username The username to log in with.
-   * @property {String} password The password to log in with.
+   * @property {string} username The username to log in with.
+   * @property {string} password The password to log in with.
    */
   static get login() {
     return false;
@@ -44,7 +44,7 @@ export default class Atviseproject {
 
   /**
    * The source directory path.
-   * @type {String}
+   * @type {string}
    */
   static get RelativeSourceDirectoryPath() {
     return './src';
@@ -52,7 +52,7 @@ export default class Atviseproject {
 
   /**
    * The diff file path.
-   * @type {String}
+   * @type {string}
    */
   static get DiffFileName() {
     return 'diff.log';
@@ -73,7 +73,7 @@ export default class Atviseproject {
 
   /**
    * The xml resource directory path.
-   * @type {String}
+   * @type {string}
    */
   static get RelativeXmlResourcesPath() {
     return './node_modules/atscm/xml_resources/**/*.xml';
@@ -92,7 +92,7 @@ export default class Atviseproject {
 
   /**
    * The atvise-server nodes that atvise-scm should sync. Defaults to
-   * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM', 'ns=1;s=ObjectTypes.PROJECT']`
+   * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM', 'ns=1;s=ObjectTypes.PROJECT']`.
    * @type {String[]|NodeId[]}
    */
   static get nodes() {

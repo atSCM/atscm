@@ -11,7 +11,7 @@ export default class ScriptTransformer extends XMLTransformer {
   /**
    * Returns `true` for all files containing script code or quick dynamics.
    * @param {AtviseFile} file The file to check.
-   * @return {Boolean} `true` for all files containing script code or quick dynamics.
+   * @return {boolean} `true` for all files containing script code or quick dynamics.
    */
   shouldBeTransformed(file) {
     return file.isScript || file.isQuickDynamic;
@@ -19,9 +19,9 @@ export default class ScriptTransformer extends XMLTransformer {
 
   /**
    * Splits any read files containing scripts or quick dynamics into their JavaScript sources,
-   * alongside with a .json file containing parameters and metadata.
+   * alongside with a json file containing parameters and metadata.
    * @param {AtviseFile} file The script file to split.
-   * @param {String} enc The encoding used.
+   * @param {string} enc The encoding used.
    * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
    * while transforming the script, or the file passed through.
    */

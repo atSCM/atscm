@@ -26,7 +26,7 @@ function createCleanup(numberOfOpenSessions, closeOpenShouldFail) {
 describe('cleanup', function() {
   before(() => stub(process, 'kill'));
   after(() => process.kill.restore());
-  afterEach(() => process.kill.reset());
+  afterEach(() => process.kill.resetHistory());
 
   it('should call uninstall', function() {
     const uninstall = spy();

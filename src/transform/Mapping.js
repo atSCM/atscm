@@ -10,7 +10,7 @@ export default class MappingTransformer extends Transformer {
   /**
    * Writes an {@link AtviseFile} for each given {@link MappingItem}.
    * @param {MappingItem} mappingItem The mapping item to create the file for.
-   * @param {String} encoding The encoding used.
+   * @param {string} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
@@ -29,7 +29,7 @@ export default class MappingTransformer extends Transformer {
   /**
    * Writes an {@link AtviseFile} for each {@link vinyl~File} read.
    * @param {vinyl~File} file The raw file.
-   * @param {String} encoding The encoding used.
+   * @param {string} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
