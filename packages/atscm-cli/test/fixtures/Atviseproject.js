@@ -1,1 +1,1 @@
-module.exports.default = class TestProj {}
+module.exports.default = class TestProj {};

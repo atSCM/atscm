@@ -128,9 +128,9 @@ describe('InitCommand', function() {
         return expect(command.createEmptyPackage(path), 'to be fulfilled')
           .then(() => {
             let pkg;
+            // eslint-disable-next-line global-require
             expect(() => (pkg = require(join(path, 'package.json'))), 'not to throw');
             expect(pkg, 'to equal', {});
-
           });
       });
     });
@@ -257,7 +257,7 @@ describe('InitCommand', function() {
       const options = { test: 123 };
 
       return expect(command.writeFiles(stubModulePath, options),
-          'to be fulfilled')
+        'to be fulfilled')
         .then(() => {
           expect(initStub.default.calledOnce, 'to be', true);
           expect(initStub.default.lastCall.args[0], 'to be', options);
