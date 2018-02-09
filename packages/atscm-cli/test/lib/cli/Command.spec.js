@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import Command from '../../../src/lib/cli/Command';
 import Option from '../../../src/lib/cli/Option';
 
@@ -17,7 +16,7 @@ describe('Command', function() {
         minArguments: 1,
         maxArguments: 0,
       }, opts)), 'to throw error',
-        'options.maxArguments must not be less than options.minArguments');
+      'options.maxArguments must not be less than options.minArguments');
     });
 
     it('should store name, description and options', function() {

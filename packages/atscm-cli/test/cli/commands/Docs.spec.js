@@ -1,7 +1,7 @@
+import { join } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-import { join } from 'path';
 
 const openSpy = spy();
 const DocsCommand = proxyquire('../../../src/cli/commands/Docs', {
@@ -54,7 +54,7 @@ describe('DocsCommand', function() {
     it('should return local path if not remote option was passed', function() {
       const { address, isPath } = command.addressToOpen({
         options: {},
-        environment: { modulePath: '/path/to/package.json' }
+        environment: { modulePath: '/path/to/package.json' },
       });
 
       expect(address, 'to equal', join('/path/docs/api/index.html'));
@@ -64,7 +64,7 @@ describe('DocsCommand', function() {
     it('should return local path if remote option was set to false', function() {
       const { isPath } = command.addressToOpen({
         options: { remote: false },
-        environment: { modulePath: '/path/to/package.json' }
+        environment: { modulePath: '/path/to/package.json' },
       });
 
       expect(isPath, 'to equal', true);
@@ -73,7 +73,7 @@ describe('DocsCommand', function() {
     it('should return remote url if remote was set to true', function() {
       const { isPath } = command.addressToOpen({
         options: { remote: true },
-        environment: { modulePath: '/path/to/package.json' }
+        environment: { modulePath: '/path/to/package.json' },
       });
 
       expect(isPath, 'to equal', false);
@@ -82,7 +82,7 @@ describe('DocsCommand', function() {
     it('should return remote url if cli.env.modulePath is undefined', function() {
       const { isPath } = command.addressToOpen({
         options: { remote: true },
-        environment: {}
+        environment: {},
       });
 
       expect(isPath, 'to equal', false);
@@ -91,7 +91,7 @@ describe('DocsCommand', function() {
     it('should return local path if cli option was set', function() {
       const { isPath } = command.addressToOpen({
         options: { cli: true },
-        environment: {}
+        environment: {},
       });
 
       expect(isPath, 'to equal', true);
@@ -156,7 +156,7 @@ describe('DocsCommand', function() {
           return Promise.resolve((this.environment = {
             modulePath: '/path/to/package.json',
           }));
-        }
+        },
       };
 
       spy(cli, 'getEnvironment');

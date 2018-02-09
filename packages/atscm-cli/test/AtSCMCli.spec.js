@@ -2,7 +2,6 @@ import { join } from 'path';
 import expect from 'unexpected';
 import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
-
 import colors from 'chalk';
 import Liftoff from 'liftoff';
 import { LogFormat } from '../src/lib/util/Logger';
@@ -92,7 +91,7 @@ describe('AtSCMCli', function() {
       expect(process.env.ATSCM_PROJECT__TEST, 'to equal', '13');
 
       delete process.env.ATSCM_PROJECT__TEST;
-    })
+    });
   });
 
   /** @test {AtSCMCli#parseArguments} */

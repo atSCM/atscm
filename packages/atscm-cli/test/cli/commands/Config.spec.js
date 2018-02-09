@@ -1,7 +1,6 @@
 import { join } from 'path';
 import expect from 'unexpected';
 import { stub } from 'sinon';
-
 import ConfigCommand from '../../../src/cli/commands/Config';
 import Logger from '../../../src/lib/util/Logger';
 
