@@ -21,11 +21,13 @@ const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
   './NodeStream': {
     __esModule: true,
     default: class ServerStream extends throughStreamClass({ objectMode: true }) {
+
       constructor() {
         super();
 
         setTimeout(() => this.end(), 10);
       }
+
     },
   },
 }).default;
@@ -33,6 +35,7 @@ const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
 const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
   'node-opcua': {
     ClientSubscription: class StubClientSubscription extends Emitter {
+
       constructor() {
         super();
 
@@ -40,6 +43,7 @@ const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', 
 
         setTimeout(() => this.emit('failure', new Error('ClientSubscription failure')), 10);
       }
+
     },
   },
 }).SubscribeStream;
@@ -132,7 +136,8 @@ describe('SubscribeStream', function() {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
       stream.once('subscription-started', subscription => {
-        stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem(new Error('item error')));
+        stub(subscription, 'monitor')
+          .callsFake(() => new StubMonitoredItem(new Error('item error')));
       });
 
       return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);

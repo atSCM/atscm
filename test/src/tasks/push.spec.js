@@ -23,9 +23,11 @@ const push = proxyquire('../../../src/tasks/push', {
   '../lib/gulp/PushStream': {
     _esModule: true,
     default: class WStream {
+
       constructor(srcStream) {
         return srcStream;
       }
+
     },
   },
 }).default;

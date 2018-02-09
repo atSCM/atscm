@@ -1,7 +1,6 @@
+import { Stream } from 'stream';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
-
-import { Stream } from 'stream';
 import { ctor as throughStreamClass } from 'through2';
 import NodeId from '../../../src/lib/server/NodeId';
 
@@ -9,6 +8,7 @@ const pull = proxyquire('../../../src/tasks/pull', {
   '../lib/server/NodeStream': {
     _esModule: true,
     default: class StubStream extends throughStreamClass({ objectMode: true }) {
+
       constructor() {
         super();
 
@@ -19,14 +19,17 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
         this.end();
       }
+
     },
   },
   '../lib/gulp/PullStream': {
     _esModule: true,
     default: class PStream {
+
       constructor(readStream) {
         return readStream;
       }
+
     },
   },
 }).default;

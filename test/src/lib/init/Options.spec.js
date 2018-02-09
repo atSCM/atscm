@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import InitOption from '../../../../src/lib/init/Option';
 
 /** @test {InitOption} */
