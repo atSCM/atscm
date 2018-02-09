@@ -15,6 +15,7 @@ export default class CombinedNodeFile {
   /**
    * Creates a new CombinedNodeFile based on given atvise File.
    * @param {AtviseFile} file The file to add in first place.
+   * @param {boolean} createNodes If nodes should be created.
    */
   constructor(file, createNodes) {
     if (!checkType(file, AtviseFile) || !checkType(createNodes, Boolean)) {
@@ -97,8 +98,8 @@ export default class CombinedNodeFile {
 
   /**
    * Adds the given file to the combined file.
-   * @param{AtviseFile} file The file to add
-   * @return {Bool} file type was already added(=true) or not(=false)
+   * @param {AtviseFile} file The file to add.
+   * @return {Bool} file type was already added(=true) or not(=false).
    */
   addFile(file) {
     if (this.fileTypeWasAlreadyAdded(file)) {
@@ -115,9 +116,9 @@ export default class CombinedNodeFile {
   }
 
   /**
-   * checks if the given file type was already added
-   * @param{AtviseFile} file The file to add
-   * @return {Bool} file type was already added(=true) or not(=false)
+   * Checks if the given file type was already added.
+   * @param {AtviseFile} file The file to add.
+   * @return {Bool} File type was already added(=true) or not(=false)
    */
   fileTypeWasAlreadyAdded(file) {
     return file.isTypeDefinition ? checkType(this.typeDefinitionFile, AtviseFile) :

@@ -1,8 +1,8 @@
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer';
-import MappingTransformer from './Mapping';
 import BrowseStream from '../lib/pull/BrowseStream';
 import ReadStream from '../lib/pull/ReadStream';
+import MappingTransformer from './Mapping';
 
 /**
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s

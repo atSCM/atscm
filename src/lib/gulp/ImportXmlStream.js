@@ -56,8 +56,8 @@ export default class ImportXmlStream extends QueueStream {
   /**
    * Performs opcua method calls for the given call object configuration.
    * @param {vinyl~file} file The file being processed.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(file, handleErrors) {
     const callObj = this.createCallObject(file);
@@ -86,4 +86,3 @@ export default class ImportXmlStream extends QueueStream {
   }
 
 }
-

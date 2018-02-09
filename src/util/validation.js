@@ -10,12 +10,11 @@ function isUndefinedOrHasWrongType(item, type) {
 }
 
 /**
- * Checks if the given var or object is defined and has the correct base type
+ * Checks if the given var or object is defined and has the correct base type.
  * Works for Arrays and Scalar types.
- * @param {*} param The parameter to check
- * @param {*} type The base type of the given parameter
- * @return {boolean} parameter is valid(=true) or not(=false)
- * to ignore.
+ * @param {*} param The parameter to check.
+ * @param {*} type The base type of the given parameter.
+ * @return {boolean} Parameter is valid (=true) or not (=false) to ignore.
  */
 export default function checkType(param, type) {
   let isValid = true;

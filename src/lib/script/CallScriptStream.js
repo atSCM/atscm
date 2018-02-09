@@ -83,8 +83,8 @@ export default class CallScriptStream extends QueueStream {
    * Handles the node-opcua call script method callback.
    * @param {Error} err If the call throw an error or not.
    * @param {Array} results The result of the call.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    * @abstract
    */
   handleCallback(err, results, handleErrors) { // eslint-disable-line no-unused-vars
@@ -94,8 +94,8 @@ export default class CallScriptStream extends QueueStream {
   /**
    * Performs opcua method calls for the given call object configuration.
    * @param {*} chunk The chunk being processed.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(chunk, handleErrors) {
     const callObj = this.createCallObject(chunk);
@@ -116,4 +116,3 @@ export default class CallScriptStream extends QueueStream {
   }
 
 }
-

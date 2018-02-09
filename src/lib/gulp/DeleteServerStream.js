@@ -1,6 +1,6 @@
 import readline from 'readline';
-import Logger from 'gulplog';
 import { createReadStream } from 'fs';
+import Logger from 'gulplog';
 import DeleteNodeStream from '../delete/DeleteNodeStream';
 import NodeId from '../ua/NodeId';
 

@@ -3,6 +3,7 @@ import ProjectConfig from '../config/ProjectConfig';
 
 /**
  * Deletes listed atvise server nodes.
+ * @param {function()} callback Called once completed.
  */
 export default function deleteServer(callback) {
   return new DeleteServerStream({

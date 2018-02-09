@@ -61,8 +61,8 @@ export default class AddReferenceStream extends CallScriptStream {
    * Handles the call script methods callback.
    * @param {Array} results The result of the call.
    * @param {AtviseFile} referenceConfigFile The referenceConfig file to process.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   handleCallback(results, referenceConfigFile, handleErrors) {
     const nodeId = referenceConfigFile.nodeId;
@@ -88,4 +88,3 @@ export default class AddReferenceStream extends CallScriptStream {
   }
 
 }
-

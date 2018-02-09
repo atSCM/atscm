@@ -1,6 +1,6 @@
 import readline from 'readline';
-import Logger from 'gulplog';
 import { join } from 'path';
+import Logger from 'gulplog';
 import { remove, existsSync, createReadStream } from 'fs-extra';
 import ProjectConfig from '../../config/ProjectConfig';
 

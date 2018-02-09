@@ -10,10 +10,10 @@ export default class DiffItemStream extends QueueStream {
 
   /**
    * Creates a new DiffItemStream.
-   * @param {Object} The Options to use.
+   * @param {Object} options The options to use.
    */
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
 
     /**
      * The diff item cache
@@ -61,4 +61,3 @@ export default class DiffItemStream extends QueueStream {
   }
 
 }
-

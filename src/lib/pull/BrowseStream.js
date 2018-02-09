@@ -119,8 +119,8 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference should be mapped as content file or not.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @param{node-opcua~NodeId} nodeId The browsed nodeId
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
+   * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    * @return {boolean} reference should be mapped as content file(=true) or not(=false)
    */
   static shouldBeMappedAsContentFile(ref, nodeId) {
@@ -130,7 +130,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference should be mapped as atvise reference file.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
   static shouldBeMappedAsAtviseReferenceFile(ref) {
@@ -139,7 +139,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference should be mapped as type definition file or not.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {boolean} reference should be mapped as type definition(=true) or not(=false)
    */
   static shouldBeMappedAsTypeDefinitionFile(ref) {
@@ -148,8 +148,8 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference should be pushed to NodeStream input or not.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @param{node-opcua~NodeId} nodeId The browsed nodeId
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
+   * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    * @return {boolean} reference should be pushed(=true) or not(=false)
    */
   static shouldBeBrowsed(ref, nodeId) {
@@ -159,8 +159,8 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference points to a child node reference or not.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @param{node-opcua~NodeId} nodeId The browsed nodeId
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
+   * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    * @return {boolean} reference points to a child node(=true) or not(=false)
    */
   static isChildNodeRef(ref, nodeId) {
@@ -169,7 +169,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference is a object type definition.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
   static isBaseTypeRef(ref) {
@@ -178,7 +178,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference is a valid browse stream reference or not.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {boolean} reference is valid(=true) or not(=false)
    */
   static isValidRef(ref) {
@@ -188,7 +188,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Casts the nodeId object of the given reference description to a NodeId object.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to cast
+   * @param {node-opcua~ReferenceDescription} ref The reference description to cast.
    */
   static opcNodeIdToExpandedNodeId(ref) {
     // 'cast' reference nodeId to NodeId
@@ -206,7 +206,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference matches the defined browse Filters.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {boolean} reference matches browse filters(=true) or not(=false)
    */
   matchesFilter(ref) {
@@ -215,7 +215,7 @@ export default class BrowseStream extends QueueStream {
 
   /**
    * Checks if the given reference description is ignored.
-   * @param{node-opcua~ReferenceDescription} ref The reference description to check
+   * @param {node-opcua~ReferenceDescription} ref The reference description to check.
    * @return {boolean} The given reference description should be ignored(=true) or not(=false)
    */
   isIgnored(ref) {
@@ -229,10 +229,10 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Returns {MappingItem}s for the given browse node id.
+   * Returns {@link MappingItem}s for the given browse node id.
    * @param {NodeId} nodeId The node id to browse.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(nodeId, handleErrors) {
     // browses forward

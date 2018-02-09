@@ -1,5 +1,5 @@
-import SplittingTransformer from './SplittingTransformer';
 import { parse as xmlStringToObj, serialize as objToXmlString, xml } from '../xml/xamel';
+import SplittingTransformer from './SplittingTransformer';
 
 /**
  * Definition for default xml header

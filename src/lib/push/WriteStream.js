@@ -38,8 +38,8 @@ export default class WriteStream extends QueueStream {
    * Writes {@link CombinedNodeFile.ContentFile}'s values to the corresponding nodes on
    * the atvise server.
    * @param {CombinedNodeFile} combinedNodeFile The combined file to process.
-   * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
-   * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(combinedNodeFile, handleErrors) {
     const contentFile = combinedNodeFile.contentFile;

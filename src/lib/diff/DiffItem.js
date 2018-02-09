@@ -109,8 +109,8 @@ export default class DiffItem {
 
   /**
    * Adds the given file.
-   * @param{DiffFile} file The file to add
-   * @return {Bool} file type was already added(=true) or not(=false)
+   * @param {DiffFile} file The file to add.
+   * @return {Bool} file Type was already added(=true) or not(=false)
    */
   addFile(file) {
     if (this.fileTypeWasAlreadyAdded(file)) {
@@ -125,9 +125,9 @@ export default class DiffItem {
   }
 
   /**
-   * checks if the given file type was already added
-   * @param{DiffFile} file The file to add
-   * @return {Bool} file type was already added(=true) or not(=false)
+   * Checks if the given file type was already added.
+   * @param {DiffFile} file The file to add.
+   * @return {Bool} file Type was already added(=true) or not(=false).
    */
   fileTypeWasAlreadyAdded(file) {
     if (file.isServerFile) {

@@ -8,6 +8,7 @@ export default class DiffFile {
   /**
    * Creates a new DiffFile based on given {AtviseFile} and file type.
    * @param {AtviseFile} file The file to add in first place.
+   * @param {DiffFile.ItemType} fileType If given file is a fs resource or a atvise server resource.
    */
   constructor(file, fileType) {
     let fileValue = file.value;

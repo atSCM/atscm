@@ -10,6 +10,7 @@ export default class NodeFileStream extends QueueStream {
 
   /**
    * Creates a new NodeFileStream.
+   * @param {Object} options The options to use.
    */
   constructor(options = {}) {
     super();
@@ -77,4 +78,3 @@ export default class NodeFileStream extends QueueStream {
   }
 
 }
-

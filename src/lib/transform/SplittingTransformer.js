@@ -1,7 +1,7 @@
 import { readdir } from 'fs';
 import { extname, basename, join } from 'path';
 import Logger from 'gulplog';
-import AtviseFile from '../server/AtviseFile';
+import AtviseFile from '../mapping/AtviseFile';
 import PartialTransformer from './PartialTransformer';
 
 /**

@@ -6,8 +6,8 @@ import {
 } from 'node-opcua';
 import checkType from '../../util/validation';
 import NodeId from '../ua/NodeId';
-import MappingItem from './MappingItem';
 import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
+import MappingItem from './MappingItem';
 
 /**
  * Mapping item for node type definitions and other reference types
@@ -18,6 +18,8 @@ export default class InstanceReferenceItem extends MappingItem {
   /**
    * Creates a new InstanceReferenceItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
+   * @param {node-opcua~ReferenceDescription} references The reference description to use.
+   * @param {node-opcua~NodeId} itemTypeDefinition The node id to reference.
    */
   constructor(nodeId, references, itemTypeDefinition) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription) ||

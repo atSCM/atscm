@@ -1,6 +1,6 @@
-import { StatusCodes } from 'node-opcua';
 import { createWriteStream } from 'fs';
 import { dirname } from 'path';
+import { StatusCodes } from 'node-opcua';
 import QueueStream from '../stream/QueueStream';
 
 /**
@@ -12,7 +12,7 @@ export default class DiffResultStream extends QueueStream {
 
   /**
    * Creates a new DiffItemStream.
-   * @param {Object} The Options to use.
+   * @param {Object} options The options to use.
    * @param {String|Path|Buffer} [options.filePath] The diff files path.
    */
   constructor(options = {}) {
@@ -57,4 +57,3 @@ export default class DiffResultStream extends QueueStream {
   }
 
 }
-

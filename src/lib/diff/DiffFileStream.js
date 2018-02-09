@@ -10,7 +10,7 @@ export default class DiffFileStream extends QueueStream {
 
   /**
    * Creates a new DiffStream based on the given stream direction an some options.
-   * @param {Object} The Options to use.
+   * @param {Object} options The options to use.
    * @param {DiffFile.fileType} [options.fileType] The diff file type to create.
    */
   constructor(options = {}) {
@@ -53,4 +53,3 @@ export default class DiffFileStream extends QueueStream {
   }
 
 }
-

@@ -23,13 +23,12 @@ const InstanceNodeClasses = {
  * Contains a the node configuration of an atvise node including the type definition
  * and references
  */
-
 export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
 
   /**
    * Creates a new InstanceTypeDefinitionItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
-   * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription}
+   * @param {node-opcua~ReferenceDescription} references The {@link node-opcua~ReferenceDescription}
    * to create the type definition item for.
    */
   constructor(nodeId, references) {
@@ -41,10 +40,10 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
   }
 
   /**
-   * Returns a configuration object for the given {node-opcua~ReferenceDescription}.
+   * Returns a configuration object for the given {@link node-opcua~ReferenceDescription}.
    * @param {node-opcua~ReferenceDescription} ref The reference description to process.
-   * @param {NodeId} nodeId browsed nodeId
-   * @return {Object} The configuration object for the given reference
+   * @param {NodeId} nodeId The browsed nodeId.
+   * @return {Object} The configuration object for the given reference.
    */
   createRefConfig(ref, nodeId) { // eslint-disable-line no-unused-vars
     return {

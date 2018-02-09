@@ -1,11 +1,11 @@
-import Int64 from 'node-int64';
 import { readFile } from 'fs';
 import { dirname, join, relative } from 'path';
+import Int64 from 'node-int64';
 import { DataType, VariantArrayType, resolveNodeId, coerceLocalizedText } from 'node-opcua';
 import File from 'vinyl';
 import ProjectConfig from '../../config/ProjectConfig';
-import AtviseTypes from './Types';
 import NodeId from '../ua/NodeId';
+import AtviseTypes from './Types';
 
 /**
  * A map of AtviseTypes against their definition id's value.
@@ -128,7 +128,7 @@ const CreateNodeDecoder = {
  * Converts safely two uint32 array to an int64 number type.
  * @param {number} lowerRangeValue The value for the lower 32 bits of the int 64 value.
  * @param {number} higherRangeValue The value for the higher 32 bits of the int 64 value.
- * @returns {number} The resulting int64 value.
+ * @return {number} The resulting int64 value.
  */
 function uint32ArraysToInt64(lowerRangeValue, higherRangeValue) {
   const int64 = new Int64(lowerRangeValue, higherRangeValue);
