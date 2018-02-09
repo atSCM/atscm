@@ -10,7 +10,7 @@
 
 ## Installation
 
-This module can be installed via [npm](https://www.npmjs.com). With [node.js](https://nodejs.org/en/) **version 6 or later** installed run:
+This module can be installed via [npm](https://www.npmjs.com). With [node.js](https://nodejs.org/en/) **version 8 or later** installed run:
 
 ```bash
 # Install atscm-cli globally
