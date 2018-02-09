@@ -26,7 +26,7 @@ This module can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli)
 <details>
 <summary><strong>Installing <i>atscm-cli</i></strong></summary>
 
- - Make sure [node.js](https://nodejs.org) (version 6 or later) is installed by running `node --version`.
+ - Make sure [node.js](https://nodejs.org) (version 8 or later) is installed by running `node --version`.
  - Make sure [npm](https://www.npmjs.com) is installed by running `npm --version`.
  - Run `npm install --global atscm-cli` to install *atscm-cli* globally. *You may have to run this command as an administrator.*
 
