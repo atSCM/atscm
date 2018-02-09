@@ -97,9 +97,9 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">test/src/lib/server/Stream.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import proxyquire from &apos;proxyquire&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Stream as CoreStream } from &apos;stream&apos;;
+import proxyquire from &apos;proxyquire&apos;;
 import { spy } from &apos;sinon&apos;;
-import { Stream as CoreStream } from &apos;stream&apos;;
 import { ClientSession } from &apos;node-opcua&apos;;
 import expect from &apos;../../../expect&apos;;
 import Stream from &apos;../../../../src/lib/server/Stream&apos;;
@@ -130,9 +130,11 @@ describe(&apos;Stream&apos;, function() {
         &apos;./Session&apos;: {
           _esModule: true,
           default: class FailingSession {
+
             static create() {
               return Promise.reject(new Error(&apos;Failed&apos;));
             }
+
           },
         },
       }).default;

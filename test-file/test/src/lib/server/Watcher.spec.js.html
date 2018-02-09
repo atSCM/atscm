@@ -120,11 +120,13 @@ const StubWatcher = proxyquire(&apos;../../../../src/lib/server/Watcher&apos;, {
   &apos;./NodeStream&apos;: {
     __esModule: true,
     default: class ServerStream extends throughStreamClass({ objectMode: true }) {
+
       constructor() {
         super();
 
         setTimeout(() =&gt; this.end(), 10);
       }
+
     },
   },
 }).default;
@@ -132,6 +134,7 @@ const StubWatcher = proxyquire(&apos;../../../../src/lib/server/Watcher&apos;, {
 const FailingSubscribeStream = proxyquire(&apos;../../../../src/lib/server/Watcher&apos;, {
   &apos;node-opcua&apos;: {
     ClientSubscription: class StubClientSubscription extends Emitter {
+
       constructor() {
         super();
 
@@ -139,6 +142,7 @@ const FailingSubscribeStream = proxyquire(&apos;../../../../src/lib/server/Watch
 
         setTimeout(() =&gt; this.emit(&apos;failure&apos;, new Error(&apos;ClientSubscription failure&apos;)), 10);
       }
+
     },
   },
 }).SubscribeStream;
@@ -231,7 +235,8 @@ describe(&apos;SubscribeStream&apos;, function() {
       const nodeId = resolveNodeId(&apos;ns=1;s=AGENT.DISPLAYS.Main&apos;);
 
       stream.once(&apos;subscription-started&apos;, subscription =&gt; {
-        stub(subscription, &apos;monitor&apos;).callsFake(() =&gt; new StubMonitoredItem(new Error(&apos;item error&apos;)));
+        stub(subscription, &apos;monitor&apos;)
+          .callsFake(() =&gt; new StubMonitoredItem(new Error(&apos;item error&apos;)));
       });
 
       return expect([{ nodeId }], &apos;when piped through&apos;, stream, &apos;to error with&apos;, /item error/);

@@ -102,15 +102,12 @@ import { join, isAbsolute } from &apos;path&apos;;
 import expect from &apos;unexpected&apos;;
 import { spy } from &apos;sinon&apos;;
 import proxyquire from &apos;proxyquire&apos;;
-
 import { obj as createStream } from &apos;through2&apos;;
 import { src } from &apos;gulp&apos;;
 import handlebars from &apos;gulp-compile-handlebars&apos;;
 import { transform as babelTransform } from &apos;babel-core&apos;;
 import { transpileModule as tsTransform } from &apos;typescript&apos;;
-// import { compile as coffeeTransform } from &apos;coffee-script&apos;;
 import evaluate from &apos;eval&apos;;
-
 import pkg from &apos;../../../package.json&apos;;
 import { ConfigLangs } from &apos;../../../src/init/Options&apos;;
 import Atviseproject from &apos;../../../src/lib/config/Atviseproject&apos;;

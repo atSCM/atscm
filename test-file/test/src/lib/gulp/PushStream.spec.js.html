@@ -121,12 +121,14 @@ const PushStream = proxyquire(&apos;../../../../src/lib/gulp/PushStream&apos;, {
   &apos;../server/WriteStream&apos;: {
     _esModule: true,
     default: class WriteStream {
+
       constructor() {
         return Object.assign(createTransformStream(), {
           opsPerSecond: 13.2,
           _processed: 12,
         });
       }
+
     },
   },
   &apos;../transform/Transformer&apos;: {

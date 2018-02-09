@@ -204,7 +204,7 @@ describe(&apos;XMLTransformer&apos;, function() {
             ],
           },
         }, cb), &apos;to call the callback&apos;)
-          .then(args =&gt; expect(args[1], &apos;to end with&apos;, `&lt;svg&gt;
+        .then(args =&gt; expect(args[1], &apos;to end with&apos;, `&lt;svg&gt;
   &lt;script&gt;&lt;![CDATA[test()]]&gt;&lt;/script&gt;
 &lt;/svg&gt;`));
     });
@@ -218,8 +218,8 @@ describe(&apos;XMLTransformer&apos;, function() {
             ],
           },
         }, cb), &apos;to call the callback&apos;)
-          .then(args =&gt; expect(args[1], &apos;to contain&apos;,
-            &apos;&lt;script&gt;&lt;![CDATA[console.log(&quot;&lt;asdf&gt;&quot;)]]&gt;&lt;/script&gt;&apos;));
+        .then(args =&gt; expect(args[1], &apos;to contain&apos;,
+          &apos;&lt;script&gt;&lt;![CDATA[console.log(&quot;&lt;asdf&gt;&quot;)]]&gt;&lt;/script&gt;&apos;));
     });
   });
 });

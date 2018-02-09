@@ -283,25 +283,25 @@ window.esdocSearchIndex = [
   ],
   [
     "atvisefile#arraytype src/lib/server/atvisefile.js~atvisefile#arraytype,atvisefile#arraytype",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber321",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber322",
     "AtviseFile #arrayType",
     "test"
   ],
   [
     "atvisefile#clone src/lib/server/atvisefile.js~atvisefile#clone,atvisefile#clone",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber405",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber406",
     "AtviseFile #clone",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber406",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber407",
     "AtviseFile #clone should return a file again",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber413",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber414",
     "AtviseFile #clone should return file with the same array type",
     "test"
   ],
@@ -319,97 +319,97 @@ window.esdocSearchIndex = [
   ],
   [
     "atvisefile#datatype src/lib/server/atvisefile.js~atvisefile#datatype,atvisefile#datatype",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber316",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber317",
     "AtviseFile #dataType",
     "test"
   ],
   [
     "atvisefile#isdisplay src/lib/server/atvisefile.js~atvisefile#isdisplay,atvisefile#isdisplay",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber331",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber332",
     "AtviseFile #isDisplay",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber332",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber333",
     "AtviseFile #isDisplay should return true for AtviseFiles with correct TypeDefinition",
     "test"
   ],
   [
     "atvisefile#isscript src/lib/server/atvisefile.js~atvisefile#isscript,atvisefile#isscript",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber340",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber341",
     "AtviseFile #isScript",
     "test"
   ],
   [
     "atvisefile#isquickdynamic src/lib/server/atvisefile.js~atvisefile#isquickdynamic,atvisefile#isquickdynamic",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber349",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber350",
     "AtviseFile #isScript",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber350",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber351",
     "AtviseFile #isScript should return true for AtviseFiles with correct TypeDefinition",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber341",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber342",
     "AtviseFile #isScript should return true for AtviseFiles with correct TypeDefinition",
     "test"
   ],
   [
     "atvisefile#nodeid src/lib/server/atvisefile.js~atvisefile#nodeid,atvisefile#nodeid",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber392",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber393",
     "AtviseFile #nodeId",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber393",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber394",
     "AtviseFile #nodeId should keep extensions for resources",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber398",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber399",
     "AtviseFile #nodeId should remove extension for non-atvise types",
     "test"
   ],
   [
     "atvisefile#typedefinition src/lib/server/atvisefile.js~atvisefile#typedefinition,atvisefile#typedefinition",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber326",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber327",
     "AtviseFile #typeDefinition",
     "test"
   ],
   [
     "ativsefile#value ativsefile#value,ativsefile#value",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber358",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber359",
     "AtviseFile #value",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber371",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber372",
     "AtviseFile #value when used as getter",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber372",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber373",
     "AtviseFile #value when used as getter should return decodedValue",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber380",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber381",
     "AtviseFile #value when used as setter",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber381",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber382",
     "AtviseFile #value when used as setter should set encoded value as contents",
     "test"
   ],
@@ -529,673 +529,673 @@ window.esdocSearchIndex = [
   ],
   [
     "atvisefile.read src/lib/server/atvisefile.js~atvisefile.read,atvisefile.read",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber422",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber423",
     "AtviseFile .read",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber423",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber424",
     "AtviseFile .read should fail without path",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber427",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber428",
     "AtviseFile .read should forward read errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber433",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber434",
     "AtviseFile .read should return AtviseFile if read succeeds",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber293",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber294",
     "AtviseFile should call _getMetadata if not present",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber303",
+    "test-file/test/src/lib/server/AtviseFile.spec.js.html#lineNumber304",
     "AtviseFile should return stored value if present",
     "test"
   ],
   [
     "atviseproject src/lib/config/atviseproject.js~atviseproject,atviseproject",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber7",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber6",
     "Atviseproject",
     "test"
   ],
   [
     "atviseproject.editorrelatednodes src/lib/config/atviseproject.js~atviseproject.editorrelatednodes,atviseproject.editorrelatednodes",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber32",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber31",
     "Atviseproject .EditorRelatedNodes",
     "test"
   ],
   [
     "atviseproject.serverrelatednodes src/lib/config/atviseproject.js~atviseproject.serverrelatednodes,atviseproject.serverrelatednodes",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber37",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber36",
     "Atviseproject .ServerRelatedNodes",
     "test"
   ],
   [
     "atviseproject.editorrelatednodes src/lib/config/atviseproject.js~atviseproject.editorrelatednodes,atviseproject.editorrelatednodes",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber42",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber41",
     "Atviseproject .ignoreNodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber45",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber44",
     "Atviseproject .ignoreNodes should contain Atviseproject.EditorRelatedNodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber49",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber48",
     "Atviseproject .ignoreNodes should contain Atviseproject.ServerRelatedNodes",
     "test"
   ],
   [
     "atviseproject.inspect src/lib/config/atviseproject.js~atviseproject.inspect,atviseproject.inspect",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber55",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber54",
     "Atviseproject .inspect",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber56",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber55",
     "Atviseproject .inspect should return the properties to print",
     "test"
   ],
   [
     "atviseproject.login src/lib/config/atviseproject.js~atviseproject.login,atviseproject.login",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber15",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber14",
     "Atviseproject .login",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber16",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber15",
     "Atviseproject .login should default to false",
     "test"
   ],
   [
     "atviseproject.nodes src/lib/config/atviseproject.js~atviseproject.nodes,atviseproject.nodes",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber22",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber21",
     "Atviseproject .nodes",
     "test"
   ],
   [
     "atviseproject.nodestowatch src/lib/config/atviseproject.js~atviseproject.nodestowatch,atviseproject.nodestowatch",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber27",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber26",
     "Atviseproject .nodesToWatch",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber9",
+    "test-file/test/src/lib/config/Atviseproject.spec.js.html#lineNumber8",
     "Atviseproject should contain NodeIds",
     "test"
   ],
   [
     "client src/lib/server/client.js~client,client",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber38",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber37",
     "Client",
     "test"
   ],
   [
     "client.create src/lib/server/client.js~client.create,client.create",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber40",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber39",
     "Client .create",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber49",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber48",
     "Client .create should fail on connection timeout",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber53",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber52",
     "Client .create should fail when node-opcua encounters an error",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber45",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber44",
     "Client .create should fail with invalid host",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber41",
+    "test-file/test/src/lib/server/Client.spec.js.html#lineNumber40",
     "Client .create should return a OPCUAClient",
     "test"
   ],
   [
     "combinefilescache src/lib/transform/splittingtransformer.js~combinefilescache,combinefilescache",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber46",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber49",
     "CombineFilesCache",
     "test"
   ],
   [
     "combinefilescache#gotallfiles src/lib/transform/splittingtransformer.js~combinefilescache#gotallfiles,combinefilescache#gotallfiles",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber67",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber70",
     "CombineFilesCache #gotAllFiles",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber91",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber94",
     "CombineFilesCache #gotAllFiles should cache passed file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber68",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber71",
     "CombineFilesCache #gotAllFiles should forward readdir errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber102",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber105",
     "CombineFilesCache #gotAllFiles should pass all cached files if all required are present",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber75",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber78",
     "CombineFilesCache #gotAllFiles should store required files if missing",
     "test"
   ],
   [
     "combinefilescache#missingextensions src/lib/transform/splittingtransformer.js~combinefilescache#missingextensions,combinefilescache#missingextensions",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber48",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber51",
     "CombineFilesCache #missingExtensions",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber57",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber60",
     "CombineFilesCache #missingExtensions should return empty array if all required files are cached",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber49",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber52",
     "CombineFilesCache #missingExtensions should return extensions if required files are missing",
     "test"
   ],
   [
     "displaytransformer src/transform/displaytransformer.js~displaytransformer,displaytransformer",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber11",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber10",
     "DisplayTransformer",
     "test"
   ],
   [
     "displaytransformer#createcombinedfile src/transform/displaytransformer.js~displaytransformer#createcombinedfile,displaytransformer#createcombinedfile",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber206",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber205",
     "DisplayTransformer #createCombinedFile",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber314",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber313",
     "DisplayTransformer #createCombinedFile should create metadata section if omitted",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber238",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber237",
     "DisplayTransformer #createCombinedFile should fail with invalid SVG",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber226",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber225",
     "DisplayTransformer #createCombinedFile should fail with invalid config file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber232",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber231",
     "DisplayTransformer #createCombinedFile should fail without SVG file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber244",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber243",
     "DisplayTransformer #createCombinedFile should fail without `svg` tag",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber269",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber268",
     "DisplayTransformer #createCombinedFile should inline script",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber325",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber324",
     "DisplayTransformer #createCombinedFile should keep parameters specified in SVG",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber279",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber278",
     "DisplayTransformer #createCombinedFile should link dependencies",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber298",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber297",
     "DisplayTransformer #createCombinedFile should reuse existant metadata section",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber263",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber262",
     "DisplayTransformer #createCombinedFile should work with empty svg tag",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber289",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber288",
     "DisplayTransformer #createCombinedFile should work without empty parameters config",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber341",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber340",
     "DisplayTransformer #createCombinedFile when encoding fails",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber346",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber345",
     "DisplayTransformer #createCombinedFile when encoding fails should forward encode error",
     "test"
   ],
   [
     "displaytransformer#shouldbetransformed src/transform/displaytransformer.js~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber15",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
     "DisplayTransformer #shouldBeTransformed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber16",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber15",
     "DisplayTransformer #shouldBeTransformed should return false for non-display files",
     "test"
   ],
   [
     "displaytransformer#transformfromdb src/transform/displaytransformer.js~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber22",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber21",
     "DisplayTransformer #transformFromDB",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber50",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber49",
     "DisplayTransformer #transformFromDB should error with invalid xml",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber45",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber44",
     "DisplayTransformer #transformFromDB should forward parse errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber87",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber86",
     "DisplayTransformer #transformFromDB should store dependencies in config when referenced as \"src\"",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber98",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber97",
     "DisplayTransformer #transformFromDB should store dependencies in config when referenced as \"xlink:href\"",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber80",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber79",
     "DisplayTransformer #transformFromDB should store empty config for empty display",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber109",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber108",
     "DisplayTransformer #transformFromDB should store multiple dependencies in config",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber122",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber121",
     "DisplayTransformer #transformFromDB when display contains inline script",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber125",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber124",
     "DisplayTransformer #transformFromDB when display contains inline script should be stored when given with attributes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber134",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber133",
     "DisplayTransformer #transformFromDB when display contains inline script should be stored when given without attributes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber143",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber142",
     "DisplayTransformer #transformFromDB when display contains inline script should store empty inline scripts in separate file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber153",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber152",
     "DisplayTransformer #transformFromDB when display contains metadata",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber163",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber162",
     "DisplayTransformer #transformFromDB when display contains metadata should store parameters",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber154",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber153",
     "DisplayTransformer #transformFromDB when display contains metadata should work without parameters",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber193",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber192",
     "DisplayTransformer #transformFromDB when encoding fails",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber198",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber197",
     "DisplayTransformer #transformFromDB when encoding fails should forward encode error",
     "test"
   ],
   [
     "",
-    "test-file/test/src/Gulpfile.spec.js.html#lineNumber7",
+    "test-file/test/src/Gulpfile.spec.js.html#lineNumber6",
     "Gulpfile",
     "test"
   ],
   [
     "",
-    "test-file/test/src/Gulpfile.spec.js.html#lineNumber8",
+    "test-file/test/src/Gulpfile.spec.js.html#lineNumber7",
     "Gulpfile should export description for all tasks",
     "test"
   ],
   [
     "",
-    "test-file/test/src/Gulpfile.spec.js.html#lineNumber17",
+    "test-file/test/src/Gulpfile.spec.js.html#lineNumber16",
     "Gulpfile should register cleanupHandler",
     "test"
   ],
   [
     "initoption src/lib/init/option.js~initoption,initoption",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber6",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber5",
     "InitOption",
     "test"
   ],
   [
     "initoption#constructor src/lib/init/option.js~initoption#constructor,initoption#constructor",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber12",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber11",
     "InitOption #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber39",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber38",
     "InitOption #constructor when run with object",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber48",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber47",
     "InitOption #constructor when run with object should add `?` to message",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber52",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber51",
     "InitOption #constructor when run with object should set default type",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber56",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber55",
     "InitOption #constructor when run with object should store type, message, default and validate",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber44",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber43",
     "InitOption #constructor when run with object should throw error for empty message",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber40",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber39",
     "InitOption #constructor when run with object should throw error for missing message",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber13",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber12",
     "InitOption #constructor when run with string, string",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber30",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber29",
     "InitOption #constructor when run with string, string should add `?` to message",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber26",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber25",
     "InitOption #constructor when run with string, string should set default type",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber34",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber33",
     "InitOption #constructor when run with string, string should store default if given",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber14",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber13",
     "InitOption #constructor when run with string, string should throw error for empty message",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber18",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber17",
     "InitOption #constructor when run with string, string should work with message only",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber7",
+    "test-file/test/src/lib/init/Options.spec.js.html#lineNumber6",
     "InitOption should throw when run without arguments",
     "test"
   ],
   [
     "initoptions src/init/options.js~initoptions,initoptions",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber7",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber6",
     "InitOptions",
     "test"
   ],
   [
     "initoptions.atvisepassword initoptions.atvisepassword,initoptions.atvisepassword",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber24",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber23",
     "InitOptions .atvisePassword",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber25",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber24",
     "InitOptions .atvisePassword should only be asked if using login",
     "test"
   ],
   [
     "initoptions.atviseuser initoptions.atviseuser,initoptions.atviseuser",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber16",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber15",
     "InitOptions .atviseUser",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber17",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber16",
     "InitOptions .atviseUser should only be asked if using login",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber8",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber7",
     "InitOptions should contain InitOptions stored against names",
     "test"
   ],
   [
     "initoptionsasarray src/init/options.js~initoptionsasarray,initoptionsasarray",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber33",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber32",
     "InitOptionsAsArray",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/Options.spec.js.html#lineNumber34",
+    "test-file/test/src/init/Options.spec.js.html#lineNumber33",
     "InitOptionsAsArray should contain all InitOptions",
     "test"
   ],
   [
     "initoptionsvalidator src/init/optionsvalidator.js~initoptionsvalidator,initoptionsvalidator",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber6",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber5",
     "InitOptionsValidator",
     "test"
   ],
   [
     "initoptionsvalidator.name src/init/optionsvalidator.js~initoptionsvalidator.name,initoptionsvalidator.name",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber8",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber7",
     "InitOptionsValidator .name",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber9",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber8",
     "InitOptionsValidator .name should fail for empty names",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber35",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber34",
     "InitOptionsValidator .name should fail with blacklisted name",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber13",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber12",
     "InitOptionsValidator .name should fail with capital letters",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber31",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber30",
     "InitOptionsValidator .name should fail with core nodejs module name",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber26",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber25",
     "InitOptionsValidator .name should fail with leading or trailing spaces",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber39",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber38",
     "InitOptionsValidator .name should fail with names longer than 214 characters",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber21",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber20",
     "InitOptionsValidator .name should fail with names starting with . or _",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber17",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber16",
     "InitOptionsValidator .name should fail with non-url-safe characters",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber43",
+    "test-file/test/src/init/OptionsValidator.spec.js.html#lineNumber42",
     "InitOptionsValidator .name should work for valid package names",
     "test"
   ],
   [
     "inittask src/init/inittask.js~inittask,inittask",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber38",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber35",
     "InitTask",
     "test"
   ],
   [
     "inittask.filestohandle src/init/inittask.js~inittask.filestohandle,inittask.filestohandle",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber58",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber55",
     "InitTask .filesToHandle",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber59",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber56",
     "InitTask .filesToHandle should return array of absolute paths",
     "test"
   ],
   [
     "inittask.run src/init/inittask.js~inittask.run,inittask.run",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber68",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber65",
     "InitTask .run",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber124",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber121",
     "InitTask .run ",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber108",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber105",
     "InitTask .run ",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber69",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber66",
     "InitTask .run should handle all general files",
     "test"
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber88",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber85",
     "InitTask .run should not escape author field in package.json (#52)",
     "test"
   ],
@@ -1327,265 +1327,265 @@ window.esdocSearchIndex = [
   ],
   [
     "nodeid src/lib/server/nodeid.js~nodeid,nodeid",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber9",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber8",
     "NodeId",
     "test"
   ],
   [
     "nodeid#constructor src/lib/server/nodeid.js~nodeid#constructor,nodeid#constructor",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber14",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber13",
     "NodeId #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber65",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber64",
     "NodeId #constructor should extend node-opcua's NodeId",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber37",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber36",
     "NodeId #constructor when called with a nodeid string",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber46",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber45",
     "NodeId #constructor when called with a nodeid string should get identifierType from string",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber42",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber41",
     "NodeId #constructor when called with a nodeid string should get namespace from string",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber38",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber37",
     "NodeId #constructor when called with a nodeid string should work",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber54",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber53",
     "NodeId #constructor when called with type, value, namespace",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber59",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber58",
     "NodeId #constructor when called with type, value, namespace should set namespace to 1 if omitted",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber55",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber54",
     "NodeId #constructor when called with type, value, namespace should work",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber19",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber18",
     "NodeId #constructor when called with value only",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber32",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber31",
     "NodeId #constructor when called with value only should set indentifierType to number if number is passed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber28",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber27",
     "NodeId #constructor when called with value only should set indentifierType to string if string is passed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber24",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber23",
     "NodeId #constructor when called with value only should set namespace to 1",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber20",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber19",
     "NodeId #constructor when called with value only should work",
     "test"
   ],
   [
     "nodeid#filepath src/lib/server/nodeid.js~nodeid#filepath,nodeid#filepath",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber98",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber97",
     "NodeId #filePath",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber106",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber105",
     "NodeId #filePath should handle resource paths",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber99",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber98",
     "NodeId #filePath should return a valid file path",
     "test"
   ],
   [
     "nodeid#fromfilepath nodeid#fromfilepath,nodeid#fromfilepath",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber71",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber70",
     "NodeId #fromFilePath",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber72",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber71",
     "NodeId #fromFilePath should return a NodeId",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber76",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber75",
     "NodeId #fromFilePath should return file path again",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber89",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber88",
     "NodeId #fromFilePath should work with multi extension resource paths",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber82",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber81",
     "NodeId #fromFilePath should work with resource paths",
     "test"
   ],
   [
     "nodeid#inspect src/lib/server/nodeid.js~nodeid#inspect,nodeid#inspect",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber115",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber114",
     "NodeId #inspect",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber122",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber121",
     "NodeId #inspect should return \"namespace value\"",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber135",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber134",
     "NodeId #inspect should style numeric id as number",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber128",
+    "test-file/test/src/lib/server/NodeId.spec.js.html#lineNumber127",
     "NodeId #inspect should style string id as string",
     "test"
   ],
   [
     "nodestream src/lib/server/nodestream.js~nodestream,nodestream",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber14",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber16",
     "NodeStream",
     "test"
   ],
   [
     "nodestream#constructor src/lib/server/nodestream.js~nodestream#constructor,nodestream#constructor",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber18",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber20",
     "NodeStream #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber32",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber34",
     "NodeStream #constructor should create ignoredRexExp",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber19",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber21",
     "NodeStream #constructor should fail without nodesToBrowse",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber37",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber39",
     "NodeStream #constructor should listen to drained events",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber28",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber30",
     "NodeStream #constructor should store \"recursive\" option",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber23",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber25",
     "NodeStream #constructor should throw with invalid ignoreNodes",
     "test"
   ],
   [
     "nodestream#processchunk src/lib/server/nodestream.js~nodestream#processchunk,nodestream#processchunk",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber50",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber52",
     "NodeStream #processChunk",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber73",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber75",
     "NodeStream #processChunk should emit error with empty results",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber62",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber64",
     "NodeStream #processChunk should emit error without results",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber51",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber53",
     "NodeStream #processChunk should forward browse errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber119",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber121",
     "NodeStream #processChunk should not push discovered object nodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber100",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber102",
     "NodeStream #processChunk should not push ignored nodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber84",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber86",
     "NodeStream #processChunk should not push parent nodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber138",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber140",
     "NodeStream #processChunk should push discovered variable nodes",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber157",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber159",
     "NodeStream #processChunk should write discovered nodes if recursive",
     "test"
   ],
   [
     "nodestream#processerrormessage src/lib/server/nodestream.js~nodestream#processerrormessage,nodestream#processerrormessage",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber43",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber45",
     "NodeStream #processErrorMessage",
     "test"
   ],
@@ -1741,289 +1741,289 @@ window.esdocSearchIndex = [
   ],
   [
     "pushstream src/lib/gulp/pushstream.js~pushstream,pushstream",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber40",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber42",
     "PushStream",
     "test"
   ],
   [
     "pushstream#constructor src/lib/gulp/pushstream.js~pushstream#constructor,pushstream#constructor",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber42",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber44",
     "PushStream #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber63",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber65",
     "PushStream #constructor should apply transformers from db",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber83",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber85",
     "PushStream #constructor should print progress",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber55",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber57",
     "PushStream #constructor should return a stream",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber100",
+    "test-file/test/src/lib/gulp/PushStream.spec.js.html#lineNumber102",
     "PushStream #constructor should work without log listeners",
     "test"
   ],
   [
     "queuestream src/lib/server/queuestream.js~queuestream,queuestream",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber18",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber20",
     "QueueStream",
     "test"
   ],
   [
     "queuestream#_enqueuechunk src/lib/server/queuestream.js~queuestream#_enqueuechunk,queuestream#_enqueuechunk",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber156",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber158",
     "QueueStream #_enqueueChunk",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber166",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber168",
     "QueueStream #_enqueueChunk should add chunk to queue if maxParallel is reached",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber157",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber159",
     "QueueStream #_enqueueChunk should call _processChunk if allowed",
     "test"
   ],
   [
     "queuestream#_flush src/lib/server/queuestream.js~queuestream#_flush,queuestream#_flush",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber200",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber202",
     "QueueStream #_flush",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber213",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber215",
     "QueueStream #_flush should flush instantly if queue is empty",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber201",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber203",
     "QueueStream #_flush should wait for queue to drain",
     "test"
   ],
   [
     "queuestream#_processchunk src/lib/server/queuestream.js~queuestream#_processchunk,queuestream#_processchunk",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber114",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber116",
     "QueueStream #_processChunk",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber143",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber145",
     "QueueStream #_processChunk should emit error on invalid status",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber133",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber135",
     "QueueStream #_processChunk should emit errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber123",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber125",
     "QueueStream #_processChunk should emit processed-chunk event",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber115",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber117",
     "QueueStream #_processChunk should increase #_processing",
     "test"
   ],
   [
     "queuestream#_transform src/lib/server/queuestream.js~queuestream#_transform,queuestream#_transform",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber177",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber179",
     "QueueStream #_transform",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber186",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber188",
     "QueueStream #_transform should enqueue item once session is open",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber178",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber180",
     "QueueStream #_transform should wait for session to open",
     "test"
   ],
   [
     "queuestream#constructor src/lib/server/queuestream.js~queuestream#constructor,queuestream#constructor",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber20",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber22",
     "QueueStream #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber33",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber35",
     "QueueStream #constructor should listen for processed-chunk events",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber25",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber27",
     "QueueStream #constructor should store maxParallel option",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber29",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber31",
     "QueueStream #constructor should store start date",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber21",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber23",
     "QueueStream #constructor should work without options",
     "test"
   ],
   [
     "queuestream#haspending src/lib/server/queuestream.js~queuestream#haspending,queuestream#haspending",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber39",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber41",
     "QueueStream #hasPending",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber54",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber56",
     "QueueStream #hasPending should return false otherwise",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber40",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber42",
     "QueueStream #hasPending should return true if there are queued operations",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber47",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber49",
     "QueueStream #hasPending should return true if there are running operations",
     "test"
   ],
   [
     "queuestream#opspersecond src/lib/server/queuestream.js~queuestream#opspersecond,queuestream#opspersecond",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber84",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber86",
     "QueueStream #opsPerSecond",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber85",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber87",
     "QueueStream #opsPerSecond should return 0 right after creating the stream",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber89",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber91",
     "QueueStream #opsPerSecond should return the number of processed items after one second",
     "test"
   ],
   [
     "queuestream#processchunk src/lib/server/queuestream.js~queuestream#processchunk,queuestream#processchunk",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber106",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber108",
     "QueueStream #processChunk",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber107",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber109",
     "QueueStream #processChunk should throw if not overridden",
     "test"
   ],
   [
     "queuestream#processerrormessage src/lib/server/queuestream.js~queuestream#processerrormessage,queuestream#processerrormessage",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber99",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber101",
     "QueueStream #processErrorMessage",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber100",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber102",
     "QueueStream #processErrorMessage should throw if not overridden",
     "test"
   ],
   [
     "queuestream#processed src/lib/server/queuestream.js~queuestream#processed,queuestream#processed",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber74",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber76",
     "QueueStream #processed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber75",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber77",
     "QueueStream #processed should return the number of processed items",
     "test"
   ],
   [
     "queuestream#queueempty src/lib/server/queuestream.js~queuestream#queueempty,queuestream#queueempty",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber60",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber62",
     "QueueStream #queueEmpty",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber65",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber67",
     "QueueStream #queueEmpty should return false if there are queued operations",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber61",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber63",
     "QueueStream #queueEmpty should return true if not operations are queued",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber222",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber224",
     "QueueStream when chunk has been processed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber223",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber225",
     "QueueStream when chunk has been processed and queue is empty",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber224",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber226",
     "QueueStream when chunk has been processed and queue is empty should emit drained if not processing any items",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber233",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber235",
     "QueueStream when chunk has been processed and queue is empty should not emit drained if processing an items",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber244",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber246",
     "QueueStream when chunk has been processed and queue is not empty",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber245",
+    "test-file/test/src/lib/server/QueueStream.spec.js.html#lineNumber247",
     "QueueStream when chunk has been processed and queue is not empty should call _processChunk with queued chunk",
     "test"
   ],
@@ -2257,223 +2257,223 @@ window.esdocSearchIndex = [
   ],
   [
     "session src/lib/server/session.js~session,session",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber49",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber53",
     "Session",
     "test"
   ],
   [
     "session.close src/lib/server/session.js~session.close,session.close",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber116",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber120",
     "Session .close",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber167",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber171",
     "Session .close should do nothing if client is not connected",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber117",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber121",
     "Session .close should fail without session",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber181",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber185",
     "Session .close should forward other errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber192",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber196",
     "Session .close should forward other errors disconnecting client",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber121",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber125",
     "Session .close should return if session is already closed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber127",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber131",
     "Session .close should wait for session to close if already closing",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber142",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber146",
     "Session .close should warn if session does not exist",
     "test"
   ],
   [
     "session.closeopen src/lib/server/session.js~session.closeopen,session.closeopen",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber208",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber212",
     "Session .closeOpen",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber213",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber217",
     "Session .closeOpen should close open sessions",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber209",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber213",
     "Session .closeOpen should return if no sessions are open",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber219",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber223",
     "Session .closeOpen should wait for opening sessions to open before closing",
     "test"
   ],
   [
     "session.create src/lib/server/session.js~session.create,session.create",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber51",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber55",
     "Session .create",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber52",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber56",
     "Session .create should create a new ClientSession",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber100",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber104",
     "Session .create should emit \"all-open\" once all opening sessions are open",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber70",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber74",
     "Session .create should fail with invalid credentials",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber92",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber96",
     "Session .create should forward Client.create errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber96",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber100",
     "Session .create should forward non-login errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber61",
+    "test-file/test/src/lib/server/Session.spec.js.html#lineNumber65",
     "Session .create should store newly created session",
     "test"
   ],
   [
     "splittingtransformer src/lib/transform/splittingtransformer.js~splittingtransformer,splittingtransformer",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber120",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber123",
     "SplittingTransformer",
     "test"
   ],
   [
     "splittingtransformer#_flush src/lib/transform/splittingtransformer.js~splittingtransformer#_flush,splittingtransformer#_flush",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber210",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber213",
     "SplittingTransformer #_flush",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber242",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber245",
     "SplittingTransformer #_flush should forward read errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber211",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber214",
     "SplittingTransformer #_flush should just callback if no files are missing",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber220",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber223",
     "SplittingTransformer #_flush should push additional files if some are missing",
     "test"
   ],
   [
     "splittingtransformer#createcombinedfile src/lib/transform/splittingtransformer.js~splittingtransformer#createcombinedfile,splittingtransformer#createcombinedfile",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber122",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber125",
     "SplittingTransformer #createCombinedFile",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber123",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber126",
     "SplittingTransformer #createCombinedFile should throw if not overridden",
     "test"
   ],
   [
     "splittingtransformer#transformfromfilesystem src/lib/transform/splittingtransformer.js~splittingtransformer#transformfromfilesystem,splittingtransformer#transformfromfilesystem",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber130",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber133",
     "SplittingTransformer #transformFromFilesystem",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber142",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber145",
     "SplittingTransformer #transformFromFilesystem should cache display files",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber158",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber161",
     "SplittingTransformer #transformFromFilesystem should call #createCombinedFile if all required files are cached",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber131",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber134",
     "SplittingTransformer #transformFromFilesystem should forward cache errors",
     "test"
   ],
   [
     "splittingtransformer.combinefiles src/lib/transform/splittingtransformer.js~splittingtransformer.combinefiles,splittingtransformer.combinefiles",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber194",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber197",
     "SplittingTransformer .combineFiles",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber204",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber207",
     "SplittingTransformer .combineFiles should apply the new extension",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber200",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber203",
     "SplittingTransformer .combineFiles should return a file",
     "test"
   ],
   [
     "splittingtransformer.splitfile src/lib/transform/splittingtransformer.js~splittingtransformer.splitfile,splittingtransformer.splitfile",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber179",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber182",
     "SplittingTransformer .splitFile",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber188",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber191",
     "SplittingTransformer .splitFile should apply the new extension",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber184",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber187",
     "SplittingTransformer .splitFile should return a file",
     "test"
   ],
@@ -2491,13 +2491,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber63",
+    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber65",
     "Stream #constructor should be endable even if session was not opened yet",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber48",
+    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber50",
     "Stream #constructor should close session on end",
     "test"
   ],
@@ -2509,7 +2509,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber77",
+    "test-file/test/src/lib/server/Stream.spec.js.html#lineNumber79",
     "Stream #constructor should forward errors occurring while closing session",
     "test"
   ],
@@ -2527,493 +2527,493 @@ window.esdocSearchIndex = [
   ],
   [
     "subscribestream src/lib/server/watcher.js~subscribestream,subscribestream",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber48",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber52",
     "SubscribeStream",
     "test"
   ],
   [
     "subscribestream#_transform src/lib/server/watcher.js~subscribestream#_transform,subscribestream#_transform",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber188",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber193",
     "SubscribeStream #_transform",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber191",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber196",
     "SubscribeStream #_transform should call enqueue immediately if subscription started",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber205",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber210",
     "SubscribeStream #_transform should wait for subscription to start before calling enqueue",
     "test"
   ],
   [
     "subscribestream#constructor src/lib/server/watcher.js~subscribestream#constructor,subscribestream#constructor",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber50",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber54",
     "SubscribeStream #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber65",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber69",
     "SubscribeStream #constructor once session is opened",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber66",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber70",
     "SubscribeStream #constructor once session is opened should create subscription once session is opened",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber51",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber55",
     "SubscribeStream #constructor should apply keepSessionAlive option",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber58",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber62",
     "SubscribeStream #constructor should not track changes instantly",
     "test"
   ],
   [
     "subscribestream#createsubscription src/lib/server/watcher.js~subscribestream#createsubscription,subscribestream#createsubscription",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber79",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber83",
     "SubscribeStream #createSubscription",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber86",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber90",
     "SubscribeStream #createSubscription should emit `subscription-started`",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber80",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber84",
     "SubscribeStream #createSubscription should forward errors while creating subscription",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber92",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber96",
     "SubscribeStream #createSubscription should set subscription property",
     "test"
   ],
   [
     "subscribestream#processchunk src/lib/server/watcher.js~subscribestream#processchunk,subscribestream#processchunk",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber113",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber117",
     "SubscribeStream #processChunk",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber114",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber118",
     "SubscribeStream #processChunk should call ClientSubscription#monitor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber130",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber134",
     "SubscribeStream #processChunk should forward MonitoredItem errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber141",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber146",
     "SubscribeStream #processChunk should forward MonitoredItem errors when given as string",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber152",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber157",
     "SubscribeStream #processChunk should forward change events",
     "test"
   ],
   [
     "subscribestream#processerrormessage src/lib/server/watcher.js~subscribestream#processerrormessage,subscribestream#processerrormessage",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber104",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber108",
     "SubscribeStream #processErrorMessage",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber105",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber109",
     "SubscribeStream #processErrorMessage should contain node id",
     "test"
   ],
   [
     "transformer src/lib/transform/transformer.js~transformer,transformer",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber10",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber9",
     "Transformer",
     "test"
   ],
   [
     "transformer#_transform src/lib/transform/transformer.js~transformer#_transform,transformer#_transform",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber47",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber46",
     "Transformer #_transform",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber61",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber60",
     "Transformer #_transform should call transformFromDB with direction FromDB",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber67",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber66",
     "Transformer #_transform should call transformFromFilesystem with direction FromFilesystem",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber56",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber55",
     "Transformer #_transform should fail without direction",
     "test"
   ],
   [
     "transformer#constructor src/lib/transform/transformer.js~transformer#constructor,transformer#constructor",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber12",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber11",
     "Transformer #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber18",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber17",
     "Transformer #constructor should store direction",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber13",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber12",
     "Transformer #constructor should throw with invalid direction",
     "test"
   ],
   [
     "transformer#inspect src/lib/transform/transformer.js~transformer#inspect,transformer#inspect",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber143",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber142",
     "Transformer #inspect",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber144",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber143",
     "Transformer #inspect should return constructor name if depth is less than zero ",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber154",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber153",
     "Transformer #inspect should return options if depth is null",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber149",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber148",
     "Transformer #inspect should return options if depth is positive",
     "test"
   ],
   [
     "transformer#transformfromdb src/lib/transform/transformer.js~transformer#transformfromdb,transformer#transformfromdb",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber75",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber74",
     "Transformer #transformFromDB",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber78",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber77",
     "Transformer #transformFromDB should fail if not overridden",
     "test"
   ],
   [
     "transformer#transformfromfilesystem src/lib/transform/transformer.js~transformer#transformfromfilesystem,transformer#transformfromfilesystem",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber85",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber84",
     "Transformer #transformFromFilesytem",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber88",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber87",
     "Transformer #transformFromFilesytem should fail if not overridden",
     "test"
   ],
   [
     "transformer#withdirection src/lib/transform/transformer.js~transformer#withdirection,transformer#withdirection",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber25",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber24",
     "Transformer #withDirection",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber38",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber37",
     "Transformer #withDirection should return self with direction set",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber34",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber33",
     "Transformer #withDirection should throw with invalid direction",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber30",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber29",
     "Transformer #withDirection should throw without direction",
     "test"
   ],
   [
     "transformer.applytransformers src/lib/transform/transformer.js~transformer.applytransformers,transformer.applytransformers",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber95",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber94",
     "Transformer .applyTransformers",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber101",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber100",
     "Transformer .applyTransformers should return directed transformer if only one is passed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber110",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber109",
     "Transformer .applyTransformers should return last transformer piped to previous",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber123",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber122",
     "Transformer .applyTransformers should reverse transformers if called with \"FromFilesystem\"",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber96",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber95",
     "Transformer .applyTransformers should throw on invalid direction",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber136",
+    "test-file/test/src/lib/transform/Transformer.spec.js.html#lineNumber135",
     "Transformer .applyTransformers should work with empty array as argument",
     "test"
   ],
   [
     "watchtask src/tasks/watch.js~watchtask,watchtask",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber64",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber68",
     "WatchTask",
     "test"
   ],
   [
     "watchtask#_waitforwatcher src/tasks/watch.js~watchtask#_waitforwatcher,watchtask#_waitforwatcher",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber73",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber77",
     "WatchTask #_waitForWatcher",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber81",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber85",
     "WatchTask #_waitForWatcher should be fulfilled on ready",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber74",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber78",
     "WatchTask #_waitForWatcher should be rejected on error",
     "test"
   ],
   [
     "watchtask#constructor src/tasks/watch.js~watchtask#constructor,watchtask#constructor",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber66",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber70",
     "WatchTask #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber67",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber71",
     "WatchTask #constructor should create a new browser-sync instance",
     "test"
   ],
   [
     "watchtask#handlefilechange src/tasks/watch.js~watchtask#handlefilechange,watchtask#handlefilechange",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber139",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber151",
     "WatchTask #handleFileChange",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber140",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber152",
     "WatchTask #handleFileChange should not do anything when lately pulled files change",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber147",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber159",
     "WatchTask #handleFileChange should not do anything while pulling",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber155",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber167",
     "WatchTask #handleFileChange should push changed files",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber162",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber174",
     "WatchTask #handleFileChange should reload browser",
     "test"
   ],
   [
     "watchtask#handleserverchange src/tasks/watch.js~watchtask#handleserverchange,watchtask#handleserverchange",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber173",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber185",
     "WatchTask #handleServerChange",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber181",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber193",
     "WatchTask #handleServerChange should do nothing when handling node that was just pushed",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber174",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber186",
     "WatchTask #handleServerChange should do nothing while pushing",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber189",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber201",
     "WatchTask #handleServerChange should pull changed nodes",
     "test"
   ],
   [
     "watchtask#initbrowsersync src/tasks/watch.js~watchtask#initbrowsersync,watchtask#initbrowsersync",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber128",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber140",
     "WatchTask #initBrowserSync",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber129",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber141",
     "WatchTask #initBrowserSync should call BrowserSync#init",
     "test"
   ],
   [
     "watchtask#run src/tasks/watch.js~watchtask#run,watchtask#run",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber198",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber210",
     "WatchTask #run",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber199",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber211",
     "WatchTask #run should fail if file watcher errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber206",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber218",
     "WatchTask #run should fail if server watcher errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber213",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber225",
     "WatchTask #run should init browser sync",
     "test"
   ],
   [
     "watchtask#startfilewatcher src/tasks/watch.js~watchtask#startfilewatcher,watchtask#startfilewatcher",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber90",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber94",
     "WatchTask #startFileWatcher",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber107",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber119",
     "WatchTask #startFileWatcher should call #_waitForWatcher",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber91",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber95",
     "WatchTask #startFileWatcher should fail if directory does not exist",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber99",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber107",
     "WatchTask #startFileWatcher should fail if fs#stat fails",
     "test"
   ],
   [
     "watchtask#startserverwatcher src/tasks/watch.js~watchtask#startserverwatcher,watchtask#startserverwatcher",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber117",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber129",
     "WatchTask #startServerWatcher",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber118",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber130",
     "WatchTask #startServerWatcher should call #_waitForWatcher",
     "test"
   ],
   [
     "watcher src/lib/server/watcher.js~watcher,watcher",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber221",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber226",
     "Watcher",
     "test"
   ],
   [
     "watcher#close src/lib/server/watcher.js~watcher#close,watcher#close",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber281",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber286",
     "Watcher #close",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber282",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber287",
     "Watcher #close should forward errors",
     "test"
   ],
   [
     "watcher#constructor src/lib/server/watcher.js~watcher#constructor,watcher#constructor",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber223",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber228",
     "Watcher #constructor",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber232",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber237",
     "Watcher #constructor should emit ready event once subscribe stream finished",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber257",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber262",
     "Watcher #constructor should forward NodeStream errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber268",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber273",
     "Watcher #constructor should forward SubscribeStream errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber241",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber246",
     "Watcher #constructor should forward change events",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber224",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber229",
     "Watcher #constructor should work without arguments",
     "test"
   ],
@@ -3181,115 +3181,115 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/index.spec.js.html#lineNumber12",
+    "test-file/test/src/index.spec.js.html#lineNumber11",
     "atscm module",
     "test"
   ],
   [
     "atviseproject src/lib/config/atviseproject.js~atviseproject,atviseproject",
-    "test-file/test/src/index.spec.js.html#lineNumber14",
+    "test-file/test/src/index.spec.js.html#lineNumber13",
     "atscm module should export Atviseproject class",
     "test"
   ],
   [
     "displaytransformer src/transform/displaytransformer.js~displaytransformer,displaytransformer",
-    "test-file/test/src/index.spec.js.html#lineNumber44",
+    "test-file/test/src/index.spec.js.html#lineNumber43",
     "atscm module should export DisplayTransformer class",
     "test"
   ],
   [
     "nodeid src/lib/server/nodeid.js~nodeid,nodeid",
-    "test-file/test/src/index.spec.js.html#lineNumber19",
+    "test-file/test/src/index.spec.js.html#lineNumber18",
     "atscm module should export NodeId class",
     "test"
   ],
   [
     "partialtransformer src/lib/transform/partialtransformer.js~partialtransformer,partialtransformer",
-    "test-file/test/src/index.spec.js.html#lineNumber34",
+    "test-file/test/src/index.spec.js.html#lineNumber33",
     "atscm module should export PartialTransformer class",
     "test"
   ],
   [
     "scripttransformer src/transform/scripttransformer.js~scripttransformer,scripttransformer",
-    "test-file/test/src/index.spec.js.html#lineNumber49",
+    "test-file/test/src/index.spec.js.html#lineNumber48",
     "atscm module should export ScriptTransformer class",
     "test"
   ],
   [
     "splittingtransformer src/lib/transform/splittingtransformer.js~splittingtransformer,splittingtransformer",
-    "test-file/test/src/index.spec.js.html#lineNumber39",
+    "test-file/test/src/index.spec.js.html#lineNumber38",
     "atscm module should export SplittingTransformer class",
     "test"
   ],
   [
     "transformdirection src/lib/transform/transformer.js~transformdirection,transformdirection",
-    "test-file/test/src/index.spec.js.html#lineNumber29",
+    "test-file/test/src/index.spec.js.html#lineNumber28",
     "atscm module should export TransformDirection enum",
     "test"
   ],
   [
     "transformer src/lib/transform/transformer.js~transformer,transformer",
-    "test-file/test/src/index.spec.js.html#lineNumber24",
+    "test-file/test/src/index.spec.js.html#lineNumber23",
     "atscm module should export Transformer class",
     "test"
   ],
   [
     "cleanup src/util/cleanup.js~cleanup,cleanup",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber26",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber28",
     "cleanup",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber31",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber33",
     "cleanup should call uninstall",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber38",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber40",
     "cleanup when receiving SIGINT",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber39",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber41",
     "cleanup when receiving SIGINT should log \"Ctrl-C\"",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber49",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber51",
     "cleanup with open sessions",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber54",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber56",
     "cleanup with open sessions should call process.kill",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber62",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber64",
     "cleanup with open sessions should forward Session.closeOpen errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber50",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber52",
     "cleanup with open sessions should return false",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber71",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber73",
     "cleanup without open sessions",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber72",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber74",
     "cleanup without open sessions should return true",
     "test"
   ],
@@ -3313,25 +3313,25 @@ window.esdocSearchIndex = [
   ],
   [
     "pull src/tasks/pull.js~pull,pull",
-    "test-file/test/src/tasks/pull.spec.js.html#lineNumber35",
+    "test-file/test/src/tasks/pull.spec.js.html#lineNumber38",
     "pull",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/pull.spec.js.html#lineNumber36",
+    "test-file/test/src/tasks/pull.spec.js.html#lineNumber39",
     "pull should return a stream",
     "test"
   ],
   [
     "push src/tasks/push.js~push,push",
-    "test-file/test/src/tasks/push.spec.js.html#lineNumber34",
+    "test-file/test/src/tasks/push.spec.js.html#lineNumber36",
     "push",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/push.spec.js.html#lineNumber35",
+    "test-file/test/src/tasks/push.spec.js.html#lineNumber37",
     "push should return a stream",
     "test"
   ],
@@ -5149,25 +5149,25 @@ window.esdocSearchIndex = [
   ],
   [
     "watch src/tasks/watch.js~watch,watch",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber226",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber238",
     "watch",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber235",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber247",
     "watch should export a description",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber227",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber239",
     "watch should export a function",
     "test"
   ],
   [
     "",
-    "test-file/test/src/tasks/watch.spec.js.html#lineNumber231",
+    "test-file/test/src/tasks/watch.spec.js.html#lineNumber243",
     "watch should resolve once watchers are ready",
     "test"
   ]

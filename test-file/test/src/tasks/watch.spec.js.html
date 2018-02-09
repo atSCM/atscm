@@ -115,9 +115,11 @@ class TestEmitter extends Emitter {
 }
 
 class NoopStream {
+
   constructor(otherStream) {
     return otherStream.pipe(createThroughStream()).on(&apos;data&apos;, () =&gt; {});
   }
+
 }
 
 const stubGulp = {
@@ -149,7 +151,9 @@ const stubModule = proxyquire(&apos;../../../src/tasks/watch&apos;, {
   },
   &apos;../lib/server/Watcher&apos;: {
     default: class extends TestEmitter {
+
       constructor() { super(&apos;ready&apos;, 1); }
+
     },
   },
   &apos;../lib/gulp/PullStream&apos;: { default: NoopStream },
@@ -188,7 +192,11 @@ describe(&apos;WatchTask&apos;, function() {
   /** @test {WatchTask#startFileWatcher} */
   describe(&apos;#startFileWatcher&apos;, function() {
     it(&apos;should fail if directory does not exist&apos;, function() {
-      class FailingTask extends WatchTask { get directoryToWatch() { return &apos;./does-not-exist&apos;; } }
+      class FailingTask extends WatchTask {
+
+        get directoryToWatch() { return &apos;./does-not-exist&apos;; }
+
+      }
 
       const task = new FailingTask();
 
@@ -196,7 +204,11 @@ describe(&apos;WatchTask&apos;, function() {
     });
 
     it(&apos;should fail if fs#stat fails&apos;, function() {
-      class FailingTask extends WatchTask { get directoryToWatch() { return 13; } }
+      class FailingTask extends WatchTask {
+
+        get directoryToWatch() { return 13; }
+
+      }
 
       const task = new FailingTask();
 

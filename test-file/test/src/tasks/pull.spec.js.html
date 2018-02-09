@@ -97,10 +97,9 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">test/src/tasks/pull.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import expect from &apos;unexpected&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Stream } from &apos;stream&apos;;
+import expect from &apos;unexpected&apos;;
 import proxyquire from &apos;proxyquire&apos;;
-
-import { Stream } from &apos;stream&apos;;
 import { ctor as throughStreamClass } from &apos;through2&apos;;
 import NodeId from &apos;../../../src/lib/server/NodeId&apos;;
 
@@ -108,6 +107,7 @@ const pull = proxyquire(&apos;../../../src/tasks/pull&apos;, {
   &apos;../lib/server/NodeStream&apos;: {
     _esModule: true,
     default: class StubStream extends throughStreamClass({ objectMode: true }) {
+
       constructor() {
         super();
 
@@ -118,14 +118,17 @@ const pull = proxyquire(&apos;../../../src/tasks/pull&apos;, {
 
         this.end();
       }
+
     },
   },
   &apos;../lib/gulp/PullStream&apos;: {
     _esModule: true,
     default: class PStream {
+
       constructor(readStream) {
         return readStream;
       }
+
     },
   },
 }).default;

@@ -97,8 +97,8 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">test/src/lib/server/AtviseFile.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { stub } from &apos;sinon&apos;;
-import { Buffer } from &apos;buffer&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Buffer } from &apos;buffer&apos;;
+import { stub } from &apos;sinon&apos;;
 import File from &apos;vinyl&apos;;
 import { DataType, VariantArrayType } from &apos;node-opcua&apos;;
 import expect from &apos;../../../expect&apos;;
@@ -378,11 +378,12 @@ describe(&apos;AtviseFile&apos;, function() {
       expect(file._typeDefinition, &apos;to equal&apos;, new NodeId(&apos;VariableTypes.ATVISE.Display&apos;));
     });
 
-    it(&apos;should not get tripped up by multiple dots in dirname if filename has no extensions&apos;, function() {
-      const file = new AtviseFile({ path: &apos;dir.with.multiple.dots.display/file&apos; });
-      expect(() =&gt; file._getMetadata(), &apos;not to throw&apos;);
-      expect(file._typeDefinition, &apos;to equal&apos;, new NodeId(&apos;VariableTypes.ATVISE.Display&apos;));
-    });
+    it(&apos;should not get tripped up by multiple dots in dirname if filename has no extensions&apos;,
+      function() {
+        const file = new AtviseFile({ path: &apos;dir.with.multiple.dots.display/file&apos; });
+        expect(() =&gt; file._getMetadata(), &apos;not to throw&apos;);
+        expect(file._typeDefinition, &apos;to equal&apos;, new NodeId(&apos;VariableTypes.ATVISE.Display&apos;));
+      });
   });
 
   function testMetaGetter(name) {

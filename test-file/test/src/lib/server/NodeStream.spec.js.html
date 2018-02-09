@@ -104,9 +104,11 @@ import NodeStream from &apos;../../../../src/lib/server/NodeStream&apos;;
 import NodeId from &apos;../../../../src/lib/server/NodeId&apos;;
 
 class StubNodeStream extends NodeStream {
+
   _transform(chunk, enc, callback) {
     callback(null, chunk);
   }
+
 }
 
 /** @test {NodeStream} */

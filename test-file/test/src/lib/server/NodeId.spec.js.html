@@ -100,7 +100,6 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { join } from &apos;path&apos;;
 import expect from &apos;unexpected&apos;;
 import { spy } from &apos;sinon&apos;;
-
 import { NodeId as OpcNodeId } from &apos;node-opcua&apos;;
 import NodeId from &apos;../../../../src/lib/server/NodeId&apos;;
 
@@ -182,14 +181,14 @@ describe(&apos;NodeId&apos;, function() {
       expect(NodeId.fromFilePath(
         join(&apos;SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif&apos;)
       ).value,
-        &apos;to equal&apos;, &apos;SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif&apos;);
+      &apos;to equal&apos;, &apos;SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif&apos;);
     });
 
     it(&apos;should work with multi extension resource paths&apos;, function() {
       expect(NodeId.fromFilePath(
         join(&apos;SYSTEM/LIBRARY/PROJECT/RESOURCES/styles/bootstrap.min.css&apos;)
-        ).value,
-        &apos;to equal&apos;, &apos;SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css&apos;);
+      ).value,
+      &apos;to equal&apos;, &apos;SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css&apos;);
     });
   });
 
