@@ -1,3 +1,14 @@
+<a name="0.5.0"></a>
+# 0.5.0 (2018-02-09)
+
+
+### Features
+
+* Update nodejs to version 8 ([#125](https://github.com/atSCM/atscm/issues/125)) ([9455aaf](https://github.com/atSCM/atscm/commits/9455aaf))
+
+
+
+
 <a name="0.4.3"></a>
 ## 0.4.3 (2018-02-08)
 
