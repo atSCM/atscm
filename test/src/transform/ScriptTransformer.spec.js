@@ -186,7 +186,7 @@ describe('ScriptTransformer', function() {
           }), 'to call the callback')
             .then(args => transformerHelper.expectFileContents([args[1]]))
             .then(contents => expect(contents[0], 'to contain', '<visible>1</visible>')),
-          ]);
+        ]);
       });
 
       it('should insert title metadata', function() {
@@ -240,9 +240,11 @@ describe('ScriptTransformer', function() {
     context('when encoding fails', function() {
       it('should forward encode errors', function() {
         class FailingScriptTransformer extends ScriptTransformer {
+
           encodeContents(object, callback) {
             callback(new Error('Encode error'));
           }
+
         }
 
         const helper = new TransformerHelper(FailingScriptTransformer);

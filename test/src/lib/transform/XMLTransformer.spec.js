@@ -105,7 +105,7 @@ describe('XMLTransformer', function() {
             ],
           },
         }, cb), 'to call the callback')
-          .then(args => expect(args[1], 'to end with', `<svg>
+        .then(args => expect(args[1], 'to end with', `<svg>
   <script><![CDATA[test()]]></script>
 </svg>`));
     });
@@ -119,8 +119,8 @@ describe('XMLTransformer', function() {
             ],
           },
         }, cb), 'to call the callback')
-          .then(args => expect(args[1], 'to contain',
-            '<script><![CDATA[console.log("<asdf>")]]></script>'));
+        .then(args => expect(args[1], 'to contain',
+          '<script><![CDATA[console.log("<asdf>")]]></script>'));
     });
   });
 });

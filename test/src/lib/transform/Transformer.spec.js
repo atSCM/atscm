@@ -3,7 +3,6 @@ import { inspect } from 'util';
 import { stub } from 'sinon';
 import { obj as createStream } from 'through2';
 import expect from '../../../expect';
-
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 
 /** @test {Transformer} */

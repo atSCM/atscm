@@ -1,5 +1,5 @@
-import { stub } from 'sinon';
 import { Buffer } from 'buffer';
+import { stub } from 'sinon';
 import File from 'vinyl';
 import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
@@ -279,11 +279,12 @@ describe('AtviseFile', function() {
       expect(file._typeDefinition, 'to equal', new NodeId('VariableTypes.ATVISE.Display'));
     });
 
-    it('should not get tripped up by multiple dots in dirname if filename has no extensions', function() {
-      const file = new AtviseFile({ path: 'dir.with.multiple.dots.display/file' });
-      expect(() => file._getMetadata(), 'not to throw');
-      expect(file._typeDefinition, 'to equal', new NodeId('VariableTypes.ATVISE.Display'));
-    });
+    it('should not get tripped up by multiple dots in dirname if filename has no extensions',
+      function() {
+        const file = new AtviseFile({ path: 'dir.with.multiple.dots.display/file' });
+        expect(() => file._getMetadata(), 'not to throw');
+        expect(file._typeDefinition, 'to equal', new NodeId('VariableTypes.ATVISE.Display'));
+      });
   });
 
   function testMetaGetter(name) {

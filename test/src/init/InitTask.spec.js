@@ -3,15 +3,12 @@ import { join, isAbsolute } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-
 import { obj as createStream } from 'through2';
 import { src } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
 import { transform as babelTransform } from 'babel-core';
 import { transpileModule as tsTransform } from 'typescript';
-// import { compile as coffeeTransform } from 'coffee-script';
 import evaluate from 'eval';
-
 import pkg from '../../../package.json';
 import { ConfigLangs } from '../../../src/init/Options';
 import Atviseproject from '../../../src/lib/config/Atviseproject';

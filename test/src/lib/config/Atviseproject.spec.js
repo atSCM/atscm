@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import Atviseproject from '../../../../src/lib/config/Atviseproject';
 import NodeId from '../../../../src/lib/server/NodeId';
 
