@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import Option from '../../../src/lib/cli/Option';
 
 /** @test {Option} */
