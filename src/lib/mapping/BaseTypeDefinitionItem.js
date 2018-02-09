@@ -47,7 +47,7 @@ export default class BaseTypeDefinitionItem extends MappingItem {
 
   /**
    * `true` for read node mapping items.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get shouldBeRead() {
     return false;
@@ -55,7 +55,7 @@ export default class BaseTypeDefinitionItem extends MappingItem {
 
   /**
    * Returns a configuration object for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} ref The reference description to process
+   * @param {node-opcua~ReferenceDescription} ref The reference description to process.
    * @return {Object} The configuration object for the given reference
    */
   createRefConfigObj(ref) {
@@ -64,4 +64,5 @@ export default class BaseTypeDefinitionItem extends MappingItem {
       refNodeId: ref.typeDefinition.toString(),
     };
   }
+
 }

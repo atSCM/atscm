@@ -7,7 +7,7 @@ export default class DiffFile {
 
   /**
    * Creates a new DiffFile based on given {AtviseFile} and file type.
-   * @param {AtviseFile} file The file to add in first place
+   * @param {AtviseFile} file The file to add in first place.
    */
   constructor(file, fileType) {
     let fileValue = file.value;
@@ -67,7 +67,7 @@ export default class DiffFile {
 
 
   /**
-   * 'true' for {AtviseFiles}'s created from atvise server resources
+   * 'true' for {AtviseFiles}'s created from atvise server resources.
    * @type {Bool}
    */
   get isServerFile() {
@@ -75,7 +75,7 @@ export default class DiffFile {
   }
 
   /**
-   * 'true' for {AtviseFiles}'s created from file system resources
+   * 'true' for {AtviseFiles}'s created from file system resources.
    * @type {Bool}
    */
   get isFsFile() {
@@ -84,7 +84,7 @@ export default class DiffFile {
 
   /**
    * Returns an error message specifically for the given mapping item.
-   * @param {DiffFile.ItemType} fileType The fileType to check
+   * @param {DiffFile.ItemType} fileType The fileType to check.
    * @return {Bool} 'true' for valid item types.
    */
   static isValidFileType(fileType) {
@@ -93,4 +93,5 @@ export default class DiffFile {
       DiffFile.FileType.FsFile,
     ].includes(fileType);
   }
+
 }

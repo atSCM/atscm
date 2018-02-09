@@ -2,9 +2,10 @@ import { DataType } from 'node-opcua';
 import NodeId from '../ua/NodeId';
 
 class Type {
+
   /**
    * Creates a new type.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} identifier Atscm's identifier for the new type.
    * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
    * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
    * or `false` indicating if the extension should be kept.
@@ -40,13 +41,15 @@ class Type {
       }
     }
   }
+
 }
 
 class AtviseType extends Type {
+
   /**
    * Creates a new atvise type.
-   * @param {String} nodeIdValue The type's OPC-UA node id value.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} nodeIdValue The type's OPC-UA node id value.
+   * @param {string} identifier Atscm's identifier for the new type.
    * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
    * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
    * or `false` indicating if the extension should be kept.
@@ -55,13 +58,15 @@ class AtviseType extends Type {
     super(identifier, dataType, fileExtensionOrKeep);
     this.typeDefinition = new NodeId(`VariableTypes.ATVISE.${nodeIdValue}`);
   }
+
 }
 
 class CustomResourceType extends Type {
+
   /**
    * Creates a new custom resource type.
-   * @param {String} name The type's name.
-   * @param {String} identifier Atscm's identifier for the new type.
+   * @param {string} name The type's name.
+   * @param {string} identifier Atscm's identifier for the new type.
    * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
    * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
    * or `false` indicating if the extension should be kept.
@@ -70,12 +75,14 @@ class CustomResourceType extends Type {
     super(identifier, dataType, fileExtensionOrKeep);
     this.typeDefinition = new NodeId(`Custom.${name}`);
   }
+
 }
 
 /**
  * An atvise-related resource type.
  */
 class AtviseResourceType extends AtviseType {
+
   /**
    * Creates a new atvise resource type.
    * @param {string} name The type's name.
@@ -84,6 +91,7 @@ class AtviseResourceType extends AtviseType {
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
   }
+
 }
 
 /**

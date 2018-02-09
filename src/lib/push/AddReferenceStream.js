@@ -16,8 +16,9 @@ const AddReferencesScriptParameterName = 'paramObjString';
  * on the atvise server.
  */
 export default class AddReferenceStream extends CallScriptStream {
+
   /**
-   * Creates a new CreateNodeStream
+   * Creates a new CreateNodeStream.
    */
   constructor() {
     super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences'));
@@ -28,7 +29,7 @@ export default class AddReferenceStream extends CallScriptStream {
    * Returns an error message specifically for the given combined file.
    * @param {AtviseFile} referenceConfigFile The combined file to process
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(referenceConfigFile) {
     return `Error adding references:  ${referenceConfigFile.nodeId.toString()}`;
@@ -36,7 +37,7 @@ export default class AddReferenceStream extends CallScriptStream {
 
 
   /**
-   * Creates the parameter object for creating nodes
+   * Creates the parameter object for creating nodes.
    * @param {AtviseFile} referenceConfigFile The referenceConfig file to create the call
    * parameter object for.
    * @return {Object} The resulting parameter object.
@@ -57,9 +58,9 @@ export default class AddReferenceStream extends CallScriptStream {
 
 
   /**
-   * Handles the call script methods callback
-   * @param {Array} results The result of the call
-   * @param {AtviseFile} referenceConfigFile The referenceConfig file to process
+   * Handles the call script methods callback.
+   * @param {Array} results The result of the call.
+   * @param {AtviseFile} referenceConfigFile The referenceConfig file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
@@ -85,5 +86,6 @@ export default class AddReferenceStream extends CallScriptStream {
       handleErrors(null, StatusCodes.Good, done => done());
     }
   }
+
 }
 

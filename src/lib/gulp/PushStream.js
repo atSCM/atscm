@@ -16,7 +16,7 @@ export default class PushStream {
    * Creates a new PushSteam based on the given options.
    * @param {Object} options The stream configuration options.
    * @param {NodeId[]} [options.nodesToPush] The nodes to push.
-   * @param {Boolean} [options.createNodes] Defines if nodes shall be created or not.
+   * @param {boolean} [options.createNodes] Defines if nodes shall be created or not.
    */
   constructor(options = {}) {
     /**
@@ -39,7 +39,7 @@ export default class PushStream {
 
     this.printProgress = setInterval(() => {
       Logger.info(
-      `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
+        `Pushed: ${writeStream._processed} (${writeStream.opsPerSecond.toFixed(1)} ops/s)`
       );
 
       if (Logger.listenerCount('info') > 0) {
@@ -75,7 +75,7 @@ export default class PushStream {
   }
 
   /**
-   * Stops the print progress when push stream has finished and stops the push task process
+   * Stops the print progress when push stream has finished and stops the push task process.
    */
   endStream() {
     if (Logger.listenerCount('info') > 0) {
@@ -85,4 +85,5 @@ export default class PushStream {
 
     clearInterval(this.printProgress);
   }
+
 }

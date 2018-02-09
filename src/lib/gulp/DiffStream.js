@@ -43,7 +43,7 @@ export default class DiffStream {
       .pipe(new DiffFileStream({ fileType: DiffFile.FileType.FsFile }));
 
     const serverFileTransformer = new UaNodeToAtviseFileTransformer(
-        { nodesToTransform: nodesToDiff }
+      { nodesToTransform: nodesToDiff }
     );
 
     const serverFileStream = serverFileTransformer.stream
@@ -109,4 +109,5 @@ export default class DiffStream {
         }
       });
   }
+
 }

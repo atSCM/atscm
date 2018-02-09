@@ -65,7 +65,7 @@ export default class BrowseStream extends QueueStream {
    * Creates a new NodeStream based on the nodes to start browsing with and some options.
    * @param {NodeId[]} nodesToBrowse The nodes to start browsing with.
    * @param {Object} [options] The options to use.
-   * @param {Boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
+   * @param {boolean} [options.recursive=true] If the discovered nodes should be browsed as well.
    * @param {NodeId[]} [options.ignoreNodes=ProjectConfig.ignoreNodes] An array of {@link NodeId}s
    * to ignore.
    */
@@ -118,10 +118,10 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference should be mapped as content file or not
+   * Checks if the given reference should be mapped as content file or not.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
-   * @return {Boolean} reference should be mapped as content file(=true) or not(=false)
+   * @return {boolean} reference should be mapped as content file(=true) or not(=false)
    */
   static shouldBeMappedAsContentFile(ref, nodeId) {
     return BrowseStream.isChildNodeRef(ref, nodeId) &&
@@ -129,28 +129,28 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference should be mapped as atvise reference file
+   * Checks if the given reference should be mapped as atvise reference file.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be mapped as atvise reference file(=true) or not(=false)
+   * @return {boolean} reference should be mapped as atvise reference file(=true) or not(=false)
    */
   static shouldBeMappedAsAtviseReferenceFile(ref) {
     return AtviseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
-   * Checks if the given reference should be mapped as type definition file or not
+   * Checks if the given reference should be mapped as type definition file or not.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference should be mapped as type definition(=true) or not(=false)
+   * @return {boolean} reference should be mapped as type definition(=true) or not(=false)
    */
   static shouldBeMappedAsTypeDefinitionFile(ref) {
     return TypeDefinitionReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
   }
 
   /**
-   * Checks if the given reference should be pushed to NodeStream input or not
+   * Checks if the given reference should be pushed to NodeStream input or not.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
-   * @return {Boolean} reference should be pushed(=true) or not(=false)
+   * @return {boolean} reference should be pushed(=true) or not(=false)
    */
   static shouldBeBrowsed(ref, nodeId) {
     return BrowseReferenceTypes.indexOf(ref.referenceTypeId.value) > -1 &&
@@ -158,17 +158,17 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference points to a child node reference or not
+   * Checks if the given reference points to a child node reference or not.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @param{node-opcua~NodeId} nodeId The browsed nodeId
-   * @return {Boolean} reference points to a child node(=true) or not(=false)
+   * @return {boolean} reference points to a child node(=true) or not(=false)
    */
   static isChildNodeRef(ref, nodeId) {
     return ref.nodeId.toString().split(nodeId.value).length > 1;
   }
 
   /**
-   * Checks if the given reference is a object type definition
+   * Checks if the given reference is a object type definition.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
    * @return {Bool} reference is a object type definition(=true) or not(=false)
    */
@@ -177,9 +177,9 @@ export default class BrowseStream extends QueueStream {
   }
 
   /**
-   * Checks if the given reference is a valid browse stream reference or not
+   * Checks if the given reference is a valid browse stream reference or not.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference is valid(=true) or not(=false)
+   * @return {boolean} reference is valid(=true) or not(=false)
    */
   static isValidRef(ref) {
     return ValidReferenceTypes.indexOf(ref.referenceTypeId.value) > -1;
@@ -187,7 +187,7 @@ export default class BrowseStream extends QueueStream {
 
 
   /**
-   * Casts the nodeId object of the given reference description to a NodeId object
+   * Casts the nodeId object of the given reference description to a NodeId object.
    * @param{node-opcua~ReferenceDescription} ref The reference description to cast
    */
   static opcNodeIdToExpandedNodeId(ref) {
@@ -198,25 +198,25 @@ export default class BrowseStream extends QueueStream {
   /**
    * Returns an error message specifically for the given nodeId.
    * @param {NodeId} nodeId The node id to get the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(nodeId) {
     return `Error browsing ${nodeId.toString()}`;
   }
 
   /**
-   * Checks if the given reference matches the defined browse Filters
+   * Checks if the given reference matches the defined browse Filters.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} reference matches browse filters(=true) or not(=false)
+   * @return {boolean} reference matches browse filters(=true) or not(=false)
    */
   matchesFilter(ref) {
     return BrowseStream.isValidRef(ref) && !this.isIgnored(ref);
   }
 
   /**
-   * Checks if the given reference description is ignored
+   * Checks if the given reference description is ignored.
    * @param{node-opcua~ReferenceDescription} ref The reference description to check
-   * @return {Boolean} The given reference description should be ignored(=true) or not(=false)
+   * @return {boolean} The given reference description should be ignored(=true) or not(=false)
    */
   isIgnored(ref) {
     const refNodeId = ref.nodeId.value.toString();
@@ -300,4 +300,5 @@ export default class BrowseStream extends QueueStream {
       }
     });
   }
+
 }

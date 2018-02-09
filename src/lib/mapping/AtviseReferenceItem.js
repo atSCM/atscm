@@ -22,7 +22,7 @@ export default class AtviseReferenceItem extends InstanceReferenceItem {
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    * @param {node-opcua~ReferenceDescription[]} references An array of
    * {@link node-opcua~ReferenceDescription}s
-   * to create the atvise reference config item for
+   * to create the atvise reference config item for.
    */
   constructor(nodeId, references) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {
@@ -34,10 +34,11 @@ export default class AtviseReferenceItem extends InstanceReferenceItem {
 
   /**
    * Returns a configuration object for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} ref The reference description to process
-   * @return {String} The configuration object for the given reference
+   * @param {node-opcua~ReferenceDescription} ref The reference description to process.
+   * @return {string} The configuration object for the given reference
    */
   createRefConfig(ref) {
     return ref.nodeId.toString();
   }
+
 }

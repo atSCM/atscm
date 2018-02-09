@@ -21,20 +21,21 @@ const RelativePathElements = [
  * A transformer used to transform XML documents.
  */
 export default class XMLTransformer extends SplittingTransformer {
+
   /**
-   * Creates a new {xamel~NodeSet}
-   * @param {xamel~Tag[]} nodes The nodes to store in the created NodeSet
+   * Creates a new {xamel~NodeSet}.
+   * @param {xamel~Tag[]} nodes The nodes to store in the created NodeSet.
    */
   createNodeSet(nodes) {
     return new xml.NodeSet(nodes);
   }
 
   /**
-   * Creates a new {xamel~Tag}
-   * @param {String} tagName The xml tag name
-   * @param {Object} attributes Object containing xml attributes
-   * @param {xamel~Tag} parentTag The parent tag the created tag belongs to
-   * @param {*} initialChildNode The tags child item
+   * Creates a new {xamel~Tag}.
+   * @param {string} tagName The xml tag name.
+   * @param {Object} attributes Object containing xml attributes.
+   * @param {xamel~Tag} parentTag The parent tag the created tag belongs to.
+   * @param {*} initialChildNode The tags child item.
    */
   createTag(tagName, attributes, parentTag, initialChildNode) {
     const tag = new xml.Tag(tagName, attributes, parentTag);
@@ -51,17 +52,17 @@ export default class XMLTransformer extends SplittingTransformer {
   }
 
   /**
-   * Creates a new {xamel~CData}
-   * @param {String} scriptCode The script code to store
+   * Creates a new {xamel~CData}.
+   * @param {string} scriptCode The script code to store.
    */
   createCData(scriptCode) {
     return new xml.CData(scriptCode);
   }
 
   /**
-   * Creates a new <RelativePath> tag
-   * @param {Object} configObj The relative path elements configuration object
-   * @param {xamel~Tag} parentTag The parent tag the relative path tag belongs to
+   * Creates a new <RelativePath> tag.
+   * @param {Object} configObj The relative path elements configuration object.
+   * @param {xamel~Tag} parentTag The parent tag the relative path tag belongs to.
    */
   createRelPathTag(configObj, parentTag) {
     const relPathTag = this.createTag('RelativePath', {}, parentTag);
@@ -123,4 +124,5 @@ export default class XMLTransformer extends SplittingTransformer {
       callback(e);
     }
   }
+
 }

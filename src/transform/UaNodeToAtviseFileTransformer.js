@@ -8,12 +8,13 @@ import ReadStream from '../lib/pull/ReadStream';
  * A transformer that transforms mapped file system files to {@link AtviseFiles}'s
  */
 export default class UaNodeToAtviseFileTransformer {
+
   /**
-   * Creates a new FileToAtviseFileTransformer
+   * Creates a new FileToAtviseFileTransformer.
    * @param {Object} options The options to use. See
    * {@link FileToAtviseFileTransformer#constructor} for available options.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
-   * @param {Boolean} [options.useInputStream] Defines if the given input stream should be
+   * @param {boolean} [options.useInputStream] Defines if the given input stream should be
    * used for mapping.
    * @param {Stream} [options.inputStream] The input stream to use.
    */
@@ -70,4 +71,5 @@ export default class UaNodeToAtviseFileTransformer {
       TransformDirection.FromDB
     );
   }
+
 }

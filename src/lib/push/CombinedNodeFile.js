@@ -14,7 +14,7 @@ export default class CombinedNodeFile {
 
   /**
    * Creates a new CombinedNodeFile based on given atvise File.
-   * @param {AtviseFile} file The file to add in first place
+   * @param {AtviseFile} file The file to add in first place.
    */
   constructor(file, createNodes) {
     if (!checkType(file, AtviseFile) || !checkType(createNodes, Boolean)) {
@@ -51,9 +51,9 @@ export default class CombinedNodeFile {
   }
 
   /**
-   * Checks if the given file has a valid type for combined files
-   * @param {AtviseFile} file The file to check
-   * @return {Boolean} file has valid type(=true) or not(=false)
+   * Checks if the given file has a valid type for combined files.
+   * @param {AtviseFile} file The file to check.
+   * @return {boolean} file has valid type(=true) or not(=false)
    */
   static hasValidType(file) {
     return !file.isAtviseReferenceConfig && !file.isDirectory();
@@ -61,7 +61,7 @@ export default class CombinedNodeFile {
 
   /**
    * `true` for files that already contain necessary information.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isComplete() {
     const typeDefFileComplete = checkType(this.typeDefinitionFile, AtviseFile);
@@ -80,7 +80,7 @@ export default class CombinedNodeFile {
 
   /**
    * `true` for files that contain type definitions.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isTypeDefOnlyFile() {
     const typeDefinitionContent = JSON.parse(this.typeDefinitionFile.value);
@@ -96,7 +96,7 @@ export default class CombinedNodeFile {
   }
 
   /**
-   * Adds the given file to the combined file
+   * Adds the given file to the combined file.
    * @param{AtviseFile} file The file to add
    * @return {Bool} file type was already added(=true) or not(=false)
    */
@@ -123,4 +123,5 @@ export default class CombinedNodeFile {
     return file.isTypeDefinition ? checkType(this.typeDefinitionFile, AtviseFile) :
       checkType(this.contentFile, AtviseFile);
   }
+
 }

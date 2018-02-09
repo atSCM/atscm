@@ -28,14 +28,14 @@ export default class WriteStream extends QueueStream {
    * Returns an error message specifically for the given combined file.
    * @param {CombinedNodeFile} combinedNodeFile The combined file to process
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(combinedNodeFile) {
     return `Error processing file:  ${combinedNodeFile.contentFile.nodeId.toString()}`;
   }
 
   /**
-   * Writes {@link CombinedNodeFile.contentFile}'s values to the corresponding nodes on
+   * Writes {@link CombinedNodeFile.ContentFile}'s values to the corresponding nodes on
    * the atvise server.
    * @param {CombinedNodeFile} combinedNodeFile The combined file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
@@ -64,13 +64,13 @@ export default class WriteStream extends QueueStream {
             if (this.createNodes) {
               Logger.debug(`Node ${
                 contentFile.nodeId.toString()
-                }: does not exist and is pushed to create node stream`);
+              }: does not exist and is pushed to create node stream`);
 
               this.push(combinedNodeFile);
             } else {
               Logger.info(`Node ${
                 contentFile.nodeId.toString()
-                }: does not exist in atvise server address space`);
+              }: does not exist in atvise server address space`);
             }
 
             handleErrors(err, StatusCodes.Good, done => done());
@@ -84,4 +84,5 @@ export default class WriteStream extends QueueStream {
       }
     }
   }
+
 }

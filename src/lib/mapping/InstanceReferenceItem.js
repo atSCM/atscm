@@ -16,7 +16,7 @@ import ReverseReferenceTypeIds from '../ua/ReverseReferenceTypeIds';
 export default class InstanceReferenceItem extends MappingItem {
 
   /**
-   * Creates a new InstanceReferenceItem
+   * Creates a new InstanceReferenceItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    */
   constructor(nodeId, references, itemTypeDefinition) {
@@ -47,7 +47,7 @@ export default class InstanceReferenceItem extends MappingItem {
 
   /**
    * `true` for read node mapping items.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get shouldBeRead() {
     return false;
@@ -55,7 +55,7 @@ export default class InstanceReferenceItem extends MappingItem {
 
   /**
    * Returns a configuration object for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} ref The reference description to process
+   * @param {node-opcua~ReferenceDescription} ref The reference description to process.
    * @return {*} The configuration for the given reference
    * @abstract
    */
@@ -66,8 +66,8 @@ export default class InstanceReferenceItem extends MappingItem {
 
   /**
    * Adds the given {node-opcua~ReferenceDescription} to the config object.
-   * @param {node-opcua~ReferenceDescription} ref The reference description to process
-   * @param {Object} refConfig The reference object to add the given reference
+   * @param {node-opcua~ReferenceDescription} ref The reference description to process.
+   * @param {Object} refConfig The reference object to add the given reference.
    */
   addRefToConfig(ref, refConfig) {
     const referenceName = ReverseReferenceTypeIds[ref.referenceTypeId.value];
@@ -85,8 +85,8 @@ export default class InstanceReferenceItem extends MappingItem {
   }
 
   /**
-   * Creates a node configuration object for type definitions and atvise reference types
-   * @param {Object} config The object that contains the reference configuration
+   * Creates a node configuration object for type definitions and atvise reference types.
+   * @param {Object} config The object that contains the reference configuration.
    */
   createConfigItem(config) {
     return {
@@ -97,4 +97,5 @@ export default class InstanceReferenceItem extends MappingItem {
       typeDefinition: this.itemTypeDefinition,
     };
   }
+
 }

@@ -12,18 +12,18 @@ import NodeId from '../ua/NodeId';
  * @type {Map<String, AtivseType>}
  */
 const AtviseTypesByValue = AtviseTypes
-    .reduce((result, type) => Object.assign(result, {
-      [type.typeDefinition.value]: type,
-    }), {});
+  .reduce((result, type) => Object.assign(result, {
+    [type.typeDefinition.value]: type,
+  }), {});
 
 /**
  * A map of AtviseTypes against their identifiers.
  * @type {Map<String, AtivseType>}
  */
 const AtviseTypesByIdentifier = AtviseTypes
-    .reduce((result, type) => Object.assign(result, {
-      [type.identifier]: type,
-    }), {});
+  .reduce((result, type) => Object.assign(result, {
+    [type.identifier]: type,
+  }), {});
 
 
 /**
@@ -48,9 +48,9 @@ export const ExtensionForDataType = {
  */
 function reverseObject(obj) {
   return Object.keys(obj)
-      .reduce((result, key) => Object.assign(result, {
-        [obj[key]]: key,
-      }), {});
+    .reduce((result, key) => Object.assign(result, {
+      [obj[key]]: key,
+    }), {});
 }
 
 /**
@@ -126,9 +126,9 @@ const CreateNodeDecoder = {
 
 /**
  * Converts safely two uint32 array to an int64 number type.
- * @param {Number} lowerRangeValue The value for the lower 32 bits of the int 64 value
- * @param {Number} higherRangeValue The value for the higher 32 bits of the int 64 value
- * @returns {Number} The resulting int64 value
+ * @param {number} lowerRangeValue The value for the lower 32 bits of the int 64 value.
+ * @param {number} higherRangeValue The value for the higher 32 bits of the int 64 value.
+ * @returns {number} The resulting int64 value.
  */
 function uint32ArraysToInt64(lowerRangeValue, higherRangeValue) {
   const int64 = new Int64(lowerRangeValue, higherRangeValue);
@@ -174,8 +174,8 @@ function extensionForDataType(dataType) {
 export default class AtviseFile extends File {
 
   /**
-   * Returns a storage path for a {@link MappingItem.configObj}.
-   * @param {Object} config The config to create the path for
+   * Returns a storage path for a {@link MappingItem.ConfigObj}.
+   * @param {Object} config The config to create the path for.
    */
   static pathForItemConfig(config) {
     let path = `${config.nodeId.filePath}/${config.nodeId.browseName}`;
@@ -219,7 +219,7 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * Returns an atvise type with type definition as accessor
+   * Returns an atvise type with type definition as accessor.
    * @return {AtviseTypes{}} Object containing atvise types
    */
   static getAtviseTypesByValue() {
@@ -230,7 +230,7 @@ export default class AtviseFile extends File {
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
-   * @param {node-opcua~VariantArrayType} arrayType The files array type
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
    * @return {?Buffer} The encoded file contents or null.
    */
   static encodeValue(value, dataType, arrayType) {
@@ -259,10 +259,10 @@ export default class AtviseFile extends File {
   /**
    * Decodes a file's contents to a node's value.
    * @param {Buffer} buffer The file contents to decode.
-   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
-   * @param {node-opcua~VariantArrayType} arrayType The files array type
-   * @param {Boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite
-   * the existing decoders
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
+   * @param {boolean} useCreateNodeEncoding If set to `true`, create node decoders will overwrite
+   * the existing decoders.
    * @return {?*} The decoded node value or null.
    */
   static decodeValue(buffer, dataType, arrayType, useCreateNodeEncoding) {
@@ -427,8 +427,8 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * The file's relative path (base = 'src' folder)
-   * @type {String}
+   * The file's relative path (base = 'src' folder).
+   * @type {string}
    */
   get relativeFilePath() {
     const path = this.path;
@@ -500,7 +500,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing type definitions.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isTypeDefinition() {
     return this.isBaseTypeDefinition || this.isInstanceTypeDefinition;
@@ -509,7 +509,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing instance type definitions.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isInstanceTypeDefinition() {
     return this.typeDefinition.value === 'Custom.InstanceTypeDefinition';
@@ -517,7 +517,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing base type definitions.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isBaseTypeDefinition() {
     return this.typeDefinition.value === 'Custom.BaseTypeDefinition';
@@ -525,7 +525,7 @@ export default class AtviseFile extends File {
 
   /**
    * `true` for files containing type definitions.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isAtviseReferenceConfig() {
     return this.typeDefinition.value === 'Custom.AtvReferenceConfig';
@@ -602,4 +602,5 @@ export default class AtviseFile extends File {
       }
     });
   }
+
 }

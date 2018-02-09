@@ -105,8 +105,8 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
-   * The node id's browsename as string
-   * @type {String}
+   * The node id's browsename as string.
+   * @type {string}
    */
   get browseName() {
     const lastSeperator = this.value.indexOf('/') > -1 ?
@@ -116,7 +116,7 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
-   * The parent node id
+   * The parent node id.
    * @type {NodeId}
    */
   get parentNodeId() {
@@ -141,4 +141,5 @@ export default class NodeId extends OpcNodeId {
       options.stylize(this.value, this.identifierType === Type.NUMERIC ? 'number' : 'string'),
     ].join(' ');
   }
+
 }

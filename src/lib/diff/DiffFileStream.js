@@ -10,7 +10,7 @@ export default class DiffFileStream extends QueueStream {
 
   /**
    * Creates a new DiffStream based on the given stream direction an some options.
-   * @param {Object} The options to use.
+   * @param {Object} The Options to use.
    * @param {DiffFile.fileType} [options.fileType] The diff file type to create.
    */
   constructor(options = {}) {
@@ -31,8 +31,8 @@ export default class DiffFileStream extends QueueStream {
 
   /**
    * Returns an error message specifically for the given mapping item.
-   * @param {AtviseFile} file The file to create the error message for
-   * @return {String} The specific error message.
+   * @param {AtviseFile} file The file to create the error message for.
+   * @return {string} The specific error message.
    */
   processErrorMessage(file) {
     return `DiffFileStream#processErrorMessage: Error processing item ${file.nodeId.toString()}`;
@@ -51,5 +51,6 @@ export default class DiffFileStream extends QueueStream {
       done();
     });
   }
+
 }
 

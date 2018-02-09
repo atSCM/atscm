@@ -12,7 +12,7 @@ export default class DeleteFsStream {
   /**
    * Creates a new DeleteServerStream based on the given options.
    * @param {Object} options The stream configuration options.
-   * @param {String} [options.deleteFileName] The delete file name.
+   * @param {string} [options.deleteFileName] The delete file name.
    */
   constructor(options = {}) {
     /**
@@ -72,4 +72,5 @@ export default class DeleteFsStream {
 
     return deleteNodeStream;
   }
+
 }

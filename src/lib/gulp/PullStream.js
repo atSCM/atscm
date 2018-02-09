@@ -13,7 +13,7 @@ export default class PullStream {
    * Creates a new PullStream based on the given options.
    * @param {Object} options The stream configuration options.
    * @param {NodeId[]} [options.nodesToPull] The nodes to push.
-   * @param {Boolean} [options.useInputStream] Defines if the given input
+   * @param {boolean} [options.useInputStream] Defines if the given input
    * stream should be used for mapping.
    * @param {Stream} [options.inputStream] The input stream to use.
    */
@@ -52,4 +52,5 @@ export default class PullStream {
         clearInterval(printProgress);
       });
   }
+
 }

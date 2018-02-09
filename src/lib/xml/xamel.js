@@ -4,4 +4,4 @@ module.exports = {
   serialize: require('./serialize').serialize,
   xml: require('./xml'),
 };
-/*eslint-enable */
+/* eslint-enable */

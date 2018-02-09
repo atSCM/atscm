@@ -7,6 +7,7 @@ import MappingItem from './MappingItem';
  * Mapping item object for variable nodes
  */
 export default class ReadNodeItem extends MappingItem {
+
   /**
    * Creates a new ReadNodeItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
@@ -36,7 +37,7 @@ export default class ReadNodeItem extends MappingItem {
 
   /**
    * `true` for read node mapping items.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get shouldBeRead() {
     return true;
@@ -47,7 +48,7 @@ export default class ReadNodeItem extends MappingItem {
    * Creates the config object from the given {node-opcua~DataValue}
    * options.
    * @param {node-opcua~DataValue} dataValue The data value object that is added to
-   * the read node config
+   * the read node config.
    */
   createConfigItemFromDataValue(dataValue) {
     const config = this.config;
@@ -63,4 +64,5 @@ export default class ReadNodeItem extends MappingItem {
     config.arrayType = variant.$arrayType;
     config.mtime = dataValue.sourceTimestamp;
   }
+
 }

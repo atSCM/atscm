@@ -76,7 +76,7 @@ export class SubscribeStream extends QueueStream {
 
   /**
    * Monitors the nodes specified by the given {MappingItem}s.
-   * @param {MappingItem} mappingItem The mappingItem to process
+   * @param {MappingItem} mappingItem The mappingItem to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */

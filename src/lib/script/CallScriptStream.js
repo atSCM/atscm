@@ -69,7 +69,7 @@ export default class CallScriptStream extends QueueStream {
   }
 
   /**
-   * Creates the script parameters for the given chunk
+   * Creates the script parameters for the given chunk.
    * @param {*} chunk The chunk to create the parameter object for
    * the error message for.
    * @return {Object} The resulting script parameters. The object always needs to contain a
@@ -80,9 +80,9 @@ export default class CallScriptStream extends QueueStream {
   }
 
   /**
-   * Handles the node-opcua call script method callback
-   * @param {Error} err If the call throw an error or not
-   * @param {Array} results The result of the call
+   * Handles the node-opcua call script method callback.
+   * @param {Error} err If the call throw an error or not.
+   * @param {Array} results The result of the call.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    * @abstract
@@ -92,7 +92,7 @@ export default class CallScriptStream extends QueueStream {
   }
 
   /**
-   * Performs opcua method calls for the given call object configuration
+   * Performs opcua method calls for the given call object configuration.
    * @param {*} chunk The chunk being processed.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -114,5 +114,6 @@ export default class CallScriptStream extends QueueStream {
       handleErrors(e);
     }
   }
+
 }
 

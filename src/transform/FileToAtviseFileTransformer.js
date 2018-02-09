@@ -10,12 +10,12 @@ import MappingTransformer from './Mapping';
 export default class FileToAtviseFileTransformer {
 
   /**
-   * Creates a new FileToAtviseFileTransformer
+   * Creates a new FileToAtviseFileTransformer.
    * @param {Object} options The options to use. See
    * {@link FileToAtviseFileTransformer#constructor} for available
    * options.
-   * @param {Boolean} [options.applyTransformers] Defines whether transformer
-   * should be applied or not
+   * @param {boolean} [options.applyTransformers] Defines whether transformer
+   * should be applied or not.
    * @param {NodeId[]} [options.nodesToTransform] The nodes to transform.
    */
   constructor(options = {}) {
@@ -54,4 +54,5 @@ export default class FileToAtviseFileTransformer {
       TransformDirection.FromFilesystem
     );
   }
+
 }

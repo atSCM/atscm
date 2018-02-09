@@ -23,7 +23,7 @@ export default class ImportXmlStream extends QueueStream {
 
   /**
    * @param {vinyl~file} file The file to create the call object for.
-   * Creates the call object for the given file
+   * Creates the call object for the given file.
    * @return {Object} The resulting call script object.
    */
   createCallObject(file) {
@@ -45,8 +45,8 @@ export default class ImportXmlStream extends QueueStream {
 
   /**
    * Returns an error message specifically for the given file.
-   * @param {vinyl~file} file The file to generate the error message for
-   * @return {String} The specific error message.
+   * @param {vinyl~file} file The file to generate the error message for.
+   * @return {string} The specific error message.
    */
   processErrorMessage(file) {
     return `Error importing file: ${file.path}`;
@@ -54,7 +54,7 @@ export default class ImportXmlStream extends QueueStream {
 
 
   /**
-   * Performs opcua method calls for the given call object configuration
+   * Performs opcua method calls for the given call object configuration.
    * @param {vinyl~file} file The file being processed.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
@@ -84,5 +84,6 @@ export default class ImportXmlStream extends QueueStream {
       handleErrors(e);
     }
   }
+
 }
 

@@ -11,7 +11,7 @@ export default class ReadStream extends QueueStream {
    * Returns an error message specifically for the given mapping item.
    * @param {MappingItem} mappingItem The reference description to get
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(mappingItem) {
     return `ReadStream#processErrorMessage: Error processing item ${mappingItem.nodeId.toString()}`;
@@ -54,5 +54,6 @@ export default class ReadStream extends QueueStream {
       });
     }
   }
+
 }
 

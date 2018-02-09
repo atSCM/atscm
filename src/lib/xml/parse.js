@@ -132,4 +132,4 @@ module.exports = function parse(xml, options, callback) {
 
     parser.write(xml).close();
 };
-/*eslint-enable */
+/* eslint-enable */

@@ -1,7 +1,7 @@
 import { ReferenceTypeIds } from 'node-opcua';
 
 /**
- * Reverse map of {node-opcua~ReferenceTypeId}'s
+ * Reverse map of {node-opcua~ReferenceTypeId}'s.
  * @type {Object}
  */
 const ReverseReferenceTypeIds = (function() {

@@ -5,7 +5,7 @@ export default class DiffItem {
 
   /**
    * Creates a new CombinedNodeFile based on given atvise File.
-   * @param {DiffFile} file The file to add in first place
+   * @param {DiffFile} file The file to add in first place.
    */
   constructor(file) {
     if (!checkType(file, DiffFile)) {
@@ -44,16 +44,16 @@ export default class DiffItem {
   }
 
   /**
-   * Checks if the given file has a valid type for combined files
-   * @param {AtviseFile} file The file to check
-   * @return {Boolean} file has valid type(=true) or not(=false)
+   * Checks if the given file has a valid type for combined files.
+   * @param {AtviseFile} file The file to check.
+   * @return {boolean} file has valid type(=true) or not(=false)
    */
   static hasValidType(file) {
     return !file.isAtviseReferenceConfig && !file.isDirectory();
   }
 
   /**
-   * The possible diff states
+   * The possible diff states.
    * @type {{Equal:Object, Added: Object, Modified: Object, Deleted: Object}}
    */
   static get DiffStates() {
@@ -67,7 +67,7 @@ export default class DiffItem {
 
   /**
    * `true` for diff items that already contain an file system and an server resource.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get isComplete() {
     return checkType(this.fsFile, DiffFile) && checkType(this.serverFile, DiffFile);
@@ -75,7 +75,7 @@ export default class DiffItem {
 
   /**
    * `true` if the server resource file and the mapped fs file are equal.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get filesAreEqual() {
     if (!this.isComplete) {
@@ -87,7 +87,7 @@ export default class DiffItem {
 
 
   /**
-   * The diff items state
+   * The diff items state.
    * @type {DiffItem.DiffStates}
    */
   get state() {
@@ -108,7 +108,7 @@ export default class DiffItem {
   }
 
   /**
-   * Adds the given file
+   * Adds the given file.
    * @param{DiffFile} file The file to add
    * @return {Bool} file type was already added(=true) or not(=false)
    */
@@ -136,4 +136,5 @@ export default class DiffItem {
 
     return checkType(this.fsFile, DiffFile);
   }
+
 }

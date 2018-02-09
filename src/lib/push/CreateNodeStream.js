@@ -37,7 +37,7 @@ const CreateNodeScriptParameterName = 'paramObjString';
 export default class CreateNodeStream extends CallScriptStream {
 
   /**
-   * Creates a new CreateNodeStream
+   * Creates a new CreateNodeStream.
    */
   constructor() {
     super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'));
@@ -48,7 +48,7 @@ export default class CreateNodeStream extends CallScriptStream {
    * Returns an error message specifically for the given combined file.
    * @param {CombinedNodeFile} combinedNodeFile The combined file to process
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(combinedNodeFile) {
     return `Error creating node:  ${combinedNodeFile.typeDefinitionFile.nodeId.toString()}`;
@@ -56,7 +56,7 @@ export default class CreateNodeStream extends CallScriptStream {
 
 
   /**
-   * Creates the parameter object for creating nodes
+   * Creates the parameter object for creating nodes.
    * @param {CombinedNodeFile} combinedNodeFile The combined node file to process
    * the error message for.
    * @return {Object} The resulting parameter object.
@@ -101,9 +101,9 @@ export default class CreateNodeStream extends CallScriptStream {
   }
 
   /**
-   * Handles the call script methods callback
-   * @param {Array} results The result of the call
-   * @param {CombinedNodeFile} combinedNodeFile The combined file to process
+   * Handles the call script methods callback.
+   * @param {Array} results The result of the call.
+   * @param {CombinedNodeFile} combinedNodeFile The combined file to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
@@ -119,13 +119,14 @@ export default class CreateNodeStream extends CallScriptStream {
       if (creatingNodeFailed) {
         Logger.error(`Node ${
           combinedNodeFile.typeDefinitionFile.nodeId.toString()
-          }: Creating node failed`);
+        }: Creating node failed`);
       } else if (createdNode) {
         Logger.info(`Created node:  ${
           combinedNodeFile.typeDefinitionFile.nodeId.toString()
-          }`);
+        }`);
       }
       handleErrors(null, StatusCodes.Good, done => done());
     }
   }
+
 }

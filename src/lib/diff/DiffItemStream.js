@@ -10,7 +10,7 @@ export default class DiffItemStream extends QueueStream {
 
   /**
    * Creates a new DiffItemStream.
-   * @param {Object} The options to use.
+   * @param {Object} The Options to use.
    */
   constructor() {
     super();
@@ -25,7 +25,7 @@ export default class DiffItemStream extends QueueStream {
   /**
    * Returns an error message specifically for the given mapping item.
    * @param {DiffFile} file The diff file to create the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(file) {
     return `DiffStream#processErrorMessage: Error processing item ${file.toString()}`;
@@ -59,5 +59,6 @@ export default class DiffItemStream extends QueueStream {
       done();
     });
   }
+
 }
 

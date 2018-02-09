@@ -29,10 +29,10 @@ export default class NodeFileStream extends QueueStream {
   }
 
   /**
-   * Returns an error message specifically for the given atvise file
+   * Returns an error message specifically for the given atvise file.
    * @param {AtviseFile} file The file to get
    * the error message for.
-   * @return {String} The specific error message.
+   * @return {string} The specific error message.
    */
   processErrorMessage(file) {
     return `Error processing file with node id: ${file.nodeId.toString()}`;
@@ -75,5 +75,6 @@ export default class NodeFileStream extends QueueStream {
       handleErrors(null, StatusCodes.Good, done => done());
     }
   }
+
 }
 

@@ -17,7 +17,7 @@ const DeleteNodeScriptParameterName = 'nodeId';
 export default class DeleteNodeStream extends CallScriptStream {
 
   /**
-   * Creates a new CreateNodeStream
+   * Creates a new CreateNodeStream.
    */
   constructor() {
     super(new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.DeleteNode'));
@@ -26,15 +26,15 @@ export default class DeleteNodeStream extends CallScriptStream {
 
   /**
    * Returns an error message specifically for the given combined file.
-   * @param {NodeId} nodeId The nodeId to create the error message for
-   * @return {String} The specific error message.
+   * @param {NodeId} nodeId The nodeId to create the error message for.
+   * @return {string} The specific error message.
    */
   processErrorMessage(nodeId) {
     return `Error deleting node:  ${nodeId.toString()}`;
   }
 
   /**
-   * Creates the parameter object for creating nodes
+   * Creates the parameter object for creating nodes.
    * @param {NodeId} nodeId The nodeId to use as parameter
    * parameter object for.
    * @return {Object} The resulting parameter object.
@@ -49,9 +49,9 @@ export default class DeleteNodeStream extends CallScriptStream {
   }
 
   /**
-   * Handles the call script methods callback
-   * @param {Array} results The result of the call
-   * @param {node} nodeId The nodeId to process
+   * Handles the call script methods callback.
+   * @param {Array} results The result of the call.
+   * @param {node} nodeId The nodeId to process.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
@@ -72,5 +72,6 @@ export default class DeleteNodeStream extends CallScriptStream {
     }
     handleErrors(null, StatusCodes.Good, done => done());
   }
+
 }
 

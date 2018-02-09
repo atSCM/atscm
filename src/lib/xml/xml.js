@@ -372,4 +372,4 @@ xml.getXMLType = function(obj) {
 };
 
 module.exports = xml;
-/*eslint-enable */
+/* eslint-enable */

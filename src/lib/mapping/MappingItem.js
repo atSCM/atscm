@@ -8,8 +8,9 @@ import NodeId from '../ua/NodeId';
  * @abstract
  */
 export default class MappingItem {
+
   /**
-   * Creates a new MappingItem
+   * Creates a new MappingItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    */
   constructor(nodeId) {
@@ -38,14 +39,14 @@ export default class MappingItem {
 
   /**
    * `true` for read node mapping items.
-   * @type {Boolean}
+   * @type {boolean}
    */
   get shouldBeRead() {
     throw new Error('MappingItem#shouldBeRead must be implemented by all subclasses');
   }
 
   /**
-   * The mapping item configuration object
+   * The mapping item configuration object.
    * @type {Object}
    */
   get configObj() {
@@ -56,7 +57,7 @@ export default class MappingItem {
   }
 
   /**
-   * The mapping item configuration source
+   * The mapping item configuration source.
    * @type {node-opcua~ReferenceDescription or node-opcua~ReferenceDescription[]}
    */
   get configSource() {
@@ -65,4 +66,5 @@ export default class MappingItem {
     }
     return this.source;
   }
+
 }

@@ -61,8 +61,8 @@ export default class Atviseproject {
   /**
    * The delete file paths.
    * @type {Object}
-   * @property {String} server The server delete file name.
-   * @property {String} fs The file system delete file name.
+   * @property {string} server The server delete file name.
+   * @property {string} fs The file system delete file name.
    */
   static get DeleteFileNames() {
     return {
@@ -80,7 +80,7 @@ export default class Atviseproject {
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}
+   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}.
    * @type {Transformer[]}
    */
   static get useTransformers() {

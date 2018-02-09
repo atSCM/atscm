@@ -81,4 +81,4 @@ function serialize(nset, options) {
 module.exports = {
     serialize : serialize
 };
-/*eslint-enable */
+/* eslint-enable */

@@ -30,7 +30,7 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
    * Creates a new InstanceTypeDefinitionItem.
    * @param {node-opcua~NodeId} nodeId The browsed nodeId.
    * @param {node-opcua~ReferenceDescription} reference The{@link node-opcua~ReferenceDescription}
-   * to create the type definition item for
+   * to create the type definition item for.
    */
   constructor(nodeId, references) {
     if (!checkType(nodeId, NodeId) || !checkType(references, BrowseService.ReferenceDescription)) {
@@ -42,7 +42,7 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
 
   /**
    * Returns a configuration object for the given {node-opcua~ReferenceDescription}.
-   * @param {node-opcua~ReferenceDescription} ref The reference description to process
+   * @param {node-opcua~ReferenceDescription} ref The reference description to process.
    * @param {NodeId} nodeId browsed nodeId
    * @return {Object} The configuration object for the given reference
    */
@@ -52,4 +52,5 @@ export default class InstanceTypeDefinitionItem extends InstanceReferenceItem {
       nodeClass: InstanceNodeClasses[ref.$nodeClass],
     };
   }
+
 }
