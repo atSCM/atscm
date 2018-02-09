@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-import { Builder } from 'xml2js';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
 
@@ -9,20 +8,6 @@ describe('XMLTransformer', function() {
   describe('#constructor', function() {
     it('should return a SplittingTransformer', function() {
       expect(new XMLTransformer(), 'to be a', Transformer);
-    });
-
-    it('should create a _fromDBBuilder', function() {
-      const transformer = new XMLTransformer();
-
-      expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
-    });
-
-    it('should create a _fromFilesystemBuilder', function() {
-      const transformer = new XMLTransformer();
-
-      expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
     });
   });
 
