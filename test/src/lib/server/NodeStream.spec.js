@@ -42,11 +42,11 @@ describe('NodeStream', function() {
   });
 
   /** @test {NodeStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
+  /* describe('#processErrorMessage', function() {
     const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
     expect(NodeStream.prototype.processErrorMessage(nodeId),
       'to contain', nodeId.toString());
-  });
+  }); */
 
   /** @test {NodeStream#processChunk} */
   describe('#processChunk', function() {

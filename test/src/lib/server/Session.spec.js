@@ -7,14 +7,14 @@ import Session from '../../../../src/lib/ua/Session';
 import Client from '../../../../src/lib/ua/Client';
 
 function sessionWithLogin(login) {
-  return proxyquire('../../../../src/lib/server/Session', {
+  return proxyquire('../../../../src/lib/ua/Session', {
     '../../config/ProjectConfig': {
       default: { login },
     },
   }).default;
 }
 
-const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
+const FailingClientSession = proxyquire('../../../../src/lib/ua/Session', {
   './Client': {
     __esModule: true,
     default: class StubClient {
@@ -27,7 +27,7 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
   },
 }).default;
 
-const FailingSession = proxyquire('../../../../src/lib/server/Session', {
+const FailingSession = proxyquire('../../../../src/lib/ua/Session', {
   './Client': {
     __esModule: true,
     default: class StubClient extends Client {

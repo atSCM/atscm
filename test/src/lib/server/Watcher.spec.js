@@ -17,7 +17,7 @@ class StubMonitoredItem extends Emitter {
 
 }
 
-const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
+const StubWatcher = proxyquire('../../../../src/lib/watch/Watcher', {
   './NodeStream': {
     __esModule: true,
     default: class ServerStream extends throughStreamClass({ objectMode: true }) {
@@ -32,7 +32,7 @@ const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
   },
 }).default;
 
-const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
+const FailingSubscribeStream = proxyquire('../../../../src/lib/watch/Watcher', {
   'node-opcua': {
     ClientSubscription: class StubClientSubscription extends Emitter {
 

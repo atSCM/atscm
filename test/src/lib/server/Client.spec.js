@@ -3,7 +3,7 @@ import proxyquire from 'proxyquire';
 import { OPCUAClient } from 'node-opcua';
 import Client from '../../../../src/lib/ua/Client';
 
-const InvalidHostClient = proxyquire('../../../../src/lib/server/Client', {
+const InvalidHostClient = proxyquire('../../../../src/lib/ua/Client', {
   '../../config/ProjectConfig': {
     default: {
       host: 'in valid url',
@@ -12,7 +12,7 @@ const InvalidHostClient = proxyquire('../../../../src/lib/server/Client', {
   },
 }).default;
 
-const NotExisingHostClient = proxyquire('../../../../src/lib/server/Client', {
+const NotExisingHostClient = proxyquire('../../../../src/lib/ua/Client', {
   '../../config/ProjectConfig': {
     default: {
       host: '123.456.789.0',
@@ -21,7 +21,7 @@ const NotExisingHostClient = proxyquire('../../../../src/lib/server/Client', {
   },
 }).default;
 
-const FailingClient = proxyquire('../../../../src/lib/server/Client', {
+const FailingClient = proxyquire('../../../../src/lib/ua/Client', {
   'node-opcua': {
     OPCUAClient: class FailingCli extends OPCUAClient {
 
