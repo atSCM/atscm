@@ -1,6 +1,6 @@
+import { Stream as CoreStream } from 'stream';
 import proxyquire from 'proxyquire';
 import { spy } from 'sinon';
-import { Stream as CoreStream } from 'stream';
 import { ClientSession } from 'node-opcua';
 import expect from '../../../expect';
 import Stream from '../../../../src/lib/stream/Stream';
@@ -31,9 +31,11 @@ describe('Stream', function() {
         './Session': {
           _esModule: true,
           default: class FailingSession {
+
             static create() {
               return Promise.reject(new Error('Failed'));
             }
+
           },
         },
       }).default;

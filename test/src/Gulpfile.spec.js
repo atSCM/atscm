@@ -1,7 +1,6 @@
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-
 import * as tasks from '../../src/Gulpfile';
 
 describe('Gulpfile', function() {

@@ -7,10 +7,12 @@ function fakeQueueStream(
   err = null, status = StatusCodes.Good, onSuccess = done => done(), options = {}
 ) {
   return new (class FakeQueueStream extends QueueStream {
+
     processErrorMessage(chunk) { return `Error processing ${chunk}`; }
     processChunk(chunk, handle) {
       handle(err, status, onSuccess);
     }
+
   })(options);
 }
 

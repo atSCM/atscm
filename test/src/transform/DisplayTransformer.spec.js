@@ -2,7 +2,6 @@ import { Buffer } from 'buffer';
 import File from 'vinyl';
 import { stub } from 'sinon';
 import expect from '../../expect';
-
 import AtviseFile from '../../../src/lib/mapping/AtviseFile';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import DisplayTransformer from '../../../src/transform/DisplayTransformer';

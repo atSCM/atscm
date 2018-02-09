@@ -18,9 +18,11 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
   './Client': {
     __esModule: true,
     default: class StubClient {
+
       static create() {
         return Promise.reject(new Error('Client.create error'));
       }
+
     },
   },
 }).default;
@@ -29,6 +31,7 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
   './Client': {
     __esModule: true,
     default: class StubClient extends Client {
+
       static create() {
         return super.create()
           .then(client => {
@@ -41,6 +44,7 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
             return client;
           });
       }
+
     },
   },
 }).default;

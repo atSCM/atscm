@@ -5,9 +5,11 @@ import NodeStream from '../../../../src/lib/stream/NodeStream';
 import NodeId from '../../../../src/lib/ua/NodeId';
 
 class StubNodeStream extends NodeStream {
+
   _transform(chunk, enc, callback) {
     callback(null, chunk);
   }
+
 }
 
 /** @test {NodeStream} */

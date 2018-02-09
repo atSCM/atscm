@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import Validator from '../../../src/init/OptionsValidator';
 
 /** @test {InitOptionsValidator} */

@@ -1,7 +1,6 @@
 import { join } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
-
 import { NodeId as OpcNodeId } from 'node-opcua';
 import NodeId from '../../../../src/lib/ua/NodeId';
 
@@ -83,14 +82,14 @@ describe('NodeId', function() {
       expect(NodeId.fromFilePath(
         join('SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif')
       ).value,
-        'to equal', 'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif');
+      'to equal', 'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif');
     });
 
     it('should work with multi extension resource paths', function() {
       expect(NodeId.fromFilePath(
         join('SYSTEM/LIBRARY/PROJECT/RESOURCES/styles/bootstrap.min.css')
-        ).value,
-        'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css');
+      ).value,
+      'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css');
     });
   });
 

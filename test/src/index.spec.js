@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import * as globalExports from '../../src/index';
 import Atviseproject from '../../src/lib/config/Atviseproject';
 import NodeId from '../../src/lib/ua/NodeId';

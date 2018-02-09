@@ -8,6 +8,7 @@ function createCleanup(numberOfOpenSessions, closeOpenShouldFail) {
     '../lib/server/Session': {
       __esModule: true,
       default: class Session {
+
         static get open() {
           return new Array(numberOfOpenSessions);
         }
@@ -17,6 +18,7 @@ function createCleanup(numberOfOpenSessions, closeOpenShouldFail) {
             Promise.reject('Session.closeOpen error') :
             Promise.resolve();
         }
+
       },
     },
   }).default;

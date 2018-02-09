@@ -1,5 +1,4 @@
 import expect from 'unexpected';
-
 import InitOptionsAsArray, { InitOptions } from '../../../src/init/Options';
 import InitOption from '../../../src/lib/init/Option';
 

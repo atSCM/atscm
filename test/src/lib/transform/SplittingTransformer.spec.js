@@ -1,7 +1,6 @@
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-
 import File from 'vinyl';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import AtviseFile from '../../../../src/lib/mapping/AtviseFile';
@@ -15,12 +14,15 @@ class StubSplittingTransformer extends proxyquire(
     '../server/AtviseFile': {
       _esModule: true,
       default: class StubAtviseFile extends AtviseFile {
+
         static read(options) {
           return Promise.resolve(options);
         }
+
       },
     },
   }).default {
+
   constructor(combineError) {
     super();
 
@@ -34,6 +36,7 @@ class StubSplittingTransformer extends proxyquire(
       callback(null, last);
     }
   }
+
 }
 
 const StubCombineFilesCache = proxyquire('../../../../src/lib/transform/SplittingTransformer', {
@@ -136,7 +139,7 @@ describe('SplittingTransformer', function() {
 
       expect(cb => transformer.transformFromFilesystem(
         new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback with error', 'Cache error');
+      'to call the callback with error', 'Cache error');
     });
 
     it('should cache display files', function() {
@@ -146,9 +149,9 @@ describe('SplittingTransformer', function() {
       transformer._combineFilesCache.gotAllFiles = (files, cb) => cb(null, false);
 
       return expect(cb =>
-          transformer.transformFromFilesystem(
-            new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback'
+        transformer.transformFromFilesystem(
+          new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
+      'to call the callback'
       )
         .then(args => {
           expect(args[0], 'to be falsy');
@@ -164,9 +167,9 @@ describe('SplittingTransformer', function() {
       transformer.createCombinedFile = (files, last, cb) => cb(null, stubDisplay);
 
       return expect(cb =>
-          transformer.transformFromFilesystem(
-            new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-        'to call the callback'
+        transformer.transformFromFilesystem(
+          new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
+      'to call the callback'
       )
         .then(args => {
           expect(args[0], 'to be falsy');
