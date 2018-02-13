@@ -76,7 +76,7 @@ export default class Atviseproject {
    * @type {string}
    */
   static get RelativeXmlResourcesPath() {
-    return './node_modules/atscm/xml_resources/**/*.xml';
+    return './node_modules/atscm/res/import/scripts/**/*.xml';
   }
 
   /**
