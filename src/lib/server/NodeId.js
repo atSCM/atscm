@@ -91,6 +91,25 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
+   * The parent node id, or `null`.
+   * @type {?NodeId}
+   */
+  get parent() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    const lastSeperator = this.value.indexOf('/') > -1 ?
+      '/' : '.';
+
+    return new NodeId(
+      NodeId.NodeIdType.STRING,
+      this.value.substr(0, this.value.lastIndexOf(lastSeperator)),
+      this.namespace
+    );
+  }
+
+  /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using {@link util~inspect}.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
