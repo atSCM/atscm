@@ -1,4 +1,4 @@
-import { resolveNodeId, StatusCodes, NodeClass } from 'node-opcua';
+import { StatusCodes, NodeClass } from 'node-opcua';
 import { spy } from 'sinon';
 import expect from '../../../expect';
 import NodeStream from '../../../../src/transform/UaNodeToAtviseFileTransformer';
