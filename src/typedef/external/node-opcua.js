@@ -31,6 +31,10 @@
  */
 
 /**
+ * @external {node-opcua~Variant} http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html
+ */
+
+/**
  * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js
  */
 
@@ -40,4 +44,8 @@
 
 /**
  * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js
+ */
+
+/**
+ * @external {node-opcua~CallMethodRequest} http://node-opcua.github.io/api_doc/0.1.0/classes/CallMethodRequest.html
  */
