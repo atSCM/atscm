@@ -1,5 +1,10 @@
-<a name="0.6.0-beta.1"></a>
-# 0.6.0-beta.1 (2018-02-14)
+<a name="0.6.0-beta.2"></a>
+# 0.6.0-beta.2 (2018-02-14)
+
+
+### Bug Fixes
+
+* Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
 
 
 ### Features
