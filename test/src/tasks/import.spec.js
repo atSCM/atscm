@@ -8,28 +8,18 @@ import Session from '../../../src/lib/server/Session';
 
 const ls = promisify(readdir);
 
-let scriptNames;
-let session;
-
 /** @test {importTask} */
 describe('importTask', function() {
-  before('create session', async function() {
-    session = await Session.create();
-
-    const scriptFiles = await ls(join(process.cwd(), './res/import/scripts'));
-    scriptNames = scriptFiles.map(s => basename(s, '.xml'));
-  });
-
-  after('close session', function(done) {
-    return session.close(done);
-  });
-
   it('should import all scripts', async function() {
     const startTime = Date.now();
 
     await expect(importTask(), 'to yield objects satisfying', []);
 
     const base = 'ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm';
+
+    const session = await Session.create();
+    const scriptFiles = await ls(join(process.cwd(), './res/import/scripts'));
+    const scriptNames = scriptFiles.map(s => basename(s, '.xml'));
 
     const results = await expect(cb => session.read(
       scriptNames.map(script => ({
