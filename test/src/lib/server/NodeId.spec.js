@@ -110,6 +110,44 @@ describe('NodeId', function() {
     });
   });
 
+  /** @test {NodeId#parent} */
+  describe('#parent', function() {
+    it('should return null for non-string node ids', function() {
+      const child = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1);
+      const parent = child.parent;
+
+      expect(parent, 'to be', null);
+    });
+
+    it('should inherit identifier type', function() {
+      const child = new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS.Main', 13);
+      const parent = child.parent;
+
+      expect(parent.identifierType, 'to equal', NodeId.NodeIdType.STRING);
+    });
+
+    it('should inherit namespace', function() {
+      const child = new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS.Main', 13);
+      const parent = child.parent;
+
+      expect(parent.namespace, 'to equal', 13);
+    });
+
+    it('should return parent nodes for dot separated node ids', function() {
+      const child = new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS.Main', 13);
+      const parent = child.parent;
+
+      expect(parent.value, 'to equal', 'AGENT.DISPLAYS');
+    });
+
+    it('should return parent nodes for slash separated node ids', function() {
+      const child = new NodeId(NodeId.NodeIdType.STRING, 'SYSTEM.LIBRARY.RESOURCES/dir/test.e', 13);
+      const parent = child.parent;
+
+      expect(parent.value, 'to equal', 'SYSTEM.LIBRARY.RESOURCES/dir');
+    });
+  });
+
   /** @test {NodeId#inspect} */
   describe('#inspect', function() {
     const opts = {

@@ -1,6 +1,6 @@
 {
   "name": "atscm",
-  "version": "0.5.0",
+  "version": "0.6.0-beta.0",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
   "engines": {
@@ -39,6 +39,7 @@
     "babel-plugin-istanbul": "^4.1.5",
     "babel-register": "^6.26.0",
     "broken-link-checker-local": "^0.1.1",
+    "buffer-replace": "^1.0.0",
     "codecov": "^3.0.0",
     "coffee-script": "^1.12.7",
     "conventional-changelog-lint": "^2.1.1",
@@ -77,6 +78,9 @@
     "xml2js": "^0.4.17"
   },
   "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
     "extends": "lsage"
   },
   "babel": {
