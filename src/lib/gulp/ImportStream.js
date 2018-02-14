@@ -1,4 +1,3 @@
-import { relative } from 'path';
 import { DataType, StatusCodes } from 'node-opcua';
 import Logger from 'gulplog';
 import QueueStream from '../server/QueueStream';
@@ -63,7 +62,7 @@ export default class ImportStream extends QueueStream {
    * @return {string} The specific error message.
    */
   processErrorMessage(file) {
-    return `Error importing file: ${relative(process.cwd(), file.path)}`;
+    return `Error importing file: ${file.relative}`;
   }
 
   /**
