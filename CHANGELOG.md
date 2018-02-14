@@ -1,3 +1,14 @@
+<a name="0.6.0-beta.1"></a>
+# 0.6.0-beta.1 (2018-02-14)
+
+
+### Features
+
+* New `import` task ([#129](https://github.com/atSCM/atscm/issues/129)) ([faa769d](https://github.com/atSCM/atscm/commits/faa769d))
+
+
+
+
 <a name="0.5.0"></a>
 # 0.5.0 (2018-02-09)
 
