@@ -110,6 +110,26 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
+   * Checks if the node is a child of another.
+   * @param {NodeId} parent The possible parent to check.
+   * @return {boolean} `true` if *this* is a child node of *parent*.
+   */
+  isChildOf(parent) {
+    if (this.identifierType !== NodeId.NodeIdType.STRING ||
+      parent.identifierType !== NodeId.NodeIdType.STRING) {
+      return false;
+    }
+
+    if (this.namespace !== parent.namespace || this.value === parent.value) {
+      return false;
+    }
+
+    const [prefix, postfix] = this.value.split(parent.value);
+
+    return (prefix === '' && postfix && postfix[0] === '.');
+  }
+
+  /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using {@link util~inspect}.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options

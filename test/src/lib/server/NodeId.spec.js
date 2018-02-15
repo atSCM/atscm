@@ -148,6 +148,50 @@ describe('NodeId', function() {
     });
   });
 
+  /** @test {NodeId#isChildOf} */
+  describe('#isChildOf', function() {
+    it('should return false for non-string ids', function() {
+      const invalid = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 13);
+      const valid = new NodeId(NodeId.NodeIdType.STRING, 'Node.Path', 13);
+
+      expect(invalid.isChildOf(valid), 'to be false');
+      expect(valid.isChildOf(invalid), 'to be false');
+    });
+
+    it('should return false for different namespaces', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To', 2);
+
+      expect(first.isChildOf(second), 'to be false');
+    });
+
+    it('should return false for same nodes values', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+
+      expect(first.isChildOf(second), 'to be false');
+    });
+
+    it('should return false for similar node values', function() {
+      const base = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const postfixed = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node1', 1);
+      const prefixed = new NodeId(NodeId.NodeIdType.STRING, 'Another.Path.To.Node', 1);
+
+      expect(base.isChildOf(postfixed), 'to be false');
+      expect(postfixed.isChildOf(base), 'to be false');
+
+      expect(base.isChildOf(prefixed), 'to be false');
+      expect(prefixed.isChildOf(base), 'to be false');
+    });
+
+    it('should return true for real parents', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To', 1);
+
+      expect(first.isChildOf(second), 'to be true');
+    });
+  });
+
   /** @test {NodeId#inspect} */
   describe('#inspect', function() {
     const opts = {
