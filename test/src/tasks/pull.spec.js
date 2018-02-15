@@ -2,7 +2,7 @@ import { Stream } from 'stream';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { ctor as throughStreamClass } from 'through2';
-import NodeId from '../../../src/lib/server/NodeId';
+import NodeId from '../../../src/lib/model/opcua/NodeId';
 
 const pull = proxyquire('../../../src/tasks/pull', {
   '../lib/server/NodeStream': {

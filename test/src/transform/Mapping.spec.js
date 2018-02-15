@@ -6,7 +6,7 @@ import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
-import NodeId from '../../../src/lib/server/NodeId';
+import NodeId from '../../../src/lib/model/opcua/NodeId';
 import AtviseFile from '../../../src/lib/server/AtviseFile';
 
 const readFile = (path, enc, cb) => cb(null, JSON.stringify({

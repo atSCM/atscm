@@ -3,8 +3,8 @@
 
 import { browse_service as BrowseService, NodeClass } from 'node-opcua';
 import Project from '../../config/ProjectConfig';
+import NodeId from '../model/opcua/NodeId';
 import QueueStream from './QueueStream';
-import NodeId from './NodeId';
 
 /**
  * A stream that browses the nodes specified and (if *recursive* option is set) it's child nodes.

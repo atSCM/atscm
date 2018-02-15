@@ -1,7 +1,7 @@
 import { DataType } from 'node-opcua';
 import expect from '../../../../expect';
 import CallMethodStream from '../../../../../src/lib/server/scripts/CallMethodStream';
-import NodeId from '../../../../../src/lib/server/NodeId';
+import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 
 class InvalidMethodStub extends CallMethodStream {
 

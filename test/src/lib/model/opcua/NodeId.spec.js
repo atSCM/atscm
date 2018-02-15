@@ -2,7 +2,7 @@ import { join } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import { NodeId as OpcNodeId } from 'node-opcua';
-import NodeId from '../../../../src/lib/server/NodeId';
+import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 
 /** @test {NodeId} */
 describe('NodeId', function() {

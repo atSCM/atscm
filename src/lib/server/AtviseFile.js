@@ -1,8 +1,8 @@
 import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
+import NodeId from '../model/opcua/NodeId';
 import AtviseTypes from './Types';
-import NodeId from './NodeId';
 
 // Path related cache
 

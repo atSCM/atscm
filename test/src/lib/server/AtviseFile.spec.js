@@ -5,7 +5,7 @@ import { DataType, VariantArrayType } from 'node-opcua';
 import expect from '../../../expect';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import AtviseTypes from '../../../../src/lib/server/Types';
-import NodeId from '../../../../src/lib/server/NodeId';
+import NodeId from '../../../../src/lib/model/opcua/NodeId';
 
 /** @test {AtviseFile} */
 describe('AtviseFile', function() {

@@ -1,6 +1,6 @@
 import { DataType } from 'node-opcua';
 import Logger from 'gulplog';
-import NodeId from '../server/NodeId';
+import NodeId from '../model/opcua/NodeId';
 import CallMethodStream from '../server/scripts/CallMethodStream';
 
 /**
