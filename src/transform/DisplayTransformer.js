@@ -120,7 +120,8 @@ export default class DisplayTransformer extends XMLTransformer {
               callback(null);
             });
           } catch (e) {
-            callback(e);
+            Logger.error(`Display ${file.nodeId}: ${e.message}`);
+            callback(null);
           }
         } else {
           Logger.error(`Display ${file.nodeId}: Can not decode display. Missing 'svg' tag`);
@@ -146,7 +147,8 @@ export default class DisplayTransformer extends XMLTransformer {
     let inlineScript = '';
 
     if (!svgFile) {
-      callback(new Error(`No display SVG in ${lastFile.dirname}`));
+      Logger.error(`Display ${svgFile.nodeId}: Missing SVG file in ${lastFile.dirname}`);
+      callback(null);
       return;
     }
 
@@ -154,7 +156,9 @@ export default class DisplayTransformer extends XMLTransformer {
       try {
         config = JSON.parse(configFile.contents.toString());
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
+        Logger.error(`Display ${svgFile.nodeId}: Error parsing configuration file.
+          Message: ${err.message}`);
+        callback(null);
         return;
       }
     }
@@ -170,7 +174,7 @@ export default class DisplayTransformer extends XMLTransformer {
         callback(null);
       } else {
         try {
-          const displayContent = xmlObj.children[0];
+          const displayContent = xmlObj.find('svg').children[0];
           const metadata = xmlObj.find('*/metadata');
           const parameters = config.parameters.reverse();
           const dependencies = config.dependencies;
@@ -179,45 +183,52 @@ export default class DisplayTransformer extends XMLTransformer {
             '.xml'
           );
 
-          // Insert parameters
-          if (parameters && parameters.length > 0) {
-            if (metadata.children[0]) {
-              const meta = metadata.children[0].children;
 
-              parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
-                param, metadata)));
-            } else {
-              Logger.error(`Display ${svgFile.nodeId}: Metadata tag is missing.`,
-                'Can not append parameters');
+          if (displayContent) {
+
+            // Insert parameters
+            if (parameters && parameters.length > 0) {
+              if (metadata.children[0]) {
+                const meta = metadata.children[0].children;
+
+                parameters.forEach(param => meta.unshift(this.createTag('atv:parameter',
+                  param, metadata)));
+              } else {
+                Logger.error(`Display ${svgFile.nodeId}: Metadata tag is missing.`,
+                  'Can not append parameters');
+              }
             }
-          }
 
-          // Insert dependencies
-          if (dependencies && dependencies.length > 0) {
-            dependencies.forEach(dependency => displayContent.children
-              .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' },
-                metadata)));
-          }
-
-          // Insert script
-          if (scriptFile) {
-            const script = this.createTag('script', { type: 'text/ecmascript' }, displayContent);
-
-            script.append(this.createCData(inlineScript));
-            displayContent.children.push(script);
-          }
-
-          this.encodeContents(xmlObj, (encodeError, xmlString) => {
-            if (encodeError) {
-              Logger.error(`Display ${svgFile.nodeId}: Could not encode svg file`);
-              callback(null);
-            } else {
-              display.contents = Buffer.from(xmlString);
-              callback(null, display);
+            // Insert dependencies
+            if (dependencies && dependencies.length > 0) {
+              dependencies.forEach(dependency => displayContent.children
+                .push(this.createTag('script', { 'xlink:href': dependency, type: 'text/ecmascript' },
+                  metadata)));
             }
-          });
+
+            // Insert script
+            if (scriptFile) {
+              const script = this.createTag('script', { type: 'text/ecmascript' }, displayContent);
+
+              script.append(this.createCData(inlineScript));
+              displayContent.children.push(script);
+            }
+
+            this.encodeContents(xmlObj, (encodeError, xmlString) => {
+              if (encodeError) {
+                Logger.error(`Display ${svgFile.nodeId}: Could not encode svg file`);
+                callback(null);
+              } else {
+                display.contents = Buffer.from(xmlString);
+                callback(null, display);
+              }
+            });
+          } else {
+            Logger.error(`Display ${svgFile.nodeId}: Root svg not found`);
+          }
         } catch (e) {
-          callback(e);
+          Logger.error(`Display ${svgFile.nodeId}: ${e.message}`);
+          callback(null);
         }
       }
     });
