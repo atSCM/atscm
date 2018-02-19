@@ -214,6 +214,25 @@ describe('NodeId', function() {
     });
   });
 
+  /** @test {NodeId#browseName} */
+  describe('#browseName', function() {
+    it('should return null for non-string node ids', function() {
+      const node = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1);
+
+      expect(node.browseName, 'to be', null);
+    });
+
+    it('should return the last node path component', function() {
+      const node = new NodeId(NodeId.NodeIdType.STRING, 'Path.to.node', 1);
+      expect(node.browseName, 'to be', 'node');
+    });
+
+    it('should return the last resource path component', function() {
+      const node = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node', 1);
+      expect(node.browseName, 'to be', 'Node');
+    });
+  });
+
   /** @test {NodeId#inspect} */
   describe('#inspect', function() {
     const opts = {

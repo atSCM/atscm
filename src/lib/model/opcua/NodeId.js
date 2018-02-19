@@ -143,6 +143,18 @@ export default class NodeId extends OpcNodeId {
   }
 
   /**
+   * The node id's browsename as string.
+   * @type {string}
+   */
+  get browseName() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    return this.value.substr(this.value.lastIndexOf(this._lastSeparator) + 1);
+  }
+
+  /**
    * Returns a string in the format "namespace value" that is printed when inspecting the NodeId
    * using {@link util~inspect}.
    * @see https://nodejs.org/api/util.html#util_util_inspect_object_options
