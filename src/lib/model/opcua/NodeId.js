@@ -90,6 +90,14 @@ export default class NodeId extends OpcNodeId {
     return parts.join('RESOURCES');
   }
 
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * Returns the last separator in a string node id's path, e.g.:
+   * - `'/'` for `ns=1;SYSTEM.LIBRARY.RESOURCES/index.htm`,
+   * - `'.'` for `ns=1;AGENT.DISPLAYS.Main`.
+   * @type {?string} `null` for non-string node ids, `'/'` for resource paths, `'.'` for regular
+   * string node ids.
+   */
   get _lastSeparator() {
     if (this.identifierType !== NodeId.NodeIdType.STRING) {
       return null;
