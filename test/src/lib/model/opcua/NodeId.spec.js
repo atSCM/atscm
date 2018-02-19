@@ -110,6 +110,21 @@ describe('NodeId', function() {
     });
   });
 
+  /** @test {_lastSeparator} */
+  describe('#_lastSeparator', function() {
+    it('should return null for non-string node ids', function() {
+      expect(new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)._lastSeparator, 'to be', null);
+    });
+
+    it('should return `/` for resource paths', function() {
+      expect(new NodeId(NodeId.NodeIdType.STRING, 'Test/Resource', 1)._lastSeparator, 'to be', '/');
+    });
+
+    it('should return `.` for regular node ids', function() {
+      expect(new NodeId(NodeId.NodeIdType.STRING, 'Test.Node', 1)._lastSeparator, 'to be', '.');
+    });
+  });
+
   /** @test {NodeId#parent} */
   describe('#parent', function() {
     it('should return null for non-string node ids', function() {
@@ -187,6 +202,13 @@ describe('NodeId', function() {
     it('should return true for real parents', function() {
       const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To', 1);
+
+      expect(first.isChildOf(second), 'to be true');
+    });
+
+    it('should return true for parent resource nodes', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path/to', 1);
 
       expect(first.isChildOf(second), 'to be true');
     });

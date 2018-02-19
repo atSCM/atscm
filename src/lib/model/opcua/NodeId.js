@@ -90,6 +90,14 @@ export default class NodeId extends OpcNodeId {
     return parts.join('RESOURCES');
   }
 
+  get _lastSeparator() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    return ~(this.value.indexOf('/')) ? '/' : '.';
+  }
+
   /**
    * The parent node id, or `null`.
    * @type {?NodeId}
@@ -99,12 +107,9 @@ export default class NodeId extends OpcNodeId {
       return null;
     }
 
-    const lastSeperator = this.value.indexOf('/') > -1 ?
-      '/' : '.';
-
     return new NodeId(
       NodeId.NodeIdType.STRING,
-      this.value.substr(0, this.value.lastIndexOf(lastSeperator)),
+      this.value.substr(0, this.value.lastIndexOf(this._lastSeparator)),
       this.namespace
     );
   }
@@ -126,7 +131,7 @@ export default class NodeId extends OpcNodeId {
 
     const [prefix, postfix] = this.value.split(parent.value);
 
-    return (prefix === '' && postfix && postfix[0] === '.');
+    return (prefix === '' && postfix && postfix[0] === this._lastSeparator);
   }
 
   /**
