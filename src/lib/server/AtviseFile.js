@@ -162,36 +162,58 @@ export default class AtviseFile extends File {
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
    * @return {?Buffer} The encoded file contents or null.
    */
-  static encodeValue(value, dataType) {
+  static encodeValue(value, dataType, arrayType) {
     if (value.value === null) {
       return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
+    const encode = v => {
+      if (v === null) { return null; }
+
+      return encoder ? encoder(v) : v.toString().trim();
+    };
+
+    if (arrayType !== VariantArrayType.Scalar) {
+      return Buffer.from(JSON.stringify(Array.from(value.value).map(encode), null, '  '));
+    }
+
+    return Buffer.from(encode(value.value));
   }
 
   /**
    * Decodes a file's contents to a node's value.
    * @param {Buffer} buffer The file contents to decode.
-   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
-   * for.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
    * @return {?*} The decoded node value or null.
    */
-  static decodeValue(buffer, dataType) {
+  static decodeValue(buffer, dataType, arrayType) {
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    const decoder = Decoder[dataType];
-
-    if (decoder) {
-      return decoder(buffer.toString());
+    if (dataType === DataType.ByteString) {
+      return buffer;
     }
 
-    return buffer;
+    const stringValue = buffer.toString();
+
+    const decoder = Decoder[dataType];
+    const decode = s => {
+      if (s === null) { return null; }
+
+      return decoder ? decoder(s) : s;
+    };
+
+    if (arrayType !== VariantArrayType.Scalar) {
+      return JSON.parse(stringValue).map(decode);
+    }
+
+    return decode(stringValue);
   }
 
   /**
@@ -383,7 +405,7 @@ export default class AtviseFile extends File {
      * The file's contents.
      * @type {?Buffer}
      */
-    this.contents = AtviseFile.encodeValue(newValue, this.dataType);
+    this.contents = AtviseFile.encodeValue(newValue, this.dataType, this.arrayType);
   }
 
   /**
@@ -391,7 +413,7 @@ export default class AtviseFile extends File {
    * @type {?*} The file's decoded value.
    */
   get value() {
-    return AtviseFile.decodeValue(this.contents, this.dataType);
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType);
   }
 
   /**

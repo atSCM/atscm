@@ -84,7 +84,7 @@ describe('AtviseFile', function() {
       filePath: 'AGENT/DISPLAYS/Test.display.xml',
     },
     {
-      name: 'should store scripts with a ".locs.xml" extension',
+      name: 'should store translation tables with a ".locs.xml" extension',
       nodeId: new NodeId('ns=1;s=SYSTEM.LIBRARY.PROJECT.de'),
       dataType: DataType.XmlElement,
       typeDefinition: new NodeId('VariableTypes.ATVISE.TranslationTable'),
@@ -151,18 +151,45 @@ describe('AtviseFile', function() {
     it('should store timestamp as string for DateTime values', function() {
       const now = new Date();
 
-      expect(AtviseFile.encodeValue({ value: now }, DataType.DateTime),
-        'to equal', Buffer.from(now.getTime().toString()));
+      expect(AtviseFile.encodeValue({ value: now }, DataType.DateTime, VariantArrayType.Scalar),
+        'to equal', Buffer.from(now.toString()));
     });
 
     it('should store JSON encoded bytes for UInt64 values', function() {
-      expect(AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64),
-        'to equal', Buffer.from('[1,2]'));
+      expect(AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64, VariantArrayType.Scalar),
+        'to equal', Buffer.from('[1, 2]'));
     });
 
     it('should use trimmed string value if no special encoder is used', function() {
-      expect(AtviseFile.encodeValue({ value: 'string\n ' }, DataType.String),
+      const value = 'string\n ';
+
+      expect(AtviseFile.encodeValue({ value }, DataType.String, VariantArrayType.Scalar),
         'to equal', Buffer.from('string'));
+    });
+
+    context('with an array passed', function() {
+      it('should JSON encode standard values', function() {
+        const value = ['test', 'another'];
+
+        return expect(AtviseFile.encodeValue({ value }, DataType.String, VariantArrayType.Array),
+          'to equal', Buffer.from(JSON.stringify(value, null, '  ')));
+      });
+
+      it('should JSON encode special encoded values', function() {
+        const value = [[0, 1]];
+
+        return expect(AtviseFile.encodeValue({ value }, DataType.Int64, VariantArrayType.Array),
+          'to equal', Buffer.from(JSON.stringify([
+            '[0, 1]',
+          ], null, '  ')));
+      });
+
+      it('should JSON encode null values', function() {
+        const value = [null];
+
+        return expect(AtviseFile.encodeValue({ value }, DataType.String, VariantArrayType.Array),
+          'to equal', Buffer.from(JSON.stringify(value, null, '  ')));
+      });
     });
   });
 
@@ -174,25 +201,65 @@ describe('AtviseFile', function() {
 
     function testDecoderForDataType(dataType, rawValue, expectedValue) {
       it(`decoder for ${dataType} should work`, function() {
-        expect(AtviseFile.decodeValue(Buffer.from(rawValue), dataType),
+        expect(AtviseFile.decodeValue(Buffer.from(rawValue), dataType, VariantArrayType.Scalar),
           'to satisfy', expectedValue);
       });
     }
 
     const now = (new Date());
+    now.setMilliseconds(0);
 
     [
       [DataType.Boolean, 'false', false],
       [DataType.Boolean, 'true', true],
       [DataType.String, 'test', 'test'],
       [DataType.NodeId, 'ns=1;s=AGENT.DISPLAYS.Main', new NodeId('AGENT.DISPLAYS.Main')],
-      [DataType.DateTime, now.getTime().toString(), now],
-      [DataType.UInt64, '[1,2]', [1, 2]],
+      [DataType.DateTime, now.toString(), now],
+      ...[ // Long int types
+        DataType.Int64,
+        DataType.UInt64,
+      ].map(type => ([type, JSON.stringify([1, 2], null, '  '), [1, 2]])),
+      ...[ // Int types
+        DataType.SByte,
+        DataType.Byte,
+        DataType.Int16,
+        DataType.UInt16,
+        DataType.Int32,
+        DataType.UInt32,
+      ].map(type => ([type, '13', 13])),
+      ...[ // float types
+        DataType.Float,
+        DataType.Double,
+      ].map(type => ([type, '13.5', 13.5])),
     ].forEach(t => testDecoderForDataType(...t));
 
-    it('should forward buffer without spection encoding', function() {
+    it('should forward binary buffer for ByteString', function() {
       const buffer = new Buffer('test');
-      expect(AtviseFile.decodeValue(buffer, DataType.ByteString), 'to equal', buffer);
+      expect(AtviseFile.decodeValue(buffer, DataType.ByteString, VariantArrayType.Scalar),
+        'to equal', buffer);
+    });
+
+    context('with an array passed', function() {
+      it('should JSON decode standard values', function() {
+        const value = ['<xml />', '<xml />'];
+        const buffer = new Buffer(JSON.stringify(value));
+        expect(AtviseFile.decodeValue(buffer, DataType.XmlElement, VariantArrayType.Array),
+          'to equal', value);
+      });
+
+      it('should JSON decode special encoded values', function() {
+        const value = ['[0, 1]'];
+        const buffer = new Buffer(JSON.stringify(value));
+        expect(AtviseFile.decodeValue(buffer, DataType.UInt64, VariantArrayType.Array),
+          'to equal', [[0, 1]]);
+      });
+
+      it('should JSON decode null values', function() {
+        const value = [null];
+        const buffer = new Buffer(JSON.stringify(value));
+        expect(AtviseFile.decodeValue(buffer, DataType.String, VariantArrayType.Array),
+          'to equal', value);
+      });
     });
   });
 
