@@ -1,5 +1,5 @@
 import { spy } from 'sinon';
-import { StatusCodes, resolveNodeId } from 'node-opcua';
+import { StatusCodes, resolveNodeId, NodeClass } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
@@ -26,7 +26,11 @@ describe('WriteStream', function() {
         stream.session.writeSingleNode = (nodeId, value, callback) => callback(new Error('Test'));
       });
 
-      return expect([{ nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main') }],
+      return expect(
+        [{
+          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeClass: NodeClass.Variable,
+        }],
         'when piped through', stream,
         'to error with', /Test/);
     });
@@ -40,7 +44,11 @@ describe('WriteStream', function() {
         };
       });
 
-      return expect([{ nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main') }],
+      return expect(
+        [{
+          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeClass: NodeClass.Variable,
+        }],
         'when piped through', stream,
         'to error with', /Sync test/);
     });
@@ -56,14 +64,18 @@ describe('WriteStream', function() {
       const warnSpy = spy();
       Logger.on('warn', warnSpy);
 
-      return expect([{ nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main') }],
+      return expect(
+        [{
+          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeClass: NodeClass.Variable,
+        }],
         'when piped through', stream,
         'to yield objects satisfying', 'to have length', 0)
         .then(() => expect(warnSpy, 'was called once'))
         .then(() => expect(warnSpy.lastCall, 'to satisfy', [/opened in atvise builder/]));
     });
 
-    it('should forward file with good status', function() {
+    it('should push non-variable files', function() {
       const stream = new WriteStream();
 
       stream.prependOnceListener('session-open', () => {
@@ -71,12 +83,51 @@ describe('WriteStream', function() {
           callback(null, StatusCodes.Good);
       });
 
-      const file = { nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main') };
+      const file = {
+        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS'),
+        nodeClass: NodeClass.Object,
+      };
       return expect([file],
         'when piped through', stream,
         'to yield objects satisfying', [
           expect.it('to be', file),
         ]);
+    });
+
+    it('should push files where no node can be found', function() {
+      const stream = new WriteStream();
+
+      stream.prependOnceListener('session-open', () => {
+        stream.session.writeSingleNode = (nodeId, value, callback) =>
+          callback(null, StatusCodes.BadNodeIdUnknown);
+      });
+
+      const file = {
+        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeClass: NodeClass.Variable,
+      };
+      return expect([file],
+        'when piped through', stream,
+        'to yield objects satisfying', [
+          expect.it('to be', file),
+        ]);
+    });
+
+    it('should not push files with good status', function() {
+      const stream = new WriteStream();
+
+      stream.prependOnceListener('session-open', () => {
+        stream.session.writeSingleNode = (nodeId, value, callback) =>
+          callback(null, StatusCodes.Good);
+      });
+
+      const file = {
+        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeClass: NodeClass.Variable,
+      };
+      return expect([file],
+        'when piped through', stream,
+        'to yield objects satisfying', 'to have length', 0);
     });
   });
 });

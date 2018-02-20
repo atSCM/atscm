@@ -2,7 +2,7 @@
 /* eslint-disable jsdoc/check-param-names */
 
 import Logger from 'gulplog';
-import { StatusCodes } from 'node-opcua';
+import { StatusCodes, NodeClass } from 'node-opcua';
 import QueueStream from './QueueStream';
 
 /**
@@ -26,22 +26,37 @@ export default class WriteStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(file, handleErrors) {
+    if (file.nodeClass.value !== NodeClass.Variable.value) { // Non-variable nodes are just pushed
+      this.push(file);
+      handleErrors(null, StatusCodes.Good, done => done());
+      return;
+    }
+
     try {
       this.session.writeSingleNode(file.nodeId.toString(), {
         dataType: file.dataType,
         arrayType: file.arrayType,
         value: file.value,
       }, (err, statusCode) => {
-        if (statusCode === StatusCodes.BadUserAccessDenied) {
+        if (
+          (statusCode === StatusCodes.BadUserAccessDenied) ||
+          (statusCode === StatusCodes.BadNotWritable)
+        ) {
           Logger.warn(`Error writing node ${
             file.nodeId.toString()
           }: Make sure it is not opened in atvise builder`);
           handleErrors(err, StatusCodes.Good, done => done());
-        } else {
-          handleErrors(err, statusCode, done => {
+        } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
+          Logger.debug(`Node ${
+            file.nodeId.toString()
+          } does not exist: Attempting to create it...`);
+
+          handleErrors(err, StatusCodes.Good, done => {
             this.push(file);
             done();
           });
+        } else {
+          handleErrors(err, statusCode, done => done());
         }
       });
     } catch (e) {
