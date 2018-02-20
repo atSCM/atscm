@@ -1,10 +1,11 @@
-<a name="0.6.0-beta.2"></a>
-# 0.6.0-beta.2 (2018-02-14)
+<a name="0.7.0-beta.0"></a>
+# 0.7.0-beta.0 (2018-02-20)
 
 
 ### Bug Fixes
 
 * Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
+* Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
 
 
 ### Features
