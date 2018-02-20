@@ -2,6 +2,7 @@ import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import NodeId from '../model/opcua/NodeId';
+import { reverse } from '../helpers/Object';
 import AtviseTypes from './Types';
 
 // Path related cache
@@ -34,22 +35,10 @@ export const ExtensionForDataType = {
 };
 
 /**
- * Switches keys and values in an object. E.G.: { "a": 1 } becomes { 1: "a" }.
- * @param {Object} obj The object to reverse.
- * @return {Object} The reversed object.
- */
-function reverseObject(obj) {
-  return Object.keys(obj)
-    .reduce((result, key) => Object.assign(result, {
-      [obj[key]]: key,
-    }), {});
-}
-
-/**
  * A map providing data types for shorter extensions (Reverse of {@link DataTypeForExtension}).
  * * @type {Map<String, node-opcua~DataType>}
  */
-export const DataTypeForExtension = reverseObject(ExtensionForDataType);
+export const DataTypeForExtension = reverse(ExtensionForDataType);
 
 // Cache DataType
 /**
