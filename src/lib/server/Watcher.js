@@ -10,6 +10,7 @@ import {
   AttributeIds,
   subscription_service as SubscriptionService,
   StatusCodes,
+  NodeClass,
 } from 'node-opcua';
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeStream from './NodeStream';
@@ -129,6 +130,11 @@ export class SubscribeStream extends QueueStream {
    * monitor the given node.
    */
   _transform(desc, enc, callback) {
+    if (desc.nodeClass !== NodeClass.Variable) {
+      callback();
+      return;
+    }
+
     if (this.subscription) {
       this._enqueueChunk(desc);
       callback();
