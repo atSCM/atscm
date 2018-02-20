@@ -184,6 +184,7 @@ describe('SubscribeStream', function() {
         [{
           nodeId,
           nodeClass: NodeClass.Variable,
+          references: {},
         }],
         'when piped through', stream,
         'to yield objects satisfying', 'to have length', 0)
@@ -193,7 +194,7 @@ describe('SubscribeStream', function() {
           expect(listener.lastCall, 'to satisfy', [{
             nodeId,
             value: changeData.value,
-            referenceDescription: { nodeId },
+            references: {},
             mtime: changeData.serverTimestamp,
           }]);
         });

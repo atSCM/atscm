@@ -99,9 +99,10 @@ export class SubscribeStream extends QueueStream {
         handleErrors(null, StatusCodes.Good, done => done()); // Ignore first notification
       } else {
         this.emit('change', {
+          nodeClass: referenceDescription.nodeClass,
           nodeId,
           value: dataValue.value,
-          referenceDescription,
+          references: referenceDescription.references,
           mtime: dataValue.serverTimestamp,
         });
       }
