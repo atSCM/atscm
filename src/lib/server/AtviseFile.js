@@ -1,10 +1,9 @@
 import { readFile } from 'fs';
 import File from 'vinyl';
 import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
+import NodeId from '../model/opcua/NodeId';
+import { reverse } from '../helpers/Object';
 import AtviseTypes from './Types';
-import NodeId from './NodeId';
-
-// Path related cache
 
 /**
  * A map of AtviseTypes against their definition id's value.
@@ -34,22 +33,10 @@ export const ExtensionForDataType = {
 };
 
 /**
- * Switches keys and values in an object. E.G.: { "a": 1 } becomes { 1: "a" }.
- * @param {Object} obj The object to reverse.
- * @return {Object} The reversed object.
- */
-function reverseObject(obj) {
-  return Object.keys(obj)
-    .reduce((result, key) => Object.assign(result, {
-      [obj[key]]: key,
-    }), {});
-}
-
-/**
  * A map providing data types for shorter extensions (Reverse of {@link DataTypeForExtension}).
  * * @type {Map<String, node-opcua~DataType>}
  */
-export const DataTypeForExtension = reverseObject(ExtensionForDataType);
+export const DataTypeForExtension = reverse(ExtensionForDataType);
 
 // Cache DataType
 /**
@@ -83,18 +70,25 @@ const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
  */
 const ExtensionRegExp = /\.([^/\\]*)$/;
 
-// Value encoding related cache
 /**
  * A set of functions that decode raw stored node values to their original value.
  * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
  */
 const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
-  [DataType.String]: stringValue => stringValue,
-  [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
-  [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
-  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.SByte]: stringValue => parseInt(stringValue, 10),
+  [DataType.Byte]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int16]: stringValue => parseInt(stringValue, 10),
+  [DataType.UInt16]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int32]: stringValue => parseInt(stringValue, 10),
+  [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
   [DataType.Int64]: stringValue => JSON.parse(stringValue),
+  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
+  [DataType.Double]: stringValue => parseFloat(stringValue, 10),
+  [DataType.String]: stringValue => stringValue,
+  [DataType.DateTime]: stringValue => new Date(stringValue),
+  [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
 };
 
 /**
@@ -102,9 +96,8 @@ const Decoder = {
  * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
-  [DataType.DateTime]: date => date.getTime().toString(),
-  [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
-  [DataType.Int64]: int32Array => JSON.stringify(int32Array),
+  [DataType.UInt64]: ([lo, high]) => `[${lo}, ${high}]`,
+  [DataType.Int64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
 };
 
@@ -176,36 +169,58 @@ export default class AtviseFile extends File {
    * Encodes a node's value to file contents.
    * @param {*} value The value to encode.
    * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
    * @return {?Buffer} The encoded file contents or null.
    */
-  static encodeValue(value, dataType) {
+  static encodeValue(value, dataType, arrayType) {
     if (value.value === null) {
       return Buffer.from('');
     }
 
     const encoder = Encoder[dataType];
-    return Buffer.from(encoder ? encoder(value.value) : value.value.toString().trim());
+    const encode = v => {
+      if (v === null) { return null; }
+
+      return encoder ? encoder(v) : v.toString().trim();
+    };
+
+    if (arrayType !== VariantArrayType.Scalar) {
+      return Buffer.from(JSON.stringify(Array.from(value.value).map(encode), null, '  '));
+    }
+
+    return Buffer.from(encode(value.value));
   }
 
   /**
    * Decodes a file's contents to a node's value.
    * @param {Buffer} buffer The file contents to decode.
-   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents
-   * for.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
    * @return {?*} The decoded node value or null.
    */
-  static decodeValue(buffer, dataType) {
+  static decodeValue(buffer, dataType, arrayType) {
     if (buffer === null || buffer.length === 0) {
       return null;
     }
 
-    const decoder = Decoder[dataType];
-
-    if (decoder) {
-      return decoder(buffer.toString());
+    if (dataType === DataType.ByteString) {
+      return buffer;
     }
 
-    return buffer;
+    const stringValue = buffer.toString();
+
+    const decoder = Decoder[dataType];
+    const decode = s => {
+      if (s === null) { return null; }
+
+      return decoder ? decoder(s) : s;
+    };
+
+    if (arrayType !== VariantArrayType.Scalar) {
+      return JSON.parse(stringValue).map(decode);
+    }
+
+    return decode(stringValue);
   }
 
   /**
@@ -397,7 +412,7 @@ export default class AtviseFile extends File {
      * The file's contents.
      * @type {?Buffer}
      */
-    this.contents = AtviseFile.encodeValue(newValue, this.dataType);
+    this.contents = AtviseFile.encodeValue(newValue, this.dataType, this.arrayType);
   }
 
   /**
@@ -405,7 +420,7 @@ export default class AtviseFile extends File {
    * @type {?*} The file's decoded value.
    */
   get value() {
-    return AtviseFile.decodeValue(this.contents, this.dataType);
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType);
   }
 
   /**

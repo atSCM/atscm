@@ -14,6 +14,17 @@
 
 
 
+<a name="0.5.1"></a>
+## 0.5.1 (2018-02-16)
+
+
+### Bug Fixes
+
+* **init:** Use node version 8 aware babel preset ([#133](https://github.com/atSCM/atscm/issues/133)) ([0535294](https://github.com/atSCM/atscm/commits/0535294)), closes [#132](https://github.com/atSCM/atscm/issues/132)
+
+
+
+
 <a name="0.5.0"></a>
 # 0.5.0 (2018-02-09)
 

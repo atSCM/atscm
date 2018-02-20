@@ -46,11 +46,3 @@ export default class ReadStream extends QueueStream {
   }
 
 }
-
-/**
- * @typedef {Object} ReadStream.ReadResult
- * @property {NodeId} nodeId The read node's id.
- * @property {?node-opcua~DataValue} value The read value.
- * @property {Object} referenceDescription Additional info on the read node.
- * @property {Date} mtime The timestamp the node's value last changed.
- */

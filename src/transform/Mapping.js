@@ -3,7 +3,7 @@ import { readFile } from 'fs';
 import Logger from 'gulplog';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
-import NodeId from '../lib/server/NodeId';
+import NodeId from '../lib/model/opcua/NodeId';
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.

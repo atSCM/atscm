@@ -2,7 +2,7 @@ import { join } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import { NodeId as OpcNodeId } from 'node-opcua';
-import NodeId from '../../../../src/lib/server/NodeId';
+import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 
 /** @test {NodeId} */
 describe('NodeId', function() {
@@ -110,6 +110,21 @@ describe('NodeId', function() {
     });
   });
 
+  /** @test {_lastSeparator} */
+  describe('#_lastSeparator', function() {
+    it('should return null for non-string node ids', function() {
+      expect(new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)._lastSeparator, 'to be', null);
+    });
+
+    it('should return `/` for resource paths', function() {
+      expect(new NodeId(NodeId.NodeIdType.STRING, 'Test/Resource', 1)._lastSeparator, 'to be', '/');
+    });
+
+    it('should return `.` for regular node ids', function() {
+      expect(new NodeId(NodeId.NodeIdType.STRING, 'Test.Node', 1)._lastSeparator, 'to be', '.');
+    });
+  });
+
   /** @test {NodeId#parent} */
   describe('#parent', function() {
     it('should return null for non-string node ids', function() {
@@ -145,6 +160,76 @@ describe('NodeId', function() {
       const parent = child.parent;
 
       expect(parent.value, 'to equal', 'SYSTEM.LIBRARY.RESOURCES/dir');
+    });
+  });
+
+  /** @test {NodeId#isChildOf} */
+  describe('#isChildOf', function() {
+    it('should return false for non-string ids', function() {
+      const invalid = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 13);
+      const valid = new NodeId(NodeId.NodeIdType.STRING, 'Node.Path', 13);
+
+      expect(invalid.isChildOf(valid), 'to be false');
+      expect(valid.isChildOf(invalid), 'to be false');
+    });
+
+    it('should return false for different namespaces', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To', 2);
+
+      expect(first.isChildOf(second), 'to be false');
+    });
+
+    it('should return false for same nodes values', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+
+      expect(first.isChildOf(second), 'to be false');
+    });
+
+    it('should return false for similar node values', function() {
+      const base = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const postfixed = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node1', 1);
+      const prefixed = new NodeId(NodeId.NodeIdType.STRING, 'Another.Path.To.Node', 1);
+
+      expect(base.isChildOf(postfixed), 'to be false');
+      expect(postfixed.isChildOf(base), 'to be false');
+
+      expect(base.isChildOf(prefixed), 'to be false');
+      expect(prefixed.isChildOf(base), 'to be false');
+    });
+
+    it('should return true for real parents', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path.To.Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path.To', 1);
+
+      expect(first.isChildOf(second), 'to be true');
+    });
+
+    it('should return true for parent resource nodes', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path/to', 1);
+
+      expect(first.isChildOf(second), 'to be true');
+    });
+  });
+
+  /** @test {NodeId#browseName} */
+  describe('#browseName', function() {
+    it('should return null for non-string node ids', function() {
+      const node = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1);
+
+      expect(node.browseName, 'to be', null);
+    });
+
+    it('should return the last node path component', function() {
+      const node = new NodeId(NodeId.NodeIdType.STRING, 'Path.to.node', 1);
+      expect(node.browseName, 'to be', 'node');
+    });
+
+    it('should return the last resource path component', function() {
+      const node = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node', 1);
+      expect(node.browseName, 'to be', 'Node');
     });
   });
 
