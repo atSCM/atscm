@@ -212,7 +212,7 @@ export default class AtviseFile extends File {
       return buffer;
     }
 
-    const stringValue = buffer.toString();
+    const stringValue = buffer.toString().trim();
 
     const decoder = Decoder[dataType];
     const decode = s => {
