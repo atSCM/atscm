@@ -76,11 +76,19 @@ const ExtensionRegExp = /\.([^/\\]*)$/;
  */
 const Decoder = {
   [DataType.Boolean]: stringValue => stringValue === 'true',
-  [DataType.String]: stringValue => stringValue,
-  [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
-  [DataType.DateTime]: stringValue => new Date(Number.parseInt(stringValue, 10)),
-  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.SByte]: stringValue => parseInt(stringValue, 10),
+  [DataType.Byte]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int16]: stringValue => parseInt(stringValue, 10),
+  [DataType.UInt16]: stringValue => parseInt(stringValue, 10),
+  [DataType.Int32]: stringValue => parseInt(stringValue, 10),
+  [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
   [DataType.Int64]: stringValue => JSON.parse(stringValue),
+  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
+  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
+  [DataType.Double]: stringValue => parseFloat(stringValue, 10),
+  [DataType.String]: stringValue => stringValue,
+  [DataType.DateTime]: stringValue => new Date(stringValue),
+  [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
 };
 
 /**
@@ -88,9 +96,8 @@ const Decoder = {
  * @type {Map<node-opcua~DataType, function(value: *): String>}
  */
 const Encoder = {
-  [DataType.DateTime]: date => date.getTime().toString(),
-  [DataType.UInt64]: uInt32Array => JSON.stringify(uInt32Array),
-  [DataType.Int64]: int32Array => JSON.stringify(int32Array),
+  [DataType.UInt64]: ([lo, high]) => `[${lo}, ${high}]`,
+  [DataType.Int64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
 };
 
