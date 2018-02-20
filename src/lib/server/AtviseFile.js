@@ -5,8 +5,6 @@ import NodeId from '../model/opcua/NodeId';
 import { reverse } from '../helpers/Object';
 import AtviseTypes from './Types';
 
-// Path related cache
-
 /**
  * A map of AtviseTypes against their definition id's value.
  * @type {Map<String, AtivseType>}
@@ -72,7 +70,6 @@ const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
  */
 const ExtensionRegExp = /\.([^/\\]*)$/;
 
-// Value encoding related cache
 /**
  * A set of functions that decode raw stored node values to their original value.
  * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
