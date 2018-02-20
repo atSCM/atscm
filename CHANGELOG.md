@@ -1,5 +1,5 @@
-<a name="0.6.0-beta.3"></a>
-# 0.6.0-beta.3 (2018-02-20)
+<a name="0.6.0-beta.4"></a>
+# 0.6.0-beta.4 (2018-02-20)
 
 
 ### Bug Fixes
@@ -10,6 +10,7 @@
 
 ### Features
 
+* Create nodes on push ([#138](https://github.com/atSCM/atscm/issues/138)) ([d84531b](https://github.com/atSCM/atscm/commits/d84531b)), closes [#32](https://github.com/atSCM/atscm/issues/32)
 * New `import` task ([#129](https://github.com/atSCM/atscm/issues/129)) ([faa769d](https://github.com/atSCM/atscm/commits/faa769d))
 
 
