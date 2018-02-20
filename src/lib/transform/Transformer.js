@@ -3,13 +3,18 @@ import { ctor as throughStreamClass } from 'through2';
 
 /**
  * The directions a transformer can be run in.
- * @type {{FromDB: String, FromFilesystem: String}}
+ * @type {{FromDB: string, FromFilesystem: string}}
  */
 export const TransformDirection = {
   FromDB: 'FromDB',
   FromFilesystem: 'FromFilesystem',
 };
 
+/**
+ * Checks if the given string is a valid {@link TransformDirection}.
+ * @param {string} direction The direction string to check.
+ * @return {boolean} `true` if the direction is valid.
+ */
 function isValidDirection(direction) {
   return [
     TransformDirection.FromDB,
