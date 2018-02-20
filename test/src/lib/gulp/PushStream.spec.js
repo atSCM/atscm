@@ -5,7 +5,6 @@ import { obj as createTransformStream } from 'through2';
 import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../../expect';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 
 const StubTransformer = {
@@ -67,14 +66,12 @@ describe('PushStream', function() {
       const stream = new PushStream(srcStream);
 
       srcStream.write(new File({
-        path: 'src/AGENT/DISPLAYS/Main',
+        path: 'src/AGENT/DISPLAYS/Main.display',
         base: 'src',
       }));
       srcStream.end();
 
-      return expect(stream, 'to yield objects satisfying', [
-        expect.it('to be a', AtviseFile),
-      ])
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
         .then(() => {
           expect(StubTransformer.applyTransformers.calledOnce, 'to be', true);
           expect(StubTransformer.applyTransformers.lastCall.args[2],

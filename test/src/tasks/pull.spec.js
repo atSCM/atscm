@@ -2,6 +2,7 @@ import { Stream } from 'stream';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { ctor as throughStreamClass } from 'through2';
+import { NodeClass } from 'node-opcua';
 import NodeId from '../../../src/lib/model/opcua/NodeId';
 
 const pull = proxyquire('../../../src/tasks/pull', {
@@ -15,6 +16,7 @@ const pull = proxyquire('../../../src/tasks/pull', {
         this.push({
           nodeId: new NodeId('AGENT.DISPLAYS.Main'),
           typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
+          nodeClass: NodeClass.Variable,
         });
 
         this.end();

@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import { stub, spy } from 'sinon';
 import proxyquire from 'proxyquire';
-import { DataType, VariantArrayType } from 'node-opcua';
+import { DataType, VariantArrayType, NodeClass } from 'node-opcua';
 import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../expect';
@@ -96,13 +96,16 @@ describe('MappingTransformer', function() {
 
       return expect([{
         nodeId: new NodeId('AGENT.DISPLAYS.Main'),
+        nodeClass: NodeClass.Variable,
         value: {
           value: '<xml></xml>',
           $dataType: DataType.XmlElement,
           $arrayType: VariantArrayType.Scalar,
         },
-        referenceDescription: {
-          typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
+        references: {
+          HasTypeDefinition: [
+            new NodeId('VariableTypes.ATVISE.Display'),
+          ],
         },
       }], 'when piped through', stream, 'to yield chunks satisfying', [
         expect.it('to be an', AtviseFile),
@@ -115,13 +118,16 @@ describe('MappingTransformer', function() {
 
         return expect([{
           nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
+          nodeClass: NodeClass.Variable,
           value: {
             value: '<xml></xml>',
             $dataType: DataType.XmlElement,
             $arrayType: VariantArrayType.Scalar,
           },
-          referenceDescription: {
-            typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+          references: {
+            HasTypeDefinition: [
+              new NodeId('VariableTypes.PROJECT.CustomType'),
+            ],
           },
         }], 'when piped through', stream, 'to yield chunks satisfying', [
           {

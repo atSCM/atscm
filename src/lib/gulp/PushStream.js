@@ -4,6 +4,7 @@ import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
 import WriteStream from '../server/WriteStream';
+import CreateNodeStream from '../server/CreateNodeStream';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -17,6 +18,7 @@ export default class PushStream {
   constructor(srcStream) {
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
     const writeStream = new WriteStream();
+    const createStream = new CreateNodeStream();
 
     const printProgress = setInterval(() => {
       Logger.info(
@@ -36,6 +38,7 @@ export default class PushStream {
       TransformDirection.FromFilesystem
     )
       .pipe(writeStream)
+      .pipe(createStream)
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.cursorTo(process.stdout, 0);

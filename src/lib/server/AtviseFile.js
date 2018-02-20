@@ -1,6 +1,7 @@
 import { readFile } from 'fs';
+import { dirname } from 'path';
+import { NodeClass, DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import File from 'vinyl';
-import { DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
 import NodeId from '../model/opcua/NodeId';
 import { reverse } from '../helpers/Object';
 import AtviseTypes from './Types';
@@ -129,9 +130,13 @@ export default class AtviseFile extends File {
   static pathForReadResult(readResult) {
     let path = readResult.nodeId.filePath;
 
+    if (readResult.nodeClass.value !== NodeClass.Variable.value) {
+      return `${path}/.${readResult.nodeClass.key}.json`;
+    }
+
     const dataType = readResult.value.$dataType;
     const arrayType = readResult.value.$arrayType;
-    const typeDefinition = readResult.referenceDescription.typeDefinition;
+    const typeDefinition = readResult.references.HasTypeDefinition[0];
 
     if (typeDefinition.value === VariableTypeDefinition.value) {
       // Variable nodes are stored with their lowercase datatype as an extension
@@ -230,10 +235,9 @@ export default class AtviseFile extends File {
    * @return {Date} The normalized mtime.
    */
   static normalizeMtime(date) {
-    const result = date;
-    result.setMilliseconds(0);
+    date.setMilliseconds(0);
 
-    return result;
+    return date;
   }
 
   /**
@@ -242,17 +246,22 @@ export default class AtviseFile extends File {
    * @return {AtviseFile} The resulting file.
    */
   static fromReadResult(readResult) {
-    if (!readResult.value) {
+    const { nodeClass, references, value, mtime } = readResult;
+
+    if (nodeClass.value === NodeClass.Variable.value && !value) {
       throw new Error('no value');
     }
 
     return new AtviseFile({
       path: AtviseFile.pathForReadResult(readResult),
-      contents: AtviseFile.encodeValue(readResult.value, readResult.value.$dataType),
-      _dataType: readResult.value.$dataType,
-      _arrayType: readResult.value.$arrayType,
-      _typeDefinition: readResult.referenceDescription.typeDefinition,
-      stat: { mtime: readResult.mtime ? this.normalizeMtime(readResult.mtime) : undefined },
+      contents: value ?
+        AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) : // Variables
+        Buffer.from(JSON.stringify({ references }, null, '  ')), // Objects, types, ...
+      _nodeClass: nodeClass,
+      _dataType: value && value.$dataType,
+      _arrayType: value && value.$arrayType,
+      _references: references,
+      stat: { mtime: mtime ? this.normalizeMtime(mtime) : undefined },
     });
   }
 
@@ -261,12 +270,37 @@ export default class AtviseFile extends File {
    * {@link AtviseFile#typeDefinition}. **Never call this method directly.**.
    */
   _getMetadata() {
+    if (this.stem[0] === '.') { // Got non-variable node
+      /**
+       * The node's class.
+       * @type {node-opcua~NodeClass}
+       */
+      this._nodeClass = NodeClass[this.stem.split('.')[1]];
+
+      const { references = {} } = JSON.parse(this.contents.toString());
+
+      /**
+       * References the node holds: In most cases this will be a single entry for
+       * `'HasTypeDefinition'`.
+       * @type {Map<String, NodeId[]>}
+       */
+      this._references = Object.entries(references)
+        .reduce((result, [type, refs]) => Object.assign(result, {
+          [type]: refs.map(v => new NodeId(v)),
+        }), {});
+      return;
+    }
+
+    this._nodeClass = NodeClass.Variable;
+
     // Set default metadata
     /**
      * The node's stored {@link node-opcua~VariantArrayType}.
      * @type {?node-opcua~VariantArrayType}
      */
     this._arrayType = VariantArrayType.Scalar;
+
+    this._references = {};
 
     let extensions = [];
     const m = this.relative.match(ExtensionRegExp);
@@ -286,7 +320,8 @@ export default class AtviseFile extends File {
       }
     }
 
-    const complete = () => this._dataType !== undefined && this._typeDefinition !== undefined;
+    const complete = () => this._dataType !== undefined &&
+      this._references.HasTypeDefinition !== undefined;
 
     // Handle array types
     ifLastExtensionMatches(ext => ext === 'array', () => {
@@ -315,11 +350,15 @@ export default class AtviseFile extends File {
        * The node's stored type definition.
        * @type {?node-opcua~NodeId}
        */
-      this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
+      this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0)];
     }
 
     ifLastExtensionMatches(ext => ext === 'prop', () => {
-      this._typeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
+      this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
+    });
+
+    ifLastExtensionMatches(ext => ext === 'var', () => {
+      this._references.HasTypeDefinition = [new NodeId('Custom.VarResourceType')];
     });
 
     if (!complete()) {
@@ -331,16 +370,30 @@ export default class AtviseFile extends File {
           foundAtType = true;
           const type = AtviseTypesByIdentifier[identifier];
 
-          this._typeDefinition = type.typeDefinition;
+          this._references.HasTypeDefinition = [type.typeDefinition];
           this._dataType = type.dataType;
         }
       });
     }
 
     if (!complete()) {
-      this._typeDefinition = new NodeId('VariableTypes.ATVISE.Resource.OctetStream');
+      this._references.HasTypeDefinition = [
+        new NodeId('VariableTypes.ATVISE.Resource.OctetStream'),
+      ];
       this._dataType = DataType.ByteString;
     }
+  }
+
+  /**
+   * The node's class.
+   * @type {node-opcua~NodeClass}
+   */
+  get nodeClass() {
+    if (!this._nodeClass) {
+      this._getMetadata();
+    }
+
+    return this._nodeClass;
   }
 
   /**
@@ -372,11 +425,15 @@ export default class AtviseFile extends File {
    * @type {node-opcua~NodeId}
    */
   get typeDefinition() {
-    if (!this._typeDefinition) {
+    if (!this._references) {
       this._getMetadata();
     }
 
-    return this._typeDefinition;
+    if (this._references && this._references.HasTypeDefinition) {
+      return this._references.HasTypeDefinition[0];
+    }
+
+    return new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
   }
 
   /**
@@ -424,10 +481,27 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * Returns the decoded node value for create node serverscript.
+   * @type {?*} The file's decoded value.
+   */
+  get createNodeValue() {
+    const value = this.value;
+
+    if (this.dataType === DataType.DateTime) {
+      return value.valueOf();
+    }
+
+    return value;
+  }
+
+  /**
    * Returns the node id associated with the file.
    * @type {NodeId} The file's node id.
    */
   get nodeId() {
+    if (this.nodeClass.value !== NodeClass.Variable.value) {
+      return NodeId.fromFilePath(dirname(this.relative));
+    }
     const atType = AtviseTypesByValue[this.typeDefinition.value];
     let idPath = this.relative;
 
@@ -448,7 +522,10 @@ export default class AtviseFile extends File {
   clone(options) {
     const clonedFile = super.clone(options);
 
+    clonedFile._nodeClass = this._nodeClass;
+    clonedFile._dataType = this._dataType;
     clonedFile._arrayType = this._arrayType;
+    clonedFile._references = this._references;
 
     return clonedFile;
   }
