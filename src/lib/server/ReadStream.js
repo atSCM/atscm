@@ -1,4 +1,5 @@
 import { StatusCodes, NodeClass } from 'node-opcua';
+import Logger from 'gulplog';
 import QueueStream from './QueueStream';
 
 /**
@@ -28,10 +29,20 @@ export default class ReadStream extends QueueStream {
   processChunk({ nodeClass, nodeId, references }, handleErrors) {
     if (nodeClass.value === NodeClass.Variable.value) {
       this.session.read([{ nodeId }], (err, nodesToRead, results) => {
-        if (!err && (!results || results.length === 0)) {
+        if (err) {
+          const status = results && results.length && results[0].statusCode;
+          handleErrors(err, status);
+        } else if (!results || results.length === 0) {
           handleErrors(new Error('No results'));
+        } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
+          handleErrors(err, StatusCodes.Good, done => {
+            Logger.warn(`${
+              nodeId.value
+            } could not be read because it's datasource is not connected`);
+            done();
+          });
         } else {
-          handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
+          handleErrors(err, results[0].statusCode, done => {
             this.push({
               nodeClass,
               nodeId,
