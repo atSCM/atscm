@@ -48,6 +48,15 @@ export default class CreateNodeStream extends CallScriptStream {
   }
 
   /**
+   * Prints an error message telling that creating a node failed.
+   * @param {AtviseFile} file The file who's node could not be created.
+   * @return {string} The resulting error message.
+  */
+  processErrorMessage(file) {
+    return `Error creating node ${file.nodeId.value}`;
+  }
+
+  /**
    * Handles the results of a script call.
    * @param {AtviseFile} file The file the script was called with.
    * @param {node-opcua~Variant[]} outArgs The raw method results.

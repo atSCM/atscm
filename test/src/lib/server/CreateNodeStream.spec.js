@@ -89,6 +89,15 @@ describe('CreateNodeStream', function() {
   });
 
   /** test {CreateNodeStream#handleOutputArguments} */
+  /** @test {CreateNodeStream#processErrorMessage} */
+  describe('#processErrorMessage', function() {
+    it('should tell which node failed to create', function() {
+      return expect(CreateNodeStream.prototype.processErrorMessage,
+        'when called with', [{ nodeId: new NodeId('Failed.to.create') }],
+        'to match', /creating node/i);
+    });
+  });
+
   describe('#handleOutputArguments', function() {
     it('should forward script errors', function() {
       const stream = new CreateNodeStream();
