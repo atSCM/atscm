@@ -24,7 +24,7 @@ describe('CreateNodeStream', function() {
     });
   });
 
-  /** test {CreateNodeStream#scriptParameters} */
+  /** @test {CreateNodeStream#scriptParameters} */
   describe('#scriptParameters', function() {
     it('should return a single JSON encoded parameter', function() {
       const file = new AtviseFile({
@@ -88,7 +88,6 @@ describe('CreateNodeStream', function() {
     });
   });
 
-  /** test {CreateNodeStream#handleOutputArguments} */
   /** @test {CreateNodeStream#processErrorMessage} */
   describe('#processErrorMessage', function() {
     it('should tell which node failed to create', function() {
@@ -98,6 +97,7 @@ describe('CreateNodeStream', function() {
     });
   });
 
+  /** @test {CreateNodeStream#handleOutputArguments} */
   describe('#handleOutputArguments', function() {
     it('should forward script errors', function() {
       const stream = new CreateNodeStream();
