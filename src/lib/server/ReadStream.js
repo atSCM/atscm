@@ -31,7 +31,7 @@ export default class ReadStream extends QueueStream {
       this.session.read([{ nodeId }], (err, nodesToRead, results) => {
         if (err) {
           const status = results && results.length && results[0].statusCode;
-          handleErrors(err, status, done => done());
+          handleErrors(err, status);
         } else if (!results || results.length === 0) {
           handleErrors(new Error('No results'));
         } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
