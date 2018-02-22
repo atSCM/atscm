@@ -6,6 +6,14 @@ import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 class StubImplementation extends CallScriptStream {
 
   get scriptId() {
+    return new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.Stub');
+  }
+
+}
+
+class StubAtscmImplementation extends CallScriptStream {
+
+  get scriptId() {
     return new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.Stub');
   }
 
@@ -86,7 +94,28 @@ describe('CallScriptStream', function() {
     it('should include the called script\'s id', function() {
       return expect(f => (new StubImplementation()).processErrorMessage(f),
         'when called with', [{ relative: './path/file' }],
-        'to contain', 'SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.Stub');
+        'to contain', 'SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.Stub');
+    });
+  });
+
+  /** @test {CallScriptStream#processChunk} */
+  describe('#processChunk', function() {
+    it('should process as usual if not called on atscm script', function() {
+      const stream = new StubImplementation();
+
+      return expect([
+        { relative: 'relative/path', nodeId: new NodeId('Stub') },
+      ], 'when piped through', stream,
+      'to error with', /Error running script/);
+    });
+
+    it('should suggest running \'atscm import\' if atscm script is missing', function() {
+      const stream = new StubAtscmImplementation();
+
+      return expect([
+        { relative: 'relative/path', nodeId: new NodeId('Stub') },
+      ], 'when piped through', stream,
+      'to error with', /Did you forget to run 'atscm import'?/);
     });
   });
 });
