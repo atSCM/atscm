@@ -1,4 +1,6 @@
 import { StatusCodes, NodeClass } from 'node-opcua';
+import Logger from 'gulplog';
+import { spy } from 'sinon';
 import expect from '../../../expect';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 import ReadStream from '../../../../src/lib/server/ReadStream';
@@ -59,6 +61,27 @@ describe('ReadStream', function() {
         return expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
           'when piped through', stream,
           'to error with', /Test/);
+      });
+
+      it('should warn if datasource is not connected', async function() {
+        const stream = new ReadStream();
+
+        spy(Logger, 'warn');
+
+        stream.once('session-open', () => {
+          stream.session.read = (node, cb) => cb(null, [{}], [{
+            statusCode: StatusCodes.BadServerNotConnected,
+          }], []);
+        });
+
+        await expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
+          'when piped through', stream,
+          'to yield objects satisfying', 'to have length', 0);
+
+        expect(Logger.warn, 'was called once');
+
+        return expect(Logger.warn, 'was called with',
+          expect.it('to match', /datasource.*not connected/));
       });
 
       it('should push result when reading succeeds', function() {
