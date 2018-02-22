@@ -29,7 +29,10 @@ export default class ReadStream extends QueueStream {
   processChunk({ nodeClass, nodeId, references }, handleErrors) {
     if (nodeClass.value === NodeClass.Variable.value) {
       this.session.read([{ nodeId }], (err, nodesToRead, results) => {
-        if (!err && (!results || results.length === 0)) {
+        if (err) {
+          const status = results && results.length && results[0].statusCode;
+          handleErrors(err, status, done => done());
+        } else if (!results || results.length === 0) {
           handleErrors(new Error('No results'));
         } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
           handleErrors(err, StatusCodes.Good, done => {
