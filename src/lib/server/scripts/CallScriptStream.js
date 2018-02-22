@@ -1,4 +1,4 @@
-import { DataType, VariantArrayType } from 'node-opcua';
+import { DataType, VariantArrayType, StatusCodes } from 'node-opcua';
 import NodeId from '../../model/opcua/NodeId';
 import CallMethodStream from './CallMethodStream';
 
@@ -80,6 +80,27 @@ export default class CallScriptStream extends CallMethodStream {
    */
   processErrorMessage(file) {
     return `Error running script ${this.scriptId} for ${file.relative}`;
+  }
+
+  /**
+   * Calls the script specified in {@link CallScriptStream#scriptId}. If the script does not exist
+   * but could be imported by running `atscm import` a special status description is returned.
+   * @param {vinyl~File} file The file being processed.
+   * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
+   * The error handler to call. See {@link QueueStream#processChunk} for details.
+  */
+  processChunk(file, handleErrors) {
+    super.processChunk(file, (err, status, success) => {
+      const processedStatus = status;
+
+      const atscmScript = this.scriptId.value.match(/SERVERSCRIPTS\.atscm\.(.*)/);
+      if (status === StatusCodes.BadMethodInvalid && atscmScript) {
+        processedStatus.description = `The '${atscmScript[1]}' script does not exist.
+- Did you forget to run 'atscm import'?`;
+      }
+
+      handleErrors(err, processedStatus, success);
+    });
   }
 
 }
