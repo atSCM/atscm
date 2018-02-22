@@ -1,13 +1,14 @@
-<a name="0.6.0-beta.6"></a>
-# 0.6.0-beta.6 (2018-02-20)
+<a name="0.6.0-beta.7"></a>
+# 0.6.0-beta.7 (2018-02-22)
 
 
 ### Bug Fixes
 
-* **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
 * Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
 * Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
 * Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
+* **pull:** Warn if datasource is not connected ([#140](https://github.com/atSCM/atscm/issues/140)) ([e6917f8](https://github.com/atSCM/atscm/commits/e6917f8)), closes [#3](https://github.com/atSCM/atscm/issues/3)
+* **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
 
 
 ### Features
