@@ -31,13 +31,13 @@ export default class ReadStream extends QueueStream {
       this.session.read([{ nodeId }], (err, nodesToRead, results) => {
         if (!err && (!results || results.length === 0)) {
           handleErrors(new Error('No results'));
-        } else if (results && results.length && results[0].statusCode === StatusCodes.BadServerNotConnected) {
+        } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
           handleErrors(err, StatusCodes.Good, done => {
-            Logger.warn(`${nodeId} could not be read because it\'s datasource is not connected`);
+            Logger.warn(`${nodeId.value} could not be read because it's datasource is not connected`);
             done();
           });
         } else {
-          handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
+          handleErrors(err, results[0].statusCode, done => {
             this.push({
               nodeClass,
               nodeId,
