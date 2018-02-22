@@ -33,7 +33,9 @@ export default class ReadStream extends QueueStream {
           handleErrors(new Error('No results'));
         } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
           handleErrors(err, StatusCodes.Good, done => {
-            Logger.warn(`${nodeId.value} could not be read because it's datasource is not connected`);
+            Logger.warn(`${
+              nodeId.value
+            } could not be read because it's datasource is not connected`);
             done();
           });
         } else {
