@@ -1,5 +1,6 @@
 import { readFile } from 'fs';
 import Logger from 'gulplog';
+import { NodeClass } from 'node-opcua';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
 import NodeId from '../lib/model/opcua/NodeId';
@@ -54,6 +55,9 @@ export default class MappingTransformer extends Transformer {
    */
   transformFromFilesystem(file, encoding, callback) {
     if (file.isDirectory()) {
+      callback(null);
+    } else if (file.stem[0] === '.' && !NodeClass[file.stem.slice(1)]) {
+      Logger.debug('Ignoring file', file.relative);
       callback(null);
     } else {
       const atFile = new AtviseFile({

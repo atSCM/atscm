@@ -183,6 +183,18 @@ describe('MappingTransformer', function() {
         });
     });
 
+    it('should skip non-atscm dot files', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+      return expect(cb => stream.transformFromFilesystem(
+        { isDirectory: () => false, stem: '.eslintrc' }, 'utf8', cb
+      ), 'to call the callback')
+        .then(args => {
+          expect(args, 'to have length', 1);
+          expect(args[0], 'to be falsy');
+        });
+    });
+
     context('when file has non-standard type-definition', function() {
       context('with .rc file', function() {
         before(() => spy(fs, 'readFile'));
