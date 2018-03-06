@@ -1,19 +1,6 @@
-import { EOL } from 'os';
-import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
+import { xml2js, js2xml } from 'xml-js';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
-
-/**
- * A special token used to encode CData section beginnings.
- * @type {String}
- */
-const START_CDATA = 'STARTCDATA';
-
-/**
- * A special token used to encode CData section endings.
- * @type {String}
- */
-const END_CDATA = 'ENDCDATA';
 
 /**
  * A transformer used to transform XML documents.
@@ -27,37 +14,39 @@ export default class XMLTransformer extends SplittingTransformer {
   constructor(options) {
     super(options);
 
+    function build(object, buildOptions) {
+      if (!object.declaration) {
+        Object.assign(object, {
+          declaration: {
+            attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
+          },
+        });
+      }
+
+      return js2xml(object, buildOptions);
+    }
+
+    // eslint-disable-next-line jsdoc/require-param
     /**
      * The builder to use with direction {@link TransformDirection.FromDB}.
-     * @type {xml2js~Builder}
+     * @type {function(object: Object): string}
      */
-    this._fromDBBuilder = new XMLBuilder({
-      cdata: false,
-      newline: EOL,
-    });
+    this._fromDBBuilder = object => build(object, { compact: false, spaces: 2 });
 
+    // eslint-disable-next-line jsdoc/require-param
     /**
      * The builder to use with direction {@link TransformDirection.FromFilesystem}.
-     * @type {xml2js~Builder}
+     * @type {function(object: Object): string}
      */
-    this._fromFilesystemBuilder = new XMLBuilder({
-      renderOpts: {
-        pretty: true,
-        indent: ' ',
-        newline: '\r\n',
-      },
-      xmldec: {
-        version: '1.0',
-        encoding: 'UTF-8',
-        standalone: false,
-      },
-      cdata: true,
-    });
+    this._fromFilesystemBuilder = object => {
+      const xml = build(object, { compact: false, spaces: 1 });
+      return xml.replace(/\r?\n/g, '\r\n');
+    };
   }
 
   /**
-   * Returns the XML builder instance to use base on the current {@link Transformer#direction}.
-   * @type {xml2js~Builder}
+   * Returns the XML builder to use based on the current {@link Transformer#direction}.
+   * @type {function(object: Object): string}
    */
   get builder() {
     return this.direction === TransformDirection.FromDB ?
@@ -72,7 +61,11 @@ export default class XMLTransformer extends SplittingTransformer {
    * parse error that occurred.
    */
   decodeContents(file, callback) {
-    parseXML(file.contents, callback);
+    try {
+      callback(null, xml2js(file.contents, { compact: false }));
+    } catch (e) {
+      callback(e);
+    }
   }
 
   /**
@@ -83,32 +76,114 @@ export default class XMLTransformer extends SplittingTransformer {
    */
   encodeContents(object, callback) {
     try {
-      callback(null,
-        this.builder.buildObject(object)
-          .replace(new RegExp(`(<!\\[CDATA\\[)?${START_CDATA}`), '<![CDATA[')
-          .replace(new RegExp(`${END_CDATA}(\\]\\]>)?`), ']]>')
-      );
+      callback(null, this.builder(object));
     } catch (e) {
       callback(e);
     }
   }
 
   /**
-   * Helper function: Returns `true` if the given tag exists and is not empty.
-   * @param {Object} tag A tag in a parsed xml document.
-   * @return {boolean} `true` if the given tag exists and is not empty.
+   * Tells if the given parsed XML node is an element (not a text / cdata node).
+   * @param {Object} node The parsed node.
+   * @return {boolean} `true` if the node has type 'element'.
    */
-  tagNotEmpty(tag) {
-    return Boolean(tag && tag.length > 0);
+  isElement({ type }) {
+    return type === 'element';
+  }
+
+  /** Tells if the given parsed XML node is an elment and has the given tag name.
+   * @param {Object} node The parsed node.
+   * @param {string} tagName The tag name to check for.
+   * @return {boolean} `true` if the node is an element with the given tag name.
+   */
+  isElementWithName({ type, name }, tagName) {
+    return this.isElement({ type }) && name === tagName;
   }
 
   /**
-   * Forces `string`, when assigned as textContent to a node, to be wrapped in a CDATA-section.
-   * @param {string} string The string to force a CDATA-section for.
-   * @return {string} The string to assign as textContent to a node.
+   * Returns a node's child elements with the given tag name.
+   * @param {Object} node The node to check in.
+   * @param {string} tagName The tag name to search for.
+   * @return {Object[]} The matching child elements.
    */
-  static forceCData(string) {
-    return `${START_CDATA}${string}${END_CDATA}`;
+  findChildren(node, tagName) {
+    if (!node || !node.elements) { return []; }
+
+    return node.elements.filter(child => this.isElementWithName(child, tagName));
+  }
+
+  /**
+   * Returns a node's first child element with the given tag name, or `null`.
+   * @param {Object} node The node to check in.
+   * @param {string} tagName The tag name to search for.
+   * @return {Object?} The matching child elements.
+   */
+  findChild(node, tagName) {
+    if (!node || !node.elements) { return null; }
+
+    for (let i = 0; i < node.elements.length; i++) {
+      if (this.isElementWithName(node.elements[i], tagName)) {
+        return node.elements[i];
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns and removes a node's child elements with the given tag name.
+   * @param {Object} node The node to check in.
+   * @param {string} tagName The tag name to search for.
+   * @return {Object[]} The matching child elements.
+   */
+  removeChildren(node, tagName) {
+    if (!node || !node.elements) { return []; }
+
+    const removed = [];
+
+    // eslint-disable-next-line no-param-reassign
+    node.elements = node.elements.filter(child => {
+      if (this.isElementWithName(child, tagName)) {
+        removed.push(child);
+        return false;
+      }
+      return true;
+    });
+
+    return removed;
+  }
+
+  /**
+   * Returns and removes a node's first child element with the given tag name, if no match is found
+   * `null` is returned.
+   * @param {Object} node The node to check in.
+   * @param {string} tagName The tag name to search for.
+   * @return {Object?} The matching child elements.
+   */
+  removeChild(node, tagName) {
+    if (!node || !node.elements) { return null; }
+
+    for (let i = 0; i < node.elements.length; i++) {
+      if (this.isElementWithName(node.elements[i], tagName)) {
+        return node.elements.splice(i, 1)[0];
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns a parsed node's text content. Works for 'text' and 'cdata' nodes.
+   * @param {Object} node The parsedNode.
+   * @return {string?} The nodes text content.
+   */
+  textContent(node) {
+    if (!node || !node.elements) { return null; }
+
+    const contentNode = node.elements[0];
+
+    // FIXME: Only works for { type: 'text', text: 'value' } and { type: 'cdata', cdata: 'data' }
+    return contentNode[contentNode.type];
   }
 
 }
