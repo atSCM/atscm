@@ -61,6 +61,31 @@ describe('ScriptTransformer', function() {
         });
     });
 
+    it('should only store metadata elements', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>shouldn't be handled</metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {}));
+    });
+
+    it('should warn on unknown metadata elements', function() {
+      const onWarn = spy();
+      Logger.on('warn', onWarn);
+
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <custom>test</custom>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {}))
+        .then(() => {
+          expect(onWarn, 'was called once');
+          expect(onWarn, 'to have a call satisfying', { args: [/unknown metadata/i] });
+        });
+    });
+
     it('should store icon metadata', function() {
       return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
   <metadata>
@@ -99,6 +124,18 @@ describe('ScriptTransformer', function() {
         .then(files => transformerHelper.expectFileContents(files))
         .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
           visible: true,
+        }));
+    });
+
+    it('should properly interpret visible metadata', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <visible>0</visible>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          visible: false,
         }));
     });
 

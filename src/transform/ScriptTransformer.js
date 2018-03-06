@@ -29,54 +29,47 @@ export default class ScriptTransformer extends XMLTransformer {
       if (err) {
         callback(err);
       } else {
-        if (!results || results.script === undefined) {
+        const document = results && this.findChild(results, 'script');
+
+        if (!document) {
           Logger.warn(`Empty document at ${file.relative}`);
         }
 
-        const document = results && results.script ? results.script : {};
-
         const config = {};
-        let code = '';
 
         // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
+        const metaTag = this.findChild(document, 'metadata');
+        if (metaTag && metaTag.elements) {
           // TODO: Warn on multiple metadata tags
-
-          const meta = document.metadata[0];
-
-          // - Icon
-          if (this.tagNotEmpty(meta.icon)) {
-            const icon = meta.icon[0];
-            config.icon = icon.$ || {};
-            config.icon.content = icon._ || '';
-          }
-
-          // - Visible
-          if (this.tagNotEmpty(meta.visible)) {
-            config.visible = Boolean(meta.visible[0]);
-          }
-
-          // - Title
-          if (this.tagNotEmpty(meta.title)) {
-            config.title = meta.title[0];
-          }
-
-          // - Description
-          if (this.tagNotEmpty(meta.description)) {
-            config.description = meta.description[0];
-          }
+          metaTag.elements.forEach(child => {
+            if (child.type === 'element') {
+              if (child.name === 'icon') { // - Icon
+                config.icon = Object.assign({
+                  content: this.textContent(child) || '',
+                }, child.attributes);
+              } else if (child.name === 'visible') { // - Visible
+                config.visible = Boolean(parseInt(this.textContent(child), 10));
+              } else if (child.name === 'title') {
+                config.title = this.textContent(child);
+              } else if (child.name === 'description') {
+                config.description = this.textContent(child);
+              } else {
+                Logger.warn(`Unknown metadata element '${child.name}' at ${file.relative}`);
+              }
+            }
+          });
         }
 
         // Extract Parameters
-        if (this.tagNotEmpty(document.parameter)) {
+        const paramTags = this.findChildren(document, 'parameter');
+        if (paramTags.length) {
           config.parameters = [];
-          document.parameter.forEach(param => config.parameters.push(param.$));
+          paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
         }
 
         // Extract JavaScript
-        if (this.tagNotEmpty(document.code)) {
-          code = document.code[0];
-        }
+        const codeNode = this.findChild(document, 'code');
+        const code = this.textContent(codeNode) || '';
 
         // Write config file
         const configFile = ScriptTransformer.splitFile(file, '.json');
@@ -120,47 +113,104 @@ export default class ScriptTransformer extends XMLTransformer {
       code = scriptFile.contents.toString();
     }
 
+    const document = {
+      type: 'element',
+      name: 'script',
+      elements: [],
+    };
+
     const result = {
-      script: { },
+      elements: [
+        document,
+      ],
     };
 
     // Insert metadata
     if (lastFile.isQuickDynamic) {
-      const meta = {};
+      const meta = [];
 
       // - Icon
       if (config.icon) {
         const icon = config.icon.content;
         delete config.icon.content;
 
-        meta.icon = {
-          $: config.icon,
-          _: icon,
-        };
+        meta.push({
+          type: 'element',
+          name: 'icon',
+          attributes: config.icon,
+          elements: [
+            {
+              type: 'text',
+              text: icon,
+            },
+          ],
+        });
       }
 
       // - Other fields
       if (config.visible !== undefined) {
-        meta.visible = config.visible ? 1 : 0;
+        meta.push({
+          type: 'element',
+          name: 'visible',
+          elements: [
+            {
+              type: 'text',
+              text: config.visible ? 1 : 0,
+            },
+          ],
+        });
       }
 
       if (config.title !== undefined) {
-        meta.title = config.title;
+        meta.push({
+          type: 'element',
+          name: 'title',
+          elements: [
+            { type: 'text', text: config.title },
+          ],
+        });
       }
 
       if (config.description !== undefined) {
-        meta.description = config.description;
+        meta.push({
+          type: 'element',
+          name: 'description',
+          elements: [
+            { type: 'text', text: config.description },
+          ],
+        });
       }
 
-      result.script.metadata = meta;
+      document.elements.push({
+        type: 'element',
+        name: 'metadata',
+        elements: meta,
+      });
+      // result.script.metadata = meta;
     }
 
     // Insert parameters
-    result.script.parameter = config.parameters ?
-      config.parameters.map(param => ({ $: param })) :
-      [];
+    if (config.parameters) {
+      config.parameters.forEach(attributes => {
+        document.elements.push({
+          type: 'element',
+          name: 'parameter',
+          attributes,
+        });
+      });
+    }
 
-    result.script.code = ScriptTransformer.forceCData(code);
+    // Insert script code
+    document.elements.push({
+      type: 'element',
+      name: 'code',
+      elements: [
+        {
+          type: 'cdata',
+          cdata: code,
+        },
+      ],
+    });
 
     const script = ScriptTransformer.combineFiles(
       Object.keys(files).map(ext => files[ext]),
