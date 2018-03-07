@@ -16,7 +16,7 @@ export default class WriteStream extends QueueStream {
    * @return {string} The error message to use.
    */
   processErrorMessage(file) {
-    return `Error writing ${file.nodeId.toString()}`;
+    return `Error writing ${file.nodeId.value}`;
   }
 
   /**
