@@ -48,7 +48,7 @@ export default class WriteStream extends QueueStream {
           handleErrors(err, StatusCodes.Good, done => done());
         } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
           Logger.debug(`Node ${
-            file.nodeId.toString()
+            file.nodeId.value
           } does not exist: Attempting to create it...`);
 
           handleErrors(err, StatusCodes.Good, done => {
