@@ -44,7 +44,9 @@ export default class WriteStream extends QueueStream {
         ) {
           Logger.warn(`Error writing node ${
             file.nodeId.value
-          }: Make sure it is not opened in atvise builder`);
+          }
+- Make sure it is not opened in atvise builder
+- Make sure the corresponding datasource is connected`);
           handleErrors(err, StatusCodes.Good, done => done());
         } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
           Logger.debug(`Node ${
