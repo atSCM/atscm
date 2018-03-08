@@ -72,6 +72,21 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     return this;
   }
 
+  _processError(err, chunk, callback, ...args) {
+    if (err) {
+      const id = (this.direction === TransformDirection.FromDB ?
+        chunk.nodeId :
+        chunk.relative) || chunk.toString();
+
+      // eslint-disable-next-line no-param-reassign
+      err.message = `[${this.constructor.name}] ${err.message} (in ${id})`;
+
+      callback(err);
+    } else {
+      callback(err, ...args);
+    }
+  }
+
   /**
    * Calls {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}
    * based on the transformer's direction.
@@ -82,12 +97,14 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * @throws {Error} Throws an error if the transformer has no valid direction.
    */
   _transform(chunk, enc, callback) {
+    const processError = (err, ...args) => this._processError(err, chunk, callback, ...args);
+
     if (!this.direction) {
       callback(new Error('Transformer has no direction'));
     } else if (this.direction === TransformDirection.FromDB) {
-      this.transformFromDB(chunk, enc, callback);
+      this.transformFromDB(chunk, enc, processError);
     } else {
-      this.transformFromFilesystem(chunk, enc, callback);
+      this.transformFromFilesystem(chunk, enc, processError);
     }
   }
 

@@ -38,7 +38,7 @@ export default class MappingTransformer extends Transformer {
       callback(null, file);
     } catch (e) {
       Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.toString()}: ${e.message}`
+        `Unable to map ${readResult.nodeId.value}: ${e.message}`
       );
       Logger.debug(e);
 

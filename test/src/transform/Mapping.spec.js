@@ -219,7 +219,7 @@ describe('MappingTransformer', function() {
         it('should forward error', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-          const promise = expect(stream, 'to error with', 'Test');
+          const promise = expect(stream, 'to error with', /Test/);
 
           stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
           stream.end();

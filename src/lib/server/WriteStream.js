@@ -16,7 +16,7 @@ export default class WriteStream extends QueueStream {
    * @return {string} The error message to use.
    */
   processErrorMessage(file) {
-    return `Error writing ${file.nodeId.toString()}`;
+    return `Error writing ${file.nodeId.value}`;
   }
 
   /**
@@ -43,12 +43,14 @@ export default class WriteStream extends QueueStream {
           (statusCode === StatusCodes.BadNotWritable)
         ) {
           Logger.warn(`Error writing node ${
-            file.nodeId.toString()
-          }: Make sure it is not opened in atvise builder`);
+            file.nodeId.value
+          }
+- Make sure it is not opened in atvise builder
+- Make sure the corresponding datasource is connected`);
           handleErrors(err, StatusCodes.Good, done => done());
         } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
           Logger.debug(`Node ${
-            file.nodeId.toString()
+            file.nodeId.value
           } does not exist: Attempting to create it...`);
 
           handleErrors(err, StatusCodes.Good, done => {
