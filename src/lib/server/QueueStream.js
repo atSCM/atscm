@@ -167,18 +167,23 @@ export default class QueueStream extends Stream {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
+      const finished = () => {
+        this._processing--;
+        this._processed++;
+        this.emit('processed-chunk', chunk);
+      };
+
       if (err) {
         this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${err.message}`));
       } else if (statusCode !== StatusCodes.Good) {
         this.emit('error',
           new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
       } else {
-        onSuccess(() => {
-          this._processing--;
-          this._processed++;
-          this.emit('processed-chunk', chunk);
-        });
+        onSuccess(finished);
+        return;
       }
+
+      finished();
     });
   }
 
