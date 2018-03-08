@@ -207,7 +207,7 @@ ${xmlString}`),
 
       it('should forward encode error', function() {
         return expect(writeXMLToDisplayTransformer('<svg></svg>'),
-          'to be rejected with', 'Encode error');
+          'to be rejected with', /Encode error/);
       });
     });
   });
