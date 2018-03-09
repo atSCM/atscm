@@ -2,6 +2,7 @@
 /* eslint-disable jsdoc/check-param-names */
 
 import { StatusCodes } from 'node-opcua';
+import Logger from 'gulplog';
 import Stream from './Stream';
 
 /**
@@ -174,10 +175,21 @@ export default class QueueStream extends Stream {
       };
 
       if (err) {
-        this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${err.message}`));
+        const message = `${this.processErrorMessage(chunk)}: ${err.message}`;
+
+        if (process.env.CONTINUE_ON_FAILURE) {
+          Logger.error(`FAILURE: ${message}`);
+        } else {
+          this.emit('error', new Error(message));
+        }
       } else if (statusCode !== StatusCodes.Good) {
-        this.emit('error',
-          new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
+        const message = `${this.processErrorMessage(chunk)}: ${statusCode.description}`;
+
+        if (process.env.CONTINUE_ON_FAILURE) {
+          Logger.error(`FAILURE: ${message}`);
+        } else {
+          this.emit('error', new Error(message));
+        }
       } else {
         onSuccess(finished);
         return;
