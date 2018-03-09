@@ -120,18 +120,23 @@ describe('XMLTransformer', function() {
 </svg>`));
     });
 
-    /* it('should not double escape forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromFilesystem }))
-        .encodeContents({
-          svg: {
-            script: [
-              { _: XMLTransformer.forceCData('console.log("<asdf>")') },
-            ],
-          },
-        }, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to contain',
-          '<script><![CDATA[console.log("<asdf>")]]></script>'));
-    }); */
+    it('should escape \'&\' in attribute values', function(done) {
+      const xml = `<root>
+  <node attribute="escape &amp; this"/>
+</root>`;
+      const xmlObject = xml2js(xml);
+
+      testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
+    });
+
+    it('should escape \'<\' in attribute values', function(done) {
+      const xml = `<root>
+  <node attribute="escape &lt; this"/>
+</root>`;
+      const xmlObject = xml2js(xml);
+
+      testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
+    });
   });
 
   describe('DOM helpers', function() {
