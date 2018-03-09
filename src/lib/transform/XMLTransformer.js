@@ -23,7 +23,13 @@ export default class XMLTransformer extends SplittingTransformer {
         });
       }
 
-      return js2xml(object, buildOptions);
+      return js2xml(object, Object.assign(buildOptions, {
+        attributeValueFn(val) {
+          return val
+            .replace(/&(?!amp;)/g, '&amp;')
+            .replace(/</g, '&lt;');
+        },
+      }));
     }
 
     // eslint-disable-next-line jsdoc/require-param
