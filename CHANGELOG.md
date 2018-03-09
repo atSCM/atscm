@@ -1,15 +1,16 @@
-<a name="0.6.0-beta.11"></a>
-# 0.6.0-beta.11 (2018-03-09)
+<a name="0.6.0-beta.12"></a>
+# 0.6.0-beta.12 (2018-03-09)
 
 
 ### Bug Fixes
 
-* Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
-* Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
 * **mapping:** Skip non-atscm dot-files ([#145](https://github.com/atSCM/atscm/issues/145)) ([c23409b](https://github.com/atSCM/atscm/commits/c23409b)), closes [#144](https://github.com/atSCM/atscm/issues/144)
 * **pull:** Warn if datasource is not connected ([#140](https://github.com/atSCM/atscm/issues/140)) ([e6917f8](https://github.com/atSCM/atscm/commits/e6917f8)), closes [#3](https://github.com/atSCM/atscm/issues/3)
 * **push:** Warn if atscm serverscript was not imported yet ([#142](https://github.com/atSCM/atscm/issues/142)) ([661aad9](https://github.com/atSCM/atscm/commits/661aad9)), closes [#141](https://github.com/atSCM/atscm/issues/141)
 * **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
+* Escape '&' and '<' in XML attribute values before encoding ([#152](https://github.com/atSCM/atscm/issues/152)) ([186a004](https://github.com/atSCM/atscm/commits/186a004)), closes [#150](https://github.com/atSCM/atscm/issues/150)
+* Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
+* Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
 * Preserve xml element order ([#147](https://github.com/atSCM/atscm/issues/147)) ([a809603](https://github.com/atSCM/atscm/commits/a809603)), closes [#46](https://github.com/atSCM/atscm/issues/46)
 * Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
 
