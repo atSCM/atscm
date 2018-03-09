@@ -1,5 +1,6 @@
 import { inspect } from 'util';
 import { ctor as throughStreamClass } from 'through2';
+import Logger from 'gulplog';
 
 /**
  * The directions a transformer can be run in.
@@ -81,7 +82,12 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
       // eslint-disable-next-line no-param-reassign
       err.message = `[${this.constructor.name}] ${err.message} (in ${id})`;
 
-      callback(err);
+      if (process.env.CONTINUE_ON_FAILURE) {
+        Logger.error(err.message);
+        callback(null);
+      } else {
+        callback(err);
+      }
     } else {
       callback(err, ...args);
     }
