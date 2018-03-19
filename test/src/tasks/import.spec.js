@@ -1,12 +1,9 @@
-import { promisify } from 'util';
-import { readdir } from 'fs';
-import { join, basename } from 'path';
+import { basename } from 'path';
 import { read_service as ReadService } from 'node-opcua';
+import scriptFiles from '@atscm/server-scripts';
 import expect from '../../expect';
 import importTask from '../../../src/tasks/import';
 import Session from '../../../src/lib/server/Session';
-
-const ls = promisify(readdir);
 
 /** @test {importTask} */
 describe('importTask', function() {
@@ -18,7 +15,6 @@ describe('importTask', function() {
     const base = 'ns=1;s=SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm';
 
     const session = await Session.create();
-    const scriptFiles = await ls(join(process.cwd(), './res/import/scripts'));
     const scriptNames = scriptFiles.map(s => basename(s, '.xml'));
 
     const results = await expect(cb => session.read(
