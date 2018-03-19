@@ -1,5 +1,5 @@
-<a name="0.6.0-beta.12"></a>
-# 0.6.0-beta.12 (2018-03-09)
+<a name="0.6.0-beta.13"></a>
+# 0.6.0-beta.13 (2018-03-19)
 
 
 ### Bug Fixes
@@ -20,6 +20,7 @@
 * Continue on failure with `--continue` flag used ([#151](https://github.com/atSCM/atscm/issues/151)) ([eebbcf1](https://github.com/atSCM/atscm/commits/eebbcf1)), closes [#90](https://github.com/atSCM/atscm/issues/90)
 * Create nodes on push ([#138](https://github.com/atSCM/atscm/issues/138)) ([d84531b](https://github.com/atSCM/atscm/commits/d84531b)), closes [#32](https://github.com/atSCM/atscm/issues/32)
 * New `import` task ([#129](https://github.com/atSCM/atscm/issues/129)) ([faa769d](https://github.com/atSCM/atscm/commits/faa769d))
+* **import:** Use scripts from [@atscm](https://github.com/atscm)/server-scripts package ([#160](https://github.com/atSCM/atscm/issues/160)) ([767be22](https://github.com/atSCM/atscm/commits/767be22))
 
 
 
