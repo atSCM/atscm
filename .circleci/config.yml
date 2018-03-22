@@ -226,6 +226,9 @@ workflows:
             - unit-tests
             - integration-tests
             - test-docs
+          filters:
+            branches:
+              only: /greenkeeper\//
       - deploy:
           requires:
             - lint-source
