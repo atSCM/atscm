@@ -208,4 +208,7 @@ workflows:
             - update-lockfile
       - update-hosted-docs:
           requires:
-            - update-lockfile
+            - deploy
+          filters:
+            branches:
+              only: master
