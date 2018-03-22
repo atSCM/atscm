@@ -1,6 +1,6 @@
-import expect from '../expect';
-import { TransformDirection } from '../../src/lib/transform/Transformer';
-import XMLTransformer from '../../src/lib/transform/XMLTransformer';
+import expect from '../../expect';
+import { TransformDirection } from '../../../src/lib/transform/Transformer';
+import XMLTransformer from '../../../src/lib/transform/XMLTransformer';
 
 describe('XMLTransformer', function() {
   it('should keep element order', async function() {
