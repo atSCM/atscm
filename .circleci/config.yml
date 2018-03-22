@@ -104,83 +104,18 @@ jobs:
           paths:
             - test/.chunks
 
-  unit-tests-1:
+  unit-tests:
     <<: *defaults
+    parallelism: 4
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Running tests
-          command: npx nyc -r json --report-dir coverage/unit-1 --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(< test/.chunks/testfiles-1.txt)
+          command: npx nyc -r json --report-dir "coverage/unit-$CIRCLE_NODE_INDEX" --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(< "test/.chunks/testfiles-$CIRCLE_NODE_INDEX.txt")
           environment:
             NODE_ENV: test
-            MOCHA_FILE: ../reports/unit-tests-1.xml
-      - persist_to_workspace:
-          root: .
-          paths:
-            - coverage
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
-
-  unit-tests-2:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Running tests
-          command: npx nyc -r json --report-dir coverage/unit-2 --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(< test/.chunks/testfiles-2.txt)
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/unit-tests-2.xml
-      - persist_to_workspace:
-          root: .
-          paths:
-            - coverage
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
-
-  unit-tests-3:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Running tests
-          command: npx nyc -r json --report-dir coverage/unit-3 --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(< test/.chunks/testfiles-3.txt)
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/unit-tests-3.xml
-      - persist_to_workspace:
-          root: .
-          paths:
-            - coverage
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
-
-  unit-tests-4:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Running tests
-          command: npx nyc -r json --report-dir coverage/unit-4 --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(< test/.chunks/testfiles-4.txt)
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/unit-tests-4.xml
+            MOCHA_FILE: "../reports/unit-tests-$CIRCLE_NODE_INDEX.xml"
       - persist_to_workspace:
           root: .
           paths:
@@ -305,24 +240,12 @@ workflows:
       - prepare-unit-tests:
           requires:
             - install-deps
-      - unit-tests-1:
-          requires:
-            - prepare-unit-tests
-      - unit-tests-2:
-          requires:
-            - prepare-unit-tests
-      - unit-tests-3:
-          requires:
-            - prepare-unit-tests
-      - unit-tests-4:
+      - unit-tests:
           requires:
             - prepare-unit-tests
       - test-coverage:
           requires:
-            - unit-tests-1
-            - unit-tests-2
-            - unit-tests-3
-            - unit-tests-4
+            - unit-tests
       - integration-tests:
           requires:
             - build
