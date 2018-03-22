@@ -152,7 +152,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: .
+          at: .
       - run:
           <<: *git-login
       - run:
@@ -164,7 +164,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: .
+          at: .
       - run:
           <<: *git-login
       - run:
@@ -179,7 +179,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: .
+          at: .
       - run:
           <<: *git-login
       - run:
