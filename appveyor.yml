@@ -24,7 +24,7 @@ test_script:
   - npm run compile
 
   # Run tests (in parallel)
-  - npx npm-run-all --parallel test:unit test:integration -- --reporter mocha-appveyor-reporter
+  - npx npm-run-all --parallel "test:integration -- {@}" "test:unit -- {@}" -- --reporter mocha-appveyor-reporter
 
 # Don't actually build.
 build: off
