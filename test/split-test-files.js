@@ -19,9 +19,11 @@ async function splitTestFiles(pattern, parallelism) {
   const files = await globby(pattern);
 
   const contents = chunks(files, parallelism)
-    .map(a => a.join(' '));
+    .map(a => a.concat(join('', 'test/src/maintenance.spec.js')).join(' '));
 
-  await mkdir(join(__dirname, '.chunks'));
+  try {
+    await mkdir(join(__dirname, '.chunks'));
+  } catch (e) { } // eslint-disable-line no-empty
 
   await Promise.all(contents
     .map((content, index) => writeFile(
@@ -31,7 +33,10 @@ async function splitTestFiles(pattern, parallelism) {
     ))
   );
 
-  return chunks(files, parallelism);
+  return contents;
 }
 
-splitTestFiles('test/src/**/*.spec.js', 4);
+/* eslint-disable no-console */
+splitTestFiles('test/src/**/*.spec.js', 4)
+  .then(contents => console.log(`Created ${contents.length} chunks`))
+  .catch(e => console.error('Creating chunks failed', e));
