@@ -98,10 +98,10 @@ jobs:
           at: .
       - run:
           name: Running tests
-          command: npx nyc npm test -- --reporter mocha-circleci-reporter
+          command: npx nyc npm run test:unit -- --reporter mocha-circleci-reporter
           environment:
             NODE_ENV: test
-            MOCHA_FILE: ../reports/mocha.xml
+            MOCHA_FILE: ../reports/unit-tests.xml
       - run:
           name: Checking test coverage
           command: npx nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
@@ -109,6 +109,24 @@ jobs:
       - run:
           name: Reporting test coverage
           command: npx nyc report --reporter=lcov > coverage.lcov | node_modules/.bin/codecov
+      - store_test_results:
+          path: ~/reports
+          when: always
+      - store_artifacts:
+          path: ~/reports
+          when: always
+
+  integration-tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running tests
+          command: npm run test:integration -- --reporter mocha-circleci-reporter
+          environment:
+            NODE_ENV: test
+            MOCHA_FILE: ../reports/integration-tests.xml
       - store_test_results:
           path: ~/reports
           when: always
@@ -194,18 +212,24 @@ workflows:
       - unit-tests:
           requires:
             - install-deps
+      - integration-tests:
+          requires:
+            - build
       - test-docs:
           requires:
             - build-docs
       - update-lockfile:
           requires:
-            - build
             - lint-source
             - unit-tests
+            - integration-tests
             - test-docs
       - deploy:
           requires:
-            - update-lockfile
+            - lint-source
+            - unit-tests
+            - integration-tests
+            - test-docs
       - update-hosted-docs:
           requires:
             - deploy
