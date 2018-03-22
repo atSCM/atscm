@@ -25,7 +25,7 @@ async function splitTestFiles(pattern, parallelism) {
 
   await Promise.all(contents
     .map((content, index) => writeFile(
-      join(__dirname, `.chunks/testfiles-${index + 1}.txt`),
+      join(__dirname, `.chunks/testfiles-${index}.txt`),
       content,
       'utf8',
     ))
@@ -34,4 +34,4 @@ async function splitTestFiles(pattern, parallelism) {
   return chunks(files, parallelism);
 }
 
-splitTestFiles('test/src/**/*.spec.js', 4);
+splitTestFiles('test/src/**/*.spec.js', process.env.CIRCLE_NODE_TOTAL || 4);
