@@ -34,4 +34,4 @@ async function splitTestFiles(pattern, parallelism) {
   return chunks(files, parallelism);
 }
 
-splitTestFiles('test/src/**/*.spec.js', process.env.CIRCLE_NODE_TOTAL || 4);
+splitTestFiles('test/src/**/*.spec.js', 4);
