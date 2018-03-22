@@ -15,7 +15,10 @@
     "docs:coverage": "esdoc-coverage -c esdoc.json",
     "lint": "eslint src test",
     "prepublishOnly": "npm run compile && npm run docs",
-    "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register \"test/**/*.spec.js\" --require ./test/prepare --timeout 10000 --exit",
+    "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
+    "test:base": "cross-env NODE_ENV=test mocha --recursive --require babel-register --require ./test/prepare --timeout 10000 --exit",
+    "test:unit": "npm run -s test:base -- \"test/src/**/*.spec.js\"",
+    "test:integration": "npm run -s test:base -- \"test/integration/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm test",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
