@@ -242,7 +242,7 @@ workflows:
       - update-lockfile:
           requires:
             - lint-source
-            - unit-tests
+            - test-coverage
             - integration-tests
             - test-docs
           filters:
@@ -251,7 +251,7 @@ workflows:
       - deploy:
           requires:
             - lint-source
-            - unit-tests
+            - test-coverage
             - integration-tests
             - test-docs
       - update-hosted-docs:
