@@ -116,13 +116,21 @@ jobs:
       - store_artifacts:
           path: ~/reports
           when: always
-      # - run:
-      #     name: Checking test coverage
-      #     command: npx nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
-      #     when: always
-      # - run:
-      #     name: Reporting test coverage
-      #     command: npx nyc report --reporter=lcov > coverage.lcov | node_modules/.bin/codecov
+
+  test-coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Combining coverage reports
+          command: npx istanbul-combine -r lcov -r html coverage/**/*.json
+      - run:
+          name: Reporting test coverage
+          command: npx codecov
+      - store_artifacts:
+          path: coverage
+          when: always
 
   integration-tests:
     <<: *defaults
@@ -222,6 +230,9 @@ workflows:
       - unit-tests:
           requires:
             - install-deps
+      - test-coverage:
+          requires:
+            - unit-tests
       - integration-tests:
           requires:
             - build
