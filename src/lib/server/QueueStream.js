@@ -177,7 +177,7 @@ export default class QueueStream extends Stream {
       if (err) {
         const message = `${this.processErrorMessage(chunk)}: ${err.message}`;
 
-        if (process.env.CONTINUE_ON_FAILURE) {
+        if (process.env.CONTINUE_ON_FAILURE === 'true') {
           Logger.error(`FAILURE: ${message}`);
         } else {
           this.emit('error', new Error(message));
@@ -185,7 +185,7 @@ export default class QueueStream extends Stream {
       } else if (statusCode !== StatusCodes.Good) {
         const message = `${this.processErrorMessage(chunk)}: ${statusCode.description}`;
 
-        if (process.env.CONTINUE_ON_FAILURE) {
+        if (process.env.CONTINUE_ON_FAILURE === 'true') {
           Logger.error(`FAILURE: ${message}`);
         } else {
           this.emit('error', new Error(message));
