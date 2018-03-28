@@ -1,5 +1,5 @@
-import { join } from 'path';
 import { src } from 'gulp';
+import scripts from '@atscm/server-scripts';
 import ImportStream from '../lib/gulp/ImportStream';
 
 /**
@@ -7,7 +7,7 @@ import ImportStream from '../lib/gulp/ImportStream';
  * @return {ImportStream} The import stream used.
  */
 export default function importTask() {
-  const srcStream = src(join(__dirname, '../../res/import/scripts', '/**/*.xml'));
+  const srcStream = src(scripts);
 
   return srcStream
     .pipe(new ImportStream());
