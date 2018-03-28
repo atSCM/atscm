@@ -93,28 +93,32 @@ jobs:
 
   unit-tests:
     <<: *defaults
+    parallelism: 4
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Running tests
-          command: npx nyc npm run test:unit -- --reporter mocha-circleci-reporter
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/unit-tests.xml
-      - run:
-          name: Checking test coverage
-          command: npx nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
-          when: always
-      - run:
-          name: Reporting test coverage
-          command: npx nyc report --reporter=lcov > coverage.lcov | node_modules/.bin/codecov
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
+          name: Printing test files to run
+          command: circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings
+      # - run:
+      #     name: Running tests
+      #     command: npx nyc npm run test:unit -- --reporter mocha-circleci-reporter
+      #     environment:
+      #       NODE_ENV: test
+      #       MOCHA_FILE: ../reports/unit-tests.xml
+      # - run:
+      #     name: Checking test coverage
+      #     command: npx nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
+      #     when: always
+      # - run:
+      #     name: Reporting test coverage
+      #     command: npx nyc report --reporter=lcov > coverage.lcov | node_modules/.bin/codecov
+      # - store_test_results:
+      #     path: ~/reports
+      #     when: always
+      # - store_artifacts:
+      #     path: ~/reports
+      #     when: always
 
   integration-tests:
     <<: *defaults
