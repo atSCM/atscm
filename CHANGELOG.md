@@ -1,5 +1,5 @@
-<a name="0.6.0-beta.13"></a>
-# 0.6.0-beta.13 (2018-03-19)
+<a name="0.6.0-beta.14"></a>
+# 0.6.0-beta.14 (2018-03-28)
 
 
 ### Bug Fixes
@@ -10,6 +10,7 @@
 * **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
 * Escape '&' and '<' in XML attribute values before encoding ([#152](https://github.com/atSCM/atscm/issues/152)) ([186a004](https://github.com/atSCM/atscm/commits/186a004)), closes [#150](https://github.com/atSCM/atscm/issues/150)
 * Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
+* Import scripts from '[@atscm](https://github.com/atscm)/server-scripts' ([#163](https://github.com/atSCM/atscm/issues/163)) ([4b6a590](https://github.com/atSCM/atscm/commits/4b6a590))
 * Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
 * Preserve xml element order ([#147](https://github.com/atSCM/atscm/issues/147)) ([a809603](https://github.com/atSCM/atscm/commits/a809603)), closes [#46](https://github.com/atSCM/atscm/issues/46)
 * Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
