@@ -100,6 +100,11 @@ export default class Atviseproject {
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
+      new NodeId('AGENT.GENERATOR.METHODS'),
+      new NodeId('AGENT.MIRROR.METHODS'),
+      new NodeId('AGENT.HISTORY.METHODS'),
+      new NodeId('AGENT.SCRIPT.METHODS'),
+      new NodeId('AGENT.OPCUA.METHODS'),
     ];
   }
 
