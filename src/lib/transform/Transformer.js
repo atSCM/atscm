@@ -82,7 +82,7 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
       // eslint-disable-next-line no-param-reassign
       err.message = `[${this.constructor.name}] ${err.message} (in ${id})`;
 
-      if (process.env.CONTINUE_ON_FAILURE) {
+      if (process.env.CONTINUE_ON_FAILURE === 'true') {
         Logger.error(err.message);
         callback(null);
       } else {
