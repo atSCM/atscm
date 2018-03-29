@@ -53,8 +53,8 @@ export default class Atviseproject {
   }
 
   /**
-   * The atvise-server nodes that atvise-scm should sync. Defaults to
-   * `['ns=1;s=AGENT', 'ns=1;s=SYSTEM', 'ns=1;s=ObjectTypes.PROJECT']`.
+   * The atvise-server nodes that atvise-scm should sync. Defaults to the nodes
+   * *AGENT*, *SYSTEM*, *ObjectTypes.PROJECT* and *VariableTypes.PROJECT*.
    * @type {String[]|NodeId[]}
    */
   static get nodes() {
@@ -100,6 +100,11 @@ export default class Atviseproject {
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
+      new NodeId('AGENT.GENERATOR.METHODS'),
+      new NodeId('AGENT.MIRROR.METHODS'),
+      new NodeId('AGENT.HISTORY.METHODS'),
+      new NodeId('AGENT.SCRIPT.METHODS'),
+      new NodeId('AGENT.OPCUA.METHODS'),
     ];
   }
 
