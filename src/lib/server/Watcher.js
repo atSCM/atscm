@@ -98,7 +98,7 @@ export class SubscribeStream extends QueueStream {
       if (!this._trackChanges) {
         handleErrors(null, StatusCodes.Good, done => done()); // Ignore first notification
       } else {
-        this.emit('change', {
+        this.emit(dataValue.value ? 'change' : 'delete', {
           nodeClass: referenceDescription.nodeClass,
           nodeId,
           value: dataValue.value,
@@ -191,6 +191,7 @@ export default class Watcher extends Emitter {
 
     this._subscribeStream.on('finish', () => this.emit('ready'));
     this._subscribeStream.on('change', event => this.emit('change', event));
+    this._subscribeStream.on('delete', event => this.emit('delete', event));
   }
 
   /**
