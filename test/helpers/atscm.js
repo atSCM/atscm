@@ -66,8 +66,6 @@ export function callScript(name, parameters) {
     nodeId: new NodeId('ns=1;s=AGENT.TEST.Helper'),
   });
 
-  stream.on('error', console.error.bind(console, '>> error'))
-
   stream.end();
 
   return promisify(stream);
