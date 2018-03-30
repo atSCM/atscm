@@ -23,6 +23,8 @@ describe('watch task', function() {
         });
       });
 
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       // Delete the node
       await callScript('DeleteNode', {
         nodeId: {
