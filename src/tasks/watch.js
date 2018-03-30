@@ -209,8 +209,8 @@ export class WatchTask {
    * handlers.
    * @param {Object} [options] The options to pass to browsersync.
    * @param {boolean} [options.open=true] If the browser should be opened once browsersync is up.
-   * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
-   * initialized.
+   * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
+   * all watchers are set up and Browsersync was initialized.
    */
   run({ open = true } = { open: true }) {
     return Promise.all([
@@ -227,6 +227,8 @@ export class WatchTask {
         serverWatcher.on('change', this.handleServerChange.bind(this));
 
         this.initBrowserSync({ open });
+
+        return { fileWatcher, serverWatcher };
       });
   }
 
@@ -236,8 +238,8 @@ export class WatchTask {
  * The gulp task invoced when running `atscm watch`.
  * @param {Object} options The options to pass to the watch task, see {@link WatchTask#run} for
  * available options.
- * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
- * initialized.
+ * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
+ * all watchers are set up and Browsersync was initialized.
  */
 export default function watch(options) {
   return (new WatchTask()).run(options);
