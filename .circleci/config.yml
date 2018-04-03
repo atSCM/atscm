@@ -102,7 +102,7 @@ jobs:
           command: circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings
       - run:
           name: Running tests
-          command: npx nyc -r json --report-dir "coverage/unit-$CIRCLE_NODE_INDEX" --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter test/src/maintenance.spec.js $(circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings)
+          command: npx nyc -r json --report-dir "coverage/unit-$CIRCLE_NODE_INDEX" --no-check-coverage npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings)
           environment:
             NODE_ENV: test
             MOCHA_FILE: ../reports/unit-tests-$CIRCLE_NODE_INDEX.xml
