@@ -189,7 +189,10 @@ export default class Watcher extends Emitter {
 
     this._nodeStream.pipe(this._subscribeStream);
 
-    this._subscribeStream.on('finish', () => this.emit('ready'));
+    // "pipe" subscribe stream
+    this._subscribeStream.on('data', () => {});
+    this._subscribeStream.on('end', () => this.emit('ready'));
+
     this._subscribeStream.on('change', event => this.emit('change', event));
     this._subscribeStream.on('delete', event => this.emit('delete', event));
   }
