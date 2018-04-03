@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- created at 2018-03-29 09:47:55 -->
+<!-- created at 2018-04-03 17:14:20 -->
 <UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
 	<NamespaceUris>
 		<Uri>http://www.atvise.com/atServer/UA/</Uri>
@@ -50,7 +50,7 @@
 			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
 		</References>
 		<Extensions>
-			<atvise ExportedNodeId="ns=1;s=AGENT.DISPLAYS.DeleteDisplay" ExportedBrowseName="1:DeleteDisplay" Upstream="true"/>
+			<atvise ExportedNodeId="ns=1;s=AGENT.DISPLAYS.atSCM.watch.DeleteDisplay" ExportedBrowseName="1:DeleteDisplay" Upstream="true"/>
 		</Extensions>
 	</UAObject>
 	<UAObject NodeId="ns=1;s=AGENT.DISPLAYS" BrowseName="1:DISPLAYS">
@@ -64,22 +64,44 @@
 			<atvise Upstream="true"/>
 		</Extensions>
 	</UAObject>
-	<UAVariable NodeId="ns=1;s=AGENT.DISPLAYS.DeleteDisplay" BrowseName="1:DeleteDisplay" DataType="XmlElement" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+	<UAObject NodeId="ns=1;s=AGENT.DISPLAYS.atSCM" BrowseName="1:atSCM">
+		<DisplayName Locale="en">atSCM</DisplayName>
+		<Description Locale="en">atSCM</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.DISPLAYS.atSCM.watch" BrowseName="1:watch">
+		<DisplayName Locale="en">watch</DisplayName>
+		<Description Locale="en">watch</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS.atSCM</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.DISPLAYS.atSCM.watch.DeleteDisplay" BrowseName="1:DeleteDisplay" DataType="XmlElement" AccessLevel="7" UserAccessLevel="7" Historizing="true">
 		<DisplayName Locale="en">DeleteDisplay</DisplayName>
 		<Description Locale="en">DeleteDisplay</Description>
 		<References>
-			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS</Reference>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS.atSCM.watch</Reference>
 			<Reference ReferenceType="HasTypeDefinition">ns=1;s=VariableTypes.ATVISE.Display</Reference>
 		</References>
 		<Value>
 			<uax:XmlElement><![CDATA[<?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<svg width="1280" version="1.2" xmlns="http://www.w3.org/2000/svg" height="680" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:atv="http://webmi.atvise.com/2007/svgext">
+<svg version="1.2" xmlns:atv="http://webmi.atvise.com/2007/svgext" width="1280" height="680" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs/>
  <metadata>
   <atv:gridconfig width="20" enabled="false" height="20" gridstyle="lines"/>
   <atv:snapconfig width="10" enabled="false" height="10"/>
  </metadata>
- <text x="640" y="344.5" fill="#000000" font-family="Arial" text-anchor="middle" id="id_0" atv:refpx="640" atv:refpy="340" font-size="12">This display will be deleted when running integration tests</text>
+ <text id="id_0" font-size="12" fill="#000000" atv:refpy="340" atv:refpx="640" font-family="Arial" x="640" y="344.5" text-anchor="middle">This display will be deleted when running integration tests</text>
 </svg>
 ]]></uax:XmlElement>
 		</Value>

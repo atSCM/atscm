@@ -6,7 +6,7 @@ describe('watch task', function() {
   context('when a watched node is deleted', function() {
     it('should not error', async function() {
       const nodeName = await importSetup('issue-157', 'DeleteDisplay');
-      const nodeId = `AGENT.DISPLAYS.${nodeName}`;
+      const nodeId = `AGENT.DISPLAYS.atSCM.watch.${nodeName}`;
 
       // Start watch task
       const { serverWatcher } = await watch({ open: false });
