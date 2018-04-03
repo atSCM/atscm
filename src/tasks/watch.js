@@ -108,14 +108,16 @@ export class WatchTask {
 
   /**
    * Initializes {@link WatchTask#browserSyncInstance}.
+   * @param {Object} options The options to pass to browsersync.
+   * @see https://browsersync.io/docs/options
    */
-  initBrowserSync() {
-    this.browserSyncInstance.init({
+  initBrowserSync(options) {
+    this.browserSyncInstance.init(Object.assign({
       proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
       ws: true,
       // logLevel: 'debug', FIXME: Use log level specified in cli options
       // logPrefix: '',
-    });
+    }, options));
 
     /* bs.logger.logOne = function(args, msg, level, unprefixed) {
       args = args.slice(2);
@@ -205,10 +207,12 @@ export class WatchTask {
   /**
    * Starts the file and server watchers, initializes Browsersync and registers change event
    * handlers.
-   * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
-   * initialized.
+   * @param {Object} [options] The options to pass to browsersync.
+   * @param {boolean} [options.open=true] If the browser should be opened once browsersync is up.
+   * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
+   * all watchers are set up and Browsersync was initialized.
    */
-  run() {
+  run({ open = true } = { open: true }) {
     return Promise.all([
       this.startFileWatcher(),
       this.startServerWatcher(),
@@ -222,7 +226,9 @@ export class WatchTask {
         fileWatcher.on('change', this.handleFileChange.bind(this));
         serverWatcher.on('change', this.handleServerChange.bind(this));
 
-        this.initBrowserSync();
+        this.initBrowserSync({ open });
+
+        return { fileWatcher, serverWatcher };
       });
   }
 
@@ -230,11 +236,13 @@ export class WatchTask {
 
 /**
  * The gulp task invoced when running `atscm watch`.
- * @return {Promise<undefined, Error>} Fulfilled once all watchers are set up and Browsersync was
- * initialized.
+ * @param {Object} options The options to pass to the watch task, see {@link WatchTask#run} for
+ * available options.
+ * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
+ * all watchers are set up and Browsersync was initialized.
  */
-export default function watch() {
-  return (new WatchTask()).run();
+export default function watch(options) {
+  return (new WatchTask()).run(options);
 }
 
 watch.description = 'Watch local files and atvise server nodes to trigger pull/push on change';

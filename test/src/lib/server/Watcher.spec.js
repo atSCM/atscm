@@ -199,6 +199,43 @@ describe('SubscribeStream', function() {
           }]);
         });
     });
+
+    it('should emit delete events without a value', function() {
+      const stream = new SubscribeStream();
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      const listener = spy();
+      stream.on('delete', listener);
+
+      const event = {
+        serverTimestamp: new Date(),
+      };
+
+      let item;
+
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor').callsFake(() => {
+          item = new StubMonitoredItem(false);
+          return item;
+        });
+      });
+
+      return expect(
+        [{
+          nodeId,
+          nodeClass: NodeClass.Variable,
+          references: {},
+        }],
+        'when piped through', stream,
+        'to yield objects satisfying', 'to have length', 0)
+        .then(() => item.emit('changed', event))
+        .then(() => {
+          expect(listener, 'was called once');
+          expect(listener.lastCall, 'to satisfy', [{
+            nodeId,
+            references: {},
+          }]);
+        });
+    });
   });
 
   /** @test {SubscribeStream#_transform} */
