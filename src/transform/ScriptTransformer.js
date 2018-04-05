@@ -69,7 +69,28 @@ export default class ScriptTransformer extends XMLTransformer {
         const paramTags = findChildren(document, 'parameter');
         if (paramTags.length) {
           config.parameters = [];
-          paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
+          paramTags.forEach(({ attributes, elements }) => {
+            const param = Object.assign({}, attributes);
+
+            // Handle relative parameter targets
+            if (attributes.relative === 'true') {
+              param.target = {};
+
+              const target = findChild(elements[0],
+                ['Elements', 'RelativePathElement', 'TargetName']);
+
+              if (target) {
+                const [index, name] = ['NamespaceIndex', 'Name']
+                  .map(tagName => textContent(findChild(target, tagName)));
+
+                const parsedIndex = parseInt(index, 10);
+
+                param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
+              }
+            }
+
+            config.parameters.push(param);
+          });
         }
 
         // Extract JavaScript
@@ -158,6 +179,28 @@ export default class ScriptTransformer extends XMLTransformer {
     if (config.parameters) {
       config.parameters.forEach(attributes => {
         let elements;
+
+        // Handle relative parameter targets
+        if (attributes.relative === 'true' && attributes.target) {
+          const { namespaceIndex, name } = attributes.target;
+          const targetElements = createElement('Elements');
+
+          elements = [createElement('RelativePath', [targetElements])];
+
+          if (name !== undefined) {
+            targetElements.elements = [
+              createElement('RelativePathElement', [
+                createElement('TargetName', [
+                  createElement('NamespaceIndex', [createTextNode(`${namespaceIndex}`)]),
+                  createElement('Name', [createTextNode(`${name}`)]),
+                ]),
+              ]),
+            ];
+          }
+
+          // eslint-disable-next-line no-param-reassign
+          delete attributes.target;
+        }
 
         document.elements.push(createElement('parameter', elements, attributes));
       });
