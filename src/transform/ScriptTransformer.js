@@ -3,6 +3,7 @@ import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
   findChild, findChildren,
   textContent,
+  createElement, createTextNode, createCDataNode,
 } from '../lib/helpers/xml';
 
 /**
