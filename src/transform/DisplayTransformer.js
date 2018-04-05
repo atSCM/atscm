@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import { findChild, removeChild, removeChildren } from '../lib/helpers/xml';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -32,7 +33,7 @@ export default class DisplayTransformer extends XMLTransformer {
         callback(new Error('Error parsing display: No `svg` tag'));
       } else {
         const xml = results;
-        const document = this.findChild(xml, 'svg');
+        const document = findChild(xml, 'svg');
 
         if (!document) {
           callback(new Error('Error parsing display: No `svg` tag'));
@@ -40,7 +41,7 @@ export default class DisplayTransformer extends XMLTransformer {
         }
 
         const config = {};
-        const scriptTags = this.removeChildren(document, 'script');
+        const scriptTags = removeChildren(document, 'script');
 
         // Extract JavaScript
         if (scriptTags.length) {
@@ -69,12 +70,12 @@ export default class DisplayTransformer extends XMLTransformer {
         }
 
         // Extract metadata
-        const metaTag = this.findChild(document, 'metadata');
+        const metaTag = findChild(document, 'metadata');
         if (metaTag && metaTag.elements) {
           // TODO: Warn on multiple metadata tags
 
           // - Parameters
-          const paramTags = this.removeChildren(metaTag, 'atv:parameter');
+          const paramTags = removeChildren(metaTag, 'atv:parameter');
           if (paramTags.length) {
             config.parameters = [];
 
@@ -140,7 +141,7 @@ export default class DisplayTransformer extends XMLTransformer {
         callback(err);
       } else {
         const result = xml;
-        const svg = this.findChild(result, 'svg');
+        const svg = findChild(result, 'svg');
 
         if (!svg) {
           callback(new Error('Error parsing display SVG: No `svg` tag'));
@@ -182,7 +183,7 @@ export default class DisplayTransformer extends XMLTransformer {
         // Insert metadata
         // - Parameters
         if (config.parameters && config.parameters.length > 0) {
-          let metaTag = this.removeChild(svg, 'metadata');
+          let metaTag = removeChild(svg, 'metadata');
 
           if (!metaTag) {
             metaTag = { type: 'element', name: 'metadata' };

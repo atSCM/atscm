@@ -1,5 +1,9 @@
 import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import {
+  findChild, findChildren,
+  textContent,
+} from '../lib/helpers/xml';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -29,7 +33,7 @@ export default class ScriptTransformer extends XMLTransformer {
       if (err) {
         callback(err);
       } else {
-        const document = results && this.findChild(results, 'script');
+        const document = results && findChild(results, 'script');
 
         if (!document) {
           Logger.warn(`Empty document at ${file.relative}`);
@@ -38,21 +42,21 @@ export default class ScriptTransformer extends XMLTransformer {
         const config = {};
 
         // Extract metadata
-        const metaTag = this.findChild(document, 'metadata');
+        const metaTag = findChild(document, 'metadata');
         if (metaTag && metaTag.elements) {
           // TODO: Warn on multiple metadata tags
           metaTag.elements.forEach(child => {
             if (child.type === 'element') {
               if (child.name === 'icon') { // - Icon
                 config.icon = Object.assign({
-                  content: this.textContent(child) || '',
+                  content: textContent(child) || '',
                 }, child.attributes);
               } else if (child.name === 'visible') { // - Visible
-                config.visible = Boolean(parseInt(this.textContent(child), 10));
+                config.visible = Boolean(parseInt(textContent(child), 10));
               } else if (child.name === 'title') {
-                config.title = this.textContent(child);
+                config.title = textContent(child);
               } else if (child.name === 'description') {
-                config.description = this.textContent(child);
+                config.description = textContent(child);
               } else {
                 Logger.warn(`Unknown metadata element '${child.name}' at ${file.relative}`);
               }
@@ -61,15 +65,15 @@ export default class ScriptTransformer extends XMLTransformer {
         }
 
         // Extract Parameters
-        const paramTags = this.findChildren(document, 'parameter');
+        const paramTags = findChildren(document, 'parameter');
         if (paramTags.length) {
           config.parameters = [];
           paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
         }
 
         // Extract JavaScript
-        const codeNode = this.findChild(document, 'code');
-        const code = this.textContent(codeNode) || '';
+        const codeNode = findChild(document, 'code');
+        const code = textContent(codeNode) || '';
 
         // Write config file
         const configFile = ScriptTransformer.splitFile(file, '.json');
