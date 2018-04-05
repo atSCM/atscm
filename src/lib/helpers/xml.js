@@ -107,3 +107,34 @@ export function removeChild(node, tagName) {
 
   return null;
 }
+
+// Creating nodes
+
+/**
+ * Creates a new text node.
+ * @param {string} [text=''] The node's content.
+ * @return {Object} A text node containing the given text.
+ */
+export function createTextNode(text = '') {
+  return { type: 'text', text };
+}
+
+/**
+ * Creates a new CData node.
+ * @param {string} [cdata=''] The node's content.
+ * @return {Object} A CData node containing the given data.
+ */
+export function createCDataNode(cdata = '') {
+  return { type: 'cdata', cdata };
+}
+
+/**
+ * Creates a new element node.
+ * @param {string} name The node's name.
+ * @param {Object[]} [elements=undefined] The child elements to add.
+ * @param {Object} [attributes={}] The attributes the new node should have.
+ * @return {Object} An element node.
+ */
+export function createElement(name, elements = undefined, attributes = {}) {
+  return { type: 'element', name, elements, attributes };
+}

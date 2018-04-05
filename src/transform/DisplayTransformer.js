@@ -1,6 +1,10 @@
 import { Buffer } from 'buffer';
 import XMLTransformer from '../lib/transform/XMLTransformer';
-import { findChild, removeChild, removeChildren } from '../lib/helpers/xml';
+import {
+  findChild, removeChild,
+  removeChildren,
+  createTextNode, createCDataNode, createElement,
+} from '../lib/helpers/xml';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -55,9 +59,7 @@ export default class DisplayTransformer extends XMLTransformer {
             } else {
               // TODO: Warn on multiple inline scripts
 
-              const scriptContentNode = script.elements ?
-                script.elements[0] :
-                { type: 'text', text: '' };
+              const scriptContentNode = script.elements ? script.elements[0] : createTextNode();
 
               const scriptFile = DisplayTransformer.splitFile(file, '.js');
 
@@ -156,28 +158,16 @@ export default class DisplayTransformer extends XMLTransformer {
         // Insert dependencies
         if (config.dependencies) {
           config.dependencies.forEach(src => {
-            svg.elements.push({
-              type: 'element',
-              name: 'script',
-              attributes: { 'xlink:href': src },
-            });
+            svg.elements.push(createElement('script', undefined, { 'xlink:href': src }));
           });
         }
 
         // Insert script
         // FIXME: Import order is not preserved!
         if (scriptFile) {
-          svg.elements.push({
-            type: 'element',
-            name: 'script',
-            attributes: { type: 'text/ecmascript' },
-            elements: [
-              {
-                type: 'cdata',
-                cdata: inlineScript,
-              },
-            ],
-          });
+          svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
+            type: 'text/ecmascript',
+          }));
         }
 
         // Insert metadata
@@ -186,7 +176,7 @@ export default class DisplayTransformer extends XMLTransformer {
           let metaTag = removeChild(svg, 'metadata');
 
           if (!metaTag) {
-            metaTag = { type: 'element', name: 'metadata' };
+            metaTag = createElement('metadata');
           }
 
           if (!metaTag.elements) {
@@ -195,11 +185,9 @@ export default class DisplayTransformer extends XMLTransformer {
 
           // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
           for (let i = config.parameters.length - 1; i >= 0; i--) {
-            metaTag.elements.unshift({
-              type: 'element',
-              name: 'atv:parameter',
-              attributes: config.parameters[i],
-            });
+            metaTag.elements.unshift(
+              createElement('atv:parameter', undefined, config.parameters[i])
+            );
           }
 
           // Insert <metadata> as first element in the resulting svg

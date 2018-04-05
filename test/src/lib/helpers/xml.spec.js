@@ -1,9 +1,15 @@
+import { js2xml } from 'xml-js';
 import expect from '../../../expect';
 import {
   isElement, isElementWithName,
   findChildren, findChild,
   removeChildren, removeChild,
+  createTextNode, createCDataNode, createElement,
 } from '../../../../src/lib/helpers/xml';
+
+function build(node) {
+  return js2xml({ elements: [node] });
+}
 
 describe('XML helpers', function() {
   /** @test {isElement} */
@@ -181,6 +187,55 @@ describe('XML helpers', function() {
       // Should remove match from elements array
       expect(node.elements.length, 'to equal', 2);
       expect(node.elements.includes(matching), 'to be', false);
+    });
+  });
+
+  /** @test {createTextNode} */
+  describe('createTextNode', function() {
+    it('should return a text node with the given text', function() {
+      return expect(build(createTextNode('testing')), 'to equal', 'testing');
+    });
+
+    it('should create an empty node with no text', function() {
+      return expect(build(createTextNode()), 'to equal', '');
+    });
+  });
+
+  /** @test {createCDataNode} */
+  describe('createCDataNode', function() {
+    it('should return a cdata node with the given content', function() {
+      return expect(build(createCDataNode('testing')), 'to equal', '<![CDATA[testing]]>');
+    });
+
+    it('should create an empty node with no content', function() {
+      return expect(build(createCDataNode()), 'to equal', '<![CDATA[]]>');
+    });
+  });
+
+  /** @test {createElement} */
+  describe('createElement', function() {
+    it('should return an element node with no additional args', function() {
+      return expect(build(createElement('testing')), 'to equal', '<testing/>');
+    });
+
+    it('should add child elements if provided', function() {
+      return expect(build(createElement('testing', [
+        createElement('child'),
+      ])), 'to equal', '<testing><child/></testing>');
+    });
+
+    it('should add attributes if provided', function() {
+      return expect(build(createElement('testing', undefined, {
+        attr: 'value',
+      })), 'to equal', '<testing attr="value"/>');
+    });
+
+    it('should add children and attributes if provided', function() {
+      return expect(build(createElement('testing', [
+        createElement('child'),
+      ], {
+        attr: 'value',
+      })), 'to equal', '<testing attr="value"><child/></testing>');
     });
   });
 });

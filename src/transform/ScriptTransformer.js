@@ -117,11 +117,7 @@ export default class ScriptTransformer extends XMLTransformer {
       code = scriptFile.contents.toString();
     }
 
-    const document = {
-      type: 'element',
-      name: 'script',
-      elements: [],
-    };
+    const document = createElement('script', []);
 
     const result = {
       elements: [
@@ -138,83 +134,36 @@ export default class ScriptTransformer extends XMLTransformer {
         const icon = config.icon.content;
         delete config.icon.content;
 
-        meta.push({
-          type: 'element',
-          name: 'icon',
-          attributes: config.icon,
-          elements: [
-            {
-              type: 'text',
-              text: icon,
-            },
-          ],
-        });
+        meta.push(createElement('icon', [createTextNode(icon)], config.icon));
       }
 
       // - Other fields
       if (config.visible !== undefined) {
-        meta.push({
-          type: 'element',
-          name: 'visible',
-          elements: [
-            {
-              type: 'text',
-              text: config.visible ? 1 : 0,
-            },
-          ],
-        });
+        meta.push(createElement('visible', [createTextNode(`${config.visible ? 1 : 0}`)]));
       }
 
       if (config.title !== undefined) {
-        meta.push({
-          type: 'element',
-          name: 'title',
-          elements: [
-            { type: 'text', text: config.title },
-          ],
-        });
+        meta.push(createElement('title', [createTextNode(config.title)]));
       }
 
       if (config.description !== undefined) {
-        meta.push({
-          type: 'element',
-          name: 'description',
-          elements: [
-            { type: 'text', text: config.description },
-          ],
-        });
+        meta.push(createElement('description', [createTextNode(config.description)]));
       }
 
-      document.elements.push({
-        type: 'element',
-        name: 'metadata',
-        elements: meta,
-      });
-      // result.script.metadata = meta;
+      document.elements.push(createElement('metadata', meta));
     }
 
     // Insert parameters
     if (config.parameters) {
       config.parameters.forEach(attributes => {
-        document.elements.push({
-          type: 'element',
-          name: 'parameter',
-          attributes,
-        });
+        let elements;
+
+        document.elements.push(createElement('parameter', elements, attributes));
       });
     }
 
     // Insert script code
-    document.elements.push({
-      type: 'element',
-      name: 'code',
-      elements: [
-        {
-          type: 'cdata',
-          cdata: code,
-        },
-      ],
-    });
+    document.elements.push(createElement('code', [createCDataNode(code)]));
 
     const script = ScriptTransformer.combineFiles(
       Object.keys(files).map(ext => files[ext]),
