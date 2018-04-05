@@ -74,6 +74,37 @@ describe('XML helpers', function() {
       }, 'elementname'],
       'to equal', [matching]);
     });
+
+    context('with a tag path', function() {
+      it('should traverse the node tree', async function() {
+        const targets = [createElement('target'), createElement('target')];
+        const doc = createElement('root', [
+          createElement('child', [
+            targets[0],
+          ]),
+          createElement('child', [
+            targets[1],
+          ]),
+        ]);
+
+        return expect(findChildren, 'when called with', [doc, ['child', 'target']],
+          'to contain', ...targets);
+      });
+
+      it('should only return exact matches', function() {
+        const targets = new Array(3).fill().map(() => createElement('target'));
+        const doc = createElement('root', [
+          createElement('child', [
+            targets[0],
+            createElement('subchild', [targets[1]]),
+          ]),
+          targets[2],
+        ]);
+
+        return expect(findChildren, 'when called with', [doc, ['child', 'target']],
+          'to have items satisfying', 'to be', targets[0]);
+      });
+    });
   });
 
   /** @test {findChild} */
@@ -107,6 +138,36 @@ describe('XML helpers', function() {
         ],
       }, 'elementname'],
       'to equal', matching);
+    });
+
+    context('with a tag path', function() {
+      it('should traverse the node tree', function() {
+        const target = createElement('target');
+
+        return expect(findChild, 'when called with', [createElement('root', [
+          createElement('child', [
+            target,
+          ]),
+        ]), ['child', 'target']],
+        'to be', target);
+      });
+
+      it('should return source without elements', function() {
+        const root = createElement('root');
+        return expect(findChild, 'when called with', [root, []], 'to be', root);
+      });
+
+      it('should return first match only ', function() {
+        const target = createElement('target');
+
+        return expect(findChild, 'when called with', [createElement('root', [
+          createElement('child', [
+            target,
+            createElement('target'),
+          ]),
+        ]), ['child', 'target']],
+        'to be', target);
+      });
     });
   });
 

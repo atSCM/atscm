@@ -37,11 +37,21 @@ export function textContent(node) {
 /**
  * Returns a node's child elements with the given tag name.
  * @param {Object} node The node to check in.
- * @param {string} tagName The tag name to search for.
+ * @param {string|string[]} tagName The tag name to search for. If an array is passed, the tree is
+ * traversed.
  * @return {Object[]} The matching child elements.
  */
 export function findChildren(node, tagName) {
   if (!node || !node.elements) { return []; }
+
+  if (Array.isArray(tagName)) {
+    return tagName.reduce(
+      (nodes, name) => nodes.reduce(
+        (results, n) => results.concat(findChildren(n, name)),
+        []),
+      [node]
+    );
+  }
 
   return node.elements.filter(child => isElementWithName(child, tagName));
 }
@@ -49,11 +59,23 @@ export function findChildren(node, tagName) {
 /**
  * Returns a node's first child element with the given tag name, or `null`.
  * @param {Object} node The node to check in.
- * @param {string} tagName The tag name to search for.
+ * @param {string|string[]} tagName The tag name to search for. If an array is passed, the tree is
+ * traversed.
  * @return {Object?} The matching child elements.
  */
 export function findChild(node, tagName) {
-  if (!node || !node.elements) { return null; }
+  const gotPath = Array.isArray(tagName);
+
+  if (!node || (!node.elements && !gotPath)) { return null; }
+
+  if (gotPath) {
+    if (tagName.length === 0) { return node; }
+
+    const child = findChild(node, tagName[0]);
+    const remaining = tagName.slice(1);
+
+    return remaining.length ? findChild(child, remaining) : child;
+  }
 
   for (let i = 0; i < node.elements.length; i++) {
     if (isElementWithName(node.elements[i], tagName)) {
