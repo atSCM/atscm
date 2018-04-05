@@ -175,6 +175,74 @@ describe('ScriptTransformer', function() {
         }));
     });
 
+    it('should store relative parameter without target', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements/>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {});
+        });
+    });
+
+    it('should store relative parameter with target', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements>
+        <RelativePathElement>
+          <TargetName>
+            <NamespaceIndex>1</NamespaceIndex>
+            <Name>double</Name>
+          </TargetName>
+        </RelativePathElement>
+      </Elements>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {
+            namespaceIndex: 1,
+            name: 'double',
+          });
+        });
+    });
+
+    it('should store relative parameter target with invalid namespace', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements>
+        <RelativePathElement>
+          <TargetName>
+            <NamespaceIndex>X</NamespaceIndex>
+            <Name>double</Name>
+          </TargetName>
+        </RelativePathElement>
+      </Elements>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {
+            namespaceIndex: 1,
+            name: 'double',
+          });
+        });
+    });
+
     it('should store code', function() {
       const code = 'console.log("called");';
       return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
@@ -262,6 +330,44 @@ describe('ScriptTransformer', function() {
         .then(args => transformerHelper.expectFileContents([args[1]]))
         .then(contents => expect(contents[0],
           'to contain', '<parameter name="paramname"/>'));
+    });
+
+    it('should insert relative parameter without target', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "parameters": [{ "name": "paramname", "relative": "true", "target": {} }] }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', `<parameter name="paramname" relative="true">
+  <RelativePath>
+   <Elements/>`.split('\n').join('\r\n')));
+    });
+
+    it('should insert relative parameter with target', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': JSON.stringify({
+          parameters: [{
+            name: 'paramname',
+            relative: 'true',
+            target: {
+              namespaceIndex: 2,
+              name: 'Test',
+            },
+          }],
+        }),
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', `<parameter name="paramname" relative="true">
+  <RelativePath>
+   <Elements>
+    <RelativePathElement>
+     <TargetName>
+      <NamespaceIndex>2</NamespaceIndex>
+      <Name>Test</Name>
+     </TargetName>
+    </RelativePathElement>
+   </Elements>`.split('\n').join('\r\n')));
     });
 
     it('should insert script code', function() {
