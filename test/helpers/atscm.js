@@ -176,7 +176,7 @@ export function expectCorrectMapping(setup, node) {
     const original = await readFile(setupPath(setup), 'utf8');
 
     // Removes the first 2 lines (created at ...) and newlines
-    const trim = str => str.split('\n').slice(2).map(s => s.trim());
+    const trim = str => str.split('\n').slice(2).map(l => l.replace(/\t/g, ' '));
 
     expect(trim(pushed), 'to equal', trim(original));
   });
