@@ -35,11 +35,11 @@ class StubImplementation extends TreeStream {
 /** @test {TreeStream} */
 describe('TreeStream', function() {
   before('prevent exit on error log', () => {
-    Logger.on('error', console.error);
+    Logger.on('error', console.error); // eslint-disable-line no-console
   });
 
   after(() => {
-    Logger.removeListener('error', console.error);
+    Logger.removeListener('error', console.error); // eslint-disable-line no-console
   });
 
   /** @test {TreeStream#constructor} */
