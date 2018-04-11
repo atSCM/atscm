@@ -1,3 +1,4 @@
+import Logger from 'gulplog';
 import QueueStream from './QueueStream';
 
 /**
@@ -26,14 +27,18 @@ export default class TreeStream extends QueueStream {
      */
     this._waitingForParent = {};
 
-    this.on('processed-chunk', ({ nodeId }) => {
+    this.on('processed-chunk', ({ nodeId }, error) => {
       const id = nodeId.toString();
       const waiting = this._waitingForParent[id];
 
       if (waiting) {
-        waiting.forEach(chunk => {
-          super._enqueueChunk(chunk);
-        });
+        if (error) {
+          Logger.warn(`Skipping ${waiting.length} child nodes`);
+        } else {
+          waiting.forEach(chunk => {
+            super._enqueueChunk(chunk);
+          });
+        }
 
         delete this._waitingForParent[id];
       }
