@@ -34,8 +34,8 @@ export function pull(nodes, destination) {
 
 export function push(source) {
   return promisify(new PushStream(src(
-    [`${source}/**/.*`, `!${source}/**/.*.rc`, `${source}/**/*.*`],
-    { base: source },
+    [`${source}/**/*`, `!${source}/**/.*.rc`],
+    { base: source, dot: true },
   )));
 }
 
