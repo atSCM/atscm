@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2018-04-11 12:48:30 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=AGENT" BrowseName="1:AGENT">
+		<DisplayName Locale="en">AGENT</DisplayName>
+		<Description Locale="en">AGENT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig" ExportedBrowseName="1:TestWithAlarmConfig" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS" BrowseName="1:OBJECTS">
+		<DisplayName Locale="en">OBJECTS</DisplayName>
+		<Description Locale="en">OBJECTS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig" BrowseName="1:TestWithAlarmConfig" DataType="Float" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestWithAlarmConfig</DisplayName>
+		<Description Locale="en">TestWithAlarmConfig</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Float>0</uax:Float>
+		</Value>
+	</UAVariable>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig" BrowseName="1:AlarmConfig">
+		<DisplayName Locale="en">AlarmConfig</DisplayName>
+		<Description Locale="en">AlarmConfig</Description>
+		<References>
+			<Reference ReferenceType="HasNotifier" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.AlarmConfiguration</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.exclusive" BrowseName="1:exclusive" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">exclusive</DisplayName>
+		<Description Locale="en">exclusive</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.variable" BrowseName="1:variable" DataType="XmlElement" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">variable</DisplayName>
+		<Description Locale="en">variable</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:XmlElement><![CDATA[
+<RelativePath>
+  <Elements/>
+</RelativePath>]]></uax:XmlElement>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.display" BrowseName="1:display" DataType="NodeId" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">display</DisplayName>
+		<Description Locale="en">display</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:NodeId>
+				<Identifier>ns=1;s=AGENT.DISPLAYS.Main</Identifier>
+			</uax:NodeId>
+		</Value>
+	</UAVariable>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.REPLACEMENTS" BrowseName="1:REPLACEMENTS">
+		<DisplayName Locale="en">REPLACEMENTS</DisplayName>
+		<Description Locale="en">REPLACEMENTS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition" BrowseName="1:FirstCondition">
+		<DisplayName Locale="en">FirstCondition</DisplayName>
+		<Description Locale="en">FirstCondition</Description>
+		<References>
+			<Reference ReferenceType="HasEventSource" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.AlarmConditionControl.Limit</Reference>
+			<Reference ReferenceType="HasModellingRule">New</Reference>
+			<Reference ReferenceType="HasComponent">ns=1;s=SYSTEM.LIBRARY.ATVISE.ALARMCATEGORIES.Error</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.lower_limit" BrowseName="1:lower_limit" DataType="BaseDataType" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">lower_limit</DisplayName>
+		<Description Locale="en">lower_limit</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Float>5</uax:Float>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.upper_limit" BrowseName="1:upper_limit" DataType="BaseDataType" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">upper_limit</DisplayName>
+		<Description Locale="en">upper_limit</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value/>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.lower_limit_deadband" BrowseName="1:lower_limit_deadband" DataType="BaseDataType" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">lower_limit_deadband</DisplayName>
+		<Description Locale="en">lower_limit_deadband</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value/>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.upper_limit_deadband" BrowseName="1:upper_limit_deadband" DataType="BaseDataType" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">upper_limit_deadband</DisplayName>
+		<Description Locale="en">upper_limit_deadband</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value/>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.lower_limit_compare" BrowseName="1:lower_limit_compare" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">lower_limit_compare</DisplayName>
+		<Description Locale="en">lower_limit_compare</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>&gt;</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.upper_limit_compare" BrowseName="1:upper_limit_compare" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">upper_limit_compare</DisplayName>
+		<Description Locale="en">upper_limit_compare</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>&lt;=</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.active_message" BrowseName="1:active_message" DataType="LocalizedText" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">active_message</DisplayName>
+		<Description Locale="en">active_message</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:LocalizedText>
+				<Locale></Locale>
+				<Text>ToActive</Text>
+			</uax:LocalizedText>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition.inactive_message" BrowseName="1:inactive_message" DataType="LocalizedText" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">inactive_message</DisplayName>
+		<Description Locale="en">inactive_message</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestWithAlarmConfig.AlarmConfig.FirstCondition</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:LocalizedText>
+				<Locale></Locale>
+				<Text>ToInactive</Text>
+			</uax:LocalizedText>
+		</Value>
+	</UAVariable>
+</UANodeSet>
