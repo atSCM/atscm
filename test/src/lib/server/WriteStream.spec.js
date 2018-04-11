@@ -1,9 +1,21 @@
 import { spy } from 'sinon';
-import { StatusCodes, resolveNodeId, NodeClass } from 'node-opcua';
+import { StatusCodes, NodeClass } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
+import _CreateNodeStream from '../../../../src/lib/server/CreateNodeStream';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
+import NodeId from '../../../../src/lib/model/opcua/NodeId';
+
+class CreateNodeStream extends _CreateNodeStream {
+
+  processChunk(file, handleErrors) {
+    setTimeout(() => {
+      handleErrors(null, StatusCodes.Good, done => done());
+    }, 10);
+  }
+
+}
 
 /** @test {WriteStream} */
 describe('WriteStream', function() {
@@ -20,7 +32,7 @@ describe('WriteStream', function() {
   /** @test {WriteStream#processChunk} */
   describe('#processChunk', function() {
     it('should forward errors', function() {
-      const stream = new WriteStream();
+      const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) => callback(new Error('Test'));
@@ -28,7 +40,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -36,7 +48,7 @@ describe('WriteStream', function() {
     });
 
     it('should forward synchronous errors', function() {
-      const stream = new WriteStream();
+      const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = () => {
@@ -46,7 +58,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -54,7 +66,7 @@ describe('WriteStream', function() {
     });
 
     it('should warn if access is denied', function() {
-      const stream = new WriteStream();
+      const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) =>
@@ -66,7 +78,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -76,7 +88,9 @@ describe('WriteStream', function() {
     });
 
     it('should push non-variable files', function() {
-      const stream = new WriteStream();
+      const createStream = new CreateNodeStream();
+      const stream = new WriteStream(createStream);
+      stream.pipe(createStream);
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) =>
@@ -84,7 +98,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS'),
         nodeClass: NodeClass.Object,
       };
       return expect([file],
@@ -95,7 +109,9 @@ describe('WriteStream', function() {
     });
 
     it('should push files where no node can be found', function() {
-      const stream = new WriteStream();
+      const createStream = new CreateNodeStream();
+      const stream = new WriteStream(createStream);
+      stream.pipe(createStream);
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) =>
@@ -103,7 +119,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         nodeClass: NodeClass.Variable,
       };
       return expect([file],
@@ -114,7 +130,7 @@ describe('WriteStream', function() {
     });
 
     it('should not push files with good status', function() {
-      const stream = new WriteStream();
+      const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) =>
@@ -122,7 +138,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         nodeClass: NodeClass.Variable,
       };
       return expect([file],

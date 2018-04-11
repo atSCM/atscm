@@ -17,8 +17,8 @@ export default class PushStream {
    */
   constructor(srcStream) {
     const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
-    const writeStream = new WriteStream();
     const createStream = new CreateNodeStream();
+    const writeStream = new WriteStream(createStream);
 
     const printProgress = setInterval(() => {
       Logger.info(
