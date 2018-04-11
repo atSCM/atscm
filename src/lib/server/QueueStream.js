@@ -180,7 +180,7 @@ export default class QueueStream extends Stream {
         if (process.env.CONTINUE_ON_FAILURE === 'true') {
           Logger.error(`FAILURE: ${message}`);
         } else {
-          this.emit('error', new Error(message));
+          this.emit('error', Object.assign(err, { message }));
         }
       } else if (statusCode !== StatusCodes.Good) {
         const message = `${this.processErrorMessage(chunk)}: ${statusCode.description}`;
