@@ -1,5 +1,5 @@
 import { spy } from 'sinon';
-import { StatusCodes, resolveNodeId, NodeClass } from 'node-opcua';
+import { StatusCodes, NodeClass } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import WriteStream from '../../../../src/lib/server/WriteStream';
@@ -28,7 +28,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -46,7 +46,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -66,7 +66,7 @@ describe('WriteStream', function() {
 
       return expect(
         [{
-          nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -84,7 +84,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS'),
         nodeClass: NodeClass.Object,
       };
       return expect([file],
@@ -103,7 +103,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         nodeClass: NodeClass.Variable,
       };
       return expect([file],
@@ -122,7 +122,7 @@ describe('WriteStream', function() {
       });
 
       const file = {
-        nodeId: resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         nodeClass: NodeClass.Variable,
       };
       return expect([file],
