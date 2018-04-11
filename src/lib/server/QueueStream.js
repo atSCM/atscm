@@ -168,11 +168,13 @@ export default class QueueStream extends Stream {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
-      const finished = () => {
+      const finished = (error) => {
         this._processing--;
         this._processed++;
-        this.emit('processed-chunk', chunk);
+        this.emit('processed-chunk', chunk, error);
       };
+
+      let error = err;
 
       if (err) {
         const message = `${this.processErrorMessage(chunk)}: ${err.message}`;
@@ -184,6 +186,7 @@ export default class QueueStream extends Stream {
         }
       } else if (statusCode !== StatusCodes.Good) {
         const message = `${this.processErrorMessage(chunk)}: ${statusCode.description}`;
+        error = new Error(message);
 
         if (process.env.CONTINUE_ON_FAILURE === 'true') {
           Logger.error(`FAILURE: ${message}`);
@@ -195,7 +198,7 @@ export default class QueueStream extends Stream {
         return;
       }
 
-      finished();
+      finished(error);
     });
   }
 
