@@ -31,6 +31,9 @@ export default class CreateNodeStream extends CallScriptStream {
       nodeClass: file.nodeClass.value,
       typeDefinition: file.typeDefinition.value,
       browseName: file.nodeId.browseName,
+
+      // Optional
+      modellingRule: file.references.HasModellingRule && file.references.HasModellingRule[0],
     };
 
     if (file.nodeClass.value === NodeClass.Variable.value) {
