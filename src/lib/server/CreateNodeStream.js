@@ -33,6 +33,7 @@ export default class CreateNodeStream extends CallScriptStream {
       browseName: file.nodeId.browseName,
 
       // Optional
+      reference: file.references.toParent && file.references.toParent.value,
       modellingRule: file.references.HasModellingRule && file.references.HasModellingRule[0],
     };
 

@@ -238,10 +238,10 @@ export default class NodeStream extends QueueStream {
    * @param {Object} result The result of the browsing the node.
    * @param  {function(err: Error)} done Called once the node has been processed.
    */
-  handleResult({ nodeId, nodeClass }, result, done) {
+  handleResult({ nodeId, nodeClass, toParent }, result, done) {
     const nodesToBrowse = [];
 
-    const references = {};
+    const references = { toParent };
 
     Promise.all(
       result.references
@@ -265,6 +265,7 @@ export default class NodeStream extends QueueStream {
               this.write({
                 nodeId: ref.nodeId,
                 nodeClass: ref.$nodeClass,
+                toParent: ReverseReferenceTypeIds[ref.referenceTypeId.value],
               }, null, resolve);
             });
           }
@@ -296,7 +297,7 @@ export default class NodeStream extends QueueStream {
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk({ nodeId, nodeClass }, handleErrors) {
+  processChunk({ nodeId, nodeClass, toParent }, handleErrors) {
     this.session.browse({
       nodeId,
       browseDirection: BrowseService.BrowseDirection.Forward,
@@ -307,7 +308,7 @@ export default class NodeStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          this.handleResult({ nodeId, nodeClass }, results[0], done);
+          this.handleResult({ nodeId, nodeClass, toParent }, results[0], done);
         });
       }
     });
