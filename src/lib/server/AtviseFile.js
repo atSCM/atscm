@@ -420,6 +420,10 @@ export default class AtviseFile extends File {
     return this._arrayType;
   }
 
+  /**
+   * The files's references.
+   * @type {Map<string, NodeId|NodeId[]>}
+   */
   get references() {
     if (!this._references) {
       this._getMetadata();
