@@ -420,17 +420,23 @@ export default class AtviseFile extends File {
     return this._arrayType;
   }
 
+  get references() {
+    if (!this._references) {
+      this._getMetadata();
+    }
+
+    return this._references;
+  }
+
   /**
    * The file's type definition.
    * @type {node-opcua~NodeId}
    */
   get typeDefinition() {
-    if (!this._references) {
-      this._getMetadata();
-    }
+    const refs = this.references;
 
-    if (this._references && this._references.HasTypeDefinition) {
-      return this._references.HasTypeDefinition[0];
+    if (refs && refs.HasTypeDefinition) {
+      return refs.HasTypeDefinition[0];
     }
 
     return new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
