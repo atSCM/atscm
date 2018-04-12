@@ -254,9 +254,12 @@ export default class NodeStream extends QueueStream {
           // "Cast" ref.nodeId to NodeId
           Object.setPrototypeOf(ref.nodeId, NodeId.prototype);
 
+          let addToReferences = true;
+
           if (this.recursive && this.shouldBeBrowsed(ref, nodeId) &&
             !nodesToBrowse.includes(ref.nodeId.toString())) {
             nodesToBrowse.push(ref.nodeId.toString());
+            addToReferences = false;
 
             promise = new Promise((resolve) => {
               this.write({
@@ -266,13 +269,15 @@ export default class NodeStream extends QueueStream {
             });
           }
 
-          const referenceType = ReverseReferenceTypeIds[ref.referenceTypeId.value];
+          if (addToReferences) {
+            const referenceType = ReverseReferenceTypeIds[ref.referenceTypeId.value];
 
-          if (!references[referenceType]) {
-            references[referenceType] = [];
+            if (!references[referenceType]) {
+              references[referenceType] = [];
+            }
+
+            references[referenceType].push(ref.nodeId);
           }
-
-          references[referenceType].push(ref.nodeId);
 
           return promise;
         })
