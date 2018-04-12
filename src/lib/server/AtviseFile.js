@@ -286,7 +286,7 @@ export default class AtviseFile extends File {
        */
       this._references = Object.entries(references)
         .reduce((result, [type, refs]) => Object.assign(result, {
-          [type]: refs.map(v => new NodeId(v)),
+          [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
         }), {});
       return;
     }
