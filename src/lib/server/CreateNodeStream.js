@@ -76,8 +76,10 @@ export default class CreateNodeStream extends CallScriptStream {
         Logger.warn('Failed to create node', file.nodeId.toString());
       } else if (createdNode) {
         Logger.debug('Created node', file.nodeId.toString());
+        this.push(file);
       } else {
         Logger.debug('Node', file.nodeId.toString(), 'already exists');
+        this.push(file);
       }
 
       callback(null);
