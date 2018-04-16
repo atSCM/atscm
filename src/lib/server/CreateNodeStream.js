@@ -73,7 +73,7 @@ export default class CreateNodeStream extends CallScriptStream {
       const [{ value: createdNode }, { value: createFailed }] = outArgs[3].value;
 
       if (createFailed) {
-        Logger.warn('Failed to created node', file.nodeId.toString());
+        Logger.warn('Failed to create node', file.nodeId.toString());
       } else if (createdNode) {
         Logger.debug('Created node', file.nodeId.toString());
       } else {
