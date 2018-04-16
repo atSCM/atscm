@@ -34,8 +34,8 @@ export function pull(nodes, destination) {
 
 export function push(source) {
   return promisify(new PushStream(src(
-    [`${source}/**/.*`, `!${source}/**/.*.rc`, `${source}/**/*.*`],
-    { base: source },
+    [`${source}/**/*`, `!${source}/**/.*.rc`],
+    { base: source, dot: true },
   )));
 }
 
@@ -176,7 +176,9 @@ export function expectCorrectMapping(setup, node) {
     const original = await readFile(setupPath(setup), 'utf8');
 
     // Removes the first 2 lines (created at ...) and newlines
-    const trim = str => str.split('\n').slice(2).map(s => s.trim());
+    const trim = str => str.split('\n').slice(2)
+      .filter(l => !l.match(/^\s*<Alias[^>]*>[^<]*<\/Alias>$/))
+      .map(l => l.replace(/\t/g, ' '));
 
     expect(trim(pushed), 'to equal', trim(original));
   });

@@ -129,8 +129,11 @@ describe('WriteStream', function() {
         ]);
     });
 
-    it('should not push files with good status', function() {
-      const stream = new WriteStream(new CreateNodeStream());
+    it('should push files with good status to add references stream', async function() {
+      const pushToAddRefsStream = spy();
+      const stream = new WriteStream(new CreateNodeStream(), {
+        push: pushToAddRefsStream,
+      });
 
       stream.prependOnceListener('session-open', () => {
         stream.session.writeSingleNode = (nodeId, value, callback) =>
@@ -141,9 +144,11 @@ describe('WriteStream', function() {
         nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
         nodeClass: NodeClass.Variable,
       };
-      return expect([file],
+      await expect([file],
         'when piped through', stream,
         'to yield objects satisfying', 'to have length', 0);
+
+      return expect(pushToAddRefsStream, 'was called once');
     });
   });
 });

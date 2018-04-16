@@ -14,12 +14,13 @@ import TreeStream from './TreeStream';
 export default class WriteStream extends TreeStream {
 
   /**
-   * Creates a new write stream with the given {@link CreateNodeStream}. Implementer have to ensure
-   * this create stream is actually piped.
+   * Creates a new write stream with the given {@link CreateNodeStream} and
+   * {@link AddReferencesStream}. Implementer have to ensure this create stream is actually piped.
    * @param {CreateNodeStream} createStream The stream that handles node creations.
+   * @param {AddReferencesStream} addReferencesStream The stream that adds missing node references.
    * @param {Object} options The options passed to the underlying {@link TreeStream}.
    */
-  constructor(createStream, options) {
+  constructor(createStream, addReferencesStream, options) {
     super(options);
 
     /**
@@ -35,6 +36,12 @@ export default class WriteStream extends TreeStream {
         this._createCallbacks[key](null);
       }
     });
+
+    /**
+     * The stream responsible for adding additional references.
+     * @type {AddReferencesStream}
+     */
+    this._addReferencesStream = addReferencesStream;
   }
 
   /**
@@ -95,7 +102,12 @@ export default class WriteStream extends TreeStream {
 
           this._createNode(file, handleErrors);
         } else {
-          handleErrors(err, statusCode, done => done());
+          handleErrors(err, statusCode, done => {
+            // Push to add references stream
+            this._addReferencesStream.push(file);
+
+            done();
+          });
         }
       });
     } catch (e) {

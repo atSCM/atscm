@@ -187,7 +187,7 @@ describe('CreateNodeStream', function() {
             ],
           },
         })),
-      })], 'when piped through', stream, 'to yield objects satisfying', 'to have length', 0);
+      })], 'when piped through', stream, 'to yield objects satisfying', 'to have length', 1);
     });
 
     const dateValue = new Date();
@@ -274,7 +274,7 @@ describe('CreateNodeStream', function() {
           },
         });
 
-        await expect([file], 'when piped through', stream, 'to yield objects satisfying', []);
+        await expect([file], 'when piped through', stream, 'to yield objects satisfying', [file]);
 
         const session = await Session.create();
 

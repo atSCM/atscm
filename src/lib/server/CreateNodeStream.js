@@ -31,6 +31,10 @@ export default class CreateNodeStream extends CallScriptStream {
       nodeClass: file.nodeClass.value,
       typeDefinition: file.typeDefinition.value,
       browseName: file.nodeId.browseName,
+
+      // Optional
+      reference: file.references.toParent && file.references.toParent.value,
+      modellingRule: file.references.HasModellingRule && file.references.HasModellingRule[0],
     };
 
     if (file.nodeClass.value === NodeClass.Variable.value) {
@@ -69,11 +73,13 @@ export default class CreateNodeStream extends CallScriptStream {
       const [{ value: createdNode }, { value: createFailed }] = outArgs[3].value;
 
       if (createFailed) {
-        Logger.warn('Failed to created node', file.nodeId.toString());
+        Logger.warn('Failed to create node', file.nodeId.toString());
       } else if (createdNode) {
         Logger.debug('Created node', file.nodeId.toString());
+        this.push(file);
       } else {
         Logger.debug('Node', file.nodeId.toString(), 'already exists');
+        this.push(file);
       }
 
       callback(null);

@@ -7,4 +7,11 @@ describe('push task', function() {
       name: 'TestSMTPServer',
     });
   });
+
+  context('when pushing node with alarm configuration', function() {
+    expectCorrectMapping('issue-170/node-with-alarmconfig', {
+      path: 'AGENT.OBJECTS',
+      name: 'TestWithAlarmConfig',
+    });
+  });
 });

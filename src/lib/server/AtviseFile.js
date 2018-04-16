@@ -1,6 +1,6 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
-import { NodeClass, DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
+import { NodeClass, DataType, VariantArrayType, resolveNodeId, LocalizedText } from 'node-opcua';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse } from '../helpers/Object';
@@ -90,6 +90,7 @@ const Decoder = {
   [DataType.String]: stringValue => stringValue,
   [DataType.DateTime]: stringValue => new Date(stringValue),
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
+  [DataType.LocalizedText]: stringValue => new LocalizedText(JSON.parse(stringValue)),
 };
 
 /**
@@ -100,6 +101,7 @@ const Encoder = {
   [DataType.UInt64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.Int64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
+  [DataType.LocalizedText]: ({ text, locale }) => (JSON.stringify({ text, locale })),
 };
 
 /**
@@ -286,7 +288,7 @@ export default class AtviseFile extends File {
        */
       this._references = Object.entries(references)
         .reduce((result, [type, refs]) => Object.assign(result, {
-          [type]: refs.map(v => new NodeId(v)),
+          [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
         }), {});
       return;
     }
@@ -421,16 +423,26 @@ export default class AtviseFile extends File {
   }
 
   /**
-   * The file's type definition.
-   * @type {node-opcua~NodeId}
+   * The files's references.
+   * @type {Map<string, NodeId|NodeId[]>}
    */
-  get typeDefinition() {
+  get references() {
     if (!this._references) {
       this._getMetadata();
     }
 
-    if (this._references && this._references.HasTypeDefinition) {
-      return this._references.HasTypeDefinition[0];
+    return this._references;
+  }
+
+  /**
+   * The file's type definition.
+   * @type {node-opcua~NodeId}
+   */
+  get typeDefinition() {
+    const refs = this.references;
+
+    if (refs && refs.HasTypeDefinition) {
+      return refs.HasTypeDefinition[0];
     }
 
     return new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
