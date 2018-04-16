@@ -1,6 +1,6 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
-import { NodeClass, DataType, VariantArrayType, resolveNodeId } from 'node-opcua';
+import { NodeClass, DataType, VariantArrayType, resolveNodeId, LocalizedText } from 'node-opcua';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse } from '../helpers/Object';
@@ -90,6 +90,7 @@ const Decoder = {
   [DataType.String]: stringValue => stringValue,
   [DataType.DateTime]: stringValue => new Date(stringValue),
   [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
+  [DataType.LocalizedText]: stringValue => new LocalizedText(JSON.parse(stringValue)),
 };
 
 /**
@@ -100,6 +101,7 @@ const Encoder = {
   [DataType.UInt64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.Int64]: ([lo, high]) => `[${lo}, ${high}]`,
   [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
+  [DataType.LocalizedText]: ({ text, locale }) => (JSON.stringify({ text, locale })),
 };
 
 /**
