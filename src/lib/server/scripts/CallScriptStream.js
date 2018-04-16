@@ -45,10 +45,15 @@ export default class CallScriptStream extends CallMethodStream {
   /**
    * Creates the raw method input arguments for the given file.
    * @param {AtviseFile} file The processed file.
-   * @return {node-opcua~Variant[]} Input arguments for the *callScript* method.
+   * @return {?node-opcua~Variant[]} Input arguments for the *callScript* method.
    */
   inputArguments(file) {
     const params = this.scriptParameters(file);
+
+    if (params === null) {
+      return null;
+    }
+
     const paramNames = Object.keys(params);
 
     return [

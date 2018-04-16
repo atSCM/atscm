@@ -26,9 +26,9 @@ export default class CallMethodStream extends QueueStream {
 
   /**
    * The input arguments the method should be called with for a file. Needs to be overridden by
-   * subclasses in most cases.
+   * subclasses in most cases. Returning `null` indicates no method call is needed.
    * @param {vinyl~File} file The file beeing processed.
-   * @return {node-opcua~Variant[]} The resulting input arguments.
+   * @return {?node-opcua~Variant[]} The resulting input arguments.
    */
   inputArguments(file) { // eslint-disable-line no-unused-vars
     return [];
@@ -37,13 +37,19 @@ export default class CallMethodStream extends QueueStream {
   /**
    * Creates a call method request object for a file.
    * @param {vinyl~File} file The file beeing processed.
-   * @return {node-opcua~CallMethodRequest} The resulting call request.
+   * @return {?node-opcua~CallMethodRequest} The resulting call request.
    */
   callRequest(file) {
+    const args = this.inputArguments(file);
+
+    if (args === null) {
+      return null;
+    }
+
     return {
       objectId: this.methodBaseId,
       methodId: this.methodId,
-      inputArguments: this.inputArguments(file),
+      inputArguments: args,
     };
   }
 
@@ -77,7 +83,14 @@ export default class CallMethodStream extends QueueStream {
    */
   processChunk(file, handleErrors) {
     try {
-      this.session.call([this.callRequest(file)], (err, [result] = []) => {
+      const request = this.callRequest(file);
+
+      if (!request) {
+        handleErrors(null, StatusCodes.Good, done => done());
+        return;
+      }
+
+      this.session.call([request], (err, [result] = []) => {
         if (err) {
           handleErrors(err);
         } else if (result.statusCode.value !== StatusCodes.Good.value) {
