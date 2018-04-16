@@ -2,6 +2,9 @@ import { DataType, StatusCodes, ReferenceTypeIds } from 'node-opcua';
 import NodeId from '../model/opcua/NodeId';
 import CallScriptStream from './scripts/CallScriptStream';
 
+/**
+ * A stream that adds non-standard references to nodes when pushed.
+ */
 export default class AddReferencesStream extends CallScriptStream {
 
   /**
