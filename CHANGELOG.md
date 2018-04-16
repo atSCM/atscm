@@ -1,5 +1,5 @@
-<a name="0.6.0-beta.19"></a>
-# 0.6.0-beta.19 (2018-04-11)
+<a name="0.6.0-beta.20"></a>
+# 0.6.0-beta.20 (2018-04-16)
 
 
 ### Bug Fixes
@@ -13,6 +13,7 @@
 * **mapping:** Handle relative parameter targets in scripts ([#172](https://github.com/atSCM/atscm/issues/172)) ([e4782b0](https://github.com/atSCM/atscm/commits/e4782b0)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * **mapping:** Skip non-atscm dot-files ([#145](https://github.com/atSCM/atscm/issues/145)) ([c23409b](https://github.com/atSCM/atscm/commits/c23409b)), closes [#144](https://github.com/atSCM/atscm/issues/144)
 * **pull:** Warn if datasource is not connected ([#140](https://github.com/atSCM/atscm/issues/140)) ([e6917f8](https://github.com/atSCM/atscm/commits/e6917f8)), closes [#3](https://github.com/atSCM/atscm/issues/3)
+* **push:** Correctly handle references ([#174](https://github.com/atSCM/atscm/issues/174)) ([b8d77a7](https://github.com/atSCM/atscm/commits/b8d77a7)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * **push:** Process chunks respecting the node tree structure ([#173](https://github.com/atSCM/atscm/issues/173)) ([c0950ea](https://github.com/atSCM/atscm/commits/c0950ea)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * **push:** Warn if atscm serverscript was not imported yet ([#142](https://github.com/atSCM/atscm/issues/142)) ([661aad9](https://github.com/atSCM/atscm/commits/661aad9)), closes [#141](https://github.com/atSCM/atscm/issues/141)
 * **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
