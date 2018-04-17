@@ -14,4 +14,11 @@ describe('push task', function() {
       name: 'TestWithAlarmConfig',
     });
   });
+
+  context('when pushing webserver with protected call', function() {
+    expectCorrectMapping('issue-170/webserver-with-protectedcall', {
+      path: 'AGENT.WEBACCESS',
+      name: 'http2',
+    });
+  });
 });
