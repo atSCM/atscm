@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2018-04-17 09:08:27 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=AGENT" BrowseName="1:AGENT">
+		<DisplayName Locale="en">AGENT</DisplayName>
+		<Description Locale="en">AGENT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate" ExportedBrowseName="1:TestAggregateTemplate" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.HISTORY" BrowseName="1:HISTORY">
+		<DisplayName Locale="en">HISTORY</DisplayName>
+		<Description Locale="en">HISTORY</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES" BrowseName="1:AGGREGATETEMPLATES">
+		<DisplayName Locale="en">AGGREGATETEMPLATES</DisplayName>
+		<Description Locale="en">AGGREGATETEMPLATES</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate" BrowseName="1:TestAggregateTemplate">
+		<DisplayName Locale="en">TestAggregateTemplate</DisplayName>
+		<Description Locale="en">TestAggregateTemplate</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.AggregateTemplate</Reference>
+			<Reference ReferenceType="HasModellingRule">Shared</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration" BrowseName="0:AggregateConfiguration">
+		<DisplayName Locale="">AggregateConfiguration</DisplayName>
+		<Description Locale="">AggregateConfiguration</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate</Reference>
+			<Reference ReferenceType="HasTypeDefinition">i=11187</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration.PercentDataBad" BrowseName="0:PercentDataBad" DataType="Byte" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">PercentDataBad</DisplayName>
+		<Description Locale="">PercentDataBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>100</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration.PercentDataGood" BrowseName="0:PercentDataGood" DataType="Byte" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">PercentDataGood</DisplayName>
+		<Description Locale="">PercentDataGood</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>100</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration.TreatUncertainAsBad" BrowseName="0:TreatUncertainAsBad" DataType="Boolean" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">TreatUncertainAsBad</DisplayName>
+		<Description Locale="">TreatUncertainAsBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration.UseSlopedExtrapolation" BrowseName="0:UseSlopedExtrapolation" DataType="Boolean" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">UseSlopedExtrapolation</DisplayName>
+		<Description Locale="">UseSlopedExtrapolation</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.Stepped" BrowseName="0:Stepped" DataType="Boolean" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">Stepped</DisplayName>
+		<Description Locale="">Stepped</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAObject NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction" BrowseName="1:TestAggregateFunction">
+		<DisplayName Locale="en">TestAggregateFunction</DisplayName>
+		<Description Locale="en">TestAggregateFunction</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.AggregateFunction</Reference>
+			<Reference ReferenceType="HasComponent">i=2352</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.interval_unit" BrowseName="1:interval_unit" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">interval_unit</DisplayName>
+		<Description Locale="en">interval_unit</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>m</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.offset_unit" BrowseName="1:offset_unit" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">offset_unit</DisplayName>
+		<Description Locale="en">offset_unit</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>m</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.interval_value" BrowseName="1:interval_value" DataType="UInt32" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">interval_value</DisplayName>
+		<Description Locale="en">interval_value</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:UInt32>7</uax:UInt32>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.offset_value" BrowseName="1:offset_value" DataType="UInt32" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">offset_value</DisplayName>
+		<Description Locale="en">offset_value</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:UInt32>1</uax:UInt32>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.stepped" BrowseName="1:stepped" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">stepped</DisplayName>
+		<Description Locale="en">stepped</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.PercentDataBad" BrowseName="0:PercentDataBad" DataType="Byte" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">PercentDataBad</DisplayName>
+		<Description Locale="">PercentDataBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>90</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.PercentDataGood" BrowseName="0:PercentDataGood" DataType="Byte" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">PercentDataGood</DisplayName>
+		<Description Locale="">PercentDataGood</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>90</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.TreatUncertainAsBad" BrowseName="0:TreatUncertainAsBad" DataType="Boolean" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">TreatUncertainAsBad</DisplayName>
+		<Description Locale="">TreatUncertainAsBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction.UseSlopedExtrapolation" BrowseName="0:UseSlopedExtrapolation" DataType="Boolean" AccessLevel="7" UserAccessLevel="7">
+		<DisplayName Locale="">UseSlopedExtrapolation</DisplayName>
+		<Description Locale="">UseSlopedExtrapolation</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.HISTORY.AGGREGATETEMPLATES.TestAggregateTemplate.TestAggregateFunction</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+</UANodeSet>

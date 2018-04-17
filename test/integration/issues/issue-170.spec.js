@@ -15,10 +15,25 @@ describe('push task', function() {
     });
   });
 
+  // NOTE: This only works on atvise server 3+
   context('when pushing webserver with protected call', function() {
     expectCorrectMapping('issue-170/webserver-with-protectedcall', {
       path: 'AGENT.WEBACCESS',
       name: 'http2',
+    });
+  });
+
+  context('when pushing archives with partition interval and file limit', function() {
+    expectCorrectMapping('issue-170/archive-interval-filelimit', {
+      path: 'AGENT.HISTORY',
+      name: 'TestArchive',
+    });
+  });
+
+  context('when pushing aggregate templates and functions', function() {
+    expectCorrectMapping('issue-170/aggregate-template', {
+      path: 'AGENT.HISTORY.AGGREGATETEMPLATES',
+      name: 'TestAggregateTemplate',
     });
   });
 });
