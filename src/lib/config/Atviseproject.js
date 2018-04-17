@@ -95,8 +95,6 @@ export default class Atviseproject {
    */
   static get ServerRelatedNodes() {
     return [
-      // eslint-disable-next-line max-len
-      new NodeId('AGENT\.HISTORY\..*\.(Stepped|PercentData(Good|Bad)|TreatUncertainAsBad|UseSlopedExtrapolation)'),
       new NodeId('AGENT\.OPCUA\.server_url'),
       new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
