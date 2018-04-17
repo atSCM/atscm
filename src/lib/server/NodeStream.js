@@ -128,7 +128,7 @@ export default class NodeStream extends QueueStream {
 
     // Write nodes to read
     this.once('session-open', () => {
-      this._writeNodesToBrowse(nodesToBrowse);
+      this._writeNodesToBrowse(nodes);
     });
   }
 
