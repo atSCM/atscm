@@ -285,17 +285,17 @@ describe('NodeStream', function() {
     });
 
     it('should write discovered nodes if recursive', function() {
-      let alreadyCalled = false;
+      let called = 0;
       const stream = new NodeStream([testNodes[0]], { recursive: true })
         .prependOnceListener('session-open', () => {
           stream.session.browse = (options, callback) => {
-            if (alreadyCalled) {
+            if (called === 2) {
               callback(null, [{
                 statusCode: StatusCodes.Good,
                 references: [],
               }]);
             } else {
-              alreadyCalled = true;
+              called++;
 
               callback(null, [{
                 statusCode: StatusCodes.Good,
