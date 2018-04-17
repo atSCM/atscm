@@ -29,4 +29,11 @@ describe('push task', function() {
       name: 'TestArchive',
     });
   });
+
+  context('when pushing aggregate templates and functions', function() {
+    expectCorrectMapping('issue-170/aggregate-template', {
+      path: 'AGENT.HISTORY.AGGREGATETEMPLATES',
+      name: 'TestAggregateTemplate',
+    });
+  });
 });
