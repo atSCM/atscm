@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2018-04-17 12:48:30 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=SYSTEM" BrowseName="1:SYSTEM">
+		<DisplayName Locale="en">SYSTEM</DisplayName>
+		<Description Locale="en">SYSTEM</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory" ExportedBrowseName="1:TestAlarmCategory" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.LIBRARY" BrowseName="1:LIBRARY">
+		<DisplayName Locale="en">LIBRARY</DisplayName>
+		<Description Locale="en">LIBRARY</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT" BrowseName="1:PROJECT">
+		<DisplayName Locale="en">PROJECT</DisplayName>
+		<Description Locale="en">PROJECT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES" BrowseName="1:ALARMCATEGORIES">
+		<DisplayName Locale="en">ALARMCATEGORIES</DisplayName>
+		<Description Locale="en">ALARMCATEGORIES</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory" BrowseName="1:TestAlarmCategory">
+		<DisplayName Locale="en">TestAlarmCategory</DisplayName>
+		<Description Locale="en">TestAlarmCategory</Description>
+		<References>
+			<Reference ReferenceType="HasNotifier" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.AlarmConditionCategory</Reference>
+			<Reference ReferenceType="HasModellingRule">Shared</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.severity" BrowseName="1:severity" DataType="UInt16" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">severity</DisplayName>
+		<Description Locale="en">severity</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:UInt16>532</uax:UInt16>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.acknowledgement_type" BrowseName="1:acknowledgement_type" DataType="UInt16" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">acknowledgement_type</DisplayName>
+		<Description Locale="en">acknowledgement_type</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:UInt16>5</uax:UInt16>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.explicit_acknowledgement" BrowseName="1:explicit_acknowledgement" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">explicit_acknowledgement</DisplayName>
+		<Description Locale="en">explicit_acknowledgement</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.Color" BrowseName="1:Color" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Color</DisplayName>
+		<Description Locale="en">Color</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#ff0004</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.Flashtimeack" BrowseName="1:Flashtimeack" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Flashtimeack</DisplayName>
+		<Description Locale="en">Flashtimeack</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>500</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.Flashtimeinack" BrowseName="1:Flashtimeinack" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Flashtimeinack</DisplayName>
+		<Description Locale="en">Flashtimeinack</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>750</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.Abbreviation" BrowseName="1:Abbreviation" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Abbreviation</DisplayName>
+		<Description Locale="en">Abbreviation</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>Test</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.Fontcolor" BrowseName="1:Fontcolor" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Fontcolor</DisplayName>
+		<Description Locale="en">Fontcolor</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#33e59b</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.UserColor1" BrowseName="1:UserColor1" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">UserColor1</DisplayName>
+		<Description Locale="en">UserColor1</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#463be1</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.UserColor2" BrowseName="1:UserColor2" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">UserColor2</DisplayName>
+		<Description Locale="en">UserColor2</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#fff70c</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.UserColor3" BrowseName="1:UserColor3" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">UserColor3</DisplayName>
+		<Description Locale="en">UserColor3</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#ff3cef</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory.UserColor4" BrowseName="1:UserColor4" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">UserColor4</DisplayName>
+		<Description Locale="en">UserColor4</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES.TestAlarmCategory</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>#00fdfd</uax:String>
+		</Value>
+	</UAVariable>
+</UANodeSet>
