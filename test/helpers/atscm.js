@@ -176,6 +176,15 @@ export function expectCorrectMapping(setup, node) {
     const pushed = rawPushed.toString().replace(new RegExp(nodeName, 'g'), node.name);
     const original = await readFile(setupPath(setup), 'utf8');
 
+    function ignoreUselessAttributes(element) {
+      if (element.attributes) {
+        // eslint-disable-next-line no-param-reassign
+        delete element.attributes.EventNotifier;
+      }
+
+      return element;
+    }
+
     function sortElements(current) {
       return Object.assign(current, {
         elements: current.elements && current.elements
@@ -194,7 +203,7 @@ export function expectCorrectMapping(setup, node) {
 
             return (gotA > gotB) ? 1 : 0;
           })
-          .map(n => sortElements(n)),
+          .map(n => ignoreUselessAttributes(sortElements(n))),
       });
     }
 
