@@ -1,26 +1,27 @@
-<a name="0.6.0-beta.21"></a>
-# 0.6.0-beta.21 (2018-04-17)
+<a name="0.6.0-beta.22"></a>
+# 0.6.0-beta.22 (2018-04-18)
 
 
 ### Bug Fixes
 
 * Escape '&' and '<' in XML attribute values before encoding ([#152](https://github.com/atSCM/atscm/issues/152)) ([186a004](https://github.com/atSCM/atscm/commits/186a004)), closes [#150](https://github.com/atSCM/atscm/issues/150)
 * Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
+* Handle parent reference type in nodes to browse ([#177](https://github.com/atSCM/atscm/issues/177)) ([cec8fe5](https://github.com/atSCM/atscm/commits/cec8fe5)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * Ignore atvise server methods ([#166](https://github.com/atSCM/atscm/issues/166)) ([f40d85d](https://github.com/atSCM/atscm/commits/f40d85d)), closes [#153](https://github.com/atSCM/atscm/issues/153) [#143](https://github.com/atSCM/atscm/issues/143)
 * Import scripts from '[@atscm](https://github.com/atscm)/server-scripts' ([#163](https://github.com/atSCM/atscm/issues/163)) ([4b6a590](https://github.com/atSCM/atscm/commits/4b6a590))
 * Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
-* **push:** Warn if atscm serverscript was not imported yet ([#142](https://github.com/atSCM/atscm/issues/142)) ([661aad9](https://github.com/atSCM/atscm/commits/661aad9)), closes [#141](https://github.com/atSCM/atscm/issues/141)
 * Map all history archive properties ([#176](https://github.com/atSCM/atscm/issues/176)) ([ab50f20](https://github.com/atSCM/atscm/commits/ab50f20)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * Preserve xml element order ([#147](https://github.com/atSCM/atscm/issues/147)) ([a809603](https://github.com/atSCM/atscm/commits/a809603)), closes [#46](https://github.com/atSCM/atscm/issues/46)
-* Properly handle `--continue` flag ([#165](https://github.com/atSCM/atscm/issues/165)) ([4aa7e36](https://github.com/atSCM/atscm/commits/4aa7e36))
-* Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
 * **mapping:** Handle relative parameter targets in scripts ([#172](https://github.com/atSCM/atscm/issues/172)) ([e4782b0](https://github.com/atSCM/atscm/commits/e4782b0)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * **mapping:** Skip non-atscm dot-files ([#145](https://github.com/atSCM/atscm/issues/145)) ([c23409b](https://github.com/atSCM/atscm/commits/c23409b)), closes [#144](https://github.com/atSCM/atscm/issues/144)
 * **pull:** Warn if datasource is not connected ([#140](https://github.com/atSCM/atscm/issues/140)) ([e6917f8](https://github.com/atSCM/atscm/commits/e6917f8)), closes [#3](https://github.com/atSCM/atscm/issues/3)
 * **push:** Correctly handle references ([#174](https://github.com/atSCM/atscm/issues/174)) ([b8d77a7](https://github.com/atSCM/atscm/commits/b8d77a7)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 * **push:** Process chunks respecting the node tree structure ([#173](https://github.com/atSCM/atscm/issues/173)) ([c0950ea](https://github.com/atSCM/atscm/commits/c0950ea)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* **push:** Warn if atscm serverscript was not imported yet ([#142](https://github.com/atSCM/atscm/issues/142)) ([661aad9](https://github.com/atSCM/atscm/commits/661aad9)), closes [#141](https://github.com/atSCM/atscm/issues/141)
 * **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
 * **watcher:** Wait for subscriptions and handle deletions ([#169](https://github.com/atSCM/atscm/issues/169)) ([85c2e54](https://github.com/atSCM/atscm/commits/85c2e54)), closes [#91](https://github.com/atSCM/atscm/issues/91) [#157](https://github.com/atSCM/atscm/issues/157)
+* Properly handle `--continue` flag ([#165](https://github.com/atSCM/atscm/issues/165)) ([4aa7e36](https://github.com/atSCM/atscm/commits/4aa7e36))
+* Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
 
 
 ### Features
