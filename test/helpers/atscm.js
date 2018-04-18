@@ -189,6 +189,7 @@ export function expectCorrectMapping(setup, node) {
       return Object.assign(current, {
         elements: current.elements && current.elements
           .filter(({ type }) => type !== 'comment')
+          .filter(({ name }) => name !== 'Aliases')
           .sort(({ attributes: a }, { attributes: b }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
