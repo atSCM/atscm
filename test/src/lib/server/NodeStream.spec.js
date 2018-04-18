@@ -14,6 +14,12 @@ class StubNodeStream extends NodeStream {
 
 }
 
+class NoWriteNodeStream extends StubNodeStream {
+
+  _writeNodesToBrowse() {}
+
+}
+
 class NonRecursive extends NodeStream {
 
   processChunk(chunk, handleErrors) {
@@ -50,11 +56,11 @@ describe('NodeStream', function() {
     });
 
     it('should store "recursive" option', function() {
-      expect((new StubNodeStream(testNodes, { recursive: false })).recursive, 'to be', false);
+      expect((new NoWriteNodeStream(testNodes, { recursive: false })).recursive, 'to be', false);
     });
 
     it('should create ignoredRexExp', function() {
-      expect((new StubNodeStream(testNodes, {
+      expect((new NoWriteNodeStream(testNodes, {
         ignoreNodes: [new NodeId('Test.Node')],
       })).ignoredRegExp, 'to equal', /^(ns=1;s=Test.Node)/);
     });
@@ -65,7 +71,7 @@ describe('NodeStream', function() {
         done();
       });
 
-      expect(new StubNodeStream(testNodes, {
+      expect(new NoWriteNodeStream(testNodes, {
         ignoreNodes: [testNodes[0]],
       }), 'to be defined');
     });
@@ -127,9 +133,11 @@ describe('NodeStream', function() {
 
   /** @test {NodeStream#processErrorMessage} */
   describe('#processErrorMessage', function() {
-    const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
-    expect(NodeStream.prototype.processErrorMessage(nodeId),
-      'to contain', nodeId.toString());
+    it('should decorate error message', function() {
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      expect(NodeStream.prototype.processErrorMessage({ nodeId }),
+        'to contain', nodeId.toString());
+    });
   });
 
   /** @test {NodeStream#processChunk} */
@@ -159,6 +167,17 @@ describe('NodeStream', function() {
     it('should emit error with empty results', function() {
       const stream = new NodeStream(testNodes)
         .prependOnceListener('session-open', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, []);
+          };
+        });
+
+      return expect(stream, 'to error with', /No results/);
+    });
+
+    it('should emit error with empty results after initial write', function() {
+      const stream = new NodeStream(testNodes)
+        .prependOnceListener('initial-read-complete', () => {
           stream.session.browse = (options, callback) => {
             callback(null, []);
           };
@@ -285,17 +304,17 @@ describe('NodeStream', function() {
     });
 
     it('should write discovered nodes if recursive', function() {
-      let alreadyCalled = false;
+      let called = 0;
       const stream = new NodeStream([testNodes[0]], { recursive: true })
         .prependOnceListener('session-open', () => {
           stream.session.browse = (options, callback) => {
-            if (alreadyCalled) {
+            if (called === 2) {
               callback(null, [{
                 statusCode: StatusCodes.Good,
                 references: [],
               }]);
             } else {
-              alreadyCalled = true;
+              called++;
 
               callback(null, [{
                 statusCode: StatusCodes.Good,

@@ -5,6 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src, dest } from 'gulp';
 import proxyquire from 'proxyquire';
+import { xml2js } from 'xml-js';
 import expect from '../expect';
 import PushStream from '../../src/lib/gulp/PushStream';
 import NodeStream from '../../src/lib/server/NodeStream';
@@ -175,12 +176,42 @@ export function expectCorrectMapping(setup, node) {
     const pushed = rawPushed.toString().replace(new RegExp(nodeName, 'g'), node.name);
     const original = await readFile(setupPath(setup), 'utf8');
 
-    // Removes the first 2 lines (created at ...) and newlines
-    const trim = str => str.split('\n').slice(2)
-      .filter(l => !l.match(/^\s*<Alias[^>]*>[^<]*<\/Alias>$/))
-      .map(l => l.replace(/\t/g, ' '));
+    function ignoreUselessAttributes(element) {
+      if (element.attributes) {
+        // eslint-disable-next-line no-param-reassign
+        delete element.attributes.EventNotifier;
+      }
 
-    expect(trim(pushed), 'to equal', trim(original));
+      return element;
+    }
+
+    function sortElements(current) {
+      return Object.assign(current, {
+        elements: current.elements && current.elements
+          .filter(({ type }) => type !== 'comment')
+          .sort(({ attributes: a }, { attributes: b }) => {
+            const gotA = a && a.NodeId;
+            const gotB = b && b.NodeId;
+
+            if (!gotA && !gotB) { return 0; }
+            if (!gotA) { return 1; }
+            if (!gotB) { return -1; }
+
+            if (gotA < gotB) {
+              return -1;
+            }
+
+            return (gotA > gotB) ? 1 : 0;
+          })
+          .map(n => ignoreUselessAttributes(sortElements(n))),
+      });
+    }
+
+    function sortedTree(xml) {
+      return sortElements(xml2js(xml, { compact: false, alwaysChildren: true }));
+    }
+
+    expect(sortedTree(pushed), 'to equal', sortedTree(original));
   });
 
   after('delete tmp node', function() {

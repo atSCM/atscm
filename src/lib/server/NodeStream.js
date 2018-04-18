@@ -128,7 +128,7 @@ export default class NodeStream extends QueueStream {
 
     // Write nodes to read
     this.once('session-open', () => {
-      this._writeNodesToBrowse(nodesToBrowse);
+      this._writeNodesToBrowse(nodes);
     });
   }
 
@@ -139,51 +139,98 @@ export default class NodeStream extends QueueStream {
    * @param {NodeId[]} nodes The nodes passed to the constructor.
    */
   _writeNodesToBrowse(nodes) {
-    this.session.read(nodes.map(nodeId => ({
-      nodeId,
-      attributeId: AttributeIds.NodeClass,
-    })), (err, _, results) => {
-      if (err) {
-        this.emit('error', err);
-        return;
+    function checkResultsStatus(results) {
+      if (!results || !results.length) {
+        throw new Error('No results');
       }
 
-      const hasReadError = results.reduce((error, { statusCode }, i) => {
-        if (error) { return error; }
-
+      const failing = results.reduce((f, { statusCode }, i) => {
         if (statusCode !== StatusCodes.Good) {
-          this.emit('error', new Error(`Error reading ${nodes[i]}: ${statusCode.description}`));
-          return true;
+          return f.concat(nodes[i]);
         }
 
-        return false;
-      }, false);
+        return f;
+      }, []);
 
-      if (hasReadError) {
-        return;
+      if (failing.length) {
+        const info = failing.join(', ');
+
+        throw new Error(`Error reading ${info}`);
       }
+    }
 
-      results.forEach(({ value }, i) => this.write({
-        nodeClass: NodeClass[value.value],
-        nodeId: nodes[i],
-      }));
-
-      // End once drained
-      this.once('drained', () => {
-        Logger.debug(`Discovered ${this._processed} nodes`);
-        this.end();
+    const getParentRefs = async () => {
+      const results = await new Promise((resolve, reject) => {
+        this.session.browse(nodes.map(nodeId => ({
+          nodeId,
+          browseDirection: BrowseService.BrowseDirection.Inverse,
+          includeSubtypes: true,
+          resultMask: this._resultMask,
+        })), (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        });
       });
 
-      this.emit('initial-read-complete', {});
-    });
+      checkResultsStatus(results);
+
+      return results.map(({ references }) => ({
+        toParent: ReverseReferenceTypeIds[
+          references
+            .map(reference => reference.referenceTypeId.value)
+            .find(value => BrowseReferenceTypes.includes(value))
+        ],
+      }));
+    };
+
+    const getNodeClasses = async () => {
+      const results = await new Promise((resolve, reject) => {
+        this.session.read(nodes.map(nodeId => ({
+          nodeId,
+          attributeId: AttributeIds.NodeClass,
+        })), (err, _, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        });
+      });
+
+      checkResultsStatus(results);
+
+      return results.map(({ value }) => ({
+        nodeClass: NodeClass[value.value],
+      }));
+    };
+
+    Promise.all([getParentRefs(), getNodeClasses()])
+      .then(([parents, classes]) => {
+        nodes.forEach((nodeId, i) => {
+          this.write(Object.assign({ nodeId }, parents[i], classes[i]));
+        });
+
+        // End once drained
+        this.once('drained', () => {
+          Logger.debug(`Discovered ${this._processed} nodes`);
+          this.end();
+        });
+
+        this.emit('initial-read-complete', {});
+      })
+      .catch(err => this.emit('error', err));
   }
 
   /**
    * Returns an error message specifically for the given nodeId.
-   * @param {NodeId} nodeId The node id to get the error message for.
+   * @param {Object} chunk The chunk to get the error message for.
+   * @param {NodeId} chunk.nodeId The browsed nodeId.
    * @return {string} The specific error message.
    */
-  processErrorMessage(nodeId) {
+  processErrorMessage({ nodeId }) {
     return `Error browsing ${nodeId.toString()}`;
   }
 

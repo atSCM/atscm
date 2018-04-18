@@ -36,4 +36,11 @@ describe('push task', function() {
       name: 'TestAggregateTemplate',
     });
   });
+
+  context('when pushing custom alarm category', function() {
+    expectCorrectMapping('issue-170/alarm-category', {
+      path: 'SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES',
+      name: 'TestAlarmCategory',
+    });
+  });
 });
