@@ -175,6 +175,17 @@ describe('NodeStream', function() {
       return expect(stream, 'to error with', /No results/);
     });
 
+    it('should emit error with empty results after initial write', function() {
+      const stream = new NodeStream(testNodes)
+        .prependOnceListener('initial-read-complete', () => {
+          stream.session.browse = (options, callback) => {
+            callback(null, []);
+          };
+        });
+
+      return expect(stream, 'to error with', /No results/);
+    });
+
     it('should not push parent nodes', function() {
       const stream = new NodeStream(testNodes, { recursive: false })
         .prependOnceListener('session-open', () => {
