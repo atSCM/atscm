@@ -133,9 +133,11 @@ describe('NodeStream', function() {
 
   /** @test {NodeStream#processErrorMessage} */
   describe('#processErrorMessage', function() {
-    const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
-    expect(NodeStream.prototype.processErrorMessage(nodeId),
-      'to contain', nodeId.toString());
+    it('should decorate error message', function() {
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      expect(NodeStream.prototype.processErrorMessage({ nodeId }),
+        'to contain', nodeId.toString());
+    });
   });
 
   /** @test {NodeStream#processChunk} */

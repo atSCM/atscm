@@ -226,10 +226,11 @@ export default class NodeStream extends QueueStream {
 
   /**
    * Returns an error message specifically for the given nodeId.
-   * @param {NodeId} nodeId The node id to get the error message for.
+   * @param {Object} chunk The chunk to get the error message for.
+   * @param {NodeId} chunk.nodeId The browsed nodeId.
    * @return {string} The specific error message.
    */
-  processErrorMessage(nodeId) {
+  processErrorMessage({ nodeId }) {
     return `Error browsing ${nodeId.toString()}`;
   }
 
