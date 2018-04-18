@@ -14,6 +14,12 @@ class StubNodeStream extends NodeStream {
 
 }
 
+class NoWriteNodeStream extends StubNodeStream {
+
+  _writeNodesToBrowse() {}
+
+}
+
 class NonRecursive extends NodeStream {
 
   processChunk(chunk, handleErrors) {
@@ -50,11 +56,11 @@ describe('NodeStream', function() {
     });
 
     it('should store "recursive" option', function() {
-      expect((new StubNodeStream(testNodes, { recursive: false })).recursive, 'to be', false);
+      expect((new NoWriteNodeStream(testNodes, { recursive: false })).recursive, 'to be', false);
     });
 
     it('should create ignoredRexExp', function() {
-      expect((new StubNodeStream(testNodes, {
+      expect((new NoWriteNodeStream(testNodes, {
         ignoreNodes: [new NodeId('Test.Node')],
       })).ignoredRegExp, 'to equal', /^(ns=1;s=Test.Node)/);
     });
@@ -65,7 +71,7 @@ describe('NodeStream', function() {
         done();
       });
 
-      expect(new StubNodeStream(testNodes, {
+      expect(new NoWriteNodeStream(testNodes, {
         ignoreNodes: [testNodes[0]],
       }), 'to be defined');
     });
