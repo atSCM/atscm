@@ -7,7 +7,7 @@ import ScriptTransformer from '../../../src/transform/ScriptTransformer';
 const transformerHelper = new TransformerHelper(ScriptTransformer);
 
 /** @test {ScriptTransformer} */
-describe.only('ScriptTransformer', function() {
+describe('ScriptTransformer', function() {
   const ScriptPath = 'SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.script';
   const QDPath = 'SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.qd';
 
