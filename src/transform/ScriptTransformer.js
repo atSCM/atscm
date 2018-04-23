@@ -202,7 +202,9 @@ export default class ScriptTransformer extends XMLTransformer {
         });
     }
 
-    document.elements.push(createElement('metadata', meta));
+    if (lastFile.isQuickDynamic || meta.length) {
+      document.elements.push(createElement('metadata', meta));
+    }
 
     // Insert parameters
     if (config.parameters) {
