@@ -43,4 +43,11 @@ describe('push task', function() {
       name: 'TestAlarmCategory',
     });
   });
+
+  context('when pushing custom user groups', function() {
+    expectCorrectMapping('issue-170/user-and-group', {
+      path: ['SYSTEM.SECURITY.GROUPS', 'SYSTEM.SECURITY.USERS'],
+      name: ['TestGroup', 'TestUser'],
+    });
+  });
 });
