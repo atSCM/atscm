@@ -7,6 +7,12 @@ import CallScriptStream from './scripts/CallScriptStream';
  */
 export default class AddReferencesStream extends CallScriptStream {
 
+  constructor(options) {
+    super(options);
+
+    this._retry = new Set();
+  }
+
   /**
    * Id of the *CreateNode* script added with `atscm import`.
    * @type {NodeId}
@@ -74,7 +80,20 @@ export default class AddReferencesStream extends CallScriptStream {
       const [{ value: failures }] = outArgs[3].value;
 
       if (failures && failures.length) {
-        callback(new Error(`Failed to create references to ${failures.join(', ')}`));
+        const retryKey = file.nodeId.value;
+
+        if (this._retry.has(retryKey)) {
+          this._retry.delete(retryKey);
+          callback(new Error(`Failed to create references to ${failures.join(', ')}`));
+        } else {
+          this._retry.add(retryKey);
+          callback(null);
+
+          this.once('drained', () => {
+            this.write(file);
+          });
+        }
+
         return;
       }
 
