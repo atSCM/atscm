@@ -59,7 +59,27 @@ export default class ScriptTransformer extends XMLTransformer {
               } else if (child.name === 'description') {
                 config.description = textContent(child);
               } else {
-                Logger.warn(`Unknown metadata element '${child.name}' at ${file.relative}`);
+                if (!config.metadata) {
+                  config.metadata = {};
+                }
+
+                const value = textContent(child);
+
+                if (config.metadata[child.name]) {
+                  if (!Array.isArray(config.metadata[child.name])) {
+                    config.metadata[child.name] = [config.metadata[child.name]];
+                  }
+
+                  config.metadata[child.name].push(value);
+                } else {
+                  config.metadata[child.name] = textContent(child);
+                }
+
+                if (![
+                  'longrunning',
+                ].includes(child.name)) {
+                  Logger.debug(`Generic metadata element '${child.name}' at ${file.relative}`);
+                }
               }
             }
           });
@@ -148,9 +168,9 @@ export default class ScriptTransformer extends XMLTransformer {
     };
 
     // Insert metadata
-    if (lastFile.isQuickDynamic) {
-      const meta = [];
+    const meta = [];
 
+    if (lastFile.isQuickDynamic) {
       // - Icon
       if (config.icon) {
         const icon = config.icon.content;
@@ -171,7 +191,18 @@ export default class ScriptTransformer extends XMLTransformer {
       if (config.description !== undefined) {
         meta.push(createElement('description', [createTextNode(config.description)]));
       }
+    }
 
+    // - Additional fields
+    if (config.metadata !== undefined) {
+      Object.entries(config.metadata)
+        .forEach(([name, value]) => {
+          (Array.isArray(value) ? value : [value])
+            .forEach(v => meta.push(createElement(name, [createTextNode(v)])));
+        });
+    }
+
+    if (lastFile.isQuickDynamic || meta.length) {
       document.elements.push(createElement('metadata', meta));
     }
 

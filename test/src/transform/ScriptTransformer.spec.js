@@ -69,21 +69,40 @@ describe('ScriptTransformer', function() {
         .then(contents => expect(JSON.parse(contents[0]), 'to equal', {}));
     });
 
-    it('should warn on unknown metadata elements', function() {
+    it('should store custom metadata elements', function() {
       const onWarn = spy();
-      Logger.on('warn', onWarn);
+      Logger.on('debug', onWarn);
 
       return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
   <metadata>
+    <longrunning>1</longrunning>
     <custom>test</custom>
   </metadata>
 </script>`)
         .then(files => transformerHelper.expectFileContents(files))
-        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {}))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          metadata: {
+            longrunning: '1',
+            custom: 'test',
+          },
+        }))
         .then(() => {
-          expect(onWarn, 'was called once');
-          expect(onWarn, 'to have a call satisfying', { args: [/unknown metadata/i] });
+          expect(onWarn, 'was called once'); // should not be called for 'longrunning'
+          expect(onWarn, 'to have a call satisfying', { args: [/generic metadata/i] });
         });
+    });
+
+    it('should store array of custom metadata elements if needed', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <custom>test</custom>
+    <custom>test2</custom>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          metadata: { custom: ['test', 'test2'] },
+        }));
     });
 
     it('should store icon metadata', function() {
@@ -313,7 +332,7 @@ describe('ScriptTransformer', function() {
     });
 
     context('when called on a script', function() {
-      it('should ignore metadata', function() {
+      it('should ignore quickdynamic metadata', function() {
         return expect(transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
           '.json': '{ "icon": { "type": "image/png", "content": "asdf" } }',
         }), 'to call the callback')
@@ -368,6 +387,24 @@ describe('ScriptTransformer', function() {
      </TargetName>
     </RelativePathElement>
    </Elements>`.split('\n').join('\r\n')));
+    });
+
+    it('should insert custom metadata', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "metadata": { "custom": "test" } }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', '<custom>test</custom>'));
+    });
+
+    it('should insert custom metadata array', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "metadata": { "custom": ["test", "test2"] } }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', '<custom>test</custom>', '<custom>test2</custom>'));
     });
 
     it('should insert script code', function() {
