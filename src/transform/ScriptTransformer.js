@@ -67,10 +67,10 @@ export default class ScriptTransformer extends XMLTransformer {
 
                 if (config.metadata[child.name]) {
                   if (!Array.isArray(config.metadata[child.name])) {
-                    config.metadata[child.name] = [config.metadata[child.name], value];
-                  } else {
-                    config.metadata[child.name].push(value);
+                    config.metadata[child.name] = [config.metadata[child.name]];
                   }
+
+                  config.metadata[child.name].push(value);
                 } else {
                   config.metadata[child.name] = textContent(child);
                 }
