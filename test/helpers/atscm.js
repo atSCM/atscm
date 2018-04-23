@@ -197,10 +197,17 @@ export function expectCorrectMapping(setup, node) {
 
     const original = await readFile(setupPath(setup), 'utf8');
 
-    function ignoreUselessAttributes(element) {
+    function normalize(element) {
       if (element.attributes) {
         // eslint-disable-next-line no-param-reassign
         delete element.attributes.EventNotifier;
+      }
+
+      if (element.type === 'cdata') {
+        // eslint-disable-next-line no-param-reassign
+        element.cdata = element.cdata
+          .replace(/(^\s+|\r?\n?)/gm, '')
+          .replace(/ standalone="no"/, '');
       }
 
       return element;
@@ -231,7 +238,7 @@ export function expectCorrectMapping(setup, node) {
 
             return (gotA > gotB) ? 1 : 0;
           })
-          .map(n => ignoreUselessAttributes(sortElements(n))),
+          .map(n => normalize(sortElements(n))),
       });
     }
 
