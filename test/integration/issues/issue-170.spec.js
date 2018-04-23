@@ -50,4 +50,11 @@ describe('push task', function() {
       name: ['TestGroup', 'TestUser'],
     });
   });
+
+  context('when pushing serverscripts in redundant project', function() {
+    expectCorrectMapping('issue-170/redundancy-serverscript', {
+      path: 'SYSTEM.LIBRARY.PROJECT.SERVERSCRIPTS',
+      name: 'LongRunningScript',
+    });
+  });
 });
