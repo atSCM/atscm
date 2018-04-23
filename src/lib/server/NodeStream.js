@@ -48,6 +48,10 @@ const TypeDefinitionReferenceTypes = [
   ReferenceTypeIds.HasModellingRule,
 ];
 
+const InverseReferenceTypes = [
+  ReferenceTypeIds.Organizes,
+];
+
 /**
  * List of valid reference types
  * @type {Set<node-opcua~ReferenceTypeId>}
@@ -57,6 +61,7 @@ const ValidReferenceTypes = new Set([
   ...BrowseReferenceTypes,
   ...AtviseReferenceTypes,
   ...TypeDefinitionReferenceTypes,
+  ...InverseReferenceTypes,
 ]);
 
 /**
