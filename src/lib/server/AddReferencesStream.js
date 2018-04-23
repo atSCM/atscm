@@ -16,6 +16,7 @@ export default class AddReferencesStream extends CallScriptStream {
 
     /**
      * A stack of {@link NodeId#value}s to be retried afterwards.
+     * @type {Set<string>}
      */
     this._retry = new Set();
   }
