@@ -46,22 +46,26 @@ export function setupPath(name) {
   return join(setupDir, `${name}.xml`);
 }
 
-export function importSetup(name, rename = 'TestNode') {
-  const nodeName = `${rename}-${id()}`;
-  const replaceStream = createTransformStream((file, enc, callback) => {
+export function importSetup(name, ...rename) {
+  const uniqueId = id();
+  const nodeNames = rename.map(r => `${r}-${uniqueId}`);
+
+  const createReplaceStream = (original, renamed) => createTransformStream((file, _, callback) => {
     callback(null, Object.assign(file, {
-      contents: replace(file.contents, rename, nodeName),
+      contents: replace(file.contents, original, renamed),
     }));
   });
 
+  const sourceStream = src(setupPath(name));
   const importStream = new ImportStream();
 
   return promisify(
-    src(setupPath(name))
-      .pipe(replaceStream)
+    rename.reduce((current, original, i) => current
+      .pipe(createReplaceStream(original, nodeNames[i])),
+    sourceStream)
       .pipe(importStream)
   )
-    .then(() => nodeName);
+    .then(() => nodeNames);
 }
 
 class SingleCallScriptStream extends CallScriptStream {
@@ -128,24 +132,24 @@ class ExportStream extends CallMethodStream {
     callback(null);
   }
 
-  inputArguments(file) {
+  inputArguments({ nodeIds }) {
     return [
       new Variant({
         dataType: DataType.NodeId,
         arrayType: VariantArrayType.Array,
-        value: [file.nodeId],
+        value: nodeIds,
       }),
     ];
   }
 
 }
 
-export function exportNode(nodeId) {
+export function exportNodes(nodeIds) {
   const stream = new ExportStream();
 
   stream.write({
     relative: 'TestHelper',
-    nodeId: new NodeId(nodeId),
+    nodeIds: nodeIds.map(raw => new NodeId(raw)), // new NodeId(nodeId),
   });
 
   stream.end();
@@ -153,27 +157,44 @@ export function exportNode(nodeId) {
   return promisify(stream);
 }
 
+export function exportNode(nodeId) {
+  return exportNodes([nodeId]);
+}
+
 export function expectCorrectMapping(setup, node) {
-  let nodeName;
+  const originalNames = [].concat(node.name);
+  let nodeNames;
+  let nodePaths;
+  let nodeIds;
   let destination;
 
   before(`import setup and pull ${setup}`, async function() {
-    nodeName = await importSetup(setup, node.name);
+    if (Array.isArray(node.name)) {
+      if (node.name.length !== node.path.length) {
+        throw new Error('Need the same number of paths as names');
+      }
+    }
+    nodeNames = await importSetup(setup, ...originalNames);
+    nodePaths = [].concat(node.path);
+    nodeIds = nodeNames.map((nodeName, i) => `${nodePaths[i]}.${nodeName}`);
     destination = tmpDir(setup.replace(/\//g, '-'));
 
     // Run atscm pull
-    await pull([`ns=1;s=${node.path}.${nodeName}`], destination);
+    await pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination);
 
-    // Delete the pulled node
-    await deleteNode(`${node.path}.${nodeName}`);
+    // Delete the pulled nodes
+    await Promise.all(nodeIds.map(nodeId => deleteNode(nodeId)));
   });
 
   it('should recreate all fields', async function() {
     // Run atscm push
     await push(destination);
 
-    const rawPushed = await exportNode(`${node.path}.${nodeName}`);
-    const pushed = rawPushed.toString().replace(new RegExp(nodeName, 'g'), node.name);
+    const rawPushed = await exportNodes(nodeIds);
+    const pushed = originalNames.reduce((str, original, i) => str
+      .replace(new RegExp(nodeNames[i], 'g'), original),
+    rawPushed.toString());
+
     const original = await readFile(setupPath(setup), 'utf8');
 
     function ignoreUselessAttributes(element) {
@@ -189,11 +210,18 @@ export function expectCorrectMapping(setup, node) {
       return Object.assign(current, {
         elements: current.elements && current.elements
           .filter(({ type }) => type !== 'comment')
-          .sort(({ attributes: a }, { attributes: b }) => {
+          .filter(({ name }) => name !== 'Aliases')
+          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
 
-            if (!gotA && !gotB) { return 0; }
+            if (!gotA && !gotB) {
+              if (nameA < nameB) {
+                return -1;
+              }
+
+              return nameA > nameB ? 1 : 0;
+            }
             if (!gotA) { return 1; }
             if (!gotB) { return -1; }
 
@@ -216,6 +244,6 @@ export function expectCorrectMapping(setup, node) {
 
   after('delete tmp node', function() {
     // Delete the pushed node
-    return deleteNode(`${node.path}.${nodeName}`);
+    return Promise.all(nodeIds.map(n => deleteNode(n)));
   });
 }

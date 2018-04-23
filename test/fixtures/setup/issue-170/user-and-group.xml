@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2018-04-17 09:39:10 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=SYSTEM" BrowseName="1:SYSTEM">
+		<DisplayName Locale="en">SYSTEM</DisplayName>
+		<Description Locale="en">SYSTEM</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser" ExportedBrowseName="1:TestUser" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY" BrowseName="1:SECURITY">
+		<DisplayName Locale="en">SECURITY</DisplayName>
+		<Description Locale="en">SECURITY</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY.USERS" BrowseName="1:USERS">
+		<DisplayName Locale="en">USERS</DisplayName>
+		<Description Locale="en">USERS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser" BrowseName="1:TestUser">
+		<DisplayName Locale="en">TestUser</DisplayName>
+		<Description Locale="en">TestUser</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.USERS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.User</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser.description" BrowseName="1:description" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">description</DisplayName>
+		<Description Locale="en">description</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.USERS.TestUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>A user for atSCM integration tests</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser.language" BrowseName="1:language" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">language</DisplayName>
+		<Description Locale="en">language</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.USERS.TestUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>en</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser.name" BrowseName="1:name" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">name</DisplayName>
+		<Description Locale="en">name</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.USERS.TestUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>Test User</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY.USERS.TestUser.password" BrowseName="1:password" DataType="ByteString" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">password</DisplayName>
+		<Description Locale="en">password</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.USERS.TestUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ByteString>UpWz3lDfWpa5tkCGnf3UAQ==</uax:ByteString>
+		</Value>
+	</UAVariable>
+	<UAObject NodeId="ns=1;s=SYSTEM" BrowseName="1:SYSTEM">
+		<DisplayName Locale="en">SYSTEM</DisplayName>
+		<Description Locale="en">SYSTEM</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=SYSTEM.SECURITY.GROUPS.TestGroup" ExportedBrowseName="1:TestGroup" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY" BrowseName="1:SECURITY">
+		<DisplayName Locale="en">SECURITY</DisplayName>
+		<Description Locale="en">SECURITY</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY.GROUPS" BrowseName="1:GROUPS">
+		<DisplayName Locale="en">GROUPS</DisplayName>
+		<Description Locale="en">GROUPS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY.GROUPS.TestGroup" BrowseName="1:TestGroup">
+		<DisplayName Locale="en">TestGroup</DisplayName>
+		<Description Locale="en">TestGroup</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.GROUPS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Group</Reference>
+			<Reference ReferenceType="Organizes">ns=1;s=SYSTEM.SECURITY.RIGHTS.VISU.View</Reference>
+			<Reference ReferenceType="Organizes">ns=1;s=SYSTEM.SECURITY.USERS.TestUser</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY.GROUPS.TestGroup.description" BrowseName="1:description" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">description</DisplayName>
+		<Description Locale="en">description</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY.GROUPS.TestGroup</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>A user group for atSCM integration tests</uax:String>
+		</Value>
+	</UAVariable>
+</UANodeSet>

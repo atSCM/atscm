@@ -66,12 +66,23 @@ describe('AddReferencesStream', function() {
       'to call the callback with error', 'Something bad happened');
     });
 
-    it('should error when script had failures', function() {
-      return expect(AddReferencesStream.prototype.handleOutputArguments
-        .bind(null, {}, [{ value: StatusCodes.Good }, {}, {}, {
+    it('should retry when script had failures', async function() {
+      const stream = new AddReferencesStream();
+      const file = { nodeId: new NodeId('AGENT.OBJECTS.Failing') };
+      const handleOutput = AddReferencesStream.prototype.handleOutputArguments
+        .bind(stream, file, [{ value: StatusCodes.Good }, {}, {}, {
           value: [{ value: [new NodeId('A.Referenced.Node')] }],
-        }]),
-      'to call the callback with error', /Failed to create reference.+A.Referenced.Node/i);
+        }]);
+
+      // The first time adding references fails is ignored
+      await expect(handleOutput, 'to call the callback without error');
+
+      // and pushed to the retry stack
+      expect(Array.from(stream._retry.values()), 'to equal', ['AGENT.OBJECTS.Failing']);
+
+      // The second time it should fail.
+      await expect(handleOutput,
+        'to call the callback with error', /Failed to create reference.+A.Referenced.Node/i);
     });
 
     it('should continue without failures', function() {
