@@ -7,9 +7,16 @@ import CallScriptStream from './scripts/CallScriptStream';
  */
 export default class AddReferencesStream extends CallScriptStream {
 
+  /**
+   * Creates a new stream for adding references to pushed nodes.
+   * @param {Object} options The options to pass to the {@link CallScriptStream}.
+   */
   constructor(options) {
     super(options);
 
+    /**
+     * A stack of {@link NodeId#value}s to be retried afterwards.
+     */
     this._retry = new Set();
   }
 
