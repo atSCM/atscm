@@ -57,4 +57,11 @@ describe('push task', function() {
       name: 'LongRunningScript',
     });
   });
+
+  context('when pushing resources with compress properties', function() {
+    expectCorrectMapping('issue-170/compressed-node', {
+      path: 'SYSTEM.LIBRARY.PROJECT.RESOURCES',
+      name: 'CompressedNode.html',
+    });
+  });
 });
