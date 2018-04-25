@@ -111,6 +111,8 @@ export default class MappingTransformer extends Transformer {
               [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
             }), {})
         );
+
+        delete this._readReferenceFiles[file.basename];
       }
 
       callback(null, atFile);
