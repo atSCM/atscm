@@ -16,6 +16,10 @@ export default class MappingTransformer extends Transformer {
   constructor(...args) {
     super(...args);
 
+    /**
+     * Contents of the reference files read but not used yet.
+     * @type {Object}
+     */
     this._readReferenceFiles = {};
   }
 
