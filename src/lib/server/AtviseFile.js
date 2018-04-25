@@ -515,6 +515,10 @@ export default class AtviseFile extends File {
       return value.valueOf();
     }
 
+    if (value instanceof Buffer) {
+      return value.toString();
+    }
+
     return value;
   }
 
