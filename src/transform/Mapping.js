@@ -81,12 +81,17 @@ export default class MappingTransformer extends Transformer {
     if (file.isDirectory()) {
       callback(null);
     } else if (file.stem[0] === '.' && !NodeClass[file.stem.slice(1)]) {
+      if (file.extname !== '.json') {
+        Logger.debug('Ignoring file', file.relative);
+        callback(null);
+        return;
+      }
       try {
         const config = JSON.parse(file.contents);
         this._readReferenceFiles[file.stem.slice(1)] = config;
       } catch (e) {
         if (file.relative.match(/\.var\./)) {
-          callback(new Error(`Invalid reference file at ${file.relative}: Parsing failed`));
+          callback(new Error(`Failed to parse reference file: ${e.message}`));
           return;
         }
 
@@ -106,13 +111,16 @@ export default class MappingTransformer extends Transformer {
       if (config) {
         atFile.getMetadata(); // ensure #_getMetadata gets called
         Object.assign(atFile._references,
-          Object.entries(config.references)
+          Object.entries(config.references || {})
             .reduce((result, [type, refs]) => Object.assign(result, {
               [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
             }), {})
         );
 
         delete this._readReferenceFiles[file.basename];
+      } else if (file.relative.match(/\.var\./)) {
+        callback(new Error(`Missing reference file, .${file.basename}.json should exist`));
+        return;
       }
 
       callback(null, atFile);
