@@ -1,6 +1,5 @@
 import { Buffer } from 'buffer';
 import { stub, spy } from 'sinon';
-import proxyquire from 'proxyquire';
 import { DataType, VariantArrayType, NodeClass } from 'node-opcua';
 import File from 'vinyl';
 import Logger from 'gulplog';
@@ -8,13 +7,7 @@ import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import NodeId from '../../../src/lib/model/opcua/NodeId';
 import AtviseFile from '../../../src/lib/server/AtviseFile';
-
-const readFile = (path, enc, cb) => cb(null, JSON.stringify({
-  typeDefinition: 'ns=1;s=VariableTypes.PROJECT.Custom',
-}));
-const fs = { readFile };
-
-const MappingTransformer = proxyquire('../../../src/transform/Mapping', { fs }).default;
+import MappingTransformer from '../../../src/transform/Mapping';
 
 /** @test {MappingTransformer} */
 describe('MappingTransformer', function() {
@@ -113,7 +106,7 @@ describe('MappingTransformer', function() {
     });
 
     context('when file has non-standard type-definition', function() {
-      it('should push .rc file', function() {
+      it('should push a reference config file', function() {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect([{
@@ -131,8 +124,13 @@ describe('MappingTransformer', function() {
           },
         }], 'when piped through', stream, 'to yield chunks satisfying', [
           {
+            basename: '.CustomVar.var.xml.json',
             contents: new Buffer(JSON.stringify({
-              typeDefinition: 'ns=1;s=VariableTypes.PROJECT.CustomType',
+              references: {
+                HasTypeDefinition: [
+                  'ns=1;s=VariableTypes.PROJECT.CustomType',
+                ],
+              },
             }, null, '  ')),
           },
           {
@@ -196,30 +194,31 @@ describe('MappingTransformer', function() {
     });
 
     context('when file has non-standard type-definition', function() {
-      context('with .rc file', function() {
-        before(() => spy(fs, 'readFile'));
-        after(() => fs.readFile.restore());
-
-        it('should read .rc file', function() {
+      context('with reference config file', function() {
+        it('should read reference config file', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
           return expect([
+            new AtviseFile({
+              path: 'AGENT/OBJECTS/.CustomVar.var.ext.json',
+              contents: Buffer.from(JSON.stringify({ references: { HasTypeDefinition: [
+                'ns=1;s=VariableTypes.PROJECT.CustomType',
+              ] } })),
+            }),
             new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }),
-          ], 'when piped through', stream)
-            .then(() => {
-              expect(fs.readFile, 'was called once');
-            });
+          ], 'when piped through', stream, 'to yield chunks satisfying', [
+            {
+              typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+            },
+          ]);
         });
       });
 
-      context('when .rc file cannot be read', function() {
-        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(new Error('Test'))));
-        afterEach(() => fs.readFile.restore());
-
+      context('when reference config file is missing', function() {
         it('should forward error', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-          const promise = expect(stream, 'to error with', /Test/);
+          const promise = expect(stream, 'to error with', /missing reference file/i);
 
           stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
           stream.end();
@@ -229,14 +228,15 @@ describe('MappingTransformer', function() {
       });
 
       context('when .rc file cannot be parsed', function() {
-        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(null, 'invalid')));
-        afterEach(() => fs.readFile.restore());
-
         it('should forward error', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-          const promise = expect(stream, 'to error with', /Unexpected token i in JSON/);
+          const promise = expect(stream, 'to error with', /Unexpected token/);
 
+          stream.write(new AtviseFile({
+            contents: Buffer.from('{ "invalid" }'),
+            path: 'AGENT/OBJECTS/.CustomVar.var.ext.json',
+          }));
           stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
           stream.end();
 

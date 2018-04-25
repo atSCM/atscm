@@ -387,6 +387,18 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * Computes a file's metadata if needed.
+   * @return {AtviseFile} The file.
+   */
+  getMetadata() {
+    if (!this._nodeClass) {
+      this._getMetadata();
+    }
+
+    return this;
+  }
+
+  /**
    * The node's class.
    * @type {node-opcua~NodeClass}
    */
@@ -501,6 +513,10 @@ export default class AtviseFile extends File {
 
     if (this.dataType === DataType.DateTime) {
       return value.valueOf();
+    }
+
+    if (value instanceof Buffer) {
+      return value.toString();
     }
 
     return value;

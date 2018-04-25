@@ -73,6 +73,13 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     return this;
   }
 
+  /**
+   * Decorates an error that occurred while running a transformer.
+   * @param {Error} err The error to decorate.
+   * @param {*} chunk The chunk (usually an {@link AtviseFile}) beeing processed.
+   * @param {function(err: ?Error)} callback The callback to call on completion.
+   * @param {Array<*>} args Any additional arguments.
+   */
   _processError(err, chunk, callback, ...args) {
     if (err) {
       const id = (this.direction === TransformDirection.FromDB ?
