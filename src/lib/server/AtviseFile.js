@@ -387,6 +387,18 @@ export default class AtviseFile extends File {
   }
 
   /**
+   * Computes a file's metadata if needed.
+   * @return {AtviseFile} The file.
+   */
+  getMetadata() {
+    if (!this._nodeClass) {
+      this._getMetadata();
+    }
+
+    return this;
+  }
+
+  /**
    * The node's class.
    * @type {node-opcua~NodeClass}
    */
