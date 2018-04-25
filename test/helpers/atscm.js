@@ -48,7 +48,12 @@ export function setupPath(name) {
 
 export function importSetup(name, ...rename) {
   const uniqueId = id();
-  const nodeNames = rename.map(r => `${r}-${uniqueId}`);
+  const nodeNames = rename
+    .map(r => {
+      const parts = r.split('.');
+
+      return [`${parts[0]}-${uniqueId}`, ...(parts.slice(1))].join('.');
+    });
 
   const createReplaceStream = (original, renamed) => createTransformStream((file, _, callback) => {
     callback(null, Object.assign(file, {
@@ -176,7 +181,11 @@ export function expectCorrectMapping(setup, node) {
     }
     nodeNames = await importSetup(setup, ...originalNames);
     nodePaths = [].concat(node.path);
-    nodeIds = nodeNames.map((nodeName, i) => `${nodePaths[i]}.${nodeName}`);
+    nodeIds = nodeNames.map((nodeName, i) => {
+      const path = nodePaths[i];
+      const divider = path.match(/RESOURCES/) ? '/' : '.';
+      return `${path}${divider}${nodeName}`;
+    });
     destination = tmpDir(setup.replace(/\//g, '-'));
 
     // Run atscm pull
