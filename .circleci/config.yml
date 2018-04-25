@@ -134,15 +134,19 @@ jobs:
 
   integration-tests:
     <<: *defaults
+    parallelism: 2
     steps:
       - attach_workspace:
           at: .
       - run:
+          name: Printing test files to run
+          command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
+      - run:
           name: Running tests
-          command: npm run test:integration -- --reporter mocha-circleci-reporter
+          command: npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings)
           environment:
             NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-tests.xml
+            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
       - store_test_results:
           path: ~/reports
           when: always
