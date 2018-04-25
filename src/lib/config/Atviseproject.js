@@ -96,7 +96,7 @@ export default class Atviseproject {
   static get ServerRelatedNodes() {
     return [
       new NodeId('AGENT\.OPCUA\.server_url'),
-      new NodeId('AGENT\.WEBACCESS\.https?[0-9]+\.(state|port)'),
+      new NodeId('AGENT\.WEBACCESS\.https?[^\.]+\.(state)'),
       new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
       new NodeId('AGENT\.GENERATOR\.METHODS'),
       new NodeId('AGENT\.MIRROR\.METHODS'),
