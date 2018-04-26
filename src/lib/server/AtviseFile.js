@@ -116,6 +116,8 @@ function extensionForDataType(dataType) {
   return ExtensionForDataType[dataType] || dataType.toString().toLowerCase();
 }
 
+const ConfigFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
+
 /**
  * An extension to {@link vinyl~File} providing some additional, atvise-related properties.
  * @property {node-opcua~DataType} AtviseFile#dataType The {@link node-opcua~DataType} the node is
@@ -458,6 +460,15 @@ export default class AtviseFile extends File {
     }
 
     return new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
+  }
+
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * `true` for reference config files (for example `.index.htm.json`).
+   * @type {boolean}
+   */
+  get isReferenceConfig() {
+    return this.stem[0] === '.' && !this.stem.match(ConfigFileRegexp);
   }
 
   /**
