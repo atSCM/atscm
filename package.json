@@ -20,7 +20,7 @@
     "test:unit": "npm run -s test:base -- \"test/src/**/*.spec.js\"",
     "test:integration": "npm run -s test:base -- \"test/integration/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
-    "test:coverage": "nyc --reporter=html npm test",
+    "test:coverage": "nyc --reporter=html npm run test:unit",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/atscm"
   },
   "repository": {
