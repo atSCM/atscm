@@ -121,7 +121,8 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * @throws {Error} Throws an error if the transformer has no valid direction.
    */
   _transform(chunk, enc, callback) {
-    if (!this.transformsReferenceConfigFiles && chunk instanceof AtviseFile && chunk.isReferenceConfig) {
+    if (!this.transformsReferenceConfigFiles && chunk instanceof AtviseFile &&
+      chunk.isReferenceConfig) {
       callback(null, chunk);
       return;
     }
