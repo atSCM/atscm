@@ -4,6 +4,7 @@ import { stub } from 'sinon';
 import { obj as createStream } from 'through2';
 import expect from '../../../expect';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
+import AtviseFile from '../../../../src/lib/server/AtviseFile';
 
 /** @test {Transformer} */
 describe('Transformer', function() {
@@ -67,6 +68,19 @@ describe('Transformer', function() {
       transformer.withDirection(TransformDirection.FromFilesystem)._transform({}, 'utf8', () => {});
 
       return expect(transformer.transformFromFilesystem, 'was called');
+    });
+
+    it('should skip reference config files', function() {
+      const file = new AtviseFile({ path: './some/path/.index.htm.json' });
+      const stream = transformer.withDirection(TransformDirection.FromFilesystem);
+      return expect([file], 'when piped through', stream,
+        'to yield chunks satisfying', [
+          expect.it('to be', file),
+        ])
+        .then(() => {
+          expect(transformer.transformFromDB, 'was not called');
+          expect(transformer.transformFromFilesystem, 'was not called');
+        });
     });
   });
 

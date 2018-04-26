@@ -127,4 +127,11 @@ export default class MappingTransformer extends Transformer {
     }
   }
 
+  /**
+   * `true` as the mapping transformer should infer references from config files.
+   */
+  get transformsReferenceConfigFiles() {
+    return true;
+  }
+
 }
