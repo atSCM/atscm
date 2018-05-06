@@ -1,9 +1,12 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
-import { NodeClass, DataType, VariantArrayType, resolveNodeId, LocalizedText } from 'node-opcua';
+import { NodeClass, DataType, VariantArrayType, resolveNodeId, Variant, LocalizedText, StatusCodes,
+  QualifiedName, DataValue } from 'node-opcua';
+import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
+import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
-import { reverse } from '../helpers/Object';
+import { reverse, pick } from '../helpers/Object';
 import AtviseTypes from './Types';
 
 /**
@@ -72,36 +75,219 @@ const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
 const ExtensionRegExp = /\.([^/\\]*)$/;
 
 /**
- * A set of functions that decode raw stored node values to their original value.
- * @type {Map<node-opcua~DataType, function(rawValue: String): *>}
+ * Function that returns the passed argument as is.
+ * @param {*} b The input argument.
+ * @return {*} The value passed.
  */
-const Decoder = {
-  [DataType.Boolean]: stringValue => stringValue === 'true',
-  [DataType.SByte]: stringValue => parseInt(stringValue, 10),
-  [DataType.Byte]: stringValue => parseInt(stringValue, 10),
-  [DataType.Int16]: stringValue => parseInt(stringValue, 10),
-  [DataType.UInt16]: stringValue => parseInt(stringValue, 10),
-  [DataType.Int32]: stringValue => parseInt(stringValue, 10),
-  [DataType.UInt32]: stringValue => parseInt(stringValue, 10),
-  [DataType.Int64]: stringValue => JSON.parse(stringValue),
-  [DataType.UInt64]: stringValue => JSON.parse(stringValue),
-  [DataType.Float]: stringValue => parseFloat(stringValue, 10),
-  [DataType.Double]: stringValue => parseFloat(stringValue, 10),
-  [DataType.String]: stringValue => stringValue,
-  [DataType.DateTime]: stringValue => new Date(stringValue),
-  [DataType.NodeId]: stringValue => resolveNodeId(stringValue),
-  [DataType.LocalizedText]: stringValue => new LocalizedText(JSON.parse(stringValue)),
+const asIs = b => b;
+
+/**
+ * Maps a single property of an object using the the mapper defined in *map* for the given
+ * *dataType*.
+ * @param {Map<node-opcua~DataType, function} map The mappings to use.
+ * @param {Object} obj The object to process.
+ * @param {string} key Name of the property to map.
+ * @param {node-opcua~DataType} dataType The data type to map the property to.
+ */
+const mapPropertyAs = (map, obj, key, dataType) => {
+  if (obj[key]) {
+    return Object.assign(obj, {
+      [key]: map[dataType](obj[key]),
+    });
+  }
+
+  return obj;
 };
 
 /**
- * A set of functions that encode node values before storing them.
- * @type {Map<node-opcua~DataType, function(value: *): String>}
+ * Mapping functions that return serializable values for a node of the given
+ * {@link node-opcua~DataType}.
+ * @type {Map<node-opcua~DataType, function>}
  */
-const Encoder = {
-  [DataType.UInt64]: ([lo, high]) => `[${lo}, ${high}]`,
-  [DataType.Int64]: ([lo, high]) => `[${lo}, ${high}]`,
-  [DataType.ByteString]: binaryArray => new Buffer(binaryArray, 'binary'),
-  [DataType.LocalizedText]: ({ text, locale }) => (JSON.stringify({ text, locale })),
+const toRawValue = {
+  [DataType.Null]: () => null,
+  [DataType.StatusCode]: ({ name }) => name,
+  [DataType.QualifiedName]: ({ namespaceIndex, name }) => ({ namespaceIndex, name }),
+  [DataType.LocalizedText]: ({ text, locale }) => ({ text, locale }),
+  [DataType.DataValue]: value => {
+    const options = pick(value, ['value', 'statusCode', 'sourceTimestamp', 'sourcePicoseconds',
+      'serverTimestamp', 'serverPicoseconds']);
+
+    mapPropertyAs(toRawValue, options, 'value', DataType.Variant);
+    mapPropertyAs(toRawValue, options, 'statusCode', DataType.StatusCode);
+    // NOTE: server- and sourceTimstamps get mapped as dates
+
+    return options;
+  },
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => ({
+    dataType,
+    arrayType,
+    value: getRawValue(value, dataType, arrayType), // eslint-disable-line no-use-before-define
+    dimensions,
+  }),
+  [DataType.DiagnosticInfo]: info => {
+    const options = pick(info, ['namespaceUri', 'symbolicId', 'locale', 'localizedText',
+      'additionalInfo', 'innerStatusCode', 'innerDiagnosticInfo']);
+
+    mapPropertyAs(toRawValue, options, 'innerStatusCode', DataType.StatusCode);
+    mapPropertyAs(toRawValue, options, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
+
+    return options;
+  },
+};
+
+/**
+ * Decodes a buffer to a string.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {string} The buffer's string representation.
+ */
+const decodeAsString = b => b.toString();
+
+/**
+ * Decodes a buffer to an integer value.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {number} The decoded integer.
+ */
+const decodeAsInt = b => parseInt(b.toString(), 10);
+
+/**
+ * Decodes a buffer to a float value.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {number} The decoded float.
+ */
+const decodeAsFloat = b => parseFloat(b.toString());
+
+/**
+ * Decodes a buffer using JSON.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {*} The decoded value, most likely an Object.
+ */
+const decodeAsJson = b => JSON.parse(b.toString());
+
+/**
+ * Mapping functions that return raw values for a stored value of the given type.
+ * @type {Map<node-opcua~DataType, function>}
+ */
+const decodeRawValue = {
+  [DataType.Null]: () => null,
+  [DataType.Boolean]: b => b.toString() === 'true',
+  [DataType.SByte]: decodeAsInt,
+  [DataType.Byte]: decodeAsInt,
+  [DataType.Int16]: decodeAsInt,
+  [DataType.UInt16]: decodeAsInt,
+  [DataType.Int32]: decodeAsInt,
+  [DataType.UInt32]: decodeAsInt,
+  [DataType.Int64]: decodeAsJson,
+  [DataType.UInt64]: decodeAsJson,
+  [DataType.Float]: decodeAsFloat,
+  [DataType.Double]: decodeAsFloat,
+  [DataType.String]: decodeAsString,
+  [DataType.DateTime]: decodeAsString,
+  [DataType.Guid]: decodeAsString,
+  // ByteString maps to Buffer
+  [DataType.XmlElement]: decodeAsString,
+  [DataType.NodeId]: decodeAsString,
+  [DataType.ExpandedNodeId]: decodeAsString,
+  [DataType.StatusCode]: decodeAsString,
+  [DataType.QualifiedName]: decodeAsJson,
+  [DataType.LocalizedText]: decodeAsJson,
+  // FIXME: Add ExtensionObject
+  [DataType.DataValue]: decodeAsJson,
+  [DataType.Variant]: decodeAsJson,
+  [DataType.DiagnosticInfo]: decodeAsJson,
+};
+
+/**
+ * Mapping functions that return OPC-UA node values for raw values.
+ * @type {Map<node-opcua~DataType, function>}
+ */
+const toNodeValue = {
+  [DataType.DateTime]: s => new Date(s),
+  [DataType.ByteString]: b => {
+    if (b instanceof Buffer) { return b; }
+
+    return Buffer.from(b.data, 'binary');
+  },
+  [DataType.NodeId]: s => resolveNodeId(s),
+
+  // Jep, node-opcua does not provide a resolve function for expanded nodeids
+  [DataType.ExpandedNodeId]: s => {
+    const nodeId = resolveNodeId(s);
+    const [value, ...defs] = nodeId.value.split(';');
+
+    const { identifierType, namespace, namespaceUri, serverIndex } = defs.reduce((opts, def) => {
+      const match = def.match(/^([^:]+):(.*)/);
+      if (!match) { return opts; }
+
+      let [key, val] = match.slice(1); // eslint-disable-line prefer-const
+
+      if (key === 'serverIndex') {
+        val = parseInt(val, 10);
+      }
+
+      return Object.assign(opts, { [key]: val });
+    }, Object.assign({}, nodeId));
+
+    return new ExpandedNodeId(identifierType, value, namespace, namespaceUri, serverIndex);
+  },
+
+  [DataType.StatusCode]: name => StatusCodes[name],
+  [DataType.QualifiedName]: options => new QualifiedName(options),
+  [DataType.LocalizedText]: options => new LocalizedText(options),
+  [DataType.DataValue]: options => {
+    const opts = options;
+
+    mapPropertyAs(toNodeValue, opts, 'value', DataType.Variant);
+    mapPropertyAs(toNodeValue, opts, 'statusCode', DataType.StatusCode);
+    mapPropertyAs(toNodeValue, opts, 'sourceTimestamp', DataType.DateTime);
+    mapPropertyAs(toNodeValue, opts, 'serverTimestamp', DataType.DateTime);
+
+    return new DataValue(opts);
+  },
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => new Variant({
+    dataType,
+    arrayType: VariantArrayType[arrayType],
+    value,
+    dimensions,
+  }),
+  [DataType.DiagnosticInfo]: options => {
+    const opts = options;
+
+    mapPropertyAs(toNodeValue, opts, 'innerStatusCode', DataType.StatusCode);
+    mapPropertyAs(toNodeValue, opts, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
+
+
+    return new DiagnosticInfo(opts);
+  },
+};
+
+/**
+ * Returns a node's raw value based on it's OPC-UA value and type.
+ * @param {*} value A node's OPC-UA value.
+ * @param {node-opcua~DataType} dataType The node's data type.
+ * @param {node-opcua~VariantArrayType} arrayType The node's array type.
+ * @return {*} The raw value of the given node.
+ */
+const getRawValue = (value, dataType, arrayType) => {
+  if (arrayType.value !== VariantArrayType.Scalar.value) {
+    return value.map(val => getRawValue(val, dataType, VariantArrayType[arrayType.value - 1]));
+  }
+
+  return (toRawValue[dataType] || asIs)(value);
+};
+
+/**
+ * Returns a node's OPC-UA value based on it's raw value and type.
+ * @param {*} rawValue A node's raw value.
+ * @param {node-opcua~DataType} dataType A node's data type.
+ * @param {node-opcua~VariantArrayType} arrayType A node's array type.
+ */
+const getNodeValue = (rawValue, dataType, arrayType) => {
+  if (arrayType.value !== VariantArrayType.Scalar.value) {
+    return rawValue.map(raw => getNodeValue(raw, dataType, VariantArrayType[arrayType.value - 1]));
+  }
+
+  return (toNodeValue[dataType] || asIs)(rawValue);
 };
 
 /**
@@ -116,6 +302,10 @@ function extensionForDataType(dataType) {
   return ExtensionForDataType[dataType] || dataType.toString().toLowerCase();
 }
 
+/**
+ * A regular expression that maches all reference definition files.
+ * @type {RegExp}
+ */
 const ConfigFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
 
 /**
@@ -186,18 +376,18 @@ export default class AtviseFile extends File {
       return Buffer.from('');
     }
 
-    const encoder = Encoder[dataType];
-    const encode = v => {
-      if (v === null) { return null; }
+    const rawValue = getRawValue(value.value, dataType, arrayType);
 
-      return encoder ? encoder(v) : v.toString().trim();
-    };
-
-    if (arrayType !== VariantArrayType.Scalar) {
-      return Buffer.from(JSON.stringify(Array.from(value.value).map(encode), null, '  '));
+    if (rawValue instanceof Buffer) {
+      return rawValue;
     }
 
-    return Buffer.from(encode(value.value));
+    const stringify = a => (a.toJSON ? a.toJSON() : JSON.stringify(a, null, '  '));
+    const stringified = (typeof rawValue === 'object') ?
+      stringify(rawValue) :
+      rawValue.toString().trim();
+
+    return Buffer.from(stringified);
   }
 
   /**
@@ -212,24 +402,15 @@ export default class AtviseFile extends File {
       return null;
     }
 
-    if (dataType === DataType.ByteString) {
+    if (dataType === DataType.ByteString && arrayType === VariantArrayType.Scalar) {
       return buffer;
     }
 
-    const stringValue = buffer.toString().trim();
+    const rawValue = arrayType === VariantArrayType.Scalar ?
+      (decodeRawValue[dataType] || asIs)(buffer) :
+      JSON.parse(buffer.toString());
 
-    const decoder = Decoder[dataType];
-    const decode = s => {
-      if (s === null) { return null; }
-
-      return decoder ? decoder(s) : s;
-    };
-
-    if (arrayType !== VariantArrayType.Scalar) {
-      return JSON.parse(stringValue).map(decode);
-    }
-
-    return decode(stringValue);
+    return getNodeValue(rawValue, dataType, arrayType);
   }
 
   /**
@@ -292,6 +473,7 @@ export default class AtviseFile extends File {
         .reduce((result, [type, refs]) => Object.assign(result, {
           [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
         }), {});
+
       return;
     }
 

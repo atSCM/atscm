@@ -165,12 +165,12 @@ describe('AtviseFile', function() {
       const now = new Date();
 
       expect(AtviseFile.encodeValue({ value: now }, DataType.DateTime, VariantArrayType.Scalar),
-        'to equal', Buffer.from(now.toString()));
+        'to equal', Buffer.from(now.toJSON()));
     });
 
     it('should store JSON encoded bytes for UInt64 values', function() {
       expect(AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64, VariantArrayType.Scalar),
-        'to equal', Buffer.from('[1, 2]'));
+        'to equal', Buffer.from(JSON.stringify([1, 2], null, '  ')));
     });
 
     it('should use trimmed string value if no special encoder is used', function() {
@@ -193,7 +193,7 @@ describe('AtviseFile', function() {
 
         return expect(AtviseFile.encodeValue({ value }, DataType.Int64, VariantArrayType.Array),
           'to equal', Buffer.from(JSON.stringify([
-            '[0, 1]',
+            [0, 1],
           ], null, '  ')));
       });
 
@@ -261,7 +261,7 @@ describe('AtviseFile', function() {
       });
 
       it('should JSON decode special encoded values', function() {
-        const value = ['[0, 1]'];
+        const value = [[0, 1]];
         const buffer = new Buffer(JSON.stringify(value));
         expect(AtviseFile.decodeValue(buffer, DataType.UInt64, VariantArrayType.Array),
           'to equal', [[0, 1]]);

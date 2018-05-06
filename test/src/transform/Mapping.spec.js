@@ -8,6 +8,7 @@ import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import NodeId from '../../../src/lib/model/opcua/NodeId';
 import AtviseFile from '../../../src/lib/server/AtviseFile';
 import MappingTransformer from '../../../src/transform/Mapping';
+import { scalar, array, matrix } from '../../fixtures/dataTypes';
 
 /** @test {MappingTransformer} */
 describe('MappingTransformer', function() {
@@ -241,6 +242,50 @@ describe('MappingTransformer', function() {
           stream.end();
 
           return promise;
+        });
+      });
+    });
+  });
+
+  describe('should be able to map all types', function() {
+    async function testFromDBMapping({ sample }) {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+      const [err, [result]] = await expect([
+        Object.assign({}, sample, {
+          nodeId: new NodeId(`AGENT.OBJECTS.allTypes.${sample.dataType}${sample.arrayType}`),
+          value: {
+            value: sample.value,
+            $dataType: sample.dataType,
+            $arrayType: sample.arrayType,
+          },
+          references: {
+            toParent: 'HasComponent',
+            HasTypeDefinition: [
+              new NodeId('ns=0;i=62'),
+            ],
+          },
+        }),
+      ], 'when piped through', stream, 'to yield chunks satisfying', [
+        chunk => expect(chunk, 'to be an', AtviseFile) && chunk,
+      ]);
+
+      expect(err, 'to be falsy');
+      expect(result.value, 'to equal', sample.value);
+
+      return result;
+    }
+
+    scalar.forEach((sample, i) => {
+      context(`when mapping ${sample.dataType}s`, function() {
+        it('should map scalar values', async function() {
+          return testFromDBMapping({ sample });
+        });
+        it('should map array values', async function() {
+          return testFromDBMapping({ sample: array[i] });
+        });
+        it('should map matrix values', async function() {
+          return testFromDBMapping({ sample: matrix[i] });
         });
       });
     });
