@@ -180,6 +180,13 @@ describe('AtviseFile', function() {
         'to equal', Buffer.from('string'));
     });
 
+    it('should convert typed array', function() {
+      expect(AtviseFile.encodeValue(
+        { value: new Uint16Array([1, 2]) }, DataType.UInt16, VariantArrayType.Array
+      ).toString(),
+      'to equal', JSON.stringify([1, 2], null, '  '));
+    });
+
     context('with an array passed', function() {
       it('should JSON encode standard values', function() {
         const value = ['test', 'another'];
@@ -250,6 +257,12 @@ describe('AtviseFile', function() {
       const buffer = new Buffer('test');
       expect(AtviseFile.decodeValue(buffer, DataType.ByteString, VariantArrayType.Scalar),
         'to equal', buffer);
+    });
+
+    it('should throw if an array variable\'s value is scalar', function() {
+      const value = 24;
+      return expect(() => AtviseFile.decodeValue(value, DataType.Int16, VariantArrayType.Array),
+        'to throw', /not an array/i);
     });
 
     context('with an array passed', function() {
