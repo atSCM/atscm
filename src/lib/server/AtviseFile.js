@@ -256,7 +256,6 @@ const toNodeValue = {
     mapPropertyAs(toNodeValue, opts, 'innerStatusCode', DataType.StatusCode);
     mapPropertyAs(toNodeValue, opts, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
 
-
     return new DiagnosticInfo(opts);
   },
 };
