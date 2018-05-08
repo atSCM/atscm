@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-transformer--em--class" data-ice="link">Using Transformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-partialtransformer--em--class" data-ice="link">Using PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-1--import--em-partialtransformer--em--class" data-ice="link">Step 1: Import PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-2--create-the--em-babeltransformer--em--class" data-ice="link">Step 2: Create the BabelTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-3--use--em-babeltransformer--em-" data-ice="link">Step 3: Use BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-4--implement--em-partialtransformer-shouldbetransformed--em-" data-ice="link">Step 4: Implement PartialTransformer#shouldBeTransformed</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-5--implement--em-transformer-transformfromfilesystem--em-" data-ice="link">Step 5: Implement Transformer#transformFromFilesystem</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-6--test--em-babeltransformer--em-" data-ice="link">Step 6: Test BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-7--implement--em-transformer-transformfromdb--em-" data-ice="link">Step 7: Implement Transformer#transformFromDB</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html" data-ice="link">Contributing</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#found-a-bug-" data-ice="link">Found a bug?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#missing-a-feature-" data-ice="link">Missing a feature?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submission-guidelines" data-ice="link">Submission Guidelines</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-an-issue" data-ice="link">Submitting an issue</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-a-pull-request--pr-" data-ice="link">Submitting a Pull Request (PR)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#code-quality-control" data-ice="link">Code quality control</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#setting-up-the-development-environment" data-ice="link">Setting up the development environment</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#linting-files" data-ice="link">Linting files</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#running-tests" data-ice="link">Running tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#creating-api-documentation" data-ice="link">Creating API documentation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-guideline" data-ice="link">Commit Message Guideline</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-format" data-ice="link">Commit message format</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#type" data-ice="link">Type</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#scope" data-ice="link">Scope</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#body" data-ice="link">Body</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#footer" data-ice="link">Footer</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-linting" data-ice="link">Commit message linting</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-6-0-beta-28--2018-05-06-" data-ice="link">0.6.0-beta.28 (2018-05-06)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-1--2018-02-16-" data-ice="link">0.5.1 (2018-02-16)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-0--2018-02-09-" data-ice="link">0.5.0 (2018-02-09)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-3--2018-02-08-" data-ice="link">0.4.3 (2018-02-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-2--2017-12-19-" data-ice="link">0.4.2 (2017-12-19)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-1--2017-12-18-" data-ice="link">0.4.1 (2017-12-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#reverts" data-ice="link">Reverts</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-4-0--2017-11-21-" data-ice="link">0.4.0 (2017-11-21)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-3-0--2017-05-08-" data-ice="link">0.3.0 (2017-05-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#reverts" data-ice="link">Reverts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-4--2017-04-05-" data-ice="link">0.2.4 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-3--2017-04-05-" data-ice="link">0.2.3 (2017-04-05)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-2--2017-03-20-" data-ice="link">0.2.2 (2017-03-20)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-1--2017-03-13-" data-ice="link">0.2.1 (2017-03-13)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#chores" data-ice="link">Chores</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-2-0--2017-03-08-" data-ice="link">0.2.0 (2017-03-08)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-2--2017-02-23-" data-ice="link">0.1.2 (2017-02-23)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-1--2017-02-22-" data-ice="link">0.1.1 (2017-02-22)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-1-0--2017-02-21-" data-ice="link">0.1.0 (2017-02-21)</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="tutorial--custom-transformer">Tutorial: Custom Transformer</h1><blockquote>
+<p>tl;dr: Jump to the <a href="https://github.com/atSCM/tutorial-custom-transformer">tutorial-custom-transformer repository</a> to see the results.</p>
+</blockquote>
+<p>In this document we&apos;ll guide you through the steps necessary to implement a custom Transformer.
+Our transformer will use <a href="http://babeljs.io">Babel</a> to transpile ES2015/ES6 JavaScript to plain ES5 JavaScript that works in all Browsers.</p>
+<h2 id="overview">Overview</h2><p>Custom transformers provide an easy way to extend the build functionality of <em>atscm</em>. Basically, a transformer implements two behaviours: How atvise server nodes are mapped to files (when running <code>atscm pull</code>) and vice versa (when running <code>atscm push</code>).</p>
+<p><strong>Where to store transformers</strong></p>
+<p>Basically, transformers can be stored anywhere inside your <em>atscm</em> project. When using a non-ES5 configuration language (such as ES2015 or TypeScript, chosen when running <code>atscm init</code>) transformers should also be written in this language. <em>atscm</em> will handle the transpilation of your transformer code automatically. If you plan to write multiple custom transformers for your project, it is recommended to create your transformers in an own directory, e.g <code>./atscm</code>.</p>
+<h2 id="step-0--project-setup">Step 0: Project setup</h2><p>In order to have the same starting point, create a new <em>atscm</em> project to follow this tutorial. Run <code>atscm init</code> and <strong>pick ES2015 as configuration language</strong>.</p>
+<p>As for now the atvise library is written in old ES5 JavaScript, we&apos;ll ignore it in our project. Adjust your project configuration accordingly:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+...
+
+export default class MyProject extends Atviseproject {
+  ...
+
+  static get ignoreNodes() {
+    return super.ignoreNodes
+      .concat([&apos;ns=1;s=SYSTEM.LIBRARY.ATVISE&apos;]);
+  }
+
+}</code>
+</code></pre>
+<p>Now we&apos;re ready to pull the project by running:</p>
+<pre><code><code class="source-code prettyprint">atscm pull</code>
+</code></pre><p>We&apos;ll use the default project files for testing later.</p>
+<p>As suggested above, we&apos;ll store our custom transformer inside a new directory, <code>./atscm</code>. Create the directory and an empty file called <em>BabelTransformer.js</em>:</p>
+<pre><code class="lang-bash"><code class="source-code prettyprint">mkdir atscm
+touch atscm/BabelTransformer.js</code>
+</code></pre>
+<p>By now you should have a project containing an <code>./Atviseproject.babel.js</code> and an empty <code>./atscm/BabelTransformer.js</code> file.
+Make sure the <code>./src</code> directory contains at least the <em>default Main display</em> which should exist inside <code>./src/AGENT/DISPLAYS/Main.display</code>.</p>
+<h2 id="step-1--import--em-partialtransformer--em--class">Step 1: Import <em>PartialTransformer</em> class</h2><p>As we don&apos;t want to implement things twice we&apos;ll subclass <em>atscm</em>&apos;s <a href="https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html">Transformer class</a>. As our transformer shall only be used for JavaScript source files we can even use the <a href="https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransformer class</a> which supports filtering source files out of the box. As both of these classes are exported from <em>atscm</em>&apos;s main file, importing them is pretty straightforward. Inside the <em>BabelTransformer.js</em> file add:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { PartialTransformer } from &apos;atscm&apos;;</code>
+</code></pre>
+<h2 id="step-2--create-the--em-babeltransformer--em--class">Step 2: Create the <em>BabelTransformer</em> class</h2><p>The next step is to create and export our Transformer class:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { PartialTransformer } from &apos;atscm&apos;;
+
+export default class BabelTransformer extends PartialTransformer {
+
+}</code>
+</code></pre>
+<p>We just created a <em>PartialTransformer</em> subclass that is exported as the file&apos;s default export. For more detailed information on ES2015&apos;s module system <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">take a look at the docs</a>.</p>
+<h2 id="step-3--use--em-babeltransformer--em-">Step 3: Use <em>BabelTransformer</em></h2><p>By default, <em>atscm</em> uses just some standard transformers. Any additional transformers must be configured to use inside the project&apos;s <em>Atviseproject</em> file.</p>
+<p>First of all, we have to import our newly created <em>BabelTransformer</em> class:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+import { Atviseproject } from &apos;atscm&apos;
+import BabelTransformer from &apos;./atscm/BabelTransformer&apos;;
+
+export default class MyProject extends Atviseproject { ... }</code>
+</code></pre>
+<p>Now we override the <em>Atviseproject.useTransformers</em> <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Functions/get">getter</a> to use our transformer:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
+
+...
+
+export default class MyProject extends Atviseproject {
+  ...
+
+  static get useTransformers() {
+    return super.useTransformers
+      .concat(new BabelTransformer());
+  }
+
+}</code>
+</code></pre>
+<p>This statement tells <em>atscm</em> to use a new <em>BabelTransformer</em> instance <strong>in addition to the default transformers</strong> (<code>super.useTransformers</code>).</p>
+<p>To verify everything worked so far run <code>atscm config</code>. Our new Transformer should show up in the <em>useTransformers</em> section:</p>
+<pre><code><code class="source-code prettyprint">$ atscm config
+[08:38:16] Configuration at ~/custom-transformer/Atviseproject.babel.js
+{ host: &apos;10.211.55.4&apos;,
+  port:
+   { opc: 4840,
+     http: 80 },
+  useTransformers:
+   [ DisplayTransformer&lt;&gt;,
+     ScriptTransformer&lt;&gt;,
+     BabelTransformer&lt;&gt; ],
+  ...</code>
+</code></pre><h2 id="step-4--implement--em-partialtransformer-shouldbetransformed--em-">Step 4: Implement <em>PartialTransformer#shouldBeTransformed</em></h2><p><a href="https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html#instance-method-shouldBeTransformed">PartialTransformer#shouldBeTransformed</a> is responsible for filtering the files we want to transform. Returning <code>true</code> means the piped file will be transformed, <code>false</code> bypasses the file.</p>
+<p>In out case we want to edit all JavaScript source files. Therefore we return true for all files with the extension <code>.js</code>. Edit <em>BabelTransformer.js</em> accordingly:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer
+
+...
+
+export default class BabelTransformer extends PartialTransformer {
+
+  shouldBeTransformed(file) {
+    return file.extname === &apos;.js&apos;;
+  }
+
+}</code>
+</code></pre>
+<h2 id="step-5--implement--em-transformer-transformfromfilesystem--em-">Step 5: Implement <em>Transformer#transformFromFilesystem</em></h2><p>Implementing <a href="https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromFilesystem">Transformer#transformFromFilesystem</a> is probably the most important part of this tutorial. In here we define the logic that actually creates ES5 code from ES2015 sources.</p>
+<p>First of all, we need to <strong>install additional dependencies</strong> required. Running</p>
+<pre><code class="lang-bash"><code class="source-code prettyprint">npm install --save-dev babel-core babel-preset-2015</code>
+</code></pre>
+<p>will install <a href="http://babeljs.io">Babel</a> and it&apos;s ES2015 preset. This preset ensures all ES5 compatible browsers will be able to run the resulting code.</p>
+<p>We will also need the <a href="https://nodejs.org/api/buffer.html">node.js buffer module</a>. We don&apos;t need to install it, as it comes with every node installation.</p>
+<p>Next, import these modules as usual:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { Buffer } from &apos;buffer&apos;;
+import { PartialTransformer } from &apos;atscm&apos;;
+import { transform } from &apos;babel-core&apos;;
+
+...</code>
+</code></pre>
+<p>The import order follows a pretty usual convention:</p>
+<ol>
+<li>Core <strong>node.js modules</strong> (<em>buffer</em> in our case)</li>
+<li>Other <strong>external modules</strong> (<em>babel-core</em> and <em>atscm</em> in our case)</li>
+<li><strong>Relative modules</strong> (<em>./atscm/BabelTransformer.js</em> inside <em>Atviseproject.babel.js</em> in our case)</li>
+</ol>
+<p>Now we&apos;re ready to implement <em>Transformer#transformFromFilesystem</em>. What we&apos;re about to do is pretty simple:</p>
+<ul>
+<li>We&apos;ll transpile the contents of the passed file with babels <em>transform</em> method</li>
+<li>We clone the passed file and set it&apos;s contents to a Buffer containing the resulting code</li>
+<li>We pass the resulting file to other streams</li>
+</ul>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">import ...
+
+export default class BabelTransformer extends PartialTransformer {
+
+  static shouldBeTransformed(file) { ... }
+
+  transformFromFilesystem(file, enc, callback) {
+    // Create ES5 code
+    const { code } = transform(file.contents, {
+      presets: [&apos;es2015&apos;]
+    });
+
+    // Create new file with ES5 content
+    const result = file.clone();
+    result.contents = Buffer.from(code);
+
+    // We&apos;re done, pass the new file to other streams
+    callback(null, result);
+  }
+
+}</code>
+</code></pre>
+<p><strong>Wow!</strong> You just implemented your first custom transformer! Now we can write any scripts using the new ES2015 syntax.</p>
+<h2 id="step-6--test--em-babeltransformer--em-">Step 6: Test <em>BabelTransformer</em></h2><p>It&apos;s time to check if everything works as expected. Create a script file for the Main display containing ES2015 JavaScript:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// src/AGENT/DISPLAYS/Main.display/Main.js
+
+// Class syntax
+class Test {
+
+  constructor(options = {}, ...otherArgs) { // Default values and rest params
+    this.options = options;
+    this.args = otherArgs.map(arg =&gt; parseInt(arg, 10)); // Arrows and Lexical This
+  }
+
+}
+
+const a = 13; // Constants
+const { options, args } = new Test({ a }, &apos;23&apos;); // Enhanced Object Literals
+
+alert(`Option a: ${options.a}, args: ${args.join(&apos;, &apos;)}`); // Template Strings</code>
+</code></pre>
+<p>Run <code>atscm push</code> to upload the new display script to atvise server. Open your atvise project in your favorite browser (you may have to delete the browser cache) and if everything worked you should see an alert box containing the text &quot;Option a: 13, args: 23&quot;. When you inspect the page&apos;s source you&apos;ll see the display script code was transpiled to ES5.</p>
+<h2 id="step-7--implement--em-transformer-transformfromdb--em-">Step 7: Implement <em>Transformer#transformFromDB</em></h2><p>As said at the beginning, atscm transformers allow transformation from and to the filesystem. A babel transpilation is a one-way process, meaning you cannot create ES2015 source code from the resulting ES5 code. Therefore the only thing we can do when transforming from atvise server to the filesystem is to prevent an override.</p>
+<p>We do so by implementing <a href="https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-transformFromDB">Transformer#transformFromDB</a>:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+...
+
+export default class BabelTransformer extends PartialTransfromer {
+  ...
+
+  transformFromDB(file, enc, callback) {
+    // Optionally, we could print a warning here
+    callback(null); // Ignore file, remove it from the stream
+  }
+}</code>
+</code></pre>
+<p>Now we can run <code>atscm push</code> without overriding our ES2015 source code.</p>
+<h2 id="result">Result</h2><p>This is how your custom transformer should look now:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">// atscm/BabelTransformer.js
+
+import { Buffer } from &apos;buffer&apos;;
+import { PartialTransformer } from &apos;atscm&apos;;
+import { transform } from &apos;babel-core&apos;;
+
+export default class BabelTransformer extends PartialTransformer {
+
+  shouldBeTransformed(file) {
+    return file.extname === &apos;.js&apos;;
+  }
+
+  transformFromFilesystem(file, enc, callback) {
+    // Create ES5 code
+    const { code } = transform(file.contents, {
+      presets: [&apos;es2015&apos;],
+    });
+
+    // Create new file with ES5 content
+    const result = file.clone();
+    result.contents = Buffer.from(code);
+
+    // We&apos;re done, pass the new file to other streams
+    callback(null, result);
+  }
+
+  transformFromDB(file, enc, callback) {
+    callback(null); // Ignore file, remove it from the stream
+  }
+
+}</code>
+</code></pre>
+<h2 id="conclusion">Conclusion</h2><p>We just created a custom Transformer in no time. It transpiles ES2015 code on push and prevents overriding this code on pull.</p>
+<p>Of course there are many ways to improve the transformer, for example:</p>
+<ul>
+<li>Handle options to configure how babel transpiles the source code</li>
+</ul>
+<h2 id="further-reading">Further reading</h2><ul>
+<li><a href="http://babeljs.io/learn-es2015/">babeljs.io</a> provides a nice overview of ES2015 features. You can also use the <a href="http://babeljs.io/repl/">REPL</a> to try out these features.</li>
+</ul>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
