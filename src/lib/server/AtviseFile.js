@@ -256,7 +256,6 @@ const toNodeValue = {
     mapPropertyAs(toNodeValue, opts, 'innerStatusCode', DataType.StatusCode);
     mapPropertyAs(toNodeValue, opts, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
 
-
     return new DiagnosticInfo(opts);
   },
 };
@@ -270,7 +269,9 @@ const toNodeValue = {
  */
 const getRawValue = (value, dataType, arrayType) => {
   if (arrayType.value !== VariantArrayType.Scalar.value) {
-    return value.map(val => getRawValue(val, dataType, VariantArrayType[arrayType.value - 1]));
+    const array = Array.isArray(value) ? value : Array.from(value);
+
+    return array.map(val => getRawValue(val, dataType, VariantArrayType[arrayType.value - 1]));
   }
 
   return (toRawValue[dataType] || asIs)(value);
@@ -284,6 +285,10 @@ const getRawValue = (value, dataType, arrayType) => {
  */
 const getNodeValue = (rawValue, dataType, arrayType) => {
   if (arrayType.value !== VariantArrayType.Scalar.value) {
+    if (!Array.isArray(rawValue)) {
+      throw new Error('Value is not an array');
+    }
+
     return rawValue.map(raw => getNodeValue(raw, dataType, VariantArrayType[arrayType.value - 1]));
   }
 

@@ -61,7 +61,7 @@ export const samples = [
     dataType: DataType.DateTime,
   },
   {
-    value: '01234567-89ab-cdef-0123-456789ab',
+    value: '01234567-89ab-cdef-0123-456789abcdef',
     dataType: DataType.Guid,
   },
   {
@@ -85,7 +85,7 @@ export const samples = [
     dataType: DataType.StatusCode,
   },
   {
-    value: new QualifiedName({ namespaceIndex: 0, name: 'Test' }),
+    value: new QualifiedName({ namespaceIndex: 3, name: 'Test' }),
     dataType: DataType.QualifiedName,
   },
   {
