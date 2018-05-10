@@ -67,14 +67,14 @@ export default class NodeId extends OpcNodeId {
     let separator = '.';
     const value = path.split(sep)
       .reduce((result, current) => {
-        const next = `${result}${separator}${current}`;
+        const next = `${result ? `${result}${separator}` : ''}${current.replace('%2F', '/')}`;
 
         if (current === 'RESOURCES') {
           separator = '/';
         }
 
         return next;
-      });
+      }, '');
 
     return new NodeId(NodeId.NodeIdType.STRING, value, 1);
   }
@@ -85,7 +85,10 @@ export default class NodeId extends OpcNodeId {
    */
   get filePath() {
     const parts = this.value.split('RESOURCES');
-    parts[0] = parts[0].split('.').join('/');
+    parts[0] = parts[0]
+      .replace('/', '%2F')
+      .split('.')
+      .join('/');
 
     return parts.join('RESOURCES');
   }
