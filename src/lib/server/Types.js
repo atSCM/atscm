@@ -79,6 +79,7 @@ const AtviseTypes = [
   new AtviseType('TranslationTable', 'locs', DataType.XmlElement),
   new AtviseResourceType('Pdf', 'pdf'),
   new AtviseResourceType('Html', 'html'),
+  new AtviseResourceType('Html', 'htm'),
   new AtviseResourceType('Javascript', 'js'),
   new AtviseResourceType('Wave', 'wav'),
   new AtviseResourceType('Gif', 'gif'),
