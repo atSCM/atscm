@@ -91,6 +91,10 @@ describe('NodeId', function() {
       ).value,
       'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css');
     });
+
+    it('should unescape slashes', function() {
+      return expect(NodeId.fromFilePath('test/no%2Ffolder').value, 'to equal', 'test.no/folder');
+    });
   });
 
   /** @test {NodeId#filePath} */
@@ -107,6 +111,11 @@ describe('NodeId', function() {
 
       expect(nodeId.filePath, 'to be a', 'string');
       expect(nodeId.filePath, 'to equal', 'SYSTEM/LIBRARY/RESOURCES/dir/test.e');
+    });
+
+    it('should escape slashes', function() {
+      return expect(new NodeId('AGENT.OBJECTS.Test/node').filePath,
+        'to equal', 'AGENT/OBJECTS/Test%2Fnode');
     });
   });
 
