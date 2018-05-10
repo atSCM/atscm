@@ -6,7 +6,7 @@ import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 
 /** @test {NodeId} */
 describe('NodeId', function() {
-  const path = 'AGENT/DISPLAYS/Main';
+  const path = join('AGENT/DISPLAYS/Main');
   const id = 'AGENT.DISPLAYS.Main';
 
   /** @test {NodeId#constructor} */
@@ -75,7 +75,7 @@ describe('NodeId', function() {
     it('should return file path again', function() {
       const nodeId = NodeId.fromFilePath(path);
       expect(nodeId.filePath, 'to be a', 'string');
-      expect(nodeId.filePath, 'to equal', path);
+      expect(join(nodeId.filePath), 'to equal', path);
     });
 
     it('should work with resource paths', function() {
@@ -93,7 +93,7 @@ describe('NodeId', function() {
     });
 
     it('should unescape slashes', function() {
-      return expect(NodeId.fromFilePath('test/no%2Ffolder').value, 'to equal', 'test.no/folder');
+      return expect(NodeId.fromFilePath(join('test/no%2Ffolder')).value, 'to equal', 'test.no/folder');
     });
   });
 
@@ -103,7 +103,7 @@ describe('NodeId', function() {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, id, 1);
 
       expect(nodeId.filePath, 'to be a', 'string');
-      expect(nodeId.filePath, 'to equal', path);
+      expect(join(nodeId.filePath), 'to equal', path);
     });
 
     it('should handle resource paths', function() {
