@@ -93,7 +93,8 @@ describe('NodeId', function() {
     });
 
     it('should unescape slashes', function() {
-      return expect(NodeId.fromFilePath(join('test/no%2Ffolder')).value, 'to equal', 'test.no/folder');
+      return expect(NodeId.fromFilePath(join('test/no%2Ffolder')).value, 'to equal',
+        'test.no/folder');
     });
   });
 

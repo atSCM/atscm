@@ -67,8 +67,7 @@ export default class NodeId extends OpcNodeId {
     let separator = '.';
     const value = path.split(sep)
       .reduce((result, current) => {
-        const prefix = result ? `${result}${separator}` : ''
-        const next = `${prefix}${current.replace('%2F', '/')}`;
+        const next = `${result ? `${result}${separator}` : ''}${current.replace('%2F', '/')}`;
 
         if (current === 'RESOURCES') {
           separator = '/';
