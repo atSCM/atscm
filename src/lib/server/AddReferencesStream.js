@@ -1,11 +1,15 @@
 import { DataType, StatusCodes, ReferenceTypeIds } from 'node-opcua';
 import NodeId from '../model/opcua/NodeId';
+import Atviseproject from '../config/Atviseproject';
 import CallScriptStream from './scripts/CallScriptStream';
+import { waitForDependencies } from './WaitingStream';
+
+const serverNodes = new Set(Atviseproject.ServerRelatedNodes.map(id => id.value));
 
 /**
  * A stream that adds non-standard references to nodes when pushed.
  */
-export default class AddReferencesStream extends CallScriptStream {
+export default class AddReferencesStream extends waitForDependencies(CallScriptStream) {
 
   /**
    * Creates a new stream for adding references to pushed nodes.
@@ -19,6 +23,33 @@ export default class AddReferencesStream extends CallScriptStream {
      * @type {Set<string>}
      */
     this._retry = new Set();
+  }
+
+  /**
+   * Returns the references that need to be set for a file.
+   * @param {AtviseFile} file The file to check.
+   * @return {Object} The files's references.
+   */
+  referencesToAdd(file) {
+    const additionalReferences = Object.assign({}, file.references);
+    delete additionalReferences.toParent;
+    delete additionalReferences.HasTypeDefinition;
+    delete additionalReferences.HasModellingRule;
+
+    return additionalReferences;
+  }
+
+  /**
+   * Returns the referenced nodes that should be processed before the given file.
+   * @param {AtviseFile} file The file to check.
+   * @return {NodeId[]} The files dependencies.
+   */
+  dependenciesFor(file) {
+    const refs = this.referencesToAdd(file);
+
+    return Object.values(refs)
+      .reduce((deps, nodes) => deps.concat(nodes), [])
+      .filter(({ value }) => !serverNodes.has(value));
   }
 
   /**
@@ -38,10 +69,7 @@ export default class AddReferencesStream extends CallScriptStream {
    * @return {Object} The options passed to the *AddReferences* script.
    */
   scriptParameters(file) {
-    const additionalReferences = Object.assign({}, file.references);
-    delete additionalReferences.toParent;
-    delete additionalReferences.HasTypeDefinition;
-    delete additionalReferences.HasModellingRule;
+    const additionalReferences = this.referencesToAdd(file);
 
     const additionalKeys = Object.keys(additionalReferences);
 
