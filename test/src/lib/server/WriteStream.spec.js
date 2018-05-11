@@ -2,7 +2,7 @@ import { spy } from 'sinon';
 import { StatusCodes, NodeClass } from 'node-opcua';
 import Logger from 'gulplog';
 import expect from '../../../expect';
-import WriteStream from '../../../../src/lib/server/WriteStream';
+import _WriteStream from '../../../../src/lib/server/WriteStream';
 import _CreateNodeStream from '../../../../src/lib/server/CreateNodeStream';
 import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
@@ -14,6 +14,13 @@ class CreateNodeStream extends _CreateNodeStream {
       handleErrors(null, StatusCodes.Good, done => done());
     }, 10);
   }
+
+}
+
+// Ignore dependencies in tests
+class WriteStream extends _WriteStream {
+
+  dependenciesFor() { return []; }
 
 }
 
@@ -41,6 +48,7 @@ describe('WriteStream', function() {
       return expect(
         [{
           nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          typeDefinition: new NodeId('VariableTypes.ATVISE.Display', 0),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -59,6 +67,7 @@ describe('WriteStream', function() {
       return expect(
         [{
           nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -79,6 +88,7 @@ describe('WriteStream', function() {
       return expect(
         [{
           nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+          typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
           nodeClass: NodeClass.Variable,
         }],
         'when piped through', stream,
@@ -99,6 +109,7 @@ describe('WriteStream', function() {
 
       const file = {
         nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS'),
+        typeDefinition: new NodeId('ns=0;i=61'),
         nodeClass: NodeClass.Object,
       };
       return expect([file],
@@ -120,6 +131,7 @@ describe('WriteStream', function() {
 
       const file = {
         nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
         nodeClass: NodeClass.Variable,
       };
       return expect([file],
@@ -142,6 +154,7 @@ describe('WriteStream', function() {
 
       const file = {
         nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+        typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
         nodeClass: NodeClass.Variable,
       };
       await expect([file],
