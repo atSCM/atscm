@@ -45,9 +45,6 @@ class WithDeps extends waitForDependencies(StubStream) {
 
     this._deps = [];
 
-
-    console.error('returning', JSON.stringify(deps));
-
     return deps;
   }
 
