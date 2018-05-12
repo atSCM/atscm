@@ -1,3 +1,4 @@
+import { join } from 'path';
 import Logger from 'gulplog';
 import { NodeClass } from 'node-opcua';
 import Transformer from '../lib/transform/Transformer';
@@ -111,10 +112,10 @@ export default class MappingTransformer extends Transformer {
     } else {
       let path = file.path;
       const refName = file.basename;
-      const innerMatch = path.match(/(.*\/RESOURCES\/.*)(\.inner)\/(.*)/);
+      const innerMatch = path.match(/(.*[/\\]RESOURCES[/\\].*)(\.inner)[/\\](.*)/);
 
       if (innerMatch) {
-        path = `${innerMatch[1]}/${innerMatch[3].replace(/\//g, '.')}`;
+        path = join(innerMatch[1], innerMatch[3].replace(/[/\\]/g, '.'));
       }
 
       const atFile = new AtviseFile({
