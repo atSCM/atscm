@@ -323,11 +323,11 @@ describe('MappingTransformer', function() {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect([new AtviseFile({
-        path: 'SYSTEM/LIBRARY/RESOURCES/test.htm.inner/Translate.prop.bool',
+        path: join('SYSTEM/LIBRARY/RESOURCES/test.htm.inner/Translate.prop.bool'),
         contents: Buffer.from('true'),
       })], 'when piped through', stream, 'to yield chunks satisfying', [
         {
-          path: 'SYSTEM/LIBRARY/RESOURCES/test.htm/Translate.prop.bool',
+          path: join('SYSTEM/LIBRARY/RESOURCES/test.htm/Translate.prop.bool'),
           value: true,
         },
       ]);

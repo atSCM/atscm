@@ -40,7 +40,7 @@ export default class MappingTransformer extends Transformer {
         const relativePath = readResult.nodeId.value.split(readResult.parent.value)[1];
 
         if (relativePath[0] === '.') {
-          file.path = file.path.split(`${readResult.parent.filePath}.`)
+          file.path = file.path.split(`${join(readResult.parent.filePath)}.`)
             .join(`${readResult.parent.filePath}.inner/`);
         }
       }
