@@ -71,6 +71,8 @@ export default class NodeId extends OpcNodeId {
 
         if (current === 'RESOURCES') {
           separator = '/';
+        } else if (separator === '/' && current.split('.').length > 1) {
+          separator = '.';
         }
 
         return next;
