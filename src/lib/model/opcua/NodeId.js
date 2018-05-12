@@ -142,7 +142,10 @@ export default class NodeId extends OpcNodeId {
 
     const [prefix, postfix] = this.value.split(parent.value);
 
-    return (prefix === '' && postfix && postfix[0] === this._lastSeparator);
+    return (prefix === '' && postfix && (
+      postfix[0] === this._lastSeparator ||
+      (this._lastSeparator === '/' && postfix[0] === '.' && postfix.split('.').length === 2)
+    ));
   }
 
   /**
