@@ -3,7 +3,7 @@
 
 import Logger from 'gulplog';
 import { StatusCodes, NodeClass } from 'node-opcua';
-import TreeStream from './TreeStream';
+import WaitingStream from './WaitingStream';
 
 /**
  * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
@@ -11,7 +11,7 @@ import TreeStream from './TreeStream';
  * parent-child relations between nodes. Nodes are created (if needed) before their children are
  * processed.
  */
-export default class WriteStream extends TreeStream {
+export default class WriteStream extends WaitingStream {
 
   /**
    * Creates a new write stream with the given {@link CreateNodeStream} and
@@ -68,6 +68,18 @@ export default class WriteStream extends TreeStream {
   }
 
   /**
+   * Returns a files parent node and type definition.
+   * @param {AtviseFile} file The file to check.
+   * @return {NodeId[]} The files dependencies.
+   */
+  dependenciesFor(file) {
+    return [
+      file.nodeId.parent,
+      file.typeDefinition,
+    ];
+  }
+
+  /**
    * Writes an {@link AtviseFile} to it's corresponding node on atvise server.
    * @param {AtviseFile} file The file to write.
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
@@ -112,22 +124,6 @@ export default class WriteStream extends TreeStream {
       });
     } catch (e) {
       handleErrors(e);
-    }
-  }
-
-  /**
-   * Waits for pending operations to complete.
-   * @param {Function} callback Called once all queued chunks have been processed.
-   */
-  _flush(callback) {
-    if (this.hasPending) {
-      this.on('drained', () => {
-        if (Object.keys(this._waitingForParent).length === 0) {
-          super._flush(callback);
-        }
-      });
-    } else {
-      super._flush(callback);
     }
   }
 
