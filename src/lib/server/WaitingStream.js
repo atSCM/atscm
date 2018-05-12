@@ -114,8 +114,8 @@ export const waitForDependencies = Stream => class Waiting extends Stream {
 
         Logger.debug(`Missing dependency. Trying to process dependents of ${first}`);
 
-        this.emit('processed-chunk', { nodeId: first });
         this.once('finished-chunk', () => checkProcessing());
+        this.emit('processed-chunk', { nodeId: first });
       } else {
         super._flush(callback);
       }
