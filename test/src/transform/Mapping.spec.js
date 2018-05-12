@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { Buffer } from 'buffer';
 import { stub, spy } from 'sinon';
 import { DataType, VariantArrayType, NodeClass } from 'node-opcua';
@@ -311,7 +312,7 @@ describe('MappingTransformer', function() {
         },
       }], 'when piped through', stream, 'to yield chunks satisfying', [
         {
-          dirname: 'SYSTEM/LIBRARY/RESOURCES/index.html.inner',
+          dirname: join('SYSTEM/LIBRARY/RESOURCES/index.html.inner'),
           basename: 'Translate.prop.bool',
           contents: Buffer.from('true'),
         },
