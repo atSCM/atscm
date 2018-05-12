@@ -21,8 +21,10 @@ class StubStream extends Emitter {
     this.emit('processed-chunk', ...args);
   }
 
-  _flush(...args) {
-    this.spies._flush(...args);
+  _flush(callback) {
+    this.spies._flush(callback);
+
+    callback(null);
   }
 
 }
@@ -160,16 +162,18 @@ describe('WaitingStream', function() {
     context('without pending operations', function() {
       it('should call super', function() {
         const stream = new NoDeps();
-        stream._flush();
+        stream._flush((() => {}));
         return expect(stream.spies._flush, 'was called once');
       });
     });
+
     context('with pending operations', function() {
-      it('should throw', function() {
+      it('should try to process dependents', function() {
         const stream = new WithDeps([new NodeId('Dep')]);
         stream._enqueueChunk({ nodeId: new NodeId('Depending') });
-        expect(cb => stream._flush(cb),
-          'to call the callback with error', /circular dependencies/i);
+
+        return expect(cb => stream._flush(cb),
+          'to call the callback without error');
       });
     });
   });
