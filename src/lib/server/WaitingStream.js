@@ -76,7 +76,8 @@ export const waitForDependencies = Stream => class Waiting extends Stream {
         if (id.namespace === 0 || !id.value || ProjectConfig.nodes.includes(id)) { return false; }
 
         return !id.value.match(/^(Object|Variable)Types$/) &&
-          !id.value.match(/^(Object|Variable)Types\.ATVISE/);
+          !id.value.match(/^(Object|Variable)Types\.ATVISE/) &&
+          !id.value.match(/^SYSTEM\.LIBRARY\.ATVISE/);
       })
       .map(id => id.toString());
 
