@@ -114,6 +114,8 @@ export default class NodeId extends OpcNodeId {
   /**
    * The parent node id, or `null`.
    * @type {?NodeId}
+   * @deprecated Doesn't work properly in some edge cases. Use AtviseFile#parentNodeId instead
+   * whenever possible.
    */
   get parent() {
     if (this.identifierType !== NodeId.NodeIdType.STRING) {

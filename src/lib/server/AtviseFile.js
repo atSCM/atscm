@@ -492,6 +492,7 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     this._references = {};
+    this._name = this.stem.split('.')[0];
 
     let extensions = [];
     const m = this.relative.match(ExtensionRegExp);
@@ -573,6 +574,8 @@ export default class AtviseFile extends File {
       ];
       this._dataType = DataType.ByteString;
     }
+
+    this._name = [this._name, ...extensions.filter(e => !dirnameExts.includes(e))].join('.');
   }
 
   /**
@@ -737,6 +740,29 @@ export default class AtviseFile extends File {
     }
 
     return NodeId.fromFilePath(idPath);
+  }
+
+  get name() {
+    if (!this._name) {
+      this._getMetadata();
+    }
+
+    return this._name;
+  }
+
+  get parentNodeId() {
+    const name = this.name;
+    const id = this.nodeId;
+
+    if (name) {
+      const parts = this.nodeId.value.split(name);
+
+      if (parts.length > 1) {
+        return new NodeId(id.identifierType, parts[0].slice(0, -1), id.namespaceIndex);
+      }
+    }
+
+    return this.nodeId.parent;
   }
 
   /**
