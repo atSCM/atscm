@@ -290,4 +290,32 @@ describe('MappingTransformer', function() {
       });
     });
   });
+
+  context('when a resource property is mapped', function() {
+    it('should wrap nodes in `.inner` folder', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+      return expect([{
+        nodeId: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html.Translate'),
+        parent: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html'),
+        nodeClass: NodeClass.Variable,
+        value: {
+          value: true,
+          $dataType: DataType.Boolean,
+          $arrayType: VariantArrayType.Scalar,
+        },
+        references: {
+          HasTypeDefinition: [
+            new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0),
+          ],
+        },
+      }], 'when piped through', stream, 'to yield chunks satisfying', [
+        {
+          dirname: 'SYSTEM/LIBRARY/RESOURCES/index.html.inner',
+          basename: 'Translate.prop.bool',
+          contents: Buffer.from('true'),
+        },
+      ]);
+    });
+  });
 });
