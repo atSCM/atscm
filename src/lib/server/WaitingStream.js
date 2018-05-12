@@ -1,3 +1,4 @@
+import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import QueueStream from './QueueStream';
 
@@ -109,7 +110,12 @@ export const waitForDependencies = Stream => class Waiting extends Stream {
       if (this._processing || this.hasPending) {
         this.once('finished-chunk', () => checkProcessing());
       } else if (Object.keys(this._waitingFor).length > 0) {
-        callback(new Error(`${Object.keys(this._waitingFor).length} Circular dependencies`));
+        const first = Object.keys(this._waitingFor)[0];
+
+        Logger.debug(`Missing dependency. Trying to process dependents of ${first}`);
+
+        this.emit('processed-chunk', { nodeId: first });
+        this.once('finished-chunk', () => checkProcessing());
       } else {
         super._flush(callback);
       }
