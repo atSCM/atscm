@@ -7,7 +7,7 @@ import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse, pick } from '../helpers/Object';
-import AtviseTypes from './Types';
+import AtviseTypes, { AtviseResourceType } from './Types';
 
 /**
  * A map of AtviseTypes against their definition id's value.
