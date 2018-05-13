@@ -492,6 +492,11 @@ export default class AtviseFile extends File {
     this._arrayType = VariantArrayType.Scalar;
 
     this._references = {};
+
+    /**
+     * A node's browse- and display name.
+     * @type {?string}
+     */
     this._name = this.stem.split('.')[0];
 
     let extensions = [];
@@ -742,6 +747,10 @@ export default class AtviseFile extends File {
     return NodeId.fromFilePath(idPath);
   }
 
+  /**
+   * A file's browse and display name.
+   * @type {string}
+   */
   get name() {
     if (!this._name) {
       this._getMetadata();
@@ -750,6 +759,10 @@ export default class AtviseFile extends File {
     return this._name;
   }
 
+  /**
+   * A file's parent's node id.
+   * @type {NodeId}
+   */
   get parentNodeId() {
     const name = this.name;
     const id = this.nodeId;
