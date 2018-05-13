@@ -39,7 +39,7 @@ const AtviseReferenceTypes = [
 ];
 
 /**
- * List of reference types that are used for node metadata
+ * List of reference types that are used for node metadata.
  * @type {node-opcua~ReferenceTypeId[]}
  * @see https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js
  */
@@ -48,6 +48,11 @@ const TypeDefinitionReferenceTypes = [
   ReferenceTypeIds.HasModellingRule,
 ];
 
+/**
+ * List of reference types that are used for node metadata.
+ * @type {node-opcua~ReferenceTypeId[]}
+ * @see https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js
+ */
 const InverseReferenceTypes = [
   ReferenceTypeIds.Organizes,
 ];
