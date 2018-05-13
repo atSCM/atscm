@@ -71,6 +71,8 @@ export default class NodeId extends OpcNodeId {
 
         if (current === 'RESOURCES') {
           separator = '/';
+        } else if (separator === '/' && current.split('.').length > 1) {
+          separator = '.';
         }
 
         return next;
@@ -112,6 +114,8 @@ export default class NodeId extends OpcNodeId {
   /**
    * The parent node id, or `null`.
    * @type {?NodeId}
+   * @deprecated Doesn't work properly in some edge cases. Use AtviseFile#parentNodeId instead
+   * whenever possible.
    */
   get parent() {
     if (this.identifierType !== NodeId.NodeIdType.STRING) {
@@ -142,7 +146,10 @@ export default class NodeId extends OpcNodeId {
 
     const [prefix, postfix] = this.value.split(parent.value);
 
-    return (prefix === '' && postfix && postfix[0] === this._lastSeparator);
+    return (prefix === '' && postfix && (
+      postfix[0] === this._lastSeparator ||
+      (this._lastSeparator === '/' && postfix[0] === '.' && postfix.split('.').length === 2)
+    ));
   }
 
   /**

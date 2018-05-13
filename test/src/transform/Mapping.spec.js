@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { Buffer } from 'buffer';
 import { stub, spy } from 'sinon';
 import { DataType, VariantArrayType, NodeClass } from 'node-opcua';
@@ -288,6 +289,48 @@ describe('MappingTransformer', function() {
           return testFromDBMapping({ sample: matrix[i] });
         });
       });
+    });
+  });
+
+  context('when a resource property is mapped', function() {
+    it('should wrap nodes in `.inner` folder', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+      return expect([{
+        nodeId: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html.Translate'),
+        parent: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html'),
+        nodeClass: NodeClass.Variable,
+        value: {
+          value: true,
+          $dataType: DataType.Boolean,
+          $arrayType: VariantArrayType.Scalar,
+        },
+        references: {
+          HasTypeDefinition: [
+            new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0),
+          ],
+        },
+      }], 'when piped through', stream, 'to yield chunks satisfying', [
+        {
+          dirname: join('SYSTEM/LIBRARY/RESOURCES/index.html.inner'),
+          basename: 'Translate.prop.bool',
+          contents: Buffer.from('true'),
+        },
+      ]);
+    });
+
+    it('should unwrap properties `.inner` folder', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+      return expect([new AtviseFile({
+        path: join('SYSTEM/LIBRARY/RESOURCES/test.htm.inner/Translate.prop.bool'),
+        contents: Buffer.from('true'),
+      })], 'when piped through', stream, 'to yield chunks satisfying', [
+        {
+          path: join('SYSTEM/LIBRARY/RESOURCES/test.htm/Translate.prop.bool'),
+          value: true,
+        },
+      ]);
     });
   });
 });

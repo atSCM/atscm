@@ -1,3 +1,4 @@
+import { join } from 'path';
 import Logger from 'gulplog';
 import { NodeClass } from 'node-opcua';
 import Transformer from '../lib/transform/Transformer';
@@ -34,6 +35,15 @@ export default class MappingTransformer extends Transformer {
   transformFromDB(readResult, encoding, callback) {
     try {
       const file = AtviseFile.fromReadResult(readResult);
+
+      if (readResult.parent && readResult.parent.value.match(/\.RESOURCES\//)) {
+        const relativePath = readResult.nodeId.value.split(readResult.parent.value)[1];
+
+        if (relativePath[0] === '.') {
+          file.path = file.path.split(`${join(readResult.parent.filePath)}.`)
+            .join(`${readResult.parent.filePath}.inner/`);
+        }
+      }
 
       if (readResult.nodeClass === NodeClass.Variable) {
         const unmappedReferences = Object.assign({}, file.references);
@@ -100,14 +110,22 @@ export default class MappingTransformer extends Transformer {
 
       callback(null);
     } else {
+      let path = file.path;
+      const refName = file.basename;
+      const innerMatch = path.match(/(.*[/\\]RESOURCES[/\\].*)(\.inner)[/\\](.*)/);
+
+      if (innerMatch) {
+        path = join(innerMatch[1], innerMatch[3].replace(/[/\\]/g, '.'));
+      }
+
       const atFile = new AtviseFile({
         cwd: file.cwd,
         base: file.base,
-        path: file.path,
+        path,
         contents: file.contents,
       });
 
-      const config = this._readReferenceFiles[file.basename];
+      const config = this._readReferenceFiles[refName];
       if (config) {
         atFile.getMetadata(); // ensure #_getMetadata gets called
         Object.assign(atFile._references,
@@ -117,9 +135,9 @@ export default class MappingTransformer extends Transformer {
             }), {})
         );
 
-        delete this._readReferenceFiles[file.basename];
+        delete this._readReferenceFiles[refName];
       } else if (file.relative.match(/\.var\./)) {
-        callback(new Error(`Missing reference file, .${file.basename}.json should exist`));
+        callback(new Error(`Missing reference file, .${refName}.json should exist`));
         return;
       }
 

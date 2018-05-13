@@ -39,7 +39,7 @@ const AtviseReferenceTypes = [
 ];
 
 /**
- * List of reference types that are used for node metadata
+ * List of reference types that are used for node metadata.
  * @type {node-opcua~ReferenceTypeId[]}
  * @see https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js
  */
@@ -48,6 +48,11 @@ const TypeDefinitionReferenceTypes = [
   ReferenceTypeIds.HasModellingRule,
 ];
 
+/**
+ * List of reference types that are used for node metadata.
+ * @type {node-opcua~ReferenceTypeId[]}
+ * @see https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js
+ */
 const InverseReferenceTypes = [
   ReferenceTypeIds.Organizes,
 ];
@@ -290,7 +295,7 @@ export default class NodeStream extends QueueStream {
    * @param {Object} result The result of the browsing the node.
    * @param  {function(err: Error)} done Called once the node has been processed.
    */
-  handleResult({ nodeId, nodeClass, toParent }, result, done) {
+  handleResult({ nodeId, nodeClass, toParent, parent }, result, done) {
     const nodesToBrowse = [];
 
     const references = { toParent };
@@ -318,6 +323,7 @@ export default class NodeStream extends QueueStream {
                 nodeId: ref.nodeId,
                 nodeClass: ref.$nodeClass,
                 toParent: ReverseReferenceTypeIds[ref.referenceTypeId.value],
+                parent: nodeId,
               }, null, resolve);
             });
           }
@@ -336,7 +342,7 @@ export default class NodeStream extends QueueStream {
         })
     )
       .then(() => {
-        this.push({ nodeClass, nodeId, references });
+        this.push({ nodeClass, nodeId, references, parent });
 
         done();
       })
@@ -349,7 +355,7 @@ export default class NodeStream extends QueueStream {
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk({ nodeId, nodeClass, toParent }, handleErrors) {
+  processChunk({ nodeId, nodeClass, toParent, parent }, handleErrors) {
     this.session.browse({
       nodeId,
       browseDirection: BrowseService.BrowseDirection.Forward,
@@ -360,7 +366,7 @@ export default class NodeStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          this.handleResult({ nodeId, nodeClass, toParent }, results[0], done);
+          this.handleResult({ nodeId, nodeClass, toParent, parent }, results[0], done);
         });
       }
     });

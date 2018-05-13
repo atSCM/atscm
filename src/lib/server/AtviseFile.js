@@ -7,7 +7,7 @@ import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse, pick } from '../helpers/Object';
-import AtviseTypes from './Types';
+import AtviseTypes, { AtviseResourceType } from './Types';
 
 /**
  * A map of AtviseTypes against their definition id's value.
@@ -493,6 +493,12 @@ export default class AtviseFile extends File {
 
     this._references = {};
 
+    /**
+     * A node's browse- and display name.
+     * @type {?string}
+     */
+    this._name = this.stem.split('.')[0];
+
     let extensions = [];
     const m = this.relative.match(ExtensionRegExp);
     if (m) {
@@ -556,10 +562,13 @@ export default class AtviseFile extends File {
       // Handle atvise types
       let foundAtType = false;
 
-      Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
+      Object.entries(AtviseTypesByIdentifier).forEach(([identifier, type]) => {
         if (!foundAtType && extensions.includes(identifier)) {
           foundAtType = true;
-          const type = AtviseTypesByIdentifier[identifier];
+
+          if (!(type instanceof AtviseResourceType)) {
+            extensions = extensions.filter(e => e !== identifier);
+          }
 
           this._references.HasTypeDefinition = [type.typeDefinition];
           this._dataType = type.dataType;
@@ -573,6 +582,8 @@ export default class AtviseFile extends File {
       ];
       this._dataType = DataType.ByteString;
     }
+
+    this._name = [this._name, ...extensions.filter(e => !dirnameExts.includes(e))].join('.');
   }
 
   /**
@@ -737,6 +748,37 @@ export default class AtviseFile extends File {
     }
 
     return NodeId.fromFilePath(idPath);
+  }
+
+  /**
+   * A file's browse and display name.
+   * @type {string}
+   */
+  get name() {
+    if (!this._name) {
+      this._getMetadata();
+    }
+
+    return this._name;
+  }
+
+  /**
+   * A file's parent's node id.
+   * @type {NodeId}
+   */
+  get parentNodeId() {
+    const name = this.name;
+    const id = this.nodeId;
+
+    if (name) {
+      const parts = this.nodeId.value.split(name);
+
+      if (parts.length > 1) {
+        return new NodeId(id.identifierType, parts[0].slice(0, -1), id.namespaceIndex);
+      }
+    }
+
+    return this.nodeId.parent;
   }
 
   /**

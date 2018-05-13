@@ -53,7 +53,7 @@ class AtviseType {
 /**
  * An atvise-related resource type.
  */
-class AtviseResourceType extends AtviseType {
+export class AtviseResourceType extends AtviseType {
 
   /**
    * Creates a new resource type.

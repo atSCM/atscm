@@ -222,6 +222,13 @@ describe('NodeId', function() {
 
       expect(first.isChildOf(second), 'to be true');
     });
+
+    it('should return true for resource child nodes', function() {
+      const first = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node.html.Translate', 1);
+      const second = new NodeId(NodeId.NodeIdType.STRING, 'Path/to/Node.html', 1);
+
+      expect(first.isChildOf(second), 'to be true');
+    });
   });
 
   /** @test {NodeId#browseName} */
