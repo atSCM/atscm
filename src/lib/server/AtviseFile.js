@@ -562,10 +562,11 @@ export default class AtviseFile extends File {
       // Handle atvise types
       let foundAtType = false;
 
-      Object.keys(AtviseTypesByIdentifier).forEach(identifier => {
+      Object.entries(AtviseTypesByIdentifier).forEach(([identifier, type]) => {
         if (!foundAtType && extensions.includes(identifier)) {
           foundAtType = true;
-          const type = AtviseTypesByIdentifier[identifier];
+
+          extensions = extensions.filter(e => e !== identifier);
 
           this._references.HasTypeDefinition = [type.typeDefinition];
           this._dataType = type.dataType;
