@@ -1,5 +1,5 @@
-<a name="0.6.0-beta.32"></a>
-# 0.6.0-beta.32 (2018-05-12)
+<a name="0.6.0-beta.33"></a>
+# 0.6.0-beta.33 (2018-05-13)
 
 
 ### Bug Fixes
@@ -40,6 +40,7 @@
 * Create nodes on push ([#138](https://github.com/atSCM/atscm/issues/138)) ([d84531b](https://github.com/atSCM/atscm/commits/d84531b)), closes [#32](https://github.com/atSCM/atscm/issues/32)
 * New `import` task ([#129](https://github.com/atSCM/atscm/issues/129)) ([faa769d](https://github.com/atSCM/atscm/commits/faa769d))
 * **import:** Use scripts from [@atscm](https://github.com/atscm)/server-scripts package ([#160](https://github.com/atSCM/atscm/issues/160)) ([767be22](https://github.com/atSCM/atscm/commits/767be22))
+* Wrap resouce node properties in a `.inner` folder ([#194](https://github.com/atSCM/atscm/issues/194)) ([5535cf2](https://github.com/atSCM/atscm/commits/5535cf2)), closes [#170](https://github.com/atSCM/atscm/issues/170)
 
 
 
