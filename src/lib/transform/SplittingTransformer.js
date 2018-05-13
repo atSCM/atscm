@@ -164,6 +164,7 @@ export default class SplittingTransformer extends PartialTransformer {
     const newFile = files[0].clone();
 
     newFile.path = `${newFile.dirname}${newExtension}`;
+    newFile._name = null;
 
     return newFile;
   }
