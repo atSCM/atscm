@@ -566,7 +566,9 @@ export default class AtviseFile extends File {
         if (!foundAtType && extensions.includes(identifier)) {
           foundAtType = true;
 
-          extensions = extensions.filter(e => e !== identifier);
+          if (!(type instanceof AtviseResourceType)) {
+            extensions = extensions.filter(e => e !== identifier);
+          }
 
           this._references.HasTypeDefinition = [type.typeDefinition];
           this._dataType = type.dataType;
