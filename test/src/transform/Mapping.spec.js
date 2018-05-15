@@ -169,7 +169,7 @@ describe('MappingTransformer', function() {
     "toParent": "HasSubtype"
   }
 }`);
-          }
+          },
         ]);
       });
     });
