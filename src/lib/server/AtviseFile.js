@@ -8,6 +8,7 @@ import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse, pick } from '../helpers/Object';
 import AtviseTypes, { AtviseResourceType } from './Types';
+import { sortReferences } from '../helpers/mapping';
 
 /**
  * A map of AtviseTypes against their definition id's value.
@@ -446,7 +447,9 @@ export default class AtviseFile extends File {
       path: AtviseFile.pathForReadResult(readResult),
       contents: value ?
         AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) : // Variables
-        Buffer.from(JSON.stringify({ references }, null, '  ')), // Objects, types, ...
+        Buffer.from(JSON.stringify({
+          references: sortReferences(references),
+        }, null, '  ')), // Objects, types, ...
       _nodeClass: nodeClass,
       _dataType: value && value.$dataType,
       _arrayType: value && value.$arrayType,

@@ -4,6 +4,7 @@ import { NodeClass } from 'node-opcua';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
 import NodeId from '../lib/model/opcua/NodeId';
+import { sortReferences } from '../lib/helpers/mapping';
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
@@ -62,7 +63,7 @@ export default class MappingTransformer extends Transformer {
           rc.basename = `.${rc.basename}.json`;
 
           rc.contents = Buffer.from(JSON.stringify({
-            references: unmappedReferences,
+            references: sortReferences(unmappedReferences),
           }, null, '  '));
 
           this.push(rc);
