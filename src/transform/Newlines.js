@@ -19,7 +19,7 @@ export default class NewlinesTransformer extends PartialTransformer {
    * @param {AtviseFile} file The file being transformed.
    */
   shouldBeTransformed(file) {
-    return file.dataType !== DataType.ByteString;
+    return file.stem[0] === '.' || file.dataType !== DataType.ByteString;
   }
 
   /**
