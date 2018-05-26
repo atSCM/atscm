@@ -6,8 +6,17 @@ import {
   createTextNode, createCDataNode, createElement,
 } from '../lib/helpers/xml';
 
+/**
+ * Names of the tags to come before <metadata> in output files.
+ * @type {Set<string>}
+ */
 const tagsBeforeMetadata = new Set(['defs', 'desc', 'title']);
 
+/**
+ * Returns the index at which the <metadata> section should be inserted in the resulting xml.
+ * @param {Object[]} elements The elements to look at.
+ * @return {number} The insertion index.
+ */
 function metadataIndex(elements) {
   let index = 0;
 
