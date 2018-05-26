@@ -1,3 +1,4 @@
+import { EOL } from 'os';
 import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../src/lib/transform/XMLTransformer';
@@ -9,7 +10,7 @@ describe('XMLTransformer', function() {
   <text>text1</text>
   <rect width="200" height="200" x="160" y="16"/>
   <text>text2</text>
-</svg>`;
+</svg>`.split('\n').join(EOL); // Multi line string templates are always LF
     const testFile = { contents: Buffer.from(testContents) };
     const transformer = new XMLTransformer({
       direction: TransformDirection.FromDB, // just to have os-native newlines
