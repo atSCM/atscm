@@ -57,6 +57,10 @@ export default class MappingTransformer extends Transformer {
           delete unmappedReferences.HasTypeDefinition;
         }
 
+        if (file.relative.match(/\.prop\./)) {
+          delete unmappedReferences.toParent;
+        }
+
         if (Object.keys(unmappedReferences).length) {
           const rc = file.clone();
 

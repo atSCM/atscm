@@ -1,7 +1,7 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
 import { NodeClass, DataType, VariantArrayType, resolveNodeId, Variant, LocalizedText, StatusCodes,
-  QualifiedName, DataValue } from 'node-opcua';
+  QualifiedName, DataValue, ReferenceTypeIds } from 'node-opcua';
 import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
 import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
@@ -555,6 +555,7 @@ export default class AtviseFile extends File {
 
     ifLastExtensionMatches(ext => ext === 'prop', () => {
       this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
+      this._references.toParent = ReferenceTypeIds.HasProperty;
     });
 
     ifLastExtensionMatches(ext => ext === 'var', () => {
