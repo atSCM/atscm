@@ -1,3 +1,4 @@
+import { EOL } from 'os';
 import { xml2js, js2xml } from 'xml-js';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
@@ -37,7 +38,10 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromDB}.
      * @type {function(object: Object): string}
      */
-    this._fromDBBuilder = object => build(object, { compact: false, spaces: 2 });
+    this._fromDBBuilder = object => {
+      const xml = build(object, { compact: false, spaces: 2 });
+      return xml.replace(/\r?\n/g, EOL);
+    };
 
     // eslint-disable-next-line jsdoc/require-param
     /**
