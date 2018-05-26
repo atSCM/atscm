@@ -138,7 +138,7 @@ export function removeChild(node, tagName) {
  * @return {Object} A text node containing the given text.
  */
 export function createTextNode(text = '') {
-  return { type: 'text', text };
+  return { type: 'text', text: text || '' };
 }
 
 /**
