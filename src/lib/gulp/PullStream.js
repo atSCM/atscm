@@ -1,6 +1,7 @@
 import readline from 'readline';
 import { dest } from 'gulp';
 import Logger from 'gulplog';
+import eol from 'gulp-eol';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
@@ -33,6 +34,7 @@ export default class PullStream {
       ProjectConfig.useTransformers,
       TransformDirection.FromDB
     )
+      .pipe(eol())
       .pipe(dest('./src'))
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {

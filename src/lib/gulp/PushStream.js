@@ -1,5 +1,6 @@
 import readline from 'readline';
 import Logger from 'gulplog';
+import eol from 'gulp-eol';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
@@ -39,6 +40,7 @@ export default class PushStream {
       ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
     )
+      .pipe(eol('\r\n', false))
       .pipe(writeStream)
       .pipe(createStream)
       .pipe(addReferencesStream)
