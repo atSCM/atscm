@@ -5,7 +5,7 @@ import Transformer, { TransformDirection } from '../../../../src/lib/transform/T
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
 
 function nativeEOLs(string) {
-  return string.replace('\n', EOL);
+  return string.replace(/\n/g, EOL);
 }
 
 /** @test {XMLTransformer} */
