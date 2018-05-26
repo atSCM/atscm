@@ -6,6 +6,18 @@ import {
   createTextNode, createCDataNode, createElement,
 } from '../lib/helpers/xml';
 
+const tagsBeforeMetadata = new Set(['defs', 'desc', 'title']);
+
+function metadataIndex(elements) {
+  let index = 0;
+
+  while (elements.length > index && tagsBeforeMetadata.has(elements[index].name)) {
+    index += 1;
+  }
+
+  return index;
+}
+
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
  * alongside with a .json file containing the display's parameters.
@@ -190,8 +202,9 @@ export default class DisplayTransformer extends XMLTransformer {
             );
           }
 
-          // Insert <metadata> as first element in the resulting svg
-          svg.elements.unshift(metaTag);
+          // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
+          // <title> if defined
+          svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
         }
 
         const display = DisplayTransformer.combineFiles(
