@@ -27,7 +27,7 @@ export default class XMLTransformer extends SplittingTransformer {
       return js2xml(object, Object.assign(buildOptions, {
         attributeValueFn(val) {
           return val
-            .replace(/&(?!amp;)/g, '&amp;')
+            .replace(/&(?!(amp|quot);)/g, '&amp;')
             .replace(/</g, '&lt;');
         },
       }));
