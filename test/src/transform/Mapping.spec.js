@@ -140,6 +140,38 @@ describe('MappingTransformer', function() {
           },
         ]);
       });
+
+      it('should sort references', function() {
+        const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+        return expect([{
+          nodeId: new NodeId('ObjectTypes.PROJECT.CustomType'),
+          nodeClass: NodeClass.ObjectType,
+          references: {
+            toParent: 'HasSubtype',
+            HasTypeDefinition: [
+              new NodeId('VariableTypes.PROJECT.CustomType'),
+            ],
+            HasModellingRule: [
+              'ns=0;i=78',
+            ],
+          },
+        }], 'when piped through', stream, 'to yield chunks satisfying', [
+          file => {
+            expect(file.contents.toString(), 'to equal', `{
+  "references": {
+    "HasModellingRule": [
+      "ns=0;i=78"
+    ],
+    "HasTypeDefinition": [
+      "ns=1;s=VariableTypes.PROJECT.CustomType"
+    ],
+    "toParent": "HasSubtype"
+  }
+}`);
+          },
+        ]);
+      });
     });
   });
 

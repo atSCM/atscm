@@ -1,12 +1,13 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
 import { NodeClass, DataType, VariantArrayType, resolveNodeId, Variant, LocalizedText, StatusCodes,
-  QualifiedName, DataValue } from 'node-opcua';
+  QualifiedName, DataValue, ReferenceTypeIds } from 'node-opcua';
 import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
 import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
 import NodeId from '../model/opcua/NodeId';
 import { reverse, pick } from '../helpers/Object';
+import { sortReferences } from '../helpers/mapping';
 import AtviseTypes, { AtviseResourceType } from './Types';
 
 /**
@@ -141,21 +142,21 @@ const toRawValue = {
  * @param {Buffer} b The buffer to decode from.
  * @return {string} The buffer's string representation.
  */
-const decodeAsString = b => b.toString();
+const decodeAsString = b => b.toString().trim();
 
 /**
  * Decodes a buffer to an integer value.
  * @param {Buffer} b The buffer to decode from.
  * @return {number} The decoded integer.
  */
-const decodeAsInt = b => parseInt(b.toString(), 10);
+const decodeAsInt = b => parseInt(decodeAsString(b), 10);
 
 /**
  * Decodes a buffer to a float value.
  * @param {Buffer} b The buffer to decode from.
  * @return {number} The decoded float.
  */
-const decodeAsFloat = b => parseFloat(b.toString());
+const decodeAsFloat = b => parseFloat(decodeAsString(b));
 
 /**
  * Decodes a buffer using JSON.
@@ -170,7 +171,7 @@ const decodeAsJson = b => JSON.parse(b.toString());
  */
 const decodeRawValue = {
   [DataType.Null]: () => null,
-  [DataType.Boolean]: b => b.toString() === 'true',
+  [DataType.Boolean]: b => decodeAsString(b) === 'true',
   [DataType.SByte]: decodeAsInt,
   [DataType.Byte]: decodeAsInt,
   [DataType.Int16]: decodeAsInt,
@@ -446,7 +447,9 @@ export default class AtviseFile extends File {
       path: AtviseFile.pathForReadResult(readResult),
       contents: value ?
         AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) : // Variables
-        Buffer.from(JSON.stringify({ references }, null, '  ')), // Objects, types, ...
+        Buffer.from(JSON.stringify({
+          references: sortReferences(references),
+        }, null, '  ')), // Objects, types, ...
       _nodeClass: nodeClass,
       _dataType: value && value.$dataType,
       _arrayType: value && value.$arrayType,
@@ -552,6 +555,7 @@ export default class AtviseFile extends File {
 
     ifLastExtensionMatches(ext => ext === 'prop', () => {
       this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
+      this._references.toParent = ReferenceTypeIds.HasProperty;
     });
 
     ifLastExtensionMatches(ext => ext === 'var', () => {

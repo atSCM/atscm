@@ -382,6 +382,37 @@ describe('AtviseFile', function() {
         },
       });
     });
+
+    it('should sort references in JSON file', function() {
+      const nodeId = new NodeId('AGENT');
+      const references = {
+        HasTypeDefinition: [
+          new NodeId('ns=1;s=ObjectTypes.ATVISE.Server.Local'),
+        ],
+        toParent: 'HasComponent',
+        HasModellingRule: [
+          new NodeId('ns=1;i=78'),
+        ],
+      };
+
+      const file = AtviseFile.fromReadResult({
+        nodeId,
+        nodeClass: NodeClass.Object,
+        references,
+      });
+
+      expect(file.contents.toString(), 'to equal', `{
+  "references": {
+    "HasModellingRule": [
+      "ns=1;i=78"
+    ],
+    "HasTypeDefinition": [
+      "ns=1;s=ObjectTypes.ATVISE.Server.Local"
+    ],
+    "toParent": "HasComponent"
+  }
+}`);
+    });
   });
 
   /** @test {AtviseFile#_getMetadata} */

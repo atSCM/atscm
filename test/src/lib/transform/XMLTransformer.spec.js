@@ -1,8 +1,12 @@
+import { EOL } from 'os';
 import expect from 'unexpected';
-// import { Builder } from 'xml2js';
 import { xml2js } from 'xml-js';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
+
+function nativeEOLs(string) {
+  return string.replace(/\n/g, EOL);
+}
 
 /** @test {XMLTransformer} */
 describe('XMLTransformer', function() {
@@ -99,9 +103,9 @@ describe('XMLTransformer', function() {
     context('when direction is FromDB', function() {
       it('should indent with double space', function(done) {
         testBuilder(TransformDirection.FromDB, baseXmlObject,
-          `<root>
+          nativeEOLs(`<root>
   <sub>test</sub>
-</root>`, done);
+</root>`), done);
       });
     });
 
@@ -115,24 +119,24 @@ describe('XMLTransformer', function() {
     it('should support CDATA', function() {
       return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB }))
         .encodeContents(cdataXmlObject, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to end with', `<svg>
+        .then(args => expect(args[1], 'to end with', nativeEOLs(`<svg>
   <script><![CDATA[test();]]></script>
-</svg>`));
+</svg>`)));
     });
 
     it('should escape \'&\' in attribute values', function(done) {
-      const xml = `<root>
+      const xml = nativeEOLs(`<root>
   <node attribute="escape &amp; this"/>
-</root>`;
+</root>`);
       const xmlObject = xml2js(xml);
 
       testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
     });
 
     it('should escape \'<\' in attribute values', function(done) {
-      const xml = `<root>
+      const xml = nativeEOLs(`<root>
   <node attribute="escape &lt; this"/>
-</root>`;
+</root>`);
       const xmlObject = xml2js(xml);
 
       testBuilder(TransformDirection.FromDB, xmlObject, xml, done);

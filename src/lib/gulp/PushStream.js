@@ -6,6 +6,7 @@ import MappingTransformer from '../../transform/Mapping';
 import WriteStream from '../server/WriteStream';
 import CreateNodeStream from '../server/CreateNodeStream';
 import AddReferencesStream from '../server/AddReferencesStream';
+import NewlinesTransformer from '../../transform/Newlines';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
@@ -36,7 +37,8 @@ export default class PushStream {
     return Transformer.applyTransformers(
       srcStream
         .pipe(mappingStream),
-      ProjectConfig.useTransformers,
+      ProjectConfig.useTransformers
+        .concat(new NewlinesTransformer()),
       TransformDirection.FromFilesystem
     )
       .pipe(writeStream)
