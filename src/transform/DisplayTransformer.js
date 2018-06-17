@@ -1,5 +1,31 @@
 import { Buffer } from 'buffer';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import {
+  findChild, removeChild,
+  removeChildren,
+  createTextNode, createCDataNode, createElement,
+} from '../lib/helpers/xml';
+
+/**
+ * Names of the tags to come before <metadata> in output files.
+ * @type {Set<string>}
+ */
+const tagsBeforeMetadata = new Set(['defs', 'desc', 'title']);
+
+/**
+ * Returns the index at which the <metadata> section should be inserted in the resulting xml.
+ * @param {Object[]} elements The elements to look at.
+ * @return {number} The insertion index.
+ */
+function metadataIndex(elements) {
+  let index = 0;
+
+  while (elements.length > index && tagsBeforeMetadata.has(elements[index].name)) {
+    index += 1;
+  }
+
+  return index;
+}
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -28,50 +54,55 @@ export default class DisplayTransformer extends XMLTransformer {
     this.decodeContents(file, (err, results) => {
       if (err) {
         callback(err);
-      } else if (!results || results.svg === undefined) {
+      } else if (!results) {
         callback(new Error('Error parsing display: No `svg` tag'));
       } else {
         const xml = results;
-        const document = results.svg;
+        const document = findChild(xml, 'svg');
+
+        if (!document) {
+          callback(new Error('Error parsing display: No `svg` tag'));
+          return;
+        }
 
         const config = {};
+        const scriptTags = removeChildren(document, 'script');
 
         // Extract JavaScript
-        if (this.tagNotEmpty(document.script)) {
-          document.script.forEach(script => {
-            if (script.$ && (script.$.src || script.$['xlink:href'])) {
+        if (scriptTags.length) {
+          scriptTags.forEach(script => {
+            if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
               if (!config.dependencies) {
                 config.dependencies = [];
               }
 
-              config.dependencies.push(script.$.src || script.$['xlink:href']);
+              config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
             } else {
               // TODO: Warn on multiple inline scripts
 
+              const scriptContentNode = script.elements ? script.elements[0] : createTextNode();
+
               const scriptFile = DisplayTransformer.splitFile(file, '.js');
-              const scriptText = (typeof script === 'string') ?
-                script : script._ || '';
+
+              const scriptText = scriptContentNode[scriptContentNode.type] || '';
 
               scriptFile.contents = Buffer.from(scriptText);
               this.push(scriptFile);
             }
           });
-
-          delete xml.svg.script;
         }
 
         // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
+        const metaTag = findChild(document, 'metadata');
+        if (metaTag && metaTag.elements) {
           // TODO: Warn on multiple metadata tags
 
-          const meta = document.metadata[0];
-
           // - Parameters
-          if (this.tagNotEmpty(meta['atv:parameter'])) {
+          const paramTags = removeChildren(metaTag, 'atv:parameter');
+          if (paramTags.length) {
             config.parameters = [];
-            meta['atv:parameter'].forEach(param => config.parameters.push(param.$));
 
-            delete xml.svg.metadata[0]['atv:parameter'];
+            paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
           }
         }
 
@@ -131,46 +162,58 @@ export default class DisplayTransformer extends XMLTransformer {
     this.decodeContents(svgFile, (err, xml) => {
       if (err) {
         callback(err);
-      } else if (!xml || xml.svg === undefined) {
-        callback(new Error('Error parsing display SVG: No `svg` tag'));
       } else {
         const result = xml;
+        const svg = findChild(result, 'svg');
+
+        if (!svg) {
+          callback(new Error('Error parsing display SVG: No `svg` tag'));
+          return;
+        }
 
         // Handle empty svg tag
-        if (typeof result.svg === 'string') {
-          result.svg = {};
+        if (!svg.elements) {
+          svg.elements = [];
         }
 
         // Insert dependencies
-        result.svg.script = [];
         if (config.dependencies) {
-          config.dependencies.forEach(p => result.svg.script.push({
-            $: { 'xlink:href': p },
-          }));
+          config.dependencies.forEach(src => {
+            svg.elements.push(createElement('script', undefined, { 'xlink:href': src }));
+          });
         }
 
         // Insert script
         // FIXME: Import order is not preserved!
         if (scriptFile) {
-          result.svg.script.push({
-            $: { type: 'text/ecmascript' },
-            _: XMLTransformer.forceCData(inlineScript),
-          });
+          svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
+            type: 'text/ecmascript',
+          }));
         }
 
         // Insert metadata
         // - Parameters
         if (config.parameters && config.parameters.length > 0) {
-          if (!result.svg.metadata || !result.svg.metadata[0]) {
-            result.svg.metadata = [{}];
-          }
-          if (!result.svg.metadata[0]['atv:parameter']) {
-            result.svg.metadata[0]['atv:parameter'] = [];
+          let metaTag = removeChild(svg, 'metadata');
+
+          if (!metaTag) {
+            metaTag = createElement('metadata');
           }
 
-          // FIXME: Parameters should come before `atv:gridconfig` and `atv:snapconfig`
-          config.parameters
-            .forEach(param => result.svg.metadata[0]['atv:parameter'].push({ $: param }));
+          if (!metaTag.elements) {
+            metaTag.elements = [];
+          }
+
+          // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
+          for (let i = config.parameters.length - 1; i >= 0; i--) {
+            metaTag.elements.unshift(
+              createElement('atv:parameter', undefined, config.parameters[i])
+            );
+          }
+
+          // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
+          // <title> if defined
+          svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
         }
 
         const display = DisplayTransformer.combineFiles(

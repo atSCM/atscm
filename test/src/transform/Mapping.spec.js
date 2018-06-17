@@ -1,20 +1,15 @@
+import { join } from 'path';
 import { Buffer } from 'buffer';
 import { stub, spy } from 'sinon';
-import proxyquire from 'proxyquire';
-import { DataType, VariantArrayType } from 'node-opcua';
+import { DataType, VariantArrayType, NodeClass } from 'node-opcua';
 import File from 'vinyl';
 import Logger from 'gulplog';
 import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
-import NodeId from '../../../src/lib/server/NodeId';
+import NodeId from '../../../src/lib/model/opcua/NodeId';
 import AtviseFile from '../../../src/lib/server/AtviseFile';
-
-const readFile = (path, enc, cb) => cb(null, JSON.stringify({
-  typeDefinition: 'ns=1;s=VariableTypes.PROJECT.Custom',
-}));
-const fs = { readFile };
-
-const MappingTransformer = proxyquire('../../../src/transform/Mapping', { fs }).default;
+import MappingTransformer from '../../../src/transform/Mapping';
+import { scalar, array, matrix } from '../../fixtures/dataTypes';
 
 /** @test {MappingTransformer} */
 describe('MappingTransformer', function() {
@@ -96,13 +91,16 @@ describe('MappingTransformer', function() {
 
       return expect([{
         nodeId: new NodeId('AGENT.DISPLAYS.Main'),
+        nodeClass: NodeClass.Variable,
         value: {
           value: '<xml></xml>',
           $dataType: DataType.XmlElement,
           $arrayType: VariantArrayType.Scalar,
         },
-        referenceDescription: {
-          typeDefinition: new NodeId('VariableTypes.ATVISE.Display'),
+        references: {
+          HasTypeDefinition: [
+            new NodeId('VariableTypes.ATVISE.Display'),
+          ],
         },
       }], 'when piped through', stream, 'to yield chunks satisfying', [
         expect.it('to be an', AtviseFile),
@@ -110,27 +108,67 @@ describe('MappingTransformer', function() {
     });
 
     context('when file has non-standard type-definition', function() {
-      it('should push .rc file', function() {
+      it('should push a reference config file', function() {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect([{
           nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
+          nodeClass: NodeClass.Variable,
           value: {
             value: '<xml></xml>',
             $dataType: DataType.XmlElement,
             $arrayType: VariantArrayType.Scalar,
           },
-          referenceDescription: {
-            typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+          references: {
+            HasTypeDefinition: [
+              new NodeId('VariableTypes.PROJECT.CustomType'),
+            ],
           },
         }], 'when piped through', stream, 'to yield chunks satisfying', [
           {
+            basename: '.CustomVar.var.xml.json',
             contents: new Buffer(JSON.stringify({
-              typeDefinition: 'ns=1;s=VariableTypes.PROJECT.CustomType',
+              references: {
+                HasTypeDefinition: [
+                  'ns=1;s=VariableTypes.PROJECT.CustomType',
+                ],
+              },
             }, null, '  ')),
           },
           {
             typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+          },
+        ]);
+      });
+
+      it('should sort references', function() {
+        const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+        return expect([{
+          nodeId: new NodeId('ObjectTypes.PROJECT.CustomType'),
+          nodeClass: NodeClass.ObjectType,
+          references: {
+            toParent: 'HasSubtype',
+            HasTypeDefinition: [
+              new NodeId('VariableTypes.PROJECT.CustomType'),
+            ],
+            HasModellingRule: [
+              'ns=0;i=78',
+            ],
+          },
+        }], 'when piped through', stream, 'to yield chunks satisfying', [
+          file => {
+            expect(file.contents.toString(), 'to equal', `{
+  "references": {
+    "HasModellingRule": [
+      "ns=0;i=78"
+    ],
+    "HasTypeDefinition": [
+      "ns=1;s=VariableTypes.PROJECT.CustomType"
+    ],
+    "toParent": "HasSubtype"
+  }
+}`);
           },
         ]);
       });
@@ -177,31 +215,44 @@ describe('MappingTransformer', function() {
         });
     });
 
-    context('when file has non-standard type-definition', function() {
-      context('with .rc file', function() {
-        before(() => spy(fs, 'readFile'));
-        after(() => fs.readFile.restore());
+    it('should skip non-atscm dot files', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-        it('should read .rc file', function() {
+      return expect(cb => stream.transformFromFilesystem(
+        { isDirectory: () => false, stem: '.eslintrc' }, 'utf8', cb
+      ), 'to call the callback')
+        .then(args => {
+          expect(args, 'to have length', 1);
+          expect(args[0], 'to be falsy');
+        });
+    });
+
+    context('when file has non-standard type-definition', function() {
+      context('with reference config file', function() {
+        it('should read reference config file', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
           return expect([
+            new AtviseFile({
+              path: 'AGENT/OBJECTS/.CustomVar.var.ext.json',
+              contents: Buffer.from(JSON.stringify({ references: { HasTypeDefinition: [
+                'ns=1;s=VariableTypes.PROJECT.CustomType',
+              ] } })),
+            }),
             new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }),
-          ], 'when piped through', stream)
-            .then(() => {
-              expect(fs.readFile, 'was called once');
-            });
+          ], 'when piped through', stream, 'to yield chunks satisfying', [
+            {
+              typeDefinition: new NodeId('VariableTypes.PROJECT.CustomType'),
+            },
+          ]);
         });
       });
 
-      context('when .rc file cannot be read', function() {
-        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(new Error('Test'))));
-        afterEach(() => fs.readFile.restore());
-
+      context('when reference config file is missing', function() {
         it('should forward error', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-          const promise = expect(stream, 'to error with', 'Test');
+          const promise = expect(stream, 'to error with', /missing reference file/i);
 
           stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
           stream.end();
@@ -211,20 +262,107 @@ describe('MappingTransformer', function() {
       });
 
       context('when .rc file cannot be parsed', function() {
-        beforeEach(() => stub(fs, 'readFile').callsFake((path, enc, cb) => cb(null, 'invalid')));
-        afterEach(() => fs.readFile.restore());
-
         it('should forward error', function() {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
-          const promise = expect(stream, 'to error with', /Unexpected token i in JSON/);
+          const promise = expect(stream, 'to error with', /Unexpected token/);
 
+          stream.write(new AtviseFile({
+            contents: Buffer.from('{ "invalid" }'),
+            path: 'AGENT/OBJECTS/.CustomVar.var.ext.json',
+          }));
           stream.write(new AtviseFile({ path: 'AGENT/OBJECTS/CustomVar.var.ext' }));
           stream.end();
 
           return promise;
         });
       });
+    });
+  });
+
+  describe('should be able to map all types', function() {
+    async function testFromDBMapping({ sample }) {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+      const [err, [result]] = await expect([
+        Object.assign({}, sample, {
+          nodeId: new NodeId(`AGENT.OBJECTS.allTypes.${sample.dataType}${sample.arrayType}`),
+          value: {
+            value: sample.value,
+            $dataType: sample.dataType,
+            $arrayType: sample.arrayType,
+          },
+          references: {
+            toParent: 'HasComponent',
+            HasTypeDefinition: [
+              new NodeId('ns=0;i=62'),
+            ],
+          },
+        }),
+      ], 'when piped through', stream, 'to yield chunks satisfying', [
+        chunk => expect(chunk, 'to be an', AtviseFile) && chunk,
+      ]);
+
+      expect(err, 'to be falsy');
+      expect(result.value, 'to equal', sample.value);
+
+      return result;
+    }
+
+    scalar.forEach((sample, i) => {
+      context(`when mapping ${sample.dataType}s`, function() {
+        it('should map scalar values', async function() {
+          return testFromDBMapping({ sample });
+        });
+        it('should map array values', async function() {
+          return testFromDBMapping({ sample: array[i] });
+        });
+        it('should map matrix values', async function() {
+          return testFromDBMapping({ sample: matrix[i] });
+        });
+      });
+    });
+  });
+
+  context('when a resource property is mapped', function() {
+    it('should wrap nodes in `.inner` folder', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
+
+      return expect([{
+        nodeId: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html.Translate'),
+        parent: new NodeId('SYSTEM.LIBRARY.RESOURCES/index.html'),
+        nodeClass: NodeClass.Variable,
+        value: {
+          value: true,
+          $dataType: DataType.Boolean,
+          $arrayType: VariantArrayType.Scalar,
+        },
+        references: {
+          HasTypeDefinition: [
+            new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0),
+          ],
+        },
+      }], 'when piped through', stream, 'to yield chunks satisfying', [
+        {
+          dirname: join('SYSTEM/LIBRARY/RESOURCES/index.html.inner'),
+          basename: 'Translate.prop.bool',
+          contents: Buffer.from('true'),
+        },
+      ]);
+    });
+
+    it('should unwrap properties `.inner` folder', function() {
+      const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
+
+      return expect([new AtviseFile({
+        path: join('SYSTEM/LIBRARY/RESOURCES/test.htm.inner/Translate.prop.bool'),
+        contents: Buffer.from('true'),
+      })], 'when piped through', stream, 'to yield chunks satisfying', [
+        {
+          path: join('SYSTEM/LIBRARY/RESOURCES/test.htm/Translate.prop.bool'),
+          value: true,
+        },
+      ]);
     });
   });
 });

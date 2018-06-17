@@ -1,5 +1,10 @@
 import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import {
+  findChild, findChildren,
+  textContent,
+  createElement, createTextNode, createCDataNode,
+} from '../lib/helpers/xml';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -29,54 +34,88 @@ export default class ScriptTransformer extends XMLTransformer {
       if (err) {
         callback(err);
       } else {
-        if (!results || results.script === undefined) {
+        const document = results && findChild(results, 'script');
+
+        if (!document) {
           Logger.warn(`Empty document at ${file.relative}`);
         }
 
-        const document = results && results.script ? results.script : {};
-
         const config = {};
-        let code = '';
 
         // Extract metadata
-        if (this.tagNotEmpty(document.metadata)) {
+        const metaTag = findChild(document, 'metadata');
+        if (metaTag && metaTag.elements) {
           // TODO: Warn on multiple metadata tags
+          metaTag.elements.forEach(child => {
+            if (child.type === 'element') {
+              if (child.name === 'icon') { // - Icon
+                config.icon = Object.assign({
+                  content: textContent(child) || '',
+                }, child.attributes);
+              } else if (child.name === 'visible') { // - Visible
+                config.visible = Boolean(parseInt(textContent(child), 10));
+              } else if (child.name === 'title') {
+                config.title = textContent(child);
+              } else if (child.name === 'description') {
+                config.description = textContent(child);
+              } else {
+                if (!config.metadata) {
+                  config.metadata = {};
+                }
 
-          const meta = document.metadata[0];
+                const value = textContent(child);
 
-          // - Icon
-          if (this.tagNotEmpty(meta.icon)) {
-            const icon = meta.icon[0];
-            config.icon = icon.$ || {};
-            config.icon.content = icon._ || '';
-          }
+                if (config.metadata[child.name]) {
+                  if (!Array.isArray(config.metadata[child.name])) {
+                    config.metadata[child.name] = [config.metadata[child.name]];
+                  }
 
-          // - Visible
-          if (this.tagNotEmpty(meta.visible)) {
-            config.visible = Boolean(meta.visible[0]);
-          }
+                  config.metadata[child.name].push(value);
+                } else {
+                  config.metadata[child.name] = textContent(child);
+                }
 
-          // - Title
-          if (this.tagNotEmpty(meta.title)) {
-            config.title = meta.title[0];
-          }
-
-          // - Description
-          if (this.tagNotEmpty(meta.description)) {
-            config.description = meta.description[0];
-          }
+                if (![
+                  'longrunning',
+                ].includes(child.name)) {
+                  Logger.debug(`Generic metadata element '${child.name}' at ${file.relative}`);
+                }
+              }
+            }
+          });
         }
 
         // Extract Parameters
-        if (this.tagNotEmpty(document.parameter)) {
+        const paramTags = findChildren(document, 'parameter');
+        if (paramTags.length) {
           config.parameters = [];
-          document.parameter.forEach(param => config.parameters.push(param.$));
+          paramTags.forEach(({ attributes, elements }) => {
+            const param = Object.assign({}, attributes);
+
+            // Handle relative parameter targets
+            if (attributes.relative === 'true') {
+              param.target = {};
+
+              const target = findChild(elements[0],
+                ['Elements', 'RelativePathElement', 'TargetName']);
+
+              if (target) {
+                const [index, name] = ['NamespaceIndex', 'Name']
+                  .map(tagName => textContent(findChild(target, tagName)));
+
+                const parsedIndex = parseInt(index, 10);
+
+                param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
+              }
+            }
+
+            config.parameters.push(param);
+          });
         }
 
         // Extract JavaScript
-        if (this.tagNotEmpty(document.code)) {
-          code = document.code[0];
-        }
+        const codeNode = findChild(document, 'code');
+        const code = textContent(codeNode) || '';
 
         // Write config file
         const configFile = ScriptTransformer.splitFile(file, '.json');
@@ -120,47 +159,86 @@ export default class ScriptTransformer extends XMLTransformer {
       code = scriptFile.contents.toString();
     }
 
+    const document = createElement('script', []);
+
     const result = {
-      script: { },
+      elements: [
+        document,
+      ],
     };
 
     // Insert metadata
-    if (lastFile.isQuickDynamic) {
-      const meta = {};
+    const meta = [];
 
+    if (lastFile.isQuickDynamic) {
       // - Icon
       if (config.icon) {
         const icon = config.icon.content;
         delete config.icon.content;
 
-        meta.icon = {
-          $: config.icon,
-          _: icon,
-        };
+        meta.push(createElement('icon', [createTextNode(icon)], config.icon));
       }
 
       // - Other fields
       if (config.visible !== undefined) {
-        meta.visible = config.visible ? 1 : 0;
+        meta.push(createElement('visible', [createTextNode(`${config.visible ? 1 : 0}`)]));
       }
 
       if (config.title !== undefined) {
-        meta.title = config.title;
+        meta.push(createElement('title', [createTextNode(config.title)]));
       }
 
       if (config.description !== undefined) {
-        meta.description = config.description;
+        meta.push(createElement('description', [createTextNode(config.description)]));
       }
+    }
 
-      result.script.metadata = meta;
+    // - Additional fields
+    if (config.metadata !== undefined) {
+      Object.entries(config.metadata)
+        .forEach(([name, value]) => {
+          (Array.isArray(value) ? value : [value])
+            .forEach(v => meta.push(createElement(name, [createTextNode(v)])));
+        });
+    }
+
+    if (lastFile.isQuickDynamic || meta.length) {
+      document.elements.push(createElement('metadata', meta));
     }
 
     // Insert parameters
-    result.script.parameter = config.parameters ?
-      config.parameters.map(param => ({ $: param })) :
-      [];
+    if (config.parameters) {
+      config.parameters.forEach(attributes => {
+        let elements;
 
-    result.script.code = ScriptTransformer.forceCData(code);
+        // Handle relative parameter targets
+        if (attributes.relative === 'true' && attributes.target) {
+          const { namespaceIndex, name } = attributes.target;
+          const targetElements = createElement('Elements');
+
+          elements = [createElement('RelativePath', [targetElements])];
+
+          if (name !== undefined) {
+            targetElements.elements = [
+              createElement('RelativePathElement', [
+                createElement('TargetName', [
+                  createElement('NamespaceIndex', [createTextNode(`${namespaceIndex}`)]),
+                  createElement('Name', [createTextNode(`${name}`)]),
+                ]),
+              ]),
+            ];
+          }
+
+          // eslint-disable-next-line no-param-reassign
+          delete attributes.target;
+        }
+
+        document.elements.push(createElement('parameter', elements, attributes));
+      });
+    }
+
+    // Insert script code
+    document.elements.push(createElement('code', [createCDataNode(code)]));
 
     const script = ScriptTransformer.combineFiles(
       Object.keys(files).map(ext => files[ext]),

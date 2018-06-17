@@ -1,7 +1,7 @@
 import Emitter from 'events';
 import { spy, stub } from 'sinon';
 import proxyquire from 'proxyquire';
-import { resolveNodeId } from 'node-opcua';
+import { resolveNodeId, NodeClass } from 'node-opcua';
 import { ctor as throughStreamClass } from 'through2';
 import expect from '../../../expect';
 import Watcher, { SubscribeStream } from '../../../../src/lib/server/Watcher';
@@ -123,7 +123,7 @@ describe('SubscribeStream', function() {
         stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem());
       });
 
-      return expect([{ nodeId }], 'when piped through', stream,
+      return expect([{ nodeId, nodeClass: NodeClass.Variable }], 'when piped through', stream,
         'to yield objects satisfying', 'to have length', 0)
         .then(() => {
           expect(stream.subscription.monitor, 'was called once');
@@ -140,7 +140,10 @@ describe('SubscribeStream', function() {
           .callsFake(() => new StubMonitoredItem(new Error('item error')));
       });
 
-      return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
+      return expect([{
+        nodeId,
+        nodeClass: NodeClass.Variable,
+      }], 'when piped through', stream, 'to error with', /item error/);
     });
 
     it('should forward MonitoredItem errors when given as string', function() {
@@ -151,7 +154,10 @@ describe('SubscribeStream', function() {
         stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem('item error'));
       });
 
-      return expect([{ nodeId }], 'when piped through', stream, 'to error with', /item error/);
+      return expect([{
+        nodeId,
+        nodeClass: NodeClass.Variable,
+      }], 'when piped through', stream, 'to error with', /item error/);
     });
 
     it('should forward change events', function() {
@@ -174,7 +180,13 @@ describe('SubscribeStream', function() {
         });
       });
 
-      return expect([{ nodeId }], 'when piped through', stream,
+      return expect(
+        [{
+          nodeId,
+          nodeClass: NodeClass.Variable,
+          references: {},
+        }],
+        'when piped through', stream,
         'to yield objects satisfying', 'to have length', 0)
         .then(() => item.emit('changed', changeData))
         .then(() => {
@@ -182,8 +194,45 @@ describe('SubscribeStream', function() {
           expect(listener.lastCall, 'to satisfy', [{
             nodeId,
             value: changeData.value,
-            referenceDescription: { nodeId },
+            references: {},
             mtime: changeData.serverTimestamp,
+          }]);
+        });
+    });
+
+    it('should emit delete events without a value', function() {
+      const stream = new SubscribeStream();
+      const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
+      const listener = spy();
+      stream.on('delete', listener);
+
+      const event = {
+        serverTimestamp: new Date(),
+      };
+
+      let item;
+
+      stream.once('subscription-started', subscription => {
+        stub(subscription, 'monitor').callsFake(() => {
+          item = new StubMonitoredItem(false);
+          return item;
+        });
+      });
+
+      return expect(
+        [{
+          nodeId,
+          nodeClass: NodeClass.Variable,
+          references: {},
+        }],
+        'when piped through', stream,
+        'to yield objects satisfying', 'to have length', 0)
+        .then(() => item.emit('changed', event))
+        .then(() => {
+          expect(listener, 'was called once');
+          expect(listener.lastCall, 'to satisfy', [{
+            nodeId,
+            references: {},
           }]);
         });
     });
@@ -191,7 +240,20 @@ describe('SubscribeStream', function() {
 
   /** @test {SubscribeStream#_transform} */
   describe('#_transform', function() {
-    const chunk = 'chunk';
+    it('should skip non-variable nodes', function(done) {
+      const stream = new SubscribeStream();
+      stub(stream, '_enqueueChunk').callsFake(() => {});
+      stream.once('subscription-started', subscription => {
+        expect(stream.subscription, 'to be', subscription);
+
+        stream._transform({ nodeClass: NodeClass.Object }, 'utf8', () => {});
+
+        expect(stream._enqueueChunk, 'was not called');
+        done();
+      });
+    });
+
+    const chunk = { nodeId: 'chunk', nodeClass: NodeClass.Variable };
 
     it('should call enqueue immediately if subscription started', function(done) {
       const stream = new SubscribeStream();

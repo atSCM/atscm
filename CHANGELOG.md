@@ -1,3 +1,52 @@
+<a name="0.6.0-beta.36"></a>
+# 0.6.0-beta.36 (2018-06-17)
+
+
+### Bug Fixes
+
+* Allow slashes in node ids ([#192](https://github.com/atSCM/atscm/issues/192)) ([fdd0a9d](https://github.com/atSCM/atscm/commits/fdd0a9d)), closes [#190](https://github.com/atSCM/atscm/issues/190)
+* Cast typed arrays to regular array objects ([806a8c4](https://github.com/atSCM/atscm/commits/806a8c4))
+* Do not transform reference config files ([#184](https://github.com/atSCM/atscm/issues/184)) ([8531734](https://github.com/atSCM/atscm/commits/8531734))
+* Escape '&' and '<' in XML attribute values before encoding ([#152](https://github.com/atSCM/atscm/issues/152)) ([186a004](https://github.com/atSCM/atscm/commits/186a004)), closes [#150](https://github.com/atSCM/atscm/issues/150)
+* Fix invalid Boolean decoding ([#139](https://github.com/atSCM/atscm/issues/139)) ([4626a42](https://github.com/atSCM/atscm/commits/4626a42))
+* Handle parent reference type in nodes to browse ([#177](https://github.com/atSCM/atscm/issues/177)) ([cec8fe5](https://github.com/atSCM/atscm/commits/cec8fe5)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* Ignore atvise server methods ([#166](https://github.com/atSCM/atscm/issues/166)) ([f40d85d](https://github.com/atSCM/atscm/commits/f40d85d)), closes [#153](https://github.com/atSCM/atscm/issues/153) [#143](https://github.com/atSCM/atscm/issues/143)
+* Import scripts from '[@atscm](https://github.com/atscm)/server-scripts' ([#163](https://github.com/atSCM/atscm/issues/163)) ([4b6a590](https://github.com/atSCM/atscm/commits/4b6a590))
+* Improve handling of circular references ([#179](https://github.com/atSCM/atscm/issues/179)) ([13aeeca](https://github.com/atSCM/atscm/commits/13aeeca)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* **push:** Process chunks respecting the node tree structure ([#173](https://github.com/atSCM/atscm/issues/173)) ([c0950ea](https://github.com/atSCM/atscm/commits/c0950ea)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* Make `import` task available to gulp ([3832173](https://github.com/atSCM/atscm/commits/3832173))
+* Proper handle array variables ([7c3c41c](https://github.com/atSCM/atscm/commits/7c3c41c))
+* **mapping:** Allow resource folders to have dots in filenames ([#201](https://github.com/atSCM/atscm/issues/201)) ([1fb9376](https://github.com/atSCM/atscm/commits/1fb9376))
+* **mapping:** Handle relative parameter targets in scripts ([#172](https://github.com/atSCM/atscm/issues/172)) ([e4782b0](https://github.com/atSCM/atscm/commits/e4782b0)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* **mapping:** Skip non-atscm dot-files ([#145](https://github.com/atSCM/atscm/issues/145)) ([c23409b](https://github.com/atSCM/atscm/commits/c23409b)), closes [#144](https://github.com/atSCM/atscm/issues/144)
+* **pull:** Warn if datasource is not connected ([#140](https://github.com/atSCM/atscm/issues/140)) ([e6917f8](https://github.com/atSCM/atscm/commits/e6917f8)), closes [#3](https://github.com/atSCM/atscm/issues/3)
+* Preserve xml element order ([#147](https://github.com/atSCM/atscm/issues/147)) ([a809603](https://github.com/atSCM/atscm/commits/a809603)), closes [#46](https://github.com/atSCM/atscm/issues/46)
+* **push:** Correctly handle references ([#174](https://github.com/atSCM/atscm/issues/174)) ([b8d77a7](https://github.com/atSCM/atscm/commits/b8d77a7)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* **push:** Warn if atscm serverscript was not imported yet ([#142](https://github.com/atSCM/atscm/issues/142)) ([661aad9](https://github.com/atSCM/atscm/commits/661aad9)), closes [#141](https://github.com/atSCM/atscm/issues/141)
+* **scripts:** Store custom metadata ([#180](https://github.com/atSCM/atscm/issues/180)) ([6bd8312](https://github.com/atSCM/atscm/commits/6bd8312)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* **watcher:** Update to new NodeStream API ([a5234da](https://github.com/atSCM/atscm/commits/a5234da))
+* **watcher:** Wait for subscriptions and handle deletions ([#169](https://github.com/atSCM/atscm/issues/169)) ([85c2e54](https://github.com/atSCM/atscm/commits/85c2e54)), closes [#91](https://github.com/atSCM/atscm/issues/91) [#157](https://github.com/atSCM/atscm/issues/157)
+* Map all history archive properties ([#176](https://github.com/atSCM/atscm/issues/176)) ([ab50f20](https://github.com/atSCM/atscm/commits/ab50f20)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* Map webserver ports ([#183](https://github.com/atSCM/atscm/issues/183)) ([4cb71bd](https://github.com/atSCM/atscm/commits/4cb71bd))
+* Properly handle `--continue` flag ([#165](https://github.com/atSCM/atscm/issues/165)) ([4aa7e36](https://github.com/atSCM/atscm/commits/4aa7e36))
+* Properly handle array value coding ([#137](https://github.com/atSCM/atscm/issues/137)) ([37e661a](https://github.com/atSCM/atscm/commits/37e661a))
+* Store reference definition files for non-objects if needed ([#181](https://github.com/atSCM/atscm/issues/181)) ([d38b7dd](https://github.com/atSCM/atscm/commits/d38b7dd)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+* Treat `.htm` files as HTML resources ([#191](https://github.com/atSCM/atscm/issues/191)) ([764fc37](https://github.com/atSCM/atscm/commits/764fc37)), closes [#188](https://github.com/atSCM/atscm/issues/188)
+* Write nodes in an order that respects the nodes dependencies ([#193](https://github.com/atSCM/atscm/issues/193)) ([58dfaec](https://github.com/atSCM/atscm/commits/58dfaec))
+
+
+### Features
+
+* **import:** Use scripts from [@atscm](https://github.com/atscm)/server-scripts package ([#160](https://github.com/atSCM/atscm/issues/160)) ([767be22](https://github.com/atSCM/atscm/commits/767be22))
+* Better diffs ([#197](https://github.com/atSCM/atscm/issues/197)) ([c3995b4](https://github.com/atSCM/atscm/commits/c3995b4))
+* Continue on failure with `--continue` flag used ([#151](https://github.com/atSCM/atscm/issues/151)) ([eebbcf1](https://github.com/atSCM/atscm/commits/eebbcf1)), closes [#90](https://github.com/atSCM/atscm/issues/90)
+* Create nodes on push ([#138](https://github.com/atSCM/atscm/issues/138)) ([d84531b](https://github.com/atSCM/atscm/commits/d84531b)), closes [#32](https://github.com/atSCM/atscm/issues/32)
+* New `import` task ([#129](https://github.com/atSCM/atscm/issues/129)) ([faa769d](https://github.com/atSCM/atscm/commits/faa769d))
+* Wrap resouce node properties in a `.inner` folder ([#194](https://github.com/atSCM/atscm/issues/194)) ([5535cf2](https://github.com/atSCM/atscm/commits/5535cf2)), closes [#170](https://github.com/atSCM/atscm/issues/170)
+
+
+
+
 <a name="0.5.1"></a>
 ## 0.5.1 (2018-02-16)
 

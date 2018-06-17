@@ -19,6 +19,15 @@ const TypeForIdentifier = {
 };
 
 /**
+ * Resource nodes are only allowed to have these child nodes.
+ * @type {Set<string>}
+ */
+const possibleResourceChildNodes = new Set([
+  'Translate',
+  'Compress',
+]);
+
+/**
  * A wrapper around {@link node-opcua~NodeId}.
  */
 export default class NodeId extends OpcNodeId {
@@ -65,16 +74,19 @@ export default class NodeId extends OpcNodeId {
    */
   static fromFilePath(path) {
     let separator = '.';
+
     const value = path.split(sep)
-      .reduce((result, current) => {
-        const next = `${result}${separator}${current}`;
+      .reduce((result, current, index, components) => {
+        const next = `${result ? `${result}${separator}` : ''}${current.replace('%2F', '/')}`;
 
         if (current === 'RESOURCES') {
           separator = '/';
+        } else if (separator === '/' && possibleResourceChildNodes.has(components[index + 1])) {
+          separator = '.';
         }
 
         return next;
-      });
+      }, '');
 
     return new NodeId(NodeId.NodeIdType.STRING, value, 1);
   }
@@ -85,9 +97,81 @@ export default class NodeId extends OpcNodeId {
    */
   get filePath() {
     const parts = this.value.split('RESOURCES');
-    parts[0] = parts[0].split('.').join('/');
+    parts[0] = parts[0]
+      .replace('/', '%2F')
+      .split('.')
+      .join('/');
 
     return parts.join('RESOURCES');
+  }
+
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * Returns the last separator in a string node id's path, e.g.:
+   * - `'/'` for `ns=1;SYSTEM.LIBRARY.RESOURCES/index.htm`,
+   * - `'.'` for `ns=1;AGENT.DISPLAYS.Main`.
+   * @type {?string} `null` for non-string node ids, `'/'` for resource paths, `'.'` for regular
+   * string node ids.
+   */
+  get _lastSeparator() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    return ~(this.value.indexOf('/')) ? '/' : '.';
+  }
+
+  /**
+   * The parent node id, or `null`.
+   * @type {?NodeId}
+   * @deprecated Doesn't work properly in some edge cases. Use AtviseFile#parentNodeId instead
+   * whenever possible.
+   */
+  get parent() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    return new NodeId(
+      NodeId.NodeIdType.STRING,
+      this.value.substr(0, this.value.lastIndexOf(this._lastSeparator)),
+      this.namespace
+    );
+  }
+
+  /**
+   * Checks if the node is a child of another.
+   * @param {NodeId} parent The possible parent to check.
+   * @return {boolean} `true` if *this* is a child node of *parent*.
+   */
+  isChildOf(parent) {
+    if (this.identifierType !== NodeId.NodeIdType.STRING ||
+      parent.identifierType !== NodeId.NodeIdType.STRING) {
+      return false;
+    }
+
+    if (this.namespace !== parent.namespace || this.value === parent.value) {
+      return false;
+    }
+
+    const [prefix, postfix] = this.value.split(parent.value);
+
+    return (prefix === '' && postfix && (
+      postfix[0] === this._lastSeparator ||
+      (this._lastSeparator === '/' && postfix[0] === '.' && postfix.split('.').length === 2)
+    ));
+  }
+
+  /**
+   * The node id's browsename as string.
+   * @type {string}
+   */
+  get browseName() {
+    if (this.identifierType !== NodeId.NodeIdType.STRING) {
+      return null;
+    }
+
+    return this.value.substr(this.value.lastIndexOf(this._lastSeparator) + 1);
   }
 
   /**

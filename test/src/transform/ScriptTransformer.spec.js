@@ -61,6 +61,50 @@ describe('ScriptTransformer', function() {
         });
     });
 
+    it('should only store metadata elements', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>shouldn't be handled</metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {}));
+    });
+
+    it('should store custom metadata elements', function() {
+      const onWarn = spy();
+      Logger.on('debug', onWarn);
+
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <longrunning>1</longrunning>
+    <custom>test</custom>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          metadata: {
+            longrunning: '1',
+            custom: 'test',
+          },
+        }))
+        .then(() => {
+          expect(onWarn, 'was called once'); // should not be called for 'longrunning'
+          expect(onWarn, 'to have a call satisfying', { args: [/generic metadata/i] });
+        });
+    });
+
+    it('should store array of custom metadata elements if needed', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <custom>test</custom>
+    <custom>test2</custom>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          metadata: { custom: ['test', 'test2'] },
+        }));
+    });
+
     it('should store icon metadata', function() {
       return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
   <metadata>
@@ -102,6 +146,18 @@ describe('ScriptTransformer', function() {
         }));
     });
 
+    it('should properly interpret visible metadata', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <metadata>
+    <visible>0</visible>
+  </metadata>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(contents => expect(JSON.parse(contents[0]), 'to equal', {
+          visible: false,
+        }));
+    });
+
     it('should store title metadata', function() {
       return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
   <metadata>
@@ -136,6 +192,74 @@ describe('ScriptTransformer', function() {
             { name: 'paramname' },
           ],
         }));
+    });
+
+    it('should store relative parameter without target', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements/>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {});
+        });
+    });
+
+    it('should store relative parameter with target', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements>
+        <RelativePathElement>
+          <TargetName>
+            <NamespaceIndex>1</NamespaceIndex>
+            <Name>double</Name>
+          </TargetName>
+        </RelativePathElement>
+      </Elements>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {
+            namespaceIndex: 1,
+            name: 'double',
+          });
+        });
+    });
+
+    it('should store relative parameter target with invalid namespace', function() {
+      return transformerHelper.writeXMLToTransformer(ScriptPath, `<script>
+  <parameter name="double_prop" type="node.value" trigger="true" relative="true">
+    <RelativePath>
+      <Elements>
+        <RelativePathElement>
+          <TargetName>
+            <NamespaceIndex>X</NamespaceIndex>
+            <Name>double</Name>
+          </TargetName>
+        </RelativePathElement>
+      </Elements>
+    </RelativePath>
+  </parameter>
+</script>`)
+        .then(files => transformerHelper.expectFileContents(files))
+        .then(([json]) => JSON.parse(json))
+        .then(config => {
+          expect(config.parameters[0].relative, 'to be', 'true');
+          expect(config.parameters[0].target, 'to equal', {
+            namespaceIndex: 1,
+            name: 'double',
+          });
+        });
     });
 
     it('should store code', function() {
@@ -208,7 +332,7 @@ describe('ScriptTransformer', function() {
     });
 
     context('when called on a script', function() {
-      it('should ignore metadata', function() {
+      it('should ignore quickdynamic metadata', function() {
         return expect(transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
           '.json': '{ "icon": { "type": "image/png", "content": "asdf" } }',
         }), 'to call the callback')
@@ -225,6 +349,62 @@ describe('ScriptTransformer', function() {
         .then(args => transformerHelper.expectFileContents([args[1]]))
         .then(contents => expect(contents[0],
           'to contain', '<parameter name="paramname"/>'));
+    });
+
+    it('should insert relative parameter without target', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "parameters": [{ "name": "paramname", "relative": "true", "target": {} }] }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', `<parameter name="paramname" relative="true">
+  <RelativePath>
+   <Elements/>`.split('\n').join('\r\n')));
+    });
+
+    it('should insert relative parameter with target', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': JSON.stringify({
+          parameters: [{
+            name: 'paramname',
+            relative: 'true',
+            target: {
+              namespaceIndex: 2,
+              name: 'Test',
+            },
+          }],
+        }),
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', `<parameter name="paramname" relative="true">
+  <RelativePath>
+   <Elements>
+    <RelativePathElement>
+     <TargetName>
+      <NamespaceIndex>2</NamespaceIndex>
+      <Name>Test</Name>
+     </TargetName>
+    </RelativePathElement>
+   </Elements>`.split('\n').join('\r\n')));
+    });
+
+    it('should insert custom metadata', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "metadata": { "custom": "test" } }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', '<custom>test</custom>'));
+    });
+
+    it('should insert custom metadata array', function() {
+      return expect(transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
+        '.json': '{ "metadata": { "custom": ["test", "test2"] } }',
+      }), 'to call the callback')
+        .then(args => transformerHelper.expectFileContents([args[1]]))
+        .then(contents => expect(contents[0],
+          'to contain', '<custom>test</custom>', '<custom>test2</custom>'));
     });
 
     it('should insert script code', function() {

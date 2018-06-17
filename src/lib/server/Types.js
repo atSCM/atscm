@@ -1,5 +1,5 @@
 import { DataType } from 'node-opcua';
-import NodeId from '../server/NodeId';
+import NodeId from '../model/opcua/NodeId';
 
 /**
  * Special, atvise releated OPC-UA type.
@@ -53,7 +53,7 @@ class AtviseType {
 /**
  * An atvise-related resource type.
  */
-class AtviseResourceType extends AtviseType {
+export class AtviseResourceType extends AtviseType {
 
   /**
    * Creates a new resource type.
@@ -79,6 +79,7 @@ const AtviseTypes = [
   new AtviseType('TranslationTable', 'locs', DataType.XmlElement),
   new AtviseResourceType('Pdf', 'pdf'),
   new AtviseResourceType('Html', 'html'),
+  new AtviseResourceType('Html', 'htm'),
   new AtviseResourceType('Javascript', 'js'),
   new AtviseResourceType('Wave', 'wav'),
   new AtviseResourceType('Gif', 'gif'),

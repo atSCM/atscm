@@ -129,7 +129,7 @@ describe('QueueStream', function() {
 
       stream._processChunk('item');
       expect(listener, 'was called once');
-      expect(listener.lastCall, 'to satisfy', ['item']);
+      expect(listener.lastCall.args[0], 'to equal', 'item');
     });
 
     it('should emit errors', function() {

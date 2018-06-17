@@ -23,9 +23,8 @@ test_script:
   # Compile sources
   - npm run compile
 
-  # Run tests
-  - node_modules/.bin/nyc npm test -- --reporter mocha-appveyor-reporter
-  - node_modules/.bin/nyc check-coverage --statements 90 --branches 90 --functions 90 --lines 90
+  # Run tests (in parallel)
+  - npx npm-run-all --parallel "test:integration -- {@}" "test:unit -- {@}" -- --reporter mocha-appveyor-reporter
 
 # Don't actually build.
 build: off

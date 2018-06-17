@@ -2,6 +2,7 @@
 /* eslint-disable jsdoc/check-param-names */
 
 import { StatusCodes } from 'node-opcua';
+import Logger from 'gulplog';
 import Stream from './Stream';
 
 /**
@@ -167,18 +168,37 @@ export default class QueueStream extends Stream {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
+      const finished = (error) => {
+        this._processing--;
+        this._processed++;
+        this.emit('processed-chunk', chunk, error);
+      };
+
+      let error = err;
+
       if (err) {
-        this.emit('error', new Error(`${this.processErrorMessage(chunk)}: ${err.message}`));
+        const message = `${this.processErrorMessage(chunk)}: ${err.message}`;
+
+        if (process.env.CONTINUE_ON_FAILURE === 'true') {
+          Logger.error(`FAILURE: ${message}`);
+        } else {
+          this.emit('error', Object.assign(err, { message }));
+        }
       } else if (statusCode !== StatusCodes.Good) {
-        this.emit('error',
-          new Error(`${this.processErrorMessage(chunk)}: ${statusCode.description}`));
+        const message = `${this.processErrorMessage(chunk)}: ${statusCode.description}`;
+        error = new Error(message);
+
+        if (process.env.CONTINUE_ON_FAILURE === 'true') {
+          Logger.error(`FAILURE: ${message}`);
+        } else {
+          this.emit('error', new Error(message));
+        }
       } else {
-        onSuccess(() => {
-          this._processing--;
-          this._processed++;
-          this.emit('processed-chunk', chunk);
-        });
+        onSuccess(finished);
+        return;
       }
+
+      finished(error);
     });
   }
 

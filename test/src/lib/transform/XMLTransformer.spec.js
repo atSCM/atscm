@@ -1,7 +1,12 @@
+import { EOL } from 'os';
 import expect from 'unexpected';
-import { Builder } from 'xml2js';
+import { xml2js } from 'xml-js';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
+
+function nativeEOLs(string) {
+  return string.replace(/\n/g, EOL);
+}
 
 /** @test {XMLTransformer} */
 describe('XMLTransformer', function() {
@@ -15,14 +20,14 @@ describe('XMLTransformer', function() {
       const transformer = new XMLTransformer();
 
       expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
+      expect(transformer._fromDBBuilder, 'to be a', 'function');
     });
 
     it('should create a _fromFilesystemBuilder', function() {
       const transformer = new XMLTransformer();
 
       expect(transformer._fromDBBuilder, 'to be defined');
-      expect(transformer._fromDBBuilder, 'to be a', Builder);
+      expect(transformer._fromDBBuilder, 'to be a', 'function');
     });
   });
 
@@ -47,7 +52,7 @@ describe('XMLTransformer', function() {
   describe('#decodeContents', function() {
     it('should forward errors', function(done) {
       expect(cb => (new XMLTransformer()).decodeContents({ contents: 'no valid xml' }, cb),
-        'to call the callback with error', /Non-whitespace before first tag./)
+        'to call the callback with error', /Text data outside of root node./)
         .then(() => done());
     });
 
@@ -56,11 +61,26 @@ describe('XMLTransformer', function() {
         'to call the callback')
         .then(args => {
           expect(args[0], 'to be falsy');
-          expect(args[1], 'to equal', { tag: 'value' });
+          expect(args[1], 'to equal', { elements: [{
+            type: 'element',
+            name: 'tag',
+            elements: [{
+              type: 'text',
+              text: 'value',
+            }],
+          }] });
           done();
         });
     });
   });
+
+  const baseXmlObject = xml2js(`<root>
+  <sub>test</sub>
+</root>`, { compact: false });
+
+  const cdataXmlObject = xml2js(`<svg>
+  <script><![CDATA[test();]]></script>
+</svg>`);
 
   function testBuilder(direction, object, expectedResult, callback) {
     const transformer = new XMLTransformer({ direction });
@@ -77,50 +97,49 @@ describe('XMLTransformer', function() {
   describe('#encodeContents', function() {
     it('should forward errors', function() {
       expect(cb => (new XMLTransformer()).encodeContents(null, cb),
-        'to call the callback with error', 'Cannot convert undefined or null to object');
+        'to call the callback with error', /Cannot read property/);
     });
 
     context('when direction is FromDB', function() {
       it('should indent with double space', function(done) {
-        testBuilder(TransformDirection.FromDB, { root: { sub: 'test' } },
-          `<root>
+        testBuilder(TransformDirection.FromDB, baseXmlObject,
+          nativeEOLs(`<root>
   <sub>test</sub>
-</root>`, done);
+</root>`), done);
       });
     });
 
     context('when direction is FromFilesytem', function() {
       it('should indent with single space', function(done) {
-        testBuilder(TransformDirection.FromFilesystem, { root: { sub: 'test' } },
+        testBuilder(TransformDirection.FromFilesystem, baseXmlObject,
           '<root>\r\n <sub>test</sub>\r\n</root>', done);
       });
     });
 
-    it('should support forced CDATA', function() {
+    it('should support CDATA', function() {
       return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromDB }))
-        .encodeContents({
-          svg: {
-            script: [
-              { _: XMLTransformer.forceCData('test()') },
-            ],
-          },
-        }, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to end with', `<svg>
-  <script><![CDATA[test()]]></script>
-</svg>`));
+        .encodeContents(cdataXmlObject, cb), 'to call the callback')
+        .then(args => expect(args[1], 'to end with', nativeEOLs(`<svg>
+  <script><![CDATA[test();]]></script>
+</svg>`)));
     });
 
-    it('should not double escape forced CDATA', function() {
-      return expect(cb => (new XMLTransformer({ direction: TransformDirection.FromFilesystem }))
-        .encodeContents({
-          svg: {
-            script: [
-              { _: XMLTransformer.forceCData('console.log("<asdf>")') },
-            ],
-          },
-        }, cb), 'to call the callback')
-        .then(args => expect(args[1], 'to contain',
-          '<script><![CDATA[console.log("<asdf>")]]></script>'));
+    it('should escape \'&\' in attribute values', function(done) {
+      const xml = nativeEOLs(`<root>
+  <node attribute="escape &amp; this"/>
+</root>`);
+      const xmlObject = xml2js(xml);
+
+      testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
+    });
+
+    it('should escape \'<\' in attribute values', function(done) {
+      const xml = nativeEOLs(`<root>
+  <node attribute="escape &lt; this"/>
+</root>`);
+      const xmlObject = xml2js(xml);
+
+      testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
     });
   });
 });

@@ -1,19 +1,7 @@
 import { EOL } from 'os';
-import { parseString as parseXML, Builder as XMLBuilder } from 'xml2js';
+import { xml2js, js2xml } from 'xml-js';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
-
-/**
- * A special token used to encode CData section beginnings.
- * @type {String}
- */
-const START_CDATA = 'STARTCDATA';
-
-/**
- * A special token used to encode CData section endings.
- * @type {String}
- */
-const END_CDATA = 'ENDCDATA';
 
 /**
  * A transformer used to transform XML documents.
@@ -27,37 +15,48 @@ export default class XMLTransformer extends SplittingTransformer {
   constructor(options) {
     super(options);
 
+    function build(object, buildOptions) {
+      if (!object.declaration) {
+        Object.assign(object, {
+          declaration: {
+            attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
+          },
+        });
+      }
+
+      return js2xml(object, Object.assign(buildOptions, {
+        attributeValueFn(val) {
+          return val
+            .replace(/&(?!(amp|quot);)/g, '&amp;')
+            .replace(/</g, '&lt;');
+        },
+      }));
+    }
+
+    // eslint-disable-next-line jsdoc/require-param
     /**
      * The builder to use with direction {@link TransformDirection.FromDB}.
-     * @type {xml2js~Builder}
+     * @type {function(object: Object): string}
      */
-    this._fromDBBuilder = new XMLBuilder({
-      cdata: false,
-      newline: EOL,
-    });
+    this._fromDBBuilder = object => {
+      const xml = build(object, { compact: false, spaces: 2 });
+      return xml.replace(/\r?\n/g, EOL);
+    };
 
+    // eslint-disable-next-line jsdoc/require-param
     /**
      * The builder to use with direction {@link TransformDirection.FromFilesystem}.
-     * @type {xml2js~Builder}
+     * @type {function(object: Object): string}
      */
-    this._fromFilesystemBuilder = new XMLBuilder({
-      renderOpts: {
-        pretty: true,
-        indent: ' ',
-        newline: '\r\n',
-      },
-      xmldec: {
-        version: '1.0',
-        encoding: 'UTF-8',
-        standalone: false,
-      },
-      cdata: true,
-    });
+    this._fromFilesystemBuilder = object => {
+      const xml = build(object, { compact: false, spaces: 1 });
+      return xml.replace(/\r?\n/g, '\r\n');
+    };
   }
 
   /**
-   * Returns the XML builder instance to use base on the current {@link Transformer#direction}.
-   * @type {xml2js~Builder}
+   * Returns the XML builder to use based on the current {@link Transformer#direction}.
+   * @type {function(object: Object): string}
    */
   get builder() {
     return this.direction === TransformDirection.FromDB ?
@@ -72,7 +71,11 @@ export default class XMLTransformer extends SplittingTransformer {
    * parse error that occurred.
    */
   decodeContents(file, callback) {
-    parseXML(file.contents, callback);
+    try {
+      callback(null, xml2js(file.contents, { compact: false }));
+    } catch (e) {
+      callback(e);
+    }
   }
 
   /**
@@ -83,32 +86,10 @@ export default class XMLTransformer extends SplittingTransformer {
    */
   encodeContents(object, callback) {
     try {
-      callback(null,
-        this.builder.buildObject(object)
-          .replace(new RegExp(`(<!\\[CDATA\\[)?${START_CDATA}`), '<![CDATA[')
-          .replace(new RegExp(`${END_CDATA}(\\]\\]>)?`), ']]>')
-      );
+      callback(null, this.builder(object));
     } catch (e) {
       callback(e);
     }
-  }
-
-  /**
-   * Helper function: Returns `true` if the given tag exists and is not empty.
-   * @param {Object} tag A tag in a parsed xml document.
-   * @return {boolean} `true` if the given tag exists and is not empty.
-   */
-  tagNotEmpty(tag) {
-    return Boolean(tag && tag.length > 0);
-  }
-
-  /**
-   * Forces `string`, when assigned as textContent to a node, to be wrapped in a CDATA-section.
-   * @param {string} string The string to force a CDATA-section for.
-   * @return {string} The string to assign as textContent to a node.
-   */
-  static forceCData(string) {
-    return `${START_CDATA}${string}${END_CDATA}`;
   }
 
 }

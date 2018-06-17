@@ -149,10 +149,21 @@ ${xmlString}`),
       });
     });
 
-    context('when display contains metadata', function() {
-      it('should work without parameters', function() {
+    context('when display contains metadata tag', function() {
+      it('should work without actual metadata', function() {
         return expectConfig(`<svg>
   <metadata></metadata>
+</svg>`)
+          .then(config => {
+            expect(config, 'to be defined');
+          });
+      });
+
+      it('should work without parameters', function() {
+        return expectConfig(`<svg>
+  <metadata>
+    <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
+  </metadata>
 </svg>`)
           .then(config => {
             expect(config, 'to be defined');
@@ -196,7 +207,7 @@ ${xmlString}`),
 
       it('should forward encode error', function() {
         return expect(writeXMLToDisplayTransformer('<svg></svg>'),
-          'to be rejected with', 'Encode error');
+          'to be rejected with', /Encode error/);
       });
     });
   });
@@ -237,7 +248,7 @@ ${xmlString}`),
     it('should fail with invalid SVG', function() {
       return expect(createDisplayWithFileContents({
         '.svg': 'invalid XML',
-      }), 'to call the callback with error', /Non-whitespace before first tag/);
+      }), 'to call the callback with error', /Text data outside of root node/);
     });
 
     it('should fail without `svg` tag', function() {
@@ -304,8 +315,8 @@ ${xmlString}`.replace(/\r?\n|\r/g, '\r\n'));
         '.json': '{ "parameters": [{ "name": "test" }] }',
       }, `<svg>
  <metadata>
-  <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
   <atv:parameter name="test"/>
+  <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
  </metadata>
 </svg>`);
     });
@@ -331,8 +342,38 @@ ${xmlString}`.replace(/\r?\n|\r/g, '\r\n'));
         '.json': '{ "parameters": [{ "name": "test" }] }',
       }, `<svg>
  <metadata>
-  <atv:parameter name="existant"/>
   <atv:parameter name="test"/>
+  <atv:parameter name="existant"/>
+ </metadata>
+</svg>`);
+    });
+
+    it('should insert parameters before other atv tags', function() {
+      return expectDisplayWithFileContentToHaveXML({
+        '.svg': `<svg>
+  <metadata>
+    <atv:parameter name="existant"/>
+    <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
+  </metadata>
+</svg>`,
+        '.json': '{ "parameters": [{ "name": "test" }] }',
+      }, `<svg>
+ <metadata>
+  <atv:parameter name="test"/>
+  <atv:parameter name="existant"/>
+  <atv:gridconfig height="20" width="20" enabled="false" gridstyle="lines"/>
+ </metadata>
+</svg>`);
+    });
+
+    it('should insert parameters in the correct order', function() {
+      return expectDisplayWithFileContentToHaveXML({
+        '.svg': '<svg></svg>',
+        '.json': '{ "parameters": [{ "name": "test" }, { "name": "another" }] }',
+      }, `<svg>
+ <metadata>
+  <atv:parameter name="test"/>
+  <atv:parameter name="another"/>
  </metadata>
 </svg>`);
     });

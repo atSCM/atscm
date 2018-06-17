@@ -1,15 +1,22 @@
 import { inspect } from 'util';
 import { ctor as throughStreamClass } from 'through2';
+import Logger from 'gulplog';
+import AtviseFile from '../server/AtviseFile';
 
 /**
  * The directions a transformer can be run in.
- * @type {{FromDB: String, FromFilesystem: String}}
+ * @type {{FromDB: string, FromFilesystem: string}}
  */
 export const TransformDirection = {
   FromDB: 'FromDB',
   FromFilesystem: 'FromFilesystem',
 };
 
+/**
+ * Checks if the given string is a valid {@link TransformDirection}.
+ * @param {string} direction The direction string to check.
+ * @return {boolean} `true` if the direction is valid.
+ */
 function isValidDirection(direction) {
   return [
     TransformDirection.FromDB,
@@ -52,6 +59,16 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
     }
   }
 
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * If reference config files should be handled by the transformer. Override if you want to
+   * transform reference config files (for example `.index.htm.json`).
+   * @type {boolean}
+   */
+  get transformsReferenceConfigFiles() {
+    return false;
+  }
+
   /**
    * Returns the Transformer with the given direction.
    * @param {TransformDirection} direction The direction to use.
@@ -68,6 +85,33 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
+   * Decorates an error that occurred while running a transformer.
+   * @param {Error} err The error to decorate.
+   * @param {*} chunk The chunk (usually an {@link AtviseFile}) beeing processed.
+   * @param {function(err: ?Error)} callback The callback to call on completion.
+   * @param {Array<*>} args Any additional arguments.
+   */
+  _processError(err, chunk, callback, ...args) {
+    if (err) {
+      const id = (this.direction === TransformDirection.FromDB ?
+        chunk.nodeId :
+        chunk.relative) || chunk.toString();
+
+      // eslint-disable-next-line no-param-reassign
+      err.message = `[${this.constructor.name}] ${err.message} (in ${id})`;
+
+      if (process.env.CONTINUE_ON_FAILURE === 'true') {
+        Logger.error(err.message);
+        callback(null);
+      } else {
+        callback(err);
+      }
+    } else {
+      callback(err, ...args);
+    }
+  }
+
+  /**
    * Calls {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}
    * based on the transformer's direction.
    * @param {Object} chunk The chunk to transform.
@@ -77,12 +121,19 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
    * @throws {Error} Throws an error if the transformer has no valid direction.
    */
   _transform(chunk, enc, callback) {
+    if (!this.transformsReferenceConfigFiles && chunk instanceof AtviseFile &&
+      chunk.isReferenceConfig) {
+      callback(null, chunk);
+      return;
+    }
+    const processError = (err, ...args) => this._processError(err, chunk, callback, ...args);
+
     if (!this.direction) {
       callback(new Error('Transformer has no direction'));
     } else if (this.direction === TransformDirection.FromDB) {
-      this.transformFromDB(chunk, enc, callback);
+      this.transformFromDB(chunk, enc, processError);
     } else {
-      this.transformFromFilesystem(chunk, enc, callback);
+      this.transformFromFilesystem(chunk, enc, processError);
     }
   }
 
