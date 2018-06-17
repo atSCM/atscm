@@ -83,7 +83,10 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-1--2018-02-16-" data-ice="link">0.5.1 (2018-02-16)</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-6-0--2018-06-17-" data-ice="link">0.6.0 (2018-06-17)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-1--2018-02-16-" data-ice="link">0.5.1 (2018-02-16)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
 <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-0--2018-02-09-" data-ice="link">0.5.0 (2018-02-09)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
@@ -129,7 +132,47 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><p><a name="0.5.1"></a></p>
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><p><a name="0.6.0"></a></p>
+<h1 id="0-6-0--2018-06-17-">0.6.0 (2018-06-17)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<li>Allow slashes in node ids (<a href="https://github.com/atSCM/atscm/issues/192">#192</a>) (<a href="https://github.com/atSCM/atscm/commits/fdd0a9d">fdd0a9d</a>), closes <a href="https://github.com/atSCM/atscm/issues/190">#190</a></li>
+<li>Cast typed arrays to regular array objects (<a href="https://github.com/atSCM/atscm/commits/806a8c4">806a8c4</a>)</li>
+<li>Do not transform reference config files (<a href="https://github.com/atSCM/atscm/issues/184">#184</a>) (<a href="https://github.com/atSCM/atscm/commits/8531734">8531734</a>)</li>
+<li>Escape &apos;&amp;&apos; and &apos;&lt;&apos; in XML attribute values before encoding (<a href="https://github.com/atSCM/atscm/issues/152">#152</a>) (<a href="https://github.com/atSCM/atscm/commits/186a004">186a004</a>), closes <a href="https://github.com/atSCM/atscm/issues/150">#150</a></li>
+<li>Fix invalid Boolean decoding (<a href="https://github.com/atSCM/atscm/issues/139">#139</a>) (<a href="https://github.com/atSCM/atscm/commits/4626a42">4626a42</a>)</li>
+<li>Handle parent reference type in nodes to browse (<a href="https://github.com/atSCM/atscm/issues/177">#177</a>) (<a href="https://github.com/atSCM/atscm/commits/cec8fe5">cec8fe5</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li>Ignore atvise server methods (<a href="https://github.com/atSCM/atscm/issues/166">#166</a>) (<a href="https://github.com/atSCM/atscm/commits/f40d85d">f40d85d</a>), closes <a href="https://github.com/atSCM/atscm/issues/153">#153</a> <a href="https://github.com/atSCM/atscm/issues/143">#143</a></li>
+<li>Import scripts from &apos;<a href="https://github.com/atscm">@atscm</a>/server-scripts&apos; (<a href="https://github.com/atSCM/atscm/issues/163">#163</a>) (<a href="https://github.com/atSCM/atscm/commits/4b6a590">4b6a590</a>)</li>
+<li>Improve handling of circular references (<a href="https://github.com/atSCM/atscm/issues/179">#179</a>) (<a href="https://github.com/atSCM/atscm/commits/13aeeca">13aeeca</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li><strong>push:</strong> Process chunks respecting the node tree structure (<a href="https://github.com/atSCM/atscm/issues/173">#173</a>) (<a href="https://github.com/atSCM/atscm/commits/c0950ea">c0950ea</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li>Make <code>import</code> task available to gulp (<a href="https://github.com/atSCM/atscm/commits/3832173">3832173</a>)</li>
+<li>Proper handle array variables (<a href="https://github.com/atSCM/atscm/commits/7c3c41c">7c3c41c</a>)</li>
+<li><strong>mapping:</strong> Allow resource folders to have dots in filenames (<a href="https://github.com/atSCM/atscm/issues/201">#201</a>) (<a href="https://github.com/atSCM/atscm/commits/1fb9376">1fb9376</a>)</li>
+<li><strong>mapping:</strong> Handle relative parameter targets in scripts (<a href="https://github.com/atSCM/atscm/issues/172">#172</a>) (<a href="https://github.com/atSCM/atscm/commits/e4782b0">e4782b0</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li><strong>mapping:</strong> Skip non-atscm dot-files (<a href="https://github.com/atSCM/atscm/issues/145">#145</a>) (<a href="https://github.com/atSCM/atscm/commits/c23409b">c23409b</a>), closes <a href="https://github.com/atSCM/atscm/issues/144">#144</a></li>
+<li><strong>pull:</strong> Warn if datasource is not connected (<a href="https://github.com/atSCM/atscm/issues/140">#140</a>) (<a href="https://github.com/atSCM/atscm/commits/e6917f8">e6917f8</a>), closes <a href="https://github.com/atSCM/atscm/issues/3">#3</a></li>
+<li>Preserve xml element order (<a href="https://github.com/atSCM/atscm/issues/147">#147</a>) (<a href="https://github.com/atSCM/atscm/commits/a809603">a809603</a>), closes <a href="https://github.com/atSCM/atscm/issues/46">#46</a></li>
+<li><strong>push:</strong> Correctly handle references (<a href="https://github.com/atSCM/atscm/issues/174">#174</a>) (<a href="https://github.com/atSCM/atscm/commits/b8d77a7">b8d77a7</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li><strong>push:</strong> Warn if atscm serverscript was not imported yet (<a href="https://github.com/atSCM/atscm/issues/142">#142</a>) (<a href="https://github.com/atSCM/atscm/commits/661aad9">661aad9</a>), closes <a href="https://github.com/atSCM/atscm/issues/141">#141</a></li>
+<li><strong>scripts:</strong> Store custom metadata (<a href="https://github.com/atSCM/atscm/issues/180">#180</a>) (<a href="https://github.com/atSCM/atscm/commits/6bd8312">6bd8312</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li><strong>watcher:</strong> Update to new NodeStream API (<a href="https://github.com/atSCM/atscm/commits/a5234da">a5234da</a>)</li>
+<li><strong>watcher:</strong> Wait for subscriptions and handle deletions (<a href="https://github.com/atSCM/atscm/issues/169">#169</a>) (<a href="https://github.com/atSCM/atscm/commits/85c2e54">85c2e54</a>), closes <a href="https://github.com/atSCM/atscm/issues/91">#91</a> <a href="https://github.com/atSCM/atscm/issues/157">#157</a></li>
+<li>Map all history archive properties (<a href="https://github.com/atSCM/atscm/issues/176">#176</a>) (<a href="https://github.com/atSCM/atscm/commits/ab50f20">ab50f20</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li>Map webserver ports (<a href="https://github.com/atSCM/atscm/issues/183">#183</a>) (<a href="https://github.com/atSCM/atscm/commits/4cb71bd">4cb71bd</a>)</li>
+<li>Properly handle <code>--continue</code> flag (<a href="https://github.com/atSCM/atscm/issues/165">#165</a>) (<a href="https://github.com/atSCM/atscm/commits/4aa7e36">4aa7e36</a>)</li>
+<li>Properly handle array value coding (<a href="https://github.com/atSCM/atscm/issues/137">#137</a>) (<a href="https://github.com/atSCM/atscm/commits/37e661a">37e661a</a>)</li>
+<li>Store reference definition files for non-objects if needed (<a href="https://github.com/atSCM/atscm/issues/181">#181</a>) (<a href="https://github.com/atSCM/atscm/commits/d38b7dd">d38b7dd</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+<li>Treat <code>.htm</code> files as HTML resources (<a href="https://github.com/atSCM/atscm/issues/191">#191</a>) (<a href="https://github.com/atSCM/atscm/commits/764fc37">764fc37</a>), closes <a href="https://github.com/atSCM/atscm/issues/188">#188</a></li>
+<li>Write nodes in an order that respects the nodes dependencies (<a href="https://github.com/atSCM/atscm/issues/193">#193</a>) (<a href="https://github.com/atSCM/atscm/commits/58dfaec">58dfaec</a>)</li>
+</ul>
+<h3 id="features">Features</h3><ul>
+<li><strong>import:</strong> Use scripts from <a href="https://github.com/atscm">@atscm</a>/server-scripts package (<a href="https://github.com/atSCM/atscm/issues/160">#160</a>) (<a href="https://github.com/atSCM/atscm/commits/767be22">767be22</a>)</li>
+<li>Better diffs (<a href="https://github.com/atSCM/atscm/issues/197">#197</a>) (<a href="https://github.com/atSCM/atscm/commits/c3995b4">c3995b4</a>)</li>
+<li>Continue on failure with <code>--continue</code> flag used (<a href="https://github.com/atSCM/atscm/issues/151">#151</a>) (<a href="https://github.com/atSCM/atscm/commits/eebbcf1">eebbcf1</a>), closes <a href="https://github.com/atSCM/atscm/issues/90">#90</a></li>
+<li>Create nodes on push (<a href="https://github.com/atSCM/atscm/issues/138">#138</a>) (<a href="https://github.com/atSCM/atscm/commits/d84531b">d84531b</a>), closes <a href="https://github.com/atSCM/atscm/issues/32">#32</a></li>
+<li>New <code>import</code> task (<a href="https://github.com/atSCM/atscm/issues/129">#129</a>) (<a href="https://github.com/atSCM/atscm/commits/faa769d">faa769d</a>)</li>
+<li>Wrap resouce node properties in a <code>.inner</code> folder (<a href="https://github.com/atSCM/atscm/issues/194">#194</a>) (<a href="https://github.com/atSCM/atscm/commits/5535cf2">5535cf2</a>), closes <a href="https://github.com/atSCM/atscm/issues/170">#170</a></li>
+</ul>
+<p><a name="0.5.1"></a></p>
 <h2 id="0-5-1--2018-02-16-">0.5.1 (2018-02-16)</h2><h3 id="bug-fixes">Bug Fixes</h3><ul>
 <li><strong>init:</strong> Use node version 8 aware babel preset (<a href="https://github.com/atSCM/atscm/issues/133">#133</a>) (<a href="https://github.com/atSCM/atscm/commits/0535294">0535294</a>), closes <a href="https://github.com/atSCM/atscm/issues/132">#132</a></li>
 </ul>

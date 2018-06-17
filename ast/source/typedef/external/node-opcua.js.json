@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 1365,
+  "end": 1976,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 44,
+      "line": 60,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 1365,
+    "end": 1976,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 44,
+        "line": 60,
         "column": 0
       }
     },
@@ -161,9 +161,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+        "value": "*\n * @external {node-opcua~Variant} http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html\n ",
         "start": 896,
-        "end": 1044,
+        "end": 1000,
         "loc": {
           "start": {
             "line": 33,
@@ -177,9 +177,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
-        "start": 1046,
-        "end": 1210,
+        "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+        "start": 1002,
+        "end": 1150,
         "loc": {
           "start": {
             "line": 37,
@@ -193,9 +193,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
-        "start": 1212,
-        "end": 1364,
+        "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
+        "start": 1152,
+        "end": 1316,
         "loc": {
           "start": {
             "line": 41,
@@ -203,6 +203,70 @@
           },
           "end": {
             "line": 43,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
+        "start": 1318,
+        "end": 1470,
+        "loc": {
+          "start": {
+            "line": 45,
+            "column": 0
+          },
+          "end": {
+            "line": 47,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {node-opcua~CallMethodRequest} http://node-opcua.github.io/api_doc/0.1.0/classes/CallMethodRequest.html\n ",
+        "start": 1472,
+        "end": 1596,
+        "loc": {
+          "start": {
+            "line": 49,
+            "column": 0
+          },
+          "end": {
+            "line": 51,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {node-opcua~ReferenceTypeId} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js\n ",
+        "start": 1598,
+        "end": 1786,
+        "loc": {
+          "start": {
+            "line": 53,
+            "column": 0
+          },
+          "end": {
+            "line": 55,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @external {node-opcua~NodeClass} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-data-model/schemas/NodeClass_enum.js\n ",
+        "start": 1788,
+        "end": 1975,
+        "loc": {
+          "start": {
+            "line": 57,
+            "column": 0
+          },
+          "end": {
+            "line": 59,
             "column": 3
           }
         }
@@ -340,9 +404,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+      "value": "*\n * @external {node-opcua~Variant} http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html\n ",
       "start": 896,
-      "end": 1044,
+      "end": 1000,
       "loc": {
         "start": {
           "line": 33,
@@ -356,9 +420,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
-      "start": 1046,
-      "end": 1210,
+      "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+      "start": 1002,
+      "end": 1150,
       "loc": {
         "start": {
           "line": 37,
@@ -372,9 +436,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
-      "start": 1212,
-      "end": 1364,
+      "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
+      "start": 1152,
+      "end": 1316,
       "loc": {
         "start": {
           "line": 41,
@@ -382,6 +446,70 @@
         },
         "end": {
           "line": 43,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
+      "start": 1318,
+      "end": 1470,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~CallMethodRequest} http://node-opcua.github.io/api_doc/0.1.0/classes/CallMethodRequest.html\n ",
+      "start": 1472,
+      "end": 1596,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~ReferenceTypeId} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js\n ",
+      "start": 1598,
+      "end": 1786,
+      "loc": {
+        "start": {
+          "line": 53,
+          "column": 0
+        },
+        "end": {
+          "line": 55,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~NodeClass} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-data-model/schemas/NodeClass_enum.js\n ",
+      "start": 1788,
+      "end": 1975,
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 0
+        },
+        "end": {
+          "line": 59,
           "column": 3
         }
       }
@@ -518,9 +646,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+      "value": "*\n * @external {node-opcua~Variant} http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html\n ",
       "start": 896,
-      "end": 1044,
+      "end": 1000,
       "loc": {
         "start": {
           "line": 33,
@@ -534,9 +662,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
-      "start": 1046,
-      "end": 1210,
+      "value": "*\n * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js\n ",
+      "start": 1002,
+      "end": 1150,
       "loc": {
         "start": {
           "line": 37,
@@ -550,9 +678,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
-      "start": 1212,
-      "end": 1364,
+      "value": "*\n * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js\n ",
+      "start": 1152,
+      "end": 1316,
       "loc": {
         "start": {
           "line": 41,
@@ -560,6 +688,70 @@
         },
         "end": {
           "line": 43,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js\n ",
+      "start": 1318,
+      "end": 1470,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 0
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~CallMethodRequest} http://node-opcua.github.io/api_doc/0.1.0/classes/CallMethodRequest.html\n ",
+      "start": 1472,
+      "end": 1596,
+      "loc": {
+        "start": {
+          "line": 49,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~ReferenceTypeId} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js\n ",
+      "start": 1598,
+      "end": 1786,
+      "loc": {
+        "start": {
+          "line": 53,
+          "column": 0
+        },
+        "end": {
+          "line": 55,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @external {node-opcua~NodeClass} https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-data-model/schemas/NodeClass_enum.js\n ",
+      "start": 1788,
+      "end": 1975,
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 0
+        },
+        "end": {
+          "line": 59,
           "column": 3
         }
       }
@@ -577,15 +769,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 1365,
-      "end": 1365,
+      "start": 1976,
+      "end": 1976,
       "loc": {
         "start": {
-          "line": 44,
+          "line": 60,
           "column": 0
         },
         "end": {
-          "line": 44,
+          "line": 60,
           "column": 0
         }
       }

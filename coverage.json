@@ -1,7 +1,7 @@
 {
-  "coverage": "99.55%",
-  "expectCount": 227,
-  "actualCount": 226,
+  "coverage": "99.69%",
+  "expectCount": 329,
+  "actualCount": 328,
   "files": {
     "src/config/ProjectConfig.js": {
       "expectCount": 7,
@@ -28,6 +28,11 @@
       "actualCount": 11,
       "undocumentLines": []
     },
+    "src/lib/gulp/ImportStream.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
     "src/lib/gulp/PullStream.js": {
       "expectCount": 2,
       "actualCount": 2,
@@ -38,14 +43,46 @@
       "actualCount": 2,
       "undocumentLines": []
     },
+    "src/lib/helpers/Object.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/mapping.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/xml.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
     "src/lib/init/Option.js": {
       "expectCount": 9,
       "actualCount": 9,
       "undocumentLines": []
     },
+    "src/lib/model/opcua/NodeId.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/lib/model/opcua/ReverseReferenceTypeIds.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/server/AddReferencesStream.js": {
+      "expectCount": 10,
+      "actualCount": 9,
+      "undocumentLines": [
+        7
+      ]
+    },
     "src/lib/server/AtviseFile.js": {
-      "expectCount": 35,
-      "actualCount": 35,
+      "expectCount": 53,
+      "actualCount": 53,
       "undocumentLines": []
     },
     "src/lib/server/Client.js": {
@@ -53,14 +90,14 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/lib/server/NodeId.js": {
-      "expectCount": 7,
-      "actualCount": 7,
+    "src/lib/server/CreateNodeStream.js": {
+      "expectCount": 5,
+      "actualCount": 5,
       "undocumentLines": []
     },
     "src/lib/server/NodeStream.js": {
-      "expectCount": 7,
-      "actualCount": 7,
+      "expectCount": 18,
+      "actualCount": 18,
       "undocumentLines": []
     },
     "src/lib/server/QueueStream.js": {
@@ -88,14 +125,29 @@
       "actualCount": 10,
       "undocumentLines": []
     },
+    "src/lib/server/WaitingStream.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
     "src/lib/server/Watcher.js": {
       "expectCount": 14,
       "actualCount": 14,
       "undocumentLines": []
     },
     "src/lib/server/WriteStream.js": {
-      "expectCount": 3,
-      "actualCount": 3,
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/lib/server/scripts/CallMethodStream.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/lib/server/scripts/CallScriptStream.js": {
+      "expectCount": 8,
+      "actualCount": 8,
       "undocumentLines": []
     },
     "src/lib/transform/PartialTransformer.js": {
@@ -109,15 +161,18 @@
       "undocumentLines": []
     },
     "src/lib/transform/Transformer.js": {
-      "expectCount": 13,
-      "actualCount": 12,
-      "undocumentLines": [
-        13
-      ]
+      "expectCount": 15,
+      "actualCount": 15,
+      "undocumentLines": []
     },
     "src/lib/transform/XMLTransformer.js": {
-      "expectCount": 11,
-      "actualCount": 11,
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/tasks/import.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     },
     "src/tasks/pull.js": {
@@ -136,13 +191,18 @@
       "undocumentLines": []
     },
     "src/transform/DisplayTransformer.js": {
-      "expectCount": 4,
-      "actualCount": 4,
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/transform/Mapping.js": {
-      "expectCount": 3,
-      "actualCount": 3,
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/transform/Newlines.js": {
+      "expectCount": 6,
+      "actualCount": 6,
       "undocumentLines": []
     },
     "src/transform/ScriptTransformer.js": {
