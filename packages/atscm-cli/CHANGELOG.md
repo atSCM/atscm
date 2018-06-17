@@ -1,10 +1,10 @@
-<a name="0.5.0-beta.0"></a>
-# 0.5.0-beta.0 (2018-03-08)
+<a name="0.5.0"></a>
+# 0.5.0 (2018-06-17)
 
 
 ### Features
 
-* Continue task execution if `--continue` is used ([011e57c](https://github.com/atSCM/atscm-cli/commits/011e57c))
+* Continue task execution if `--continue` is used ([#82](https://github.com/atSCM/atscm-cli/issues/82)) ([92ff5a6](https://github.com/atSCM/atscm-cli/commits/92ff5a6))
 
 
 
