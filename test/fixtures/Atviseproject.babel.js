@@ -4,13 +4,13 @@ import NodeId from '../../src/lib/model/opcua/NodeId';
 export default class TestProject extends Atviseproject {
 
   static get host() {
-    return '185.67.228.66';
+    return '0.tcp.ngrok.io';
   }
 
   static get port() {
     return {
-      opc: 4888,
-      http: 8888,
+      opc: 14293,
+      http: 99,
     };
   }
 
