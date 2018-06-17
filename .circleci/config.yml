@@ -200,6 +200,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - add_ssh_keys
       - attach_workspace:
           at: .
       - run:
