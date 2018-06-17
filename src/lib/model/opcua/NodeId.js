@@ -19,6 +19,15 @@ const TypeForIdentifier = {
 };
 
 /**
+ * Resource nodes are only allowed to have these child nodes.
+ * @type {Set<string>}
+ */
+const possibleResourceChildNodes = new Set([
+  'Translate',
+  'Compress',
+]);
+
+/**
  * A wrapper around {@link node-opcua~NodeId}.
  */
 export default class NodeId extends OpcNodeId {
@@ -65,13 +74,14 @@ export default class NodeId extends OpcNodeId {
    */
   static fromFilePath(path) {
     let separator = '.';
+
     const value = path.split(sep)
-      .reduce((result, current) => {
+      .reduce((result, current, index, components) => {
         const next = `${result ? `${result}${separator}` : ''}${current.replace('%2F', '/')}`;
 
         if (current === 'RESOURCES') {
           separator = '/';
-        } else if (separator === '/' && current.split('.').length > 1) {
+        } else if (separator === '/' && possibleResourceChildNodes.has(components[index + 1])) {
           separator = '.';
         }
 
