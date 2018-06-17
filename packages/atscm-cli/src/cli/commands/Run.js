@@ -39,6 +39,7 @@ export default class RunCommand extends Command {
     };
 
     process.env.ATSCM_CONFIG_PATH = cli.environment.configPath;
+    process.env.CONTINUE_ON_FAILURE = cli.options.continue;
 
     // eslint-disable-next-line global-require
     require('gulp-cli/lib/versioned/^4.0.0/')(
