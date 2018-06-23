@@ -1,3 +1,15 @@
+<a name="0.6.1-beta.0"></a>
+## 0.6.1-beta.0 (2018-06-23)
+
+
+### Bug Fixes
+
+* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
+* Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2018-06-17)
 
