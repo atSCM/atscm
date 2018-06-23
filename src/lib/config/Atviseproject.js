@@ -42,7 +42,8 @@ export default class Atviseproject {
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}.
+   * The transformers to use in this project. Returns {@link DisplayTransformer} and
+   * {@link ScriptTransformer} by default.
    * @type {Transformer[]}
    */
   static get useTransformers() {
