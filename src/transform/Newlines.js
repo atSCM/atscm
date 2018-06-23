@@ -5,7 +5,7 @@ import PartialTransformer from '../lib/transform/PartialTransformer';
 /**
  * A regular expression matching trailing newlines.
  */
-const trailingNewlineRegExp = /\r\n+$/;
+const trailingNewlineRegExp = /\r?\n$/;
 
 /**
  * A transformer that handles newline characters in files. During a pull, all breaks are converted

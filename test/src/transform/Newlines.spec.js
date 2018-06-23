@@ -96,5 +96,17 @@ describe.only('NewlinesTransformer', function() {
         .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
           'to equal', lines.join('\r\n')));
     });
+
+    it('should remove only one trailing newline if set', function() {
+      const transformer = new NewlinesTransformer({ trailingNewlines: true });
+      const lines = ['first line', 'second'];
+
+      return expect(cb => transformer.transformFromFilesystem(new File({
+        path: './src/test/Test.script/Test.js',
+        contents: Buffer.from(lines.concat('').concat('').join(EOL)),
+      }), 'utf8', cb), 'to call the callback without error')
+        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
+          'to equal', lines.concat('').join('\r\n')));
+    });
   });
 });
