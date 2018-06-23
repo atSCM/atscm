@@ -4,7 +4,6 @@ import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
-import NewlinesTransformer from '../../transform/Newlines';
 
 /**
  * A stream that transforms read {@link ReadStream.ReadResult}s and stores the on the filesystem.
@@ -31,8 +30,7 @@ export default class PullStream {
     return Transformer.applyTransformers(
       readStream
         .pipe(mappingStream),
-      ProjectConfig.useTransformers
-        .concat(new NewlinesTransformer()),
+      ProjectConfig.useTransformers,
       TransformDirection.FromDB
     )
       .pipe(dest('./src'))

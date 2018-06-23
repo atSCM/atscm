@@ -5,18 +5,35 @@ import PartialTransformer from '../lib/transform/PartialTransformer';
 /**
  * A regular expression matching trailing newlines.
  */
-const trailingNewlineRegExp = /\r\n+$/;
+const trailingNewlineRegExp = /\r?\n$/;
 
 /**
  * A transformer that handles newline characters in files. During a pull, all breaks are converted
- * the OS-native EOL character and a trailing newline is added (for better git diffs). On push, CRLF
- * characters are used and those trailing newlines are removed again.
+ * the OS-native EOL character and (optionally) a trailing newline is added (for better git diffs).
+ * On push, CRLF characters are used and those trailing newlines are removed again.
  */
 export default class NewlinesTransformer extends PartialTransformer {
 
   /**
+   * Creates a new newline transformer.
+   * @param {Object} [options={}] The options to use.
+   * @param {boolean} [options.trailingNewlines] If trailing newlines should be added. Pass *true*
+   * for better git diffs.
+   */
+  constructor(options = {}) {
+    super(options);
+
+    /**
+     * If newlines should be added to pulled files.
+     * @type {boolean}
+     */
+    this._addTrailingNewlines = options.trailingNewlines || false;
+  }
+
+  /**
    * Returns `true` for all files except binary ones.
    * @param {AtviseFile} file The file being transformed.
+   * @return {boolean} Always `true`.
    */
   shouldBeTransformed(file) {
     return file.stem[0] === '.' || file.dataType !== DataType.ByteString;
@@ -31,7 +48,7 @@ export default class NewlinesTransformer extends PartialTransformer {
   transformFromDB(file, enc, callback) {
     let str = file.contents.toString().replace(/\r?\n/g, EOL);
 
-    if (!str.match(trailingNewlineRegExp)) {
+    if (this._addTrailingNewlines && !str.match(trailingNewlineRegExp)) {
       str += EOL;
     }
 
@@ -47,9 +64,12 @@ export default class NewlinesTransformer extends PartialTransformer {
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with resulting file.
    */
   transformFromFilesystem(file, enc, callback) {
-    const str = file.contents.toString()
-      .replace(/\r?\n/g, '\r\n')
-      .replace(trailingNewlineRegExp, '');
+    let str = file.contents.toString()
+      .replace(/\r?\n/g, '\r\n');
+
+    if (this._addTrailingNewlines) {
+      str = str.replace(trailingNewlineRegExp, '');
+    }
 
     file.contents = Buffer.from(str); // eslint-disable-line no-param-reassign
 

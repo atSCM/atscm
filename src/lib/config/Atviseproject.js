@@ -3,6 +3,7 @@
 import NodeId from '../model/opcua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
+import NewlinesTransformer from '../../transform/Newlines';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -42,13 +43,15 @@ export default class Atviseproject {
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}.
+   * The transformers to use in this project. Returns a {@link DisplayTransformer}, a
+   * {@link ScriptTransformer} and a {@link NewlinesTransformer} by default.
    * @type {Transformer[]}
    */
   static get useTransformers() {
     return [
       new DisplayTransformer(),
       new ScriptTransformer(),
+      new NewlinesTransformer({ trailingNewlines: false }),
     ];
   }
 
