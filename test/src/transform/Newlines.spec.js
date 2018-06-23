@@ -3,7 +3,7 @@ import expect from '../../expect';
 import NewlinesTransformer from '../../../src/transform/Newlines';
 import File from '../../../src/lib/server/AtviseFile';
 
-describe.only('NewlinesTransformer', function() {
+describe('NewlinesTransformer', function() {
   /** @test {MappingTransformer#constructor} */
   describe('#constructor', function() {
     context('trailingNewlines option', function() {
