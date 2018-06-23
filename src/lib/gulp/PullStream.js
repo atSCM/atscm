@@ -31,8 +31,7 @@ export default class PullStream {
     return Transformer.applyTransformers(
       readStream
         .pipe(mappingStream),
-      ProjectConfig.useTransformers
-        .concat(new NewlinesTransformer()),
+      ProjectConfig.useTransformers,
       TransformDirection.FromDB
     )
       .pipe(dest('./src'))

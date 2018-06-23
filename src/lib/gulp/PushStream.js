@@ -37,8 +37,7 @@ export default class PushStream {
     return Transformer.applyTransformers(
       srcStream
         .pipe(mappingStream),
-      ProjectConfig.useTransformers
-        .concat(new NewlinesTransformer()),
+      ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
     )
       .pipe(writeStream)
