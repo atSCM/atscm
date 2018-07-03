@@ -334,7 +334,7 @@ export default class AtviseFile extends File {
    * @param {ReadStream.ReadResult} readResult The read result to get a path for.
    */
   static pathForReadResult(readResult) {
-    let path = readResult.nodeId.filePath;
+    let path = readResult.path.join('/');
 
     if (readResult.nodeClass.value !== NodeClass.Variable.value) {
       return `${path}/.${readResult.nodeClass.key}.json`;
@@ -476,6 +476,9 @@ export default class AtviseFile extends File {
        */
       this._nodeClass = NodeClass[this.stem.split('.')[1]];
 
+      const parts = this.dirname.split('/');
+      this._name = parts[parts.length - 1];
+
       const { references = {} } = JSON.parse(this.contents.toString());
 
       /**
@@ -506,7 +509,7 @@ export default class AtviseFile extends File {
      * A node's browse- and display name.
      * @type {?string}
      */
-    this._name = this.stem.split('.')[0];
+    this._name = this.stem;
 
     let extensions = [];
     const m = this.relative.match(ExtensionRegExp);

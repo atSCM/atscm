@@ -293,10 +293,12 @@ export default class NodeStream extends QueueStream {
    * @param {Object} result The result of the browsing the node.
    * @param  {function(err: Error)} done Called once the node has been processed.
    */
-  handleResult({ nodeId, nodeClass, toParent, parent }, result, done) {
+  handleResult({ nodeId, nodeClass, toParent, parent, path = [] }, result, done) {
     const nodesToBrowse = [];
 
     const references = { toParent };
+    const name = parent ? nodeId.value.split(parent.value)[1].slice(1) : nodeId.value;
+    const childrenPath = path.concat(name);
 
     Promise.all(
       result.references
@@ -322,6 +324,7 @@ export default class NodeStream extends QueueStream {
                 nodeClass: ref.$nodeClass,
                 toParent: ReverseReferenceTypeIds[ref.referenceTypeId.value],
                 parent: nodeId,
+                path: childrenPath,
               }, null, resolve);
             });
           }
@@ -340,7 +343,7 @@ export default class NodeStream extends QueueStream {
         })
     )
       .then(() => {
-        this.push({ nodeClass, nodeId, references, parent });
+        this.push({ nodeClass, nodeId, references, parent, path: childrenPath });
 
         done();
       })
@@ -353,7 +356,7 @@ export default class NodeStream extends QueueStream {
    * @param {function(err: Error, statusCode: node-opcua~StatusCodes, onSuccess: function)}
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk({ nodeId, nodeClass, toParent, parent }, handleErrors) {
+  processChunk({ nodeId, nodeClass, toParent, parent, path }, handleErrors) {
     this.session.browse({
       nodeId,
       browseDirection: BrowseService.BrowseDirection.Forward,
@@ -364,7 +367,7 @@ export default class NodeStream extends QueueStream {
         handleErrors(new Error('No results'));
       } else {
         handleErrors(err, results && results.length > 0 ? results[0].statusCode : null, done => {
-          this.handleResult({ nodeId, nodeClass, toParent, parent }, results[0], done);
+          this.handleResult({ nodeId, nodeClass, toParent, parent, path }, results[0], done);
         });
       }
     });

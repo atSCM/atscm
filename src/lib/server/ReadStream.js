@@ -27,7 +27,7 @@ export default class ReadStream extends QueueStream {
    * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
    * The error handler to call. See {@link QueueStream#processChunk} for details.
    */
-  processChunk({ nodeClass, nodeId, references, parent }, handleErrors) {
+  processChunk({ nodeClass, nodeId, references, parent, path }, handleErrors) {
     if (nodeClass.value === NodeClass.Variable.value) {
       this.session.read([{ nodeId }], (err, nodesToRead, results) => {
         if (err) {
@@ -59,6 +59,7 @@ export default class ReadStream extends QueueStream {
               nodeId,
               references,
               parent,
+              path,
               value: results[0].value,
               mtime: results[0].sourceTimestamp,
             });
@@ -73,6 +74,7 @@ export default class ReadStream extends QueueStream {
           nodeId,
           references,
           parent,
+          path,
         });
 
         done();
