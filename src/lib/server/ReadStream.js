@@ -34,15 +34,23 @@ export default class ReadStream extends QueueStream {
           handleErrors(err, status);
         } else if (!results || results.length === 0) {
           handleErrors(new Error('No results'));
-        } else if (results[0].statusCode === StatusCodes.BadServerNotConnected) {
-          handleErrors(err, StatusCodes.Good, done => {
-            Logger.warn(`${
-              nodeId.value
-            } could not be read because it's datasource is not connected`);
-            done();
-          });
         } else {
-          handleErrors(err, results[0].statusCode, done => {
+          let status = results[0].statusCode;
+
+          if (status !== StatusCodes.Good) {
+            if (results[0].value) {
+              status = StatusCodes.Good;
+              Logger.debug(`Node ${nodeId.value} has bad status: ${results[0].statusCode.description}`);
+            } else {
+              handleErrors(err, StatusCodes.Good, done => {
+                Logger.error(`Unable to read ${nodeId.value}: ${results[0].statusCode.description}`);
+                done();
+              });
+              return;
+            }
+          }
+
+          handleErrors(err, status, done => {
             this.push({
               nodeClass,
               nodeId,
