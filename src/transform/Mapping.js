@@ -1,6 +1,6 @@
 import { join } from 'path';
 import Logger from 'gulplog';
-import { NodeClass } from 'node-opcua';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import Transformer from '../lib/transform/Transformer';
 import AtviseFile from '../lib/server/AtviseFile';
 import NodeId from '../lib/model/opcua/NodeId';

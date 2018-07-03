@@ -1,13 +1,11 @@
 /* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
 /* eslint-disable jsdoc/check-param-names */
 
-import {
-  browse_service as BrowseService,
-  NodeClass,
-  ReferenceTypeIds,
-  AttributeIds,
-  StatusCodes,
-} from 'node-opcua';
+import BrowseService from 'node-opcua/lib/services/browse_service';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
+import { AttributeIds } from 'node-opcua/lib/services/read_service';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import Logger from 'gulplog';
 import Project from '../../config/ProjectConfig';
 import NodeId from '../model/opcua/NodeId';

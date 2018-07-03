@@ -1,4 +1,4 @@
-import { OPCUAClient } from 'node-opcua';
+import { OPCUAClient } from 'node-opcua/lib/client/opcua_client';
 import ProjectConfig from '../../config/ProjectConfig';
 
 /**

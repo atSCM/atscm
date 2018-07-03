@@ -5,13 +5,11 @@
 /* eslint-disable jsdoc/check-param-names */
 
 import Emitter from 'events';
-import {
-  ClientSubscription,
-  AttributeIds,
-  subscription_service as SubscriptionService,
-  StatusCodes,
-  NodeClass,
-} from 'node-opcua';
+import { ClientSubscription } from 'node-opcua/lib/client/client_subscription';
+import { AttributeIds } from 'node-opcua/lib/services/read_service';
+import SubscriptionService from 'node-opcua/lib/services/subscription_service';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeStream from './NodeStream';
 import QueueStream from './QueueStream';

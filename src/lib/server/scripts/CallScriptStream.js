@@ -1,4 +1,5 @@
-import { DataType, VariantArrayType, StatusCodes } from 'node-opcua';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import NodeId from '../../model/opcua/NodeId';
 import CallMethodStream from './CallMethodStream';
 

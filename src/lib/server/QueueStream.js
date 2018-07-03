@@ -1,7 +1,7 @@
 /* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
 /* eslint-disable jsdoc/check-param-names */
 
-import { StatusCodes } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import Logger from 'gulplog';
 import Stream from './Stream';
 

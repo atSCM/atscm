@@ -1,4 +1,4 @@
-import { DataType } from 'node-opcua';
+import { DataType } from 'node-opcua/lib/datamodel/variant';
 import NodeId from '../model/opcua/NodeId';
 
 /**

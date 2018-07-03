@@ -1,5 +1,6 @@
 import Emitter from 'events';
-import { StatusCodes, ClientSession } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { ClientSession } from 'node-opcua/lib/client/opcua_client';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Client from './Client';
