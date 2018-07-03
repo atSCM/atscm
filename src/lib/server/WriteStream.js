@@ -2,7 +2,8 @@
 /* eslint-disable jsdoc/check-param-names */
 
 import Logger from 'gulplog';
-import { StatusCodes, NodeClass } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import WaitingStream from './WaitingStream';
 
 /**

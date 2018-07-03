@@ -33,7 +33,7 @@ const StubWatcher = proxyquire('../../../../src/lib/server/Watcher', {
 }).default;
 
 const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', {
-  'node-opcua': {
+  'node-opcua/lib/client/client_subscription': {
     ClientSubscription: class StubClientSubscription extends Emitter {
 
       constructor() {

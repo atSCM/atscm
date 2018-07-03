@@ -1,4 +1,6 @@
-import { DataType, StatusCodes, ReferenceTypeIds } from 'node-opcua';
+import { DataType } from 'node-opcua/lib/datamodel/variant';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
 import NodeId from '../model/opcua/NodeId';
 import Atviseproject from '../config/Atviseproject';
 import CallScriptStream from './scripts/CallScriptStream';

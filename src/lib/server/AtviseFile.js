@@ -1,7 +1,13 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
-import { NodeClass, DataType, VariantArrayType, resolveNodeId, Variant, LocalizedText, StatusCodes,
-  QualifiedName, DataValue, ReferenceTypeIds } from 'node-opcua';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { DataType, VariantArrayType, Variant } from 'node-opcua/lib/datamodel/variant';
+import { resolveNodeId } from 'node-opcua/lib/datamodel/nodeid';
+import { LocalizedText } from 'node-opcua/lib/datamodel/localized_text';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { QualifiedName } from 'node-opcua/lib/datamodel/qualified_name';
+import { DataValue } from 'node-opcua/lib/datamodel/datavalue';
+import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
 import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
 import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';

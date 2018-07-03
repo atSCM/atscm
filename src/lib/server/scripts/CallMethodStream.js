@@ -1,4 +1,4 @@
-import { StatusCodes } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import QueueStream from '../QueueStream';
 
 /**

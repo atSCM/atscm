@@ -1,4 +1,6 @@
-import { StatusCodes, DataType, NodeClass } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { DataType } from 'node-opcua/lib/datamodel/variant';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
 import CallScriptStream from './scripts/CallScriptStream';
