@@ -63,25 +63,49 @@ describe('ReadStream', function() {
           'to error with', /Test/);
       });
 
-      it('should warn if datasource is not connected', async function() {
-        const stream = new ReadStream();
+      context('if datasource is not connected', function() {
+        it('should print an error without a value', async function() {
+          const stream = new ReadStream();
 
-        spy(Logger, 'warn');
+          spy(Logger, 'error');
 
-        stream.once('session-open', () => {
-          stream.session.read = (node, cb) => cb(null, [{}], [{
-            statusCode: StatusCodes.BadServerNotConnected,
-          }], []);
+          stream.once('session-open', () => {
+            stream.session.read = (node, cb) => cb(null, [{}], [{
+              statusCode: StatusCodes.BadServerNotConnected,
+            }], []);
+          });
+
+          await expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
+            'when piped through', stream,
+            'to yield objects satisfying', 'to have length', 0);
+
+          expect(Logger.error, 'was called once');
+
+          return expect(Logger.error, 'was called with',
+            expect.it('to match', /not connected/));
         });
 
-        await expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
-          'when piped through', stream,
-          'to yield objects satisfying', 'to have length', 0);
+        it('should print a debug warning with a value', async function() {
+          const stream = new ReadStream();
 
-        expect(Logger.warn, 'was called once');
+          spy(Logger, 'debug');
 
-        return expect(Logger.warn, 'was called with',
-          expect.it('to match', /datasource.*not connected/));
+          stream.once('session-open', () => {
+            stream.session.read = (node, cb) => cb(null, [{}], [{
+              statusCode: StatusCodes.BadServerNotConnected,
+              value: true,
+            }], []);
+          });
+
+          await expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
+            'when piped through', stream,
+            'to yield objects satisfying', 'to have length', 0);
+
+          expect(Logger.debug, 'was called once');
+
+          return expect(Logger.debug, 'was called with',
+            expect.it('to match', /not connected/));
+        });
       });
 
       it('should push result when reading succeeds', function() {
