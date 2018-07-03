@@ -22,7 +22,7 @@ const NotExisingHostClient = proxyquire('../../../../src/lib/server/Client', {
 }).default;
 
 const FailingClient = proxyquire('../../../../src/lib/server/Client', {
-  'node-opcua': {
+  'node-opcua/lib/client/opcua_client': {
     OPCUAClient: class FailingCli extends OPCUAClient {
 
       connect(endpoint, callback) {
