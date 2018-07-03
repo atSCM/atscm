@@ -38,12 +38,14 @@ export default class ReadStream extends QueueStream {
           let status = results[0].statusCode;
 
           if (status !== StatusCodes.Good) {
+            const id = nodeId.value;
+
             if (results[0].value) {
               status = StatusCodes.Good;
-              Logger.debug(`Node ${nodeId.value} has bad status: ${results[0].statusCode.description}`);
+              Logger.debug(`Node ${id} has bad status: ${results[0].statusCode.description}`);
             } else {
               handleErrors(err, StatusCodes.Good, done => {
-                Logger.error(`Unable to read ${nodeId.value}: ${results[0].statusCode.description}`);
+                Logger.error(`Unable to read ${id}: ${results[0].statusCode.description}`);
                 done();
               });
               return;
