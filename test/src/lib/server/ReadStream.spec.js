@@ -99,7 +99,7 @@ describe('ReadStream', function() {
 
           await expect([browseResult('ns=1;s=AGENT.DISPLAYS.Main')],
             'when piped through', stream,
-            'to yield objects satisfying', 'to have length', 0);
+            'to yield objects satisfying', 'to have length', 1);
 
           expect(Logger.debug, 'was called once');
 
