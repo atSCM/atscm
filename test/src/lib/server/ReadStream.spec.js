@@ -64,6 +64,10 @@ describe('ReadStream', function() {
       });
 
       context('if datasource is not connected', function() {
+        let errorListener = () => {};
+        before(() => Logger.on('error', errorListener));
+        after(() => Logger.off('error', errorListener));
+
         it('should print an error without a value', async function() {
           const stream = new ReadStream();
 
