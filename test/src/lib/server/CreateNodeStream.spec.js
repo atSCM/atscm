@@ -67,7 +67,7 @@ describe('CreateNodeStream', function() {
       expect(decoded.value, 'to be undefined');
     });
 
-    it('should include dataType, arrayType and value for variables', function() {
+    it('should include dataType, arrayType and empty value for variables', function() {
       const file = new AtviseFile({
         path: './src/AGENT/OBJECTS/Test.prop.float.array',
         base: './src/',
@@ -84,7 +84,7 @@ describe('CreateNodeStream', function() {
       expect(decoded.browseName, 'to equal', 'Test');
       expect(decoded.dataType, 'to equal', DataType.Float.value);
       expect(decoded.valueRank, 'to equal', VariantArrayType.Array.value);
-      expect(decoded.value, 'to equal', [0.13, 14]);
+      expect(decoded.value, 'to equal', null);
     });
   });
 
@@ -283,7 +283,9 @@ describe('CreateNodeStream', function() {
           'to call the callback without error'
         );
 
-        expect(readValue, 'to equal', variant);
+        const ignoreValue = raw => Object.assign(raw, { value: null });
+
+        expect(ignoreValue(readValue), 'to equal', ignoreValue(variant));
       });
     });
   });
