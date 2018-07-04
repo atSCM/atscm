@@ -42,7 +42,7 @@ export default class CreateNodeStream extends CallScriptStream {
     if (file.nodeClass.value === NodeClass.Variable.value) {
       options.dataType = file.dataType.value;
       options.valueRank = file.arrayType.value;
-      options.value = file.createNodeValue;
+      options.value = null; // Value is later written in WriteStream for better performance
     }
 
     return {

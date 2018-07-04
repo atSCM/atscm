@@ -113,7 +113,13 @@ export default class WriteStream extends WaitingStream {
             file.nodeId.value
           } does not exist: Attempting to create it...`);
 
-          this._createNode(file, handleErrors);
+          this._createNode(file, (createErr, createStatus, callback) => {
+            if (!createErr && createStatus === StatusCodes.Good) {
+              this.write(file);
+            }
+
+            handleErrors(createErr, createStatus, callback);
+          });
         } else {
           handleErrors(err, statusCode, done => {
             // Push to add references stream
