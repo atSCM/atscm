@@ -1,5 +1,6 @@
 import { EOL } from 'os';
 import { xml2js, js2xml } from 'xml-js';
+import { isElement, removeChild } from '../helpers/xml';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -22,6 +23,22 @@ export default class XMLTransformer extends SplittingTransformer {
             attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
           },
         });
+      }
+
+      const root = object.elements.find(isElement);
+
+      function addOnTop(parent, name) {
+        const node = removeChild(parent, name);
+
+        if (node) {
+          parent.elements.unshift(node);
+        }
+      }
+
+      if (root.elements) {
+        addOnTop(root, 'metadata');
+        addOnTop(root, 'defs');
+        addOnTop(root, 'title');
       }
 
       return js2xml(object, Object.assign(buildOptions, {
