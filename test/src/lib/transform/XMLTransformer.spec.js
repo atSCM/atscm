@@ -61,7 +61,7 @@ describe('XMLTransformer', function() {
   <title>Test</title>
 </svg>`, { compact: false });
       expect(transformer.builder(dom), 'to equal',
-        `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        nativeEOLs(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg>
   <title>Test</title>
   <defs>
@@ -71,7 +71,7 @@ describe('XMLTransformer', function() {
     <some>meta</some>
   </metadata>
   <rect x="12" y="13"/>
-</svg>`);
+</svg>`));
     });
   });
 
