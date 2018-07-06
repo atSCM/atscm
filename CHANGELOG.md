@@ -1,12 +1,18 @@
-<a name="0.6.1-beta.1"></a>
-## 0.6.1-beta.1 (2018-07-03)
+<a name="0.6.1-beta.2"></a>
+## 0.6.1-beta.2 (2018-07-06)
 
 
 ### Bug Fixes
 
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
+* Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+
+
+### Performance Improvements
+
+* Require only needed `node-opcua` modules ([#208](https://github.com/atSCM/atscm/issues/208)) ([f534ba5](https://github.com/atSCM/atscm/commits/f534ba5))
 
 
 
