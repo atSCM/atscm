@@ -1,9 +1,9 @@
 import readline from 'readline';
-import { dest } from 'gulp';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
 import MappingTransformer from '../../transform/Mapping';
+import dest from './dest';
 
 /**
  * A stream that transforms read {@link ReadStream.ReadResult}s and stores the on the filesystem.
@@ -28,9 +28,8 @@ export default class PullStream {
     }, 1000);
 
     return Transformer.applyTransformers(
-      readStream
-        .pipe(mappingStream),
-      ProjectConfig.useTransformers,
+      readStream,
+      ProjectConfig.useTransformers.concat(mappingStream),
       TransformDirection.FromDB
     )
       .pipe(dest('./src'))

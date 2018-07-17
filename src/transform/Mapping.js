@@ -1,10 +1,19 @@
-import { join } from 'path';
-import Logger from 'gulplog';
-import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { basename } from 'path';
+import { VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { DataType, ReferenceTypeIds } from 'node-opcua';
 import Transformer from '../lib/transform/Transformer';
-import AtviseFile from '../lib/server/AtviseFile';
-import NodeId from '../lib/model/opcua/NodeId';
-import { sortReferences } from '../lib/helpers/mapping';
+import { reverse } from '../lib/helpers/Object';
+
+const standardTypes = {
+  'VariableTypes.ATVISE.HtmlHelp': {
+    extension: '.help.html',
+    dataType: DataType.XmlElement,
+  },
+  'VariableTypes.ATVISE.TranslationTable': {
+    extension: '.locs.xml',
+    dataType: DataType.ByteString,
+  },
+};
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
@@ -28,61 +37,134 @@ export default class MappingTransformer extends Transformer {
   /**
    * Writes an {@link AtviseFile} for each {@link ReadStream.ReadResult} read. If a read file has a
    * non-standard type (definition) an additional `rc` file is pushed holding this type.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * @param {Node} node The read result to create the file for.
    * @param {string} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
-  transformFromDB(readResult, encoding, callback) {
-    try {
-      const file = AtviseFile.fromReadResult(readResult);
-
-      if (readResult.parent && readResult.parent.value.match(/\.RESOURCES\//)) {
-        const relativePath = readResult.nodeId.value.split(readResult.parent.value)[1];
-
-        if (relativePath[0] === '.') {
-          file.path = file.path.split(`${join(readResult.parent.filePath)}.`)
-            .join(`${readResult.parent.filePath}.inner/`);
-        }
-      }
-
-      if (readResult.nodeClass === NodeClass.Variable) {
-        const unmappedReferences = Object.assign({}, file.references);
-
-        if (unmappedReferences.toParent === 'HasComponent') {
-          delete unmappedReferences.toParent;
-        }
-
-        if (!file.relative.match(/\.var\./)) {
-          delete unmappedReferences.HasTypeDefinition;
-        }
-
-        if (file.relative.match(/\.prop\./)) {
-          delete unmappedReferences.toParent;
-        }
-
-        if (Object.keys(unmappedReferences).length) {
-          const rc = file.clone();
-
-          rc.basename = `.${rc.basename}.json`;
-
-          rc.contents = Buffer.from(JSON.stringify({
-            references: sortReferences(unmappedReferences),
-          }, null, '  '));
-
-          this.push(rc);
-        }
-      }
-
-      callback(null, file);
-    } catch (e) {
-      Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.value}: ${e.message}`
-      );
-      Logger.debug(e);
-
-      callback(null);
+  transformFromDB(node, encoding, callback) {
+    if (node.parentResolvesMetadata) { // Skip e.g. split files
+      callback(null, node);
+      return;
     }
+
+    const typeDefinition = node.typeDefinition;
+    if (!typeDefinition) {
+      console.error('Missing type definition', node.nodeId);
+    }
+
+    for (const [def, { extension }] of Object.entries(standardTypes)) {
+      if (node.isVariable && typeDefinition === def) {
+        Object.assign(node, { fileName: `${node.fileName}${extension}` });
+
+        node.markReferenceAsResolved('HasTypeDefinition', typeDefinition);
+        node.markAsResolved('nodeClass');
+        node.markAsResolved('dataType');
+        break;
+      } else if (node.fileName.endsWith(extension)) {
+        callback(new Error(`Name conflict: ${node.nodeId} should not end with '${extension}'`));
+        return;
+      }
+    }
+
+    const extensionForDataType = {
+      [DataType.Boolean.key]: '.bool',
+      [DataType.SByte.key]: '.sbyte',
+      [DataType.Byte.key]: '.byte',
+      [DataType.Int16.key]: '.int16',
+      [DataType.UInt16.key]: '.uint16',
+      [DataType.Int32.key]: '.int32',
+      [DataType.UInt32.key]: '.uint32',
+      [DataType.Int64.key]: '.int64',
+      [DataType.UInt64.key]: '.uint64',
+      [DataType.Float.key]: '.float',
+      [DataType.Double.key]: '.double',
+      [DataType.String.key]: '.string',
+      [DataType.DateTime.key]: '.datetime',
+      [DataType.Guid.key]: '.guid',
+      // [DataType.ByteString.key]: '.bytestring',
+      [DataType.XmlElement.key]: '.xml',
+      [DataType.NodeId.key]: '.nodeid',
+      [DataType.ExpandedNodeId.key]: '.enodeid',
+      [DataType.StatusCode.key]: '.status',
+      [DataType.QualifiedName.key]: '.name',
+      [DataType.LocalizedText.key]: '.text',
+      [DataType.ExtensionObject.key]: '.obj',
+      [DataType.DataValue.key]: '.value',
+      [DataType.Variant.key]: '.variant',
+      [DataType.DiagnosticInfo.key]: '.info',
+    };
+
+    // Check for appended extensions
+    if (node.fileName.endsWith('.prop')) {
+      callback(new Error(`Name conflict: ${node.nodeId} should not end with '.prop'`));
+      return;
+    }
+
+    // FIXME: Check '.array', '.matrix'
+
+    if (node.isVariable) {
+      if (!node.isResolved('nodeClass')) {
+        node.markAsResolved('nodeClass');
+      }
+
+      if (node.hasUnresolvedReference('HasTypeDefinition') && node.typeDefinition === 62) {
+        node.markReferenceAsResolved('HasTypeDefinition', 62);
+      } else if (node.hasUnresolvedReference('HasTypeDefinition') && node.typeDefinition === 68) {
+        Object.assign(node, { fileName: `${node.fileName}.prop` });
+
+        node.markReferenceAsResolved('HasTypeDefinition', 68);
+      }
+
+      for (const [type, ext] of Object.entries(extensionForDataType)) {
+        if (!node.isResolved('dataType')) {
+          if (node.isVariable && node.value.dataType.key === type) {
+            Object.assign(node, { fileName: `${node.fileName}${ext}` });
+
+            node.markAsResolved('dataType');
+            break;
+          } else if (node.fileName.endsWith(ext)) {
+            callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
+            return;
+          }
+        }
+      }
+
+      if (!node.isResolved('arrayType')) {
+        if (node.arrayType !== VariantArrayType.Scalar) {
+          Object.assign(node, {
+            fileName: `${node.fileName}.${node.arrayType.key.toLowerCase()}`,
+          });
+        }
+
+        node.markAsResolved('arrayType');
+      }
+    } else {
+      node.markAsResolved('dataType');
+      node.markAsResolved('arrayType');
+    }
+
+    // Legacy mapping: Root source folders are AGENT, SYSTEM, ObjectTypes and VariableTypes
+    // FIXME: Make optional
+    const ignore = new Set([
+      58, // Objects -> Types -> BaseObjectType
+      62, // Objects -> Types -> BaseVariableType
+      85, // Objects
+      86, // Objects -> Types
+    ]);
+
+    for (let c = node; c && c.parent && !c._compactMappingApplied; c = c.parent) {
+      if (ignore.has(c.parent.id.value)) {
+        c.parent = c.parent.parent;
+        c = node;
+      }
+    }
+
+    Object.assign(node, {
+      _compactMappingApplied: true,
+    });
+
+    callback(null, node);
   }
 
   /**
