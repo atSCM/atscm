@@ -62,10 +62,6 @@ export class WriteStream extends Writable {
       }
     }
 
-    if (writeOps.length === 0 && node.nodeClass !== NodeClass.Variable) {
-      console.error('File ignored!!', node.id.value);
-    }
-
     Promise.all(writeOps)
       .then(() => callback())
       .catch(err => callback(err))

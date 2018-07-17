@@ -63,7 +63,7 @@ const toRawValue = {
 
     return options;
   },
-}
+};
 
 export function getRawValue({ value, dataType, arrayType }) {
   if (arrayType !== VariantArrayType.Scalar) {
@@ -248,8 +248,8 @@ export function decodeVariant(buffer, { dataType, arrayType }) { // Variant miss
   }
 
   const rawValue = arrayType === VariantArrayType.Scalar ?
-      (decodeRawValue[dataType] || asIs)(buffer) :
-      JSON.parse(buffer.toString());
+    (decodeRawValue[dataType] || asIs)(buffer) :
+    JSON.parse(buffer.toString());
 
-    return getNodeValue(rawValue, dataType, arrayType);
+  return getNodeValue(rawValue, dataType, arrayType);
 }

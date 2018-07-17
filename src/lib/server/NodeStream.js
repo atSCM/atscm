@@ -1,5 +1,4 @@
 import { Readable } from 'stream';
-import BrowseService from 'node-opcua/lib/services/browse_service';
 import Logger from 'gulplog';
 import Project from '../../config/ProjectConfig';
 import NodeBrowser from './NodeBrowser';
