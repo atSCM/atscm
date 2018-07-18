@@ -11,7 +11,7 @@ const standardTypes = {
   },
   'VariableTypes.ATVISE.TranslationTable': {
     extension: '.locs.xml',
-    dataType: DataType.ByteString,
+    dataType: DataType.XmlElement,
   },
 };
 
