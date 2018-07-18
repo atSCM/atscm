@@ -7,7 +7,7 @@ export const ReferenceTypeIds = Object.assign({
   toParent: -1,
 }, RealReferenceTypeIds);
 
-const ReferenceTypeNames = reverse(ReferenceTypeIds);
+export const ReferenceTypeNames = reverse(ReferenceTypeIds);
 
 class ReferenceMap extends Map {
 

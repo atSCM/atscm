@@ -6,6 +6,8 @@ import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import WaitingStream from './WaitingStream';
 
+// FIXME: Extend QueueStream directly
+
 /**
  * A stream that writes all read {@link AtviseFile}s to their corresponding nodes on atvise server.
  * The underlying {@link TreeStream} ensures the nodes are processed in an order that respects the
@@ -51,7 +53,7 @@ export default class WriteStream extends WaitingStream {
    * @return {string} The error message to use.
    */
   processErrorMessage(file) {
-    return `Error writing ${file.nodeId.value}`;
+    return `Error writing ${file.nodeId}`;
   }
 
   /**
@@ -73,11 +75,8 @@ export default class WriteStream extends WaitingStream {
    * @param {AtviseFile} file The file to check.
    * @return {NodeId[]} The files dependencies.
    */
-  dependenciesFor(file) {
-    return [
-      file.nodeId.parent,
-      file.typeDefinition,
-    ];
+  dependenciesFor() {
+    return [];
   }
 
   /**
@@ -93,36 +92,33 @@ export default class WriteStream extends WaitingStream {
     }
 
     try {
-      this.session.writeSingleNode(file.nodeId.toString(), {
-        dataType: file.dataType,
-        arrayType: file.arrayType,
-        value: file.value,
-      }, (err, statusCode) => {
-        if (
-          (statusCode === StatusCodes.BadUserAccessDenied) ||
-          (statusCode === StatusCodes.BadNotWritable)
-        ) {
-          Logger.warn(`Error writing node ${
-            file.nodeId.value
+      this.session.writeSingleNode(`ns=1;s=${file.nodeId}`, file.variantValue,
+        (err, statusCode) => {
+          if (
+            (statusCode === StatusCodes.BadUserAccessDenied) ||
+            (statusCode === StatusCodes.BadNotWritable)
+          ) {
+            Logger.warn(`Error writing node ${
+              file.nodeId
+            }
+  - Make sure it is not opened in atvise builder
+  - Make sure the corresponding datasource is connected`);
+            handleErrors(err, StatusCodes.Good, done => done());
+          } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
+            Logger.debug(`Node ${
+              file.nodeId
+            } does not exist: Attempting to create it...`);
+
+            this._createNode(file, handleErrors);
+          } else {
+            handleErrors(err, statusCode, done => {
+              // Push to add references stream
+              this._addReferencesStream.push(file);
+
+              done();
+            });
           }
-- Make sure it is not opened in atvise builder
-- Make sure the corresponding datasource is connected`);
-          handleErrors(err, StatusCodes.Good, done => done());
-        } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
-          Logger.debug(`Node ${
-            file.nodeId.value
-          } does not exist: Attempting to create it...`);
-
-          this._createNode(file, handleErrors);
-        } else {
-          handleErrors(err, statusCode, done => {
-            // Push to add references stream
-            this._addReferencesStream.push(file);
-
-            done();
-          });
-        }
-      });
+        });
     } catch (e) {
       handleErrors(e);
     }
