@@ -127,7 +127,7 @@ export default class Node {
     if (this.specialId) {
       return {
         id: this.specialId,
-        separator: this.parent ? this.parent._nodeId.separator : '.',
+        separator: this.specialId.match(/\.RESOURCES\/?/) ? '/' : '.',
       };
     }
 
