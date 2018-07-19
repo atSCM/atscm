@@ -82,7 +82,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
         if (ignoredReferences.has(key)) { return result; }
 
         return Object.assign(result, {
-          [key]: [...value],
+          [key]: [...value].map(s => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
         });
       }, {});
 
@@ -96,7 +96,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
             nodeId: file.nodeId,
             references: referenceKeys
               .map(type => ({
-                referenceIdValue: type,
+                referenceIdValue: parseInt(type, 10),
                 items: references[type],
               })),
           }),
