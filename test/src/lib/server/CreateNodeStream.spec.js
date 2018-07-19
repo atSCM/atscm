@@ -51,7 +51,7 @@ describe('CreateNodeStream', function() {
       expect(() => JSON.parse(params.paramObjString.value), 'not to throw');
     });
 
-    it.skip('should include nodeId, parentNodeId, nodeClass, typeDefinition and browseName', function() {
+    it.skip('should include nodeId, parentNodeId, nodeClass, typeDefinition and browseName', () => {
       const typeDefId = new NodeId('Type.Def.Id');
       const file = new AtviseFile({
         path: './src/path/to/node/.Object.json',
@@ -182,7 +182,6 @@ describe('CreateNodeStream', function() {
   /** @test {CreateNodeStream#processChunk} */
   describe.skip('#processChunk', function() {
     const testTime = Date.now();
-    const name = `TestCreate-${testTime}`;
     const testFolderNodePath = `src/AGENT/OBJECTS/TestCreate-${testTime}`;
     const nodeIdBase = `AGENT.OBJECTS.TestCreate-${testTime}`;
 

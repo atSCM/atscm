@@ -123,8 +123,11 @@ describe.skip('SubscribeStream', function() {
         stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem());
       });
 
-      return expect([{ specialNodeId: nodeId, nodeClass: NodeClass.Variable }], 'when piped through', stream,
-        'to yield objects satisfying', 'to have length', 0)
+      return expect([{
+        specialNodeId: nodeId,
+        nodeClass: NodeClass.Variable,
+      }], 'when piped through', stream,
+      'to yield objects satisfying', 'to have length', 0)
         .then(() => {
           expect(stream.subscription.monitor, 'was called once');
           expect(stream.subscription.monitor.lastCall.args[0], 'to have properties', { nodeId });

@@ -32,7 +32,6 @@ export function pull(nodes, destination) {
 }
 
 export function push(source) {
-  console.error('>>', source);
   return promisify(new PushStream(src(
     source,
     // [`${source}/**/*`, `!${source}/**/.*.rc`],
@@ -152,8 +151,6 @@ class ExportStream extends CallMethodStream {
 export function exportNodes(nodeIds) {
   const stream = new ExportStream();
 
-  console.error('EXPORT', nodeIds);
-
   stream.write({
     relative: 'TestHelper',
     nodeIds: nodeIds.map(raw => new NodeId(raw)), // new NodeId(nodeId),
@@ -169,7 +166,6 @@ export function exportNode(nodeId) {
 }
 
 export function expectCorrectMapping(setup, node) {
-  console.error(node);
   const originalNames = [].concat(node.name);
   let nodeNames;
   let nodePaths;
