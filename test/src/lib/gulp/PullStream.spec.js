@@ -2,11 +2,10 @@ import { Stream, PassThrough } from 'stream';
 import Logger from 'gulplog';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-import { resolveNodeId, DataType, StatusCodes, Variant, NodeClass } from 'node-opcua';
+import { DataType, StatusCodes, Variant, NodeClass } from 'node-opcua';
 import { obj as createTransformSteam } from 'through2';
 import expect from '../../../expect';
 import ReadStream from '../../../../src/lib/server/NodeStream';
-import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import { ServerNode } from '../../../../src/lib/model/Node';
 
