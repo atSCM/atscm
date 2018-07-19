@@ -82,14 +82,17 @@ export default class XMLTransformer extends SplittingTransformer {
   }
 
   /**
-   * Parses XML in a file's contents.
-   * @param {AtviseFile} file The file to process.
+   * Parses XML in a node's contents.
+   * @param {Node} node The node to process.
    * @param {function(err: ?Error, result: ?Object)} callback Called with the parsed document or the
    * parse error that occurred.
    */
-  decodeContents(file, callback) {
+  decodeContents(node, callback) {
     try {
-      callback(null, xml2js(file.contents, { compact: false }));
+      callback(null, xml2js(this.direction === TransformDirection.FromDB ?
+        node.value.value :
+        node.stringValue,
+      { compact: false }));
     } catch (e) {
       callback(e);
     }

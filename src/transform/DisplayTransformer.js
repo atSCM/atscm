@@ -1,10 +1,13 @@
-import { Buffer } from 'buffer';
+import { basename } from 'path';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
   findChild, removeChild,
   removeChildren,
   createTextNode, createCDataNode, createElement,
 } from '../lib/helpers/xml';
+import { ReferenceTypeIds } from '../lib/model/Node';
 
 /**
  * Names of the tags to come before <metadata> in output files.
@@ -34,24 +37,34 @@ function metadataIndex(elements) {
 export default class DisplayTransformer extends XMLTransformer {
 
   /**
-   * Returns true for all files containing atvise displays.
-   * @param {AtviseFile} file The file to check.
-   * @return {boolean} `true` for all atvise display files.
+   * Returns true for all nodes containing atvise displays.
+   * @param {Node} node The node to check.
+   * @return {boolean} `true` for all atvise display nodes.
    */
-  shouldBeTransformed(file) {
-    return file.isDisplay;
+  shouldBeTransformed(node) {
+    return node.hasTypeDefinition('VariableTypes.ATVISE.Display') ||
+      super.shouldBeTransformed(node);
   }
 
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
-   * @param {AtviseFile} file The display file to split.
+   * @param {Node} node The display node to split.
    * @param {string} enc The encoding used.
-   * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
-   * while transforming the display, or the file passed through.
+   * @param {function(err: Error, node: Node)} callback Called with the error that occured
+   * while transforming the display, or the node passed through.
    */
-  transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+  transformFromDB(node, enc, callback) {
+    if (node.arrayType !== VariantArrayType.Scalar) {
+      // FIXME: Instead of throwing we could simply pass the original node to the callback
+      throw new Error('Array of displays not supported');
+    }
+    node.markAsResolved('nodeClass');
+    node.markAsResolved('dataType');
+    node.markAsResolved('arrayType');
+    node.markReferenceAsResolved('HasTypeDefinition', 'VariableTypes.ATVISE.Display');
+
+    this.decodeContents(node, (err, results) => {
       if (err) {
         callback(err);
       } else if (!results) {
@@ -82,11 +95,15 @@ export default class DisplayTransformer extends XMLTransformer {
 
               const scriptContentNode = script.elements ? script.elements[0] : createTextNode();
 
-              const scriptFile = DisplayTransformer.splitFile(file, '.js');
+              const scriptFile = DisplayTransformer.splitFile(node, '.js');
 
               const scriptText = scriptContentNode[scriptContentNode.type] || '';
 
-              scriptFile.contents = Buffer.from(scriptText);
+              scriptFile.value = {
+                dataType: DataType.String,
+                arrayType: VariantArrayType.Scalar,
+                value: scriptText,
+              };
               this.push(scriptFile);
             }
           });
@@ -106,21 +123,31 @@ export default class DisplayTransformer extends XMLTransformer {
           }
         }
 
-        const configFile = DisplayTransformer.splitFile(file, '.json');
+        const configFile = DisplayTransformer.splitFile(node, '.json');
 
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+        configFile.value = {
+          dataType: DataType.String,
+          arrayType: VariantArrayType.Scalar,
+          value: JSON.stringify(config, null, '  '),
+        };
         this.push(configFile);
 
-        const svgFile = DisplayTransformer.splitFile(file, '.svg');
+        const svgFile = DisplayTransformer.splitFile(node, '.svg');
 
         this.encodeContents(xml, (encodeErr, stringValue) => {
           if (encodeErr) {
             callback(encodeErr);
           } else {
-            svgFile.contents = Buffer.from(stringValue);
+            svgFile.value = {
+              dataType: DataType.String,
+              arrayType: VariantArrayType.Scalar,
+              value: stringValue,
+            };
             this.push(svgFile);
 
-            callback(null);
+            node.renameTo(`${node.name}.display`);
+
+            callback(null, node);
           }
         });
       }
@@ -128,35 +155,57 @@ export default class DisplayTransformer extends XMLTransformer {
   }
 
   /**
-   * Creates a display from the collected files.
-   * @param {Map<String, vinyl~File>} files The collected files, stored against their extension.
-   * @param {vinyl~File} lastFile The last file read. *Used for error messages only*.
-   * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
+   * Creates a display from the collected source nodes.
+   * @param {Node} node The node to map to.
+   * @param {Map<String, Node>} sources The collected files, stored against their extension.
+   * @param {function(err: ?Error, data: Node)} callback Called with the error that occured
    * while creating the display or the resulting file.
    */
-  createCombinedFile(files, lastFile, callback) {
-    const configFile = files['.json'];
+  createCombinedFile(node, sources, callback) {
+    /* eslint-disable no-param-reassign */
+
+    // FIXME: Set nodeClass to NodeClass.Variable
+    node.nodeClass = NodeClass.Variable;
+    node.markAsResolved('nodeClass');
+
+    // Set dataType to DataType.XmlElement
+    node.value.dataType = DataType.XmlElement;
+    node.markAsResolved('dataType');
+
+    // Set arrayType to 'Scalar'
+    node.value.arrayType = VariantArrayType.Scalar;
+    node.markAsResolved('arrayType');
+
+    // Set type definition reference to 'VariableTypes.ATVISE.Display'
+    node.setReferences(ReferenceTypeIds.HasTypeDefinition, ['VariableTypes.ATVISE.Display']);
+    node.markAllReferencesAsResolved('HasTypeDefinition');
+
+    /* eslint-enable no-param-reassign */
+
+    node.renameTo(basename(node.name, '.display'));
+
+    const configFile = sources['.json'];
     let config = {};
 
     if (configFile) {
       try {
-        config = JSON.parse(configFile.contents.toString());
+        config = JSON.parse(configFile.stringValue);
       } catch (e) {
         callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
         return;
       }
     }
 
-    const svgFile = files['.svg'];
+    const svgFile = sources['.svg'];
     if (!svgFile) {
-      callback(new Error(`No display SVG in ${lastFile.dirname}`));
+      callback(new Error(`No display SVG in ${svgFile.path}`));
       return;
     }
 
-    const scriptFile = files['.js'];
+    const scriptFile = sources['.js'];
     let inlineScript = '';
     if (scriptFile) {
-      inlineScript = scriptFile.contents.toString();
+      inlineScript = scriptFile.stringValue;
     }
 
     this.decodeContents(svgFile, (err, xml) => {
@@ -216,18 +265,14 @@ export default class DisplayTransformer extends XMLTransformer {
           svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
         }
 
-        const display = DisplayTransformer.combineFiles(
-          Object.keys(files).map(ext => files[ext]),
-          '.xml'
-        );
-
         this.encodeContents(result, (encodeErr, xmlString) => {
           if (encodeErr) {
             callback(encodeErr);
           } else {
-            display.contents = Buffer.from(xmlString);
+            // eslint-disable-next-line no-param-reassign
+            node.value.value = xmlString;
 
-            callback(null, display);
+            callback(null, node);
           }
         });
       }
