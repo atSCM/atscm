@@ -7,7 +7,7 @@ import { reverse } from '../lib/helpers/Object';
 const standardTypes = {
   'VariableTypes.ATVISE.HtmlHelp': {
     extension: '.help.html',
-    dataType: DataType.XmlElement,
+    dataType: DataType.ByteString,
   },
   'VariableTypes.ATVISE.TranslationTable': {
     extension: '.locs.xml',
