@@ -4,7 +4,7 @@ import { promisify } from 'util';
 import { join, basename, dirname } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { DataType, VariantArrayType } from 'node-opcua';
-import Node, { ReferenceTypeIds } from '../model/Node';
+import { SourceNode, ReferenceTypeIds } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
 
@@ -12,7 +12,7 @@ const readdir = promisify(_readdir);
 const stat = promisify(_stat);
 const readFile = promisify(_readFile);
 
-export class SourceNode extends Node {
+export class FileNode extends SourceNode {
 
   constructor({ name, parent, nodeClass, nodeId, references, dataType, arrayType }) {
     super({ name, parent, nodeClass });
@@ -51,6 +51,10 @@ export class SourceNode extends Node {
     }
   }
 
+  get stringValue() {
+    return this._rawValue.toString();
+  }
+
   get variantValue() {
     const value = this.value;
 
@@ -79,6 +83,7 @@ export class SourceBrowser {
     this._ended = false;
     this._readNodes = [];
 
+    this._isDir = new Set();
     this._base = base || path;
     this._nextToBrowse = [];
     this._nextToStat = [];
@@ -155,6 +160,7 @@ export class SourceBrowser {
       .map(path => stat(path)
         .then(s => {
           if (s.isDirectory()) {
+            this._isDir.add(path);
             this._nextToBrowse.push(path);
           } else if (s.isFile()) {
             if (this._isDefinitionFile(path)) {
@@ -240,7 +246,7 @@ export class SourceBrowser {
     const dir = dirname(path);
     const parentPath = this._parentNodePath(path);
     const relative = join(dir, name);
-    const node = new SourceNode(Object.assign({
+    const node = new FileNode(Object.assign({
       name,
       parent: this._discoveredNodes.get(parentPath),
     }, definitions));
@@ -278,7 +284,7 @@ export class SourceBrowser {
   }
 
   _readNodeValue(node) {
-    if (node.nodeClass === NodeClass.Variable) {
+    if (node.nodeClass === NodeClass.Variable && !this._isDir.has(node.relative)) {
       this._nextToRead.push(node.relative);
     } else {
       this._pushNode(node);

@@ -238,6 +238,8 @@ export default class Node {
       nodeClass: this.nodeClass,
     });
 
+    Object.setPrototypeOf(node, this.constructor.prototype);
+
     node.fileName = `${this.fileName}${extension}`;
 
     node.references = this.references;
@@ -277,5 +279,24 @@ export default class Node {
 
 export class ServerNode extends Node {
 
+  get name() {
+    return this.fileName;
+  }
+
+  renameTo(name) {
+    this.fileName = name;
+  }
+
+}
+
+export class SourceNode extends Node {
+
+  get name() {
+    return this.idName;
+  }
+
+  renameTo(name) {
+    this.idName = name;
+  }
 
 }
