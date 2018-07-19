@@ -172,11 +172,16 @@ export default class Node {
   get hasUnresolvedMetadata() {
     return true;
     /* FIXME: Once plugin mapping is implemented
-    const value = !this._parentResolvesMetadata && (Boolean(this._unresolved.size) || Boolean(this._unresolvedReferences.size) || this.specialId);
+    const value = !this._parentResolvesMetadata && (Boolean(this._unresolved.size) ||
+      Boolean(this._unresolvedReferences.size) || this.specialId);
 
     // FIXME: If debug / test
     if (!value && Object.keys(this.metadata).length > 0) {
-      throw new Error(`#hasUnresolvedMetadata did return invalid result ${value} for ${JSON.stringify(Object.assign(this, { parent: undefined, value: undefined }), null, '  ')}`);
+      throw new Error(`#hasUnresolvedMetadata did return invalid result ${
+        value
+      } for ${
+        JSON.stringify(Object.assign(this, {parent: undefined, value: undefined }), null, '  ')
+      }`);
     } else if (value && Object.keys(this.metadata).length === 0) {
       throw new Error('#metadata did return invalid result');
     }
