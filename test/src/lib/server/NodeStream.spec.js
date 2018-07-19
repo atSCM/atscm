@@ -34,7 +34,7 @@ class NonRecursive extends NodeStream {
 }
 
 /** @test {NodeStream} */
-describe('NodeStream', function() {
+describe.skip('NodeStream', function() {
   const testNodes = [
     new NodeId('ns=1;s=AGENT.DISPLAYS'),
     new NodeId('ns=1;s=AGENT.OBJECTS'),

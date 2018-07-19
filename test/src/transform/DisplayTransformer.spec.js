@@ -7,7 +7,7 @@ import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import DisplayTransformer from '../../../src/transform/DisplayTransformer';
 
 /** @test {DisplayTransformer} */
-describe('DisplayTransformer', function() {
+describe.skip('DisplayTransformer', function() {
   const nonDisplayFile = { isDisplay: false };
 
   /** @test {DisplayTransformer#shouldBeTransformed} */

@@ -7,7 +7,7 @@ import Session from '../../../src/lib/server/Session';
 
 /** @test {importTask} */
 describe('importTask', function() {
-  it('should import all scripts', async function() {
+  it.skip('should import all scripts', async function() {
     const startTime = Date.now();
 
     await expect(importTask(), 'to yield objects satisfying', []);
