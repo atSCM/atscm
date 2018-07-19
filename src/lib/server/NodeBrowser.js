@@ -109,11 +109,11 @@ export default class NodeBrowser {
       for (const reference of references) {
         if (
           reference.namespace &&
-          !this._pushed.has(reference.value) &&
-          !this._sourceNodesRegExp.test(reference.value)
+          !this._pushed.has(reference) &&
+          !this._sourceNodesRegExp.test(reference)
         ) {
-          this._dependingNodes[reference.value] = this._dependingNodes[reference.value] || [];
-          this._dependingNodes[reference.value].push(node);
+          this._dependingNodes[reference] = this._dependingNodes[reference] || [];
+          this._dependingNodes[reference].push(node);
           dependencyCount += 1;
         }
       }
