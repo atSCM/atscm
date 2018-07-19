@@ -1,7 +1,7 @@
 import { Readable } from 'stream';
 import { readdir as _readdir, stat as _stat, readFile as _readFile } from 'fs';
 import { promisify } from 'util';
-import { join, basename, dirname } from 'path';
+import { join, basename, dirname, relative, isAbsolute } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { DataType, VariantArrayType } from 'node-opcua';
 import { SourceNode, ReferenceTypeIds } from '../model/Node';
@@ -69,7 +69,7 @@ export class FileNode extends SourceNode {
 
 export class SourceBrowser {
 
-  constructor({ path, base, ignoreNodes }) {
+  constructor({ path, base, ignoreNodes, recursive }) {
     this._sourceNodesRegExp = new RegExp(`^(${ProjectConfig.nodes
       .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
       .join('|')})`);
@@ -84,7 +84,9 @@ export class SourceBrowser {
     this._readNodes = [];
 
     this._isDir = new Set();
-    this._base = base || path;
+    this._path = path;
+    this._base = base;
+    this._recursive = recursive;
     this._nextToBrowse = [];
     this._nextToStat = [];
     this._nextToRead = [];
@@ -95,7 +97,7 @@ export class SourceBrowser {
     this._dependingNodes = {};
     this._dependencies = {};
 
-    this._stat([path])
+    this._stat([this._base])
       .then(() => this._processQueues())
       .catch(err => this.onError(err));
   }
@@ -149,10 +151,12 @@ export class SourceBrowser {
   }
 
   _isRootNodePath(path) {
+    const name = relative(this._base, path);
+
     // MARK: Only works with compact mapping applied, update once configurable.
     // FIXME: Needs a more general solution.
     // eslint-disable-next-line max-len
-    return /^src.(AGENT|SYSTEM|ObjectTypes.PROJECT|VariableTypes.PROJECT).\.(Object|ObjectType|VariableType)?.json$/.test(path);
+    return /^(AGENT|SYSTEM|ObjectTypes.PROJECT|VariableTypes.PROJECT).\.(Object|ObjectType|VariableType)?.json$/.test(name);
   }
 
   _stat(paths) {
@@ -161,7 +165,13 @@ export class SourceBrowser {
         .then(s => {
           if (s.isDirectory()) {
             this._isDir.add(path);
-            this._nextToBrowse.push(path);
+
+            if (
+              this._path.split(path).length > 1 || // browse up to source node
+              (this._recursive && path.split(this._path).length > 1) // browse children if recursive
+            ) {
+              this._nextToBrowse.push(path);
+            }
           } else if (s.isFile()) {
             if (this._isDefinitionFile(path)) {
               const parentPath = this._parentNodePath(path);
@@ -245,13 +255,13 @@ export class SourceBrowser {
 
     const dir = dirname(path);
     const parentPath = this._parentNodePath(path);
-    const relative = join(dir, name);
+    const rel = join(dir, name);
     const node = new FileNode(Object.assign({
       name,
       parent: this._discoveredNodes.get(parentPath),
     }, definitions));
-    node.relative = relative;
-    this._discoveredNodes.set(relative, node);
+    node.relative = rel;
+    this._discoveredNodes.set(rel, node);
 
     let dependencyCount = 0;
 
@@ -297,6 +307,7 @@ export class SourceBrowser {
     this.onNode(node);
 
     // FIXME: Only while debugging
+    /*
     if (!node.parent && ![
       'AGENT',
       'SYSTEM',
@@ -305,6 +316,7 @@ export class SourceBrowser {
     ].includes(node.nodeId)) {
       throw new Error(`Node '${node.nodeId}' has no parent node`);
     }
+    */
 
     const waiting = this._waitingForParent[node.relative];
     if (waiting) {
@@ -399,5 +411,11 @@ export class SourceStream extends Readable {
 }
 
 export default function src(path, options = {}) {
-  return new SourceStream(Object.assign(options, { path }));
+  const getAbsolute = rel => (isAbsolute(rel) ? rel : join(process.cwd(), rel));
+
+  return new SourceStream(Object.assign(options, {
+    path: getAbsolute(path),
+    base: getAbsolute(options.base || './src'), // FIXME: Take from config file
+    recursive: options.recursive === undefined ? true : options.recursive,
+  }));
 }
