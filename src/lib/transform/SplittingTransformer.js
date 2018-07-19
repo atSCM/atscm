@@ -192,9 +192,11 @@ export default class SplittingTransformer extends PartialTransformer {
     const missingDirnames = Object.keys(this._combineFilesCache._files);
 
     if (missingDirnames.length > 0) {
-      callback(new Error(`Incomplete mapping: Missing files for ${
+      callback();
+      // FIXME: Assert in push but not in watch task
+      /* callback(new Error(`Incomplete mapping: Missing files for ${
         missingDirnames.join(', ')
-      }`));
+      }`)); */
     } else {
       callback();
     }

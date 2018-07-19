@@ -1,8 +1,8 @@
 import { join } from 'path';
-import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
+import src from '../lib/gulp/src';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
 import AtviseFile from '../lib/server/AtviseFile';
@@ -152,7 +152,7 @@ export class WatchTask {
         this._pushing = true;
         Logger.info(path, 'changed');
 
-        const source = src(join(root, path), { base: root });
+        const source = src(join(root, path), { base: root, recursive: false });
 
         (new PushStream(source))
           .on('data', file => (this._lastPushed = file.nodeId.toString()))
@@ -185,7 +185,7 @@ export class WatchTask {
           const stream = new NodeStream([readResult.nodeId], { recursive: false });
 
           (new PullStream(stream))
-            .on('end', () => {
+            .on('finish', () => {
               this._pulling = false;
               this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
               this.browserSyncInstance.reload();
