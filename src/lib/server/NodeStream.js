@@ -52,7 +52,11 @@ export default class NodeStream extends Readable {
     this._isDestroyed = false;
 
     // Write nodes to read
-    this._browser = new NodeBrowser({ nodes, ignoreNodes });
+    this._browser = new NodeBrowser({
+      nodes,
+      ignoreNodes,
+      recursive: options.recursive === undefined ? true : options.recursive,
+    });
 
     this._browser.onNode = node => {
       if (!this.push(node)) { this._browser.stop(); }

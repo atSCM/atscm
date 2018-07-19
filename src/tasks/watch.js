@@ -3,13 +3,13 @@ import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
-import { obj as createStream } from 'through2';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
 import AtviseFile from '../lib/server/AtviseFile';
 import ServerWatcher from '../lib/server/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
+import NodeStream from '../lib/server/NodeStream';
 
 /**
  * The task executed when running `atscm watch`.
@@ -181,11 +181,10 @@ export class WatchTask {
           this._pulling = true;
           Logger.info(readResult.nodeId.toString(), 'changed');
 
-          const readStream = createStream();
-          readStream.write(readResult);
-          readStream.end();
+          // FIXME: Reuse read value
+          const stream = new NodeStream([readResult.nodeId], { recursive: false });
 
-          (new PullStream(readStream))
+          (new PullStream(stream))
             .on('end', () => {
               this._pulling = false;
               this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);

@@ -1,42 +1,42 @@
-import { join } from 'path';
+import { join, sep } from 'path';
 import replace from 'buffer-replace';
 import promisify from 'stream-to-promise';
 import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
-import { src, dest } from 'gulp';
+import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
 import { xml2js } from 'xml-js';
 import expect from '../expect';
 import PushStream from '../../src/lib/gulp/PushStream';
 import NodeStream from '../../src/lib/server/NodeStream';
-import ReadStream from '../../src/lib/server/ReadStream';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
 import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
+import src from '../../src/lib/gulp/src';
+import dest from '../../src/lib/gulp/dest';
 import { id, tmpDir, readFile } from './util';
 
 export function pull(nodes, destination) {
   const PullStream = proxyquire('../../src/lib/gulp/PullStream', {
-    gulp: {
-      dest() {
-        return dest(destination);
-      },
+    './dest': {
+      default: () => dest(destination),
     },
   }).default;
 
   return promisify(
     new PullStream(
       (new NodeStream(nodes.map(n => new NodeId(n))))
-        .pipe(new ReadStream())
     )
   );
 }
 
 export function push(source) {
+  console.error('>>', source);
   return promisify(new PushStream(src(
-    [`${source}/**/*`, `!${source}/**/.*.rc`],
-    { base: source, dot: true },
+    source,
+    // [`${source}/**/*`, `!${source}/**/.*.rc`],
+    { base: source },
   )));
 }
 
@@ -61,7 +61,7 @@ export function importSetup(name, ...rename) {
     }));
   });
 
-  const sourceStream = src(setupPath(name));
+  const sourceStream = gulpSrc(setupPath(name));
   const importStream = new ImportStream();
 
   return promisify(
@@ -152,6 +152,8 @@ class ExportStream extends CallMethodStream {
 export function exportNodes(nodeIds) {
   const stream = new ExportStream();
 
+  console.error('EXPORT', nodeIds);
+
   stream.write({
     relative: 'TestHelper',
     nodeIds: nodeIds.map(raw => new NodeId(raw)), // new NodeId(nodeId),
@@ -167,6 +169,7 @@ export function exportNode(nodeId) {
 }
 
 export function expectCorrectMapping(setup, node) {
+  console.error(node);
   const originalNames = [].concat(node.name);
   let nodeNames;
   let nodePaths;
@@ -197,7 +200,7 @@ export function expectCorrectMapping(setup, node) {
 
   it('should recreate all fields', async function() {
     // Run atscm push
-    await push(destination);
+    await push(join(destination, node.path.replace(/\./g, sep)));
 
     const rawPushed = await exportNodes(nodeIds);
     const pushed = originalNames.reduce((str, original, i) => str
@@ -227,7 +230,21 @@ export function expectCorrectMapping(setup, node) {
         elements: current.elements && current.elements
           .filter(({ type }) => type !== 'comment')
           .filter(({ name }) => name !== 'Aliases')
-          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
+          .sort(({ attributes: a }, { attributes: b }) => {
+            const gotA = a && a.NodeId;
+            const gotB = b && b.NodeId;
+
+            if (gotA) {
+              if (gotB) {
+                return a < b ? -1 : 1;
+              }
+
+              return -1;
+            } else if (gotB) { return 1; }
+
+            return 0;
+          })
+          /* .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
 
@@ -246,7 +263,7 @@ export function expectCorrectMapping(setup, node) {
             }
 
             return (gotA > gotB) ? 1 : 0;
-          })
+          }) */
           .map(n => normalize(sortElements(n))),
       });
     }

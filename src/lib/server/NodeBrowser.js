@@ -48,7 +48,7 @@ export class BrowsedNode extends ServerNode {
 
 export default class NodeBrowser {
 
-  constructor({ nodes, ignoreNodes }/* : { nodes: NodeId[] } */ = {}) {
+  constructor({ nodes, ignoreNodes, recursive }/* : { nodes: NodeId[] } */ = {}) {
     this._sourceNodes = nodes;
     this._sourceNodesRegExp = new RegExp(`^(${nodes
       .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
@@ -57,6 +57,8 @@ export default class NodeBrowser {
     this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes
       .map(n => n.value)
       .join('|')})`);
+
+    this._recursive = recursive;
 
     this._discoveredNodes = [];
     this._nextToBrowse = [];
@@ -279,7 +281,7 @@ export default class NodeBrowser {
           isChildReference(node, reference) &&
           !this._ignoreNodesRegExp.test(reference.nodeId.value)
         ) {
-          if (!this._queued.has(reference.nodeId.value)) {
+          if (!this._queued.has(reference.nodeId.value) && this._recursive) {
             this._queued.add(reference.nodeId.value);
             this._nextToBrowse.push(new BrowsedNode({
               parent: node,

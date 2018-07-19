@@ -75,53 +75,50 @@ export default class MappingTransformer extends Transformer {
    * while transforming the read result or the resulting file.
    */
   transformFromDB(node, encoding, callback) {
-    if (node.fullyMapped || node.parentResolvesMetadata) { // Skip e.g. split files
-      callback(null, node);
-      return;
-    }
+    if (!node.fullyMapped && !node.parentResolvesMetadata) { // Skip mapping for e.g. split files
+      const typeDefinition = node.typeDefinition;
+      let isStandardTypeNode = false;
 
-    const typeDefinition = node.typeDefinition;
-    let isStandardTypeNode = false;
+      // Add extensions for standard types
+      for (const [def, { extension }] of Object.entries(standardTypes)) {
+        if (node.isVariable && typeDefinition === def) {
+          node.renameTo(`${node.name}${extension}`);
+          isStandardTypeNode = true;
 
-    // Add extensions for standard types
-    for (const [def, { extension }] of Object.entries(standardTypes)) {
-      if (node.isVariable && typeDefinition === def) {
-        node.renameTo(`${node.name}${extension}`);
-        isStandardTypeNode = true;
-
-        // FIXME: Set dataType and mark as resolved
-        // FIXME: Set typeDefinition and mark as resolved
-      } else if (node.fileName.endsWith(extension)) {
-        callback(new Error(`Name conflict: ${node.nodeId} should not end with '${extension}'`));
-        return;
-      }
-    }
-
-    // Add extensions for data types
-    for (const [type, ext] of Object.entries(extensionForDataType)) {
-      if (node.isVariable && node.value.dataType.key === type) {
-        if (!isStandardTypeNode) {
-          node.renameTo(`${node.name}${ext}`);
+          // FIXME: Set dataType and mark as resolved
+          // FIXME: Set typeDefinition and mark as resolved
+        } else if (node.fileName.endsWith(extension)) {
+          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${extension}'`));
+          return;
         }
-
-        // FIXME: Set dataType and mark as resolved
-      } else if (node.fileName.endsWith(ext)) {
-        callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
-        return;
       }
-    }
 
-    // Add extensions for array types
-    for (const [type, ext] of Object.entries(extensionForArrayType)) {
-      if (node.isVariable && node.value.arrayType.key === type) {
-        if (!isStandardTypeNode) {
-          node.renameTo(`${node.name}${ext}`);
+      // Add extensions for data types
+      for (const [type, ext] of Object.entries(extensionForDataType)) {
+        if (node.isVariable && node.value.dataType.key === type) {
+          if (!isStandardTypeNode) {
+            node.renameTo(`${node.name}${ext}`);
+          }
+
+          // FIXME: Set dataType and mark as resolved
+        } else if (node.fileName.endsWith(ext)) {
+          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
+          return;
         }
+      }
 
-        // FIXME: Set arrayType and mark as resolved
-      } else if (node.fileName.endsWith(ext)) {
-        callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
-        return;
+      // Add extensions for array types
+      for (const [type, ext] of Object.entries(extensionForArrayType)) {
+        if (node.isVariable && node.value.arrayType.key === type) {
+          if (!isStandardTypeNode) {
+            node.renameTo(`${node.name}${ext}`);
+          }
+
+          // FIXME: Set arrayType and mark as resolved
+        } else if (node.fileName.endsWith(ext)) {
+          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
+          return;
+        }
       }
     }
 

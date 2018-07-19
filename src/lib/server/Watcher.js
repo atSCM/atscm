@@ -80,7 +80,7 @@ export class SubscribeStream extends QueueStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(referenceDescription, handleErrors) {
-    const nodeId = referenceDescription.nodeId;
+    const nodeId = referenceDescription.id;
 
     const item = this.subscription.monitor({
       nodeId,
