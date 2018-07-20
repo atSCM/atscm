@@ -1,5 +1,5 @@
-<a name="0.6.1-beta.2"></a>
-## 0.6.1-beta.2 (2018-07-06)
+<a name="1.0.0-beta.0"></a>
+# 1.0.0-beta.0 (2018-07-20)
 
 
 ### Bug Fixes
@@ -12,7 +12,14 @@
 
 ### Performance Improvements
 
+* Implement tree aware pull task ([e800b7a](https://github.com/atSCM/atscm/commits/e800b7a))
+* Implement tree aware pull task ([7685442](https://github.com/atSCM/atscm/commits/7685442))
 * Require only needed `node-opcua` modules ([#208](https://github.com/atSCM/atscm/issues/208)) ([f534ba5](https://github.com/atSCM/atscm/commits/f534ba5))
+
+
+### BREAKING CHANGES
+
+* The `AtviseFile` class is now deprecated and will be removed soon. Use the `Node` class in Transformers instead
 
 
 
