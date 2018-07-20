@@ -8,24 +8,48 @@ import { SourceNode, ReferenceTypeIds } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
 
+/** Browses the given directory @type {function(path: string): Promise<string[]>} */
 const readdir = promisify(_readdir);
+
+/** Stats the given file @type {function(file: string): Promise<fs~Stat>} */
 const stat = promisify(_stat);
+
+/** Reads the given file @type {function(file: string): Promise<Buffer>} */
 const readFile = promisify(_readFile);
 
+/**
+ * A node returned by the {@link SourceStream}.
+ */
 export class FileNode extends SourceNode {
 
+  /**
+   * Creates a new node.
+   * @param {Object} options The options to use.
+   */
   constructor({ name, parent, nodeClass, nodeId, references, dataType, arrayType }) {
     super({ name, parent, nodeClass });
 
+    /**
+     * A node's value (may be incomplete, use {@link FileNode#variantValue} to ensure).
+     * @type {node-opcua~Variant}
+     */
     this.value = {};
 
     if (nodeClass) {
+      /**
+       * The node's class.
+       * @type {node-opcua~NodeClass}
+       * */
       this.nodeClass = NodeClass[nodeClass];
     } else {
       this.nodeClass = NodeClass.Variable;
     }
 
     if (nodeId) {
+      /**
+       * The id stored in the definition file
+       * @type {NodeId}
+      */
       this.specialId = nodeId;
     } else {
       throw new Error('no nodeid');
@@ -51,10 +75,18 @@ export class FileNode extends SourceNode {
     }
   }
 
+  /**
+   * A node's raw value, decoded into a string.
+   * @type {string}
+   */
   get stringValue() {
     return this._rawValue.toString();
   }
 
+  /**
+   * A node's {@link node-opcua~Variant} value.
+   * @type {node-opcua~Variant}
+   */
   get variantValue() {
     const value = this.value;
 
@@ -67,34 +99,68 @@ export class FileNode extends SourceNode {
 
 }
 
+/**
+ * A stream that browses the file system and returns {@link Node}s from the read files.
+ */
 export class SourceBrowser {
 
+  /**
+   * Creates a new browser.
+   * @param {Object} options The options to use.
+   * @param {string} options.path The path to browse for.
+   * @param {string} [options.base] The base directory to use (defaults to './src').
+   * @param {NodeId[]} [options.ignoreNodes] The nodes to ignore (defaults to the ones in the
+   * project config.
+   * @param {boolean} [options.recursive=true] If the browser shoud recurse directories.
+   */
   constructor({ path, base, ignoreNodes, recursive }) {
+    /**
+     * A regular expression matching all nodes specified in {@link ProjectConfig.nodes}.
+     */
     this._sourceNodesRegExp = new RegExp(`^(${ProjectConfig.nodes
       .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
       .join('|')})`);
 
+    /**
+     * A regular expression matching all nodes specified in {@link ProjectConfig.nodes}.
+     */
     this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes || ProjectConfig.ignoreNodes
       .map(n => n.value)
       .join('|')})`);
 
+    /** If the browser is stopped. @type {boolean} */
     this._isStopped = true;
+    /** If the browser is destoyed. @type {boolean} */
     this._isDestroyed = false;
+    /** If the browser has ended. @type {boolean} */
     this._ended = false;
+    /** Nodes discovered and read but not yet pushed. @type {FileNode[]} */
     this._readNodes = [];
 
+    /** The directories discovered. @type {Set<string>} */
     this._isDir = new Set();
+    /** The source path. @type {string} */
     this._path = path;
+    /** The base path. @type {string} */
     this._base = base;
+    /** If the browser should recurse directores. @type {boolean} */
     this._recursive = recursive;
+    /** The browse queue. @type {string[]} */
     this._nextToBrowse = [];
+    /** The stat queue. @type {string[]} */
     this._nextToStat = [];
+    /** The read queue. @type {string[]} */
     this._nextToRead = [];
 
+    /** Nodes waiting for it's parent to be pushed. @type {Map<string, string[]>} */
     this._waitingForParent = {};
+    /** Nodes discovered but not read yet. @type {Map<string, FileNode>} */
     this._discoveredNodes = new Map();
+    /** Paths of nodes already pushed. @type {Set<string>} */
     this._pushedNodes = new Set();
+    /** Nodes that depend on others to be pushed. @type {Map<string, Set<FileNode>>} */
     this._dependingNodes = {};
+    /** Numbers of dependencies for nodes at path. @type {Map<string, number>} */
     this._dependencies = {};
 
     this._stat([this._base])
@@ -102,11 +168,20 @@ export class SourceBrowser {
       .catch(err => this.onError(err));
   }
 
+  /**
+   * Picks the next items from a queue.
+   * @param {any[]} queue The queue to pick from.
+   */
   _nextInQueue(queue) {
     const count = Math.min(queue.length, 50);
     return queue.splice(0, count);
   }
 
+  /**
+   * Processes the next items in a queue.
+   * @param {any[]} queue The queue to process.
+   * @param {function(input: any[]): Promise<any>} handler The handler to use.
+   */
   _processQueue(queue, handler) {
     const input = this._nextInQueue(queue);
 
@@ -118,6 +193,11 @@ export class SourceBrowser {
       .then(() => this._processQueue(queue, handler));
   }
 
+  /**
+   * Browses the specified directories.
+   * @param {string[]} dirs The directories to browse.
+   * @return {Promise<void>} Resolved once finished.
+   */
   _browse(dirs) {
     return Promise.all(dirs
       .map(dir => readdir(dir)
@@ -128,10 +208,20 @@ export class SourceBrowser {
     );
   }
 
+  /**
+   * Returns `true` for all definition file paths.
+   * @param {string} path The path to check.
+   * @return {boolean} If the item at the given path is a definition file.
+   */
   _isDefinitionFile(path) {
     return basename(path).match(/^\..*\.json$/);
   }
 
+  /**
+   * Returns `true` for all non-variable definition file paths.
+   * @param {string} path The pach to check.
+   * @return {boolean} If the item at the given path is a definition file.
+   */
   _isNonVarFile(path) {
     const t = basename(path).slice(1).replace(/\.json$/, '');
 
@@ -140,6 +230,11 @@ export class SourceBrowser {
     return Boolean(NodeClass[t]);
   }
 
+  /**
+   * Returns the path to the parent node.
+   * @param {string} path The path to use.
+   * @return {string} The parent node's path.
+   */
   _parentNodePath(path) {
     let dir = dirname(path);
 
@@ -150,6 +245,11 @@ export class SourceBrowser {
     return dir.replace(/.inner$/, '');
   }
 
+  /**
+   * Returns `true` for all root node paths.
+   * @param {string} path The path to check.
+   * @return {boolean} If the node at *path* is a root node.
+   */
   _isRootNodePath(path) {
     const name = relative(this._base, path);
 
@@ -159,6 +259,11 @@ export class SourceBrowser {
     return /^(AGENT|SYSTEM|ObjectTypes.PROJECT|VariableTypes.PROJECT).\.(Object|ObjectType|VariableType)?.json$/.test(name);
   }
 
+  /**
+   * Stats the given paths.
+   * @param {string[]} paths The paths to stat.
+   * @return {Promise<void>} Resolved once finished.
+   */
   _stat(paths) {
     return Promise.all(paths
       .map(path => stat(path)
@@ -188,6 +293,11 @@ export class SourceBrowser {
     );
   }
 
+  /**
+   * Reads the given files.
+   * @param {string[]} paths Reads the files at the given paths.
+   * @return {Promise<void>} Resolved once finished.
+   */
   _read(paths) {
     return Promise.all(paths
       .map(path => readFile(path)
@@ -209,6 +319,10 @@ export class SourceBrowser {
     );
   }
 
+  /**
+   * Processes the next itmems in all queues.
+   * @return {Promise<void>} Resolved once finished.
+   */
   async _processQueues() {
     if (this._isDestroyed) { return true; }
 
@@ -244,6 +358,13 @@ export class SourceBrowser {
 
   // Dependency management
 
+  /**
+   * Invoced once a new node has been discovered. Queues it behind it's parents if needed, otherwise
+   * marks it for reading.
+   * @param {Object} options The discovered node.
+   * @param {string} options.path The node's path.
+   * @param {Object} options.definitions The node's definitions.
+   */
   _discoveredNode({ path: _path, definitions }) {
     let path = _path;
     let name = basename(path).slice(1).replace(/\.json$/, '');
@@ -293,6 +414,10 @@ export class SourceBrowser {
     }
   }
 
+  /**
+   * Marks a variable node for reading or pushes it if non-var.
+   * @param {FileNode} node The node to read the value of.
+   */
   _readNodeValue(node) {
     if (node.nodeClass === NodeClass.Variable && !this._isDir.has(node.relative)) {
       this._nextToRead.push(node.relative);
@@ -301,6 +426,10 @@ export class SourceBrowser {
     }
   }
 
+  /**
+   * Pushes a node and queues it's dependents.
+   * @param {FileNode} node The node to push.
+   */
   _pushNode(node) {
     this._pushedNodes.add(node.relative);
     this._pushedNodes.add(node.nodeId);
@@ -343,11 +472,17 @@ export class SourceBrowser {
     }
   }
 
+  /**
+   * Destroys the browser.
+   */
   async destroy() {
     this.stop();
     this._isDestroyed = true;
   }
 
+  /**
+   * Invoced to start the browser pushing nodes.
+   */
   start() {
     this._isStopped = false;
 
@@ -361,17 +496,38 @@ export class SourceBrowser {
     }
   }
 
+  /**
+   * Prevents the browser to push nodes.
+   */
   stop() {
     this._isStopped = true;
   }
 
 }
 
+/**
+ * A stream writing {@link FileNode}s.
+ */
 export class SourceStream extends Readable {
 
+  /**
+   * Creates a new steam.
+   * @param {Object} options The options to use.
+   * @see {SourceBrowser#constructor}
+   */
   constructor(options) {
     super(Object.assign(options, { objectMode: true, highWaterMark: 10000 }));
 
+    /**
+     * If the stream is destoryed.
+     * @type {boolean}
+     */
+    this._isDestroyed = false;
+
+    /**
+     * The stream's file system browser.
+     * @type {SourceBrowser}
+     */
     this._browser = new SourceBrowser(options);
 
     this._browser.onNode = node => {
@@ -390,14 +546,26 @@ export class SourceStream extends Readable {
     };
   }
 
+  /**
+   * If the stream is destroyed.
+   * @type {boolean}
+   */
   get isDestroyed() {
     return this._isDestroyed;
   }
 
+  /**
+   * Starts the browser.
+   */
   _read() {
     this._browser.start();
   }
 
+  /**
+   * Destoys the stream and it's browser.
+   * @param {?Error} err The error that caused the destroy.
+   * @param {function(err: ?Error)} callback Called once finished.
+   */
   _destroy(err, callback) {
     this._isDestroyed = true;
 
@@ -410,6 +578,12 @@ export class SourceStream extends Readable {
 
 }
 
+/**
+ * Returns a {@link SourceStream} for the given path.
+ * @param {string} path The path to read from.
+ * @param {Object} options Options passed to the {@link SourceStream}.
+ * @return {SourceStream} The source stream.
+ */
 export default function src(path, options = {}) {
   const getAbsolute = rel => (isAbsolute(rel) ? rel : join(process.cwd(), rel));
 

@@ -3,8 +3,18 @@ import Logger from 'gulplog';
 import Project from '../../config/ProjectConfig';
 import NodeBrowser from './NodeBrowser';
 
+/**
+ * A stream of server nodes.
+ */
 export default class NodeStream extends Readable {
 
+  /**
+   * Creates new node stream.
+   * @param {NodeId[]} nodesToBrowse The nodes to browse.
+   * @param {Object} [options] The options to use.
+   * @param {boolean} [options.recursive] If the stream should recurse child nodes.
+   * @param {NodeId[]} [options.ignoreNodes] The nodes to ignore.
+   */
   constructor(nodesToBrowse, options = {}) {
     if (!nodesToBrowse || !(nodesToBrowse instanceof Array) || nodesToBrowse.length === 0) {
       throw new Error('nodesToBrowse is required');
@@ -31,6 +41,10 @@ export default class NodeStream extends Readable {
       ignoreNodes = options.ignoreNodes;
     }
 
+    /**
+     * The timestamp when the stream started.
+     * @type {number}
+     */
     this._start = Date.now();
 
     const nodes = nodesToBrowse.filter(nodeId => {
@@ -49,9 +63,18 @@ export default class NodeStream extends Readable {
       throw new Error('Nothing to browse');
     }
 
+    /**
+     * If the stream is destroyed.
+     * @type {boolean}
+     */
     this._isDestroyed = false;
 
     // Write nodes to read
+
+    /**
+     * The stream's browser
+     * @type {NodeBrowser}
+     */
     this._browser = new NodeBrowser({
       nodes,
       ignoreNodes,
@@ -74,14 +97,26 @@ export default class NodeStream extends Readable {
     };
   }
 
+  /**
+   * If the stream is destoyed.
+   * @type {boolean}
+   */
   get isDestroyed() {
     return this._isDestroyed;
   }
 
+  /**
+   * Starts the browser.
+   */
   _read() {
     this._browser.start();
   }
 
+  /**
+   * Destroys the stream.
+   * @param {?Error} err The error that caused the destroy.
+   * @param {function(err: ?Error): void} callback Called once finished.
+   */
   _destroy(err, callback) {
     this._isDestroyed = true;
 
@@ -92,6 +127,10 @@ export default class NodeStream extends Readable {
     });
   }
 
+  /**
+   * The number of processed nodes.
+   * @type {number}
+   */
   get processed() {
     return this._browser._pushed.size;
   }

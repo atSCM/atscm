@@ -4,6 +4,10 @@ import NodeId from '../model/opcua/NodeId';
 import { ServerNode, ReferenceTypeIds } from '../model/Node';
 import Session from './Session';
 
+/**
+ * A set of all hierarchical reference types.
+ * @type {Set<number>}
+ */
 const HierachicalReferencesTypeIds = new Set([
   ReferenceTypeIds.HasChild,
   ReferenceTypeIds.Aggregates,
@@ -17,8 +21,17 @@ const HierachicalReferencesTypeIds = new Set([
   ReferenceTypeIds.Organizes,
 ]);
 
+/**
+ * A node discovered while browsing the server's database.
+ */
 export class BrowsedNode extends ServerNode {
 
+  /**
+   * Creates a new node.
+   * @param {Object} options The options to use.
+   * @param {?BrowsedNode} options.parent The parent node.
+   * @param {Object} options.reference The reference to pick metadata from.
+   */
   constructor({ parent, reference }) {
     super({
       parent,
@@ -27,15 +40,26 @@ export class BrowsedNode extends ServerNode {
     });
 
     this.addReference(ReferenceTypeIds.toParent, reference.referenceTypeId.value);
+
+    /** The node's id. @type {NodeId} */
     this.id = reference.nodeId;
   }
 
+  /**
+   * Add multiple references at once.
+   * @param {Object[]} references The references to add.
+   */
   addReferences(references) {
     references.forEach(reference => {
       this.addReference(reference.referenceTypeId.value, reference.nodeId.value);
     });
   }
 
+  /**
+   * Creates new child node.
+   * @param {Object} options The options to use.
+   * @see {Node#createChild}
+   */
   createChild(options) {
     const node = super.createChild(options);
 
@@ -46,39 +70,78 @@ export class BrowsedNode extends ServerNode {
 
 }
 
+/**
+ * Browses the server database.
+ */
 export default class NodeBrowser {
 
+  /**
+   * Creates a new browser.
+   * @param {Object} options The options to use.
+   * @param {NodeId[]} options.nodes The nodes to browse.
+   * @param {NodeId[]} options.ignoreNodes The nodes to igore.
+   * @param {boolean} options.recursive If the browser should recurse.
+   */
   constructor({ nodes, ignoreNodes, recursive }/* : { nodes: NodeId[] } */ = {}) {
+    /** The browser's source nodes @type {NodeId[]} */
     this._sourceNodes = nodes;
+
+    /** A regular expression matching all source nodes. @type {RegExp} */
     this._sourceNodesRegExp = new RegExp(`^(${nodes
       .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
       .join('|')})`);
-
+    /** A regular expression matching all ignored nodes. @type {RegExp} */
     this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes
       .map(n => n.value)
       .join('|')})`);
 
+    /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
 
+    /** Nodes discovered but not yet pushed. @type {ServerNode[]} */
     this._discoveredNodes = [];
+    /** Nodes that should be browsed next. @type {NodeId[]} */
     this._nextToBrowse = [];
+    /** Nodes queued. @type {Set<string>} */
     this._queued = new Set();
+    /** Nodes pushed. @type {Set<string>} */
     this._pushed = new Set();
+    /** Node dependency map. @type {Map<string, SourceNode[]>} */
     this._dependingNodes = {};
+    /** The count of dependencies for nodes. @type {Map<string, number>} */
     this._dependencies = {};
+
+    /** If the browser is stopped. @type {boolean} */
+    this._isStopped = false;
+    /** If the browser is destroyed. @type {boolean} */
+    this._isDestroyed = false;
+    /** If the browser ended. @type {boolean} */
     this._ended = false;
 
     Session.create()
       .then(session => (this._session = session))
       .then(() => this._getSourceNodes())
       .then(() => this._browseNext())
-      .catch(err => this.onError(err));
+      .catch(err => {
+        if (!this._isDisconnected) {
+          this.onError(err);
+        }
+      });
   }
 
+  /**
+   * Disconnects the browser.
+   * @return {Promise<void>} Resolved once finished.
+   */
   disconnect() {
+    this._isDestroyed = true;
     return Session.close(this._session);
   }
 
+  /**
+   * Destroys the browser.
+   * @return {Promise<void>} Resolved once finished.
+   */
   destroy() {
     this.stop();
     this._isDestroyed = true;
@@ -86,6 +149,11 @@ export default class NodeBrowser {
     return this.disconnect();
   }
 
+  /**
+   * Browses the given nodes.
+   * @param {NodeId[]} nodes The nodes to browse.
+   * @return {Promise<Object[]>} The browse results.
+   */
   _browse(nodes) {
     return new Promise((resolve, reject) => {
       this._session.browse(nodes, (err, results) => {
@@ -95,6 +163,11 @@ export default class NodeBrowser {
     });
   }
 
+  /**
+   * Reads the given nodes.
+   * @param {NodeId[]} nodes The nodes to read.
+   * @return {Promise<Object[]>} The read results.
+   */
   _readValues(nodes) {
     return new Promise((resolve, reject) => {
       this._session.readVariableValue(nodes, (err, results) => {
@@ -104,6 +177,10 @@ export default class NodeBrowser {
     });
   }
 
+  /**
+   * Called once a new node was discovered. Pushes it if possible.
+   * @param {ServerNode} node The discovered node.
+   */
   _discoveredNode(node) {
     let dependencyCount = 0;
 
@@ -128,6 +205,10 @@ export default class NodeBrowser {
     }
   }
 
+  /**
+   * Pushes the given node and queues it's dependents.
+   * @param {ServerNode} node The pushed node.
+   */
   _pushNode(node) {
     if (!this._isStopped) {
       this.onNode(node);
@@ -150,6 +231,11 @@ export default class NodeBrowser {
     }
   }
 
+  /**
+   * Browses the source node to the root node.
+   * @param {NodeId[]} nodes The current nodes.
+   * @return {Promise<string[]>} The discovered source path.
+   */
   async _getSourcePaths(nodes) {
     const paths = nodes.map(() => []);
 
@@ -193,6 +279,11 @@ export default class NodeBrowser {
     return paths;
   }
 
+  /**
+   * Browses the source nodes's root paths.
+   * @param {string[][]} paths The source paths.
+   * @param {NodeId} targets The target nodes to browse onto.
+   */
   async _browseSourcePaths(paths, targets) {
     const remainingPaths = paths;
     const nodes = new Array(paths.length);
@@ -235,6 +326,10 @@ export default class NodeBrowser {
     return nodes;
   }
 
+  /**
+   * Discovers and browses the source nodes.
+   * @return {Promise<void>} Resolved once finished.
+   */
   _getSourceNodes() {
     return this._getSourcePaths(this._sourceNodes)
       .then(paths => this._browseSourcePaths(paths, this._sourceNodes))
@@ -243,6 +338,9 @@ export default class NodeBrowser {
       });
   }
 
+  /**
+   * Browses the next nodes queued.
+   */
   async _browseNext() {
     if (this._isDestroyed) { return Promise.resolve(); }
 
@@ -309,6 +407,9 @@ export default class NodeBrowser {
     return this.onEnd();
   }
 
+  /**
+   * Starts the browser.
+   */
   start() {
     this._isStopped = false;
 
@@ -322,6 +423,9 @@ export default class NodeBrowser {
     }
   }
 
+  /**
+   * Stops the browser.
+   */
   stop() {
     this._isStopped = true;
   }

@@ -33,6 +33,11 @@ const mapPropertyAs = (map, obj, key, dataType) => {
   return obj;
 };
 
+/**
+ * A set of functions that return raw values from {@link node-opcua~Variant} for specific
+ * {@link node-opcua~DataType}s.
+ * @type {Map<node-opcua~DataType, function(value: any): any>}
+ */
 const toRawValue = {
   [DataType.Null]: () => null,
   [DataType.StatusCode]: ({ name }) => name,
@@ -65,7 +70,11 @@ const toRawValue = {
   },
 };
 
-export function getRawValue({ value, dataType, arrayType }) {
+/**
+ * Returns the raw value for a {@link node-opcua~Variant}.
+ * @param {node-opcua~Variant} variant The variant to convert.
+ */
+function getRawValue({ value, dataType, arrayType }) {
   if (arrayType !== VariantArrayType.Scalar) {
     return (Array.isArray(value) ? value : Array.from(value))
       .map(val => getRawValue({
@@ -78,6 +87,11 @@ export function getRawValue({ value, dataType, arrayType }) {
   return (toRawValue[dataType] || asIs)(value);
 }
 
+/**
+ * Returns a buffer containing a {@link node-opcua~Variant}s encoded value.
+ * @param {node-opcua~Variant} variant The variant to encode.
+ * @return {Buffer} A buffer containing the encoded value.
+ */
 export function encodeVariant({ value, dataType, arrayType }) {
   if (value === null) { return Buffer.from([]); }
 
@@ -238,7 +252,14 @@ const getNodeValue = (rawValue, dataType, arrayType) => {
   return (toNodeValue[dataType] || asIs)(rawValue);
 };
 
-export function decodeVariant(buffer, { dataType, arrayType }) { // Variant misses "value" here
+/**
+ * Returns a {@link node-opcua~Variant} from a Buffer with the given *dataType* and *arrayType*.
+ * @param {Buffer} buffer The buffer to decode from.
+ * @param {Object} options The options to use.
+ * @param {node-opcua~DataType} options.dataType The data type to decode to.
+ * @param {node-opcua~VariantArrayType} options.arrayType The array type to decode to.
+ */
+export function decodeVariant(buffer, { dataType, arrayType }) {
   if (buffer === null || buffer.length === 0) {
     return null;
   }
