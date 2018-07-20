@@ -2,7 +2,6 @@ import readline from 'readline';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
-import MappingTransformer from '../../transform/Mapping';
 import dest from './dest';
 
 /**
@@ -16,8 +15,6 @@ export default class PullStream {
    * @param {ReadStream} readStream The stream to read from.
    */
   constructor(readStream) {
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromDB });
-
     const printProgress = setInterval(() => {
       Logger.info(`Pulled: ${readStream.processed} (${readStream.opsPerSecond.toFixed(1)} ops/s)`);
 
@@ -29,10 +26,10 @@ export default class PullStream {
 
     return Transformer.applyTransformers(
       readStream,
-      ProjectConfig.useTransformers.concat(mappingStream),
+      ProjectConfig.useTransformers,
       TransformDirection.FromDB
     )
-      .pipe(dest('./src'))
+      .pipe(dest('./src')) // FIXME: Get from config file
       .on('finish', () => {
         if (Logger.listenerCount('info') > 0) {
           readline.clearLine(process.stdout, 0);

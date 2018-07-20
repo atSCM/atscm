@@ -3,7 +3,7 @@
 import NodeId from '../model/opcua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
-import NewlinesTransformer from '../../transform/Newlines';
+import MappingTransformer from '../../transform/Mapping';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -51,7 +51,7 @@ export default class Atviseproject {
     return [
       new DisplayTransformer(),
       new ScriptTransformer(),
-      new NewlinesTransformer({ trailingNewlines: false }),
+      new MappingTransformer(),
     ];
   }
 
