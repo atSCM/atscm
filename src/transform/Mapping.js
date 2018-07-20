@@ -3,6 +3,10 @@ import assert from 'assert';
 import { VariantArrayType, DataType } from 'node-opcua/lib/datamodel/variant';
 import Transformer from '../lib/transform/Transformer';
 
+/**
+ * Atvise specific types that need special extensions.
+ * @type {Map<string, Object>}
+ */
 const standardTypes = {
   'VariableTypes.ATVISE.HtmlHelp': {
     extension: '.help.html',
@@ -14,6 +18,10 @@ const standardTypes = {
   },
 };
 
+/**
+ * Extensions to use for {@link node-opcua~DataType}s.
+ * @type {Map<string, string>}
+ */
 const extensionForDataType = {
   [DataType.Boolean.key]: '.bool',
   [DataType.SByte.key]: '.sbyte',
@@ -42,6 +50,10 @@ const extensionForDataType = {
   [DataType.DiagnosticInfo.key]: '.info',
 };
 
+/**
+ * Extensions to use for {@link node-opcua~VariantArrayType}s.
+ * @type {Map<string, string>}
+ */
 const extensionForArrayType = {
   [VariantArrayType.Array.key]: '.array',
   [VariantArrayType.Matrix.key]: '.matrix',
