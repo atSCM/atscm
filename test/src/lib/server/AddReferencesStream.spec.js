@@ -2,6 +2,7 @@ import { StatusCodes } from 'node-opcua';
 import expect from '../../../expect';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 import AddReferencesStream from '../../../../src/lib/server/AddReferencesStream';
+import { ReferenceTypeIds } from '../../../../src/lib/model/Node';
 
 /** @test {AddReferencesStream} */
 describe('AddReferencesStream', function() {
@@ -16,29 +17,29 @@ describe('AddReferencesStream', function() {
   /** @test {AddReferencesStream#scriptParameters} */
   describe('#scriptParameters', function() {
     it('should return null without references', function() {
-      expect(AddReferencesStream.prototype.scriptParameters({ references: {} }),
+      expect(AddReferencesStream.prototype.scriptParameters({ references: new Map() }),
         'to be', null);
     });
 
     it('should return null witout additional references', function() {
       expect(AddReferencesStream.prototype.scriptParameters({
-        references: {
-          toParent: 'ToParent',
-          HasTypeDefinition: ['Typedef'],
-          HasModellingRule: ['ModellingRule'],
-        },
+        references: new Map([
+          [ReferenceTypeIds.toParent, new Set([1])],
+          [ReferenceTypeIds.HasTypeDefinition, new Set([2])],
+          [ReferenceTypeIds.HasModellingRule, new Set([3])],
+        ]),
       }),
       'to be', null);
     });
 
     it('should return JSON string for additional references', function() {
       expect(AddReferencesStream.prototype.scriptParameters({
-        references: {
-          toParent: 'ToParent',
-          HasTypeDefinition: ['Typedef'],
-          HasModellingRule: ['ModellingRule'],
-          HasComponent: [new NodeId('ns=1;s=SYSTEM.LIBRARY.ATVISE.ALARMCATEGORIES.Error')],
-        },
+        references: new Map([
+          [ReferenceTypeIds.toParent, new Set([1])],
+          [ReferenceTypeIds.HasTypeDefinition, new Set([2])],
+          [ReferenceTypeIds.HasModellingRule, new Set([3])],
+          [ReferenceTypeIds.HasComponent, new Set(['SYSTEM.LIBRARY.ATVISE.ALARMCATEGORIES.Error'])],
+        ]),
       }),
       'to satisfy', {
         paramObjString: {

@@ -76,7 +76,7 @@ describe('XMLTransformer', function() {
   });
 
   /** @test {XMLTransformer#decodeContents} */
-  describe('#decodeContents', function() {
+  describe.skip('#decodeContents', function() {
     it('should forward errors', function(done) {
       expect(cb => (new XMLTransformer()).decodeContents({ contents: 'no valid xml' }, cb),
         'to call the callback with error', /Text data outside of root node./)
@@ -121,7 +121,7 @@ describe('XMLTransformer', function() {
   }
 
   /** @test {XMLTransformer#encodeContents} */
-  describe('#encodeContents', function() {
+  describe.skip('#encodeContents', function() {
     it('should forward errors', function() {
       expect(cb => (new XMLTransformer()).encodeContents(null, cb),
         'to call the callback with error', /Cannot read property/);

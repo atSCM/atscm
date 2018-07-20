@@ -12,7 +12,7 @@
     "compile:watch": "npm run compile -- --watch",
     "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
-    "docs:coverage": "esdoc-coverage -c esdoc.json",
+    "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
     "lint": "eslint src test",
     "prepublishOnly": "npm run compile && npm run docs",
     "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
@@ -68,6 +68,7 @@
   "dependencies": {
     "@atscm/server-scripts": "^0.2.0",
     "browser-sync": "^2.23.6",
+    "fs-extra": "^6.0.1",
     "gulp": "^4.0.0",
     "gulp-compile-handlebars": "^0.6.1",
     "gulp-filter": "^5.0.0",

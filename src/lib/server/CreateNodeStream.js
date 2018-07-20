@@ -3,6 +3,7 @@ import { DataType } from 'node-opcua/lib/datamodel/variant';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
+import { ReferenceTypeIds, ReferenceTypeNames } from '../model/Node';
 import CallScriptStream from './scripts/CallScriptStream';
 
 /**
@@ -29,20 +30,26 @@ export default class CreateNodeStream extends CallScriptStream {
   scriptParameters(file) {
     const options = {
       nodeId: file.nodeId,
-      parentNodeId: file.parentNodeId,
+      parentNodeId: file.parent ? file.parent.nodeId : 'Objects',
       nodeClass: file.nodeClass.value,
-      typeDefinition: file.typeDefinition.value,
-      browseName: file.name || file.nodeId.browseName,
-
-      // Optional
-      reference: file.references.toParent && file.references.toParent.value,
-      modellingRule: file.references.HasModellingRule && file.references.HasModellingRule[0],
+      typeDefinition: file.typeDefinition,
+      browseName: file.idName,
     };
 
+    const toParentRefs = file.references.get(ReferenceTypeIds.toParent);
+    if (toParentRefs) {
+      options.reference = ReferenceTypeNames[[...toParentRefs][0]];
+    }
+
+    const rules = file.references.get(ReferenceTypeIds.HasModellingRule);
+    if (rules) {
+      options.modellingRule = [...rules][0];
+    }
+
     if (file.nodeClass.value === NodeClass.Variable.value) {
-      options.dataType = file.dataType.value;
-      options.valueRank = file.arrayType.value;
-      options.value = file.createNodeValue;
+      options.dataType = file.variantValue.dataType.value;
+      options.valueRank = file.variantValue.arrayType.value;
+      options.value = file.variantValue.value;
     }
 
     return {
@@ -59,7 +66,7 @@ export default class CreateNodeStream extends CallScriptStream {
    * @return {string} The resulting error message.
   */
   processErrorMessage(file) {
-    return `Error creating node ${file.nodeId.value}`;
+    return `Error creating node ${file.nodeId}`;
   }
 
   /**

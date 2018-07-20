@@ -12,7 +12,7 @@ import MappingTransformer from '../../../src/transform/Mapping';
 import { scalar, array, matrix } from '../../fixtures/dataTypes';
 
 /** @test {MappingTransformer} */
-describe('MappingTransformer', function() {
+describe.skip('MappingTransformer', function() {
   before(() => Logger.on('error', () => true));
 
   /** @test {MappingTransformer#transformFromDB} */

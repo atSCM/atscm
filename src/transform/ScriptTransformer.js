@@ -1,4 +1,6 @@
+import { basename } from 'path';
 import Logger from 'gulplog';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
   findChild, findChildren,
@@ -14,30 +16,31 @@ export default class ScriptTransformer extends XMLTransformer {
 
   /**
    * Returns `true` for all files containing script code or quick dynamics.
-   * @param {AtviseFile} file The file to check.
+   * @param {Node} node The file to check.
    * @return {boolean} `true` for all files containing script code or quick dynamics.
    */
-  shouldBeTransformed(file) {
-    return file.isScript || file.isQuickDynamic;
+  shouldBeTransformed(node) {
+    return (node.isVariable && (node.isScript || node.isQuickDynamic)) ||
+      super.shouldBeTransformed(node);
   }
 
   /**
-   * Splits any read files containing scripts or quick dynamics into their JavaScript sources,
+   * Splits any read nodes containing scripts or quick dynamics into their JavaScript sources,
    * alongside with a json file containing parameters and metadata.
-   * @param {AtviseFile} file The script file to split.
+   * @param {Node} node The script node to split.
    * @param {string} enc The encoding used.
-   * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
-   * while transforming the script, or the file passed through.
+   * @param {function(err: Error, node: Node)} callback Called with the error that occured
+   * while transforming the script, or the node passed through.
    */
-  transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
+  transformFromDB(node, enc, callback) {
+    this.decodeContents(node, (err, results) => {
       if (err) {
         callback(err);
       } else {
         const document = results && findChild(results, 'script');
 
         if (!document) {
-          Logger.warn(`Empty document at ${file.relative}`);
+          Logger.warn(`Empty document at ${node.nodeId}`);
         }
 
         const config = {};
@@ -78,7 +81,7 @@ export default class ScriptTransformer extends XMLTransformer {
                 if (![
                   'longrunning',
                 ].includes(child.name)) {
-                  Logger.debug(`Generic metadata element '${child.name}' at ${file.relative}`);
+                  Logger.debug(`Generic metadata element '${child.name}' at ${node.nodeId}`);
                 }
               }
             }
@@ -118,45 +121,59 @@ export default class ScriptTransformer extends XMLTransformer {
         const code = textContent(codeNode) || '';
 
         // Write config file
-        const configFile = ScriptTransformer.splitFile(file, '.json');
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
+        const configFile = ScriptTransformer.splitFile(node, '.json');
+        configFile.value = {
+          dataType: DataType.String,
+          arrayType: VariantArrayType.Scalar,
+          value: JSON.stringify(config, null, '  '),
+        };
+
         this.push(configFile);
 
         // Write script file
-        const scriptFile = ScriptTransformer.splitFile(file, '.js');
-        scriptFile.contents = Buffer.from(code);
+        const scriptFile = ScriptTransformer.splitFile(node, '.js');
+        scriptFile.value = {
+          dataType: DataType.String,
+          arrayType: VariantArrayType.Scalar,
+          value: code,
+        };
+
         this.push(scriptFile);
 
-        callback(null);
+        node.renameTo(`${node.name}.${node.isQuickDynamic ? 'qd' : 'script'}`);
+
+        callback(null, node);
       }
     });
   }
 
   /**
    * Creates a script from the collected files.
-   * @param {Map<String, AtviseFile>} files The collected files, stored against their extension.
-   * @param {AtviseFile} lastFile The last file read. *Used for error messages only*.
-   * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
+   * @param {Node} node The last file read. *Used for error messages only*.
+   * @param {Map<string, Node>} sources The collected source nodes, stored against their extension.
+   * @param {function(err: ?Error, data: Node)} callback Called with the error that occured
    * while creating the script or the resulting file.
    */
-  createCombinedFile(files, lastFile, callback) {
-    const configFile = files['.json'];
+  createCombinedFile(node, sources, callback) {
+    node.renameTo(basename(node.name, node.isQuickDynamic ? '.qd' : '.script'));
+
+    const configFile = sources['.json'];
     let config = {};
 
     if (configFile) {
       try {
-        config = JSON.parse(configFile.contents.toString());
+        config = JSON.parse(configFile.stringValue);
       } catch (e) {
         callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
         return;
       }
     }
 
-    const scriptFile = files['.js'];
+    const scriptFile = sources['.js'];
     let code = '';
 
     if (scriptFile) {
-      code = scriptFile.contents.toString();
+      code = scriptFile.stringValue;
     }
 
     const document = createElement('script', []);
@@ -170,7 +187,7 @@ export default class ScriptTransformer extends XMLTransformer {
     // Insert metadata
     const meta = [];
 
-    if (lastFile.isQuickDynamic) {
+    if (node.isQuickDynamic) {
       // - Icon
       if (config.icon) {
         const icon = config.icon.content;
@@ -202,7 +219,7 @@ export default class ScriptTransformer extends XMLTransformer {
         });
     }
 
-    if (lastFile.isQuickDynamic || meta.length) {
+    if (node.isQuickDynamic || meta.length) {
       document.elements.push(createElement('metadata', meta));
     }
 
@@ -240,18 +257,14 @@ export default class ScriptTransformer extends XMLTransformer {
     // Insert script code
     document.elements.push(createElement('code', [createCDataNode(code)]));
 
-    const script = ScriptTransformer.combineFiles(
-      Object.keys(files).map(ext => files[ext]),
-      '.xml'
-    );
-
     this.encodeContents(result, (encodeErr, xmlString) => {
       if (encodeErr) {
         callback(encodeErr);
       } else {
-        script.contents = Buffer.from(xmlString);
+        // eslint-disable-next-line no-param-reassign
+        node.value.value = xmlString;
 
-        callback(null, script);
+        callback(null, node);
       }
     });
   }

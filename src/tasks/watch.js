@@ -1,15 +1,15 @@
 import { join } from 'path';
-import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
-import { obj as createStream } from 'through2';
+import src from '../lib/gulp/src';
 import PushStream from '../lib/gulp/PushStream';
 import PullStream from '../lib/gulp/PullStream';
 import AtviseFile from '../lib/server/AtviseFile';
 import ServerWatcher from '../lib/server/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
+import NodeStream from '../lib/server/NodeStream';
 
 /**
  * The task executed when running `atscm watch`.
@@ -152,7 +152,7 @@ export class WatchTask {
         this._pushing = true;
         Logger.info(path, 'changed');
 
-        const source = src(join(root, path), { base: root });
+        const source = src(join(root, path), { base: root, recursive: false });
 
         (new PushStream(source))
           .on('data', file => (this._lastPushed = file.nodeId.toString()))
@@ -181,12 +181,11 @@ export class WatchTask {
           this._pulling = true;
           Logger.info(readResult.nodeId.toString(), 'changed');
 
-          const readStream = createStream();
-          readStream.write(readResult);
-          readStream.end();
+          // FIXME: Reuse read value
+          const stream = new NodeStream([readResult.nodeId], { recursive: false });
 
-          (new PullStream(readStream))
-            .on('end', () => {
+          (new PullStream(stream))
+            .on('finish', () => {
               this._pulling = false;
               this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
               this.browserSyncInstance.reload();

@@ -75,7 +75,7 @@ describe('CombineFilesCache', function() {
         'to call the callback with error', /ENOENT/);
     });
 
-    it('should store required files if missing', function() {
+    it.skip('should store required files if missing', function() {
       const cache = new StubCombineFilesCache();
 
       return expect(cb => cache.gotAllFiles({ dirname: 'dirname' }, cb),
@@ -91,7 +91,7 @@ describe('CombineFilesCache', function() {
     const file1 = { dirname: 'dirname', extname: '.ext1' };
     const file2 = { dirname: 'dirname', extname: '.ext2' };
 
-    it('should cache passed file', function() {
+    it.skip('should cache passed file', function() {
       return expect(cb => fillCache.gotAllFiles(file1, cb),
         'to call the callback')
         .then(args => {
@@ -102,7 +102,7 @@ describe('CombineFilesCache', function() {
         });
     });
 
-    it('should pass all cached files if all required are present', function() {
+    it.skip('should pass all cached files if all required are present', function() {
       return expect(cb => fillCache.gotAllFiles(file2, cb),
         'to call the callback')
         .then(args => {
@@ -158,7 +158,7 @@ describe('SplittingTransformer', function() {
         });
     });
 
-    it('should call #createCombinedFile if all required files are cached', function() {
+    it.skip('should call #createCombinedFile if all required files are cached', function() {
       const transformer = new SplittingTransformer({
         direction: TransformDirection.FromFilesystem,
       });
@@ -179,7 +179,7 @@ describe('SplittingTransformer', function() {
   });
 
   /** @test {SplittingTransformer.splitFile} */
-  describe('.splitFile', function() {
+  describe.skip('.splitFile', function() {
     const original = new File({
       path: 'path/name.type.ext',
     });
@@ -194,7 +194,7 @@ describe('SplittingTransformer', function() {
   });
 
   /** @test {SplittingTransformer.combineFiles} */
-  describe('.combineFiles', function() {
+  describe.skip('.combineFiles', function() {
     const originals = [
       new File({ path: 'path/name.type/name.ext1' }),
       new File({ path: 'path/name.type/name.ext2' }),
@@ -210,7 +210,7 @@ describe('SplittingTransformer', function() {
   });
 
   /** @test {SplittingTransformer#_flush} */
-  describe('#_flush', function() {
+  describe.skip('#_flush', function() {
     it('should just callback if no files are missing', function() {
       const transformer = new SplittingTransformer();
       const callback = spy();
