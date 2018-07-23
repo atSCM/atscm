@@ -49,6 +49,7 @@ const Options = {
   'tasks-json': Option.boolean('Print the task dependency tree, in JSON format.'),
   version: Option.boolean('Print version.', { alias: 'v' }),
   beta: Option.boolean('Use atscm beta resources.'),
+  debug: Option.boolean('Use debug mode.'),
 };
 
 export default Options;
@@ -66,4 +67,5 @@ export const GlobalOptions = {
   help: Options.help,
   silent: Options.silent,
   'log-level': Options['log-level'],
+  debug: Options.debug,
 };

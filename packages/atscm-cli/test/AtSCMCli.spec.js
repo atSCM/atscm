@@ -312,5 +312,26 @@ describe('AtSCMCli', function() {
 
       return expect(cli.launch(), 'to be fulfilled');
     });
+
+    it('should start debug mode with `--debug` option', function() {
+      const cli = new AtSCMCli(['--debug']);
+      cli.runViaCli = true;
+
+      return expect(cli.launch(), 'to be fulfilled')
+        .then(() => expect(process.env.ATSCM_DEBUG, 'to equal', 'true'));
+    });
+
+    context('with ATSCM_DEBUG env var', function() {
+      before((() => { process.env.ATSCM_DEBUG = 'yes'; }));
+      after((() => { process.env.ATSCM_DEBUG = undefined; }));
+
+      it('should start debug mode', function() {
+        const cli = new AtSCMCli(['--debug']);
+        cli.runViaCli = true;
+
+        return expect(cli.launch(), 'to be fulfilled')
+          .then(() => expect(process.env.ATSCM_DEBUG, 'to equal', 'yes'));
+      });
+    });
   });
 });
