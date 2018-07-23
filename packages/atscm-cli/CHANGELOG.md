@@ -1,3 +1,14 @@
+<a name="0.6.0"></a>
+# 0.6.0 (2018-07-23)
+
+
+### Features
+
+* Use the `--debug` flag to start debug mode ([#85](https://github.com/atSCM/atscm-cli/issues/85)) ([a929e0e](https://github.com/atSCM/atscm-cli/commits/a929e0e))
+
+
+
+
 <a name="0.5.0"></a>
 # 0.5.0 (2018-06-17)
 
