@@ -1,9 +1,21 @@
 import { Writable } from 'stream';
 import { join } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
-import { outputFile } from 'fs-extra';
+import { outputFile, readJson } from 'fs-extra';
 import Logger from 'gulplog';
 import { encodeVariant } from '../coding';
+
+/**
+ * Relative path to the rename file.
+ * @type {string}
+ */
+const renameConfigPath = './atscm/rename.json';
+
+/**
+ * The default name inserted into the rename file.
+ * @type {string}
+ */
+const renameDefaultName = 'insert node name';
 
 /**
  * A stream that writes {@link Node}s to the file system.
@@ -27,7 +39,7 @@ export class WriteStream extends Writable {
      * If the stream is destroyed.
      * @type {boolean}
      */
-    this._destroyed = false;
+    this._isDestroyed = false;
 
     /**
      * The number of processed nodes.
@@ -42,16 +54,33 @@ export class WriteStream extends Writable {
     this._written = 0;
 
     /**
-     * If the stream is destroyed.
-     * @type {boolean}
-     */
-    this._destroyed = false;
-
-    /**
      * The base to output to.
      * @type {string}
      */
     this._base = options.base || options.path;
+
+    /**
+     * The object stored in the *rename file* (usually at './atscm/rename.json')
+     */
+    this._renameConfig = {};
+
+    /**
+     * A promise that resolves once the *rename file* is loaded.
+     * @type Promise<Object>
+     */
+    this._loadRenameConfig = readJson(renameConfigPath)
+      .then(config => (this._renameConfig = config))
+      .catch(() => Logger.debug('No rename config file loaded'));
+
+    /**
+     * A map of ids used for renaming.
+     */
+    this._idMap = new Map();
+
+    /**
+     * If writes should actually be performed. Set to `false` once id conflicts were discovered.
+     */
+    this._performWrites = true;
   }
 
   /**
@@ -63,21 +92,81 @@ export class WriteStream extends Writable {
   }
 
   /**
-   * Writes a single node to the file system.
-   * @param {Node} node The node to write.
-   * @param {string} enc The encoding used.
-   * @param {function(err: ?Error): void} callback Called once finished.
+   * Transverses the node tree to see if any parent node has an id conflict.
+   * @param {ServerNode} node The processed node.
+   * @return {boolean} `true` if a parent node has an id conflict.
    */
-  _write(node, enc, callback) {
+  _parentHasIdConflict(node) {
+    let current = node.parent;
+
+    while (current) {
+      if (current._hasIdConflict) { return true; }
+      current = current.parent;
+    }
+
+    return false;
+  }
+
+  /**
+   * Writes a single node to disk.
+   * @param {ServerNode} node The processed node.
+   * @return {Promise<boolean>} Resolves once the node has been written, `true` indicates the node
+   * has actually been written.
+   */
+  async _writeNode(node) {
     // TODO: Throw if node.name ends with '.inner'
     const dirPath = node.filePath;
 
     const writeOps = [];
 
-    if (node.nodeId !== node.id.value) {
-      Logger.info(`Resolved ID conflict: '${node.id.value}' should be renamed to '${node.nodeId}'`);
+    // Rename nodes specified in the rename config
+    const rename = this._renameConfig[node.nodeId];
+    if (rename && rename !== renameDefaultName) {
+      node.renameTo(rename);
+      Logger.info(`'${node.nodeId}' was renamed to '${rename}'`);
 
-      Object.assign(node, { specialId: node.id.value });
+      Object.assign(node, { _renamed: true });
+    }
+
+    // Resolve invalid ids
+    if (!node._renamed && node.nodeId !== node.id.value) {
+      Logger.info(`Resolved ID conflict: '${node.id.value}' should be renamed to '${node.nodeId}'`);
+    }
+
+    Object.assign(node, { specialId: node.id.value });
+
+    // Detect "duplicate" ids (as file names are case insensitive)
+    const pathKey = dirPath.concat(node.fileName).join('/').toLowerCase();
+    if (this._idMap.has(pathKey)) {
+      if (this._parentHasIdConflict(node)) {
+        Logger.debug(`ID conflict: Skipping '${node.nodeId}'`);
+      } else {
+        Logger.error(`ID conflict: '${node.nodeId}' conflicts with '${
+          this._idMap.get(pathKey)
+        }'`);
+
+        const existingRename = this._renameConfig[node.nodeId];
+        if (existingRename) {
+          if (existingRename === renameDefaultName) {
+            // eslint-disable-next-line max-len
+            Logger.error(` - '${node.nodeId}' is present inside the rename file at './atscm/rename.json', but no name has been inserted yet.`);
+          } else {
+            // eslint-disable-next-line max-len
+            Logger.error(` - The name for '${node.nodeId}' inside './atscm/rename.json' is not unique.`);
+          }
+
+          Logger.info(" - Edit the node's name and run 'atscm pull' again");
+        } else {
+          this._renameConfig[node.nodeId] = renameDefaultName;
+          Logger.info(` - '${node.nodeId}' was added to the rename file at './atscm/rename.json'`);
+          Logger.info("Edit it's name and run 'atscm pull' again.");
+        }
+      }
+
+      Object.assign(node, { _hasIdConflict: true });
+      this._performWrites = false;
+    } else {
+      this._idMap.set(pathKey, node.nodeId);
     }
 
     // Write definition file (if needed)
@@ -86,21 +175,25 @@ export class WriteStream extends Writable {
         `./.${node.fileName}.json` :
         `./${node.fileName}/.${node.nodeClass.key}.json`;
 
-      writeOps.push(
-        outputFile(join(this._base, dirPath.join('/'), name),
-          JSON.stringify(node.metadata, null, '  '))
-      );
+      if (this._performWrites) {
+        writeOps.push(
+          outputFile(join(this._base, dirPath.join('/'), name),
+            JSON.stringify(node.metadata, null, '  '))
+        );
+      }
     }
 
     // Write value
     if (node.nodeClass === NodeClass.Variable) {
       if (node.value) {
         if (!node.value.noWrite) {
-          writeOps.push(
-            outputFile(
-              join(this._base, dirPath.join('/'), node.fileName),
-              encodeVariant(node.value))
-          );
+          if (this._performWrites) {
+            writeOps.push(
+              outputFile(
+                join(this._base, dirPath.join('/'), node.fileName),
+                encodeVariant(node.value))
+            );
+          }
 
           // Store child nodes as file.inner/...
           node.renameTo(`${node.name}.inner`);
@@ -110,13 +203,25 @@ export class WriteStream extends Writable {
       }
     }
 
-    Promise.all(writeOps)
-      .then(() => callback())
-      .catch(err => callback(err))
+    return Promise.all(writeOps)
       .then(() => {
         this._processed++;
         this._written += writeOps.length;
-      });
+      })
+      .then(() => writeOps.length > 0);
+  }
+
+  /**
+   * Writes a single node to the file system.
+   * @param {Node} node The node to write.
+   * @param {string} enc The encoding used.
+   * @param {function(err: ?Error): void} callback Called once finished.
+   */
+  _write(node, enc, callback) {
+    this._loadRenameConfig
+      .then(() => this._writeNode(node))
+      .then(() => callback())
+      .catch(err => callback(err));
   }
 
   /**
@@ -127,12 +232,10 @@ export class WriteStream extends Writable {
   _writev(nodes, callback) {
     if (this.isDestroyed) { return; }
 
-    Promise.all(nodes.map(({ chunk, encoding }) => new Promise((resolve, reject) => {
-      this._write(chunk, encoding, err => {
-        if (err) { return reject(err); }
-        return resolve();
-      });
-    })))
+    this._loadRenameConfig
+      .then(() => Promise.all(nodes
+        .map(({ chunk }) => this._writeNode(chunk)))
+      )
       .then(() => callback())
       .catch(err => callback(err));
   }
@@ -145,6 +248,16 @@ export class WriteStream extends Writable {
   _destroy(err, callback) {
     this._isDestroyed = true;
     super._destroy(err, callback);
+  }
+
+  /**
+   * Writes the updated rename config to disk.
+   * @param {function(err: ?Error): void} callback Called once the rename file has been written.
+   */
+  _final(callback) {
+    outputFile(renameConfigPath, JSON.stringify(this._renameConfig, null, '  '))
+      .then(callback)
+      .catch(callback);
   }
 
 }
