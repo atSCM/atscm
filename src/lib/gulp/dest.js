@@ -27,7 +27,7 @@ export class WriteStream extends Writable {
      * If the stream is destroyed.
      * @type {boolean}
      */
-    this._destroyed = false;
+    this._isDestroyed = false;
 
     /**
      * The number of processed nodes.
@@ -40,12 +40,6 @@ export class WriteStream extends Writable {
      * @type {number}
      */
     this._written = 0;
-
-    /**
-     * If the stream is destroyed.
-     * @type {boolean}
-     */
-    this._destroyed = false;
 
     /**
      * The base to output to.
