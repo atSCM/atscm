@@ -2,7 +2,7 @@ import { DataType } from 'node-opcua';
 import watch from '../../../src/tasks/watch';
 import { importSetup, callScript } from '../../helpers/atscm';
 
-describe('watch task', function() {
+describe.skip('watch task', function() {
   context('when a watched node is deleted', function() {
     it('should not error', async function() {
       const nodeName = await importSetup('issue-157', 'DeleteDisplay');
