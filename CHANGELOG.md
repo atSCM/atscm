@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.0"></a>
-# 1.0.0-beta.0 (2018-07-20)
+<a name="1.0.0-beta.1"></a>
+# 1.0.0-beta.1 (2018-07-24)
 
 
 ### Bug Fixes
@@ -8,6 +8,11 @@
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+
+
+### Features
+
+* Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
 
 
 ### Performance Improvements
