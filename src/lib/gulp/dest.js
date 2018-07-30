@@ -130,7 +130,8 @@ export class WriteStream extends Writable {
 
     // Resolve invalid ids
     if (!node._renamed && node.nodeId !== node.id.value) {
-      Logger.debug(`Resolved ID conflict: '${node.id.value}' should be renamed to '${node.nodeId}'`);
+      Logger.debug(`Resolved ID conflict: '${
+        node.id.value}' should be renamed to '${node.nodeId}'`);
     }
 
     Object.assign(node, { specialId: node.id.value });
