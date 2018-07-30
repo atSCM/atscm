@@ -135,6 +135,12 @@ export class WriteStream extends Writable {
 
     Object.assign(node, { specialId: node.id.value });
 
+    if (node.name.match(/:/)) {
+      const before = node.name;
+      node.renameTo(node.name.replace(/:/g, '_'));
+      Logger.debug(`Resolved ID conflict: '${before}' was renamed to safe name '${node.name}'`);
+    }
+
     // Detect "duplicate" ids (as file names are case insensitive)
     const pathKey = dirPath.concat(node.fileName).join('/').toLowerCase();
     if (this._idMap.has(pathKey)) {
