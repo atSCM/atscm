@@ -123,17 +123,24 @@ export class WriteStream extends Writable {
     const rename = this._renameConfig[node.nodeId];
     if (rename && rename !== renameDefaultName) {
       node.renameTo(rename);
-      Logger.info(`'${node.nodeId}' was renamed to '${rename}'`);
+      Logger.debug(`'${node.nodeId}' was renamed to '${rename}'`);
 
       Object.assign(node, { _renamed: true });
     }
 
     // Resolve invalid ids
     if (!node._renamed && node.nodeId !== node.id.value) {
-      Logger.info(`Resolved ID conflict: '${node.id.value}' should be renamed to '${node.nodeId}'`);
+      Logger.debug(`Resolved ID conflict: '${
+        node.id.value}' should be renamed to '${node.nodeId}'`);
     }
 
     Object.assign(node, { specialId: node.id.value });
+
+    if (node.name.match(/:/)) {
+      const before = node.name;
+      node.renameTo(node.name.replace(/:/g, '_'));
+      Logger.debug(`Resolved ID conflict: '${before}' was renamed to safe name '${node.name}'`);
+    }
 
     // Detect "duplicate" ids (as file names are case insensitive)
     const pathKey = dirPath.concat(node.fileName).join('/').toLowerCase();
