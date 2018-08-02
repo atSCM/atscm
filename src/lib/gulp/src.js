@@ -51,8 +51,6 @@ export class FileNode extends SourceNode {
        * @type {NodeId}
       */
       this.specialId = nodeId;
-    } else {
-      throw new Error('no nodeid');
     }
 
     if (references) {
