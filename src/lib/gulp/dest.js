@@ -81,6 +81,8 @@ export class WriteStream extends Writable {
      * If writes should actually be performed. Set to `false` once id conflicts were discovered.
      */
     this._performWrites = true;
+
+    this._discoveredIdConflicts = 0;
   }
 
   /**
@@ -151,6 +153,8 @@ export class WriteStream extends Writable {
         Logger.error(`ID conflict: '${node.nodeId}' conflicts with '${
           this._idMap.get(pathKey)
         }'`);
+
+        this._discoveredIdConflicts++;
 
         const existingRename = this._renameConfig[node.nodeId];
         if (existingRename) {
@@ -262,6 +266,13 @@ export class WriteStream extends Writable {
    * @param {function(err: ?Error): void} callback Called once the rename file has been written.
    */
   _final(callback) {
+    if (this._discoveredIdConflicts) {
+      Logger.error(
+        `Discovered ${this._discoveredIdConflicts} node id conflicts, results are incomplete.
+ - Resolve all conflicts inside '${renameConfigPath}' and run 'atscm pull' again`);
+      // FIXME: Insert link to node ide conflict manual here once 1.0.0 is released.
+    }
+
     outputFile(renameConfigPath, JSON.stringify(this._renameConfig, null, '  '))
       .then(callback)
       .catch(callback);
