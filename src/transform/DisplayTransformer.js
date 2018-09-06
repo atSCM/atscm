@@ -1,6 +1,7 @@
 import { basename } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
   findChild, removeChild,
@@ -80,6 +81,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
         const config = {};
         const scriptTags = removeChildren(document, 'script');
+        let inlineScript = false;
 
         // Extract JavaScript
         if (scriptTags.length) {
@@ -91,22 +93,26 @@ export default class DisplayTransformer extends XMLTransformer {
 
               config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
             } else {
-              // TODO: Warn on multiple inline scripts
-
-              const scriptContentNode = script.elements ? script.elements[0] : createTextNode();
-
-              const scriptFile = DisplayTransformer.splitFile(node, '.js');
-
-              const scriptText = scriptContentNode[scriptContentNode.type] || '';
-
-              scriptFile.value = {
-                dataType: DataType.String,
-                arrayType: VariantArrayType.Scalar,
-                value: scriptText,
-              };
-              this.push(scriptFile);
+              // Warn on multiple inline scripts
+              if (inlineScript) {
+                Logger.warn(`'${node.id.value}' contains multiple inline scripts.`);
+                document.elements.push(inlineScript);
+              }
+              inlineScript = script;
             }
           });
+        }
+        if (inlineScript) {
+          const contentNode = inlineScript.elements ? inlineScript.elements[0] : createTextNode();
+          const scriptFile = DisplayTransformer.splitFile(node, '.js');
+          const scriptText = contentNode[contentNode.type] || '';
+
+          scriptFile.value = {
+            dataType: DataType.String,
+            arrayType: VariantArrayType.Scalar,
+            value: scriptText,
+          };
+          this.push(scriptFile);
         }
 
         // Extract metadata
