@@ -122,7 +122,7 @@ export class WriteStream extends Writable {
     const writeOps = [];
 
     // Rename nodes specified in the rename config
-    const rename = this._renameConfig[node.nodeId];
+    const rename = this._renameConfig[node.id.value];
     if (rename && rename !== renameDefaultName) {
       node.renameTo(rename);
       Logger.debug(`'${node.nodeId}' was renamed to '${rename}'`);
