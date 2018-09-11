@@ -357,12 +357,6 @@ export default class NodeBrowser {
       this._readValues(browseNow.map(node => node.id)),
     ]);
 
-    const isChildReference = (parent, reference) => {
-      const [prefix, postfix] = reference.nodeId.value.split(parent.id.value);
-
-      return prefix === '' && postfix/* .slice(1) === reference.browseName.name */;
-    };
-
     results.forEach((result, i) => {
       const node = browseNow[i];
       const references = [];
@@ -376,7 +370,6 @@ export default class NodeBrowser {
 
         if (
           HierachicalReferencesTypeIds.has(reference.referenceTypeId.value) &&
-          isChildReference(node, reference) &&
           !this._ignoreNodesRegExp.test(reference.nodeId.value)
         ) {
           if (!this._queued.has(reference.nodeId.value) && this._recursive) {
