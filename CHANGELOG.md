@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.6"></a>
-# 1.0.0-beta.6 (2018-09-06)
+<a name="1.0.0-beta.7"></a>
+# 1.0.0-beta.7 (2018-09-11)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
+* **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
