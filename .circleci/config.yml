@@ -91,6 +91,15 @@ jobs:
           path: ~/reports
           when: always
 
+  flow:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Typecheck source files
+          command: npx flow check
+
   unit-tests:
     <<: *defaults
     parallelism: 4
@@ -232,6 +241,9 @@ workflows:
       - lint-source:
           requires:
             - install-deps
+      - flow:
+          requires:
+            - install-deps
       - unit-tests:
           requires:
             - install-deps
@@ -247,6 +259,7 @@ workflows:
       - update-lockfile:
           requires:
             - lint-source
+            - flow
             - test-coverage
             - integration-tests
             - test-docs

@@ -37,9 +37,11 @@
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "@babel/preset-flow": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@ls-age/bump-version": "^0.1.3",
     "@ls-age/esdoc-coverage": "^0.1.6",
+    "babel-eslint": "^9.0.0",
     "babel-plugin-istanbul": "^4.1.6",
     "broken-link-checker-local": "^0.1.1",
     "buffer-replace": "^1.0.0",
@@ -51,7 +53,9 @@
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.17.0",
     "eslint-config-lsage": "^0.3.0",
+    "eslint-plugin-flowtype": "^2.50.1",
     "eval": "^0.1.2",
+    "flow-bin": "^0.81.0",
     "husky": "^0.14.3",
     "istanbul-combine": "^0.3.0",
     "mocha": "^5.0.0",
@@ -84,10 +88,14 @@
     "xml-js": "^1.6.2"
   },
   "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 2017
-    },
-    "extends": "lsage"
+    "parser": "babel-eslint",
+    "extends": [
+      "lsage",
+      "plugin:flowtype/recommended"
+    ],
+    "plugins": [
+      "flowtype"
+    ]
   },
   "babel": {
     "presets": [
@@ -98,7 +106,8 @@
             "node": 8
           }
         }
-      ]
+      ],
+      "@babel/preset-flow"
     ],
     "env": {
       "test": {
