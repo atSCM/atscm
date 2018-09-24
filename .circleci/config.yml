@@ -269,6 +269,7 @@ workflows:
       - deploy:
           requires:
             - lint-source
+            - flow
             - test-coverage
             - integration-tests
             - test-docs
