@@ -1,3 +1,14 @@
+<a name="0.7.0"></a>
+# 0.7.0 (2018-09-27)
+
+
+### Features
+
+* Allow flags in run tasks ([#87](https://github.com/atSCM/atscm-cli/issues/87)) ([4d14f29](https://github.com/atSCM/atscm-cli/commits/4d14f29))
+
+
+
+
 <a name="0.6.1"></a>
 ## 0.6.1 (2018-09-27)
 
