@@ -1,3 +1,14 @@
+<a name="0.6.1-beta.0"></a>
+## 0.6.1-beta.0 (2018-09-27)
+
+
+### Bug Fixes
+
+* **package:** Support babel v7 ([42e3c65](https://github.com/atSCM/atscm-cli/commits/42e3c65))
+
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2018-07-23)
 
