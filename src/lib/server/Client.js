@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { OPCUAClient } from 'node-opcua/lib/client/opcua_client';
 import ProjectConfig from '../../config/ProjectConfig';
 
@@ -15,6 +16,8 @@ export default class Client {
     const client = new OPCUAClient({
       requestedSessionTimeout: 600000,
       keepSessionAlive: true,
+      certificateFile: join(__dirname, '../../../res/certificates/certificate.pem'),
+      privateKeyFile: join(__dirname, '../../../res/certificates/key.pem'),
     });
 
     return new Promise((resolve, reject) => {
