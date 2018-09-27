@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.8"></a>
-# 1.0.0-beta.8 (2018-09-27)
+<a name="1.0.0-beta.9"></a>
+# 1.0.0-beta.9 (2018-09-27)
 
 
 ### Bug Fixes
@@ -20,6 +20,7 @@
 ### Features
 
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
+* **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 
 
 ### Performance Improvements
