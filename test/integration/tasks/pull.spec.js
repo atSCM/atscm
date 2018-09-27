@@ -2,7 +2,7 @@ import { join } from 'path';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { ctor as makeStreamConstructor } from 'through2';
-import { copy, outputJson, outputFile, readdir } from 'fs-extra';
+import { copy, outputJson, outputFile, readdir, remove } from 'fs-extra';
 import { tmpDir } from '../../helpers/util';
 
 const StreamConstructor = makeStreamConstructor({ objectMode: true }, (chunk, _, callback) => {
@@ -45,6 +45,9 @@ describe('pull task', function() {
         .then(() => expect(readdir(sourceDir), 'when fulfilled', 'to be empty'));
     });
 
-    after(() => process.chdir(originalCwd));
+    after(() => {
+      process.chdir(originalCwd);
+      return remove(projectDir);
+    });
   });
 });
