@@ -16,6 +16,7 @@ export default class Command {
    * requires.
    * @param {number} [options.maxArguments] The maximum number or (non-option) arguments the command
    * requires.
+   * @param {boolean} [options.strict=true] Throw error for unknown arguments.
    * @throws {Error} Throws an error if options.maxArguments is less than options.minArguments.
    * @see {@link yargs}
    */
@@ -95,6 +96,14 @@ export default class Command {
     }
 
     return ret;
+  }
+
+  /**
+   * If an error should be thrown for unknown arguments.
+   * @type {boolean}
+   */
+  get strict() {
+    return this._options.strict !== undefined ? this._options.strict : true;
   }
 
 }
