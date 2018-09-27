@@ -1,12 +1,9 @@
-<a name="1.0.0-beta.7"></a>
-# 1.0.0-beta.7 (2018-09-11)
+<a name="1.0.0-beta.8"></a>
+# 1.0.0-beta.8 (2018-09-27)
 
 
 ### Bug Fixes
 
-* Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
-* Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
-* Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
@@ -14,6 +11,10 @@
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
+* Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
+* Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
+* Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
+* Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
 
 
 ### Features
