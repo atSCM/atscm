@@ -8,9 +8,10 @@ import PullStream from '../lib/gulp/PullStream';
 
 /**
  * Pulls all nodes from atvise server.
+ * @param {Object} [options] The options to use.
  */
-export default function pull() {
-  const { clean } = parseOptions(process.argv.slice(2));
+export default function pull(options) {
+  const { clean } = options || parseOptions(process.argv.slice(2));
 
   return Promise.resolve()
     .then(() => {
