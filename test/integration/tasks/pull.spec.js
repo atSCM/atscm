@@ -22,7 +22,7 @@ const runPull = proxyquire('../../../src/tasks/pull', {
   } },
 }).default;
 
-describe.only('pull task', function() {
+describe('pull task', function() {
   context('with the `--clean` flag', function() {
     const projectDir = tmpDir('pull-clean');
     const sourceDir = join(projectDir, 'src');
