@@ -85,4 +85,20 @@ describe('Command', function() {
       }, opts))).demandCommand, 'to equal', [1, 2]);
     });
   });
+
+  /** @test {Command#strict} */
+  describe('#strict', function() {
+    it('should default to `true`', function() {
+      expect(new Command(name, desc, opts).strict, 'to be', true);
+    });
+
+    it('should return the value passed to the constructor', function() {
+      expect((new Command(name, desc, Object.assign({
+        strict: false,
+      }), opts)).strict, 'to be', false);
+      expect((new Command(name, desc, Object.assign({
+        strict: true,
+      }), opts)).strict, 'to be', true);
+    });
+  });
 });

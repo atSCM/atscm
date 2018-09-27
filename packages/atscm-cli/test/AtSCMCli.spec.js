@@ -96,16 +96,22 @@ describe('AtSCMCli', function() {
 
   /** @test {AtSCMCli#parseArguments} */
   describe('#parseArguments', function() {
-    const unknownArgCli = new AtSCMCli(['--unknown']);
+    const unknownArgCli = new AtSCMCli(['config', '--unknown']);
+    const unknownRunArgCli = new AtSCMCli(['run', '--unknown']);
 
     it('should fail with UsageError with an unknown argument', function() {
       return expect(unknownArgCli.parseArguments(), 'when rejected', 'to be a', UsageError);
     });
 
-    it('should report the invalid argument', function() {
+    it('should report unknown arguments for strict commands', function() {
       return expect(unknownArgCli.parseArguments(), 'when rejected',
         'to have message', 'Unknown argument: unknown'
       );
+    });
+
+    it('should not report unknown arguments for non-strict commands', function() {
+      return expect(unknownRunArgCli.parseArguments(), 'when fulfilled',
+        'to have properties', { unknown: true });
     });
 
     it('should return options with valid arguments', function() {
