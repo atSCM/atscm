@@ -22,6 +22,7 @@ export default class RunCommand extends Command {
         'tasks-json': CliOptions['tasks-json'],
         continue: CliOptions.continue,
       },
+      strict: false,
     });
   }
 
