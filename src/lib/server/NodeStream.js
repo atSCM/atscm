@@ -82,6 +82,10 @@ export default class NodeStream extends Readable {
     });
 
     this._browser.onNode = node => {
+      if (node.nodeId.match(/\s$/)) {
+        Logger.warn(`Node '${node.nodeId}' has trailing spaces in it's name.`);
+        Logger.info(' - Rename it to prevent errors on windows.');
+      }
       if (!this.push(node)) { this._browser.stop(); }
     };
 
