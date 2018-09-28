@@ -1,10 +1,11 @@
-<a name="1.0.0-beta.9"></a>
-# 1.0.0-beta.9 (2018-09-27)
+<a name="1.0.0-beta.10"></a>
+# 1.0.0-beta.10 (2018-09-28)
 
 
 ### Bug Fixes
 
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
+* **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
