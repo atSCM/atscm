@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.11"></a>
-# 1.0.0-beta.11 (2018-09-28)
+<a name="1.0.0-beta.12"></a>
+# 1.0.0-beta.12 (2018-10-25)
 
 
 ### Bug Fixes
@@ -21,8 +21,10 @@
 
 ### Features
 
-* Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
 * **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
+* Check server scripts version on push ([#230](https://github.com/atSCM/atscm/issues/230)) ([84c843a](https://github.com/atSCM/atscm/commits/84c843a))
+* Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
+* Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
 
 
 ### Performance Improvements
