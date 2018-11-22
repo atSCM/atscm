@@ -44,7 +44,7 @@ describe('InitOptionsValidator', function() {
     });
 
     it('should work for valid package names', function() {
-      expect(Validator.name('atscm'), 'to be', true);
+      expect(Validator.name('project-name'), 'to be', true);
     });
   });
 });
