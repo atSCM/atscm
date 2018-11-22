@@ -21,6 +21,10 @@ export default class InitOptionsValidator {
       return 'name must start with a letter';
     }
 
+    if (value === 'atscm') {
+      return "'atscm' is not allowed";
+    }
+
     return result.validForNewPackages ? true : result.warnings[0];
   }
 
