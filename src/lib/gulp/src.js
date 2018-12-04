@@ -120,6 +120,12 @@ export class SourceBrowser {
       .join('|')})`);
 
     /**
+     * A set of the paths specified in {@link ProjectConfig.nodes}.
+     */
+    this._rootNodePaths = new Set(ProjectConfig.nodes
+      .map(n => join(...n.value.split('.'), '.Object.json')));
+
+    /**
      * A regular expression matching all nodes specified in {@link ProjectConfig.nodes}.
      */
     this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes || ProjectConfig.ignoreNodes
@@ -246,10 +252,15 @@ export class SourceBrowser {
   /**
    * Returns `true` for all root node paths.
    * @param {string} path The path to check.
+   * @param {string} parentPath The parent path to check.
    * @return {boolean} If the node at *path* is a root node.
    */
-  _isRootNodePath(path) {
+  _isRootNodePath(path, parentPath) {
+    if (parentPath === this._base) { return true; }
+
     const name = relative(this._base, path);
+
+    if (this._rootNodePaths.has(name)) { return true; }
 
     // MARK: Only works with compact mapping applied, update once configurable.
     // FIXME: Needs a more general solution.
@@ -278,7 +289,7 @@ export class SourceBrowser {
           } else if (s.isFile()) {
             if (this._isDefinitionFile(path)) {
               const parentPath = this._parentNodePath(path);
-              if (this._isRootNodePath(path) || this._pushedNodes.has(parentPath)) {
+              if (this._isRootNodePath(path, parentPath) || this._pushedNodes.has(parentPath)) {
                 this._nextToRead.push(path);
               } else {
                 this._waitingForParent[parentPath] = (this._waitingForParent[parentPath] || [])
@@ -384,7 +395,7 @@ export class SourceBrowser {
 
     let dependencyCount = 0;
 
-    if (!this._pushedNodes.has(parentPath) && !this._isRootNodePath(_path)) {
+    if (!this._pushedNodes.has(parentPath) && !this._isRootNodePath(_path, parentPath)) {
       throw new Error(`'${path}' was pushed before parent node`);
     }
 
