@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.14"></a>
-# 1.0.0-beta.14 (2018-12-04)
+<a name="1.0.0-beta.15"></a>
+# 1.0.0-beta.15 (2019-01-10)
 
 
 ### Bug Fixes
@@ -8,6 +8,7 @@
 * **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
 * **init:** Do not allow 'atscm' as project name ([#235](https://github.com/atSCM/atscm/issues/235)) ([20a7f41](https://github.com/atSCM/atscm/commits/20a7f41))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
+* **pull:** Prevent pulling with invalid configuration ([#243](https://github.com/atSCM/atscm/issues/243)) ([2e37bba](https://github.com/atSCM/atscm/commits/2e37bba)), closes [#242](https://github.com/atSCM/atscm/issues/242)
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
 * **pull:** Warn if node names contain trailing spaces ([#223](https://github.com/atSCM/atscm/issues/223)) ([3eeee49](https://github.com/atSCM/atscm/commits/3eeee49))
