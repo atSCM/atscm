@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.15"></a>
-# 1.0.0-beta.15 (2019-01-10)
+<a name="1.0.0-beta.16"></a>
+# 1.0.0-beta.16 (2019-01-10)
 
 
 ### Bug Fixes
@@ -25,10 +25,11 @@
 
 ### Features
 
-* **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 * Check server scripts version on push ([#230](https://github.com/atSCM/atscm/issues/230)) ([84c843a](https://github.com/atSCM/atscm/commits/84c843a))
 * Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
+* **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
+* **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 
 
 ### Performance Improvements
