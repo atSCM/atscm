@@ -2,7 +2,9 @@ import { Writable } from 'stream';
 import { join } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { outputFile, readJson } from 'fs-extra';
+import hasha from 'hasha';
 import Logger from 'gulplog';
+import ProjectConfig from '../../config/ProjectConfig';
 import { encodeVariant } from '../coding';
 
 /**
@@ -16,6 +18,18 @@ const renameConfigPath = './atscm/rename.json';
  * @type {string}
  */
 const renameDefaultName = 'insert node name';
+
+/**
+ * Options to pass to *hasha*.
+ * @type {Object}
+ */
+const hashaOptions = { algorithm: 'md5' };
+
+/**
+ * If checksums should be used to decide if writes are needed.
+ * @type {boolean}
+ */
+const useChecksums = ProjectConfig.vcs === 'svn';
 
 /**
  * A stream that writes {@link Node}s to the file system.
@@ -83,6 +97,10 @@ export class WriteStream extends Writable {
     this._performWrites = true;
 
     this._discoveredIdConflicts = 0;
+
+    if (useChecksums) {
+      Logger.info('Optimizing for SVN diffs');
+    }
   }
 
   /**
@@ -107,6 +125,26 @@ export class WriteStream extends Writable {
     }
 
     return false;
+  }
+
+  async _outputFile(path, content) {
+    if (useChecksums) {
+      const oldSum = await hasha.fromFile(path, hashaOptions)
+        .catch(() => null);
+
+      if (oldSum) {
+        if (oldSum === hasha(content, hashaOptions)) {
+          Logger.debug(`Content did not change at ${path}`);
+          return Promise.resolve();
+        }
+
+        Logger.debug(`Content changed at ${path}`);
+      } else {
+        Logger.debug(`No checksums for ${path}`);
+      }
+    }
+
+    return outputFile(path, content);
   }
 
   /**
@@ -188,7 +226,7 @@ export class WriteStream extends Writable {
 
       if (this._performWrites) {
         writeOps.push(
-          outputFile(join(this._base, dirPath.join('/'), name),
+          this._outputFile(join(this._base, dirPath.join('/'), name),
             JSON.stringify(node.metadata, null, '  '))
         );
       }
@@ -200,7 +238,7 @@ export class WriteStream extends Writable {
         if (!node.value.noWrite) {
           if (this._performWrites) {
             writeOps.push(
-              outputFile(
+              this._outputFile(
                 join(this._base, dirPath.join('/'), node.fileName),
                 encodeVariant(node.value))
             );
