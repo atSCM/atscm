@@ -4,6 +4,7 @@ import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
 import { ServerNode, ReferenceTypeIds } from '../model/Node';
 import Session from './Session';
+import ProjectConfig from '../../config/ProjectConfig';
 
 /**
  * A set of all hierarchical reference types.
@@ -332,6 +333,9 @@ export default class NodeBrowser {
    * @return {Promise<void>} Resolved once finished.
    */
   _getSourceNodes() {
+    const validateSourceNodes = JSON.stringify(this._sourceNodes) ===
+      JSON.stringify(ProjectConfig.nodes);
+
     return this._getSourcePaths(this._sourceNodes)
       .then(paths => this._browseSourcePaths(paths, this._sourceNodes))
       .then(nodes => {
