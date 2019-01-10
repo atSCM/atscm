@@ -136,4 +136,13 @@ export default class Atviseproject {
     };
   }
 
+  /**
+   * The *version control system* to optimize tasks for.
+   * @type {'git' | 'svn'}
+   * @since 1.0.0
+   */
+  static get vcs() {
+    return 'git';
+  }
+
 }
