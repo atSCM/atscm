@@ -1,4 +1,5 @@
 import { ObjectIds, browse_service as BrowseService } from 'node-opcua';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass.js';
 import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
 import { ServerNode, ReferenceTypeIds } from '../model/Node';
@@ -334,7 +335,13 @@ export default class NodeBrowser {
     return this._getSourcePaths(this._sourceNodes)
       .then(paths => this._browseSourcePaths(paths, this._sourceNodes))
       .then(nodes => {
-        nodes.forEach(node => this._nextToBrowse.push(node));
+        nodes.forEach(node => {
+          if (node.nodeClass !== NodeClass.Object) {
+            throw new Error(`Source node '${node.id.value}' is not an Object.
+ - You could use it's parent (${node.parent.id.value}) inside your project configuration instead.`);
+          }
+          this._nextToBrowse.push(node);
+        });
       });
   }
 
