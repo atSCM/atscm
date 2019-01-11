@@ -30,7 +30,7 @@ export default class CreateNodeStream extends CallScriptStream {
   scriptParameters(file) {
     const options = {
       nodeId: file.nodeId,
-      parentNodeId: file.parent ? file.parent.nodeId : 'Objects',
+      parentNodeId: file.parent ? file.parent.nodeId : 85,
       nodeClass: file.nodeClass.value,
       typeDefinition: file.typeDefinition,
       browseName: file.idName,
