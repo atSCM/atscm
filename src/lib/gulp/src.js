@@ -3,7 +3,7 @@ import { readdir as _readdir, stat as _stat, readFile as _readFile } from 'fs';
 import { promisify } from 'util';
 import { join, basename, dirname, relative, isAbsolute } from 'path';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
-import { DataType, VariantArrayType } from 'node-opcua';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import { SourceNode, ReferenceTypeIds } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
