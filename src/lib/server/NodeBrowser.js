@@ -1,4 +1,5 @@
-import { ObjectIds, browse_service as BrowseService } from 'node-opcua';
+import { ObjectIds } from 'node-opcua/lib/opcua_node_ids.js';
+import { BrowseDirection } from 'node-opcua/lib/services/browse_service.js';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass.js';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
@@ -247,7 +248,7 @@ export default class NodeBrowser {
 
       const results = await this._browse(items.map(({ nodeId }) => ({
         nodeId,
-        browseDirection: BrowseService.BrowseDirection.Inverse,
+        browseDirection: BrowseDirection.Inverse,
         resultMask: 63,
       })));
 
@@ -298,7 +299,7 @@ export default class NodeBrowser {
 
       const results = await this._browse(browse.map(({ nodeId }) => ({
         nodeId,
-        browseDirection: BrowseService.BrowseDirection.Forward,
+        browseDirection: BrowseDirection.Forward,
         resultMask: 63,
       })));
 
@@ -362,7 +363,7 @@ export default class NodeBrowser {
     const [results, values] = await Promise.all([
       this._browse(browseNow.map(node => ({
         nodeId: node.id,
-        browseDirection: BrowseService.BrowseDirection.Forward,
+        browseDirection: BrowseDirection.Forward,
         resultMask: 63,
       }))),
       this._readValues(browseNow.map(node => node.id)),

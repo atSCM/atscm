@@ -1,4 +1,6 @@
-import { StatusCodes, DataType, VariantArrayType, NodeClass } from 'node-opcua';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import Session from './lib/server/Session';
 import NodeId from './lib/model/opcua/NodeId';
 
