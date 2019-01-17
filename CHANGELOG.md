@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.17"></a>
-# 1.0.0-beta.17 (2019-01-11)
+<a name="1.0.0-beta.18"></a>
+# 1.0.0-beta.18 (2019-01-17)
 
 
 ### Bug Fixes
@@ -8,6 +8,7 @@
 * **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
 * **init:** Do not allow 'atscm' as project name ([#235](https://github.com/atSCM/atscm/issues/235)) ([20a7f41](https://github.com/atSCM/atscm/commits/20a7f41))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
+* **pull:** Fix on variable source nodes only ([#249](https://github.com/atSCM/atscm/issues/249)) ([7b64fdc](https://github.com/atSCM/atscm/commits/7b64fdc))
 * **pull:** Prevent pulling with invalid configuration ([#243](https://github.com/atSCM/atscm/issues/243)) ([2e37bba](https://github.com/atSCM/atscm/commits/2e37bba)), closes [#242](https://github.com/atSCM/atscm/issues/242)
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
@@ -16,12 +17,12 @@
 * **push:** Allow non-standard root nodes ([#236](https://github.com/atSCM/atscm/issues/236)) ([6da0bcc](https://github.com/atSCM/atscm/commits/6da0bcc))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
 * **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
-* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
-* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
+* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 
 
 ### Features
@@ -37,6 +38,7 @@
 
 * Implement tree aware pull task ([e800b7a](https://github.com/atSCM/atscm/commits/e800b7a))
 * Implement tree aware pull task ([7685442](https://github.com/atSCM/atscm/commits/7685442))
+* Import node-opcua modules directly ([#247](https://github.com/atSCM/atscm/issues/247)) ([3327320](https://github.com/atSCM/atscm/commits/3327320))
 * Require only needed `node-opcua` modules ([#208](https://github.com/atSCM/atscm/issues/208)) ([f534ba5](https://github.com/atSCM/atscm/commits/f534ba5))
 
 
