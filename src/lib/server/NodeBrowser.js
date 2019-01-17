@@ -341,7 +341,7 @@ export default class NodeBrowser {
       .then(paths => this._browseSourcePaths(paths, this._sourceNodes))
       .then(nodes => {
         nodes.forEach(node => {
-          if (validateSourceNodes && node.nodeClass !== NodeClass.Object) {
+          if (validateSourceNodes && node.nodeClass === NodeClass.Variable) {
             throw new Error(`Source node '${node.id.value}' is not an Object.
  - You could use it's parent (${node.parent.id.value}) inside your project configuration instead.`);
           }
