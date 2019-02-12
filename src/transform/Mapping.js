@@ -107,7 +107,7 @@ export default class MappingTransformer extends Transformer {
 
       // Add extensions for data types
       for (const [type, ext] of Object.entries(extensionForDataType)) {
-        if (node.isVariable && node.value.dataType.key === type) {
+        if (node.isVariable && node.value && node.value.dataType.key === type) {
           if (!isStandardTypeNode) {
             node.renameTo(`${node.name}${ext}`);
           }

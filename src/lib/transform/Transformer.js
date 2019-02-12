@@ -1,7 +1,4 @@
-import { inspect } from 'util';
-import { ctor as throughStreamClass } from 'through2';
 import Logger from 'gulplog';
-import AtviseFile from '../server/AtviseFile';
 
 /**
  * The directions a transformer can be run in.
@@ -24,49 +21,20 @@ function isValidDirection(direction) {
   ].includes(direction);
 }
 
-/**
- * A special kind of an object transform stream: It does apply different transformations based on
- * it's direction.
- * @abstract
- */
-export default class Transformer extends throughStreamClass({ objectMode: true }) {
+export default class Transformer {
 
-  /**
-   * Creates a new Transformer with the specified options.
-   * @param {Object} [options] The options to use.
-   * @param {TransformDirection} [options.direction] The direction to use.
-   * @throws {Error} Throws an error if the given direction is invalid.
-   */
-  constructor(options = {}) {
-    super();
+  static combinedTransformer(transformers, direction) {
+    const directed = transformers.map(t => t.withDirection(direction));
 
-    /**
-     * The options the transformer was created with. Used for printing description.
-     * @type {Object}
-     */
-    this._options = options;
+    if (direction === TransformDirection.FromFilesystem) { directed.reverse(); }
 
-    if (options.direction) {
-      if (isValidDirection(options.direction)) {
-        /**
-         * The transformer's direction
-         * @type {TransformerDirection}
-         */
-        this.direction = options.direction;
-      } else {
-        throw new Error('Invalid direction');
+    return async (node, context) => {
+      for (const transformer of directed) {
+        if (await transformer.compatTransform(direction, node, context) !== undefined) {
+          // break;
+        }
       }
-    }
-  }
-
-  // eslint-disable-next-line jsdoc/require-description-complete-sentence
-  /**
-   * If reference config files should be handled by the transformer. Override if you want to
-   * transform reference config files (for example `.index.htm.json`).
-   * @type {boolean}
-   */
-  get transformsReferenceConfigFiles() {
-    return false;
+    };
   }
 
   /**
@@ -85,133 +53,46 @@ export default class Transformer extends throughStreamClass({ objectMode: true }
   }
 
   /**
-   * Decorates an error that occurred while running a transformer.
-   * @param {Error} err The error to decorate.
-   * @param {*} chunk The chunk (usually an {@link AtviseFile}) beeing processed.
-   * @param {function(err: ?Error)} callback The callback to call on completion.
-   * @param {Array<*>} args Any additional arguments.
+   * Determines if a node's value node should be read, e.G. The *Variable.Bool* file for a node
+   * defined in *.Variable.Bool.Json*.
+   * @param {FileNode} node The node to read or not.
+   * @return {boolean?} *true* if the node's value file should be read, undefined to let other
+   * transformers decide.
    */
-  _processError(err, chunk, callback, ...args) {
-    if (err) {
-      const id = (this.direction === TransformDirection.FromDB ?
-        chunk.nodeId :
-        chunk.relative) || chunk.toString();
-
-      // eslint-disable-next-line no-param-reassign
-      err.message = `[${this.constructor.name}] ${err.message} (in ${id})`;
-
-      if (process.env.CONTINUE_ON_FAILURE === 'true') {
-        Logger.error(err.message);
-        callback(null);
-      } else {
-        callback(err);
-      }
-    } else {
-      callback(err, ...args);
-    }
+  readNodeFile(node) { // eslint-disable-line no-unused-vars
+    return undefined;
   }
 
-  /**
-   * Calls {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}
-   * based on the transformer's direction.
-   * @param {Object} chunk The chunk to transform.
-   * @param {string} enc The encoding used.
-   * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
-   * transforming or (optionally) the transformed object.
-   * @throws {Error} Throws an error if the transformer has no valid direction.
-   */
-  _transform(chunk, enc, callback) {
-    if (!this.transformsReferenceConfigFiles && chunk instanceof AtviseFile &&
-      chunk.isReferenceConfig) {
-      callback(null, chunk);
-      return;
-    }
-    const processError = (err, ...args) => this._processError(err, chunk, callback, ...args);
+  compatTransform(direction, node, context) {
+    const transform = (direction === TransformDirection.FromDB ?
+      this.transformFromDB :
+      this.transformFromFilesystem).bind(this);
 
-    if (!this.direction) {
-      callback(new Error('Transformer has no direction'));
-    } else if (this.direction === TransformDirection.FromDB) {
-      this.transformFromDB(chunk, enc, processError);
-    } else {
-      this.transformFromFilesystem(chunk, enc, processError);
-    }
-  }
-
-  /**
-   * **Must be overridden by all subclasses:** Transforms the given chunk when using
-   * {@link TransformDirection.FromDB}.
-   * @param {Object} chunk The chunk to transform.
-   * @param {string} enc The encoding used.
-   * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
-   * transforming or (optionally) the transformed object.
-   */
-  transformFromDB(chunk, enc, callback) {
-    callback(new Error('Transformer#transformFromDB must be overridden by all subclasses'));
-  }
-
-  /**
-   * **Must be overridden by all subclasses:** Transforms the given chunk when using
-   * {@link TransformDirection.FromFilesystem}.
-   * @param {Object} chunk The chunk to transform.
-   * @param {string} enc The encoding used.
-   * @param {function(err: ?Error, obj: ?Object)} callback Called with the error that occured while
-   * transforming or (optionally) the transformed object.
-   */
-  transformFromFilesystem(chunk, enc, callback) {
-    callback(new Error('Transformer#transformFromFilesystem must be overridden by all subclasses'));
-  }
-
-  /**
-   * Applies the transformer to the given stream. By default this just invokes
-   * {@link Transformer#transformFromDB} or {@link Transformer#transformFromFilesystem}. Override
-   * this method if you want to pipe streams directly.
-   * @param {Stream} stream The stream to apply the transformer to.
-   * @param {TransformDirection} direction The direction to use.
-   * @return {Stream} The resulting stream.
-   */
-  applyToStream(stream, direction) {
-    return stream.pipe(this.withDirection(direction));
-  }
-
-  /**
-   * Creates a stream with all transformers passed, with the given direction. Transformers are
-   * reversed if using {@link TransformDirection.FromFilesystem}.
-   * @param {Stream} stream The stream to apply the transformers to.
-   * @param {Transformer[]} transformers The transformers to apply.
-   * @param {TransformDirection} direction The direction to use.
-   * @return {Transformer} The last transformer passed, piped to the previous.
-   */
-  static applyTransformers(stream, transformers, direction) {
-    if (!isValidDirection(direction)) {
-      throw new Error('Direction is invalid');
-    }
-
-    if (transformers.length === 0) {
-      return stream;
-    }
-
-    return (direction === TransformDirection.FromDB ? transformers : transformers.reverse())
-      .reduce((prev, curr) => curr.applyToStream(prev, direction), stream);
-  }
-
-  /**
-   * Prints the transformer.
-   * @param {?Number} depth The depth to inspect.
-   * @param {Object} options See {@link util~inspect} for details.
-   * @return {string} A string representation of the transformer.
-   */
-  inspect(depth, options) {
-    const newOptions = options;
-    newOptions.depth = options.depth === null ? null : options.depth - 1;
-
-    if (depth < 0) {
-      return options.stylize(`[${this.constructor.name}]`, 'special');
-    }
-
-    return `${options.stylize(this.constructor.name, 'special')}${inspect(this._options, newOptions)
-      .replace(/^{/, '<').replace(/}$/, '>')
-      .replace(/\n/, `\n${' '.repeat(this.constructor.name.length)}`)
+    const fnName = `${this.constructor.name}#transform${
+      direction === TransformDirection.FromDB ? 'FromDB' : 'FromFilesystem'
     }`;
+
+    return new Promise((resolve, reject) => {
+      const promise = transform(node, context, (err, result) => {
+        if (!this.constructor._warnedStreamAPI) {
+          this.constructor._warnedStreamAPI = true;
+          Logger.debug(`Deprecated: ${fnName} uses the Stream API instead of async/await.`);
+        }
+        if (err) { return reject(err); }
+
+        // Handle "repush"
+        if (result === node) { return resolve(); }
+
+        return resolve(result);
+      });
+
+      if (promise instanceof Promise) {
+        promise.then(resolve, reject);
+      } else if (this.transformFromDB.length < 3) {
+        reject(new Error(`${fnName} did not return a Promise.
+  - Did you forget \`async\`?`));
+      }
+    });
   }
 
 }
