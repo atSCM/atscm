@@ -139,6 +139,37 @@ export function createNode(nodeId, {
   });
 }
 
+/**
+ * Adds references to a node.
+ * @param {NodeId} nodeId The node to add the references to.
+ * @param {Object} references The references to add.
+ * @return {Promise} Resolved once the references were added.
+ * @example <caption>Add a simple reference</caption>
+ * import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
+ *
+ * addReferences('AGENT.DISPLAYS.Main', {
+ *   [47]: ['VariableTypes.ATVISE.Display'],
+ *   // equals:
+ *   [ReferenceTypeIds.HasTypeDefinition]: ['VariableTypes.ATVISE.Display'],
+ * })
+ *   .then(() => console.log('Done!'))
+ *   .catch(console.error);
+ */
+export function addReferences(nodeId, references) {
+  return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences'), {
+    paramObjString: {
+      dataType: DataType.String,
+      value: JSON.stringify({
+        nodeId,
+        references: Object.entries(references).map(([type, items]) => ({
+          referenceIdValue: parseInt(type, 10),
+          items,
+        })),
+      }),
+    },
+  });
+}
+
 // Reading/Writing
 
 /**
