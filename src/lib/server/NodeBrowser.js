@@ -247,7 +247,7 @@ export default class NodeBrowser {
     let dependencyCount = 0;
 
 
-    for (const [type, references] of node.references.entries()) {
+    for (const references of node.references.values()) {
       for (const reference of references) {
         if (
           // !this._handled.get(reference) &&
@@ -256,7 +256,6 @@ export default class NodeBrowser {
         ) {
           dependencyCount++;
           this._waitingFor[reference] = (this._waitingFor[reference] || []).concat(node);
-
         }
       }
     }

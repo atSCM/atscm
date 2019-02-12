@@ -89,7 +89,7 @@ export default class XMLTransformer extends SplittingTransformer {
     return xml2js(this.direction === TransformDirection.FromDB ?
       node.value.value :
       node.stringValue,
-      { compact: false });
+    { compact: false });
   }
 
   /**

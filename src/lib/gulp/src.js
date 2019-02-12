@@ -175,7 +175,6 @@ class SourceBrowser {
     const s = await stat(path);
 
     if (s.isDirectory()) {
-
       let container;
       const nextChildren = (await readdir(path))
         .reduce((nodes, p) => {
