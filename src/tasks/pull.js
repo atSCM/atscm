@@ -1,17 +1,48 @@
 import parseOptions from 'mri';
 import { emptyDir } from 'fs-extra';
-import toPromise from 'stream-to-promise';
 import Logger from 'gulplog';
+import NodeBrowser from '../lib/server/NodeBrowser';
 import ProjectConfig from '../config/ProjectConfig';
-import NodeStream from '../lib/server/NodeStream';
-import PullStream from '../lib/gulp/PullStream';
+import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
+import dest from '../lib/gulp/dest';
+import { reportProgress } from '../lib/helpers/log';
+
+export function performPull(nodes, options = {}) {
+  const writeStream = dest('./src');
+  const applyTransforms = Transformer.combinedTransformer(
+    ProjectConfig.useTransformers, TransformDirection.FromDB);
+
+  const browser = new NodeBrowser({
+    ...options,
+    async handleNode(node, { transform = true } = {}) {
+      const context = {
+        _added: [],
+        addNode(n) {
+          this._added.push(n);
+        },
+      };
+
+      if (transform) {
+        await applyTransforms(node, context);
+      }
+
+      await writeStream.writeAsync(node);
+
+      // Enqueue added nodes
+      if (context._added.length) {
+        context._added.forEach(n => this.addNode(n));
+      }
+    },
+  });
+
+  return Object.assign(browser.browse(nodes), { browser });
+}
 
 /**
  * Pulls all nodes from atvise server.
- * @param {Object} [options] The options to use.
  */
-export default function pull(options) {
-  const { clean } = options || parseOptions(process.argv.slice(2));
+export default function pull() {
+  const { clean } = parseOptions(process.argv.slice(2));
 
   return Promise.resolve()
     .then(() => {
@@ -22,9 +53,14 @@ export default function pull(options) {
 
       return Promise.resolve();
     })
-    .then(() => toPromise(new PullStream(
-      (new NodeStream(ProjectConfig.nodes))
-    )));
+    .then(() => {
+      const promise = performPull(ProjectConfig.nodes);
+
+      return reportProgress(promise, {
+        getter: () => promise.browser._pushed,
+        formatter: count => `Processed ${count} nodes`,
+      });
+    });
 }
 
 pull.description = 'Pull all nodes from atvise server';

@@ -10,10 +10,12 @@ import { AttributeIds } from 'node-opcua/lib/services/read_service';
 import SubscriptionService from 'node-opcua/lib/services/subscription_service';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
-import NodeStream from './NodeStream';
+import { reportProgress } from '../helpers/log';
 import QueueStream from './QueueStream';
 import Session from './Session';
+import NodeBrowser from './NodeBrowser';
 
 /**
  * A stream that monitors changes in the read nodes.
@@ -171,28 +173,85 @@ export default class Watcher extends Emitter {
   constructor(nodes = ProjectConfig.nodesToWatch) {
     super();
 
-    /**
-     * The node stream that discovers the nodes to watch.
-     * @type {NodeStream}
-     */
-    this._nodeStream = new NodeStream(nodes)
-      .on('error', err => this.emit('error', err));
+    this._nodeBrowser = new NodeBrowser({
+      handleNode: this._subscribe.bind(this),
+    });
 
-    /**
-     * The stream that starts monitoring the nodes to watch.
-     * @type {SubscribeStream}
-     */
-    this._subscribeStream = new SubscribeStream()
-      .on('error', err => this.emit('error', err));
+    reportProgress(this._nodeBrowser.browse(nodes), {
+      getter: () => this._nodeBrowser._pushed,
+      formatter: count => `Subscribed to ${count} nodes`,
+    })
+      .then(() => this.emit('ready'))
+      .catch(err => this.emit('error', err));
 
-    this._nodeStream.pipe(this._subscribeStream);
+    this.subscriptionStarted = this._setupSubscription()
+      .catch(err => this.emit('error', err));
+  }
 
-    // "pipe" subscribe stream
-    this._subscribeStream.on('data', () => {});
-    this._subscribeStream.on('end', () => this.emit('ready'));
+  _setupSubscription() {
+    return Session.create()
+      .then(session => new Promise((resolve, reject) => {
+        const subscription = new ClientSubscription(session, {
+          requestedPublishingInterval: 100,
+          requestedLifetimeCount: 1000,
+          requestedMaxKeepAliveCount: 12,
+          maxNotificationsPerPublish: 10,
+          publishingEnabled: true,
+          priority: 10,
+        });
 
-    this._subscribeStream.on('change', event => this.emit('change', event));
-    this._subscribeStream.on('delete', event => this.emit('delete', event));
+        subscription.on('started', () => resolve(subscription));
+        subscription.on('failure', err => reject(err));
+      }));
+  }
+
+  async _subscribe(node) {
+    if (node.nodeClass !== NodeClass.Variable) { return undefined; }
+    const subscription = await this.subscriptionStarted;
+
+    const nodeId = node.id;
+
+    const item = subscription.monitor({
+      nodeId,
+      attributeId: AttributeIds.Value,
+    }, {
+      clientHandle: 13,
+      samplingInterval: 250,
+      queueSize: 123,
+      discardOldest: true,
+    });
+
+    return new Promise((resolve, reject) => {
+      // Sometimes the changed event is not emitted...
+      // Fixes #202
+      const timeout = setTimeout(() => {
+        Logger.debug(`Error monitoring '${nodeId.value}': Did not receive initial value. Retry...`);
+        item.terminate();
+        return this._subscribe(node).then(resolve, reject);
+      }, 1000);
+
+      item.once('changed', () => {
+        clearTimeout(timeout);
+        item.on('changed', this._handleChange.bind(this, {
+          nodeId,
+        }));
+
+        resolve();
+      });
+      item.on('err', err => {
+        clearTimeout(timeout);
+        reject(err instanceof Error ? err : new Error(err));
+      });
+    });
+  }
+
+  _handleChange({ nodeId }, dataValue) {
+    this.emit(dataValue.value ? 'change' : 'delete', {
+      // nodeClass,
+      nodeId,
+      value: dataValue.value,
+      mtime: dataValue.serverTimestamp,
+    });
   }
 
   /**
