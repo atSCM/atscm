@@ -1,4 +1,3 @@
-import { Stream } from 'stream';
 import { obj as createStream } from 'through2';
 import { spy } from 'sinon';
 import expect from '../../../expect';

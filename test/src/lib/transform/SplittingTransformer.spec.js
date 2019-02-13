@@ -39,12 +39,6 @@ class StubSplittingTransformer extends proxyquire(
 
 }
 
-const StubCombineFilesCache = proxyquire('../../../../src/lib/transform/SplittingTransformer', {
-  fs: {
-    readdir: (dir, cb) => cb(null, ['file.ext1', 'file.ext2']),
-  },
-}).CombineFilesCache;
-
 /** @test {CombineFilesCache} */
 describe.skip('CombineFilesCache', function() {
   /** @test {CombineFilesCache#missingExtensions} */
