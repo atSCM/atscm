@@ -2,7 +2,10 @@
 
 import NodeId from '../model/opcua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
-import ScriptTransformer from '../../transform/ScriptTransformer';
+import {
+  ServerscriptTransformer,
+  QuickDynamicTransformer,
+} from '../../transform/ScriptTransformer.js';
 import MappingTransformer from '../../transform/Mapping';
 
 /**
@@ -50,7 +53,8 @@ export default class Atviseproject {
   static get useTransformers() {
     return [
       new DisplayTransformer(),
-      new ScriptTransformer(),
+      new ServerscriptTransformer(),
+      new QuickDynamicTransformer(),
       new MappingTransformer(),
     ];
   }
