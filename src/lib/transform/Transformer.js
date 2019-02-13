@@ -21,8 +21,18 @@ function isValidDirection(direction) {
   ].includes(direction);
 }
 
+/**
+ * The base transformer class.
+ * @abstract
+ */
 export default class Transformer {
 
+  /**
+   * Returns a function that combines multiple transformer actions.
+   * @param {Transformer[]} transformers An array of transformers.
+   * @param {TransformDirection} direction The direction to use.
+   * @return {function(node: Node): Promise<any>} The combined transform function.
+   */
   static combinedTransformer(transformers, direction) {
     const directed = transformers.map(t => t.withDirection(direction));
 
@@ -48,6 +58,10 @@ export default class Transformer {
       throw new Error('Invalid direction');
     }
 
+    /**
+     * The transformer's direction
+     * @type {TransformerDirection}
+     */
     this.direction = direction;
     return this;
   }
@@ -63,6 +77,13 @@ export default class Transformer {
     return undefined;
   }
 
+  /**
+   * A transform wrapper that works with both async/await (atscm >= 1) and callback-based
+   * (atscm < 1)transformers.
+   * @param {TransformDirection} direction The direction to use.
+   * @param {Node} node The node to transform.
+   * @param {Object} context The browser context.
+   */
   compatTransform(direction, node, context) {
     const transform = (direction === TransformDirection.FromDB ?
       this.transformFromDB :

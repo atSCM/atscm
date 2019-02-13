@@ -241,7 +241,6 @@ class SourceBrowser {
         return Promise.resolve();
       }
 
-
       const dir = dirname(path);
       const rel = join(dir, name);
       const node = new FileNode({

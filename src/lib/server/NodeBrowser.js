@@ -78,6 +78,13 @@ export class BrowsedNode extends ServerNode {
  */
 export default class NodeBrowser {
 
+  /**
+   * Creates a new node browser.
+   * @param {Object} options The options to use.
+   * @param {number} [options.concurrency=250] The maximum of nodes to process in parallel.
+   * @param {function(node: BrowsedNode): Promise<any>} options.handleNode A custom node handler.
+   * @param {boolean} [options.recursive] If the whole node tree should be processed.
+   */
   constructor({
     concurrency = 250,
     ignoreNodes = ProjectConfig.ignoreNodes,
@@ -105,11 +112,17 @@ export default class NodeBrowser {
     /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
 
+    /** The custom node handler. @type {function(node: BrowsedNode): Promise<any>} */
     this._handleNode = handleNode;
 
+    /** The number of pushed (discovered and handled) nodes. @type {number} */
     this._pushed = 0;
   }
 
+  /**
+   * Reads the given node's value.
+   * @param {BrowsedNode} node The node to read.
+   */
   _readValue(node) {
     if (!node.isVariable) { return null; }
     return new Promise((resolve, reject) => {
@@ -122,6 +135,10 @@ export default class NodeBrowser {
 
   // FIXME: Debounce á la https://runkit.com/5c347d277da2ad00125b6bc2/5c50161cbc21520012c42290
   // FIXME: Move to api
+  /**
+   * Browses the server address space at the given node id.
+   * @param {Object} options The options to use.
+   */
   _browse({ nodeId, browseDirection = BrowseDirection.Forward, resultMask = 63 }) {
     return new Promise((resolve, reject) => {
       this._session.browse({ nodeId, browseDirection, resultMask }, (err, [{ references }]) => {
@@ -132,6 +149,10 @@ export default class NodeBrowser {
     });
   }
 
+  /**
+   * Browses a node.
+   * @param {BrowsedNode} node The node to browse.
+   */
   _browseNode(node) {
     return this._browse({ nodeId: node.id })
       .then(allReferences => {
@@ -176,14 +197,11 @@ export default class NodeBrowser {
       });
   }
 
-  async _handleErrors(task) {
-    try {
-      await task();
-    } catch (err) {
-      this._reject(err);
-    }
-  }
-
+  /**
+   * Finishes processing a given node: After calling {@link NodeBrowser#_handleNode}, it resolves
+   * is's dependencies.
+   * @param {BrowsedNode} node The node handled.
+   */
   async _push(node) {
     if (this._handled.get(node.id.value)) {
       Logger.error('Prevented duplicate handling of', node.id.value);
@@ -227,6 +245,12 @@ export default class NodeBrowser {
     }
   }
 
+  /**
+   * Instructs the browser to handle a node that would otherwise be queued behind others (eg: its
+   * parent node).
+   * @param {BrowsedNode} node The node to add.
+   * @return {Promise<?BrowsedNode>} The fully processed node.
+   */
   addNode(node) {
     if (this.queue.isPaused) {
       Logger.debug('Queue is stopped, not adding...');
@@ -239,13 +263,21 @@ export default class NodeBrowser {
       .catch(this._reject);
   }
 
+  /**
+   * Returns `true` for node ids that should be treated as external references.
+   * @param {string|number} idValue Value of the id to check.
+   * @return {boolean} If the id should be treated as external.
+   */
   _isExternalReference(idValue) { // FIXME: Allow plugins
     return typeof idValue !== 'string' || !this._sourceNodesRegExp.test(idValue);
   }
 
+  /**
+   * Returns `true` if a node has dependencies it should be queued behind.
+   * @param {BrowsedNode} node The node to check.
+   */
   _hasDependencies(node) {
     let dependencyCount = 0;
-
 
     for (const references of node.references.values()) {
       for (const reference of references) {
@@ -266,6 +298,11 @@ export default class NodeBrowser {
     return dependencyCount > 0;
   }
 
+  /**
+   * Processes a single node: Requires special error handling.
+   * @param {BrowsedNode} node The node to process.
+   * @return {Promise<?BrowsedNode>} The fully processed node.
+   */
   async _process(node) {
     try {
       if (this._handled.has(node.id.value)) { // Already queued
@@ -286,6 +323,7 @@ export default class NodeBrowser {
 
   /**
    * Discovers and browses the source nodes.
+   * @param {Array<string, NodeId>} nodeIds The source ids.
    * @return {Promise<Node[]>} Resolved once finished.
    */
   _getSourceNodes(nodeIds) {
@@ -325,6 +363,11 @@ export default class NodeBrowser {
     );
   }
 
+  /**
+   * Starts the browser of the given nodes.
+   * @param {NodeId[]} nodeIds The nodes to browse.
+   * @return {Promise<any>} Resolved once all nodes are finished.
+   */
   async browse(nodeIds) {
     this._sourceNodesRegExp = new RegExp(`^(${nodeIds
       .map(({ value }) => `${value.replace(/\./g, '\\.')}`)

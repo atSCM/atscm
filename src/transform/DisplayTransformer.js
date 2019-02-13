@@ -34,14 +34,28 @@ function metadataIndex(elements) {
  */
 export default class DisplayTransformer extends XMLTransformer {
 
+  /**
+   * The extension to add to display container node names when they are pulled.
+   * @type {string}
+   */
   static get extension() {
     return '.display';
   }
 
+  /**
+   * Returns `true` for all display nodes.
+   * @param {Node} node The node to check.
+   */
   shouldBeTransformed(node) {
     return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
+  /**
+   * Splits any read files containing atvise displays into their SVG and JavaScript sources,
+   * alongside with a json file containing the display's parameters.
+   * @param {BrowsedNode} node The node to split.
+   * @param {Object} context The transform context.
+   */
   async transformFromDB(node, context) {
     if (!this.shouldBeTransformed(node)) { return undefined; }
 
@@ -126,6 +140,12 @@ export default class DisplayTransformer extends XMLTransformer {
     return super.transformFromDB(node);
   }
 
+  /**
+   * Creates a display from the collected nodes.
+   * @param {BrowsedNode} node The container node.
+   * @param {Map<string, BrowsedNode>} sources The collected files, stored against their
+   * extension.
+   */
   combineNodes(node, sources) {
     const configFile = sources['.json'];
     let config = {};

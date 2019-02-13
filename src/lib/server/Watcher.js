@@ -173,6 +173,10 @@ export default class Watcher extends Emitter {
   constructor(nodes = ProjectConfig.nodesToWatch) {
     super();
 
+    /**
+     * The browser used to subscribe to server nodes.
+     * @type {NodeBrowser}
+     */
     this._nodeBrowser = new NodeBrowser({
       handleNode: this._subscribe.bind(this),
     });
@@ -184,10 +188,18 @@ export default class Watcher extends Emitter {
       .then(() => this.emit('ready'))
       .catch(err => this.emit('error', err));
 
+    /**
+     * Resolved once the server subscription is set up.
+     * @type {Promise<any>}
+     */
     this.subscriptionStarted = this._setupSubscription()
       .catch(err => this.emit('error', err));
   }
 
+  /**
+   * Initializes a server subscription.
+   * @return {Promise<node-opcua~ClientSubscription>} A setup subscription.
+   */
   _setupSubscription() {
     return Session.create()
       .then(session => new Promise((resolve, reject) => {
@@ -205,6 +217,10 @@ export default class Watcher extends Emitter {
       }));
   }
 
+  /**
+   * Subscribes to value changes of a single node.
+   * @param {BrowsedNode} node A browsed node.
+   */
   async _subscribe(node) {
     if (node.nodeClass !== NodeClass.Variable) { return undefined; }
     const subscription = await this.subscriptionStarted;
@@ -245,6 +261,11 @@ export default class Watcher extends Emitter {
     });
   }
 
+  /**
+   * Called once a change has been detected and emits a 'change' or 'delete' event.
+   * @param {Object} node The node that changed.
+   * @param {?node-opcua~Variant} dataValue The current value.
+   */
   _handleChange({ nodeId }, dataValue) {
     this.emit(dataValue.value ? 'change' : 'delete', {
       // nodeClass,
