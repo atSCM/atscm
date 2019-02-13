@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.18"></a>
-# 1.0.0-beta.18 (2019-01-17)
+<a name="1.0.0-beta.19"></a>
+# 1.0.0-beta.19 (2019-02-13)
 
 
 ### Bug Fixes
@@ -29,9 +29,12 @@
 
 * Check server scripts version on push ([#230](https://github.com/atSCM/atscm/issues/230)) ([84c843a](https://github.com/atSCM/atscm/commits/84c843a))
 * Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
-* Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
+* **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
 * **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
 * **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
+* Implement async/await-based tasks ([4d59989](https://github.com/atSCM/atscm/commits/4d59989))
+* Implement async/await-based transformers ([99376ba](https://github.com/atSCM/atscm/commits/99376ba))
+* Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
 
 
 ### Performance Improvements
