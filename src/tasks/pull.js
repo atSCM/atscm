@@ -40,9 +40,11 @@ export function performPull(nodes, options = {}) {
 
 /**
  * Pulls all nodes from atvise server.
+ * @param {Object} [options] The options to use.
+ * @param {boolean} [options.clean] If the source directory should be cleaned first.
  */
-export default function pull() {
-  const { clean } = parseOptions(process.argv.slice(2));
+export default function pull(options) {
+  const { clean } = typeof options === 'object' ? options : parseOptions(process.argv.slice(2));
 
   return Promise.resolve()
     .then(() => {
