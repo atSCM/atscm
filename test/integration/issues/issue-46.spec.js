@@ -16,11 +16,8 @@ describe('XMLTransformer', function() {
       direction: TransformDirection.FromDB, // just to have os-native newlines
     });
 
-    const [decoded] = await expect(cb => transformer.decodeContents(testFile, cb),
-      'to call the callback without error');
-
-    const [encoded] = await expect(cb => transformer.encodeContents(decoded, cb),
-      'to call the callback without error');
+    const decoded = transformer.decodeContents(testFile);
+    const encoded = transformer.encodeContents(decoded);
 
     expect(encoded, 'to equal', testContents);
   });
