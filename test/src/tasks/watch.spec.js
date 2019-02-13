@@ -115,7 +115,7 @@ describe('WatchTask', function() {
       const task = new FailingTask();
 
       return expect(task.startFileWatcher(), 'to be rejected with',
-        /"?Path"? .* must be (a|of type) string/i);
+        /"?Path"?.* must be (a|of type) string/i);
     });
 
     it('should call #_waitForWatcher', function() {
