@@ -147,7 +147,7 @@ export class WatchTask {
   handleFileChange(path, root) {
     if (this._handlingChange) {
       Logger.debug('Ignoring', path, 'changed');
-      return false;
+      return Promise.resolve(false);
     }
 
     this._handlingChange = true;
@@ -173,7 +173,7 @@ export class WatchTask {
   handleServerChange(readResult) {
     if (this._handlingChange) {
       Logger.debug('Ignoring', readResult.nodeId.value, 'changed');
-      return false;
+      return Promise.resolve(false);
     }
 
     this._handlingChange = true;

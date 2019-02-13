@@ -23,12 +23,12 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
     },
   },
-  '../lib/gulp/PullStream': {
+  '../lib/server/NodeBrowser': {
     _esModule: true,
-    default: class PStream {
+    default: class NBrowser {
 
-      constructor(readStream) {
-        return readStream;
+      async browse() {
+        return true;
       }
 
     },
