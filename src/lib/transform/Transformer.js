@@ -48,6 +48,19 @@ export default class Transformer {
   }
 
   /**
+   * Creates a new Transformer with the specified options.
+   * @param {Object} [options] The options to use.
+   * @param {TransformDirection} [options.direction] The direction to use.
+   * @throws {Error} Throws an error if the given direction is invalid.
+   */
+  constructor({ direction } = {}) {
+    if (direction) {
+      if (!isValidDirection(direction)) { throw new Error('Invalid direction'); }
+      this.direction = direction;
+    }
+  }
+
+  /**
    * Returns the Transformer with the given direction.
    * @param {TransformDirection} direction The direction to use.
    * @return {Transformer} Itself, to be chainable.
@@ -75,6 +88,26 @@ export default class Transformer {
    */
   readNodeFile(node) { // eslint-disable-line no-unused-vars
     return undefined;
+  }
+
+  /**
+   * **Must be overridden by all subclasses:** Transforms the given node when using
+   * {@link TransformDirection.FromDB}.
+   * @param {BrowsedNode} node The node to split.
+   * @param {Object} context The transform context.
+   */
+  async transformFromDB(node, context) { // eslint-disable-line no-unused-vars
+    throw new Error('Transformer#transformFromDB must be overridden by all subclasses');
+  }
+
+  /**
+   * **Must be overridden by all subclasses:** Transforms the given node when using
+   * {@link TransformDirection.FromFilesystem}.
+   * @param {BrowsedNode} node The node to transform.
+   * @param {Object} context The browser context.
+   */
+  async transformFromFilesystem(node, context) { // eslint-disable-line no-unused-vars
+    throw new Error('Transformer#transformFromFilesystem must be overridden by all subclasses');
   }
 
   /**
