@@ -132,6 +132,20 @@ export default class NodeId extends OpcNodeId {
       return null;
     }
 
+    /*
+      Known aliases:
+        - AGENT and SYSTEM are children of "Objects"
+        - ObjectTypes.PROJECT and VariableTypes.PROJECT are children of their base Types
+    */
+    // FIXME: Should be in mapping transformer
+    if (this.value === 'AGENT' || this.value === 'SYSTEM') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 85, 0); // "Objects"
+    } else if (this.value === 'ObjectTypes.PROJECT') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 58, 0); // "BaseObjectType"
+    } else if (this.value === 'VariableTypes.PROJECT') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0); // "BaseVariableType"
+    }
+
     return new NodeId(
       NodeId.NodeIdType.STRING,
       this.value.substr(0, this.value.lastIndexOf(this._lastSeparator)),

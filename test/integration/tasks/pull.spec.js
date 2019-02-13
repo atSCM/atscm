@@ -1,23 +1,13 @@
 import { join } from 'path';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
-import { ctor as makeStreamConstructor } from 'through2';
 import { copy, outputJson, outputFile, readdir, remove } from 'fs-extra';
 import { tmpDir } from '../../helpers/util';
 
-const StreamConstructor = makeStreamConstructor({ objectMode: true }, (chunk, _, callback) => {
-  callback(new Error('Test'));
-});
-
 const runPull = proxyquire('../../../src/tasks/pull', {
-  '../lib/server/NodeStream': { default: StreamConstructor },
-  '../lib/gulp/PullStream': { default: class PullStub extends StreamConstructor {
+  '../lib/server/NodeBrowser': { default: class PullStub {
 
-    constructor(...args) {
-      super(...args);
-
-      setTimeout(() => this.emit('end'), 100);
-    }
+    async browse() { return false; }
 
   } },
 }).default;

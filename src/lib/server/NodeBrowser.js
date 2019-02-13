@@ -1,10 +1,10 @@
 import { ObjectIds } from 'node-opcua/lib/opcua_node_ids.js';
 import { BrowseDirection } from 'node-opcua/lib/services/browse_service.js';
-import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass.js';
 import Logger from 'gulplog';
+import PromiseQueue from 'p-queue';
 import ProjectConfig from '../../config/ProjectConfig';
 import NodeId from '../model/opcua/NodeId';
-import { ServerNode, ReferenceTypeIds } from '../model/Node';
+import { ServerNode, ReferenceTypeIds, ReferenceTypeNames } from '../model/Node';
 import Session from './Session';
 
 /**
@@ -79,20 +79,31 @@ export class BrowsedNode extends ServerNode {
 export default class NodeBrowser {
 
   /**
-   * Creates a new browser.
+   * Creates a new node browser.
    * @param {Object} options The options to use.
-   * @param {NodeId[]} options.nodes The nodes to browse.
-   * @param {NodeId[]} options.ignoreNodes The nodes to igore.
-   * @param {boolean} options.recursive If the browser should recurse.
+   * @param {number} [options.concurrency=250] The maximum of nodes to process in parallel.
+   * @param {function(node: BrowsedNode): Promise<any>} options.handleNode A custom node handler.
+   * @param {boolean} [options.recursive] If the whole node tree should be processed.
    */
-  constructor({ nodes, ignoreNodes, recursive }/* : { nodes: NodeId[] } */ = {}) {
-    /** The browser's source nodes @type {NodeId[]} */
-    this._sourceNodes = nodes;
+  constructor({
+    concurrency = 250,
+    ignoreNodes = ProjectConfig.ignoreNodes,
+    handleNode,
+    recursive = true,
+  } = {}) {
+    this.queue = new PromiseQueue({
+      // autoStart: false,
+      concurrency,
+    });
 
-    /** A regular expression matching all source nodes. @type {RegExp} */
-    this._sourceNodesRegExp = new RegExp(`^(${nodes
-      .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
-      .join('|')})`);
+    /** A map of nodes already handled. Keys are ids, values are `true` if the node was already
+     * pushed and `false` otherwise.
+     * @type {Map<string, boolean>}
+     * */
+    this._handled = new Map();
+
+    this._waitingFor = {};
+
     /** A regular expression matching all ignored nodes. @type {RegExp} */
     this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes
       .map(n => n.value)
@@ -101,338 +112,325 @@ export default class NodeBrowser {
     /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
 
-    /** Nodes discovered but not yet pushed. @type {ServerNode[]} */
-    this._discoveredNodes = [];
-    /** Nodes that should be browsed next. @type {NodeId[]} */
-    this._nextToBrowse = [];
-    /** Nodes queued. @type {Set<string>} */
-    this._queued = new Set();
-    /** Nodes pushed. @type {Set<string>} */
-    this._pushed = new Set();
-    /** Node dependency map. @type {Map<string, SourceNode[]>} */
-    this._dependingNodes = {};
-    /** The count of dependencies for nodes. @type {Map<string, number>} */
-    this._dependencies = {};
+    /** The custom node handler. @type {function(node: BrowsedNode): Promise<any>} */
+    this._handleNode = handleNode;
 
-    /** If the browser is stopped. @type {boolean} */
-    this._isStopped = false;
-    /** If the browser is destroyed. @type {boolean} */
-    this._isDestroyed = false;
-    /** If the browser ended. @type {boolean} */
-    this._ended = false;
+    /** The number of pushed (discovered and handled) nodes. @type {number} */
+    this._pushed = 0;
+  }
 
-    Session.create()
-      .then(session => (this._session = session))
-      .then(() => this._getSourceNodes())
-      .then(() => this._browseNext())
-      .catch(err => {
-        if (!this._isDisconnected) {
-          this.onError(err);
+  /**
+   * Reads the given node's value.
+   * @param {BrowsedNode} node The node to read.
+   */
+  _readValue(node) {
+    if (!node.isVariable) { return null; }
+    return new Promise((resolve, reject) => {
+      this._session.readVariableValue(node.id, (err, result) => {
+        if (err) { return reject(err); }
+        return resolve(result && result.value);
+      });
+    });
+  }
+
+  // FIXME: Debounce á la https://runkit.com/5c347d277da2ad00125b6bc2/5c50161cbc21520012c42290
+  // FIXME: Move to api
+  /**
+   * Browses the server address space at the given node id.
+   * @param {Object} options The options to use.
+   */
+  _browse({ nodeId, browseDirection = BrowseDirection.Forward, resultMask = 63 }) {
+    return new Promise((resolve, reject) => {
+      this._session.browse({ nodeId, browseDirection, resultMask },
+        (err, [{ references }] = []) => (err ? reject(err) : resolve(references)));
+    });
+  }
+
+  /**
+   * Browses a node.
+   * @param {BrowsedNode} node The node to browse.
+   */
+  _browseNode(node) {
+    return this._browse({ nodeId: node.id })
+      .then(allReferences => {
+        const children = [];
+        const references = [];
+
+        allReferences.forEach(reference => {
+          // "Cast" ref.nodeId to NodeId
+          Object.setPrototypeOf(reference.nodeId, NodeId.prototype);
+
+          const ignored = this._ignoreNodesRegExp.test(reference.nodeId.value);
+          const external = this._isExternalReference(reference.nodeId.value);
+
+          if (
+            HierachicalReferencesTypeIds.has(reference.referenceTypeId.value) &&
+            !ignored &&
+            !external
+          ) {
+            if (this._handled.get(reference.nodeId.value) === undefined) {
+              children.push(new BrowsedNode({
+                parent: node,
+                reference,
+              }));
+            } // else node is already handled
+          } else if (reference.referenceTypeId.value !== 50) { // Added by atvise builder
+            // Do not add ignored
+            if (!ignored) {
+              references.push(reference);
+            } else {
+              Logger.debug(`Ignored reference from ${node.id.value} (${
+                ReferenceTypeNames[reference.referenceTypeId.value]
+              }) to ${reference.nodeId.value}`);
+            }
+          }
+        });
+
+        // eslint-disable-next-line no-param-reassign
+        node.children = children;
+        node.addReferences(references);
+
+        return { children, references };
+      });
+  }
+
+  /**
+   * Finishes processing a given node: After calling {@link NodeBrowser#_handleNode}, it resolves
+   * is's dependencies.
+   * @param {BrowsedNode} node The node handled.
+   */
+  async _push(node) {
+    if (this._handled.get(node.id.value)) {
+      Logger.error('Prevented duplicate handling of', node.id.value);
+      return;
+    }
+
+    // Prevent duplicate pushes while reading value file
+    this._handled.set(node.id.value, 'processing');
+
+    // eslint-disable-next-line no-param-reassign
+    node.value = (await this._readValue(node) || node.value);
+
+    // TODO: Remove additional properties (children, ...) for better memory-usage
+
+    await this._handleNode(node);
+
+    this._pushed += 1;
+
+    // Do not proceed if queue is stopped (because an error occured)
+    if (!this._recursive || this.queue.isPaused) {
+      // Queue is stopped, not adding...
+      return;
+    }
+
+    this.queue.addAll(node.children.map(child => () => this._process(child)));
+
+    const idValue = node.id.value;
+    this._handled.set(idValue, true);
+
+    // Handle dependencies
+    if (this._waitingFor[idValue]) {
+      this._waitingFor[idValue].forEach(dep => {
+        // eslint-disable-next-line no-param-reassign
+        if (--dep.dependencies === 0) {
+          // Adding as dependencies are resolved
+          this.queue.add(() => this._push(dep)).catch(this._reject);
         }
       });
+
+      delete this._waitingFor[idValue];
+    }
   }
 
   /**
-   * Disconnects the browser.
-   * @return {Promise<void>} Resolved once finished.
+   * Instructs the browser to handle a node that would otherwise be queued behind others (eg: its
+   * parent node).
+   * @param {BrowsedNode} node The node to add.
+   * @return {Promise<?BrowsedNode>} The fully processed node.
    */
-  disconnect() {
-    this._isDestroyed = true;
-    return Session.close(this._session);
+  addNode(node) {
+    if (this.queue.isPaused) {
+      Logger.debug('Queue is stopped, not adding...');
+      return Promise.resolve();
+    }
+
+    return this.queue.add(
+      () => this._handleNode(node, { transform: false })
+    )
+      .catch(this._reject);
   }
 
   /**
-   * Destroys the browser.
-   * @return {Promise<void>} Resolved once finished.
+   * Returns `true` for node ids that should be treated as external references.
+   * @param {string|number} idValue Value of the id to check.
+   * @return {boolean} If the id should be treated as external.
    */
-  destroy() {
-    this.stop();
-    this._isDestroyed = true;
-
-    return this.disconnect();
+  _isExternalReference(idValue) { // FIXME: Allow plugins
+    return typeof idValue !== 'string' || !this._sourceNodesRegExp.test(idValue);
   }
 
   /**
-   * Browses the given nodes.
-   * @param {NodeId[]} nodes The nodes to browse.
-   * @return {Promise<Object[]>} The browse results.
+   * Returns `true` if a node has dependencies it should be queued behind.
+   * @param {BrowsedNode} node The node to check.
    */
-  _browse(nodes) {
-    return new Promise((resolve, reject) => {
-      this._session.browse(nodes, (err, results) => {
-        if (err) { return reject(err); }
-        return resolve(results);
-      });
-    });
-  }
-
-  /**
-   * Reads the given nodes.
-   * @param {NodeId[]} nodes The nodes to read.
-   * @return {Promise<Object[]>} The read results.
-   */
-  _readValues(nodes) {
-    return new Promise((resolve, reject) => {
-      this._session.readVariableValue(nodes, (err, results) => {
-        if (err) { return reject(err); }
-        return resolve(results);
-      });
-    });
-  }
-
-  /**
-   * Called once a new node was discovered. Pushes it if possible.
-   * @param {ServerNode} node The discovered node.
-   */
-  _discoveredNode(node) {
+  _hasDependencies(node) {
     let dependencyCount = 0;
 
     for (const references of node.references.values()) {
       for (const reference of references) {
         if (
-          reference.namespace &&
-          !this._pushed.has(reference) &&
-          !this._sourceNodesRegExp.test(reference)
+          // !this._handled.get(reference) &&
+          !this._isExternalReference(reference) &&
+          !this._ignoreNodesRegExp.test(reference)
         ) {
-          this._dependingNodes[reference] = this._dependingNodes[reference] || [];
-          this._dependingNodes[reference].push(node);
-          dependencyCount += 1;
+          dependencyCount++;
+          this._waitingFor[reference] = (this._waitingFor[reference] || []).concat(node);
         }
       }
     }
 
-    if (dependencyCount) { // has dependencies
-      this._dependencies[node.id.value] = dependencyCount;
-    } else {
-      this._pushNode(node);
-    }
+    // eslint-disable-next-line no-param-reassign
+    node.dependencies = dependencyCount;
+
+    return dependencyCount > 0;
   }
 
   /**
-   * Pushes the given node and queues it's dependents.
-   * @param {ServerNode} node The pushed node.
+   * Processes a single node: Requires special error handling.
+   * @param {BrowsedNode} node The node to process.
+   * @return {Promise<?BrowsedNode>} The fully processed node.
    */
-  _pushNode(node) {
-    if (!this._isStopped) {
-      this.onNode(node);
-    } else {
-      this._discoveredNodes.push(node);
+  async _process(node) {
+    try {
+      if (this._handled.has(node.id.value)) { // Already queued
+        return undefined;
+      }
+      this._handled.set(node.id.value, false);
+      await this._browseNode(node);
+
+      if (!this._hasDependencies(node)) {
+        await this._push(node);
+      }
+    } catch (err) {
+      this._reject(err);
     }
 
-    this._pushed.add(node.id.value);
-
-    if (this._dependingNodes[node.id.value]) {
-      this._dependingNodes[node.id.value].forEach(dependency => {
-        this._dependencies[dependency.id.value] -= 1;
-
-        if (this._dependencies[dependency.id.value] === 0) {
-          this._pushNode(dependency);
-        } // else: Still got dependencies
-      });
-
-      delete this._dependingNodes[node.id.value];
-    }
-  }
-
-  /**
-   * Browses the source node to the root node.
-   * @param {NodeId[]} nodes The current nodes.
-   * @return {Promise<string[]>} The discovered source path.
-   */
-  async _getSourcePaths(nodes) {
-    const paths = nodes.map(() => []);
-
-    let browseNext = nodes.map((nodeId, index) => ({ nodeId, index }));
-    const browsePath = async items => {
-      browseNext = [];
-
-      const results = await this._browse(items.map(({ nodeId }) => ({
-        nodeId,
-        browseDirection: BrowseDirection.Inverse,
-        resultMask: 63,
-      })));
-
-      results.forEach((result, i) => {
-        if (result.statusCode.value !== 0) {
-          throw new Error(`Unable to browse ${items[i].nodeId}`);
-        }
-
-        for (const reference of result.references) {
-          if (HierachicalReferencesTypeIds.has(reference.referenceTypeId.value)) {
-            const index = items[i].index;
-
-            if (reference.nodeId.value !== ObjectIds.RootFolder) {
-              browseNext.push({ nodeId: reference.nodeId, index });
-            }
-
-            paths[index].unshift(reference.nodeId);
-
-            return;
-          }
-        }
-
-        throw new Error(`Unable to get parent node of ${items[i].nodeId}`);
-      });
-    };
-
-    while (browseNext.length) {
-      await browsePath(browseNext);
-    }
-
-    return paths;
-  }
-
-  /**
-   * Browses the source nodes's root paths.
-   * @param {string[][]} paths The source paths.
-   * @param {NodeId} targets The target nodes to browse onto.
-   */
-  async _browseSourcePaths(paths, targets) {
-    const remainingPaths = paths;
-    const nodes = new Array(paths.length);
-
-    const browsePaths = async () => {
-      const browse = [];
-      remainingPaths.forEach((p, index) => {
-        if (p.length) { browse.push({ nodeId: p.shift(), index }); }
-      });
-
-      const results = await this._browse(browse.map(({ nodeId }) => ({
-        nodeId,
-        browseDirection: BrowseDirection.Forward,
-        resultMask: 63,
-      })));
-
-      results.forEach((result, i) => {
-        const item = browse[i];
-        const next = remainingPaths[item.index][0] || targets[item.index];
-
-        for (const reference of result.references) {
-          if (reference.nodeId.value === next.value) {
-            nodes[item.index] = new BrowsedNode({
-              parent: nodes[item.index],
-              reference,
-            });
-
-            return;
-          }
-        }
-
-        throw new Error('Fatal error');
-      });
-    };
-
-    while (remainingPaths.find(i => i.length)) {
-      await browsePaths();
-    }
-
-    return nodes;
+    return node;
   }
 
   /**
    * Discovers and browses the source nodes.
-   * @return {Promise<void>} Resolved once finished.
+   * @param {Array<string, NodeId>} nodeIds The source ids.
+   * @return {Promise<Node[]>} Resolved once finished.
    */
-  _getSourceNodes() {
-    const validateSourceNodes = JSON.stringify(this._sourceNodes) ===
-      JSON.stringify(ProjectConfig.nodes);
-
-    return this._getSourcePaths(this._sourceNodes)
-      .then(paths => this._browseSourcePaths(paths, this._sourceNodes))
-      .then(nodes => {
-        nodes.forEach(node => {
-          if (validateSourceNodes && node.nodeClass === NodeClass.Variable) {
-            throw new Error(`Source node '${node.id.value}' is not an Object.
- - You could use it's parent (${node.parent.id.value}) inside your project configuration instead.`);
+  _getSourceNodes(nodeIds) {
+    const browseUp = ({ nodeId, path = [] }) => this._browse({
+      nodeId,
+      browseDirection: BrowseDirection.Inverse,
+    })
+      .then(references => {
+        for (const reference of references) {
+          if (HierachicalReferencesTypeIds.has(reference.referenceTypeId.value)) {
+            path.unshift(reference.nodeId);
+            return reference.nodeId.value === ObjectIds.RootFolder ?
+              path :
+              browseUp({ nodeId: reference.nodeId, path });
           }
-          this._nextToBrowse.push(node);
-        });
-      });
-  }
-
-  /**
-   * Browses the next nodes queued.
-   */
-  async _browseNext() {
-    if (this._isDestroyed) { return Promise.resolve(); }
-
-    const browseCount = Math.min(this._nextToBrowse.length, 10000);
-    Logger.debug('browsing', browseCount, 'nodes...');
-    const browseNow = this._nextToBrowse.splice(0, browseCount);
-
-    const [results, values] = await Promise.all([
-      this._browse(browseNow.map(node => ({
-        nodeId: node.id,
-        browseDirection: BrowseDirection.Forward,
-        resultMask: 63,
-      }))),
-      this._readValues(browseNow.map(node => node.id)),
-    ]);
-
-    results.forEach((result, i) => {
-      const node = browseNow[i];
-      const references = [];
-
-      // FIXME: Check status
-      node.value = values[i].value;
-
-      result.references.forEach(reference => {
-        // "Cast" ref.nodeId to NodeId
-        Object.setPrototypeOf(reference.nodeId, NodeId.prototype);
-
-        if (
-          HierachicalReferencesTypeIds.has(reference.referenceTypeId.value) &&
-          !this._ignoreNodesRegExp.test(reference.nodeId.value)
-        ) {
-          if (!this._queued.has(reference.nodeId.value) && this._recursive) {
-            this._queued.add(reference.nodeId.value);
-            this._nextToBrowse.push(new BrowsedNode({
-              parent: node,
-              reference,
-            }));
-          }
-        } else if (reference.referenceTypeId.value !== 50) { // Added by atvise builder
-          references.push(reference);
         }
+        throw new Error(`Unable to find parent node of ${nodeId}`);
       });
 
-      node.addReferences(references);
-      this._discoveredNode(node);
+    const browseDown = (path, target) => Promise.all(path
+      .map((nodeId, i) => this._browse({ nodeId })
+        .then(references => references
+          .find(ref => ref.nodeId.value === (
+            path[i + 1] ? path[i + 1].value : target.value
+          ))
+        )
+      )
+    );
+
+    return Promise.all(nodeIds
+      .map(nodeId => browseUp({ nodeId })
+        .then(path => browseDown(path, nodeId))
+        .then(pathDown => pathDown
+          .reduce((parent, reference) => new BrowsedNode({ parent, reference }), null)
+        )
+      )
+    );
+  }
+
+  /**
+   * Starts the browser of the given nodes.
+   * @param {NodeId[]} nodeIds The nodes to browse.
+   * @return {Promise<any>} Resolved once all nodes are finished.
+   */
+  async browse(nodeIds) {
+    this._sourceNodesRegExp = new RegExp(`^(${nodeIds
+      .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
+      .join('|')})`);
+
+    this._session = await Session.create();
+
+    // Add source nodes
+    const nodes = await this._getSourceNodes(nodeIds);
+    this.queue.addAll(nodes.map(node => () => this._process(node)));
+
+    // Queue error handling
+    let processError = null;
+    this._reject = err => {
+      if (processError) {
+        // Multiple errors occured. In most cases this means, that the server connection was closed
+        // after the first error.
+        Logger.debug('Additional error', err);
+        return;
+      }
+
+      processError = err;
+      this.queue.pause();
+      this.queue.clear();
+    };
+
+    return new Promise((resolve, reject) => {
+      this.queue.onIdle()
+        .then(async () => {
+          await Session.close(this._session);
+
+          if (processError) {
+            reject(processError);
+            return;
+          }
+
+          if (Object.keys(this._waitingFor).length) {
+            const unresolved = Object.entries(this._waitingFor)
+              .reduce((all, [to, children]) => all.concat(children
+                .map(c => ({
+                  from: c.id.value,
+                  to,
+                  type: ReferenceTypeNames[
+                    Array.from(c.references).find(([, refs]) => refs.has(to))[0]
+                  ],
+                }))
+              ), []);
+
+            reject(new Error(`Unable to resolve reference${unresolved.length > 1 ? 's' : ''}:
+
+  ${
+  unresolved
+    .map(({ from, type, to }) => `${from} → (${type}) → ${to}`)
+    .join('\n  ')
+}
+`));
+            return;
+          }
+
+          if (Array.from(this._handled).find(([, pushed]) => !pushed)) {
+            throw new Error('A node was processed, but not pushed');
+          }
+
+          resolve();
+        });
     });
-
-    if (this._nextToBrowse.length) {
-      return this._browseNext();
-    }
-
-    // All nodes have been browsed
-    if (this._isStopped) {
-      this._ended = true;
-      return Promise.resolve();
-    }
-    return this.onEnd();
-  }
-
-  /**
-   * Starts the browser.
-   */
-  start() {
-    this._isStopped = false;
-
-    while (this._discoveredNodes.length) {
-      this.onNode(this._discoveredNodes.shift());
-      if (this._isStopped) { break; }
-    }
-
-    if (!this._discoveredNodes.length && this._ended) {
-      this.onEnd();
-    }
-  }
-
-  /**
-   * Stops the browser.
-   */
-  stop() {
-    this._isStopped = true;
   }
 
 }

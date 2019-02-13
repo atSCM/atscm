@@ -84,32 +84,20 @@ export default class XMLTransformer extends SplittingTransformer {
   /**
    * Parses XML in a node's contents.
    * @param {Node} node The node to process.
-   * @param {function(err: ?Error, result: ?Object)} callback Called with the parsed document or the
-   * parse error that occurred.
    */
-  decodeContents(node, callback) {
-    try {
-      callback(null, xml2js(this.direction === TransformDirection.FromDB ?
-        node.value.value :
-        node.stringValue,
-      { compact: false }));
-    } catch (e) {
-      callback(e);
-    }
+  decodeContents(node) {
+    return xml2js(this.direction === TransformDirection.FromDB ?
+      node.value.value :
+      node.stringValue,
+    { compact: false });
   }
 
   /**
    * Builds an XML string from an object.
    * @param {Object} object The object to encode.
-   * @param {function(err: ?Error, result: ?String)} callback Called with the resulting string or
-   * the error that occurred while building.
    */
-  encodeContents(object, callback) {
-    try {
-      callback(null, this.builder(object));
-    } catch (e) {
-      callback(e);
-    }
+  encodeContents(object) {
+    return this.builder(object);
   }
 
 }

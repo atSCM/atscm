@@ -2,14 +2,13 @@ import { join } from 'path';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
-import src from '../lib/gulp/src';
-import PushStream from '../lib/gulp/PushStream';
-import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/server/AtviseFile';
 import ServerWatcher from '../lib/server/Watcher';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
-import NodeStream from '../lib/server/NodeStream';
+import { performPull } from './pull';
+import { performPush } from './push';
+
+const delay = ms => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 /**
  * The task executed when running `atscm watch`.
@@ -142,30 +141,27 @@ export class WatchTask {
    * Handles a file change.
    * @param {string} path The path of the file that changed.
    * @param {string} root The root of the file that changed.
-   * @param {fs~Stats} stats The stats of the file that changed.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a push operation,
    * with `false` otherwise.
    */
-  handleFileChange(path, root, stats) {
-    return new Promise(resolve => {
-      if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
-        this._pushing = true;
-        Logger.info(path, 'changed');
+  handleFileChange(path, root) {
+    if (this._handlingChange) {
+      Logger.debug('Ignoring', path, 'changed');
+      return Promise.resolve(false);
+    }
 
-        const source = src(join(root, path), { base: root, recursive: false });
+    this._handlingChange = true;
+    Logger.info(path, 'changed');
 
-        (new PushStream(source))
-          .on('data', file => (this._lastPushed = file.nodeId.toString()))
-          .on('end', () => {
-            this._pushing = false;
-            this.browserSyncInstance.reload();
+    return performPush(join(root, path), { singleNode: true })
+      .catch(err => Logger.error('Push failed', err))
+      .then(async () => {
+        this.browserSyncInstance.reload();
 
-            resolve(true);
-          });
-      } else {
-        resolve(false);
-      }
-    });
+        await delay(500);
+
+        this._handlingChange = false;
+      });
   }
 
   /**
@@ -175,32 +171,23 @@ export class WatchTask {
    * with `false` otherwise.
    */
   handleServerChange(readResult) {
-    return new Promise(resolve => {
-      if (!this._pushing) {
-        if (readResult.nodeId.toString() !== this._lastPushed) {
-          this._pulling = true;
-          Logger.info(readResult.nodeId.toString(), 'changed');
+    if (this._handlingChange) {
+      Logger.debug('Ignoring', readResult.nodeId.value, 'changed');
+      return Promise.resolve(false);
+    }
 
-          // FIXME: Reuse read value
-          const stream = new NodeStream([readResult.nodeId], { recursive: false });
+    this._handlingChange = true;
+    Logger.info(readResult.nodeId.value, 'changed');
 
-          (new PullStream(stream))
-            .on('finish', () => {
-              this._pulling = false;
-              this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
-              this.browserSyncInstance.reload();
+    return performPull([readResult.nodeId], { recursive: false })
+      .catch(err => Logger.error('Pull failed', err))
+      .then(async () => {
+        this.browserSyncInstance.reload();
 
-              resolve(true);
-            });
-        } else {
-          this._lastPushed = null;
+        await delay(500);
 
-          resolve(false);
-        }
-      } else {
-        resolve(false);
-      }
-    });
+        this._handlingChange = false;
+      });
   }
 
   /**
@@ -211,7 +198,7 @@ export class WatchTask {
    * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
    * all watchers are set up and Browsersync was initialized.
    */
-  run({ open = true } = { open: true }) {
+  run({ open = true } = {}) {
     return Promise.all([
       this.startFileWatcher(),
       this.startServerWatcher(),

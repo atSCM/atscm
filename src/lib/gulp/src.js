@@ -1,21 +1,12 @@
-import { Readable } from 'stream';
-import { readdir as _readdir, stat as _stat, readFile as _readFile } from 'fs';
-import { promisify } from 'util';
-import { join, basename, dirname, relative, isAbsolute } from 'path';
+import { join, basename, dirname } from 'path';
+import { readdir, stat, readFile, readJSON } from 'fs-extra';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import Logger from 'gulplog';
+import PromiseQueue from 'p-queue';
 import { SourceNode, ReferenceTypeIds } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
-
-/** Browses the given directory @type {function(path: string): Promise<string[]>} */
-const readdir = promisify(_readdir);
-
-/** Stats the given file @type {function(file: string): Promise<fs~Stat>} */
-const stat = promisify(_stat);
-
-/** Reads the given file @type {function(file: string): Promise<Buffer>} */
-const readFile = promisify(_readFile);
 
 /**
  * A node returned by the {@link SourceStream}.
@@ -89,6 +80,9 @@ export class FileNode extends SourceNode {
     const value = this.value;
 
     if (!value.value) {
+      if (!value.arrayType) {
+        throw new Error(`${this.nodeId} has no array type`);
+      }
       value.value = decodeVariant(this._rawValue, value);
     }
 
@@ -97,508 +91,263 @@ export class FileNode extends SourceNode {
 
 }
 
-/**
- * A stream that browses the file system and returns {@link Node}s from the read files.
- */
-export class SourceBrowser {
-
-  /**
-   * Creates a new browser.
-   * @param {Object} options The options to use.
-   * @param {string} options.path The path to browse for.
-   * @param {string} [options.base] The base directory to use (defaults to './src').
-   * @param {NodeId[]} [options.ignoreNodes] The nodes to ignore (defaults to the ones in the
-   * project config.
-   * @param {boolean} [options.recursive=true] If the browser shoud recurse directories.
-   */
-  constructor({ path, base, ignoreNodes, recursive }) {
-    /**
-     * A regular expression matching all nodes specified in {@link ProjectConfig.nodes}.
-     */
-    this._sourceNodesRegExp = new RegExp(`^(${ProjectConfig.nodes
-      .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
-      .join('|')})`);
-
-    /**
-     * A set of the paths specified in {@link ProjectConfig.nodes}.
-     */
-    this._rootNodePaths = new Set(ProjectConfig.nodes
-      .map(n => join(...n.value.split('.'), '.Object.json')));
-
-    /**
-     * A regular expression matching all nodes specified in {@link ProjectConfig.nodes}.
-     */
-    this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes || ProjectConfig.ignoreNodes
-      .map(n => n.value)
-      .join('|')})`);
-
-    /** If the browser is stopped. @type {boolean} */
-    this._isStopped = true;
-    /** If the browser is destoyed. @type {boolean} */
-    this._isDestroyed = false;
-    /** If the browser has ended. @type {boolean} */
-    this._ended = false;
-    /** Nodes discovered and read but not yet pushed. @type {FileNode[]} */
-    this._readNodes = [];
-
-    /** The directories discovered. @type {Set<string>} */
-    this._isDir = new Set();
-    /** The source path. @type {string} */
-    this._path = path;
-    /** The base path. @type {string} */
-    this._base = base;
-    /** If the browser should recurse directores. @type {boolean} */
-    this._recursive = recursive;
-    /** The browse queue. @type {string[]} */
-    this._nextToBrowse = [];
-    /** The stat queue. @type {string[]} */
-    this._nextToStat = [];
-    /** The read queue. @type {string[]} */
-    this._nextToRead = [];
-
-    /** Nodes waiting for it's parent to be pushed. @type {Map<string, string[]>} */
-    this._waitingForParent = {};
-    /** Nodes discovered but not read yet. @type {Map<string, FileNode>} */
-    this._discoveredNodes = new Map();
-    /** Paths of nodes already pushed. @type {Set<string>} */
-    this._pushedNodes = new Set();
-    /** Nodes that depend on others to be pushed. @type {Map<string, Set<FileNode>>} */
-    this._dependingNodes = {};
-    /** Numbers of dependencies for nodes at path. @type {Map<string, number>} */
-    this._dependencies = {};
-
-    this._stat([this._base])
-      .then(() => this._processQueues())
-      .catch(err => this.onError(err));
-  }
-
-  /**
-   * Picks the next items from a queue.
-   * @param {any[]} queue The queue to pick from.
-   */
-  _nextInQueue(queue) {
-    const count = Math.min(queue.length, 50);
-    return queue.splice(0, count);
-  }
-
-  /**
-   * Processes the next items in a queue.
-   * @param {any[]} queue The queue to process.
-   * @param {function(input: any[]): Promise<any>} handler The handler to use.
-   */
-  _processQueue(queue, handler) {
-    const input = this._nextInQueue(queue);
-
-    if (!input.length) {
-      return Promise.resolve();
-    }
-
-    return handler(input)
-      .then(() => this._processQueue(queue, handler));
-  }
-
-  /**
-   * Browses the specified directories.
-   * @param {string[]} dirs The directories to browse.
-   * @return {Promise<void>} Resolved once finished.
-   */
-  _browse(dirs) {
-    return Promise.all(dirs
-      .map(dir => readdir(dir)
-        .then(files => files.forEach(file => {
-          this._nextToStat.push(join(dir, file));
-        }))
-      )
-    );
-  }
-
-  /**
-   * Returns `true` for all definition file paths.
-   * @param {string} path The path to check.
-   * @return {boolean} If the item at the given path is a definition file.
-   */
-  _isDefinitionFile(path) {
-    return basename(path).match(/^\..*\.json$/);
-  }
-
-  /**
-   * Returns `true` for all non-variable definition file paths.
-   * @param {string} path The pach to check.
-   * @return {boolean} If the item at the given path is a definition file.
-   */
-  _isNonVarFile(path) {
-    const t = basename(path).slice(1).replace(/\.json$/, '');
-
-    if (t.length < 4) { return false; }
-
-    return Boolean(NodeClass[t]);
-  }
-
-  /**
-   * Returns the path to the parent node.
-   * @param {string} path The path to use.
-   * @return {string} The parent node's path.
-   */
-  _parentNodePath(path) {
-    let dir = dirname(path);
-
-    if (this._isNonVarFile(path)) {
-      dir = dirname(dir);
-    }
-
-    return dir.replace(/.inner$/, '');
-  }
-
-  /**
-   * Returns `true` for all root node paths.
-   * @param {string} path The path to check.
-   * @param {string} parentPath The parent path to check.
-   * @return {boolean} If the node at *path* is a root node.
-   */
-  _isRootNodePath(path, parentPath) {
-    if (parentPath === this._base) { return true; }
-
-    const name = relative(this._base, path);
-
-    if (this._rootNodePaths.has(name)) { return true; }
-
-    // MARK: Only works with compact mapping applied, update once configurable.
-    // FIXME: Needs a more general solution.
-    // eslint-disable-next-line max-len
-    return /^(AGENT|SYSTEM|ObjectTypes.PROJECT|VariableTypes.PROJECT).\.(Object|ObjectType|VariableType)?.json$/.test(name);
-  }
-
-  /**
-   * Stats the given paths.
-   * @param {string[]} paths The paths to stat.
-   * @return {Promise<void>} Resolved once finished.
-   */
-  _stat(paths) {
-    return Promise.all(paths
-      .map(path => stat(path)
-        .then(s => {
-          if (s.isDirectory()) {
-            this._isDir.add(path);
-
-            if (
-              this._path.split(path).length > 1 || // browse up to source node
-              (this._recursive && path.split(this._path).length > 1) // browse children if recursive
-            ) {
-              this._nextToBrowse.push(path);
-            }
-          } else if (s.isFile()) {
-            if (this._isDefinitionFile(path)) {
-              const parentPath = this._parentNodePath(path);
-              if (this._isRootNodePath(path, parentPath) || this._pushedNodes.has(parentPath)) {
-                this._nextToRead.push(path);
-              } else {
-                this._waitingForParent[parentPath] = (this._waitingForParent[parentPath] || [])
-                  .concat(path);
-              }
-            } // Got a regular / variable value file
-          }
-        })
-      )
-    );
-  }
-
-  /**
-   * Reads the given files.
-   * @param {string[]} paths Reads the files at the given paths.
-   * @return {Promise<void>} Resolved once finished.
-   */
-  _read(paths) {
-    return Promise.all(paths
-      .map(path => readFile(path)
-        .then(contents => {
-          if (this._isDefinitionFile(path)) {
-            this._discoveredNode({ path, definitions: JSON.parse(contents.toString()) });
-          } else {
-            const node = this._discoveredNodes.get(path);
-
-            if (!node) {
-              throw new Error(`Unknown node at ${path}`);
-            }
-
-            node._rawValue = contents;
-            this._pushNode(node);
-          }
-        })
-      )
-    );
-  }
-
-  /**
-   * Processes the next itmems in all queues.
-   * @return {Promise<void>} Resolved once finished.
-   */
-  async _processQueues() {
-    if (this._isDestroyed) { return true; }
-
-    await Promise.all([
-      this._processQueue(this._nextToBrowse, this._browse.bind(this)),
-      this._processQueue(this._nextToStat, this._stat.bind(this)),
-      this._processQueue(this._nextToRead, this._read.bind(this)),
-    ]);
-
-    if (this._nextToBrowse.length || this._nextToStat.length || this._nextToRead.length) {
-      return this._processQueues();
-    }
-
-    if (this._isStopped) {
-      this._ended = true;
-      return true;
-    }
-
-    if (Object.keys(this._dependingNodes).length) {
-      throw new Error('Unmapped nodes');
-    }
-
-    if (Object.keys(this._waitingForParent).length) {
-      throw new Error('Unmapped nodes');
-    }
-
-    if (Object.keys(this._dependencies).length) {
-      throw new Error('Unmapped nodes');
-    }
-
-    return this.onEnd();
-  }
-
-  // Dependency management
-
-  /**
-   * Invoced once a new node has been discovered. Queues it behind it's parents if needed, otherwise
-   * marks it for reading.
-   * @param {Object} options The discovered node.
-   * @param {string} options.path The node's path.
-   * @param {Object} options.definitions The node's definitions.
-   */
-  _discoveredNode({ path: _path, definitions }) {
-    let path = _path;
-    let name = basename(path).slice(1).replace(/\.json$/, '');
-
-    if (name.length >= 4 && NodeClass[name]) {
-      path = dirname(path);
-      name = basename(path);
-    }
-
-    const dir = dirname(path);
-    const parentPath = this._parentNodePath(path);
-    const rel = join(dir, name);
-    const node = new FileNode(Object.assign({
-      name,
-      parent: this._discoveredNodes.get(parentPath),
-    }, definitions));
-    node.relative = rel;
-    this._discoveredNodes.set(rel, node);
-
-    let dependencyCount = 0;
-
-    if (!this._pushedNodes.has(parentPath) && !this._isRootNodePath(_path, parentPath)) {
-      throw new Error(`'${path}' was pushed before parent node`);
-    }
-
-    for (const [type, references] of node.references.entries()) {
-      if (type !== ReferenceTypeIds.toParent) {
-        for (const reference of references) {
-          if (
-            type !== ReferenceTypeIds.toParent && // parents are handled via _waitingForParent
-            !this._pushedNodes.has(reference) && // hasn't been processed yet
-            this._sourceNodesRegExp.test(reference) && // is included in project config
-            !this._ignoreNodesRegExp.test(reference) // is not ignored in project config
-          ) {
-            this._dependingNodes[reference] = this._dependingNodes[reference] || [];
-            this._dependingNodes[reference].push(node);
-            dependencyCount += 1;
-          }
-        }
-      }
-    }
-
-    if (dependencyCount) { // has deps
-      this._dependencies[node.nodeId] = dependencyCount;
-    } else {
-      this._readNodeValue(node);
-    }
-  }
-
-  /**
-   * Marks a variable node for reading or pushes it if non-var.
-   * @param {FileNode} node The node to read the value of.
-   */
-  _readNodeValue(node) {
-    if (node.nodeClass === NodeClass.Variable && !this._isDir.has(node.relative)) {
-      this._nextToRead.push(node.relative);
-    } else {
-      this._pushNode(node);
-    }
-  }
-
-  /**
-   * Pushes a node and queues it's dependents.
-   * @param {FileNode} node The node to push.
-   */
-  _pushNode(node) {
-    this._pushedNodes.add(node.relative);
-    this._pushedNodes.add(node.nodeId);
-    this.onNode(node);
-
-    // FIXME: Only while debugging
-    /*
-    if (!node.parent && ![
-      'AGENT',
-      'SYSTEM',
-      'VariableTypes.PROJECT',
-      'ObjectTypes.PROJECT',
-    ].includes(node.nodeId)) {
-      throw new Error(`Node '${node.nodeId}' has no parent node`);
-    }
-    */
-
-    const waiting = this._waitingForParent[node.relative];
-    if (waiting) {
-      waiting.forEach(p => {
-        this._nextToRead.push(p);
-      });
-
-      delete this._waitingForParent[node.relative];
-    }
-
-    const dependents = this._dependingNodes[node.nodeId];
-
-    if (dependents) {
-      dependents.forEach(dep => {
-        this._dependencies[dep.nodeId]--;
-
-        if (this._dependencies[dep.nodeId] === 0) {
-          this._readNodeValue(dep);
-          delete this._dependencies[dep.nodeId];
-        } // else: dependent has other dependencies as well
-      });
-
-      delete this._dependingNodes[node.nodeId];
-    }
-  }
-
-  /**
-   * Destroys the browser.
-   */
-  async destroy() {
-    this.stop();
-    this._isDestroyed = true;
-  }
-
-  /**
-   * Invoced to start the browser pushing nodes.
-   */
-  start() {
-    this._isStopped = false;
-
-    while (this._readNodes.length) {
-      this.onNode(this._readNodes.shift());
-      if (this._isStopped) { break; }
-    }
-
-    if (!this._readNodes.length && this._ended) {
-      this.onEnd();
-    }
-  }
-
-  /**
-   * Prevents the browser to push nodes.
-   */
-  stop() {
-    this._isStopped = true;
-  }
-
+// Helpers
+export function isDefinitionFile(path) {
+  return basename(path).match(/^\..*\.json$/);
 }
 
-/**
- * A stream writing {@link FileNode}s.
- */
-export class SourceStream extends Readable {
+const containerFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
 
-  /**
-   * Creates a new steam.
-   * @param {Object} options The options to use.
-   * @see {SourceBrowser#constructor}
-   */
-  constructor(options) {
-    super(Object.assign(options, { objectMode: true, highWaterMark: 10000 }));
+const hierarchicalReferencesTypeNames = new Set([
+  'HasChild',
+  'Aggregates',
+  'HasComponent',
+  'HasOrderedComponent',
+  'HasHistoricalConfiguration',
+  'HasProperty',
+  'HasSubtype',
+  'HasEventSource',
+  'HasNotifier',
+  'Organizes',
+]);
 
-    /**
-     * If the stream is destoryed.
-     * @type {boolean}
-     */
-    this._isDestroyed = false;
+class SourceBrowser {
 
-    /**
-     * The stream's file system browser.
-     * @type {SourceBrowser}
-     */
-    this._browser = new SourceBrowser(options);
+  constructor({ handleNode, readNodeFile }) {
+    this._queue = new PromiseQueue({
+      concurrency: 250,
+    });
 
-    this._browser.onNode = node => {
-      if (!this.push(node)) { this._browser.stop(); }
-    };
+    this._nodeHandler = handleNode;
+    this._readNodeFile = readNodeFile;
 
-    this._browser.onEnd = () => {
-      this.push(null);
-      this.destroy();
-    };
-
-    this._browser.onError = err => {
-      if (this.isDestroyed) { return; }
-      this.emit('error', err);
-      this.destroy();
-    };
+    this._pushed = new Set();
+    this._pushedPath = new Set();
+    this._dependingOn = new Map();
   }
 
-  /**
-   * If the stream is destroyed.
-   * @type {boolean}
-   */
-  get isDestroyed() {
-    return this._isDestroyed;
+  async browse(path, options = {}) {
+    // Queue error handling
+    let processError = null;
+    this._reject = err => {
+      if (processError) {
+        // Multiple errors occured. In most cases this means, that the server connection was closed
+        // after the first error.
+        Logger.debug('Additional error', err);
+        return;
+      }
+
+      processError = err;
+      this._queue.pause();
+      this._queue.clear();
+    };
+
+    // write initial path
+    this.processPath({ path, ...options });
+
+    return this._queue.onIdle()
+      .then(() => {
+        if (processError) {
+          throw processError;
+        }
+
+        if (this._dependingOn.size) {
+          throw new Error(`Some nodes are still waiting for dependencies
+  Missing nodes: ${Array.from(this._dependingOn.keys()).join(', ')}
+  - Pull these nodes or add them to the ignored ones`);
+        }
+      });
   }
 
-  /**
-   * Starts the browser.
-   */
-  _read() {
-    this._browser.start();
+  processPath(options) {
+    return this._queue.add(() => this._processPath(options).catch(this._reject));
   }
 
-  /**
-   * Destoys the stream and it's browser.
-   * @param {?Error} err The error that caused the destroy.
-   * @param {function(err: ?Error)} callback Called once finished.
-   */
-  _destroy(err, callback) {
-    this._isDestroyed = true;
-
-    super.destroy(err, () => {
-      this._browser.destroy()
-        .then(() => callback(err))
-        .catch(destroyErr => callback(err || destroyErr));
+  readNode({ path, tree }) {
+    return this._processPath({
+      path,
+      tree,
+      push: false,
     });
   }
 
+  async _processPath({ path, parent, children, push = true, singleNode = false }) {
+    const s = await stat(path);
+
+    if (s.isDirectory()) {
+      let container;
+      const nextChildren = (await readdir(path))
+        .reduce((nodes, p) => {
+          const node = {
+            name: p,
+            path: join(path, p),
+            push,
+          };
+
+          if (p.match(containerFileRegexp)) {
+            container = node;
+
+            return nodes;
+          }
+
+          let parts;
+          const noProcessingNeeded = nodes.find(current => {
+            const n = current.name;
+            if (n === `.${p}.json`) { return true; } // Skip files with definitions already present
+
+            const [raw, rest] = parts || (parts = p.split('.inner'));
+
+            if (rest === '' && (n === raw || n === `.${raw}.json`)) { // Got an *.inner directory
+              // eslint-disable-next-line no-param-reassign
+              current.children = (current.children || []).concat(node);
+              return true;
+            }
+
+            return false;
+          });
+
+          return noProcessingNeeded ? nodes : nodes.concat(node);
+        }, []);
+
+      if (container) {
+        return this._processPath(Object.assign(container, { children: nextChildren, parent }));
+      } else if (singleNode) {
+        Logger.debug(`Pushing parent at ${path}`);
+        return this._processPath({ path: join(path, '../'), parent, children, push });
+      }
+
+      nextChildren.forEach(node => this.processPath(node));
+    } else if (s.isFile()) {
+      if (!isDefinitionFile(path)) {
+        // FIXME: Browse parent here for watch task / Variable source node
+        // (e.g. AGENT/DISPLAYS/Default.display/Default.js changed)
+
+        if (singleNode) {
+          Logger.debug(`Pushing parent at ${path}`);
+          return this._processPath({ path: join(path, '../'), parent, children, push, singleNode });
+        }
+
+        Logger.warn(`Not a definition file at ${path}`);
+        return Promise.resolve();
+      }
+
+      let name = basename(path, '.json').slice(1);
+      if (name.length >= 4 && NodeClass[name]) {
+        name = basename(dirname(path));
+      }
+
+      if (this._pushedPath.has(path)) {
+        // throw new Error('Double-handled node ' + path);
+        return Promise.resolve();
+      }
+
+      const dir = dirname(path);
+      const rel = join(dir, name);
+      const node = new FileNode({
+        name,
+        path, // FIXME: Remove, add as #relative
+        parent,
+        ...await readJSON(path),
+      });
+
+      node.push = push;
+      node.children = children;
+      node.relative = rel;
+      node.definitionPath = path;
+
+      return this._processNode(node);
+    }
+
+    return Promise.resolve();
+  }
+
+  _processNode(node) {
+    // Build dependency map
+    if (!node._waitingFor) {
+      const deps = Object.entries(node.references)
+        .filter(([key]) => key !== 'toParent' && !hierarchicalReferencesTypeNames.has(key))
+        .reduce((result, [, ids]) => result.concat(ids.filter(id => !(this._pushed.has(id)))), [])
+        .filter(id => {
+          if (typeof id === 'number') { // OPC-UA node
+            return false;
+          }
+
+          return !ProjectConfig.isExternal(id);
+        });
+      // eslint-disable-next-line no-param-reassign
+      node.waitingFor = new Set(deps);
+      deps.forEach(d => {
+        this._dependingOn.set(d, (this._dependingOn.get(d) || []).concat(node));
+      });
+    }
+
+    if (!node.waitingFor.size) {
+      return this._pushNode(node);
+    }
+
+    return Promise.resolve();
+  }
+
+  async _pushNode(node) {
+    // Read node value
+    if (node.nodeClass === NodeClass.Variable && this._readNodeFile(node)) {
+      // eslint-disable-next-line no-param-reassign
+      node._rawValue = await readFile(node.relative)
+        .catch(err => {
+          if (err.code === 'EISDIR') { return; }
+          throw new Error(`${err.code}: Error reading ${node.path}`);
+        });
+    }
+
+    return this._nodeHandler(node)
+      .then(() => {
+        // Handle children
+        if (node.children) {
+          node.children.forEach(child => {
+            // eslint-disable-next-line no-param-reassign
+            child.parent = node;
+            this.processPath(child);
+          });
+        }
+
+        // Handle dependencies
+        const depending = this._dependingOn.get(node.nodeId);
+        if (depending) {
+          depending.forEach(dep => {
+            dep.node.waitingFor.delete(node.nodeId);
+
+            if (!dep.node.waitingFor.size) {
+              // All dependencies resolved
+              return this._pushNode({
+                ...dep,
+                tree: {
+                  ...dep.tree,
+                  parent: node,
+                },
+              });
+            }
+
+            // Still waiting
+            return Logger.debug('Still waiting', dep.node.nodeId, Array.from(dep.node.waitingFor));
+          });
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        delete node.waitingFor;
+        this._dependingOn.delete(node.nodeId);
+        this._pushed.add(node.nodeId);
+
+        // Mark as pushed
+        this._pushedPath.add(node.definitionPath);
+
+        return node;
+      });
+  }
+
 }
 
-/**
- * Returns a {@link SourceStream} for the given path.
- * @param {string} path The path to read from.
- * @param {Object} options Options passed to the {@link SourceStream}.
- * @return {SourceStream} The source stream.
- */
 export default function src(path, options = {}) {
-  const getAbsolute = rel => (isAbsolute(rel) ? rel : join(process.cwd(), rel));
+  const browser = new SourceBrowser(options);
 
-  return new SourceStream(Object.assign(options, {
-    path: getAbsolute(path),
-    base: getAbsolute(options.base || './src'), // FIXME: Take from config file
-    recursive: options.recursive === undefined ? true : options.recursive,
-  }));
+  return Object.assign(browser.browse(path, options), { browser });
 }

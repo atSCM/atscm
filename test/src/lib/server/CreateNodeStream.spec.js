@@ -159,7 +159,7 @@ describe('CreateNodeStream', function() {
       return expect(debugSpy, 'to have a call satisfying', { args: [/Created node.*Test/] });
     });
 
-    it('should log if node already existed', async function() {
+    it.skip('should log if node already existed', async function() {
       const stream = new CreateNodeStream();
 
       const debugSpy = spy();

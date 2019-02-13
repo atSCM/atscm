@@ -273,6 +273,12 @@ export class WriteStream extends Writable {
       .catch(err => callback(err));
   }
 
+  writeAsync(node) {
+    return new Promise((resolve, reject) => {
+      this._write(node, null, err => (err ? reject(err) : resolve()));
+    });
+  }
+
   /**
    * Writes multiple nodes in parallel.
    * @param {Node[]} nodes The nodes to write.

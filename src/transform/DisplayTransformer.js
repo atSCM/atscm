@@ -1,5 +1,3 @@
-import { basename } from 'path';
-import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import XMLTransformer from '../lib/transform/XMLTransformer';
@@ -8,7 +6,6 @@ import {
   removeChildren,
   createTextNode, createCDataNode, createElement,
 } from '../lib/helpers/xml';
-import { ReferenceTypeIds } from '../lib/model/Node';
 
 /**
  * Names of the tags to come before <metadata> in output files.
@@ -38,158 +35,118 @@ function metadataIndex(elements) {
 export default class DisplayTransformer extends XMLTransformer {
 
   /**
-   * Returns true for all nodes containing atvise displays.
+   * The extension to add to display container node names when they are pulled.
+   * @type {string}
+   */
+  static get extension() {
+    return '.display';
+  }
+
+  /**
+   * Returns `true` for all display nodes.
    * @param {Node} node The node to check.
-   * @return {boolean} `true` for all atvise display nodes.
    */
   shouldBeTransformed(node) {
-    return node.hasTypeDefinition('VariableTypes.ATVISE.Display') ||
-      super.shouldBeTransformed(node);
+    return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
-   * @param {Node} node The display node to split.
-   * @param {string} enc The encoding used.
-   * @param {function(err: Error, node: Node)} callback Called with the error that occured
-   * while transforming the display, or the node passed through.
+   * @param {BrowsedNode} node The node to split.
+   * @param {Object} context The transform context.
    */
-  transformFromDB(node, enc, callback) {
+  async transformFromDB(node, context) {
+    if (!this.shouldBeTransformed(node)) { return undefined; }
+
     if (node.arrayType !== VariantArrayType.Scalar) {
       // FIXME: Instead of throwing we could simply pass the original node to the callback
       throw new Error('Array of displays not supported');
     }
-    node.markAsResolved('nodeClass');
-    node.markAsResolved('dataType');
-    node.markAsResolved('arrayType');
-    node.markReferenceAsResolved('HasTypeDefinition', 'VariableTypes.ATVISE.Display');
 
-    this.decodeContents(node, (err, results) => {
-      if (err) {
-        callback(err);
-      } else if (!results) {
-        callback(new Error('Error parsing display: No `svg` tag'));
-      } else {
-        const xml = results;
-        const document = findChild(xml, 'svg');
+    const xml = this.decodeContents(node);
+    if (!xml) { throw new Error('Error parsing display'); }
 
-        if (!document) {
-          callback(new Error('Error parsing display: No `svg` tag'));
-          return;
-        }
+    const document = findChild(xml, 'svg');
+    if (!document) { throw new Error('Error parsing display: No `svg` tag'); }
 
-        const config = {};
-        const scriptTags = removeChildren(document, 'script');
-        let inlineScript = false;
+    const config = {};
+    const scriptTags = removeChildren(document, 'script');
+    let inlineScript = false;
 
-        // Extract JavaScript
-        if (scriptTags.length) {
-          scriptTags.forEach(script => {
-            if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
-              if (!config.dependencies) {
-                config.dependencies = [];
-              }
-
-              config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
-            } else {
-              // Warn on multiple inline scripts
-              if (inlineScript) {
-                Logger.warn(`'${node.id.value}' contains multiple inline scripts.`);
-                document.elements.push(inlineScript);
-              }
-              inlineScript = script;
-            }
-          });
-        }
-        if (inlineScript) {
-          const contentNode = inlineScript.elements ? inlineScript.elements[0] : createTextNode();
-          const scriptFile = DisplayTransformer.splitFile(node, '.js');
-          const scriptText = contentNode[contentNode.type] || '';
-
-          scriptFile.value = {
-            dataType: DataType.String,
-            arrayType: VariantArrayType.Scalar,
-            value: scriptText,
-          };
-          this.push(scriptFile);
-        }
-
-        // Extract metadata
-        const metaTag = findChild(document, 'metadata');
-        if (metaTag && metaTag.elements) {
-          // TODO: Warn on multiple metadata tags
-
-          // - Parameters
-          const paramTags = removeChildren(metaTag, 'atv:parameter');
-          if (paramTags.length) {
-            config.parameters = [];
-
-            paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
+    // Extract JavaScript
+    if (scriptTags.length) {
+      scriptTags.forEach(script => {
+        if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
+          if (!config.dependencies) {
+            config.dependencies = [];
           }
-        }
 
-        const configFile = DisplayTransformer.splitFile(node, '.json');
-
-        configFile.value = {
-          dataType: DataType.String,
-          arrayType: VariantArrayType.Scalar,
-          value: JSON.stringify(config, null, '  '),
-        };
-        this.push(configFile);
-
-        const svgFile = DisplayTransformer.splitFile(node, '.svg');
-
-        this.encodeContents(xml, (encodeErr, stringValue) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            svgFile.value = {
-              dataType: DataType.String,
-              arrayType: VariantArrayType.Scalar,
-              value: stringValue,
-            };
-            this.push(svgFile);
-
-            node.renameTo(`${node.name}.display`);
-
-            callback(null, node);
+          config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
+        } else {
+          // Warn on multiple inline scripts
+          if (inlineScript) {
+            Logger.warn(`'${node.id.value}' contains multiple inline scripts.`);
+            document.elements.push(inlineScript);
           }
-        });
+          inlineScript = script;
+        }
+      });
+    }
+    if (inlineScript) {
+      const contentNode = inlineScript.elements ? inlineScript.elements[0] : createTextNode();
+      const scriptFile = this.constructor.splitFile(node, '.js');
+      const scriptText = contentNode[contentNode.type] || '';
+
+      scriptFile.value = {
+        dataType: DataType.String,
+        arrayType: VariantArrayType.Scalar,
+        value: scriptText,
+      };
+      context.addNode(scriptFile);
+    }
+
+    // Extract metadata
+    const metaTag = findChild(document, 'metadata');
+    if (metaTag && metaTag.elements) {
+      // TODO: Warn on multiple metadata tags
+
+      // - Parameters
+      const paramTags = removeChildren(metaTag, 'atv:parameter');
+      if (paramTags.length) {
+        config.parameters = [];
+
+        paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
       }
-    });
+    }
+
+    const configFile = this.constructor.splitFile(node, '.json');
+    configFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: JSON.stringify(config, null, '  '),
+    };
+    context.addNode(configFile);
+
+    const svgFile = this.constructor.splitFile(node, '.svg');
+    svgFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: this.encodeContents(xml),
+    };
+    context.addNode(svgFile);
+
+    // equals: node.renameTo(`${node.name}.display`);
+    return super.transformFromDB(node);
   }
 
   /**
-   * Creates a display from the collected source nodes.
-   * @param {Node} node The node to map to.
-   * @param {Map<String, Node>} sources The collected files, stored against their extension.
-   * @param {function(err: ?Error, data: Node)} callback Called with the error that occured
-   * while creating the display or the resulting file.
+   * Creates a display from the collected nodes.
+   * @param {BrowsedNode} node The container node.
+   * @param {Map<string, BrowsedNode>} sources The collected files, stored against their
+   * extension.
    */
-  createCombinedFile(node, sources, callback) {
-    /* eslint-disable no-param-reassign */
-
-    // FIXME: Set nodeClass to NodeClass.Variable
-    node.nodeClass = NodeClass.Variable;
-    node.markAsResolved('nodeClass');
-
-    // Set dataType to DataType.XmlElement
-    node.value.dataType = DataType.XmlElement;
-    node.markAsResolved('dataType');
-
-    // Set arrayType to 'Scalar'
-    node.value.arrayType = VariantArrayType.Scalar;
-    node.markAsResolved('arrayType');
-
-    // Set type definition reference to 'VariableTypes.ATVISE.Display'
-    node.setReferences(ReferenceTypeIds.HasTypeDefinition, ['VariableTypes.ATVISE.Display']);
-    node.markAllReferencesAsResolved('HasTypeDefinition');
-
-    /* eslint-enable no-param-reassign */
-
-    node.renameTo(basename(node.name, '.display'));
-
+  combineNodes(node, sources) {
     const configFile = sources['.json'];
     let config = {};
 
@@ -197,15 +154,13 @@ export default class DisplayTransformer extends XMLTransformer {
       try {
         config = JSON.parse(configFile.stringValue);
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
-        return;
+        throw new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`);
       }
     }
 
     const svgFile = sources['.svg'];
     if (!svgFile) {
-      callback(new Error(`No display SVG in ${svgFile.path}`));
-      return;
+      throw new Error(`No display SVG for ${node.nodeId}`);
     }
 
     const scriptFile = sources['.js'];
@@ -214,75 +169,62 @@ export default class DisplayTransformer extends XMLTransformer {
       inlineScript = scriptFile.stringValue;
     }
 
-    this.decodeContents(svgFile, (err, xml) => {
-      if (err) {
-        callback(err);
-      } else {
-        const result = xml;
-        const svg = findChild(result, 'svg');
+    const xml = this.decodeContents(svgFile);
+    const result = xml;
+    const svg = findChild(result, 'svg');
 
-        if (!svg) {
-          callback(new Error('Error parsing display SVG: No `svg` tag'));
-          return;
-        }
+    if (!svg) {
+      throw new Error('Error parsing display SVG: No `svg` tag');
+    }
 
-        // Handle empty svg tag
-        if (!svg.elements) {
-          svg.elements = [];
-        }
+    // Handle empty svg tag
+    if (!svg.elements) {
+      svg.elements = [];
+    }
 
-        // Insert dependencies
-        if (config.dependencies) {
-          config.dependencies.forEach(src => {
-            svg.elements.push(createElement('script', undefined, { 'xlink:href': src }));
-          });
-        }
+    // Insert dependencies
+    if (config.dependencies) {
+      config.dependencies.forEach(s => {
+        svg.elements.push(createElement('script', undefined, { 'xlink:href': s }));
+      });
+    }
 
-        // Insert script
-        // FIXME: Import order is not preserved!
-        if (scriptFile) {
-          svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
-            type: 'text/ecmascript',
-          }));
-        }
+    // Insert script
+    // FIXME: Import order is not preserved!
+    if (scriptFile) {
+      svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
+        type: 'text/ecmascript',
+      }));
+    }
 
-        // Insert metadata
-        // - Parameters
-        if (config.parameters && config.parameters.length > 0) {
-          let metaTag = removeChild(svg, 'metadata');
+    // Insert metadata
+    // - Parameters
+    if (config.parameters && config.parameters.length > 0) {
+      let metaTag = removeChild(svg, 'metadata');
 
-          if (!metaTag) {
-            metaTag = createElement('metadata');
-          }
-
-          if (!metaTag.elements) {
-            metaTag.elements = [];
-          }
-
-          // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
-          for (let i = config.parameters.length - 1; i >= 0; i--) {
-            metaTag.elements.unshift(
-              createElement('atv:parameter', undefined, config.parameters[i])
-            );
-          }
-
-          // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
-          // <title> if defined
-          svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
-        }
-
-        this.encodeContents(result, (encodeErr, xmlString) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            // eslint-disable-next-line no-param-reassign
-            node.value.value = xmlString;
-
-            callback(null, node);
-          }
-        });
+      if (!metaTag) {
+        metaTag = createElement('metadata');
       }
-    });
+
+      if (!metaTag.elements) {
+        metaTag.elements = [];
+      }
+
+      // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
+      for (let i = config.parameters.length - 1; i >= 0; i--) {
+        metaTag.elements.unshift(
+          createElement('atv:parameter', undefined, config.parameters[i])
+        );
+      }
+
+      // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
+      // <title> if defined
+      svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
+    }
+
+    // eslint-disable-next-line
+    node.value.value = this.encodeContents(result);
+    return node;
   }
 
 }
