@@ -35,7 +35,10 @@ export function performPull(nodes, options = {}) {
     },
   });
 
-  return Object.assign(browser.browse(nodes), { browser });
+  return Object.assign(
+    browser.browse(nodes)
+      .then(() => writeStream.writeRenamefile())
+    , { browser });
 }
 
 /**

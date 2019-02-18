@@ -307,9 +307,8 @@ export class WriteStream extends Writable {
 
   /**
    * Writes the updated rename config to disk.
-   * @param {function(err: ?Error): void} callback Called once the rename file has been written.
    */
-  _final(callback) {
+  writeRenamefile() {
     if (this._discoveredIdConflicts) {
       Logger.error(
         `Discovered ${this._discoveredIdConflicts} node id conflicts, results are incomplete.
@@ -317,9 +316,7 @@ export class WriteStream extends Writable {
       // FIXME: Insert link to node ide conflict manual here once 1.0.0 is released.
     }
 
-    outputFile(renameConfigPath, JSON.stringify(this._renameConfig, null, '  '))
-      .then(callback)
-      .catch(callback);
+    return outputFile(renameConfigPath, JSON.stringify(this._renameConfig, null, '  '));
   }
 
 }
