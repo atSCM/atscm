@@ -305,7 +305,7 @@ export default class NodeBrowser {
     for (const references of node.references.values()) {
       for (const reference of references) {
         if (
-          // !this._handled.get(reference) &&
+          (this._handled.get(reference) !== true) &&
           !this._isExternalReference(reference) &&
           !this._ignoreNodesRegExp.test(reference)
         ) {
