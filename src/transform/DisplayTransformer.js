@@ -86,7 +86,9 @@ export default class DisplayTransformer extends XMLTransformer {
         } else {
           // Warn on multiple inline scripts
           if (inlineScript) {
-            Logger.warn(`'${node.id.value}' contains multiple inline scripts.`);
+            Logger[
+              node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'
+            ](`'${node.id.value}' contains multiple inline scripts.`);
             document.elements.push(inlineScript);
           }
           inlineScript = script;
