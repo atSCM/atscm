@@ -31,6 +31,8 @@ const hashaOptions = { algorithm: 'md5' };
  */
 const useChecksums = ProjectConfig.vcs === 'svn';
 
+const escapePathComponent = a => a.replace(/\//g, '%2F');
+
 /**
  * A stream that writes {@link Node}s to the file system.
  */
@@ -155,7 +157,7 @@ export class WriteStream extends Writable {
    */
   async _writeNode(node) {
     // TODO: Throw if node.name ends with '.inner'
-    const dirPath = node.filePath;
+    const dirPath = node.filePath.map(escapePathComponent);
 
     const writeOps = [];
 
@@ -221,8 +223,8 @@ export class WriteStream extends Writable {
     // Write definition file (if needed)
     if (node.hasUnresolvedMetadata) {
       const name = node.nodeClass === NodeClass.Variable ?
-        `./.${node.fileName}.json` :
-        `./${node.fileName}/.${node.nodeClass.key}.json`;
+        `./.${escapePathComponent(node.fileName)}.json` :
+        `./${escapePathComponent(node.fileName)}/.${node.nodeClass.key}.json`;
 
       if (this._performWrites) {
         writeOps.push(
@@ -239,7 +241,7 @@ export class WriteStream extends Writable {
           if (this._performWrites) {
             writeOps.push(
               this._outputFile(
-                join(this._base, dirPath.join('/'), node.fileName),
+                join(this._base, dirPath.join('/'), escapePathComponent(node.fileName)),
                 encodeVariant(node.value))
             );
           }
