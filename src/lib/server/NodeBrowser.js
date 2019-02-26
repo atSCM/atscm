@@ -1,5 +1,7 @@
 import { ObjectIds } from 'node-opcua/lib/opcua_node_ids.js';
 import { BrowseDirection } from 'node-opcua/lib/services/browse_service.js';
+import { AttributeIds } from 'node-opcua/lib/services/read_service';
+import { VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
 import ProjectConfig from '../../config/ProjectConfig';
@@ -130,7 +132,31 @@ export default class NodeBrowser {
         if (err) { return reject(err); }
         return resolve(result && result.value);
       });
-    });
+    })
+      .then(value => {
+        if (value) { return value; }
+
+        // Node is a variable but has no value -> Need to read dataType and arrayType directly.
+        return new Promise((resolve, reject) => {
+          const toRead = [AttributeIds.DataType, AttributeIds.ValueRank]
+            .map(attributeId => ({ nodeId: node.id, attributeId }));
+          this._session.read(toRead, (err, _, [
+            { value: { value: dataType } },
+            { value: { value: valueRank } },
+          ] = []) => {
+            if (err) return reject(err);
+
+            // FIXME: valueRank -2 (Any) and -3 (ScalarOrOneDimension) are not handled properly here
+            const arrayType = valueRank < 0 ? VariantArrayType.Scalar : VariantArrayType.Array;
+
+            return resolve({
+              dataType,
+              arrayType,
+              value: null,
+            });
+          });
+        });
+      });
   }
 
   // FIXME: Debounce á la https://runkit.com/5c347d277da2ad00125b6bc2/5c50161cbc21520012c42290
