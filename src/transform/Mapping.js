@@ -110,12 +110,10 @@ export default class MappingTransformer extends Transformer {
         if (node.isVariable && node.value && node.value.dataType.key === type) {
           if (!isStandardTypeNode) {
             node.renameTo(`${node.name}${ext}`);
+            break;
           }
 
           // FIXME: Set dataType and mark as resolved
-        } else if (node.fileName.endsWith(ext)) {
-          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
-          return;
         }
       }
 
@@ -187,17 +185,17 @@ export default class MappingTransformer extends Transformer {
         // FIXME: Set arrayType and mark as resolved
 
         node.renameTo(basename(node.name, extension));
+        break;
       }
     }
 
     // Resolve dataType from extension
     for (const [type, extension] of Object.entries(extensionForDataType)) {
-      if (node.name.endsWith(extension) && !isStandardTypeNode) {
-        assert.equal(node.dataType.key, type);
-
+      if (node.name.endsWith(extension) && !isStandardTypeNode && node.dataType.key === type) {
         // FIXME: Set dataType and mark as resolved
 
         node.renameTo(basename(node.name, extension));
+        break;
       }
     }
 
