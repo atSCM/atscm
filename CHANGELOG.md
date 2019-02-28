@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.21"></a>
-# 1.0.0-beta.21 (2019-02-26)
+<a name="1.0.0-beta.22"></a>
+# 1.0.0-beta.22 (2019-02-28)
 
 
 ### Bug Fixes
@@ -7,6 +7,7 @@
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
 * **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
 * **init:** Do not allow 'atscm' as project name ([#235](https://github.com/atSCM/atscm/issues/235)) ([20a7f41](https://github.com/atSCM/atscm/commits/20a7f41))
+* **mapping:** Allow standard type extensions ([#266](https://github.com/atSCM/atscm/issues/266)) ([18e8a4d](https://github.com/atSCM/atscm/commits/18e8a4d))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
 * **pull:** Allow empty variable values ([#262](https://github.com/atSCM/atscm/issues/262)) ([9a37a29](https://github.com/atSCM/atscm/commits/9a37a29))
 * **pull:** Escape slashes in node names ([#261](https://github.com/atSCM/atscm/issues/261)) ([f0f8ceb](https://github.com/atSCM/atscm/commits/f0f8ceb))
@@ -20,13 +21,13 @@
 * **pull:** Write rename.json after pull ([#257](https://github.com/atSCM/atscm/issues/257)) ([468fb52](https://github.com/atSCM/atscm/commits/468fb52))
 * **push:** Allow non-standard root nodes ([#236](https://github.com/atSCM/atscm/issues/236)) ([6da0bcc](https://github.com/atSCM/atscm/commits/6da0bcc))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
+* **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
+* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
+* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
-* **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
-* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
-* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 
 
 ### Features
