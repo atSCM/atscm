@@ -3,12 +3,11 @@ import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
 import ServerWatcher from '../lib/server/Watcher';
+import { delay } from '../lib/helpers/async.js';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
 import { performPull } from './pull';
 import { performPush } from './push';
-
-const delay = ms => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 /**
  * The task executed when running `atscm watch`.
