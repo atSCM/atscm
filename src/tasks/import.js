@@ -4,9 +4,11 @@ import { version } from '@atscm/server-scripts/package.json';
 import toPromise from 'stream-to-promise';
 import { DataType } from 'node-opcua/lib/datamodel/variant';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import Logger from 'gulplog';
 import ImportStream from '../lib/gulp/ImportStream';
 import { writeNode, createNode } from '../api';
 import { versionNode } from '../lib/server/scripts/version';
+import { delay } from '../lib/helpers/async';
 
 /**
  * Imports all xml files needed for atscm usage.
@@ -22,10 +24,35 @@ export default function importTask() {
     .then(() => writeNode(versionNode, versionVariant))
     .catch(err => {
       if (err.statusCode === StatusCodes.BadNodeIdUnknown) {
-        return createNode(versionNode, {
-          name: 'version',
-          value: versionVariant,
-        });
+        const maxTries = 20;
+        const retryDelay = 100;
+
+        let tryNo = 0;
+        const tryToCreate = () => {
+          tryNo++;
+
+          return createNode(versionNode, {
+            name: 'version',
+            value: versionVariant,
+          })
+            .then(async ({ outputArguments }) => {
+              if (outputArguments[3].value.length < 2) {
+                if (tryNo < maxTries) {
+                  Logger.debug(`Create script is not ready yet. Retrying after ${retryDelay}ms`);
+
+                  await delay(retryDelay);
+                  return tryToCreate();
+                }
+
+                throw new Error('CreateNode script is not ready yet. Try again later');
+              }
+
+              return true;
+            });
+        };
+
+        return tryToCreate()
+          .then(() => Logger.debug(`Import worked on attempt # ${tryNo}`));
       }
 
       throw err;
