@@ -8,6 +8,7 @@ import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
 import { performPull } from './pull';
 import { performPush } from './push';
+import { handleTaskError } from '../lib/helpers/tasks';
 
 /**
  * The task executed when running `atscm watch`.
@@ -137,6 +138,19 @@ export class WatchTask {
   }
 
   /**
+   * Prints an error that happened while handling a change.
+   * @param {string} contextMessage Describes the currently run action.
+   * @param {Error} err The error that occured.
+   */
+  printTaskError(contextMessage, err) {
+    try {
+      handleTaskError(err);
+    } catch (refined) {
+      Logger.error(contextMessage, refined.message, refined.stack);
+    }
+  }
+
+  /**
    * Handles a file change.
    * @param {string} path The path of the file that changed.
    * @param {string} root The root of the file that changed.
@@ -153,7 +167,7 @@ export class WatchTask {
     Logger.info(path, 'changed');
 
     return performPush(join(root, path), { singleNode: true })
-      .catch(err => Logger.error('Push failed', err))
+      .catch(err => this.printTaskError('Push failed', err))
       .then(async () => {
         this.browserSyncInstance.reload();
 
@@ -179,7 +193,7 @@ export class WatchTask {
     Logger.info(readResult.nodeId.value, 'changed');
 
     return performPull([readResult.nodeId], { recursive: false })
-      .catch(err => Logger.error('Pull failed', err))
+      .catch(err => this.printTaskError('Pull failed', err))
       .then(async () => {
         this.browserSyncInstance.reload();
 
