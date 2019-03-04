@@ -4,11 +4,11 @@ import browserSync from 'browser-sync';
 import Logger from 'gulplog';
 import ServerWatcher from '../lib/server/Watcher';
 import { delay } from '../lib/helpers/async.js';
+import { handleTaskError } from '../lib/helpers/tasks';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
 import { performPull } from './pull';
 import { performPush } from './push';
-import { handleTaskError } from '../lib/helpers/tasks';
 
 /**
  * The task executed when running `atscm watch`.
