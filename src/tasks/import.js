@@ -9,6 +9,7 @@ import ImportStream from '../lib/gulp/ImportStream';
 import { writeNode, createNode } from '../api';
 import { versionNode } from '../lib/server/scripts/version';
 import { delay } from '../lib/helpers/async';
+import { handleTaskError } from '../lib/helpers/tasks';
 
 /**
  * Imports all xml files needed for atscm usage.
@@ -56,7 +57,8 @@ export default function importTask() {
       }
 
       throw err;
-    });
+    })
+    .catch(handleTaskError);
 }
 
 importTask.description = 'Imports all xml resources needed for atscm usage';

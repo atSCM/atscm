@@ -6,6 +6,7 @@ import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
 import dest from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
+import { handleTaskError } from '../lib/helpers/tasks';
 
 export function performPull(nodes, options = {}) {
   const writeStream = dest('./src');
@@ -65,7 +66,8 @@ export default function pull(options) {
         getter: () => promise.browser._pushed,
         formatter: count => `Processed ${count} nodes`,
       });
-    });
+    })
+    .catch(handleTaskError);
 }
 
 pull.description = 'Pull all nodes from atvise server';
