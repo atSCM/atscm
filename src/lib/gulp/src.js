@@ -145,6 +145,9 @@ class SourceBrowser {
         reject(err);
       };
 
+      // write initial path
+      this.processPath({ path, ...options });
+
       this._queue.onIdle().then(() => {
         if (processError) { return; }
 
@@ -157,9 +160,6 @@ class SourceBrowser {
         resolve();
       });
     });
-
-    // write initial path
-    this.processPath({ path, ...options });
 
     return done;
   }
