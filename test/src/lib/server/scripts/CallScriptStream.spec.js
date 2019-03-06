@@ -84,7 +84,7 @@ describe('CallScriptStream', function() {
   });
 
   /** @test {CallScriptStream#processErrorMessage} */
-  describe('#processErrorMessage}', function() {
+  describe('#processErrorMessage', function() {
     it('should include the file\'s name', function() {
       return expect(f => (new StubImplementation()).processErrorMessage(f),
         'when called with', [{ relative: './path/file' }],

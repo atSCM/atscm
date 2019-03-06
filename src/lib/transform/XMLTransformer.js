@@ -1,6 +1,7 @@
 import { EOL } from 'os';
 import { xml2js, js2xml } from 'xml-js';
-import { isElement, removeChild } from '../helpers/xml';
+import Logger from 'gulplog';
+import { isElement, removeChild, displayPath, elementPath } from '../helpers/xml';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -67,7 +68,7 @@ export default class XMLTransformer extends SplittingTransformer {
      */
     this._fromFilesystemBuilder = object => {
       const xml = build(object, { compact: false, spaces: 1 });
-      return xml.replace(/\r?\n/g, '\r\n');
+      return xml.replace(/\r?\n/g, '\n');
     };
   }
 
@@ -86,10 +87,39 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {Node} node The node to process.
    */
   decodeContents(node) {
-    return xml2js(this.direction === TransformDirection.FromDB ?
+    const textTagIssues = new Set();
+
+    const doc = xml2js(this.direction === TransformDirection.FromDB ?
       node.value.value :
-      node.stringValue,
-    { compact: false });
+      node.stringValue, {
+      compact: false,
+      textFn(text, parentElement) {
+        if (text.match(/\r?\n *$/)) {
+          const siblingElements = parentElement.elements.filter(isElement);
+
+          if (siblingElements.length) {
+            textTagIssues.add(displayPath(parentElement));
+
+            // Correct indent
+            const tab = ' '.repeat(this.direction === TransformDirection.FromDB ? 2 : 1);
+
+            return text.replace(/\s*\r?\n *$/,
+              `${EOL}${tab.repeat(elementPath(parentElement).length - 1)}`
+            );
+          }
+        }
+
+        return text;
+      },
+    });
+
+    if (textTagIssues.size) {
+      Logger.warn(`Mixed text and tags inside '${node.nodeId}': This can lead to weird behaviour.
+  - Affected paths: ${Array.from(textTagIssues).map(p => `'${p}'`).join(',\n    ')}
+  - See: https://github.com/atSCM/atscm/issues/239`);
+    }
+
+    return doc;
   }
 
   /**

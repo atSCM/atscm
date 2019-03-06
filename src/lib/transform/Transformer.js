@@ -132,7 +132,7 @@ export default class Transformer {
           this.constructor._warnedStreamAPI = true;
           Logger.debug(`Deprecated: ${fnName} uses the Stream API instead of async/await.`);
         }
-        if (err) { return reject(err); }
+        if (err) { return reject(Object.assign(err, { node })); }
 
         // Handle "repush"
         if (result === node) { return resolve(); }
@@ -141,7 +141,7 @@ export default class Transformer {
       });
 
       if (promise instanceof Promise) {
-        promise.then(resolve, reject);
+        promise.then(resolve, err => reject(Object.assign(err, { node })));
       } else if (this.transformFromDB.length < 3) {
         reject(new Error(`${fnName} did not return a Promise.
   - Did you forget \`async\`?`));
