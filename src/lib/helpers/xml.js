@@ -160,3 +160,43 @@ export function createCDataNode(cdata = '') {
 export function createElement(name, elements = undefined, attributes = {}) {
   return { type: 'element', name, elements, attributes };
 }
+
+/**
+ * Browses a parsed document's tree up starting with the given element.
+ * @param {Object} element A parsed XML element.
+ * @param {function(element: Object): void} onElement A function called once an element is
+ * discovered in the document tree.
+ */
+function browseUp(element, onElement) {
+  let current = element;
+
+  while (current) {
+    onElement(current);
+
+    current = current.parent;
+  }
+}
+
+/**
+ * Returns an element's path.
+ * @param {Object} element The element to use.
+ * @return {string[]} The element's path.
+ */
+export function elementPath(element) {
+  const path = [];
+
+  browseUp(element, ({ name }) => {
+    if (name) path.unshift(name);
+  });
+
+  return path;
+}
+
+/**
+ * Returns a string describing an element's path.
+ * @param {Object} element Th element to use.
+ * @return {string} A description of the element's path.
+ */
+export function displayPath(element) {
+  return elementPath(element).join(' > ︎');
+}
