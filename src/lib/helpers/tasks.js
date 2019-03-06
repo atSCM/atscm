@@ -6,12 +6,13 @@
  * @throws {Error} The extended error.
  */
 export function handleTaskError(error) {
-  if (error.node) {
-    Object.assign(error, {
-      message: `${error.message}
- - Node: ${error.node.nodeId}`,
-    });
-  }
+  const additionalMessage = error.node ? `
+ - Node: ${error.node.nodeId}` : '';
+
+  Object.assign(error, {
+    message: `${error.message}${additionalMessage}`,
+    stack: `${error.stack}${additionalMessage}`,
+  });
 
   throw error;
 }

@@ -48,7 +48,8 @@ export function performPush(path, options) {
           } else {
             Logger.debug(`Added ${Object.keys(references).length} reference(s) to ${node.nodeId}`);
           }
-        });
+        })
+        .catch(err => { throw Object.assign(err, { node }); });
     }
 
     return Promise.resolve();
@@ -83,7 +84,8 @@ export function performPush(path, options) {
         }
 
         return ensureReferences(node);
-      });
+      })
+      .catch(err => { throw Object.assign(err, { node }); });
   };
 
   return src(path, {
@@ -132,7 +134,7 @@ export function performPush(path, options) {
               return create(node);
             }
 
-            throw err;
+            throw Object.assign(err, { node });
           }
         );
     },
