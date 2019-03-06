@@ -7,36 +7,26 @@ import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
 import { xml2js } from 'xml-js';
 import expect from '../expect';
-import PushStream from '../../src/lib/gulp/PushStream';
-import NodeStream from '../../src/lib/server/NodeStream';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
 import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
-import src from '../../src/lib/gulp/src';
 import dest from '../../src/lib/gulp/dest';
+import { performPush } from '../../src/tasks/push';
 import { id, tmpDir, readFile } from './util';
 
 export function pull(nodes, destination) {
-  const PullStream = proxyquire('../../src/lib/gulp/PullStream', {
-    './dest': {
+  const { performPull } = proxyquire('../../src/tasks/pull', {
+    '../lib/gulp/dest': {
       default: () => dest(destination),
     },
-  }).default;
+  });
 
-  return promisify(
-    new PullStream(
-      (new NodeStream(nodes.map(n => new NodeId(n))))
-    )
-  );
+  return performPull(nodes.map(n => new NodeId(n)));
 }
 
 export function push(source) {
-  return promisify(new PushStream(src(
-    source,
-    // [`${source}/**/*`, `!${source}/**/.*.rc`],
-    { base: source },
-  )));
+  return performPush(source);
 }
 
 export const setupDir = join(__dirname, '../fixtures/setup');
