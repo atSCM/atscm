@@ -132,8 +132,8 @@ class SourceBrowser {
     const done = new Promise((resolve, reject) => {
       this._reject = err => {
         if (processError) {
-          // Multiple errors occured. In most cases this means, that the server connection was closed
-          // after the first error.
+          // Multiple errors occured. In most cases this means, that the server connection was
+          // closed after the first error.
           Logger.debug('Additional error', err);
           return;
         }
