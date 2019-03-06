@@ -67,7 +67,7 @@ export default class XMLTransformer extends SplittingTransformer {
      */
     this._fromFilesystemBuilder = object => {
       const xml = build(object, { compact: false, spaces: 1 });
-      return xml.replace(/\r?\n/g, '\r\n');
+      return xml.replace(/\r?\n/g, '\n');
     };
   }
 
