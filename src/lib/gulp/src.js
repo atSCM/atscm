@@ -127,36 +127,41 @@ class SourceBrowser {
   }
 
   async browse(path, options = {}) {
-    // Queue error handling
     let processError = null;
-    this._reject = err => {
-      if (processError) {
-        // Multiple errors occured. In most cases this means, that the server connection was closed
-        // after the first error.
-        Logger.debug('Additional error', err);
-        return;
-      }
 
-      processError = err;
-      this._queue.pause();
-      this._queue.clear();
-    };
-
-    // write initial path
-    this.processPath({ path, ...options });
-
-    return this._queue.onIdle()
-      .then(() => {
+    const done = new Promise((resolve, reject) => {
+      this._reject = err => {
         if (processError) {
-          throw processError;
+          // Multiple errors occured. In most cases this means, that the server connection was closed
+          // after the first error.
+          Logger.debug('Additional error', err);
+          return;
         }
+
+        processError = err;
+        this._queue.pause();
+        this._queue.clear();
+
+        reject(err);
+      };
+
+      this._queue.onIdle().then(() => {
+        if (processError) { return; }
 
         if (this._dependingOn.size) {
           throw new Error(`Some nodes are still waiting for dependencies
   Missing nodes: ${Array.from(this._dependingOn.keys()).join(', ')}
   - Pull these nodes or add them to the ignored ones`);
         }
+
+        resolve();
       });
+    });
+
+    // write initial path
+    this.processPath({ path, ...options });
+
+    return done;
   }
 
   processPath(options) {
