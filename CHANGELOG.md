@@ -1,10 +1,11 @@
-<a name="1.0.0-beta.22"></a>
-# 1.0.0-beta.22 (2019-02-28)
+<a name="1.0.0-beta.23"></a>
+# 1.0.0-beta.23 (2019-03-06)
 
 
 ### Bug Fixes
 
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
+* **import:** Retry if serverscripts are not ready yet ([#267](https://github.com/atSCM/atscm/issues/267)) ([413045a](https://github.com/atSCM/atscm/commits/413045a)), closes [#252](https://github.com/atSCM/atscm/issues/252)
 * **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
 * **init:** Do not allow 'atscm' as project name ([#235](https://github.com/atSCM/atscm/issues/235)) ([20a7f41](https://github.com/atSCM/atscm/commits/20a7f41))
 * **mapping:** Allow standard type extensions ([#266](https://github.com/atSCM/atscm/issues/266)) ([18e8a4d](https://github.com/atSCM/atscm/commits/18e8a4d))
