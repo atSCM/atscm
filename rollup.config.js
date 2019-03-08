@@ -24,13 +24,6 @@ export default [{
   external,
   plugins: [
     resolve(),
-    unusedPlugin(({
-      include: 'src/**',
-      exclude: [
-        'src/init/**',
-        'src/typedef/**',
-      ],
-    })),
     json(),
     babel({
       exclude: 'node_modules/**',
