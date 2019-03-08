@@ -12,6 +12,15 @@ import CliOptions from '../Options';
 const IgnoredFiles = ['.ds_store', 'thumbs.db'];
 
 /**
+ * Returns the default export of a module, if present.
+ * @param {any | { default: any }} mod The required module.
+ * @return {any} The module's default export.
+ */
+function defaultExport(mod) {
+  return (mod.default || mod);
+}
+
+/**
  * The command invoked when running "init".
  */
 export default class InitCommand extends Command {
@@ -163,7 +172,7 @@ export default class InitCommand extends Command {
     Logger.info('Answer these questions to create a new project:');
 
     // eslint-disable-next-line global-require
-    const options = require(join(modulePath, '../init/options')).default;
+    const options = defaultExport(require(join(modulePath, '../init/options')));
 
     return prompt(options);
   }
@@ -180,7 +189,7 @@ export default class InitCommand extends Command {
    */
   writeFiles(modulePath, options) {
     // eslint-disable-next-line global-require
-    return require(join(modulePath, '../init/init')).default(options);
+    return defaultExport(require(join(modulePath, '../init/init')))(options);
   }
 
   /**
