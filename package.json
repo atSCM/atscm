@@ -13,7 +13,7 @@
     "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
-    "lint": "eslint src test",
+    "lint": "eslint src test rollup.config.js",
     "prepublishOnly": "npm run compile && npm run docs",
     "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
     "test:base": "cross-env NODE_ENV=test mocha --recursive --require @babel/register --require ./test/prepare --timeout 10000 --exit test/src/maintenance.spec.js",
