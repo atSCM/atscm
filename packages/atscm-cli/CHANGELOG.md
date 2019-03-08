@@ -1,3 +1,14 @@
+<a name="0.7.1"></a>
+## 0.7.1 (2019-03-08)
+
+
+### Bug Fixes
+
+* **init:** Allow rollup-bundled atscm module ([#95](https://github.com/atSCM/atscm-cli/issues/95)) ([3a0059a](https://github.com/atSCM/atscm-cli/commits/3a0059a))
+
+
+
+
 <a name="0.7.0"></a>
 # 0.7.0 (2018-09-27)
 
