@@ -23,7 +23,7 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
         return Promise.reject(new Error('Client.create error'));
       }
 
-      static disconnect() {}
+      static disconnect() { return Promise.resolve(); }
 
     },
   },
