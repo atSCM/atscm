@@ -17,6 +17,10 @@ export function handleTaskError(error) {
   throw error;
 }
 
+/**
+ * Closes open sessions once a task is complete.
+ * @return {Promise<void>} Resolved once cleanup is complete.
+ */
 export function finishTask() {
   return Session.closeOpen();
 }
