@@ -29,11 +29,12 @@ export default class Client {
     this._connecting = new Promise((resolve, reject) => {
       const endpoint = `opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`;
 
-      setTimeout(() => reject(
+      const timer = setTimeout(() => reject(
         new Error(`Unable to connect to ${endpoint}: Connection timed out`)
       ), 5000);
 
       client.connect(endpoint, err => {
+        clearTimeout(timer);
         if (err) {
           reject(new Error(`Unable to connect to ${endpoint}: ${err.message}`));
         } else {
