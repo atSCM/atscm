@@ -104,13 +104,7 @@ export default class Session {
             reject(new Error(`Unable to close session: ${err.message}`));
           }
         } else {
-          session._client.disconnect(clientErr => {
-            if (clientErr) {
-              reject(new Error(`Unable to disconnect client: ${clientErr.message}`));
-            } else {
-              markAsClosed(session);
-            }
-          });
+          Client.disconnect().then(resolve, reject);
         }
       });
     });

@@ -41,4 +41,22 @@ export default class Client {
     return this._connecting;
   }
 
+  /**
+   * Disconnects the shared client.
+   * @return {Promise<node-opcua~OPCUAClient} The (now disconnected) client.
+   */
+  static async disconnect() {
+    const getClient = this._connecting;
+    delete this._connecting;
+
+    const client = await getClient;
+
+    return new Promise((resolve, reject) => {
+      client.disconnect(err => {
+        if (err) { return reject(err); }
+        return resolve(client);
+      });
+    });
+  }
+
 }
