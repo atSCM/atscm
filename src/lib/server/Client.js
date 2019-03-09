@@ -51,6 +51,8 @@ export default class Client {
 
     const client = await getClient;
 
+    if (!client) { return null; }
+
     return new Promise((resolve, reject) => {
       client.disconnect(err => {
         if (err) { return reject(err); }
