@@ -55,7 +55,11 @@ export default class Session {
             resolve(session);
           }
         });
-      }));
+      }))
+      .catch(async err => {
+        await Client.disconnect();
+        throw err;
+      });
 
     return this._getShared;
   }
