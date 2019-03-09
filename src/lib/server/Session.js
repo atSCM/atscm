@@ -119,7 +119,8 @@ export default class Session {
             reject(new Error(`Unable to close session: ${err.message}`));
           }
         } else {
-          Client.disconnect().then(resolve, reject);
+          Client.disconnect()
+            .then(() => markAsClosed(session), reject);
         }
       });
     });
@@ -156,7 +157,11 @@ export default class Session {
    * @return {Promise<Error, Session[]>} Rejected with the error that occurred while closing the
    * sessions or fulfilled with the (now closed) sessions affected.
    */
-  static closeOpen() {
+  static async closeOpen() {
+    if (!this._getShared) { return []; }
+
+    await this._getShared; // Wait if session is currently being created
+
     return Promise.all(openSessions.map(session => this._close(session)));
   }
 
