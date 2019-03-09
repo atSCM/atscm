@@ -50,7 +50,7 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
 }).default;
 
 /** @test {Session} */
-describe('Session', function() {
+describe.skip('Session', function() {
   /** @test {Session.create} */
   describe('.create', function() {
     it('should create a new ClientSession', function() {

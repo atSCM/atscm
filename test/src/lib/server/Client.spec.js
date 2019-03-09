@@ -34,7 +34,7 @@ const FailingClient = proxyquire('../../../../src/lib/server/Client', {
 }).default;
 
 /** @test {Client} */
-describe('Client', function() {
+describe.skip('Client', function() {
   /** @test {Client.create} */
   describe('.create', function() {
     it('should return a OPCUAClient', function() {
