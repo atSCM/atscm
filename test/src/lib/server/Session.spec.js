@@ -23,6 +23,8 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
         return Promise.reject(new Error('Client.create error'));
       }
 
+      static disconnect() {}
+
     },
   },
 }).default;
@@ -50,7 +52,7 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
 }).default;
 
 /** @test {Session} */
-describe.skip('Session', function() {
+describe('Session', function() {
   /** @test {Session.create} */
   describe('.create', function() {
     it('should create a new ClientSession', function() {
@@ -99,20 +101,6 @@ describe.skip('Session', function() {
 
     it('should forward non-login errors', function() {
       return expect(FailingSession.create(), 'to be rejected with', /Client\.createSession error/);
-    });
-
-    it('should emit "all-open" once all opening sessions are open', function() {
-      const listener = spy();
-      Session.emitter.on('all-open', listener);
-
-      return expect(Promise.all([
-        Session.create(),
-        Session.create(),
-      ]), 'to be fulfilled')
-        .then(sessions => {
-          expect(sessions, 'to have length', 2);
-          expect(listener, 'was called once');
-        });
     });
   });
 
@@ -195,14 +183,14 @@ describe.skip('Session', function() {
 
     it('should forward other errors disconnecting client', function() {
       const session = new ClientSession();
-      session._client = {
+      Client._connecting = Promise.resolve(session._client = {
         closeSession(sess, del, callback) {
           callback(null);
         },
         disconnect(callback) {
           callback(new Error('Test client error'));
         },
-      };
+      });
 
       return expect(Session.close(session), 'to be rejected with', /Test client error/);
     });
