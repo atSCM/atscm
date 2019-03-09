@@ -22,6 +22,10 @@ export default class Client {
       privateKeyFile: join(__dirname, '../../../res/certificates/key.pem'),
     });
 
+    /**
+     * A Promise that resolves once the shared client is connected.
+     * @type {?Promise<node-opcua~OPCUAClient}
+     */
     this._connecting = new Promise((resolve, reject) => {
       const endpoint = `opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`;
 

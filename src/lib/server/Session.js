@@ -5,8 +5,15 @@ import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Client from './Client';
 
+/**
+ * The currently open sessions.
+ * @type {node-opcua~ClientSession[]}
+ */
 const openSessions = [];
 
+/**
+ * A wrapper around {@link node-opcua~ClientSession} used to connect to atvise server.
+ */
 export default class Session {
 
   /**
@@ -17,6 +24,10 @@ export default class Session {
   static create() {
     if (this._getShared) { return this._getShared; }
 
+    /**
+     * A promise that resolves once the shared session is created.
+     * @type {Promise<node-opcua~ClientSession}
+     */
     this._getShared = Client.create()
       .then(client => new Promise((resolve, reject) => {
         client.createSession({
@@ -55,6 +66,10 @@ export default class Session {
    * {@link Session.closeOpen}.
    */
   static pool() {
+    /**
+     * If sessions should be reused.
+     * @type {boolean}
+     */
     this._pool = true;
   }
 
