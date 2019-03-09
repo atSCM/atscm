@@ -57,7 +57,7 @@ export default class Session {
         });
       }))
       .catch(async err => {
-        await Client.disconnect();
+        await Client.disconnect().catch(() => {});
         throw err;
       });
 
