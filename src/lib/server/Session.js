@@ -5,47 +5,19 @@ import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Client from './Client';
 
-/**
- * The global EventEmitter used to emit events.
- * @type {events~Emitter}
- */
-const emitter = new Emitter();
-
-/**
- * The currently open sessions.
- * @type {node-opcua~ClientSession[]}
- */
 const openSessions = [];
 
-/**
- * The number of session currently being opened.
- * @type {Number}
- */
-let openingSessions = 0;
-
-/**
- * A wrapper around {@link node-opcua~ClientSession} used to connect to atvise server.
- */
 export default class Session {
-
-  /**
-   * An {@link events~Emitter} that emits events when creating / closing sessions.
-   * @type {events~Emitter}
-   */
-  static get emitter() {
-    return emitter;
-  }
 
   /**
    * Creates and opens a new {@link node-opcua~ClientSession}.
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
    * {@link node-opcua~ClientSession}.
-   * @emits {undefined} Emits an `all-open` event once all opening sessions are open.
    */
   static create() {
-    openingSessions++;
+    if (this._getShared) { return this._getShared; }
 
-    return Client.create()
+    this._getShared = Client.create()
       .then(client => new Promise((resolve, reject) => {
         client.createSession({
           userName: ProjectConfig.login.username,
@@ -68,15 +40,22 @@ export default class Session {
             Object.assign(session, { _emitter: new Emitter() });
 
             openSessions.push(session);
-            resolve(session);
-          }
 
-          openingSessions--;
-          if (openingSessions === 0) {
-            emitter.emit('all-open');
+            resolve(session);
           }
         });
       }));
+
+    return this._getShared;
+  }
+
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * Starts pooling (reusing) sessions. Note that you'll have to manually close sessions using
+   * {@link Session.closeOpen}.
+   */
+  static pool() {
+    this._pool = true;
   }
 
   /**
@@ -86,7 +65,9 @@ export default class Session {
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
    * rejected with the error that occured while closing.
    */
-  static close(session, deleteSubscriptions = true) {
+  static _close(session, deleteSubscriptions = true) {
+    delete this._getShared;
+
     if (!session || !(session instanceof ClientSession)) {
       return Promise.reject(new Error('session is required'));
     }
@@ -96,14 +77,11 @@ export default class Session {
     }
 
     if (session._closing) {
-      return new Promise(resolve => {
-        session._emitter.on('fully-closed', () => resolve(session));
-      });
+      return session._closing;
     }
 
-    Object.assign(session, { _closing: true });
-
-    return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-param-reassign
+    session._closing = new Promise((resolve, reject) => {
       function markAsClosed() {
         openSessions.splice(openSessions.indexOf(session), 1);
         Object.assign(session, { _closed: true });
@@ -136,10 +114,28 @@ export default class Session {
         }
       });
     });
+
+    return session._closing;
   }
 
   /**
-   * The sessions currently open.
+   * Closes the given session. When session pooling is active the session won't actually be closed
+   * and the returned Promise will resolve immediately.
+   * @param {node-opcua~ClientSession} session The session to close.
+   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
+   * rejected with the error that occured while closing.
+   */
+  static close(session, deleteSubscriptions = true) {
+    if (this._pool) {
+      return Promise.resolve(session);
+    }
+
+    return this._close(session, deleteSubscriptions);
+  }
+
+  /**
+   * The sessions currently open. Starting with version 1.0.0-beta.25 there will be one at most.
    * @type {Session[]}
    */
   static get open() {
@@ -152,26 +148,7 @@ export default class Session {
    * sessions or fulfilled with the (now closed) sessions affected.
    */
   static closeOpen() {
-    function closeSessions(sessions) {
-      return Promise.all(
-        sessions.map(session => Session.close(session))
-      );
-    }
-
-    if (openingSessions === 0) {
-      if (openSessions.length === 0) {
-        return Promise.resolve([]);
-      }
-
-      return closeSessions(openSessions);
-    }
-
-    return new Promise((resolve, reject) => {
-      emitter.once('all-open', () => {
-        closeSessions(openSessions)
-          .then(resolve, reject);
-      });
-    });
+    return Promise.all(openSessions.map(session => this._close(session)));
   }
 
 }

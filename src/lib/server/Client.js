@@ -13,6 +13,8 @@ export default class Client {
    * {@link node-opcua~OPCUAClient} instance, rejected if an error occured.
    */
   static create() {
+    if (this._connecting) { return this._connecting; }
+
     const client = new OPCUAClient({
       requestedSessionTimeout: 600000,
       keepSessionAlive: true,
@@ -20,7 +22,7 @@ export default class Client {
       privateKeyFile: join(__dirname, '../../../res/certificates/key.pem'),
     });
 
-    return new Promise((resolve, reject) => {
+    this._connecting = new Promise((resolve, reject) => {
       const endpoint = `opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`;
 
       setTimeout(() => reject(
@@ -35,6 +37,8 @@ export default class Client {
         }
       });
     });
+
+    return this._connecting;
   }
 
 }

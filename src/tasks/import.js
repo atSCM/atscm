@@ -9,7 +9,8 @@ import ImportStream from '../lib/gulp/ImportStream';
 import { writeNode, createNode } from '../api';
 import { versionNode } from '../lib/server/scripts/version';
 import { delay } from '../lib/helpers/async';
-import { handleTaskError } from '../lib/helpers/tasks';
+import { handleTaskError, finishTask } from '../lib/helpers/tasks';
+import Session from '../lib/server/Session';
 
 /**
  * Imports all xml files needed for atscm usage.
@@ -18,6 +19,8 @@ import { handleTaskError } from '../lib/helpers/tasks';
 export default function importTask() {
   const srcStream = src(scripts);
   const versionVariant = { dataType: DataType.String, value: version };
+
+  Session.pool();
 
   return toPromise(srcStream
     .pipe(new ImportStream())
@@ -58,7 +61,7 @@ export default function importTask() {
 
       throw err;
     })
-    .catch(handleTaskError);
+    .then(finishTask, handleTaskError);
 }
 
 importTask.description = 'Imports all xml resources needed for atscm usage';
