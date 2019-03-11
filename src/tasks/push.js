@@ -11,7 +11,8 @@ import NodeId from '../lib/model/opcua/NodeId.js';
 import { ReferenceTypeIds } from '../lib/model/Node.js';
 import { reportProgress } from '../lib/helpers/log.js';
 import ProjectConfig from '../config/ProjectConfig.js';
-import { handleTaskError } from '../lib/helpers/tasks.js';
+import { finishTask, handleTaskError } from '../lib/helpers/tasks.js';
+import Session from '../lib/server/Session.js';
 
 const openInBuilderStatus = new Set([
   StatusCodes.BadUserAccessDenied,
@@ -145,6 +146,8 @@ export function performPush(path, options) {
  * Pushes {@link AtviseFile}s to atvise server.
  */
 export default function push() {
+  Session.pool();
+
   Logger.debug('Checking server setup');
 
   return readNode(versionNode)
@@ -183,7 +186,7 @@ export default function push() {
         formatter: count => `Processed ${count} files`,
       });
     })
-    .catch(handleTaskError);
+    .then(finishTask, handleTaskError);
 }
 
 push.description = 'Push all stored nodes to atvise server';

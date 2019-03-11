@@ -1,149 +1,163 @@
+import { join } from 'path';
 import Emitter from 'events';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
-import { ClientSession } from 'node-opcua/lib/client/opcua_client';
-import Logger from 'gulplog';
+import { OPCUAClient, ClientSession } from 'node-opcua/lib/client/opcua_client';
 import ProjectConfig from '../../config/ProjectConfig';
-import Client from './Client';
-
-/**
- * The global EventEmitter used to emit events.
- * @type {events~Emitter}
- */
-const emitter = new Emitter();
 
 /**
  * The currently open sessions.
- * @type {node-opcua~ClientSession[]}
+ * @type {Set<node-opcua~ClientSession>}
  */
-const openSessions = [];
+const openSessions = new Set();
 
 /**
- * The number of session currently being opened.
- * @type {Number}
+ * The sessions currentyl being opened.
+ * @type {Set<node-opcua~ClientSession>}
  */
-let openingSessions = 0;
+const openingSessions = new Set();
 
 /**
  * A wrapper around {@link node-opcua~ClientSession} used to connect to atvise server.
+ * The sessions currentyl being opened.
+ * @type {Set<node-opcua~ClientSession>}
  */
 export default class Session {
 
   /**
-   * An {@link events~Emitter} that emits events when creating / closing sessions.
-   * @type {events~Emitter}
-   */
-  static get emitter() {
-    return emitter;
-  }
-
-  /**
-   * Creates and opens a new {@link node-opcua~ClientSession}.
+   * Creates an {@link node-opcuaOPCUAClient} and opens a new  {@link node-opcua~ClientSession}.
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
    * {@link node-opcua~ClientSession}.
-   * @emits {undefined} Emits an `all-open` event once all opening sessions are open.
    */
-  static create() {
-    openingSessions++;
+  static async _create() {
+    const client = new OPCUAClient({
+      requestedSessionTimeout: 600000,
+      keepSessionAlive: true,
+      certificateFile: join(__dirname, '../../../res/certificates/certificate.pem'),
+      privateKeyFile: join(__dirname, '../../../res/certificates/key.pem'),
+    });
 
-    return Client.create()
-      .then(client => new Promise((resolve, reject) => {
-        client.createSession({
-          userName: ProjectConfig.login.username,
-          password: ProjectConfig.login.password,
-        }, (err, session) => {
-          if (err) {
-            if (
-              [
-                'userName === null || typeof userName === "string"',
-                'password === null || typeof password === "string"',
-              ].includes(err.message) ||
-              (err.response &&
-              err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
-            ) {
-              reject(new Error('Unable to create session: Invalid login'));
-            } else {
-              reject(new Error(`Unable to create session: ${err.message}`));
-            }
-          } else {
-            Object.assign(session, { _emitter: new Emitter() });
+    const endpoint = `opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`;
 
-            openSessions.push(session);
-            resolve(session);
-          }
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(
+        new Error(`Unable to connect to ${endpoint}: Connection timed out`)
+      ), 5000);
 
-          openingSessions--;
-          if (openingSessions === 0) {
-            emitter.emit('all-open');
-          }
-        });
-      }));
-  }
-
-  /**
-   * Closes the given session.
-   * @param {node-opcua~ClientSession} session The session to close.
-   * @param {boolean} [deleteSubscriptions=true] If active subscriptions should be closed as well.
-   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
-   * rejected with the error that occured while closing.
-   */
-  static close(session, deleteSubscriptions = true) {
-    if (!session || !(session instanceof ClientSession)) {
-      return Promise.reject(new Error('session is required'));
-    }
-
-    if (session._closed) {
-      return Promise.resolve();
-    }
-
-    if (session._closing) {
-      return new Promise(resolve => {
-        session._emitter.on('fully-closed', () => resolve(session));
+      client.connect(endpoint, err => {
+        clearTimeout(timer);
+        return err ? reject(err) : resolve();
       });
-    }
-
-    Object.assign(session, { _closing: true });
+    });
 
     return new Promise((resolve, reject) => {
-      function markAsClosed() {
-        openSessions.splice(openSessions.indexOf(session), 1);
-        Object.assign(session, { _closed: true });
-
-        resolve(session);
-        session._emitter.emit('fully-closed');
-      }
-
-      session.close(deleteSubscriptions, err => {
+      client.createSession({
+        userName: ProjectConfig.login.username,
+        password: ProjectConfig.login.password,
+      }, (err, session) => {
         if (err) {
-          if (err.response &&
-            err.response.responseHeader.serviceResult === StatusCodes.BadSessionIdInvalid
+          if (
+            [
+              'userName === null || typeof userName === "string"',
+              'password === null || typeof password === "string"',
+            ].includes(err.message) ||
+            (err.response &&
+            err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
           ) {
-            Logger.debug('Attempted to close a session that does not exist');
-            markAsClosed(session);
-          } else if (err.message === 'no channel') {
-            // Client already disconnected
-            markAsClosed(session);
+            reject(new Error('Unable to create session: Invalid login'));
           } else {
-            reject(new Error(`Unable to close session: ${err.message}`));
+            reject(err);
           }
         } else {
-          session._client.disconnect(clientErr => {
-            if (clientErr) {
-              reject(new Error(`Unable to disconnect client: ${clientErr.message}`));
-            } else {
-              markAsClosed(session);
-            }
-          });
+          Object.assign(session, { _emitter: new Emitter() });
+
+          openSessions.add(session);
+
+          resolve(session);
         }
       });
     });
   }
 
   /**
-   * The sessions currently open.
+   * Creates an {@link node-opcuaOPCUAClient} and opens a new  {@link node-opcua~ClientSession}. If
+   * pooling is active, the shared session will be reused.
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
+   * {@link node-opcua~ClientSession}.
+   */
+  static create() {
+    const create = () => {
+      const c = this._create();
+      openingSessions.add(c);
+
+      return c.then(s => openingSessions.delete(c) && s);
+    };
+
+    if (!this._pool) {
+      return create();
+    }
+
+    if (!this._createShared) {
+      /**
+       * A promise that resolves once the shared session is created.
+       * @type {Promise<node-opcua~ClientSession}
+       */
+      this._createShared = create();
+    }
+
+    return this._createShared;
+  }
+
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * Starts pooling (reusing) sessions. Note that you'll have to manually close sessions using
+   * {@link Session.closeOpen}.
+   */
+  static pool() {
+    /**
+     * If sessions should be reused.
+     * @type {boolean}
+     */
+    this._pool = true;
+  }
+
+  /**
+   * Closes the given session. Waits for currently opening sessions to open.
+   * @param {node-opcua~ClientSession} session The session to close.
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (now closed!) session or
+   * rejected with the error that occured while closing.
+   */
+  static async _close(session) {
+    openSessions.delete(session);
+
+    await new Promise(resolve => session.close(true, () => resolve()));
+    await new Promise(resolve => session._client && session._client.disconnect(() => resolve()));
+
+    return session;
+  }
+
+  /**
+   * Closes the given session. When session pooling is active the session won't actually be closed
+   * and the returned Promise will resolve immediately.
+   * @param {node-opcua~ClientSession} session The session to close.
+   * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with the (maybe closed) session or
+   * rejected with the error that occured while closing.
+   */
+  static close(session) {
+    if (!session || !(session instanceof ClientSession)) {
+      return Promise.reject(new Error('session is required'));
+    }
+
+    if (this._pool) { return Promise.resolve(); }
+
+    return this._close(session);
+  }
+
+  /**
+   * The sessions currently open. Starting with version 1.0.0-beta.25 there will be one at most.
    * @type {Session[]}
    */
   static get open() {
-    return openSessions;
+    return Array.from(openSessions);
   }
 
   /**
@@ -151,27 +165,12 @@ export default class Session {
    * @return {Promise<Error, Session[]>} Rejected with the error that occurred while closing the
    * sessions or fulfilled with the (now closed) sessions affected.
    */
-  static closeOpen() {
-    function closeSessions(sessions) {
-      return Promise.all(
-        sessions.map(session => Session.close(session))
-      );
-    }
+  static async closeOpen() {
+    await Promise.all(openingSessions);
 
-    if (openingSessions === 0) {
-      if (openSessions.length === 0) {
-        return Promise.resolve([]);
-      }
-
-      return closeSessions(openSessions);
-    }
-
-    return new Promise((resolve, reject) => {
-      emitter.once('all-open', () => {
-        closeSessions(openSessions)
-          .then(resolve, reject);
-      });
-    });
+    return Promise.all(
+      Array.from(openSessions).map(session => this._close(session))
+    );
   }
 
 }

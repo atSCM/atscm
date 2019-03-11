@@ -6,7 +6,8 @@ import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
 import dest from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
-import { handleTaskError } from '../lib/helpers/tasks';
+import { handleTaskError, finishTask } from '../lib/helpers/tasks';
+import Session from '../lib/server/Session';
 
 export function performPull(nodes, options = {}) {
   const writeStream = dest('./src');
@@ -50,6 +51,8 @@ export function performPull(nodes, options = {}) {
 export default function pull(options) {
   const { clean } = typeof options === 'object' ? options : parseOptions(process.argv.slice(2));
 
+  Session.pool();
+
   return Promise.resolve()
     .then(() => {
       if (clean) {
@@ -67,7 +70,7 @@ export default function pull(options) {
         formatter: count => `Processed ${count} nodes`,
       });
     })
-    .catch(handleTaskError);
+    .then(finishTask, handleTaskError);
 }
 
 pull.description = 'Pull all nodes from atvise server';

@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+import Session from '../server/Session';
 
 /**
  * Adds additional infomation to the error's message and rethows it.
@@ -15,4 +15,12 @@ export function handleTaskError(error) {
   });
 
   throw error;
+}
+
+/**
+ * Closes open sessions once a task is complete.
+ * @return {Promise<void>} Resolved once cleanup is complete.
+ */
+export function finishTask() {
+  return Session.closeOpen();
 }
