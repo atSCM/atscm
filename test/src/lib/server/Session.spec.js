@@ -5,7 +5,6 @@ import { ClientSession, OPCUAClient } from 'node-opcua/lib/client/opcua_client';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import Session from '../../../../src/lib/server/Session';
-import Client from '../../../../src/lib/server/Client';
 import ProjectConfig from '../../../../src/config/ProjectConfig';
 
 function sessionWithLogin(login) {
@@ -179,14 +178,14 @@ describe('Session', function() {
 
     it('should ignore errors disconnecting client', function() {
       const session = new ClientSession();
-      Client._connecting = Promise.resolve(session._client = {
+      session._client = {
         closeSession(sess, del, callback) {
           callback(null);
         },
         disconnect(callback) {
           callback(new Error('Test client error'));
         },
-      });
+      };
 
       return expect(Session.close(session), 'to be fulfilled');
     });
