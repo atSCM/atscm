@@ -206,7 +206,7 @@ describe('Session', function() {
 
     it('should wait for opening sessions to open before closing', function() {
       let session;
-      Session.create().then(sess => console.error('SESSD', sess) || (session = sess));
+      Session.create().then(sess => (session = sess));
 
       return expect(Session.closeOpen(), 'to be fulfilled')
         .then(sessions => {
