@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.24"></a>
-# 1.0.0-beta.24 (2019-03-06)
+<a name="1.0.0-beta.25"></a>
+# 1.0.0-beta.25 (2019-03-11)
 
 
 ### Bug Fixes
@@ -42,6 +42,7 @@
 * Implement async/await-based tasks ([4d59989](https://github.com/atSCM/atscm/commits/4d59989))
 * Implement async/await-based transformers ([99376ba](https://github.com/atSCM/atscm/commits/99376ba))
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
+* Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
 
 
 ### Performance Improvements
