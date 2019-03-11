@@ -7,7 +7,7 @@ import Client from './Client';
 
 /**
  * The currently open sessions.
- * @type {node-opcua~ClientSession[]}
+ * @type {Set<node-opcua~ClientSession>}
  */
 const openSessions = [];
 

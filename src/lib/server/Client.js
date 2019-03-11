@@ -1,3 +1,5 @@
+// FIXME: Remove this file. Implementation simplified in ./Session.js
+
 import { join } from 'path';
 import { OPCUAClient } from 'node-opcua/lib/client/opcua_client';
 import ProjectConfig from '../../config/ProjectConfig';
