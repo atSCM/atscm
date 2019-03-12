@@ -8,7 +8,7 @@ import { versionNode } from '../lib/server/scripts/version';
 import { dependencies } from '../../package.json';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
 import NodeId from '../lib/model/opcua/NodeId.js';
-import { ReferenceTypeIds } from '../lib/model/Node.js';
+import { ReferenceTypeIds, ReferenceTypeNames } from '../lib/model/Node.js';
 import { reportProgress } from '../lib/helpers/log.js';
 import ProjectConfig from '../config/ProjectConfig.js';
 import { finishTask, handleTaskError } from '../lib/helpers/tasks.js';
@@ -70,6 +70,8 @@ export function performPush(path, options) {
       parentNodeId,
       nodeClass: node.nodeClass,
       typeDefinition: node.typeDefinition,
+      modellingRule: node.modellingRule,
+      reference: ReferenceTypeNames[node.references.getSingle(ReferenceTypeIds.toParent)],
       value: node.nodeClass === NodeClass.Variable && node.variantValue,
     })
       .then(({ outputArguments }) => {

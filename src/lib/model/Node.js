@@ -58,6 +58,16 @@ class ReferenceMap extends Map {
   }
 
   /**
+   * Returns the first entry of a specific type.
+   * @param {number} type The reference type id to look for.
+   * @return {string|number|undefined} The first reference found or undefined.
+   */
+  getSingle(type) {
+    const set = this.get(type);
+    return set && Array.from(set)[0];
+  }
+
+  /**
    * Returns a plain object of refernces.
    * @type {Object}
    */
@@ -246,8 +256,15 @@ export default class Node {
    * @type {?number}
    */
   get typeDefinition() {
-    const refs = this.references.get(ReferenceTypeIds.HasTypeDefinition);
-    return refs ? [...refs][0] : undefined;
+    return this.references.getSingle(ReferenceTypeIds.HasTypeDefinition);
+  }
+
+  /**
+   * The node's modellingRule if given.
+   * @type {?number}
+   */
+  get modellingRule() {
+    return this.references.getSingle(ReferenceTypeIds.HasModellingRule);
   }
 
   /**

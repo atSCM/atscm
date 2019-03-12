@@ -110,6 +110,8 @@ export function callScript(scriptId, parameters = {}) {
  * `node-opcua~NodeClass.Variable`.
  * @param {NodeId} [options.typeDefinition] The node's type definition, must be provided for
  * non-variable nodes.
+ * @param {NodeId} [options.modellingRule] The node's modelling rule.
+ * @param {string} [options.reference] Name of the type of the node's reference to it's parent.
  * @param {node-opcua~Variant} [options.value] The node's value, required for all variable nodes.
  */
 export function createNode(nodeId, {
@@ -117,6 +119,8 @@ export function createNode(nodeId, {
   parentNodeId = nodeId.parent,
   nodeClass = NodeClass.Variable,
   typeDefinition = new NodeId('ns=0;i=62'),
+  modellingRule,
+  reference,
   value,
 }) {
   const variableOptions = nodeClass === NodeClass.Variable ? {
@@ -134,6 +138,8 @@ export function createNode(nodeId, {
         parentNodeId: parentNodeId || nodeId.parent,
         nodeClass: nodeClass.value,
         typeDefinition,
+        modellingRule,
+        reference,
       }, variableOptions)),
     },
   });
