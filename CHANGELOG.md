@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.25"></a>
-# 1.0.0-beta.25 (2019-03-11)
+<a name="1.0.0-beta.26"></a>
+# 1.0.0-beta.26 (2019-03-12)
 
 
 ### Bug Fixes
@@ -24,6 +24,7 @@
 * **push:** Force exit on error ([#273](https://github.com/atSCM/atscm/issues/273)) ([f5afadd](https://github.com/atSCM/atscm/commits/f5afadd))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
 * **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
+* **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
