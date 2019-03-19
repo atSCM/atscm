@@ -86,11 +86,24 @@ export default class SplittingTransformer extends PartialTransformer {
     }
 
     const regExp = new RegExp(`^\\.${name}(\\..*)\\.json$`);
+
+    // Find source files an child definition files
+    const sourceFiles = [];
     const children = (await readdir(node.relative))
-      .filter(c => c.match(regExp));
+      .reduce((current, f) => {
+        if (f.match(regExp)) {
+          sourceFiles.push(f);
+        } else if (f.match(/^\..*\.json$/)) { // Other definition file -> child node
+          current.push({ name: f, path: join(node.relative, f) });
+        }
 
+        return current;
+      }, []);
 
-    const sourceNodes = await Promise.all(children
+    // Manually set node.children for the container as source browser only handles definition files
+    Object.assign(node, { children });
+
+    const sourceNodes = await Promise.all(sourceFiles
       .map(f => context.readNode({
         path: join(node.relative, f),
         tree: { parent: node },
