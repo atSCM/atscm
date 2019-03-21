@@ -59,4 +59,17 @@
 			<Reference ReferenceType="HasSubtype" IsForward="false">ns=1;s=ObjectTypes.PROJECT</Reference>
 		</References>
 	</UAObjectType>
+	<UAVariable NodeId="ns=1;s=ObjectTypes.PROJECT.OT.TestDisplay" BrowseName="1:TestDisplay" DataType="XmlElement" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestDisplay</DisplayName>
+		<Description Locale="en">TestDisplay</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=ObjectTypes.PROJECT.OT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=VariableTypes.ATVISE.Display</Reference>
+			<Reference ReferenceType="HasModellingRule">Shared</Reference>
+		</References>
+		<Value>
+			<uax:XmlElement><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" width="1280" height="768"/>]]></uax:XmlElement>
+		</Value>
+	</UAVariable>
 </UANodeSet>
