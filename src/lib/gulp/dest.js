@@ -11,7 +11,7 @@ import { encodeVariant } from '../coding';
  * Relative path to the rename file.
  * @type {string}
  */
-const renameConfigPath = './atscm/rename.json';
+export const renameConfigPath = './atscm/rename.json';
 
 /**
  * The default name inserted into the rename file.
@@ -98,6 +98,16 @@ export class WriteStream extends Writable {
      */
     this._performWrites = true;
 
+    /**
+     * The IDs that are affected by node id conflicts, lowercased.
+     * @type {Set<string>}
+     */
+    this._conflictingIds = new Set();
+
+    /**
+     * The number of id conflicts discovered.
+     * @type {number}
+     */
     this._discoveredIdConflicts = 0;
 
     if (useChecksums) {
@@ -122,7 +132,7 @@ export class WriteStream extends Writable {
     let current = node.parent;
 
     while (current) {
-      if (current._hasIdConflict) { return true; }
+      if (this._conflictingIds.has(current.nodeId.toLowerCase())) { return true; }
       current = current.parent;
     }
 
@@ -214,7 +224,7 @@ export class WriteStream extends Writable {
         }
       }
 
-      Object.assign(node, { _hasIdConflict: true });
+      this._conflictingIds.add(node.nodeId.toLowerCase());
       this._performWrites = false;
     } else {
       this._idMap.set(pathKey, node.nodeId);
