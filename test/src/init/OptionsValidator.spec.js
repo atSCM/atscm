@@ -46,5 +46,9 @@ describe('InitOptionsValidator', function() {
     it('should work for valid package names', function() {
       expect(Validator.name('project-name'), 'to be', true);
     });
+
+    it('should work for scoped package names', function() {
+      expect(Validator.name('@project/name'), 'to be', true);
+    });
   });
 });

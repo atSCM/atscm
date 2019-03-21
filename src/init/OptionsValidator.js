@@ -17,7 +17,7 @@ export default class InitOptionsValidator {
     if (result.errors) { return result.errors[0]; }
 
     // First letter must be a letter
-    if (value.match(/^[a-z]+/i) === null) {
+    if (value.match(/^@?[a-z]+/i) === null) {
       return 'name must start with a letter';
     }
 
