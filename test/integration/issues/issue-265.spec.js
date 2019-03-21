@@ -11,7 +11,10 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
 
   let nodeIds;
 
+  const catchErrorLog = () => {};
+
   before('reset renames, import setup and pull conflicting nodes', async function() {
+    Logger.on('error', () => catchErrorLog);
     await outputJson(renamePath, {});
 
     const nodeNames = await importSetup(setup, originalName);
@@ -33,6 +36,8 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
   });
 
   after('delete tmp node', function() {
+    Logger.off('error', () => catchErrorLog);
+
     // Delete the pushed node
     return Promise.all(nodeIds.map(n => deleteNode(n)));
   });
