@@ -34,7 +34,7 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
   });
 
   after('delete tmp node', function() {
-    Logger.off('error', () => catchErrorLog);
+    Logger.removeListener('error', () => catchErrorLog);
 
     // Delete the pushed node
     return Promise.all(nodeIds.map(n => deleteNode(n)));
