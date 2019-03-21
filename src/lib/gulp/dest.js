@@ -11,7 +11,7 @@ import { encodeVariant } from '../coding';
  * Relative path to the rename file.
  * @type {string}
  */
-const renameConfigPath = './atscm/rename.json';
+export const renameConfigPath = './atscm/rename.json';
 
 /**
  * The default name inserted into the rename file.
