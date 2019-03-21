@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.27"></a>
-# 1.0.0-beta.27 (2019-03-19)
+<a name="1.0.0-beta.28"></a>
+# 1.0.0-beta.28 (2019-03-21)
 
 
 ### Bug Fixes
@@ -30,6 +30,7 @@
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
+* Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
 
