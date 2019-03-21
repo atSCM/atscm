@@ -1,10 +1,10 @@
 import parseOptions from 'mri';
-import { emptyDir } from 'fs-extra';
+import { emptyDir, remove } from 'fs-extra';
 import Logger from 'gulplog';
 import NodeBrowser from '../lib/server/NodeBrowser';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
-import dest from '../lib/gulp/dest';
+import dest, { renameConfigPath } from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
@@ -54,13 +54,12 @@ export default function pull(options) {
   Session.pool();
 
   return Promise.resolve()
-    .then(() => {
+    .then(async () => {
       if (clean) {
         Logger.info('Using --clean, removing pulled files first');
-        return emptyDir('./src');
+        await remove(renameConfigPath);
+        await emptyDir('./src');
       }
-
-      return Promise.resolve();
     })
     .then(() => {
       const promise = performPull(ProjectConfig.nodes);
