@@ -1,8 +1,8 @@
-import { importSetup, pull, deleteNode } from '../../helpers/atscm';
-import { tmpDir } from '../../helpers/util';
 import Logger from 'gulplog';
 import { outputJson, readJson } from 'fs-extra';
 import expect from '../../expect';
+import { importSetup, pull, deleteNode } from '../../helpers/atscm';
+import { tmpDir } from '../../helpers/util';
 
 describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
   const renamePath = './atscm/rename.json';
@@ -27,8 +27,6 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
 
   it('should not create duplicate entries in rename.json', async function() {
     const renames = await readJson(renamePath);
-
-    console.error('got renames', renames);
 
     expect(Object.keys(renames), 'to equal', [
       `${nodeIds[0]}.Parent`,
