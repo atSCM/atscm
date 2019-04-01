@@ -43,6 +43,8 @@ export class WriteStream extends Writable {
    * @param {Object} options The options to use.
    * @param {string} options.path The path to write to **(required)**.
    * @param {string} options.base The base path to write to (defaults to *path*).
+   * @param {boolean} [options.cleanRenameConfig=false] If unused entries should be removed when
+   * rename config is written.
    */
   constructor(options) {
     if (!options.path) {
@@ -79,6 +81,8 @@ export class WriteStream extends Writable {
      * The object stored in the *rename file* (usually at './atscm/rename.json')
      */
     this._renameConfig = {};
+    this._renamesUsed = {};
+    this._cleanRenameConfig = options.cleanRenameConfig || false;
 
     /**
      * A promise that resolves once the *rename file* is loaded.
@@ -174,6 +178,7 @@ export class WriteStream extends Writable {
     // Rename nodes specified in the rename config
     const rename = this._renameConfig[node.id.value];
     if (rename && rename !== renameDefaultName) {
+      this._renamesUsed[node.id.value] = true;
       node.renameTo(rename);
       Logger.debug(`'${node.nodeId}' was renamed to '${rename}'`);
 
@@ -325,10 +330,24 @@ export class WriteStream extends Writable {
       Logger.error(
         `Discovered ${this._discoveredIdConflicts} node id conflicts, results are incomplete.
  - Resolve all conflicts inside '${renameConfigPath}' and run 'atscm pull' again`);
-      // FIXME: Insert link to node ide conflict manual here once 1.0.0 is released.
+      // FIXME: Insert link to node id conflict manual here once 1.0.0 is released.
     }
 
-    return outputFile(renameConfigPath, JSON.stringify(this._renameConfig, null, '  '));
+    let renameConfig = this._renameConfig;
+    if (!this._discoveredIdConflicts && this._cleanRenameConfig) {
+      renameConfig = Object.keys(this._renamesUsed).reduce((result, key) => Object.assign(result, {
+        [key]: this._renameConfig[key],
+      }), {});
+
+      const renamesRemoved = Object.keys(this._renameConfig).length -
+        Object.keys(renameConfig).length;
+
+      if (renamesRemoved > 0) {
+        Logger.info(`Removed ${renamesRemoved} unused renames from rename configuration.`);
+      }
+    }
+
+    return outputFile(renameConfigPath, JSON.stringify(renameConfig, null, '  '));
   }
 
 }
@@ -337,6 +356,6 @@ export class WriteStream extends Writable {
  * Creates a new {@link WriteStream} to write to *path*.
  * @param {string} path The path to write to.
  */
-export default function dest(path) {
-  return new WriteStream({ path });
+export default function dest(path, { cleanRenameConfig = false } = {}) {
+  return new WriteStream({ path, cleanRenameConfig });
 }

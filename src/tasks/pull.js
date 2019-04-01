@@ -10,7 +10,7 @@ import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
 
 export function performPull(nodes, options = {}) {
-  const writeStream = dest('./src');
+  const writeStream = dest('./src', { cleanRenameConfig: options.clean });
   const applyTransforms = Transformer.combinedTransformer(
     ProjectConfig.useTransformers, TransformDirection.FromDB);
 
@@ -57,12 +57,11 @@ export default function pull(options) {
     .then(async () => {
       if (clean) {
         Logger.info('Using --clean, removing pulled files first');
-        await remove(renameConfigPath);
         await emptyDir('./src');
       }
     })
     .then(() => {
-      const promise = performPull(ProjectConfig.nodes);
+      const promise = performPull(ProjectConfig.nodes, { clean });
 
       return reportProgress(promise, {
         getter: () => promise.browser._pushed,
