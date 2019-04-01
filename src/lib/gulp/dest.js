@@ -355,6 +355,7 @@ export class WriteStream extends Writable {
 /**
  * Creates a new {@link WriteStream} to write to *path*.
  * @param {string} path The path to write to.
+ * @param {Object} [options] The options to use. Passed to {@link WriteStream#constructor}.
  */
 export default function dest(path, { cleanRenameConfig = false } = {}) {
   return new WriteStream({ path, cleanRenameConfig });
