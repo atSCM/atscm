@@ -37,8 +37,8 @@ export default class NodeId extends OpcNodeId {
    *  - with a {@link node-opcua~NodeIdType}, a value and a namespace (defaults to 0),
    *  - with a value only (type will be taken from it, namespace defaults to 1) or
    *  - with a {@link NodeId}s string representation (for example `ns=1;s=AGENT.DISPLAYS`).
-   * @param {node-opcua~NodeIdType|String|Number} typeOrValue The type or value to use.
-   * @param {(Number|String)} [value] The value to use.
+   * @param {node-opcua~NodeIdType|string|number} typeOrValue The type or value to use.
+   * @param {(number|string)} [value] The value to use.
    * @param {number} [namespace=1] The namespace to use.
    */
   constructor(typeOrValue, value, namespace = 1) {

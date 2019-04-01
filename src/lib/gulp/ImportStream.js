@@ -28,6 +28,7 @@ export default class ImportStream extends CallMethodStream {
    * @return {node-opcua~Variant[]} The arguments for the `importNodes` method:
    *  - The import scope (which is set to be absolute)
    *  - The XML code (read from *file*)
+   * .
    */
   inputArguments(file) {
     return [
