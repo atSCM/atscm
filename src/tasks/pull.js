@@ -1,10 +1,10 @@
 import parseOptions from 'mri';
-import { emptyDir, remove } from 'fs-extra';
+import { emptyDir } from 'fs-extra';
 import Logger from 'gulplog';
 import NodeBrowser from '../lib/server/NodeBrowser';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
-import dest, { renameConfigPath } from '../lib/gulp/dest';
+import dest from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
