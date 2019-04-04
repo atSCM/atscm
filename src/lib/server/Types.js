@@ -11,7 +11,7 @@ class AtviseType {
    * @param {string} nodeIdValue The type's OPC-UA node id value.
    * @param {string} identifier Atscm's identifier for the new type.
    * @param {node-opcua~DataType} dataType The type's parent OPC-UA type.
-   * @param {String|Boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
+   * @param {string|boolean} [fileExtensionOrKeep] The file extension to use when storing or `true`
    * or `false` indicating if the extension should be kept.
    */
   constructor(nodeIdValue, identifier, dataType, fileExtensionOrKeep) {

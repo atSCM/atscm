@@ -37,7 +37,7 @@ export default class Atviseproject {
 
   /**
    * The login to use. Return `false` if no login is required (default).
-   * @type {Boolean|Object}
+   * @type {boolean|Object}
    * @property {string} username The username to log in with.
    * @property {string} password The password to log in with.
    */
@@ -62,7 +62,7 @@ export default class Atviseproject {
   /**
    * The atvise-server nodes that atvise-scm should sync. Defaults to the nodes
    * *AGENT*, *SYSTEM*, *ObjectTypes.PROJECT* and *VariableTypes.PROJECT*.
-   * @type {String[]|NodeId[]}
+   * @type {string[]|NodeId[]}
    */
   static get nodes() {
     return [
@@ -76,7 +76,7 @@ export default class Atviseproject {
   /**
    * The atvise-server nodes to watch in the corresponding tasks. Defaults to all nodes containing
    * displays.
-   * @type {String[]|NodeId[]}
+   * @type {string[]|NodeId[]}
    */
   static get nodesToWatch() {
     return [
