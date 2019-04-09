@@ -86,34 +86,6 @@
     "vinyl": "^2.0.1",
     "xml-js": "^1.6.2"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
-    "extends": "@ls-age",
-    "rules": {
-      "compat/compat": "off"
-    }
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": 8
-          }
-        }
-      ]
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
-    }
-  },
   "nyc": {
     "all": true,
     "include": [
