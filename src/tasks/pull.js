@@ -1,16 +1,16 @@
 import parseOptions from 'mri';
-import { emptyDir, remove } from 'fs-extra';
+import { emptyDir } from 'fs-extra';
 import Logger from 'gulplog';
 import NodeBrowser from '../lib/server/NodeBrowser';
 import ProjectConfig from '../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
-import dest, { renameConfigPath } from '../lib/gulp/dest';
+import dest from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
 
 export function performPull(nodes, options = {}) {
-  const writeStream = dest('./src');
+  const writeStream = dest('./src', { cleanRenameConfig: options.clean });
   const applyTransforms = Transformer.combinedTransformer(
     ProjectConfig.useTransformers, TransformDirection.FromDB);
 
@@ -57,12 +57,11 @@ export default function pull(options) {
     .then(async () => {
       if (clean) {
         Logger.info('Using --clean, removing pulled files first');
-        await remove(renameConfigPath);
         await emptyDir('./src');
       }
     })
     .then(() => {
-      const promise = performPull(ProjectConfig.nodes);
+      const promise = performPull(ProjectConfig.nodes, { clean });
 
       return reportProgress(promise, {
         getter: () => promise.browser._pushed,

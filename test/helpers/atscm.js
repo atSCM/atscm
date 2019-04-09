@@ -214,15 +214,14 @@ export function expectCorrectMapping(setup, node) {
     function sortElements(current) {
       return Object.assign(current, {
         elements: current.elements && current.elements
-          .filter(({ type }) => type !== 'comment')
-          .filter(({ name }) => name !== 'Aliases')
+          .filter(({ type, name }) => type !== 'comment' && name !== 'Aliases')
           .sort(({ attributes: a }, { attributes: b }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
 
             if (gotA) {
               if (gotB) {
-                return a < b ? -1 : 1;
+                return a.NodeId < b.NodeId ? -1 : 1;
               }
 
               return -1;
@@ -230,26 +229,6 @@ export function expectCorrectMapping(setup, node) {
 
             return 0;
           })
-          /* .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
-            const gotA = a && a.NodeId;
-            const gotB = b && b.NodeId;
-
-            if (!gotA && !gotB) {
-              if (nameA < nameB) {
-                return -1;
-              }
-
-              return nameA > nameB ? 1 : 0;
-            }
-            if (!gotA) { return 1; }
-            if (!gotB) { return -1; }
-
-            if (gotA < gotB) {
-              return -1;
-            }
-
-            return (gotA > gotB) ? 1 : 0;
-          }) */
           .map(n => normalize(sortElements(n))),
       });
     }

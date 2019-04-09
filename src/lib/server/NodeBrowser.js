@@ -182,6 +182,12 @@ export default class NodeBrowser {
         const children = [];
         const references = [];
 
+        const typeDefinitionReference = allReferences
+          .find(ref => ref.referenceTypeId.value === ReferenceTypeIds.HasTypeDefinition);
+
+        const isUserGroup = typeDefinitionReference &&
+          typeDefinitionReference.nodeId.value === 'ObjectTypes.ATVISE.Group';
+
         allReferences.forEach(reference => {
           // "Cast" ref.nodeId to NodeId
           Object.setPrototypeOf(reference.nodeId, NodeId.prototype);
@@ -194,6 +200,10 @@ export default class NodeBrowser {
             !ignored &&
             !external
           ) {
+            if (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1) {
+              references.push(reference);
+              return;
+            }
             if (this._handled.get(reference.nodeId.value) === undefined) {
               children.push(new BrowsedNode({
                 parent: node,
