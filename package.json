@@ -9,7 +9,7 @@
   },
   "scripts": {
     "compile": "babel src --out-dir out --source-maps",
-    "compile:watch": "npm run compile -- --watch",
+    "compile:watch": "npm run compile -- --watch --verbose",
     "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
@@ -34,10 +34,10 @@
   },
   "homepage": "https://github.com/atSCM/atscm#readme",
   "devDependencies": {
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/register": "^7.0.0",
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/register": "^7.4.0",
     "@ls-age/bump-version": "^0.1.3",
     "@ls-age/esdoc-coverage": "^0.1.6",
     "@ls-age/eslint-config": "^0.8.0",
@@ -86,34 +86,6 @@
     "vinyl": "^2.0.1",
     "xml-js": "^1.6.2"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
-    "extends": "@ls-age",
-    "rules": {
-      "compat/compat": "off"
-    }
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": 8
-          }
-        }
-      ]
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
-    }
-  },
   "nyc": {
     "all": true,
     "include": [
@@ -128,14 +100,5 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
-  },
-  "standard-version": {
-    "skip": {
-      "changelog": true,
-      "tag": true
-    },
-    "scripts": {
-      "postbump": "./node_modules/.bin/conventional-changelog -r 0 -i CHANGELOG.md --same-file --preset angular"
-    }
   }
 }
