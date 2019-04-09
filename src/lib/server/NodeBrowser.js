@@ -201,7 +201,8 @@ export default class NodeBrowser {
             !external
           ) {
             if (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1) {
-              return references.push(reference);
+              references.push(reference);
+              return;
             }
             if (this._handled.get(reference.nodeId.value) === undefined) {
               children.push(new BrowsedNode({
