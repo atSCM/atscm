@@ -9,7 +9,7 @@
   },
   "scripts": {
     "compile": "babel src --out-dir out --source-maps",
-    "compile:watch": "npm run compile -- --watch",
+    "compile:watch": "npm run compile -- --watch --verbose",
     "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
