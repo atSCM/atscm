@@ -16,7 +16,7 @@
     "lint": "eslint src test",
     "prepublishOnly": "npm run compile && npm run docs",
     "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
-    "test:base": "cross-env NODE_ENV=test mocha --recursive --require @babel/register --require ./test/prepare --timeout 10000 --exit test/src/maintenance.spec.js",
+    "test:base": "cross-env NODE_ENV=test mocha --recursive --require @babel/register --require ./test/prepare --timeout 20000 --exit test/src/maintenance.spec.js",
     "test:unit": "npm run -s test:base -- \"test/src/**/*.spec.js\"",
     "test:integration": "npm run -s test:base -- \"test/integration/**/*.spec.js\"",
     "test:watch": "npm test -- --watch --reporter min",
