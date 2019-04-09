@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.28"></a>
-# 1.0.0-beta.28 (2019-03-21)
+<a name="1.0.0-beta.29"></a>
+# 1.0.0-beta.29 (2019-04-09)
 
 
 ### Bug Fixes
@@ -7,10 +7,13 @@
 * **displays:** Warn on multiple inline scripts ([#216](https://github.com/atSCM/atscm/issues/216)) ([6e62a21](https://github.com/atSCM/atscm/commits/6e62a21))
 * **import:** Retry if serverscripts are not ready yet ([#267](https://github.com/atSCM/atscm/issues/267)) ([413045a](https://github.com/atSCM/atscm/commits/413045a)), closes [#252](https://github.com/atSCM/atscm/issues/252)
 * **init:** Add babel core package ([3d74eb5](https://github.com/atSCM/atscm/commits/3d74eb5))
+* **init:** Allow scoped package names ([54ff8d0](https://github.com/atSCM/atscm/commits/54ff8d0))
+* **init:** Allow scoped package names ([#286](https://github.com/atSCM/atscm/issues/286)) ([1955c51](https://github.com/atSCM/atscm/commits/1955c51))
 * **init:** Do not allow 'atscm' as project name ([#235](https://github.com/atSCM/atscm/issues/235)) ([20a7f41](https://github.com/atSCM/atscm/commits/20a7f41))
 * **mapping:** Allow standard type extensions ([#266](https://github.com/atSCM/atscm/issues/266)) ([18e8a4d](https://github.com/atSCM/atscm/commits/18e8a4d))
 * **npm:** Skip conflicting version ([28f8604](https://github.com/atSCM/atscm/commits/28f8604))
 * **pull:** Allow empty variable values ([#262](https://github.com/atSCM/atscm/issues/262)) ([9a37a29](https://github.com/atSCM/atscm/commits/9a37a29))
+* **pull:** Correctly handle user group references ([#292](https://github.com/atSCM/atscm/issues/292)) ([f289055](https://github.com/atSCM/atscm/commits/f289055)), closes [#290](https://github.com/atSCM/atscm/issues/290)
 * **pull:** Escape slashes in node names ([#261](https://github.com/atSCM/atscm/issues/261)) ([f0f8ceb](https://github.com/atSCM/atscm/commits/f0f8ceb))
 * **pull:** Fix on variable source nodes only ([#249](https://github.com/atSCM/atscm/issues/249)) ([7b64fdc](https://github.com/atSCM/atscm/commits/7b64fdc))
 * **pull:** Prevent pulling with invalid configuration ([#243](https://github.com/atSCM/atscm/issues/243)) ([2e37bba](https://github.com/atSCM/atscm/commits/2e37bba)), closes [#242](https://github.com/atSCM/atscm/issues/242)
@@ -41,11 +44,12 @@
 * Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
 * **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
 * **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
-* **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 * Implement async/await-based tasks ([4d59989](https://github.com/atSCM/atscm/commits/4d59989))
 * Implement async/await-based transformers ([99376ba](https://github.com/atSCM/atscm/commits/99376ba))
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
 * Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
+* **pull:** Remove unused renames with --clean ([#287](https://github.com/atSCM/atscm/issues/287)) ([06243ff](https://github.com/atSCM/atscm/commits/06243ff))
+* **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 
 
 ### Performance Improvements
