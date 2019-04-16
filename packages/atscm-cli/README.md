@@ -6,7 +6,6 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/m7dy3spqfg4b2d9f?svg=true&pendingText=windows%20tests%20pending&passingText=windows%20tests%20passing&failingText=windows%20tests%20failing)](https://ci.appveyor.com/project/LukasHechenberger/atscm-cli)
 [![codecov](https://codecov.io/gh/atSCM/atscm-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm-cli)
 [![ESDoc](https://atscm.github.io/atscm-cli/badge.svg)](https://atscm.github.io/atscm-cli)
-[![Greenkeeper badge](https://badges.greenkeeper.io/atSCM/atscm-cli.svg)](https://greenkeeper.io/)
 
 ## Installation
 
