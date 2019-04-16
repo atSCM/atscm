@@ -91,7 +91,7 @@ jobs:
           path: ~/reports
           when: always
 
-  check-types:
+  type-check:
     <<: *defaults
     steps:
       - attach_workspace:
