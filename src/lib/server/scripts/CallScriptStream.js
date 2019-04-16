@@ -39,7 +39,7 @@ export default class CallScriptStream extends CallMethodStream {
    * @param {AtviseFile} file The processed file.
    * @return {Object} The parameters passed to the script.
    */
-  scriptParameters(file) { // eslint-disable-line no-unused-vars
+  scriptParameters(file) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return {};
   }
 

@@ -129,7 +129,8 @@ const toRawValue = {
   [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => ({
     dataType,
     arrayType,
-    value: getRawValue(value, dataType, arrayType), // eslint-disable-line no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    value: getRawValue(value, dataType, arrayType),
     dimensions,
   }),
   [DataType.DiagnosticInfo]: info => {
