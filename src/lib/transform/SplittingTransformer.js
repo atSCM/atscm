@@ -56,7 +56,7 @@ export default class SplittingTransformer extends PartialTransformer {
    * @param {BrowsedNode} node The container node.
    * @param {Map<string, BrowsedNode>} sourceNodes The source nodes.
    */
-  combineNodes(node, sourceNodes) { // eslint-disable-line no-unused-vars
+  combineNodes(node, sourceNodes) { // eslint-disable-line @typescript-eslint/no-unused-vars
     throw new Error('Must be implemented by all subclasses');
   }
 
