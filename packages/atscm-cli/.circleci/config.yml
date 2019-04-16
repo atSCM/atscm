@@ -78,8 +78,6 @@ jobs:
           name: Check documentation coverage
           command: npm run docs:coverage
 
-      - run: git status
-
       # Store Results
       - store_test_results:
           path: ~/reports
@@ -92,8 +90,7 @@ jobs:
       - add_ssh_keys
       - deploy:
           name: Updating lockfile
-          command: |
-            git push origin $CIRCLE_BRANCH
+          command: git push origin $CIRCLE_BRANCH
       - deploy:
           name: Deploy changes
           command: |
