@@ -1,5 +1,6 @@
 import { Writable } from 'stream';
 import { join } from 'path';
+import { EOL } from 'os';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import { outputFile, readJson } from 'fs-extra';
 import hasha from 'hasha';
@@ -335,9 +336,10 @@ export class WriteStream extends Writable {
 
     let renameConfig = this._renameConfig;
     if (!this._discoveredIdConflicts && this._cleanRenameConfig) {
-      renameConfig = Object.keys(this._renamesUsed).reduce((result, key) => Object.assign(result, {
-        [key]: this._renameConfig[key],
-      }), {});
+      renameConfig = Object.keys(this._renamesUsed).sort()
+        .reduce((result, key) => Object.assign(result, {
+          [key]: this._renameConfig[key],
+        }), {});
 
       const renamesRemoved = Object.keys(this._renameConfig).length -
         Object.keys(renameConfig).length;
@@ -347,7 +349,7 @@ export class WriteStream extends Writable {
       }
     }
 
-    return outputFile(renameConfigPath, JSON.stringify(renameConfig, null, '  '));
+    return outputFile(renameConfigPath, `${JSON.stringify(renameConfig, null, '  ')}${EOL}`);
   }
 
 }
