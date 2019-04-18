@@ -6,6 +6,7 @@ import hasha from 'hasha';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import { encodeVariant } from '../coding';
+import { EOL } from 'os';
 
 /**
  * Relative path to the rename file.
@@ -335,7 +336,7 @@ export class WriteStream extends Writable {
 
     let renameConfig = this._renameConfig;
     if (!this._discoveredIdConflicts && this._cleanRenameConfig) {
-      renameConfig = Object.keys(this._renamesUsed).reduce((result, key) => Object.assign(result, {
+      renameConfig = Object.keys(this._renamesUsed).sort().reduce((result, key) => Object.assign(result, {
         [key]: this._renameConfig[key],
       }), {});
 
@@ -347,7 +348,7 @@ export class WriteStream extends Writable {
       }
     }
 
-    return outputFile(renameConfigPath, JSON.stringify(renameConfig, null, '  '));
+    return outputFile(renameConfigPath, `${JSON.stringify(renameConfig, null, '  ')}${EOL}`);
   }
 
 }
