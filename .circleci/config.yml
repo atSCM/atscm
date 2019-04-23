@@ -160,7 +160,20 @@ jobs:
           name: Start local atvise server
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            sh ./test/scripts/start-atserver.sh
+
+            # create a dummy container which will hold a volume with the atserver project
+            docker create -v /atvise/project --name atserver alpine:3.4 /bin/true
+            # copy the atserver project into this volume
+            docker cp test/fixtures/atserver/nodes.db atserver:/atvise/project
+
+            # start an atvise server container using this volume
+            docker run --name test-atserver -dt \
+              --mac-address $ATSERVER_MAC_ADDRESS \
+              -p "${ATSCM_PROJECT__PORT__OPC:-4840}:4840" \
+              -p "${ATSCM_PROJECT__PORT__HTTP:-9000}:80" \
+              -e ATSERVER_LICENSE="$ATSERVER_LICENSE" \
+              --volumes-from atserver
+              lukashechenberger/test-atvise-server:3
       - run:
           name: Printing test files to run
           command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
