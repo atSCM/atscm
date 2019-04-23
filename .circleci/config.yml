@@ -143,10 +143,24 @@ jobs:
 
   integration-tests:
     <<: *defaults
+    environment:
+      ATSCM_PROJECT__HOST: localhost
+      ATSCM_PROJECT__PORT__OPC: 4840
+      ATSCM_PROJECT__PORT__HTTP: 9000
+      # Local server does not need login
+      ATSCM_PROJECT__LOGIN__USERNAME: ''
+      ATSCM_PROJECT__LOGIN__PASSWORD: ''
     parallelism: 2
     steps:
       - attach_workspace:
           at: .
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Start local atvise server
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            sh ./test/scripts/start-atserver.sh
       - run:
           name: Printing test files to run
           command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
