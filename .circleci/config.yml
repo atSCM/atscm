@@ -172,7 +172,7 @@ jobs:
               -p "${ATSCM_PROJECT__PORT__OPC:-4840}:4840" \
               -p "${ATSCM_PROJECT__PORT__HTTP:-9000}:80" \
               -e ATSERVER_LICENSE="$ATSERVER_LICENSE" \
-              --volumes-from atserver
+              --volumes-from atserver \
               lukashechenberger/test-atvise-server:3
       - run:
           name: Printing test files to run
