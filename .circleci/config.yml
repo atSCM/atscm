@@ -144,7 +144,7 @@ jobs:
   integration-tests:
     <<: *defaults
     environment:
-      ATSCM_PROJECT__HOST: test-atserver
+      ATSCM_PROJECT__HOST: localhost
       ATSCM_PROJECT__PORT__OPC: 4840
       ATSCM_PROJECT__PORT__HTTP: 9000
       # Local server does not need login
