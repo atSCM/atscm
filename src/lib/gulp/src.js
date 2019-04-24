@@ -271,7 +271,8 @@ class SourceBrowser {
     if (!node.waitingFor) {
       const deps = Array.from(node.references)
         .filter(([key]) => key !== 'toParent' && !hierarchicalReferencesTypeNames.has(key))
-        .reduce((result, [, ids]) => result.concat(Array.from(ids).filter(id => !(this._pushed.has(id)))), [])
+        .reduce((result, [, ids]) => result
+          .concat(Array.from(ids).filter(id => !(this._pushed.has(id)))), [])
         .filter(id => {
           if (typeof id === 'number') { // OPC-UA node
             return false;
