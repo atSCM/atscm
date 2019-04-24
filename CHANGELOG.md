@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.29"></a>
-# 1.0.0-beta.29 (2019-04-09)
+<a name="1.0.0-beta.30"></a>
+# 1.0.0-beta.30 (2019-04-24)
 
 
 ### Bug Fixes
@@ -27,6 +27,7 @@
 * **push:** Force exit on error ([#273](https://github.com/atSCM/atscm/issues/273)) ([f5afadd](https://github.com/atSCM/atscm/commits/f5afadd))
 * **push:** Handle displays inside displays ([#282](https://github.com/atSCM/atscm/issues/282)) ([8f19c33](https://github.com/atSCM/atscm/commits/8f19c33))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
+* **push:** Properly wait for dependencies ([#298](https://github.com/atSCM/atscm/issues/298)) ([ebae772](https://github.com/atSCM/atscm/commits/ebae772))
 * **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
