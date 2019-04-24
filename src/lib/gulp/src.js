@@ -152,9 +152,9 @@ class SourceBrowser {
         if (processError) { return; }
 
         if (this._dependingOn.size) {
-          throw new Error(`Some nodes are still waiting for dependencies
+          reject(new Error(`Some nodes are still waiting for dependencies
   Missing nodes: ${Array.from(this._dependingOn.keys()).join(', ')}
-  - Pull these nodes or add them to the ignored ones`);
+  - Pull these nodes or add them to the ignored ones`));
         }
 
         resolve();
