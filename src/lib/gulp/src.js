@@ -152,9 +152,9 @@ class SourceBrowser {
         if (processError) { return; }
 
         if (this._dependingOn.size) {
-          throw new Error(`Some nodes are still waiting for dependencies
+          reject(new Error(`Some nodes are still waiting for dependencies
   Missing nodes: ${Array.from(this._dependingOn.keys()).join(', ')}
-  - Pull these nodes or add them to the ignored ones`);
+  - Pull these nodes or add them to the ignored ones`));
         }
 
         resolve();
@@ -268,10 +268,11 @@ class SourceBrowser {
 
   _processNode(node) {
     // Build dependency map
-    if (!node._waitingFor) {
-      const deps = Object.entries(node.references)
+    if (!node.waitingFor) {
+      const deps = Array.from(node.references)
         .filter(([key]) => key !== 'toParent' && !hierarchicalReferencesTypeNames.has(key))
-        .reduce((result, [, ids]) => result.concat(ids.filter(id => !(this._pushed.has(id)))), [])
+        .reduce((result, [, ids]) => result
+          .concat(Array.from(ids).filter(id => !(this._pushed.has(id)))), [])
         .filter(id => {
           if (typeof id === 'number') { // OPC-UA node
             return false;
@@ -319,21 +320,20 @@ class SourceBrowser {
         const depending = this._dependingOn.get(node.nodeId);
         if (depending) {
           depending.forEach(dep => {
-            dep.node.waitingFor.delete(node.nodeId);
+            dep.waitingFor.delete(node.nodeId);
 
-            if (!dep.node.waitingFor.size) {
+            if (!dep.waitingFor.size) {
               // All dependencies resolved
-              return this._pushNode({
-                ...dep,
+              return this._pushNode(Object.assign(dep, {
                 tree: {
                   ...dep.tree,
                   parent: node,
                 },
-              });
+              }));
             }
 
             // Still waiting
-            return Logger.debug('Still waiting', dep.node.nodeId, Array.from(dep.node.waitingFor));
+            return Logger.debug('Still waiting', dep.nodeId, Array.from(dep.waitingFor));
           });
         }
 
