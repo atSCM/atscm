@@ -87,7 +87,7 @@ export default class ProjectConfig extends Config {
     return this._ignoredNodesRegExp;
   }
 
-  static get isExternal(id) {
+  static isExternal(id) {
     return !id.match(this.sourceNodeRegExp) || id.match(this.ignoredNodesRegExp);
   }
 
