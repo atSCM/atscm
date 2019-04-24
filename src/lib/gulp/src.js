@@ -319,21 +319,20 @@ class SourceBrowser {
         const depending = this._dependingOn.get(node.nodeId);
         if (depending) {
           depending.forEach(dep => {
-            dep.node.waitingFor.delete(node.nodeId);
+            dep.waitingFor.delete(node.nodeId);
 
-            if (!dep.node.waitingFor.size) {
+            if (!dep.waitingFor.size) {
               // All dependencies resolved
-              return this._pushNode({
-                ...dep,
+              return this._pushNode(Object.assign(dep, {
                 tree: {
                   ...dep.tree,
                   parent: node,
                 },
-              });
+              }));
             }
 
             // Still waiting
-            return Logger.debug('Still waiting', dep.node.nodeId, Array.from(dep.node.waitingFor));
+            return Logger.debug('Still waiting', dep.nodeId, Array.from(dep.waitingFor));
           });
         }
 

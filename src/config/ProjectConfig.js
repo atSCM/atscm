@@ -67,4 +67,28 @@ export default class ProjectConfig extends Config {
     return super.login;
   }
 
+  static get sourceNodeRegExp() {
+    if (!this._sourceNodeRegExp) {
+      this._sourceNodesRegExp = new RegExp(`^(${this.nodes
+        .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
+        .join('|')})`);
+    }
+
+    return this._sourceNodesRegExp;
+  }
+
+  static get ignoredNodesRegExp() {
+    if (!this._ignoredNodesRegExp) {
+      this._ignoredNodesRegExp = new RegExp(`^(${this.nodes
+        .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
+        .join('|')})`);
+    }
+
+    return this._ignoredNodesRegExp;
+  }
+
+  static get isExternal(id) {
+    return !id.match(this.sourceNodeRegExp) || id.match(this.ignoredNodesRegExp);
+  }
+
 }
