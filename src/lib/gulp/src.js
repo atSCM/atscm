@@ -92,12 +92,23 @@ export class FileNode extends SourceNode {
 }
 
 // Helpers
+/**
+ * Returns `true` for definition file paths.
+ * @param {string} path The path to check.
+ * @return {boolean} If the file at path is a definition file.
+ */
 export function isDefinitionFile(path) {
   return basename(path).match(/^\..*\.json$/);
 }
 
+/**
+ * Matches container files.
+ */
 const containerFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
 
+/**
+ * Names of hierarchical reference types.
+ */
 const hierarchicalReferencesTypeNames = new Set([
   'HasChild',
   'Aggregates',
@@ -111,25 +122,51 @@ const hierarchicalReferencesTypeNames = new Set([
   'Organizes',
 ]);
 
+/**
+ * Browses the local file system for nodes.
+ */
 class SourceBrowser {
 
+  /**
+   * Sets up a new browser.
+   * @param {Object} options The options to apply.
+   */
   constructor({ handleNode, readNodeFile }) {
+    /** The queue processing incoming paths / nodes. @type {p-queue~PQueue} */
     this._queue = new PromiseQueue({
       concurrency: 250,
     });
 
+    /** A callback called with every discovered node. @type {function(node: FileNode): void} */
     this._nodeHandler = handleNode;
+    /**
+     * A callback deciding if a node file should be read.
+     * @type {function(node: FileNode): boolean}
+     */
     this._readNodeFile = readNodeFile;
 
+    /** The pushed node's ids @type {Set<string>} */
     this._pushed = new Set();
+    /** The pushed node's paths @type {Set<string>} */
     this._pushedPath = new Set();
+    /** Stores how queued nodes depend on each other @type {Map<string, FileNode[]>} */
     this._dependingOn = new Map();
   }
 
+  /**
+   * Starts the browser at the given path.
+   * @param {string} path The path to start browsing at.
+   * @param {Object} options Passed directly to {@link SourceBrowser#processPath}.
+   * @return {Promise<void>} Fulfilled once browsing is complete.
+   */
   async browse(path, options = {}) {
     let processError = null;
 
     const done = new Promise((resolve, reject) => {
+      /**
+       * A function to be called once an error occurres during parallel processing.
+       * @param {function(err: Error)} err The error to exit with.
+       */
       this._reject = err => {
         if (processError) {
           // Multiple errors occured. In most cases this means, that the server connection was
@@ -164,10 +201,19 @@ class SourceBrowser {
     return done;
   }
 
+  /**
+   * Enqueues a {@link SourceBrowser#_processPath} call with the given options.
+   * @param {Object} options Passed directly to {@link SourceBrowser#_processPath}.
+   */
   processPath(options) {
     return this._queue.add(() => this._processPath(options).catch(this._reject));
   }
 
+  /**
+   * Can be called by transformers to read this path before finishing it's parent nodes.
+   * @param {Object} options Passed directly to {@link SourceBrowser#_processPath}.
+   * @param {string} options.path The path to read.
+   */
   readNode({ path, tree }) {
     return this._processPath({
       path,
@@ -176,6 +222,11 @@ class SourceBrowser {
     });
   }
 
+  /**
+   * Where the real browsing happens: Stats the given path, discovering new node definition files,
+   * if any and finally pushes discovered nodes to {@link SourceBrowser#_processNode}.
+   * @param {Object} options The options to use.
+   */
   async _processPath({ path, parent, children, push = true, singleNode = false }) {
     const s = await stat(path);
 
@@ -266,6 +317,10 @@ class SourceBrowser {
     return Promise.resolve();
   }
 
+  /**
+   * Handles a node's dependencies and calls {@link SourceBrowser#_pushNode} once it's ready.
+   * @param {FileNode} node A discovered node.
+   */
   _processNode(node) {
     // Build dependency map
     if (!node.waitingFor) {
@@ -294,6 +349,11 @@ class SourceBrowser {
     return Promise.resolve();
   }
 
+  /**
+   * Reads a node's value file (if it's a variable) and calls {@link SourceBrowser#_nodeHandler}
+   * with it, finishing the node's processing and promoting it's dependents, if any.
+   * @param {FileNode} node A discovered node.
+   */
   async _pushNode(node) {
     // Read node value
     if (node.nodeClass === NodeClass.Variable && this._readNodeFile(node)) {
@@ -351,6 +411,12 @@ class SourceBrowser {
 
 }
 
+/**
+ * Starts a new source browser at the given path.
+ * @param {string} path The path to start browsing with.
+ * @param {Object} options Passed directly to {@link SourceBrowser#constructor}.
+ * @return {Promise<void>& { browser: SourceBrowser }} A promise resolved once browsing is finished.
+ */
 export default function src(path, options = {}) {
   const browser = new SourceBrowser(options);
 

@@ -13,6 +13,11 @@ import {
  */
 export class AtviseScriptTransformer extends XMLTransformer {
 
+  /**
+   * Extracts a script's metadata.
+   * @param {Object} document The parsed xml document to process.
+   * @return {Object} The metadata found.
+   */
   processMetadata(document) {
     const config = {};
 
@@ -65,6 +70,11 @@ export class AtviseScriptTransformer extends XMLTransformer {
     return config;
   }
 
+  /**
+   * Extracts a script's parameters.
+   * @param {Object} document The parsed xml document to process.
+   * @return {Object[]} The parameters found.
+   */
   processParameters(document) {
     const paramTags = findChildren(document, 'parameter');
     if (!paramTags.length) { return undefined; }
@@ -93,6 +103,11 @@ export class AtviseScriptTransformer extends XMLTransformer {
     });
   }
 
+  /**
+   * Splits a node into multiple source nodes.
+   * @param {Node} node A server node.
+   * @param {Object} context The current transform context.
+   */
   async transformFromDB(node, context) {
     if (!this.shouldBeTransformed(node)) { return undefined; }
 
@@ -137,6 +152,11 @@ export class AtviseScriptTransformer extends XMLTransformer {
     return super.transformFromDB(node);
   }
 
+  /**
+   * Inlines the passed source nodes to the given container node.
+   * @param {Node} node The container node.
+   * @param {{ [ext: string]: Node }} sources The source nodes to inline.
+   */
   combineNodes(node, sources) {
     const configFile = sources['.json'];
     let config = {};
@@ -243,24 +263,42 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
 }
 
+/**
+ * A transformer that splits atvise server scripts into multiple files.
+ */
 export class ServerscriptTransformer extends AtviseScriptTransformer {
 
+  /** The container's extension. */
   static get extension() {
     return '.script';
   }
 
+  /**
+   * Returns `true` for all script nodes.
+   * @param {Node} node The node to check.
+   * @return {boolean} If the node is a server script.
+   */
   shouldBeTransformed(node) {
     return node.isVariable && node.isScript;
   }
 
 }
 
+/**
+ * A transformer that splits atvise quickdynamics into multiple files.
+ */
 export class QuickDynamicTransformer extends AtviseScriptTransformer {
 
+  /** The container's extension. */
   static get extension() {
     return '.qd';
   }
 
+  /**
+   * Returns `true` for all nodes containing quick dynamics.
+   * @param {Node} node The node to check.
+   * @return {boolean} If the node is a quick dynamic.
+   */
   shouldBeTransformed(node) {
     return node.isVariable && node.isQuickDynamic;
   }

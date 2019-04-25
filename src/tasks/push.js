@@ -14,16 +14,31 @@ import ProjectConfig from '../config/ProjectConfig.js';
 import { finishTask, handleTaskError } from '../lib/helpers/tasks.js';
 import Session from '../lib/server/Session.js';
 
+/**
+ * Status codes indicating a node is opened in atvise builder and therefore not writable right now.
+ * @type {Set<node-opcua~StatusCodes>}
+ */
 const openInBuilderStatus = new Set([
   StatusCodes.BadUserAccessDenied,
   StatusCodes.BadNotWritable,
 ]);
+
+/**
+ * The reference types ignored when adding references. The corresponding references are created
+ * alongside the node itself using the 'CreateNode' server script.
+ * @type {Set<node-opcua~ReferenceTypeId>}
+ */
 const ignoredReferences = new Set([
   ReferenceTypeIds.toParent,
   ReferenceTypeIds.HasTypeDefinition,
   ReferenceTypeIds.HasModellingRule,
 ]);
 
+/**
+ * Pushes the given path to the server.
+ * @param {string} path The local path to push.
+ * @param {Object} options Options passed to {@link src}.
+ */
 export function performPush(path, options) {
   const applyTransforms = Transformer.combinedTransformer(
     ProjectConfig.useTransformers, TransformDirection.FromFilesystem);

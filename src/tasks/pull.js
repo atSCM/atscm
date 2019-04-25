@@ -9,6 +9,11 @@ import { reportProgress } from '../lib/helpers/log';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
 
+/**
+ * Pulls the given nodes from the server.
+ * @param {NodeId[]} nodes The nodes to pull from the server.
+ * @param {Object} options Options passed to {@link NodeBrowser}.
+ */
 export function performPull(nodes, options = {}) {
   const writeStream = dest('./src', { cleanRenameConfig: options.clean });
   const applyTransforms = Transformer.combinedTransformer(
