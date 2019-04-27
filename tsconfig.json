@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "target": "es2015",
-    "strict": true
+    "target": "es2018",
+    "strict": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "outDir": "out/ts",
+    "lib": ["es2018"]
   },
   "include": [
     "types/**/*",
