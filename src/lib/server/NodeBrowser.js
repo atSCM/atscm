@@ -48,6 +48,8 @@ export class BrowsedNode extends ServerNode {
 
     /** The node's id. @type {NodeId} */
     this.id = reference.nodeId;
+
+    this.value = {};
   }
 
   /**
