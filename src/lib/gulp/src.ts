@@ -226,7 +226,7 @@ export class SourceBrowser {
    * Enqueues a {@link SourceBrowser#_processPath} call with the given options.
    * @param options Passed directly to {@link SourceBrowser#_processPath}.
    */
-  public processPath(options: ProcessPathOptions): Promise<void> {
+  public processPath(options: ProcessPathOptions): Promise<FileNode | void> {
     return this._queue.add(() => this._processPath(options).catch(this._reject));
   }
 
@@ -235,12 +235,11 @@ export class SourceBrowser {
    * @param {Object} options Passed directly to {@link SourceBrowser#_processPath}.
    * @param {string} options.path The path to read.
    */
-  public readNode({ path, tree }: { path: string; tree: never }): Promise<FileNode> {
+  public readNode({ path }: { path: string }): Promise<FileNode> {
     return this._processPath({
       path,
-      tree,
       push: false,
-    });
+    }) as Promise<FileNode>; // NOTE: If `push` is true, the browser always returns a node.
   }
 
   /**
@@ -251,7 +250,7 @@ export class SourceBrowser {
   private async _processPath({
     path, parent, children,
     push = true, singleNode = false,
-  }: ProcessPathOptions): Promise<void> {
+  }: ProcessPathOptions): Promise<void | FileNode> {
     const s = await stat(path);
 
     if (s.isDirectory()) {
@@ -323,19 +322,18 @@ export class SourceBrowser {
 
       const dir = dirname(path);
       const rel = join(dir, name);
-      const node: BrowsedFileNode = new FileNode({
+      const node: BrowsedFileNode = Object.assign(new FileNode({
         name,
-        path, // FIXME: Remove, add as #relative
         parent,
         ...(await readJSON(path) as NodeDefinition),
+      }), {
+        push, // FIXME: Remove?
+        children,
+        relative: rel,
+        definitionPath: path,
       });
 
-      node.push = push;
-      node.children = children;
-      node.relative = rel;
-      node.definitionPath = path;
-
-      return this._processNode(node as BrowsedFileNode);
+      return this._processNode(node);
     }
 
     return Promise.resolve();
@@ -411,12 +409,7 @@ export class SourceBrowser {
 
             if (!dep.waitingFor.size) {
               // All dependencies resolved
-              return this._pushNode(Object.assign(dep, {
-                tree: {
-                  ...dep.tree,
-                  parent: node,
-                },
-              }));
+              return this._pushNode(dep);
             }
 
             // Still waiting
@@ -467,11 +460,11 @@ interface DiscoveredNodeFile {
   path: string;
   name: string;
   push: boolean;
+  parent?: FileNode;
   children?: DiscoveredNodeFile[];
 }
 
 type ProcessPathOptions = Partial<DiscoveredNodeFile> & {
   path: string;
-  parent?: FileNode;
   singleNode?: boolean;
 }

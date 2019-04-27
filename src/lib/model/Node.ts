@@ -373,13 +373,12 @@ export default abstract class Node {
    * @param {string} options.extension The extension to append to the node's name.
    */
   public createChild({ extension }: { extension: string }): Node {
-    const node: Node = new Node({ // (this.constructor as any)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const node: Node = new (this.constructor as any)({
       name: this.idName,
       parent: this,
       nodeClass: this.nodeClass,
     });
-
-    Object.setPrototypeOf(node, this.constructor.prototype);
 
     node.fileName = `${this.fileName}${extension}`;
 

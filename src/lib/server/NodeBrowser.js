@@ -37,17 +37,19 @@ export class BrowsedNode extends ServerNode {
    * @param {?BrowsedNode} options.parent The parent node.
    * @param {Object} options.reference The reference to pick metadata from.
    */
-  constructor({ parent, reference }) {
+  constructor({ parent, reference, nodeClass, name }) {
     super({
       parent,
-      nodeClass: reference.nodeClass,
-      name: reference.browseName.name,
+      nodeClass: reference ? reference.nodeClass : nodeClass,
+      name: reference ? reference.browseName.name : name,
     });
 
-    this.addReference(ReferenceTypeIds.toParent, reference.referenceTypeId.value);
+    if (reference) { // NOTE: You should always provide reference, this only for #createChild
+      this.addReference(ReferenceTypeIds.toParent, reference.referenceTypeId.value);
 
-    /** The node's id. @type {NodeId} */
-    this.id = reference.nodeId;
+      /** The node's id. @type {NodeId} */
+      this.id = reference.nodeId;
+    }
 
     this.value = {};
   }
