@@ -51,6 +51,8 @@ export class BrowsedNode extends ServerNode {
       this.id = reference.nodeId;
     }
 
+    /** The node's value
+     * @type {node-opcua~Variant} */
     this.value = {};
   }
 
@@ -97,6 +99,8 @@ export default class NodeBrowser {
     handleNode,
     recursive = true,
   } = {}) {
+    /** The queue used to process nodes in parallel
+     * @type {p-queue~PQueue} */
     this.queue = new PromiseQueue({
       // autoStart: false,
       concurrency,
