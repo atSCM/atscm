@@ -6,7 +6,7 @@ import { KeyOf } from 'node-opcua/lib/misc/enum.js';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
 import {
-  SourceNode, ReferenceTypeIds, NodeOptions, NodeDefinition, ReferenceTypeNames,
+  SourceNode, ReferenceTypeIds, NodeOptions, NodeDefinition,
 } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
@@ -128,22 +128,6 @@ export function isDefinitionFile(path: string): boolean {
  * Matches container files.
  */
 const containerFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
-
-/**
- * Names of hierarchical reference types.
- */
-const hierarchicalReferencesTypeNames = new Set([
-  'HasChild',
-  'Aggregates',
-  'HasComponent',
-  'HasOrderedComponent',
-  'HasHistoricalConfiguration',
-  'HasProperty',
-  'HasSubtype',
-  'HasEventSource',
-  'HasNotifier',
-  'Organizes',
-]);
 
 type NodeHandler<R = void> = (node: FileNode) => R;
 
@@ -365,7 +349,7 @@ export class SourceBrowser {
     // Build dependency map
     if (!node.waitingFor) {
       const deps = Array.from(node.references)
-        .reduce((result, [type, ids]) => result
+        .reduce((result, [, ids]) => result
           .concat(Array.from(ids)
             .filter(id => {
               if (typeof id === 'number') { // OPC-UA node
