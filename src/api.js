@@ -52,6 +52,41 @@ async function withSession(action) {
   return result;
 }
 
+// Reading/Writing
+
+/**
+ * Reads a single node's value.
+ * @param {NodeId} nodeId The node to read.
+ * @return {Promise<any>} The read value.
+ */
+export async function readNode(nodeId) {
+  return withSession(session => promisified(cb => session.readVariableValue(nodeId, cb)))
+    .then(({ value, statusCode }) => {
+      if (statusCode !== StatusCodes.Good) {
+        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
+      }
+
+      return value;
+    });
+}
+
+/**
+ * Writes a single node's value.
+ * @param {NodeId} nodeId The node to write.
+ * @param {Variant} value The value to write.
+ * @return {Promise<node-opcua~StatusCodes} The operation status result.
+ */
+export function writeNode(nodeId, value) {
+  return withSession(session => promisified(cb => session.writeSingleNode(nodeId, value, cb)))
+    .then(statusCode => {
+      if (statusCode !== StatusCodes.Good) {
+        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
+      }
+
+      return statusCode;
+    });
+}
+
 // Methods / Scripts
 
 /**
@@ -210,39 +245,4 @@ export function addReferences(nodeId, references) {
       }),
     },
   });
-}
-
-// Reading/Writing
-
-/**
- * Reads a single node's value.
- * @param {NodeId} nodeId The node to read.
- * @return {Promise<any>} The read value.
- */
-export async function readNode(nodeId) {
-  return withSession(session => promisified(cb => session.readVariableValue(nodeId, cb)))
-    .then(({ value, statusCode }) => {
-      if (statusCode !== StatusCodes.Good) {
-        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
-      }
-
-      return value;
-    });
-}
-
-/**
- * Writes a single node's value.
- * @param {NodeId} nodeId The node to write.
- * @param {Variant} value The value to write.
- * @return {Promise<node-opcua~StatusCodes} The operation status result.
- */
-export function writeNode(nodeId, value) {
-  return withSession(session => promisified(cb => session.writeSingleNode(nodeId, value, cb)))
-    .then(statusCode => {
-      if (statusCode !== StatusCodes.Good) {
-        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
-      }
-
-      return statusCode;
-    });
 }
