@@ -67,7 +67,16 @@ export function callMethod(methodId, args = []) {
       inputArguments: args,
     },
   ], cb)))
-    .then(([result] = []) => result);
+    .then(([result] = []) => {
+      if (result.statusCode.value) {
+        throw Object.assign(new Error(result.statusCode.description), {
+          methodId,
+          inputArguments: args,
+        });
+      }
+
+      return result;
+    });
 }
 
 /**
@@ -96,7 +105,20 @@ export function callScript(scriptId, parameters = {}) {
       arrayType: VariantArrayType.Array,
       value: Object.values(parameters),
     },
-  ]);
+  ])
+    .then(result => {
+      const statusCode = result.outputArguments[0].value;
+
+      if (statusCode.value) {
+        throw Object.assign(new Error(`Script failed: ${statusCode.description}
+${result.outputArguments[1].value}`), {
+          scriptId,
+          parameters,
+        });
+      }
+
+      return result;
+    });
 }
 
 /**
