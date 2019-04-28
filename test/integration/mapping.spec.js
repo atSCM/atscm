@@ -15,6 +15,13 @@ describe('Mapping', function() {
     });
   });
 
+  context('a display containing a display with the same name', function() {
+    expectCorrectMapping('mapping/child-display-with-same-name', {
+      path: 'AGENT.DISPLAYS',
+      name: 'ChildWithSameName',
+    });
+  });
+
   context('a variable array', function() {
     expectCorrectMapping('mapping/test-array-values', {
       path: 'AGENT.OBJECTS',
