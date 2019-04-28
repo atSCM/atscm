@@ -14,4 +14,11 @@ describe('Mapping', function() {
       name: 'FolderInDisplay',
     });
   });
+
+  context('a variable array', function() {
+    expectCorrectMapping('mapping/test-array-values', {
+      path: 'AGENT.OBJECTS',
+      name: 'InvalidArrayValue',
+    });
+  });
 });
