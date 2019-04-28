@@ -1,33 +1,55 @@
-import { ReferenceTypeIds as RealReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
+import { ReferenceTypeIds as OpcReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { VariantArrayType, DataType, Variant } from 'node-opcua/lib/datamodel/variant';
+import { ItemOf, KeyOf } from 'node-opcua/lib/misc/enum.js';
 import { reverse } from '../helpers/Object';
 import { sortReferences } from '../helpers/mapping';
+import { ValueOf } from '../helpers/types';
 
 /**
  * References type ids.
- * @type {Map<string, number>}
  */
-export const ReferenceTypeIds = Object.assign({
+export const ReferenceTypeIds = {
+  ...OpcReferenceTypeIds,
   toParent: -1,
-}, RealReferenceTypeIds);
+};
+
+/** A reference type name */
+type ReferenceTypeName = keyof typeof ReferenceTypeIds;
+
+/** A raw (number) reference type */
+type ReferenceType = ValueOf<typeof ReferenceTypeIds>;
+
+/** Node references stored in definition files */
+export type ReferenceDefinitions = {
+  [type in ReferenceTypeName]?: (number | string)[];
+};
+
+/** Node definition stored in definition file */
+export interface NodeDefinition {
+  nodeId?: string;
+  nodeClass?: KeyOf<typeof NodeClass>; // Defaults to 'Variable'
+  dataType?: KeyOf<typeof DataType>;
+  arrayType?: KeyOf<typeof VariantArrayType>;
+  references?: ReferenceDefinitions;
+}
 
 /**
  * Names for references.
- * @type {Map<number, string>}
  */
 export const ReferenceTypeNames = reverse(ReferenceTypeIds);
 
 /**
  * A map specialized for holding references.
  */
-class ReferenceMap extends Map {
+class ReferenceMap extends Map<ReferenceType, Set<number | string>> {
 
   /**
    * Adds a new reference.
    * @param {number} type The reference id.
    * @param {string} nodeId The reference target node's id.
    */
-  addReference(type, nodeId) {
+  public addReference(type: ReferenceType, nodeId: number | string): void {
     const set = this.get(type);
     if (set) {
       set.add(nodeId);
@@ -41,7 +63,7 @@ class ReferenceMap extends Map {
    * @param {number} type The reference id.
    * @param {string} nodeId The reference target node's id.
    */
-  deleteReference(type, nodeId) {
+  public deleteReference(type: ReferenceType, nodeId: number | string): number | string {
     const set = this.get(type);
     if (set) {
       const ref = set.delete(nodeId);
@@ -50,7 +72,8 @@ class ReferenceMap extends Map {
         if (set.size === 0) {
           this.delete(type);
         }
-        return ref;
+
+        return nodeId;
       }
     }
 
@@ -59,19 +82,19 @@ class ReferenceMap extends Map {
 
   /**
    * Returns the first entry of a specific type.
-   * @param {number} type The reference type id to look for.
-   * @return {string|number|undefined} The first reference found or undefined.
+   * @param type The reference type id to look for.
+   * @return The first reference found or undefined.
    */
-  getSingle(type) {
+  public getSingle(type: ReferenceType): number | string | undefined {
     const set = this.get(type);
     return set && Array.from(set)[0];
   }
 
   /**
    * Returns a plain object of refernces.
-   * @type {Object}
+   * @return A string describing the reference map.
    */
-  toJSON() {
+  public toJSON(): ReferenceDefinitions {
     return [...this]
       .reduce((result, [key, value]) => Object.assign(result, {
         [ReferenceTypeNames[key] || key]: [...value],
@@ -80,10 +103,47 @@ class ReferenceMap extends Map {
 
 }
 
+interface WithValue {
+  value: Variant;
+}
+
+export interface NodeOptions {
+  name: string;
+  parent?: Node;
+  nodeClass: ItemOf<typeof NodeClass>;
+}
+
+type NodeResolveKey = 'nodeClass' | 'dataType' | 'arrayType';
+
 /**
  * The main model class.
  */
-export default class Node {
+export default abstract class Node {
+
+  /** The node's name when stored to a file. */
+  protected fileName: string;
+  /** The node's name when written to the server. */
+  protected idName: string;
+  /** The id stored in the definition file. */
+  protected specialId?: string;
+
+  /** The node's parent node. */
+  public readonly parent?: Node;
+  /** The node's class. */
+  public readonly nodeClass: ItemOf<typeof NodeClass>;
+
+  /** A set of resolved properties. */
+  protected _resolved = new Set<NodeResolveKey>();
+  /** A set of unresolved properties. */
+  protected _unresolved: Set<NodeResolveKey>;
+  /** The node's references. */
+  public references = new ReferenceMap();
+  /** The node's unresolved refernces. */
+  protected _resolvedReferences = new ReferenceMap();
+  /** The node's resolved refernces. */
+  protected _unresolvedReferences = new ReferenceMap();
+  /** If the parent node resolves metadata. */
+  protected _parentResolvesMetadata: boolean = false;
 
   /**
    * Creates a new node.
@@ -92,64 +152,28 @@ export default class Node {
    * @param {Node} options.parent The node's parent node.
    * @param {node-opcua~NodeClass} options.nodeClass The node's class.
    */
-  constructor({ name, parent, nodeClass/* , referenceToParent */ }) {
-    /** The node's name when stored to a file. {@type string} */
+  public constructor({ name, parent, nodeClass/* , referenceToParent */ }: NodeOptions) {
     this.fileName = name;
-    /** The node's name when written to the server. {@type string} */
     this.idName = name;
-    /** The node's parent node. {@type Node} */
     this.parent = parent;
-    /** The node's class. {@type node-opcua~NodeClass} */
     this.nodeClass = nodeClass;
 
-    /**
-     * A set of unresolved properties.
-     * @type {Set<string>}
-     */
     this._unresolved = new Set([
       'nodeClass',
       // Only for variables
       'dataType',
       'arrayType',
     ]);
-    /**
-     * A set of resolved properties.
-     * @type {Set<string>}
-     */
-    this._resolved = new Set();
-
-    /**
-     * The node's refernces.
-     * @type {ReferenceMap}
-     */
-    this.references = new ReferenceMap();
-    /**
-     * The node's unresolved refernces.
-     * @type {ReferenceMap}
-     */
-    this._resolvedReferences = new ReferenceMap();
-    /**
-     * The node's resolved refernces.
-     * @type {ReferenceMap}
-     */
-    this._unresolvedReferences = new ReferenceMap();
-
-    /**
-     * If the parent node resolves metadata.
-     * @type {boolean}
-     */
-    this._parentResolvesMetadata = false;
   }
 
   /**
    * If the parent resolves metadata (for example: split transformer source files).
-   * @type {boolean}
    */
-  get parentResolvesMetadata() {
+  public get parentResolvesMetadata(): boolean {
     return this._parentResolvesMetadata;
   }
 
-  markAsResolved(key) {
+  public markAsResolved(key: NodeResolveKey): void {
     const value = this._unresolved.delete(key);
 
     // FIXME: Only test if debug / test
@@ -160,7 +184,7 @@ export default class Node {
     this._resolved.add(key);
   }
 
-  isResolved(key) {
+  public isResolved(key: NodeResolveKey): boolean {
     return this._resolved.has(key);
   }
 
@@ -169,28 +193,28 @@ export default class Node {
    * @param {number} type The reference type's id.
    * @param {string} id The reference target node's id.
    */
-  addReference(type, id) {
+  public addReference(type: ReferenceType, id: string): void {
     this.references.addReference(type, id);
     this._unresolvedReferences.addReference(type, id);
   }
 
-  setReferences(type, ids) {
+  public setReferences(type: ReferenceType, ids: string[]): void {
     this.references.set(type, new Set(ids));
     this._unresolvedReferences.set(type, new Set(ids));
   }
 
-  markReferenceAsResolved(name, value) {
+  public markReferenceAsResolved(name: ReferenceTypeName, value: string): void {
     const type = ReferenceTypeIds[name];
     const ref = this._unresolvedReferences.deleteReference(type, value);
     this._resolvedReferences.addReference(type, ref);
   }
 
-  markAllReferencesAsResolved(name) {
+  public markAllReferencesAsResolved(name: ReferenceTypeName): void {
     const type = ReferenceTypeIds[name];
     this._unresolvedReferences.delete(type);
   }
 
-  hasUnresolvedReference(name) {
+  public hasUnresolvedReference(name: ReferenceTypeName): boolean {
     const type = ReferenceTypeIds[name];
     return this._unresolvedReferences.has(type);
   }
@@ -198,25 +222,23 @@ export default class Node {
   /**
    * The node's file path, used to compute {@link Node#filePath}.
    */
-  get _filePath() {
+  private get _filePath(): string[] {
     if (!this.parent) { return [this.fileName]; }
     return this.parent._filePath.concat(this.fileName);
   }
 
   /**
    * The node's file path.
-   * @type {string[]}
    */
-  get filePath() {
+  public get filePath(): string[] {
     if (!this.parent) { return []; }
     return this.parent._filePath;
   }
 
   /**
    * The node's id, used to compute {@link Node#nodeId}.
-   * @type {string}
    */
-  get _nodeId() {
+  private get _nodeId(): { id: string; separator: '/' | '.' } {
     if (this.specialId) {
       return {
         id: this.specialId,
@@ -245,17 +267,15 @@ export default class Node {
 
   /**
    * The node's id.
-   * @type {string}
    */
-  get nodeId() {
+  public get nodeId(): string {
     return this._nodeId.id;
   }
 
   /**
    * The node's type definition if given.
-   * @type {?number}
    */
-  get typeDefinition() {
+  public get typeDefinition(): number | string | undefined {
     return this.references.getSingle(ReferenceTypeIds.HasTypeDefinition);
   }
 
@@ -263,16 +283,16 @@ export default class Node {
    * The node's modellingRule if given.
    * @type {?number}
    */
-  get modellingRule() {
+  public get modellingRule(): number | string | undefined {
     return this.references.getSingle(ReferenceTypeIds.HasModellingRule);
   }
 
   /**
    * Returns `true` if the node has the given type definition.
-   * @param {string} typeDefName The type definition to check.
-   * @return {boolean} If the node has the given type definition.
+   * @param typeDefName - The type definition to check.
+   * @return If the node has the given type definition.
    */
-  hasTypeDefinition(typeDefName) {
+  public hasTypeDefinition(typeDefName: number | string): boolean {
     const def = this.typeDefinition;
 
     return def ? def === typeDefName : false;
@@ -280,9 +300,8 @@ export default class Node {
 
   /**
    * `true` at the moment.
-   * @type {boolean}
    */
-  get hasUnresolvedMetadata() {
+  public get hasUnresolvedMetadata(): boolean {
     return true;
     /* FIXME: Once plugin mapping is implemented
     const value = !this._parentResolvesMetadata && (Boolean(this._unresolved.size) ||
@@ -306,20 +325,16 @@ export default class Node {
    * The metadata to store in the node's definition file.
    * @type {Object}
    */
-  get metadata() {
+  public get metadata(): NodeDefinition {
     if (this._parentResolvesMetadata) { return {}; }
 
-    const meta = {};
+    const meta: Partial<NodeDefinition> = {};
 
     if (this.specialId) {
       meta.nodeId = this.specialId;
     }
 
-    if (this.specialName) {
-      meta.name = this.specialName;
-    }
-
-    if (this.nodeClass === NodeClass.Variable) {
+    if (this.isVariableNode()) {
       meta.dataType = this.value.dataType.key;
       meta.arrayType = this.value.arrayType.key;
     } else {
@@ -357,14 +372,13 @@ export default class Node {
    * @param {Object} options The options to use.
    * @param {string} options.extension The extension to append to the node's name.
    */
-  createChild({ extension }) {
-    const node = new Node({
+  public createChild({ extension }: { extension: string }): Node {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const node: Node = new (this.constructor as any)({
       name: this.idName,
       parent: this,
       nodeClass: this.nodeClass,
     });
-
-    Object.setPrototypeOf(node, this.constructor.prototype);
 
     node.fileName = `${this.fileName}${extension}`;
 
@@ -378,51 +392,54 @@ export default class Node {
 
   /**
    * The node's data type.
-   * @type {node-opcua~DataType}
    */
-  get dataType() {
+  public get dataType(): ItemOf<typeof DataType> {
+    if (!this.isVariableNode()) { throw new TypeError('Not a variable node'); }
+
     return this.value.dataType;
   }
 
   /**
    * The node's array type.
-   * @type {node-opcua~VariantArrayType}
    */
-  get arrayType() {
+  public get arrayType(): ItemOf<typeof VariantArrayType> {
+    if (!this.isVariableNode()) { throw new TypeError('Not a variable node'); }
+
     return this.value.arrayType;
   }
 
   /**
    * If the node is a variable.
-   * @type {boolean}
+   * @deprecated Use TypeScript compatible {@link Node#isVariableNode} instead.
    */
-  get isVariable() {
+  public get isVariable(): boolean {
     return this.nodeClass === NodeClass.Variable;
+  }
+
+  public isVariableNode(): this is WithValue {
+    return this.isVariable;
   }
 
   // FIXME: Move to display / script transformers
 
   /**
    * If the node is an object display.
-   * @type {boolean}
    */
-  get isDisplay() {
+  public get isDisplay(): boolean {
     return this.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
   /**
    * If the node is a serverside script.
-   * @type {boolean}
    */
-  get isScript() {
+  public get isScript(): boolean {
     return this.hasTypeDefinition('VariableTypes.ATVISE.ScriptCode');
   }
 
   /**
    * If the node is a quickdynamic.
-   * @type {boolean}
    */
-  get isQuickDynamic() {
+  public get isQuickDynamic(): boolean {
     return this.hasTypeDefinition('VariableTypes.ATVISE.QuickDynamic');
   }
 
@@ -431,21 +448,20 @@ export default class Node {
 /**
  * A node during a *pull*.
  */
-export class ServerNode extends Node {
+export abstract class ServerNode extends Node {
 
   /**
    * The node's name.
-   * @type {string}
    */
-  get name() {
+  public get name(): string {
     return this.fileName;
   }
 
   /**
    * Renames a node.
-   * @param {string} name The name to set.
+   * @param name The name to set.
    */
-  renameTo(name) {
+  public renameTo(name: string): void {
     this.fileName = name;
   }
 
@@ -454,21 +470,20 @@ export class ServerNode extends Node {
 /**
  * A node during a *push*.
  */
-export class SourceNode extends Node {
+export abstract class SourceNode extends Node {
 
   /**
    * The node's name.
-   * @type {string}
    */
-  get name() {
+  public get name(): string {
     return this.idName;
   }
 
   /**
    * Renames a node.
-   * @param {string} name The name to set.
+   * @param name The name to set.
    */
-  renameTo(name) {
+  public renameTo(name: string): void {
     this.idName = name;
   }
 
