@@ -148,7 +148,9 @@ export function createNode(nodeId, {
   const variableOptions = nodeClass === NodeClass.Variable ? {
     dataType: value.dataType.value,
     valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
-    value: value.arrayType && value.arrayType !== VariantArrayType.Scalar ? Array.from(value.value) : value.value,
+    value: value.arrayType && value.arrayType !== VariantArrayType.Scalar ?
+      Array.from(value.value) :
+      value.value,
   } : {};
 
   return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'), {
