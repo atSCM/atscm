@@ -1,12 +1,18 @@
 import { join, basename, dirname } from 'path';
 import { readdir, stat, readFile, readJSON } from 'fs-extra';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
-import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { DataType, VariantArrayType, Variant } from 'node-opcua/lib/datamodel/variant';
+import { KeyOf } from 'node-opcua/lib/misc/enum.js';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
-import { SourceNode, ReferenceTypeIds } from '../model/Node';
+import {
+  SourceNode, ReferenceTypeIds, NodeOptions, NodeDefinition,
+} from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
+import { Omit } from '../helpers/types';
+
+type FileNodeOptions = Omit<NodeOptions, 'nodeClass'> & NodeDefinition;
 
 /**
  * A node returned by the {@link SourceStream}.
@@ -15,26 +21,16 @@ export class FileNode extends SourceNode {
 
   /**
    * Creates a new node.
-   * @param {Object} options The options to use.
+   * @param options The options to use.
    */
-  constructor({ name, parent, nodeClass, nodeId, references, dataType, arrayType }) {
-    super({ name, parent, nodeClass });
-
-    /**
-     * A node's value (may be incomplete, use {@link FileNode#variantValue} to ensure).
-     * @type {node-opcua~Variant}
-     */
-    this.value = {};
-
-    if (nodeClass) {
-      /**
-       * The node's class.
-       * @type {node-opcua~NodeClass}
-       * */
-      this.nodeClass = NodeClass[nodeClass];
-    } else {
-      this.nodeClass = NodeClass.Variable;
-    }
+  public constructor({
+    nodeClass, dataType, arrayType, references, nodeId,
+    ...options
+  }: FileNodeOptions) {
+    super({
+      ...options,
+      nodeClass: NodeClass[nodeClass || 'Variable'],
+    });
 
     if (nodeId) {
       /**
@@ -45,48 +41,75 @@ export class FileNode extends SourceNode {
     }
 
     if (references) {
-      Object.entries(references).forEach(([ref, ids]) => {
-        const type = ReferenceTypeIds[ref];
+      (Object.entries(references) as ([keyof typeof ReferenceTypeIds, (string | number)[]])[])
+        .forEach(([ref, ids]) => {
+          const type = ReferenceTypeIds[ref];
 
-        ids.forEach(id => {
-          this.references.addReference(type, id);
-          this._resolvedReferences.addReference(type, id);
+          ids.forEach(id => {
+            this.references.addReference(type, id);
+            this._resolvedReferences.addReference(type, id);
+          });
         });
-      });
     }
 
     if (dataType) {
-      this.value.dataType = DataType[dataType];
+      this.valueSoFar.dataType = DataType[dataType];
     }
 
     if (arrayType) {
-      this.value.arrayType = VariantArrayType[arrayType];
+      this.valueSoFar.arrayType = VariantArrayType[arrayType];
     }
+  }
+
+  protected _rawValue?: Buffer;
+
+  public setRawValue(value: Buffer): void {
+    this._rawValue = value;
+  }
+
+  private hasRawValue(): this is { _rawValue: Buffer } {
+    return !!this._rawValue;
   }
 
   /**
    * A node's raw value, decoded into a string.
-   * @type {string}
    */
-  get stringValue() {
+  public get stringValue(): string {
+    if (!this.hasRawValue()) { throw new Error('No value read yet. Ensure to call #setRawValue'); }
+
     return this._rawValue.toString();
+  }
+
+  /** The node's value (may be incomplete, use {@link FileNode#value} to ensure). */
+  public valueSoFar: Partial<Variant> = {};
+
+  private valueIsComplete(): this is { valueSoFar: Variant } {
+    return this.valueSoFar.value !== undefined;
   }
 
   /**
    * A node's {@link node-opcua~Variant} value.
-   * @type {node-opcua~Variant}
    */
-  get variantValue() {
-    const value = this.value;
+  public get variantValue(): Variant {
+    const value = this.valueSoFar;
 
-    if (!value.value) {
+    if (!this.valueIsComplete()) {
+      if (!value.dataType) {
+        throw new Error(`${this.nodeId} has no data type`);
+      }
       if (!value.arrayType) {
         throw new Error(`${this.nodeId} has no array type`);
       }
-      value.value = decodeVariant(this._rawValue, value);
+      if (this.hasRawValue()) {
+        value.value = decodeVariant(this._rawValue, value);
+      }
     }
 
-    return value;
+    return (this.valueSoFar as Variant);
+  }
+
+  public get value(): Variant {
+    return this.variantValue;
   }
 
 }
@@ -94,11 +117,11 @@ export class FileNode extends SourceNode {
 // Helpers
 /**
  * Returns `true` for definition file paths.
- * @param {string} path The path to check.
- * @return {boolean} If the file at path is a definition file.
+ * @param path The path to check.
+ * @return If the file at path is a definition file.
  */
-export function isDefinitionFile(path) {
-  return basename(path).match(/^\..*\.json$/);
+export function isDefinitionFile(path: string): boolean {
+  return Boolean(basename(path).match(/^\..*\.json$/));
 }
 
 /**
@@ -106,67 +129,65 @@ export function isDefinitionFile(path) {
  */
 const containerFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
 
-/**
- * Names of hierarchical reference types.
- */
-const hierarchicalReferencesTypeNames = new Set([
-  'HasChild',
-  'Aggregates',
-  'HasComponent',
-  'HasOrderedComponent',
-  'HasHistoricalConfiguration',
-  'HasProperty',
-  'HasSubtype',
-  'HasEventSource',
-  'HasNotifier',
-  'Organizes',
-]);
+type NodeHandler<R = void> = (node: FileNode) => R;
+
+interface SourceBrowserOptions {
+  handleNode: NodeHandler<Promise<void>>;
+  readNodeFile: NodeHandler<boolean>;
+}
 
 /**
  * Browses the local file system for nodes.
  */
-class SourceBrowser {
+export class SourceBrowser {
+
+  /** The queue processing incoming paths / nodes. @type {p-queue~PQueue} */
+  private _queue: PromiseQueue;
+
+  /** A callback called with every discovered node. */
+  private _nodeHandler: NodeHandler<Promise<void>>;
+  /** A callback deciding if a node file should be read. */
+  private _readNodeFile: NodeHandler<boolean>;
+
+  /** The pushed node's ids */
+  private _pushed = new Set<string>();
+  /** The pushed node's paths */
+  private _pushedPath = new Set<string>();
+  /** Stores how queued nodes depend on each other */
+  // eslint-disable-next-line no-spaced-func
+  private _dependingOn = new Map<string, (BrowsedFileNode & { waitingFor: Set<string> })[]>();
 
   /**
    * Sets up a new browser.
-   * @param {Object} options The options to apply.
+   * @param options The options to apply.
+   * @param options.handleNode A callback called with every discovered node.
+   * @param options.readNodeFile A callback deciding if a node file should be read.
    */
-  constructor({ handleNode, readNodeFile }) {
-    /** The queue processing incoming paths / nodes. @type {p-queue~PQueue} */
+  public constructor({ handleNode, readNodeFile }: SourceBrowserOptions) {
     this._queue = new PromiseQueue({
       concurrency: 250,
     });
 
-    /** A callback called with every discovered node. @type {function(node: FileNode): void} */
     this._nodeHandler = handleNode;
-    /**
-     * A callback deciding if a node file should be read.
-     * @type {function(node: FileNode): boolean}
-     */
     this._readNodeFile = readNodeFile;
-
-    /** The pushed node's ids @type {Set<string>} */
-    this._pushed = new Set();
-    /** The pushed node's paths @type {Set<string>} */
-    this._pushedPath = new Set();
-    /** Stores how queued nodes depend on each other @type {Map<string, FileNode[]>} */
-    this._dependingOn = new Map();
   }
 
   /**
-   * Starts the browser at the given path.
-   * @param {string} path The path to start browsing at.
-   * @param {Object} options Passed directly to {@link SourceBrowser#processPath}.
-   * @return {Promise<void>} Fulfilled once browsing is complete.
+   * A function to be called once an error occurres during parallel processing.
+   * @param error The error to exit with.
    */
-  async browse(path, options = {}) {
-    let processError = null;
+  private _reject!: (error: Error) => void;
 
-    const done = new Promise((resolve, reject) => {
-      /**
-       * A function to be called once an error occurres during parallel processing.
-       * @param {function(err: Error)} err The error to exit with.
-       */
+  /**
+   * Starts the browser at the given path.
+   * @param path The path to start browsing at.
+   * @param options Passed directly to {@link SourceBrowser#processPath}.
+   * @return Fulfilled once browsing is complete.
+   */
+  public async browse(path: string, options = {}): Promise<void> {
+    let processError: Error;
+
+    const done = new Promise<void>((resolve, reject) => {
       this._reject = err => {
         if (processError) {
           // Multiple errors occured. In most cases this means, that the server connection was
@@ -203,9 +224,9 @@ class SourceBrowser {
 
   /**
    * Enqueues a {@link SourceBrowser#_processPath} call with the given options.
-   * @param {Object} options Passed directly to {@link SourceBrowser#_processPath}.
+   * @param options Passed directly to {@link SourceBrowser#_processPath}.
    */
-  processPath(options) {
+  public processPath(options: ProcessPathOptions): Promise<FileNode | void> {
     return this._queue.add(() => this._processPath(options).catch(this._reject));
   }
 
@@ -214,12 +235,11 @@ class SourceBrowser {
    * @param {Object} options Passed directly to {@link SourceBrowser#_processPath}.
    * @param {string} options.path The path to read.
    */
-  readNode({ path, tree }) {
+  public readNode({ path }: { path: string }): Promise<FileNode> {
     return this._processPath({
       path,
-      tree,
       push: false,
-    });
+    }) as Promise<FileNode>; // NOTE: If `push` is true, the browser always returns a node.
   }
 
   /**
@@ -227,7 +247,10 @@ class SourceBrowser {
    * if any and finally pushes discovered nodes to {@link SourceBrowser#_processNode}.
    * @param {Object} options The options to use.
    */
-  async _processPath({ path, parent, children, push = true, singleNode = false }) {
+  private async _processPath({
+    path, parent, children,
+    push = true, singleNode = false,
+  }: ProcessPathOptions): Promise<void | FileNode> {
     const s = await stat(path);
 
     if (s.isDirectory()) {
@@ -246,7 +269,7 @@ class SourceBrowser {
             return nodes;
           }
 
-          let parts;
+          let parts: string[];
           const noProcessingNeeded = nodes.find(current => {
             const n = current.name;
             if (n === `.${p}.json`) { return true; } // Skip files with definitions already present
@@ -263,7 +286,7 @@ class SourceBrowser {
           });
 
           return noProcessingNeeded ? nodes : nodes.concat(node);
-        }, []);
+        }, [] as DiscoveredNodeFile[]);
 
       if (container) {
         return this._processPath(Object.assign(container, { children: nextChildren, parent }));
@@ -288,7 +311,7 @@ class SourceBrowser {
       }
 
       let name = basename(path, '.json').slice(1);
-      if (name.length >= 4 && NodeClass[name]) {
+      if (name.length >= 4 && NodeClass[name as KeyOf<typeof NodeClass>]) {
         name = basename(dirname(path));
       }
 
@@ -299,17 +322,16 @@ class SourceBrowser {
 
       const dir = dirname(path);
       const rel = join(dir, name);
-      const node = new FileNode({
+      const node: BrowsedFileNode = Object.assign(new FileNode({
         name,
-        path, // FIXME: Remove, add as #relative
         parent,
-        ...await readJSON(path),
+        ...(await readJSON(path) as NodeDefinition),
+      }), {
+        push, // FIXME: Remove?
+        children,
+        relative: rel,
+        definitionPath: path,
       });
-
-      node.push = push;
-      node.children = children;
-      node.relative = rel;
-      node.definitionPath = path;
 
       return this._processNode(node);
     }
@@ -319,26 +341,27 @@ class SourceBrowser {
 
   /**
    * Handles a node's dependencies and calls {@link SourceBrowser#_pushNode} once it's ready.
-   * @param {FileNode} node A discovered node.
+   * @param node A discovered node.
    */
-  _processNode(node) {
+  private _processNode(node: BrowsedFileNode): Promise<void | FileNode> {
     // Build dependency map
     if (!node.waitingFor) {
       const deps = Array.from(node.references)
-        .filter(([key]) => key !== 'toParent' && !hierarchicalReferencesTypeNames.has(key))
         .reduce((result, [, ids]) => result
-          .concat(Array.from(ids).filter(id => !(this._pushed.has(id)))), [])
-        .filter(id => {
-          if (typeof id === 'number') { // OPC-UA node
-            return false;
-          }
+          .concat(Array.from(ids)
+            .filter(id => {
+              if (typeof id === 'number') { // OPC-UA node
+                return false;
+              }
 
-          return !ProjectConfig.isExternal(id);
-        });
+              return !(this._pushed.has(id)) && !ProjectConfig.isExternal(id);
+            }) as string[]),
+        [] as string[]);
       // eslint-disable-next-line no-param-reassign
       node.waitingFor = new Set(deps);
       deps.forEach(d => {
-        this._dependingOn.set(d, (this._dependingOn.get(d) || []).concat(node));
+        this._dependingOn.set(d, (this._dependingOn.get(d) || [])
+          .concat(node as BrowsedFileNode & { waitingFor: Set<string> }));
       });
     }
 
@@ -352,16 +375,18 @@ class SourceBrowser {
   /**
    * Reads a node's value file (if it's a variable) and calls {@link SourceBrowser#_nodeHandler}
    * with it, finishing the node's processing and promoting it's dependents, if any.
-   * @param {FileNode} node A discovered node.
+   * @param node A discovered node.
+   * @return The node, once it's fully processed.
    */
-  async _pushNode(node) {
+  private async _pushNode(node: BrowsedFileNode): Promise<FileNode> {
     // Read node value
     if (node.nodeClass === NodeClass.Variable && this._readNodeFile(node)) {
       // eslint-disable-next-line no-param-reassign
-      node._rawValue = await readFile(node.relative)
+      await readFile(node.relative)
+        .then(value => node.setRawValue(value))
         .catch(err => {
           if (err.code === 'EISDIR') { return; }
-          throw new Error(`${err.code}: Error reading ${node.path}`);
+          throw new Error(`${err.code}: Error reading ${node.relative}`);
         });
     }
 
@@ -384,12 +409,7 @@ class SourceBrowser {
 
             if (!dep.waitingFor.size) {
               // All dependencies resolved
-              return this._pushNode(Object.assign(dep, {
-                tree: {
-                  ...dep.tree,
-                  parent: node,
-                },
-              }));
+              return this._pushNode(dep);
             }
 
             // Still waiting
@@ -413,12 +433,38 @@ class SourceBrowser {
 
 /**
  * Starts a new source browser at the given path.
- * @param {string} path The path to start browsing with.
- * @param {Object} options Passed directly to {@link SourceBrowser#constructor}.
- * @return {Promise<void>& { browser: SourceBrowser }} A promise resolved once browsing is finished.
+ * @param path The path to start browsing with.
+ * @param options Passed directly to {@link SourceBrowser#constructor}.
+ * @return A promise resolved once browsing is finished, with an addional *browser* property holding
+ * the SourceBrowser instance created.
  */
-export default function src(path, options = {}) {
+export default function src(path: string, options: SourceBrowserOptions): Promise<void> & {
+  browser: SourceBrowser;
+} {
   const browser = new SourceBrowser(options);
 
   return Object.assign(browser.browse(path, options), { browser });
+}
+
+// Option types
+
+/** A file node while being processed by a source browser */
+type BrowsedFileNode = FileNode & {
+  waitingFor?: Set<string>;
+  children?: DiscoveredNodeFile[];
+  relative: string;
+  definitionPath: string;
+}
+
+interface DiscoveredNodeFile {
+  path: string;
+  name: string;
+  push: boolean;
+  parent?: FileNode;
+  children?: DiscoveredNodeFile[];
+}
+
+type ProcessPathOptions = Partial<DiscoveredNodeFile> & {
+  path: string;
+  singleNode?: boolean;
 }
