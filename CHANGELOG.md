@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.30"></a>
-# 1.0.0-beta.30 (2019-04-24)
+<a name="1.0.0-beta.31"></a>
+# 1.0.0-beta.31 (2019-04-28)
 
 
 ### Bug Fixes
@@ -24,6 +24,7 @@
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **pull:** Write rename.json after pull ([#257](https://github.com/atSCM/atscm/issues/257)) ([468fb52](https://github.com/atSCM/atscm/commits/468fb52))
 * **push:** Allow non-standard root nodes ([#236](https://github.com/atSCM/atscm/issues/236)) ([6da0bcc](https://github.com/atSCM/atscm/commits/6da0bcc))
+* **push:** Fix typo in external node handling ([#302](https://github.com/atSCM/atscm/issues/302)) ([b5e9b5f](https://github.com/atSCM/atscm/commits/b5e9b5f))
 * **push:** Force exit on error ([#273](https://github.com/atSCM/atscm/issues/273)) ([f5afadd](https://github.com/atSCM/atscm/commits/f5afadd))
 * **push:** Handle displays inside displays ([#282](https://github.com/atSCM/atscm/issues/282)) ([8f19c33](https://github.com/atSCM/atscm/commits/8f19c33))
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
