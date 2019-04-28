@@ -86,7 +86,7 @@ describe('ProjectConfig', function() {
     () => expect(ProjectConfig.login, 'to equal', TestConfig.login));
 
   describe('.isExternal', function() {
-    it('should return true for ids not included in #nodes', function() {
+    it('should return true for ids not included in .nodes', function() {
       expect(ProjectConfig.isExternal('Somewhere.Else'), 'to be', true);
     });
 
