@@ -43,6 +43,14 @@ export default class DisplayTransformer extends XMLTransformer {
   }
 
   /**
+   * The source file extensions to allow.
+   * @type {string[]}
+   */
+  static get sourceExtensions() {
+    return ['.json', '.svg', '.js'];
+  }
+
+  /**
    * Returns `true` for all display nodes.
    * @param {Node} node The node to check.
    */
