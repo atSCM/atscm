@@ -17,6 +17,15 @@ export default class SplittingTransformer extends PartialTransformer {
   }
 
   /**
+   * The source file extensions to allow.
+   * @abstract
+   * @type {string[]}
+   */
+  static get sourceExtensions() {
+    throw new Error('Must be implemented by all subclasses');
+  }
+
+  /**
    * Splits a {@link Node}: The resulting is a clone of the input file, with a different path.
    * @param {Node} node The file to split.
    * @param {?string} newExtension The extension the resulting file gets.
@@ -85,15 +94,23 @@ export default class SplittingTransformer extends PartialTransformer {
       throw new Error(`${node.relative} shouldn't be transformed`);
     }
 
-    const regExp = new RegExp(`^\\.${name}(\\..*)\\.json$`);
+    const regExp = new RegExp(`^\\.${name}(${
+      this.constructor.sourceExtensions.join('|')
+    })\\.json$`);
 
     // Find source files an child definition files
     const sourceFiles = [];
+    const childFiles = [];
+
     const children = (await readdir(node.relative))
       .reduce((current, f) => {
         if (f.match(regExp)) {
           sourceFiles.push(f);
         } else if (f.match(/^\..*\.json$/)) { // Other definition file -> child node
+          current.push({ name: f, path: join(node.relative, f) });
+          childFiles.push(f);
+        } else if (!sourceFiles.includes(`.${f}.json`) && !childFiles.includes(`.${f}.json`)) {
+          // This might be a child object's folder...
           current.push({ name: f, path: join(node.relative, f) });
         }
 

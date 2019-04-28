@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2019-04-28 17:33:52 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=AGENT" BrowseName="1:AGENT">
+		<DisplayName Locale="en">AGENT</DisplayName>
+		<Description Locale="en">AGENT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue" ExportedBrowseName="1:InvalidArrayValue" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS" BrowseName="1:OBJECTS">
+		<DisplayName Locale="en">OBJECTS</DisplayName>
+		<Description Locale="en">OBJECTS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue" BrowseName="1:InvalidArrayValue">
+		<DisplayName Locale="en">InvalidArrayValue</DisplayName>
+		<Description Locale="en">InvalidArrayValue</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestBoolean" BrowseName="1:TestBoolean" DataType="Boolean" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestBoolean</DisplayName>
+		<Description Locale="en">TestBoolean</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfBoolean>
+				<uax:Boolean>false</uax:Boolean>
+			</uax:ListOfBoolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestByte" BrowseName="1:TestByte" DataType="Byte" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestByte</DisplayName>
+		<Description Locale="en">TestByte</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfByte/>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestFloat" BrowseName="1:TestFloat" DataType="Float" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestFloat</DisplayName>
+		<Description Locale="en">TestFloat</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfFloat>
+				<uax:Float>0</uax:Float>
+			</uax:ListOfFloat>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestSByte" BrowseName="1:TestSByte" DataType="SByte" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestSByte</DisplayName>
+		<Description Locale="en">TestSByte</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfSByte>
+				<uax:SByte>0</uax:SByte>
+			</uax:ListOfSByte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestUInt16" BrowseName="1:TestUInt16" DataType="UInt16" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestUInt16</DisplayName>
+		<Description Locale="en">TestUInt16</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfUInt16>
+				<uax:UInt16>0</uax:UInt16>
+			</uax:ListOfUInt16>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestUInt32" BrowseName="1:TestUInt32" DataType="UInt32" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestUInt32</DisplayName>
+		<Description Locale="en">TestUInt32</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfUInt32>
+				<uax:UInt32>0</uax:UInt32>
+			</uax:ListOfUInt32>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestUInt64" BrowseName="1:TestUInt64" DataType="UInt64" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestUInt64</DisplayName>
+		<Description Locale="en">TestUInt64</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfUInt64>
+				<uax:UInt64>0</uax:UInt64>
+			</uax:ListOfUInt64>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestInt64" BrowseName="1:TestInt64" DataType="Int64" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestInt64</DisplayName>
+		<Description Locale="en">TestInt64</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfInt64>
+				<uax:Int64>0</uax:Int64>
+			</uax:ListOfInt64>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestDouble" BrowseName="1:TestDouble" DataType="Double" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestDouble</DisplayName>
+		<Description Locale="en">TestDouble</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfDouble>
+				<uax:Double>0</uax:Double>
+			</uax:ListOfDouble>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestString" BrowseName="1:TestString" DataType="String" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestString</DisplayName>
+		<Description Locale="en">TestString</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfString>
+				<uax:String></uax:String>
+			</uax:ListOfString>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestDateTime" BrowseName="1:TestDateTime" DataType="DateTime" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestDateTime</DisplayName>
+		<Description Locale="en">TestDateTime</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfDateTime>
+				<uax:DateTime>1970-01-01T00:00:00.000000Z</uax:DateTime>
+			</uax:ListOfDateTime>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestXmlElement" BrowseName="1:TestXmlElement" DataType="XmlElement" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestXmlElement</DisplayName>
+		<Description Locale="en">TestXmlElement</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfXmlElement>
+				<uax:XmlElement><![CDATA[]]></uax:XmlElement>
+			</uax:ListOfXmlElement>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestInt16" BrowseName="1:TestInt16" DataType="Int16" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestInt16</DisplayName>
+		<Description Locale="en">TestInt16</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfInt16>
+				<uax:Int16>0</uax:Int16>
+			</uax:ListOfInt16>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestInt32" BrowseName="1:TestInt32" DataType="Int32" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">TestInt32</DisplayName>
+		<Description Locale="en">TestInt32</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.InvalidArrayValue</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ListOfInt32>
+				<uax:Int32>0</uax:Int32>
+			</uax:ListOfInt32>
+		</Value>
+	</UAVariable>
+</UANodeSet>

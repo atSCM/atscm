@@ -52,130 +52,6 @@ async function withSession(action) {
   return result;
 }
 
-// Methods / Scripts
-
-/**
- * Calls an OPC-UA method on the server.
- * @param {NodeId} methodId The method's id.
- * @param {Array<Variant>} args The arguments to pass.
- */
-export function callMethod(methodId, args = []) {
-  return withSession(session => promisified(cb => session.call([
-    {
-      objectId: methodId.parent,
-      methodId,
-      inputArguments: args,
-    },
-  ], cb)))
-    .then(([result] = []) => result);
-}
-
-/**
- * Calls a server script on the server.
- * @param {NodeId} scriptId The script's id.
- * @param {Object} parameters The parameters to pass, given as a map of Variants, like
- * `{ name: { ... } }`.
- */
-export function callScript(scriptId, parameters = {}) {
-  return callMethod(new NodeId('AGENT.SCRIPT.METHODS.callScript'), [
-    {
-      dataType: DataType.NodeId,
-      value: scriptId,
-    },
-    {
-      dataType: DataType.NodeId,
-      value: scriptId.parent,
-    },
-    {
-      dataType: DataType.String,
-      arrayType: VariantArrayType.Array,
-      value: Object.keys(parameters),
-    },
-    {
-      dataType: DataType.Variant,
-      arrayType: VariantArrayType.Array,
-      value: Object.values(parameters),
-    },
-  ]);
-}
-
-/**
- * Creates a new Node on the server.
- * @param {NodeId} nodeId The new node's id.
- * @param {Object} options The options to use.
- * @param {string} options.name The node's name.
- * @param {NodeId} [options.parentNodeId] The node's parent, defaults to the calculated parent
- * (`Test` for `Test.Child`).
- * @param {node-opcua~NodeClass} [options.nodeClass] The node's class, defaults so
- * `node-opcua~NodeClass.Variable`.
- * @param {NodeId} [options.typeDefinition] The node's type definition, must be provided for
- * non-variable nodes.
- * @param {NodeId} [options.modellingRule] The node's modelling rule.
- * @param {string} [options.reference] Name of the type of the node's reference to it's parent.
- * @param {node-opcua~Variant} [options.value] The node's value, required for all variable nodes.
- */
-export function createNode(nodeId, {
-  name,
-  parentNodeId = nodeId.parent,
-  nodeClass = NodeClass.Variable,
-  typeDefinition = new NodeId('ns=0;i=62'),
-  modellingRule,
-  reference,
-  value,
-}) {
-  const variableOptions = nodeClass === NodeClass.Variable ? {
-    dataType: value.dataType.value,
-    valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
-    value: value.value,
-  } : {};
-
-  return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'), {
-    paramObjString: {
-      dataType: DataType.String,
-      value: JSON.stringify(Object.assign({
-        nodeId,
-        browseName: name,
-        parentNodeId: parentNodeId || nodeId.parent,
-        nodeClass: nodeClass.value,
-        typeDefinition,
-        modellingRule,
-        reference,
-      }, variableOptions)),
-    },
-  });
-}
-
-/**
- * Adds references to a node.
- * @param {NodeId} nodeId The node to add the references to.
- * @param {Object} references The references to add.
- * @return {Promise} Resolved once the references were added.
- * @example <caption>Add a simple reference</caption>
- * import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
- *
- * addReferences('AGENT.DISPLAYS.Main', {
- *   [47]: ['VariableTypes.ATVISE.Display'],
- *   // equals:
- *   [ReferenceTypeIds.HasTypeDefinition]: ['VariableTypes.ATVISE.Display'],
- * })
- *   .then(() => console.log('Done!'))
- *   .catch(console.error);
- */
-export function addReferences(nodeId, references) {
-  return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences'), {
-    paramObjString: {
-      dataType: DataType.String,
-      value: JSON.stringify({
-        nodeId,
-        references: Object.entries(references).map(([type, items]) => ({
-          referenceIdValue: parseInt(type, 10),
-          items,
-        })),
-      }),
-    },
-  });
-}
-
 // Reading/Writing
 
 /**
@@ -209,4 +85,164 @@ export function writeNode(nodeId, value) {
 
       return statusCode;
     });
+}
+
+// Methods / Scripts
+
+/**
+ * Calls an OPC-UA method on the server.
+ * @param {NodeId} methodId The method's id.
+ * @param {Array<Variant>} args The arguments to pass.
+ */
+export function callMethod(methodId, args = []) {
+  return withSession(session => promisified(cb => session.call([
+    {
+      objectId: methodId.parent,
+      methodId,
+      inputArguments: args,
+    },
+  ], cb)))
+    .then(([result] = []) => {
+      if (result.statusCode.value) {
+        throw Object.assign(new Error(result.statusCode.description), {
+          methodId,
+          inputArguments: args,
+        });
+      }
+
+      return result;
+    });
+}
+
+/**
+ * Calls a server script on the server.
+ * @param {NodeId} scriptId The script's id.
+ * @param {Object} parameters The parameters to pass, given as a map of Variants, like
+ * `{ name: { ... } }`.
+ */
+export function callScript(scriptId, parameters = {}) {
+  return callMethod(new NodeId('AGENT.SCRIPT.METHODS.callScript'), [
+    {
+      dataType: DataType.NodeId,
+      value: scriptId,
+    },
+    {
+      dataType: DataType.NodeId,
+      value: scriptId.parent,
+    },
+    {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Array,
+      value: Object.keys(parameters),
+    },
+    {
+      dataType: DataType.Variant,
+      arrayType: VariantArrayType.Array,
+      value: Object.values(parameters),
+    },
+  ])
+    .then(result => {
+      const statusCode = result.outputArguments[0].value;
+
+      if (statusCode.value) {
+        throw Object.assign(new Error(`Script failed: ${statusCode.description}
+${result.outputArguments[1].value}`), {
+          scriptId,
+          parameters,
+        });
+      }
+
+      return result;
+    });
+}
+
+/**
+ * Creates a new Node on the server.
+ * @param {NodeId} nodeId The new node's id.
+ * @param {Object} options The options to use.
+ * @param {string} options.name The node's name.
+ * @param {NodeId} [options.parentNodeId] The node's parent, defaults to the calculated parent
+ * (`Test` for `Test.Child`).
+ * @param {node-opcua~NodeClass} [options.nodeClass] The node's class, defaults so
+ * `node-opcua~NodeClass.Variable`.
+ * @param {NodeId} [options.typeDefinition] The node's type definition, must be provided for
+ * non-variable nodes.
+ * @param {NodeId} [options.modellingRule] The node's modelling rule.
+ * @param {string} [options.reference] Name of the type of the node's reference to it's parent.
+ * @param {node-opcua~Variant} [options.value] The node's value, required for all variable nodes.
+ */
+export function createNode(nodeId, {
+  name,
+  parentNodeId = nodeId.parent,
+  nodeClass = NodeClass.Variable,
+  typeDefinition = new NodeId('ns=0;i=62'),
+  modellingRule,
+  reference,
+  value,
+}) {
+  const variableOptions = nodeClass === NodeClass.Variable ? {
+    dataType: value.dataType.value,
+    valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
+    value: value.arrayType && value.arrayType !== VariantArrayType.Scalar ?
+      Array.from(value.value) :
+      value.value,
+  } : {};
+
+  const is64Bit = value.dataType === DataType.Int64 || value.dataType === DataType.UInt64;
+  if (is64Bit) { variableOptions.value = 0; }
+
+  return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'), {
+    paramObjString: {
+      dataType: DataType.String,
+      value: JSON.stringify(Object.assign({
+        nodeId,
+        browseName: name,
+        parentNodeId: parentNodeId || nodeId.parent,
+        nodeClass: nodeClass.value,
+        typeDefinition,
+        modellingRule,
+        reference,
+      }, variableOptions)),
+    },
+  })
+    .then(async result => {
+      const [{ value: createdNode }] = result.outputArguments[3].value;
+
+      if (createdNode && is64Bit) {
+        await writeNode(nodeId, value);
+      }
+
+      return result;
+    });
+}
+
+/**
+ * Adds references to a node.
+ * @param {NodeId} nodeId The node to add the references to.
+ * @param {Object} references The references to add.
+ * @return {Promise} Resolved once the references were added.
+ * @example <caption>Add a simple reference</caption>
+ * import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
+ *
+ * addReferences('AGENT.DISPLAYS.Main', {
+ *   [47]: ['VariableTypes.ATVISE.Display'],
+ *   // equals:
+ *   [ReferenceTypeIds.HasTypeDefinition]: ['VariableTypes.ATVISE.Display'],
+ * })
+ *   .then(() => console.log('Done!'))
+ *   .catch(console.error);
+ */
+export function addReferences(nodeId, references) {
+  return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences'), {
+    paramObjString: {
+      dataType: DataType.String,
+      value: JSON.stringify({
+        nodeId,
+        references: Object.entries(references).map(([type, items]) => ({
+          referenceIdValue: parseInt(type, 10),
+          items,
+        })),
+      }),
+    },
+  });
 }

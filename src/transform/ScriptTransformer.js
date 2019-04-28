@@ -14,6 +14,14 @@ import {
 export class AtviseScriptTransformer extends XMLTransformer {
 
   /**
+   * The source file extensions to allow.
+   * @type {string[]}
+   */
+  static get sourceExtensions() {
+    return ['.json', '.js'];
+  }
+
+  /**
    * Extracts a script's metadata.
    * @param {Object} document The parsed xml document to process.
    * @return {Object} The metadata found.
