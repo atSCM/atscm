@@ -87,7 +87,7 @@ export default class ProjectConfig extends Config {
    */
   static get ignoredNodesRegExp() {
     if (!this._ignoredNodesRegExp) {
-      this._ignoredNodesRegExp = new RegExp(`^(${this.nodes
+      this._ignoredNodesRegExp = new RegExp(`^(${this.ignoreNodes
         .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
         .join('|')})`);
     }
