@@ -1,6 +1,7 @@
 import { extname, basename, join } from 'path';
 import { readdir } from 'fs-extra';
 import PartialTransformer from './PartialTransformer.js';
+import { isDefinitionFile } from '../gulp/src';
 
 /**
  * A transformer that splits a node into multiple source nodes when pulling.
@@ -89,11 +90,17 @@ export default class SplittingTransformer extends PartialTransformer {
 
     // Find source files an child definition files
     const sourceFiles = [];
+    const childFiles = [];
+
     const children = (await readdir(node.relative))
       .reduce((current, f) => {
         if (f.match(regExp)) {
           sourceFiles.push(f);
         } else if (f.match(/^\..*\.json$/)) { // Other definition file -> child node
+          current.push({ name: f, path: join(node.relative, f) });
+          childFiles.push(f);
+        } else if (!sourceFiles.includes(`.${f}.json`) && !childFiles.includes(`.${f}.json`)) {
+          // This might be a child object's folder...
           current.push({ name: f, path: join(node.relative, f) });
         }
 
