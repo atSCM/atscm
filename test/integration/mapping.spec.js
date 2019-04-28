@@ -21,4 +21,11 @@ describe('Mapping', function() {
       name: 'InvalidArrayValue',
     });
   });
+
+  context('a 64bit variable value', function() {
+    expectCorrectMapping('mapping/int64', {
+      path: 'AGENT.OBJECTS',
+      name: 'TestCreateInt64',
+    });
+  });
 });
