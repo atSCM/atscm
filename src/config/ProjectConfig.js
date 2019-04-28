@@ -102,7 +102,7 @@ export default class ProjectConfig extends Config {
    * @return {boolean} If the node is external.
    */
   static isExternal(id) {
-    return !id.match(this.sourceNodeRegExp) || id.match(this.ignoredNodesRegExp);
+    return !id.match(this.sourceNodeRegExp) || !!id.match(this.ignoredNodesRegExp);
   }
 
 }
