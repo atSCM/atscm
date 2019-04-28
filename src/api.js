@@ -153,6 +153,9 @@ export function createNode(nodeId, {
       value.value,
   } : {};
 
+  const is64Bit = value.dataType === DataType.Int64 || value.dataType === DataType.UInt64;
+  if (is64Bit) { variableOptions.value = 0; }
+
   return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'), {
     paramObjString: {
       dataType: DataType.String,
@@ -166,7 +169,16 @@ export function createNode(nodeId, {
         reference,
       }, variableOptions)),
     },
-  });
+  })
+    .then(async result => {
+      const [{ value: createdNode }] = result.outputArguments[3].value;
+
+      if (createdNode && is64Bit) {
+        await writeNode(nodeId, value);
+      }
+
+      return result;
+    });
 }
 
 /**
