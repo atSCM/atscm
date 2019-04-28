@@ -84,5 +84,20 @@ describe('ProjectConfig', function() {
 
   checkDefault('ATSCM_PROJECT__LOGIN__PASSWORD',
     () => expect(ProjectConfig.login, 'to equal', TestConfig.login));
+
+  describe('.isExternal', function() {
+    it('should return true for ids not included in #nodes', function() {
+      expect(ProjectConfig.isExternal('Somewhere.Else'), 'to be', true);
+    });
+
+    it('should return true for ignored ids', function() {
+      // NOTE: AGENT.OPCUA.server_url is ignored by .ServerRelatedNodes
+      expect(ProjectConfig.isExternal('AGENT.OPCUA.server_url'), 'to be', true);
+    });
+
+    it('should return false for included nodes', function() {
+      expect(ProjectConfig.isExternal('AGENT.DISPLAYS.Default'), 'to be', false);
+    });
+  });
 });
 
