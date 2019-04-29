@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.32"></a>
-# 1.0.0-beta.32 (2019-04-28)
+<a name="1.0.0-beta.33"></a>
+# 1.0.0-beta.33 (2019-04-29)
 
 
 ### Bug Fixes
@@ -20,6 +20,7 @@
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
 * **pull:** Resolve reference dependencies ([#263](https://github.com/atSCM/atscm/issues/263)) ([7375330](https://github.com/atSCM/atscm/commits/7375330))
+* **pull:** Store historical configs in definition files ([#305](https://github.com/atSCM/atscm/issues/305)) ([84c8006](https://github.com/atSCM/atscm/commits/84c8006))
 * **pull:** Warn if node names contain trailing spaces ([#223](https://github.com/atSCM/atscm/issues/223)) ([3eeee49](https://github.com/atSCM/atscm/commits/3eeee49))
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **pull:** Write rename.json after pull ([#257](https://github.com/atSCM/atscm/issues/257)) ([468fb52](https://github.com/atSCM/atscm/commits/468fb52))
@@ -33,15 +34,15 @@
 * **push:** Prevent error when pushing displays source files ([#214](https://github.com/atSCM/atscm/issues/214)) ([5184b70](https://github.com/atSCM/atscm/commits/5184b70))
 * **push:** Properly wait for dependencies ([#298](https://github.com/atSCM/atscm/issues/298)) ([ebae772](https://github.com/atSCM/atscm/commits/ebae772))
 * **push:** Restrict split transformer source files ([5b38467](https://github.com/atSCM/atscm/commits/5b38467))
-* **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
-* **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
-* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
-* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+* **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
+* **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
+* **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
+* **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
 
 
 ### Features
