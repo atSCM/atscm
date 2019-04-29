@@ -224,8 +224,10 @@ export default class NodeBrowser {
             }
 
             if (earlierParent) {
-              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${earlierParent}' and '${node.id.value}'.
-  - Reference type (to the latter): ${ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
+              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
+                earlierParent}' and '${node.id.value}'.
+  - Reference type (to the latter): ${
+  ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
             }
 
             if (this._handled.get(reference.nodeId.value) === undefined) {
