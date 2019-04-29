@@ -35,4 +35,11 @@ describe('Mapping', function() {
       name: 'TestCreateInt64',
     });
   });
+
+  context('a node with a historical configuration', function() {
+    expectCorrectMapping('mapping/historical-config', {
+      path: 'AGENT.OBJECTS',
+      name: 'TestHistoryConfig',
+    });
+  });
 });

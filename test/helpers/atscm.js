@@ -188,6 +188,8 @@ export function expectCorrectMapping(setup, node) {
     // Run atscm push
     await push(join(destination, node.path.replace(/\./g, sep)));
 
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     const rawPushed = await exportNodes(nodeIds);
     const pushed = originalNames.reduce((str, original, i) => str
       .replace(new RegExp(nodeNames[i], 'g'), original),
