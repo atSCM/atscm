@@ -127,6 +127,11 @@ export default class NodeBrowser {
 
     /** The number of pushed (discovered and handled) nodes. @type {number} */
     this._pushed = 0;
+
+    /** A map that maps node ids against their discovered hierarchical parent nodes. Used to detect
+     * reference conflicts.
+     * @type {Map<string, string>} */
+    this.parentNode = new Map();
   }
 
   /**
@@ -208,6 +213,8 @@ export default class NodeBrowser {
             !ignored &&
             !external
           ) {
+            const earlierParent = this.parentNode.get(reference.nodeId.value);
+
             if (
               reference.referenceTypeId.value === ReferenceTypeIds.HasHistoricalConfiguration ||
               (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1)
@@ -215,7 +222,14 @@ export default class NodeBrowser {
               references.push(reference);
               return;
             }
+
+            if (earlierParent) {
+              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${earlierParent}' and '${node.id.value}'.
+  - Reference type (to the latter): ${ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
+            }
+
             if (this._handled.get(reference.nodeId.value) === undefined) {
+              this.parentNode.set(reference.nodeId.value, node.id.value);
               children.push(new BrowsedNode({
                 parent: node,
                 reference,
