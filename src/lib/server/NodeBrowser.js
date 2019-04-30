@@ -147,6 +147,29 @@ export default class NodeBrowser {
       });
     })
       .then(value => {
+        if (node.nodeId.endsWith('.SortOrder')) {
+          const removed = [];
+          const siblings = node.parent.children.map(c => c.idName).filter(n => n !== 'SortOrder');
+          const existing = value.value
+            .map(({ name }) => name)
+            .filter(name => {
+              const exists = siblings.find(c => c === name);
+
+              if (exists) { return true; }
+
+              removed.push(name);
+              return false;
+            });
+
+          // We could also add missing references here...
+
+          if (removed.length) {
+            // eslint-disable-next-line no-param-reassign
+            value.value = existing.map(name => ({ namespaceIndex: 1, name }));
+            Logger.warn(`Removed ${removed.length} invalid references from '${node.nodeId}'`);
+          }
+        }
+
         if (value) { return value; }
 
         // Node is a variable but has no value -> Need to read dataType and arrayType directly.
