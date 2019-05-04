@@ -5,7 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { xml2js } from 'xml-js';
+import { parse } from 'modify-xml';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -215,8 +215,8 @@ export function expectCorrectMapping(setup, node) {
 
     function sortElements(current) {
       return Object.assign(current, {
-        elements: current.elements && current.elements
-          .filter(({ type, name }) => type !== 'comment' && name !== 'Aliases')
+        childNodes: current.childNodes && current.childNodes
+          .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
           .sort(({ attributes: a }, { attributes: b }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
@@ -236,7 +236,7 @@ export function expectCorrectMapping(setup, node) {
     }
 
     function sortedTree(xml) {
-      return sortElements(xml2js(xml, { compact: false, alwaysChildren: true }));
+      return sortElements(parse(xml));
     }
 
     expect(sortedTree(pushed), 'to equal', sortedTree(original));
