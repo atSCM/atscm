@@ -22,7 +22,7 @@
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm run test:unit",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/workflows/atscm",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "repository": {
     "type": "git",
