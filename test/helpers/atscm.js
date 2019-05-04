@@ -205,10 +205,13 @@ export function expectCorrectMapping(setup, node) {
 
       if (element.type === 'cdata') {
         // eslint-disable-next-line no-param-reassign
-        element.cdata = element.cdata
+        element.value = element.value
+          .replace(/\?>\s/, '?>')
           .replace(/(^\s+|\r?\n?)/gm, '')
           .replace(/ standalone="no"/, '');
       }
+
+      delete element.rawValue
 
       return element;
     }
