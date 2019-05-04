@@ -211,7 +211,8 @@ export function expectCorrectMapping(setup, node) {
           .replace(/ standalone="no"/, '');
       }
 
-      delete element.rawValue
+      // eslint-disable-next-line no-param-reassign
+      delete element.rawValue;
 
       return element;
     }
