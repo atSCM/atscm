@@ -1,32 +1,9 @@
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
-  findChild, removeChild,
-  removeChildren,
-  createTextNode, createCDataNode, createElement,
-} from '../lib/helpers/xml';
-
-/**
- * Names of the tags to come before <metadata> in output files.
- * @type {Set<string>}
- */
-const tagsBeforeMetadata = new Set(['defs', 'desc', 'title']);
-
-/**
- * Returns the index at which the <metadata> section should be inserted in the resulting xml.
- * @param {Object[]} elements The elements to look at.
- * @return {number} The insertion index.
- */
-function metadataIndex(elements) {
-  let index = 0;
-
-  while (elements.length > index && tagsBeforeMetadata.has(elements[index].name)) {
-    index += 1;
-  }
-
-  return index;
-}
+  findChild, removeChildren, createCDataNode, createElement, appendChild, prependChild, textContent,
+} from 'modify-xml';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -80,7 +57,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     const config = {};
     const scriptTags = removeChildren(document, 'script');
-    let inlineScript = false;
+    let inlineScript;
 
     // Extract JavaScript
     if (scriptTags.length) {
@@ -104,9 +81,8 @@ export default class DisplayTransformer extends XMLTransformer {
       });
     }
     if (inlineScript) {
-      const contentNode = inlineScript.elements ? inlineScript.elements[0] : createTextNode();
       const scriptFile = this.constructor.splitFile(node, '.js');
-      const scriptText = contentNode[contentNode.type] || '';
+      const scriptText = textContent(inlineScript);
 
       scriptFile.value = {
         dataType: DataType.String,
@@ -118,7 +94,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // Extract metadata
     const metaTag = findChild(document, 'metadata');
-    if (metaTag && metaTag.elements) {
+    if (metaTag && metaTag.childNodes) {
       // TODO: Warn on multiple metadata tags
 
       // - Parameters
@@ -187,22 +163,17 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display SVG: No `svg` tag');
     }
 
-    // Handle empty svg tag
-    if (!svg.elements) {
-      svg.elements = [];
-    }
-
     // Insert dependencies
     if (config.dependencies) {
       config.dependencies.forEach(s => {
-        svg.elements.push(createElement('script', undefined, { 'xlink:href': s }));
+        appendChild(svg, createElement('script', undefined, { 'xlink:href': s }));
       });
     }
 
     // Insert script
     // FIXME: Import order is not preserved!
     if (scriptFile) {
-      svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
+      appendChild(svg, createElement('script', [createCDataNode(inlineScript)], {
         type: 'text/ecmascript',
       }));
     }
@@ -210,26 +181,22 @@ export default class DisplayTransformer extends XMLTransformer {
     // Insert metadata
     // - Parameters
     if (config.parameters && config.parameters.length > 0) {
-      let metaTag = removeChild(svg, 'metadata');
+      let [metaTag] = removeChildren(svg, 'metadata');
+
+      // FIXME: Warn on multiple metadata tags
 
       if (!metaTag) {
         metaTag = createElement('metadata');
       }
 
-      if (!metaTag.elements) {
-        metaTag.elements = [];
-      }
-
       // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
       for (let i = config.parameters.length - 1; i >= 0; i--) {
-        metaTag.elements.unshift(
-          createElement('atv:parameter', undefined, config.parameters[i])
-        );
+        prependChild(metaTag, createElement('atv:parameter', undefined, config.parameters[i]));
       }
 
       // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
-      // <title> if defined
-      svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
+      // <title> if defined (nothing to do, they are ordered inside #encodeContents)
+      prependChild(svg, metaTag);
     }
 
     // eslint-disable-next-line

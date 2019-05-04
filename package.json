@@ -22,7 +22,7 @@
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm run test:unit",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/workflows/atscm",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "repository": {
     "type": "git",
@@ -82,6 +82,7 @@
     "gulplog": "^1.0.0",
     "handlebars-helpers": "^0.10.0",
     "hasha": "^3.0.0",
+    "modify-xml": "^0.1.0",
     "mri": "^1.1.1",
     "node-cleanup": "^2.1.2",
     "node-opcua": "0.0.60",
@@ -91,8 +92,7 @@
     "stream-to-promise": "^2.2.0",
     "through2": "^2.0.3",
     "validate-npm-package-name": "^3.0.0",
-    "vinyl": "^2.0.1",
-    "xml-js": "^1.6.2"
+    "vinyl": "^2.0.1"
   },
   "nyc": {
     "all": true,
