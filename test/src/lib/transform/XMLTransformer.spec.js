@@ -1,6 +1,6 @@
 import { EOL } from 'os';
 import expect from 'unexpected';
-import { xml2js } from 'xml-js';
+import { parse as xml2js } from 'modify-xml';
 import Transformer, { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../../src/lib/transform/XMLTransformer';
 

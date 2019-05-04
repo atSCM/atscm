@@ -1,7 +1,5 @@
 import { EOL } from 'os';
-import { xml2js, js2xml } from 'xml-js';
-import Logger from 'gulplog';
-import { isElement, removeChild, displayPath, elementPath } from '../helpers/xml';
+import { parse, render, isElement, moveToTop } from 'modify-xml';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -18,37 +16,15 @@ export default class XMLTransformer extends SplittingTransformer {
     super(options);
 
     function build(object, buildOptions) {
-      if (!object.declaration) {
-        Object.assign(object, {
-          declaration: {
-            attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
-          },
-        });
+      const root = object.childNodes.find(n => isElement(n));
+
+      if (root) {
+        moveToTop(root, 'metadata');
+        moveToTop(root, 'defs');
+        moveToTop(root, 'title');
       }
 
-      const root = object.elements.find(isElement);
-
-      function addOnTop(parent, name) {
-        const node = removeChild(parent, name);
-
-        if (node) {
-          parent.elements.unshift(node);
-        }
-      }
-
-      if (root.elements) {
-        addOnTop(root, 'metadata');
-        addOnTop(root, 'defs');
-        addOnTop(root, 'title');
-      }
-
-      return js2xml(object, Object.assign(buildOptions, {
-        attributeValueFn(val) {
-          return val
-            .replace(/&(?!(amp|quot);)/g, '&amp;')
-            .replace(/</g, '&lt;');
-        },
-      }));
+      return render(object, { indent: ' '.repeat(buildOptions.spaces) });
     }
 
     // eslint-disable-next-line jsdoc/require-param
@@ -87,39 +63,9 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {Node} node The node to process.
    */
   decodeContents(node) {
-    const textTagIssues = new Set();
-
-    const doc = xml2js(this.direction === TransformDirection.FromDB ?
-      node.value.value :
-      node.stringValue, {
-      compact: false,
-      textFn(text, parentElement) {
-        if (text.match(/\r?\n *$/)) {
-          const siblingElements = parentElement.elements.filter(isElement);
-
-          if (siblingElements.length) {
-            textTagIssues.add(displayPath(parentElement));
-
-            // Correct indent
-            const tab = ' '.repeat(this.direction === TransformDirection.FromDB ? 2 : 1);
-
-            return text.replace(/\s*\r?\n *$/,
-              `${EOL}${tab.repeat(elementPath(parentElement).length - 1)}`
-            );
-          }
-        }
-
-        return text;
-      },
-    });
-
-    if (textTagIssues.size) {
-      Logger.warn(`Mixed text and tags inside '${node.nodeId}': This can lead to weird behaviour.
-  - Affected paths: ${Array.from(textTagIssues).map(p => `'${p}'`).join(',\n    ')}
-  - See: https://github.com/atSCM/atscm/issues/239`);
-    }
-
-    return doc;
+    return parse(this.direction === TransformDirection.FromDB ?
+      node.value.value.toString() :
+      node.stringValue);
   }
 
   /**

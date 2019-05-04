@@ -1,11 +1,10 @@
 import Logger from 'gulplog';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
-import XMLTransformer from '../lib/transform/XMLTransformer';
 import {
-  findChild, findChildren,
-  textContent,
-  createElement, createTextNode, createCDataNode,
-} from '../lib/helpers/xml';
+  findChild, findChildren, textContent, createElement, createTextNode, createCDataNode,
+  prependChild, appendChild,
+} from 'modify-xml';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -30,9 +29,10 @@ export class AtviseScriptTransformer extends XMLTransformer {
     const config = {};
 
     const metaTag = findChild(document, 'metadata');
-    if (!metaTag || !metaTag.elements) { return config; }
+    // console.error('Meta', metaTag);
+    if (!metaTag || !metaTag.childNodes) { return config; }
 
-    metaTag.elements.forEach(child => {
+    metaTag.childNodes.forEach(child => {
       if (child.type !== 'element') { return; }
 
       switch (child.name) {
@@ -87,14 +87,14 @@ export class AtviseScriptTransformer extends XMLTransformer {
     const paramTags = findChildren(document, 'parameter');
     if (!paramTags.length) { return undefined; }
 
-    return paramTags.map(({ attributes, elements }) => {
+    return paramTags.map(({ attributes, childNodes }) => {
       const param = Object.assign({}, attributes);
 
       // Handle relative parameter targets
       if (attributes.relative === 'true') {
         param.target = {};
 
-        const target = findChild(elements[0],
+        const target = findChild(childNodes[0],
           ['Elements', 'RelativePathElement', 'TargetName']);
 
         if (target) {
@@ -187,7 +187,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     const document = createElement('script', []);
 
     const result = {
-      elements: [
+      childNodes: [
         document,
       ],
     };
@@ -228,7 +228,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     }
 
     if (node.isQuickDynamic || meta.length) {
-      document.elements.push(createElement('metadata', meta));
+      prependChild(document, createElement('metadata', meta));
     }
 
     // Insert parameters
@@ -244,7 +244,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
           elements = [createElement('RelativePath', [targetElements])];
 
           if (name !== undefined) {
-            targetElements.elements = [
+            targetElements.childNodes = [
               createElement('RelativePathElement', [
                 createElement('TargetName', [
                   createElement('NamespaceIndex', [createTextNode(`${namespaceIndex}`)]),
@@ -258,12 +258,12 @@ export class AtviseScriptTransformer extends XMLTransformer {
           delete attributes.target;
         }
 
-        document.elements.push(createElement('parameter', elements, attributes));
+        appendChild(document, createElement('parameter', elements, attributes));
       });
     }
 
     // Insert script code
-    document.elements.push(createElement('code', [createCDataNode(code)]));
+    appendChild(document, createElement('code', [createCDataNode(code)]));
 
     // eslint-disable-next-line no-param-reassign
     node.value.value = this.encodeContents(result);
