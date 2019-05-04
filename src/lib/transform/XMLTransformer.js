@@ -64,7 +64,7 @@ export default class XMLTransformer extends SplittingTransformer {
    */
   decodeContents(node) {
     return parse(this.direction === TransformDirection.FromDB ?
-      node.value.value :
+      node.value.value.toString() :
       node.stringValue);
   }
 
