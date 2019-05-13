@@ -236,7 +236,6 @@ export default class NodeBrowser {
             !ignored &&
             !external
           ) {
-
             if (
               reference.referenceTypeId.value === ReferenceTypeIds.HasHistoricalConfiguration ||
               (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1)
