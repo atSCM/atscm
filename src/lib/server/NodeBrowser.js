@@ -236,7 +236,6 @@ export default class NodeBrowser {
             !ignored &&
             !external
           ) {
-            const earlierParent = this.parentNode.get(reference.nodeId.value);
 
             if (
               reference.referenceTypeId.value === ReferenceTypeIds.HasHistoricalConfiguration ||
@@ -246,6 +245,7 @@ export default class NodeBrowser {
               return;
             }
 
+            const earlierParent = this.parentNode.get(reference.nodeId.value);
             if (earlierParent) {
               Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
                 earlierParent}' and '${node.id.value}'.
