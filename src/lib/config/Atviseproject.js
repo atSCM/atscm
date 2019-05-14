@@ -166,4 +166,14 @@ export default class Atviseproject {
     return 'git';
   }
 
+  /**
+   * If atvise builder sort order nodes should be stored.
+   * @type {boolean}
+   * @since 1.0.0
+   * @deprecated Mapping source order nodes leads to inconsistent results in many cases.
+   */
+  static get preserveSortOrderNodes() {
+    return false;
+  }
+
 }

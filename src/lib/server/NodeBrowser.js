@@ -122,6 +122,10 @@ export default class NodeBrowser {
     /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
 
+    /** If a warning should be printed for attempting to pull sort order nodes
+     * @type {boolean} */
+    this._printSortOrderWarning = recursive;
+
     /** The custom node handler. @type {function(node: BrowsedNode): Promise<any>} */
     this._handleNode = handleNode;
 
@@ -243,6 +247,19 @@ export default class NodeBrowser {
               (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1)
             ) {
               references.push(reference);
+              return;
+            }
+
+            if (
+              !ProjectConfig.preserveSortOrderNodes &&
+              reference.nodeId.value.endsWith('.SortOrder')
+            ) {
+              if (this._printSortOrderWarning) {
+                Logger.warn(`Skipped pulling an atvise builder sort order node.
+ - Reason: These nodes are not consistent across pulls.
+ - You can force pulling them by setting Atviseproject.preserveSortOrderNodes.`);
+                this._printSortOrderWarning = false;
+              }
               return;
             }
 
