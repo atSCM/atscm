@@ -114,13 +114,28 @@ export default class Atviseproject {
   }
 
   /**
+   * Server nodes atscm manages itself. These include the serverscripts used during pull/push for
+   * example.
+   * @type {NodeId[]}
+   */
+  static get AtscmRelatedNodes() {
+    return [
+      new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm'),
+    ];
+  }
+
+  /**
    * These nodes (and their subnodes, if any) will be ignored by atvise-scm. Defaults to
    * {@link Atviseproject.EditorRelatedNodes} combined with
    * {@link Atviseproject.ServerRelatedNodes}.
    * @type {NodeId[]}
    */
   static get ignoreNodes() {
-    return this.EditorRelatedNodes.concat(this.ServerRelatedNodes);
+    return [
+      ...this.EditorRelatedNodes,
+      ...this.ServerRelatedNodes,
+      ...this.AtscmRelatedNodes,
+    ];
   }
 
   /**
