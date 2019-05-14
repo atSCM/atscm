@@ -7,6 +7,7 @@ import {
   QuickDynamicTransformer,
 } from '../../transform/ScriptTransformer.js';
 import MappingTransformer from '../../transform/Mapping';
+import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -52,6 +53,7 @@ export default class Atviseproject {
    */
   static get useTransformers() {
     return [
+      new AlarmConfigTransformer(),
       new DisplayTransformer(),
       new ServerscriptTransformer(),
       new QuickDynamicTransformer(),
