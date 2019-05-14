@@ -1,7 +1,7 @@
 import { ObjectIds } from 'node-opcua/lib/opcua_node_ids.js';
 import { BrowseDirection } from 'node-opcua/lib/services/browse_service.js';
 import { AttributeIds } from 'node-opcua/lib/services/read_service';
-import { VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { VariantArrayType, DataType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
 import ProjectConfig from '../../config/ProjectConfig';
