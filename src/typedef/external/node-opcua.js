@@ -35,11 +35,11 @@
  */
 
 /**
- * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.ts
+ * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/DataType_enum.ts
  */
 
 /**
- * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.ts
+ * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/VariantArrayType_enum.ts
  */
 
 /**
