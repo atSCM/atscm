@@ -114,7 +114,8 @@ export default class Atviseproject {
   }
 
   /**
-   * Server nodes atscm manages itself. These are e.g. serverscripts used during pull/push.
+   * Server nodes atscm manages itself. These include the serverscripts used during pull/push for
+   * example.
    * @type {NodeId[]}
    */
   static get AtscmRelatedNodes() {
