@@ -188,7 +188,7 @@ export default class NodeBrowser {
             const arrayType = valueRank < 0 ? VariantArrayType.Scalar : VariantArrayType.Array;
 
             return resolve({
-              dataType,
+              dataType: DataType[dataType.value],
               arrayType,
               value: null,
             });
