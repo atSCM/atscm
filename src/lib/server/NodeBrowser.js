@@ -132,6 +132,8 @@ export default class NodeBrowser {
      * reference conflicts.
      * @type {Map<string, string>} */
     this.parentNode = new Map();
+
+    this.ensureHandled = new Set();
   }
 
   /**
@@ -252,6 +254,18 @@ export default class NodeBrowser {
   ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
             }
 
+            const [prefix, subPath] = reference.nodeId.value.split(node.id.value);
+            if (!subPath || prefix !== '') {
+              if (!ProjectConfig.isExternal(reference.nodeId.parent.value)) {
+                references.push(reference);
+
+                if (this._handled.get(reference.nodeId.value) === undefined) {
+                  this.ensureHandled.add(reference.nodeId.value);
+                }
+                return;
+              }
+            }
+
             if (this._handled.get(reference.nodeId.value) === undefined) {
               this.parentNode.set(reference.nodeId.value, node.id.value);
               children.push(new BrowsedNode({
@@ -298,6 +312,8 @@ export default class NodeBrowser {
 
     // TODO: Remove additional properties (children, ...) for better memory-usage
 
+    const originalId = node.id.value;
+
     await this._handleNode(node);
 
     this._pushed += 1;
@@ -312,6 +328,7 @@ export default class NodeBrowser {
 
     const idValue = node.id.value;
     this._handled.set(idValue, true);
+    this.ensureHandled.delete(originalId);
 
     // Handle dependencies
     if (this._waitingFor[idValue]) {
@@ -506,6 +523,12 @@ export default class NodeBrowser {
     .join('\n  ')
 }
 `));
+            return;
+          }
+
+          if (this.ensureHandled.size) {
+            reject(new Error(`Some referenced nodes were not handled,
+ - ${Array.from(this.ensureHandled).join('\n - ')}`));
             return;
           }
 
