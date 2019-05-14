@@ -22,10 +22,14 @@ export function performPull(nodes, options = {}) {
   const browser = new NodeBrowser({
     ...options,
     async handleNode(node, { transform = true } = {}) {
+      let removed = false;
       const context = {
         _added: [],
         addNode(n) {
           this._added.push(n);
+        },
+        remove: () => {
+          removed = true;
         },
       };
 
@@ -33,6 +37,7 @@ export function performPull(nodes, options = {}) {
         await applyTransforms(node, context);
       }
 
+      if (removed) { return; }
       await writeStream.writeAsync(node);
 
       // Enqueue added nodes
