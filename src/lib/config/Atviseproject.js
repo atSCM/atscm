@@ -7,6 +7,7 @@ import {
   QuickDynamicTransformer,
 } from '../../transform/ScriptTransformer.js';
 import MappingTransformer from '../../transform/Mapping';
+import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
 
 /**
  * An *atvise-scm* project's configuration.
@@ -52,6 +53,7 @@ export default class Atviseproject {
    */
   static get useTransformers() {
     return [
+      new AlarmConfigTransformer(),
       new DisplayTransformer(),
       new ServerscriptTransformer(),
       new QuickDynamicTransformer(),
@@ -114,13 +116,28 @@ export default class Atviseproject {
   }
 
   /**
+   * Server nodes atscm manages itself. These include the serverscripts used during pull/push for
+   * example.
+   * @type {NodeId[]}
+   */
+  static get AtscmRelatedNodes() {
+    return [
+      new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm'),
+    ];
+  }
+
+  /**
    * These nodes (and their subnodes, if any) will be ignored by atvise-scm. Defaults to
    * {@link Atviseproject.EditorRelatedNodes} combined with
    * {@link Atviseproject.ServerRelatedNodes}.
    * @type {NodeId[]}
    */
   static get ignoreNodes() {
-    return this.EditorRelatedNodes.concat(this.ServerRelatedNodes);
+    return [
+      ...this.EditorRelatedNodes,
+      ...this.ServerRelatedNodes,
+      ...this.AtscmRelatedNodes,
+    ];
   }
 
   /**
@@ -147,6 +164,16 @@ export default class Atviseproject {
    */
   static get vcs() {
     return 'git';
+  }
+
+  /**
+   * If atvise builder sort order nodes should be stored.
+   * @type {boolean}
+   * @since 1.0.0
+   * @deprecated Mapping source order nodes leads to inconsistent results in many cases.
+   */
+  static get preserveSortOrderNodes() {
+    return false;
   }
 
 }

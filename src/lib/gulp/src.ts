@@ -295,7 +295,12 @@ export class SourceBrowser {
         return this._processPath({ path: join(path, '../'), parent, children, push });
       }
 
-      nextChildren.forEach(node => this.processPath(node));
+      const inheritParent = path.endsWith('.inner');
+      nextChildren.forEach(node => {
+        // eslint-disable-next-line no-param-reassign
+        if (inheritParent) { node.parent = parent; }
+        this.processPath(node);
+      });
     } else if (s.isFile()) {
       if (!isDefinitionFile(path)) {
         // FIXME: Browse parent here for watch task / Variable source node

@@ -1,7 +1,7 @@
 import { ObjectIds } from 'node-opcua/lib/opcua_node_ids.js';
 import { BrowseDirection } from 'node-opcua/lib/services/browse_service.js';
 import { AttributeIds } from 'node-opcua/lib/services/read_service';
-import { VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import { VariantArrayType, DataType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
 import ProjectConfig from '../../config/ProjectConfig';
@@ -122,6 +122,10 @@ export default class NodeBrowser {
     /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
 
+    /** If a warning should be printed for attempting to pull sort order nodes
+     * @type {boolean} */
+    this._printSortOrderWarning = recursive;
+
     /** The custom node handler. @type {function(node: BrowsedNode): Promise<any>} */
     this._handleNode = handleNode;
 
@@ -132,6 +136,8 @@ export default class NodeBrowser {
      * reference conflicts.
      * @type {Map<string, string>} */
     this.parentNode = new Map();
+
+    this.ensureHandled = new Set();
   }
 
   /**
@@ -186,7 +192,7 @@ export default class NodeBrowser {
             const arrayType = valueRank < 0 ? VariantArrayType.Scalar : VariantArrayType.Array;
 
             return resolve({
-              dataType,
+              dataType: DataType[dataType.value],
               arrayType,
               value: null,
             });
@@ -236,8 +242,6 @@ export default class NodeBrowser {
             !ignored &&
             !external
           ) {
-            const earlierParent = this.parentNode.get(reference.nodeId.value);
-
             if (
               reference.referenceTypeId.value === ReferenceTypeIds.HasHistoricalConfiguration ||
               (isUserGroup && reference.nodeId.value.split(node.nodeId).length === 1)
@@ -246,11 +250,37 @@ export default class NodeBrowser {
               return;
             }
 
+            if (
+              !ProjectConfig.preserveSortOrderNodes &&
+              reference.nodeId.value.endsWith('.SortOrder')
+            ) {
+              if (this._printSortOrderWarning) {
+                Logger.warn(`Skipped pulling an atvise builder sort order node.
+ - Reason: These nodes are not consistent across pulls.
+ - You can force pulling them by setting Atviseproject.preserveSortOrderNodes.`);
+                this._printSortOrderWarning = false;
+              }
+              return;
+            }
+
+            const earlierParent = this.parentNode.get(reference.nodeId.value);
             if (earlierParent) {
               Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
                 earlierParent}' and '${node.id.value}'.
   - Reference type (to the latter): ${
   ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
+            }
+
+            const [prefix, subPath] = reference.nodeId.value.split(node.id.value);
+            if (!subPath || prefix !== '') {
+              if (!ProjectConfig.isExternal(reference.nodeId.parent.value)) {
+                references.push(reference);
+
+                if (this._handled.get(reference.nodeId.value) === undefined) {
+                  this.ensureHandled.add(reference.nodeId.value);
+                }
+                return;
+              }
             }
 
             if (this._handled.get(reference.nodeId.value) === undefined) {
@@ -299,6 +329,8 @@ export default class NodeBrowser {
 
     // TODO: Remove additional properties (children, ...) for better memory-usage
 
+    const originalId = node.id.value;
+
     await this._handleNode(node);
 
     this._pushed += 1;
@@ -313,6 +345,7 @@ export default class NodeBrowser {
 
     const idValue = node.id.value;
     this._handled.set(idValue, true);
+    this.ensureHandled.delete(originalId);
 
     // Handle dependencies
     if (this._waitingFor[idValue]) {
@@ -507,6 +540,12 @@ export default class NodeBrowser {
     .join('\n  ')
 }
 `));
+            return;
+          }
+
+          if (this.ensureHandled.size) {
+            reject(new Error(`Some referenced nodes were not handled,
+ - ${Array.from(this.ensureHandled).join('\n - ')}`));
             return;
           }
 
