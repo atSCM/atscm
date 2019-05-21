@@ -1,3 +1,14 @@
+<a name="0.8.0"></a>
+# 0.8.0 (2019-05-21)
+
+
+### Features
+
+* **init:** Add '--yes' and '--link' options ([#138](https://github.com/atSCM/atscm-cli/issues/138)) ([d18dcf6](https://github.com/atSCM/atscm-cli/commits/d18dcf6))
+
+
+
+
 <a name="0.7.1"></a>
 ## 0.7.1 (2019-03-08)
 
