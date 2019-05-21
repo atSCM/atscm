@@ -50,6 +50,11 @@ const Options = {
   version: Option.boolean('Print version.', { alias: 'v' }),
   beta: Option.boolean('Use atscm beta resources.'),
   debug: Option.boolean('Use debug mode.'),
+  yes: Option.boolean('Use default values.', { alias: 'y' }),
+  // NOTE: Commit once gulp is no longer required for running
+  link: Option.boolean('Link atscm instead of installing. ' +
+    'This allows you to use you local atscm version. (Run `npm link .` first)'),
+
 };
 
 export default Options;
