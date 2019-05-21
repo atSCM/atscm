@@ -71,6 +71,9 @@
     "yargs": "^11.0.0"
   },
   "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
     "extends": "lsage"
   },
   "babel": {

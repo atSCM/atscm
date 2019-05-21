@@ -21,6 +21,20 @@ function defaultExport(mod) {
 }
 
 /**
+ * Utility that returns any non-function values and calls them with the given args otherwise.
+ * @param {function(...args: any[]): any | any} value The value to return or function to call.
+ * @param {...any} [args] The arguments to apply if value is a function.
+ * @return {any} The value or function call result.
+ */
+function allowFunction(value, ...args) {
+  if (typeof value === 'function') {
+    return value(...args);
+  }
+
+  return value;
+}
+
+/**
  * The command invoked when running "init".
  */
 export default class InitCommand extends Command {
@@ -33,8 +47,10 @@ export default class InitCommand extends Command {
   constructor(name, description) {
     super(name, description, {
       options: {
+        yes: CliOptions.yes,
         force: CliOptions.force,
         beta: CliOptions.beta,
+        link: CliOptions.link,
       },
     });
   }
@@ -97,48 +113,64 @@ export default class InitCommand extends Command {
   }
 
   /**
+   * Runs npm with the given args.
+   * @param {string[]} args The arguments to call npm with.
+   * @param {Object} options Options applied to the spawn call.
+   */
+  runNpm(args, options = {}) {
+    return new Promise((resolve, reject) => {
+      which('npm', (err, npm) => {
+        if (err) { return reject(err); }
+
+        const child = spawn(npm, args, Object.assign({}, options, { /* stdio: 'inherit' */ }))
+          .on('error', npmErr => reject(npmErr))
+          .on('close', code => {
+            if (code > 0) {
+              reject(new Error(`npm ${args[0]} returned code ${code}`));
+            } else {
+              resolve();
+            }
+          });
+
+        Logger.pipeLastLine(child.stderr);
+        Logger.pipeLastLine(child.stdout);
+
+        return child;
+      });
+    });
+  }
+
+  /**
    * Runs `npm install --save-dev {packages}` at the given path.
    * @param {string} path The path to install packages at.
    * @param {String|String[]} packages Names of the packages to install.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
   install(path, packages) {
-    return new Promise((resolve, reject) => {
-      which('npm', (err, npm) => {
-        if (err) {
-          reject(err);
-        } else {
-          const child = spawn(npm, ['install', '--save-dev'].concat(packages), { cwd: path })
-            .on('error', npmErr => reject(npmErr))
-            .on('close', code => {
-              if (code > 0) {
-                reject(new Error(`npm install returned code ${code}`));
-              } else {
-                resolve();
-              }
-            });
-
-          Logger.pipeLastLine(child.stdout);
-        }
-      });
-    });
+    return this.runNpm(['install', '--save-dev'].concat(packages), { cwd: path });
   }
 
   /**
    * Installs the local atscm module at the given path.
    * @param {string} path The path to install the module at.
-   * @param {boolean} [useBetaRelease=false] If beta versions should be used.
+   * @param {Object} options The options to use.
+   * @param {boolean} [options.useBetaRelease=false] If beta versions should be used.
+   * @param {boolean} [options.link=false] Link instead of installing.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
-  installLocal(path, useBetaRelease = false) {
+  async installLocal(path, { beta: useBetaRelease = false, link = false } = {}) {
     Logger.info('Installing latest version of atscm...');
 
     if (useBetaRelease) {
       Logger.debug(Logger.colors.gray('Using beta release'));
     }
 
-    // FIXME: call with (path, 'atscm') once atscm is published
-    return this.install(path, useBetaRelease ? 'atscm@beta' : 'atscm');
+    await this.install(path, useBetaRelease ? 'atscm@beta' : 'atscm');
+
+    if (link) {
+      Logger.info('Linking atscm...');
+      await this.runNpm(['link', 'atscm'], { cwd: path });
+    }
   }
 
   /**
@@ -163,17 +195,46 @@ export default class InitCommand extends Command {
   }
 
   /**
+   * Returns the default values for the given init options.
+   * @param {Object[]} options An array of init options to check.
+   */
+  getDefaultOptions(options) {
+    return options.reduce((current, option) => {
+      if (option.when && !allowFunction(option.when, current)) {
+        return current;
+      }
+
+      let value;
+      if (option.default !== undefined) {
+        value = option.default;
+      } else if (option.choices) {
+        const [firstChoice] = allowFunction(option.choices, current);
+        value = firstChoice.value || firstChoice;
+      }
+
+      return Object.assign(current, {
+        [option.name]: value,
+      });
+    }, {});
+  }
+
+  /**
    * Resolves the needed options from the local atscm module and asks for them. These options are
    * stored in the `atscm` module inside `out/init/options`.
    * @param {string} modulePath The path to the local module to use.
+   * @param {Object} [options] The options to use.
+   * @param {boolean} [options.useDefaults=false] Use default values.
    * @return {Promise<Object, Error>} Resolved with the chosen options.
    */
-  getOptions(modulePath) {
-    Logger.info('Answer these questions to create a new project:');
-
+  getOptions(modulePath, { useDefaults = false } = {}) {
     // eslint-disable-next-line global-require
     const options = defaultExport(require(join(modulePath, '../init/options')));
 
+    if (useDefaults) {
+      return this.getDefaultOptions(options);
+    }
+
+    Logger.info('Answer these questions to create a new project:');
     return prompt(options);
   }
 
@@ -212,16 +273,22 @@ export default class InitCommand extends Command {
     return cli.getEnvironment(false)
       .then(env => this.checkDirectory(env.cwd, cli.options.force))
       .then(() => this.createEmptyPackage(cli.environment.cwd))
-      .then(() => this.installLocal(cli.environment.cwd, cli.options.beta))
+      .then(() => this.installLocal(cli.environment.cwd, cli.options))
       .then(() => cli.getEnvironment(false))
       .then(env => this.checkCliVersion(env))
       .then(env => process.chdir(env.cwd))
-      .then(() => this.getOptions(cli.environment.modulePath))
+      .then(() => this.getOptions(cli.environment.modulePath, { useDefaults: cli.options.yes }))
       .then(options => this.writeFiles(
         cli.environment.modulePath,
         Object.assign({}, cli.environment, options)
       ))
       .then(result => this.installDependencies(cli.environment.cwd, result.install))
+      .then(async () => {
+        if (cli.options.link) {
+          Logger.info('Linking atscm...');
+          await this.runNpm(['link', 'atscm'], { cwd: cli.environment.cwd });
+        }
+      })
       .then(() => {
         Logger.info('Created new project at', Logger.format.path(cli.environment.cwd));
       });
