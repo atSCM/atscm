@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.36"></a>
-# 1.0.0-beta.36 (2019-05-14)
+<a name="1.0.0-beta.37"></a>
+# 1.0.0-beta.37 (2019-05-29)
 
 
 ### Bug Fixes
@@ -29,6 +29,7 @@
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **pull:** Write rename.json after pull ([#257](https://github.com/atSCM/atscm/issues/257)) ([468fb52](https://github.com/atSCM/atscm/commits/468fb52))
 * **push:** Allow non-standard root nodes ([#236](https://github.com/atSCM/atscm/issues/236)) ([6da0bcc](https://github.com/atSCM/atscm/commits/6da0bcc))
+* **push:** Allow quotes in xml attribute values ([#316](https://github.com/atSCM/atscm/issues/316)) ([6e8b954](https://github.com/atSCM/atscm/commits/6e8b954))
 * **push:** Correctly create 64 bit integers ([11394cd](https://github.com/atSCM/atscm/commits/11394cd))
 * **push:** Correctly create array variables ([40ec3c1](https://github.com/atSCM/atscm/commits/40ec3c1))
 * **push:** Ensure parent node for '.inner'-node ([#311](https://github.com/atSCM/atscm/issues/311)) ([1dae982](https://github.com/atSCM/atscm/commits/1dae982))
