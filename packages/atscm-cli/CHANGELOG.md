@@ -1,3 +1,14 @@
+<a name="0.8.1"></a>
+## 0.8.1 (2019-06-01)
+
+
+### Bug Fixes
+
+* **package:** Update dependency axios to ^0.19.0 ([#140](https://github.com/atSCM/atscm-cli/issues/140)) ([93d2c4c](https://github.com/atSCM/atscm-cli/commits/93d2c4c))
+
+
+
+
 <a name="0.8.0"></a>
 # 0.8.0 (2019-05-21)
 
