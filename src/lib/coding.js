@@ -42,7 +42,7 @@ const toRawValue = {
   [DataType.Null]: () => null,
   [DataType.StatusCode]: ({ name }) => name,
   [DataType.QualifiedName]: ({ namespaceIndex, name }) => ({ namespaceIndex, name }),
-  [DataType.LocalizedText]: ({ text, locale }) => ({ text, locale }),
+  [DataType.LocalizedText]: ({ text, locale }) => ({ text: text || null, locale }),
   [DataType.DataValue]: value => {
     const options = pick(value, ['value', 'statusCode', 'sourceTimestamp', 'sourcePicoseconds',
       'serverTimestamp', 'serverPicoseconds']);
