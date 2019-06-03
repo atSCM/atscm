@@ -23,8 +23,8 @@ export default class {{pascalcase name}} extends Atviseproject {
         return {
             opc: {{atvisePortOpc}},
             http: {{atvisePortHttp}},
-        }
-    };
+        };
+    }
     {{#if useLogin}}
 
     /**
