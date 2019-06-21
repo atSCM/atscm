@@ -60,7 +60,7 @@ export default class InitCommand extends Command {
    * under macOS, *thumbs* under Windows) are ignored.
    * @param {string} path The path to check.
    * @param {boolean} [overwrite=false] If existing files should be overwritten.
-   * @return {Promise<String, Error>} Fulfilled with the valid directory's path, rejected if `path`
+   * @return {Promise<string, Error>} Fulfilled with the valid directory's path, rejected if `path`
    * contains no or a non-empty directory.
    */
   checkDirectory(path, overwrite = false) {
@@ -143,7 +143,7 @@ export default class InitCommand extends Command {
   /**
    * Runs `npm install --save-dev {packages}` at the given path.
    * @param {string} path The path to install packages at.
-   * @param {String|String[]} packages Names of the packages to install.
+   * @param {string|string[]} packages Names of the packages to install.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
   install(path, packages) {
@@ -244,8 +244,8 @@ export default class InitCommand extends Command {
    * @param {string} modulePath The path to the local module to use.
    * @param {Object} options The options to apply (Received by calling
    * {@link InitCommand#getOptions}).
-   * @return {Promise<{install: String[]}, Error>} Resolved with information on the further init
-   * steps (e.g. which dependencies are needed), rejected with an error if running the init script
+   * @return {Promise<{install: string[]}, Error>} Resolved with information on the further init
+   * steps (which dependencies are needed), rejected with an error if running the init script
    * failed.
    */
   writeFiles(modulePath, options) {
@@ -256,7 +256,7 @@ export default class InitCommand extends Command {
   /**
    * Installs any additional dependencies needed after writing files.
    * @param {string} path The path to install the dependencies at.
-   * @param {String[]} deps Names of the packages to install.
+   * @param {string[]} deps Names of the packages to install.
    * @return {Promise<undefined, Error>} Rejected if installing failed, resolved otherwise.
    */
   installDependencies(path, deps) {

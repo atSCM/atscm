@@ -50,7 +50,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Creates a new {@link AtSCMCli} object based on command line arguments.
-   * @param {String[]} argv The command line arguments to use. If no command is provided and neither
+   * @param {string[]} argv The command line arguments to use. If no command is provided and neither
    * `--help` nor `--version` are used, the command `run` is added.
    * @throws {UsageError} Throws an error if option parsing fails.
    */
@@ -229,7 +229,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Returns the CLI version and, if a local module could be found, the local version.
-   * @return {Promise<{cli: String, local: ?String}>} Fulfilled with the found cli and local
+   * @return {Promise<{cli: string, local: ?string}>} Fulfilled with the found cli and local
    * version.
    */
   getVersion() {
@@ -242,7 +242,7 @@ export default class AtSCMCli extends Liftoff {
 
   /**
    * Gets and prints the CLI version and, if a local module could be found, the local version.
-   * @return {Promise<{cli: String, local: ?String}>} Fulfilled with the found cli and local
+   * @return {Promise<{cli: string, local: ?string}>} Fulfilled with the found cli and local
    * version.
    */
   printVersion() {

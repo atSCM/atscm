@@ -94,7 +94,7 @@ export default class Logger {
 
   /**
    * Print debug messages.
-   * @param {...String} message The message(s) to print.
+   * @param {...string} message The message(s) to print.
    */
   static debug(...message) {
     gulplog.debug(...message);
@@ -102,7 +102,7 @@ export default class Logger {
 
   /**
    * Print regular logs.
-   * @param {...String} message The message(s) to print.
+   * @param {...string} message The message(s) to print.
    */
   static info(...message) {
     gulplog.info(...message);
@@ -110,7 +110,7 @@ export default class Logger {
 
   /**
    * Print warnings.
-   * @param {...String} message The message(s) to print.
+   * @param {...string} message The message(s) to print.
    */
   static warn(...message) {
     gulplog.warn(...message);
@@ -118,7 +118,7 @@ export default class Logger {
 
   /**
    * Print error messages.
-   * @param {...String} message The message(s) to print.
+   * @param {...string} message The message(s) to print.
    */
   static error(...message) {
     gulplog.error(...message);
@@ -126,7 +126,7 @@ export default class Logger {
 
   /**
    * The log types available.
-   * @type {String[]}
+   * @type {string[]}
    */
   static get types() {
     return ['error', 'warn', 'info', 'debug'];
