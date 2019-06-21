@@ -1,11 +1,9 @@
 import { realpathSync } from 'fs';
 import { join } from 'path';
-import { EOL } from 'os';
 import Liftoff from 'liftoff';
 import yargs from 'yargs';
 import gulplog from 'gulplog';
 import { jsVariants } from 'interpret';
-import { yellow } from 'chalk';
 import pkg from '../package.json';
 import Logger from './lib/util/Logger';
 import Options, { GlobalOptions } from './cli/Options';
@@ -45,11 +43,6 @@ export default class AtSCMCli extends Liftoff {
       Logger.info(err.help);
     } else {
       Logger.debug(err.stack);
-
-      if (err instanceof SyntaxError && this._failedRequires.length) {
-        Logger.info(yellow(`You may have to install the '${this._failedRequires[0]}' module.`));
-        Logger.info(['Other failed requires:', ...this._failedRequires].join(`${EOL} - `));
-      }
     }
 
     process.exitCode = 1;
@@ -72,14 +65,8 @@ export default class AtSCMCli extends Liftoff {
       Logger.debug('Requiring external module', Logger.colors.magenta(name));
     });
 
-    /** If requiring an external module failed.
-     * @type {string[]} */
-    this._failedRequires = [];
-
     this.on('requireFail', function(name) {
-      this._failedRequires.push(name);
-
-      Logger.debug(
+      Logger.error(
         Logger.colors.red('Failed to load external module'),
         Logger.colors.magenta(name)
       );
