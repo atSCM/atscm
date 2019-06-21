@@ -9,7 +9,7 @@ export default class Command {
    * @param {string} name The command's name.
    * @param {string} description The command's description.
    * @param {Object} options The options to apply.
-   * @param {Map<String, Option>} options.options The options available for this command.
+   * @param {Map<string, Option>} options.options The options available for this command.
    * @param {string} [options.arguments] The command's argument string. See yargs' documentation
    * for details.
    * @param {number} [options.minArguments] The minimum number or (non-option) arguments the command
@@ -78,7 +78,7 @@ export default class Command {
 
   /**
    * The options available for the command.
-   * @type {Map<String, Option>}
+   * @type {Map<string, Option>}
    */
   get options() {
     return this._options.options || {};
@@ -86,7 +86,7 @@ export default class Command {
 
   /**
    * The minimum and maximum number of (non-option) arguments the command handles.
-   * @type {Number[]}
+   * @type {number[]}
    */
   get demandCommand() {
     const ret = [this._options.minArguments || 0];
