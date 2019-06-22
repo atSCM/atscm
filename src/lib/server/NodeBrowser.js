@@ -210,7 +210,7 @@ export default class NodeBrowser {
   _browse({ nodeId, browseDirection = BrowseDirection.Forward, resultMask = 63 }) {
     return new Promise((resolve, reject) => {
       this._session.browse({ nodeId, browseDirection, resultMask },
-        (err, [{ references }] = []) => (err ? reject(err) : resolve(references)));
+        (err, data = []) => (err ? reject(err) : resolve(data[0].references)));
     });
   }
 
