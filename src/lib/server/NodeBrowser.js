@@ -263,14 +263,6 @@ export default class NodeBrowser {
               return;
             }
 
-            const earlierParent = this.parentNode.get(reference.nodeId.value);
-            if (earlierParent) {
-              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
-                earlierParent}' and '${node.id.value}'.
-  - Reference type (to the latter): ${
-  ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
-            }
-
             const [prefix, subPath] = reference.nodeId.value.split(node.id.value);
             if (!subPath || prefix !== '') {
               if (!ProjectConfig.isExternal(reference.nodeId.parent.value)) {
@@ -281,6 +273,14 @@ export default class NodeBrowser {
                 }
                 return;
               }
+            }
+
+            const earlierParent = this.parentNode.get(reference.nodeId.value);
+            if (earlierParent) {
+              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
+                earlierParent}' and '${node.id.value}'.
+  - Reference type (to the latter): ${
+  ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
             }
 
             if (this._handled.get(reference.nodeId.value) === undefined) {
