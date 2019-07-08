@@ -210,7 +210,7 @@ export default class NodeBrowser {
   _browse({ nodeId, browseDirection = BrowseDirection.Forward, resultMask = 63 }) {
     return new Promise((resolve, reject) => {
       this._session.browse({ nodeId, browseDirection, resultMask },
-        (err, [{ references }] = []) => (err ? reject(err) : resolve(references)));
+        (err, data = []) => (err ? reject(err) : resolve(data[0].references)));
     });
   }
 
@@ -263,14 +263,6 @@ export default class NodeBrowser {
               return;
             }
 
-            const earlierParent = this.parentNode.get(reference.nodeId.value);
-            if (earlierParent) {
-              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
-                earlierParent}' and '${node.id.value}'.
-  - Reference type (to the latter): ${
-  ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
-            }
-
             const [prefix, subPath] = reference.nodeId.value.split(node.id.value);
             if (!subPath || prefix !== '') {
               if (!ProjectConfig.isExternal(reference.nodeId.parent.value)) {
@@ -281,6 +273,14 @@ export default class NodeBrowser {
                 }
                 return;
               }
+            }
+
+            const earlierParent = this.parentNode.get(reference.nodeId.value);
+            if (earlierParent) {
+              Logger.warn(`'${reference.nodeId.value}' was discovered as a child node of both '${
+                earlierParent}' and '${node.id.value}'.
+  - Reference type (to the latter): ${
+  ReferenceTypeNames[reference.referenceTypeId.value]} (${reference.referenceTypeId.value})`);
             }
 
             if (this._handled.get(reference.nodeId.value) === undefined) {
