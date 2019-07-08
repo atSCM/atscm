@@ -188,6 +188,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     const result = {
       childNodes: [
+        { type: 'directive', value: '<?xml version="1.0" encoding="UTF-8"?>' },
         document,
       ],
     };
