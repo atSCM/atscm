@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.37"></a>
-# 1.0.0-beta.37 (2019-05-29)
+<a name="1.0.0-beta.38"></a>
+# 1.0.0-beta.38 (2019-07-08)
 
 
 ### Bug Fixes
@@ -19,6 +19,7 @@
 * **pull:** Fix on variable source nodes only ([#249](https://github.com/atSCM/atscm/issues/249)) ([7b64fdc](https://github.com/atSCM/atscm/commits/7b64fdc))
 * **pull:** Ignore invalid alarm configuration limit nodes ([#313](https://github.com/atSCM/atscm/issues/313)) ([c1cbb11](https://github.com/atSCM/atscm/commits/c1cbb11))
 * **pull:** Prevent pulling with invalid configuration ([#243](https://github.com/atSCM/atscm/issues/243)) ([2e37bba](https://github.com/atSCM/atscm/commits/2e37bba)), closes [#242](https://github.com/atSCM/atscm/issues/242)
+* **pull:** Properly handle relative node targets ([#320](https://github.com/atSCM/atscm/issues/320)) ([ae15743](https://github.com/atSCM/atscm/commits/ae15743)), closes [#319](https://github.com/atSCM/atscm/issues/319)
 * **pull:** Properly pull displays with multiple inline scripts ([#309](https://github.com/atSCM/atscm/issues/309)) ([aa67735](https://github.com/atSCM/atscm/commits/aa67735))
 * **pull:** Pull nodes with invalid ids ([#217](https://github.com/atSCM/atscm/issues/217)) ([f334f34](https://github.com/atSCM/atscm/commits/f334f34))
 * **pull:** Replace ':'s to prevent invalid filenames ([#212](https://github.com/atSCM/atscm/issues/212)) ([4f5c834](https://github.com/atSCM/atscm/commits/4f5c834))
@@ -44,6 +45,7 @@
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
+* Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
