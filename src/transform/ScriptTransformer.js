@@ -94,7 +94,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       if (attributes.relative === 'true') {
         param.target = {};
 
-        const target = path && findChild(childNodes.find(isElement),
+        const target = findChild(childNodes.find(isElement),
           ['Elements', 'RelativePathElement', 'TargetName']);
 
         if (target) {
