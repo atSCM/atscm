@@ -2,7 +2,7 @@ import Logger from 'gulplog';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import {
   findChild, findChildren, textContent, createElement, createTextNode, createCDataNode,
-  prependChild, appendChild,
+  prependChild, appendChild, isElement,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
@@ -94,7 +94,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       if (attributes.relative === 'true') {
         param.target = {};
 
-        const target = findChild(childNodes[0],
+        const target = findChild(childNodes.find(isElement),
           ['Elements', 'RelativePathElement', 'TargetName']);
 
         if (target) {
@@ -188,6 +188,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     const result = {
       childNodes: [
+        { type: 'directive', value: '<?xml version="1.0" encoding="UTF-8"?>' },
         document,
       ],
     };
