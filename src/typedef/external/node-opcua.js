@@ -43,7 +43,7 @@
  */
 
 /**
- * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/source/raw_status_codes.ts
+ * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/v0.0.60/lib/raw_status_codes.js
  */
 
 /**
