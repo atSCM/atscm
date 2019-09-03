@@ -43,7 +43,7 @@ export class FileNode extends SourceNode {
     if (references) {
       (Object.entries(references) as ([keyof typeof ReferenceTypeIds, (string | number)[]])[])
         .forEach(([ref, ids]) => {
-          const type = ReferenceTypeIds[ref];
+          const type = ReferenceTypeIds[ref] || parseInt(ref, 10);
 
           ids.forEach(id => {
             this.references.addReference(type, id);
