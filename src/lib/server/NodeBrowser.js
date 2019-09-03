@@ -291,6 +291,13 @@ export default class NodeBrowser {
               }));
             } // else node is already handled
           } else if (reference.referenceTypeId.value !== 50) { // Added by atvise builder
+            // 'HasModelParent' reference set in atvise 3.3.2+
+            // Always points to parent node, which atscm already handles
+            if (reference.referenceTypeId.value === 334 &&
+              reference.nodeId.value === (node.parent && node.parent.id.value)) {
+              return;
+            }
+
             // Do not add ignored
             if (!ignored) {
               references.push(reference);
