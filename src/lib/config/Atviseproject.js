@@ -112,6 +112,7 @@ export default class Atviseproject {
       new NodeId('AGENT\.HISTORY\.METHODS'),
       new NodeId('AGENT\.SCRIPT\.METHODS'),
       new NodeId('AGENT\.OPCUA\.METHODS'),
+      new NodeId('AGENT\.ALARMING\.METHODS'),
     ];
   }
 
