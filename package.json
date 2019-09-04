@@ -10,7 +10,6 @@
   "scripts": {
     "compile": "babel src --out-dir out --source-maps --extensions .js,.ts",
     "compile:watch": "npm run compile -- --watch --verbose",
-    "commitmsg": "conventional-changelog-lint -e",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
     "lint": "eslint src test --ext .js,.ts",
@@ -110,5 +109,10 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "conventional-changelog-lint -e"
+    }
   }
 }
