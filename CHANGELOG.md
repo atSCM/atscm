@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.40"></a>
-# 1.0.0-beta.40 (2019-09-03)
+<a name="1.0.0-beta.41"></a>
+# 1.0.0-beta.41 (2019-09-04)
 
 
 ### Bug Fixes
@@ -53,6 +53,7 @@
 * Prevent errors with atvise 3.2.2+ ([#324](https://github.com/atSCM/atscm/issues/324)) ([e8a8b4a](https://github.com/atSCM/atscm/commits/e8a8b4a)), closes [#323](https://github.com/atSCM/atscm/issues/323)
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+* Resolve correct parent node for root nodes ([#326](https://github.com/atSCM/atscm/issues/326)) ([399d11f](https://github.com/atSCM/atscm/commits/399d11f))
 
 
 ### Features
