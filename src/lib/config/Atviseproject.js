@@ -5,7 +5,7 @@ import DisplayTransformer from '../../transform/DisplayTransformer';
 import ScriptTransformer from '../../transform/ScriptTransformer';
 
 /**
- * An *atvise-scm* project's configuration.
+ * An *atscm* project's configuration.
  * @abstract
  */
 export default class Atviseproject {
@@ -53,7 +53,7 @@ export default class Atviseproject {
   }
 
   /**
-   * The atvise-server nodes that atvise-scm should sync. Defaults to the nodes
+   * The atvise-server nodes that atscm should sync. Defaults to the nodes
    * *AGENT*, *SYSTEM*, *ObjectTypes.PROJECT* and *VariableTypes.PROJECT*.
    * @type {String[]|NodeId[]}
    */
@@ -79,7 +79,7 @@ export default class Atviseproject {
   }
 
   /**
-   * An array of editor related node ids. They should be ignored in a atvise-scm project.
+   * An array of editor related node ids. They should be ignored in a atscm project.
    * @type {NodeId[]}
    */
   static get EditorRelatedNodes() {
@@ -89,7 +89,7 @@ export default class Atviseproject {
   }
 
   /**
-   * An array of server related node ids. They should be ignored in a atvise-scm project
+   * An array of server related node ids. They should be ignored in a atscm project
    * as they are read-only.
    * @type {NodeId[]}
    */
@@ -107,7 +107,7 @@ export default class Atviseproject {
   }
 
   /**
-   * These nodes (and their subnodes, if any) will be ignored by atvise-scm. Defaults to
+   * These nodes (and their subnodes, if any) will be ignored by atscm. Defaults to
    * {@link Atviseproject.EditorRelatedNodes} combined with
    * {@link Atviseproject.ServerRelatedNodes}.
    * @type {NodeId[]}

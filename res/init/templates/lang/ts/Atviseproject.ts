@@ -1,7 +1,7 @@
 import { Atviseproject } from 'atscm';
 
 /**
- * atvise-scm configuration of {{name}}.
+ * atscm configuration of {{name}}.
  */
 export default class {{pascalcase name}} extends Atviseproject {
 

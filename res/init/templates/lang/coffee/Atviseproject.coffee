@@ -1,7 +1,7 @@
 { Atviseproject } = require 'atscm'
 
 ###*
- * atvise-scm configuration of {{name}}.
+ * atscm configuration of {{name}}.
 ###
 class {{pascalcase name}} extends Atviseproject
 
