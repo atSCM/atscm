@@ -1,4 +1,4 @@
-import { DataType } from 'node-opcua';
+import { DataType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
 import CallMethodStream from '../server/scripts/CallMethodStream';
@@ -28,6 +28,7 @@ export default class ImportStream extends CallMethodStream {
    * @return {node-opcua~Variant[]} The arguments for the `importNodes` method:
    *  - The import scope (which is set to be absolute)
    *  - The XML code (read from *file*)
+   * .
    */
   inputArguments(file) {
     return [

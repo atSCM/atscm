@@ -4,7 +4,7 @@ import proxyquire from 'proxyquire';
 import { obj as createStream } from 'through2';
 import { src } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
-import { transform as babelTransform } from 'babel-core';
+import { transform as babelTransform } from '@babel/core';
 import { transpileModule as tsTransform } from 'typescript';
 import evaluate from 'eval';
 import pkg from '../../../package.json';

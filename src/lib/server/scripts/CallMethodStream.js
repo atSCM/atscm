@@ -1,4 +1,4 @@
-import { StatusCodes } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import QueueStream from '../QueueStream';
 
 /**
@@ -30,7 +30,7 @@ export default class CallMethodStream extends QueueStream {
    * @param {vinyl~File} file The file beeing processed.
    * @return {?node-opcua~Variant[]} The resulting input arguments.
    */
-  inputArguments(file) { // eslint-disable-line no-unused-vars
+  inputArguments(file) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return [];
   }
 
@@ -62,7 +62,8 @@ export default class CallMethodStream extends QueueStream {
    * @param {function(err: Error)} callback Call this method with an error to indicate the method
    * call didn't work as expected.
    */
-  handleOutputArguments(file, outputArgs, callback) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handleOutputArguments(file, outputArgs, callback) {
     throw new Error('Must be implemented in all subclasses');
   }
 

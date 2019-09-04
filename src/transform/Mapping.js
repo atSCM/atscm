@@ -1,10 +1,63 @@
-import { join } from 'path';
-import Logger from 'gulplog';
-import { NodeClass } from 'node-opcua';
+import { basename } from 'path';
+import assert from 'assert';
+import { VariantArrayType, DataType } from 'node-opcua/lib/datamodel/variant';
 import Transformer from '../lib/transform/Transformer';
-import AtviseFile from '../lib/server/AtviseFile';
-import NodeId from '../lib/model/opcua/NodeId';
-import { sortReferences } from '../lib/helpers/mapping';
+
+/**
+ * Atvise specific types that need special extensions.
+ * @type {Map<string, Object>}
+ */
+const standardTypes = {
+  'VariableTypes.ATVISE.HtmlHelp': {
+    extension: '.help.html',
+    dataType: DataType.ByteString,
+  },
+  'VariableTypes.ATVISE.TranslationTable': {
+    extension: '.locs.xml',
+    dataType: DataType.XmlElement,
+  },
+};
+
+/**
+ * Extensions to use for {@link node-opcua~DataType}s.
+ * @type {Map<string, string>}
+ */
+const extensionForDataType = {
+  [DataType.Boolean.key]: '.bool',
+  [DataType.SByte.key]: '.sbyte',
+  [DataType.Byte.key]: '.byte',
+  [DataType.Int16.key]: '.int16',
+  [DataType.UInt16.key]: '.uint16',
+  [DataType.Int32.key]: '.int32',
+  [DataType.UInt32.key]: '.uint32',
+  [DataType.Int64.key]: '.int64',
+  [DataType.UInt64.key]: '.uint64',
+  [DataType.Float.key]: '.float',
+  [DataType.Double.key]: '.double',
+  [DataType.String.key]: '.string',
+  [DataType.DateTime.key]: '.datetime',
+  [DataType.Guid.key]: '.guid',
+  // [DataType.ByteString.key]: '.bytestring',
+  [DataType.XmlElement.key]: '.xml',
+  [DataType.NodeId.key]: '.nodeid',
+  [DataType.ExpandedNodeId.key]: '.enodeid',
+  [DataType.StatusCode.key]: '.status',
+  [DataType.QualifiedName.key]: '.name',
+  [DataType.LocalizedText.key]: '.text',
+  [DataType.ExtensionObject.key]: '.obj',
+  [DataType.DataValue.key]: '.value',
+  [DataType.Variant.key]: '.variant',
+  [DataType.DiagnosticInfo.key]: '.info',
+};
+
+/**
+ * Extensions to use for {@link node-opcua~VariantArrayType}s.
+ * @type {Map<string, string>}
+ */
+const extensionForArrayType = {
+  [VariantArrayType.Array.key]: '.array',
+  [VariantArrayType.Matrix.key]: '.matrix',
+};
 
 /**
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
@@ -28,126 +81,125 @@ export default class MappingTransformer extends Transformer {
   /**
    * Writes an {@link AtviseFile} for each {@link ReadStream.ReadResult} read. If a read file has a
    * non-standard type (definition) an additional `rc` file is pushed holding this type.
-   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * @param {Node} node The read result to create the file for.
    * @param {string} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
-  transformFromDB(readResult, encoding, callback) {
-    try {
-      const file = AtviseFile.fromReadResult(readResult);
+  transformFromDB(node, encoding, callback) {
+    if (!node.fullyMapped && !node.parentResolvesMetadata) { // Skip mapping for e.g. split files
+      const typeDefinition = node.typeDefinition;
+      let isStandardTypeNode = false;
 
-      if (readResult.parent && readResult.parent.value.match(/\.RESOURCES\//)) {
-        const relativePath = readResult.nodeId.value.split(readResult.parent.value)[1];
+      // Add extensions for standard types
+      for (const [def, { extension }] of Object.entries(standardTypes)) {
+        if (node.isVariable && typeDefinition === def) {
+          node.renameTo(`${node.name}${extension}`);
+          isStandardTypeNode = true;
 
-        if (relativePath[0] === '.') {
-          file.path = file.path.split(`${join(readResult.parent.filePath)}.`)
-            .join(`${readResult.parent.filePath}.inner/`);
+          // FIXME: Set dataType and mark as resolved
+          // FIXME: Set typeDefinition and mark as resolved
+        } else if (node.fileName.endsWith(extension)) {
+          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${extension}'`));
+          return;
         }
       }
 
-      if (readResult.nodeClass === NodeClass.Variable) {
-        const unmappedReferences = Object.assign({}, file.references);
+      // Add extensions for data types
+      for (const [type, ext] of Object.entries(extensionForDataType)) {
+        if (node.isVariable && node.value && node.value.dataType.key === type) {
+          if (!isStandardTypeNode) {
+            node.renameTo(`${node.name}${ext}`);
+            break;
+          }
 
-        if (unmappedReferences.toParent === 'HasComponent') {
-          delete unmappedReferences.toParent;
-        }
-
-        if (!file.relative.match(/\.var\./)) {
-          delete unmappedReferences.HasTypeDefinition;
-        }
-
-        if (file.relative.match(/\.prop\./)) {
-          delete unmappedReferences.toParent;
-        }
-
-        if (Object.keys(unmappedReferences).length) {
-          const rc = file.clone();
-
-          rc.basename = `.${rc.basename}.json`;
-
-          rc.contents = Buffer.from(JSON.stringify({
-            references: sortReferences(unmappedReferences),
-          }, null, '  '));
-
-          this.push(rc);
+          // FIXME: Set dataType and mark as resolved
         }
       }
 
-      callback(null, file);
-    } catch (e) {
-      Logger[e.message === 'no value' ? 'debug' : 'warn'](
-        `Unable to map ${readResult.nodeId.value}: ${e.message}`
-      );
-      Logger.debug(e);
+      // Add extensions for array types
+      for (const [type, ext] of Object.entries(extensionForArrayType)) {
+        if (node.isVariable && node.value.arrayType.key === type) {
+          if (!isStandardTypeNode) {
+            node.renameTo(`${node.name}${ext}`);
+          }
 
-      callback(null);
+          // FIXME: Set arrayType and mark as resolved
+        } else if (node.fileName.endsWith(ext)) {
+          callback(new Error(`Name conflict: ${node.nodeId} should not end with '${ext}'`));
+          return;
+        }
+      }
     }
+
+    // Compact mapping: Root source folders are AGENT, SYSTEM, ObjectTypes and VariableTypes
+    // FIXME: Make optional
+    const ignore = new Set([
+      58, // Objects -> Types -> BaseObjectType
+      62, // Objects -> Types -> BaseVariableType
+      85, // Objects
+      86, // Objects -> Types
+    ]);
+
+    for (let c = node; c && c.parent && !c._compactMappingApplied; c = c.parent) {
+      if (ignore.has(c.parent.id.value)) {
+        c.parent = c.parent.parent;
+        c = node;
+      }
+    }
+
+    Object.assign(node, {
+      _compactMappingApplied: true,
+    });
+
+    callback(null, node);
   }
 
   /**
-   * Writes an {@link AtviseFile} for each {@link vinyl~File} read.
-   * @param {vinyl~File} file The raw file.
+   * Writes an {@link AtviseFile} for each {@link Node} read.
+   * @param {Node} node The raw file.
    * @param {string} encoding The encoding used.
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error that occurred
    * while transforming the read result or the resulting file.
    */
-  transformFromFilesystem(file, encoding, callback) {
-    if (file.isDirectory()) {
-      callback(null);
-    } else if (file.stem[0] === '.' && !NodeClass[file.stem.slice(1)]) {
-      if (file.extname !== '.json') {
-        Logger.debug('Ignoring file', file.relative);
-        callback(null);
-        return;
+  transformFromFilesystem(node, encoding, callback) {
+    let isStandardTypeNode = false;
+
+    // Resolve standard type from extension
+    for (const [, { extension }] of Object.entries(standardTypes)) {
+      if (node.name.endsWith(extension)) {
+        isStandardTypeNode = true;
+
+        // FIXME: Set dataType and mark as resolved
+        // FIXME: Set typeDefinition and mark as resolved
+
+        node.renameTo(basename(node.name, extension));
       }
-      try {
-        const config = JSON.parse(file.contents);
-        this._readReferenceFiles[file.stem.slice(1)] = config;
-      } catch (e) {
-        if (file.relative.match(/\.var\./)) {
-          callback(new Error(`Failed to parse reference file: ${e.message}`));
-          return;
-        }
-
-        Logger.debug('Ignoring file', file.relative);
-      }
-
-      callback(null);
-    } else {
-      let path = file.path;
-      const refName = file.basename;
-      const innerMatch = path.match(/(.*[/\\]RESOURCES[/\\].*)(\.inner)[/\\](.*)/);
-
-      if (innerMatch) {
-        path = join(innerMatch[1], innerMatch[3].replace(/[/\\]/g, '.'));
-      }
-
-      const atFile = new AtviseFile({
-        cwd: file.cwd,
-        base: file.base,
-        path,
-        contents: file.contents,
-      });
-
-      const config = this._readReferenceFiles[refName];
-      if (config) {
-        atFile.getMetadata(); // ensure #_getMetadata gets called
-        Object.assign(atFile._references,
-          Object.entries(config.references || {})
-            .reduce((result, [type, refs]) => Object.assign(result, {
-              [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
-            }), {})
-        );
-
-        delete this._readReferenceFiles[refName];
-      } else if (file.relative.match(/\.var\./)) {
-        callback(new Error(`Missing reference file, .${refName}.json should exist`));
-        return;
-      }
-
-      callback(null, atFile);
     }
+
+    // Resolve arrayType from extension
+    for (const [type, extension] of Object.entries(extensionForArrayType)) {
+      if (node.name.endsWith(extension) && !isStandardTypeNode) {
+        assert.equal(node.arrayType.key, type);
+
+        // FIXME: Set arrayType and mark as resolved
+
+        node.renameTo(basename(node.name, extension));
+        break;
+      }
+    }
+
+    // Resolve dataType from extension
+    for (const [type, extension] of Object.entries(extensionForDataType)) {
+      if (node.name.endsWith(extension) && !isStandardTypeNode && node.dataType.key === type) {
+        // FIXME: Set dataType and mark as resolved
+
+        node.renameTo(basename(node.name, extension));
+        break;
+      }
+    }
+
+    return callback(null, node);
   }
 
   /**

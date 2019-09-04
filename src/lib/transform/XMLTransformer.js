@@ -1,5 +1,5 @@
 import { EOL } from 'os';
-import { xml2js, js2xml } from 'xml-js';
+import { parse, render, isElement, moveToTop } from 'modify-xml';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -16,21 +16,15 @@ export default class XMLTransformer extends SplittingTransformer {
     super(options);
 
     function build(object, buildOptions) {
-      if (!object.declaration) {
-        Object.assign(object, {
-          declaration: {
-            attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
-          },
-        });
+      const root = object.childNodes.find(n => isElement(n));
+
+      if (root) {
+        moveToTop(root, 'metadata');
+        moveToTop(root, 'defs');
+        moveToTop(root, 'title');
       }
 
-      return js2xml(object, Object.assign(buildOptions, {
-        attributeValueFn(val) {
-          return val
-            .replace(/&(?!(amp|quot);)/g, '&amp;')
-            .replace(/</g, '&lt;');
-        },
-      }));
+      return render(object, { indent: ' '.repeat(buildOptions.spaces) });
     }
 
     // eslint-disable-next-line jsdoc/require-param
@@ -50,7 +44,7 @@ export default class XMLTransformer extends SplittingTransformer {
      */
     this._fromFilesystemBuilder = object => {
       const xml = build(object, { compact: false, spaces: 1 });
-      return xml.replace(/\r?\n/g, '\r\n');
+      return xml.replace(/\r?\n/g, '\n');
     };
   }
 
@@ -65,31 +59,21 @@ export default class XMLTransformer extends SplittingTransformer {
   }
 
   /**
-   * Parses XML in a file's contents.
-   * @param {AtviseFile} file The file to process.
-   * @param {function(err: ?Error, result: ?Object)} callback Called with the parsed document or the
-   * parse error that occurred.
+   * Parses XML in a node's contents.
+   * @param {Node} node The node to process.
    */
-  decodeContents(file, callback) {
-    try {
-      callback(null, xml2js(file.contents, { compact: false }));
-    } catch (e) {
-      callback(e);
-    }
+  decodeContents(node) {
+    return parse(this.direction === TransformDirection.FromDB ?
+      node.value.value.toString() :
+      node.stringValue);
   }
 
   /**
    * Builds an XML string from an object.
    * @param {Object} object The object to encode.
-   * @param {function(err: ?Error, result: ?String)} callback Called with the resulting string or
-   * the error that occurred while building.
    */
-  encodeContents(object, callback) {
-    try {
-      callback(null, this.builder(object));
-    } catch (e) {
-      callback(e);
-    }
+  encodeContents(object) {
+    return this.builder(object);
   }
 
 }

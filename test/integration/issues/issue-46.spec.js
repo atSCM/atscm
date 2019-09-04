@@ -11,16 +11,13 @@ describe('XMLTransformer', function() {
   <rect width="200" height="200" x="160" y="16"/>
   <text>text2</text>
 </svg>`.split('\n').join(EOL); // Multi line string templates are always LF
-    const testFile = { contents: Buffer.from(testContents) };
+    const testFile = { value: { value: Buffer.from(testContents) } };
     const transformer = new XMLTransformer({
       direction: TransformDirection.FromDB, // just to have os-native newlines
     });
 
-    const [decoded] = await expect(cb => transformer.decodeContents(testFile, cb),
-      'to call the callback without error');
-
-    const [encoded] = await expect(cb => transformer.encodeContents(decoded, cb),
-      'to call the callback without error');
+    const decoded = transformer.decodeContents(testFile);
+    const encoded = transformer.encodeContents(decoded);
 
     expect(encoded, 'to equal', testContents);
   });

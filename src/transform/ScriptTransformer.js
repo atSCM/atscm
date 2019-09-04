@@ -1,168 +1,194 @@
 import Logger from 'gulplog';
-import XMLTransformer from '../lib/transform/XMLTransformer';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import {
-  findChild, findChildren,
-  textContent,
-  createElement, createTextNode, createCDataNode,
-} from '../lib/helpers/xml';
+  findChild, findChildren, textContent, createElement, createTextNode, createCDataNode,
+  prependChild, appendChild, isElement,
+} from 'modify-xml';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
  * containing parameters and metadata.
  */
-export default class ScriptTransformer extends XMLTransformer {
+export class AtviseScriptTransformer extends XMLTransformer {
 
   /**
-   * Returns `true` for all files containing script code or quick dynamics.
-   * @param {AtviseFile} file The file to check.
-   * @return {boolean} `true` for all files containing script code or quick dynamics.
+   * The source file extensions to allow.
+   * @type {string[]}
    */
-  shouldBeTransformed(file) {
-    return file.isScript || file.isQuickDynamic;
+  static get sourceExtensions() {
+    return ['.json', '.js'];
   }
 
   /**
-   * Splits any read files containing scripts or quick dynamics into their JavaScript sources,
-   * alongside with a json file containing parameters and metadata.
-   * @param {AtviseFile} file The script file to split.
-   * @param {string} enc The encoding used.
-   * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
-   * while transforming the script, or the file passed through.
+   * Extracts a script's metadata.
+   * @param {Object} document The parsed xml document to process.
+   * @return {Object} The metadata found.
    */
-  transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
-      if (err) {
-        callback(err);
-      } else {
-        const document = results && findChild(results, 'script');
+  processMetadata(document) {
+    const config = {};
 
-        if (!document) {
-          Logger.warn(`Empty document at ${file.relative}`);
-        }
+    const metaTag = findChild(document, 'metadata');
+    // console.error('Meta', metaTag);
+    if (!metaTag || !metaTag.childNodes) { return config; }
 
-        const config = {};
+    metaTag.childNodes.forEach(child => {
+      if (child.type !== 'element') { return; }
 
-        // Extract metadata
-        const metaTag = findChild(document, 'metadata');
-        if (metaTag && metaTag.elements) {
-          // TODO: Warn on multiple metadata tags
-          metaTag.elements.forEach(child => {
-            if (child.type === 'element') {
-              if (child.name === 'icon') { // - Icon
-                config.icon = Object.assign({
-                  content: textContent(child) || '',
-                }, child.attributes);
-              } else if (child.name === 'visible') { // - Visible
-                config.visible = Boolean(parseInt(textContent(child), 10));
-              } else if (child.name === 'title') {
-                config.title = textContent(child);
-              } else if (child.name === 'description') {
-                config.description = textContent(child);
-              } else {
-                if (!config.metadata) {
-                  config.metadata = {};
-                }
+      switch (child.name) {
+        case 'icon':
+          config.icon = Object.assign({
+            content: textContent(child) || '',
+          }, child.attributes);
+          break;
+        case 'visible':
+          config.visible = Boolean(parseInt(textContent(child), 10));
+          break;
+        case 'title':
+          config.title = textContent(child);
+          break;
+        case 'description':
+          config.description = textContent(child);
+          break;
+        default: {
+          if (!config.metadata) { config.metadata = {}; }
 
-                const value = textContent(child);
+          const value = textContent(child);
 
-                if (config.metadata[child.name]) {
-                  if (!Array.isArray(config.metadata[child.name])) {
-                    config.metadata[child.name] = [config.metadata[child.name]];
-                  }
-
-                  config.metadata[child.name].push(value);
-                } else {
-                  config.metadata[child.name] = textContent(child);
-                }
-
-                if (![
-                  'longrunning',
-                ].includes(child.name)) {
-                  Logger.debug(`Generic metadata element '${child.name}' at ${file.relative}`);
-                }
-              }
-            }
-          });
-        }
-
-        // Extract Parameters
-        const paramTags = findChildren(document, 'parameter');
-        if (paramTags.length) {
-          config.parameters = [];
-          paramTags.forEach(({ attributes, elements }) => {
-            const param = Object.assign({}, attributes);
-
-            // Handle relative parameter targets
-            if (attributes.relative === 'true') {
-              param.target = {};
-
-              const target = findChild(elements[0],
-                ['Elements', 'RelativePathElement', 'TargetName']);
-
-              if (target) {
-                const [index, name] = ['NamespaceIndex', 'Name']
-                  .map(tagName => textContent(findChild(target, tagName)));
-
-                const parsedIndex = parseInt(index, 10);
-
-                param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
-              }
+          if (config.metadata[child.name]) {
+            if (!Array.isArray(config.metadata[child.name])) {
+              config.metadata[child.name] = [config.metadata[child.name]];
             }
 
-            config.parameters.push(param);
-          });
+            config.metadata[child.name].push(value);
+          } else {
+            config.metadata[child.name] = textContent(child);
+          }
+
+          if (![
+            'longrunning',
+          ].includes(child.name)) {
+            Logger.debug(`Generic metadata element '${child.name}'`); // FIXME:  at ${node.nodeId}
+          }
+          break;
         }
-
-        // Extract JavaScript
-        const codeNode = findChild(document, 'code');
-        const code = textContent(codeNode) || '';
-
-        // Write config file
-        const configFile = ScriptTransformer.splitFile(file, '.json');
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
-        this.push(configFile);
-
-        // Write script file
-        const scriptFile = ScriptTransformer.splitFile(file, '.js');
-        scriptFile.contents = Buffer.from(code);
-        this.push(scriptFile);
-
-        callback(null);
       }
+    });
+
+    return config;
+  }
+
+  /**
+   * Extracts a script's parameters.
+   * @param {Object} document The parsed xml document to process.
+   * @return {Object[]} The parameters found.
+   */
+  processParameters(document) {
+    const paramTags = findChildren(document, 'parameter');
+    if (!paramTags.length) { return undefined; }
+
+    return paramTags.map(({ attributes, childNodes }) => {
+      const param = Object.assign({}, attributes);
+
+      // Handle relative parameter targets
+      if (attributes.relative === 'true') {
+        param.target = {};
+
+        const target = findChild(childNodes.find(isElement),
+          ['Elements', 'RelativePathElement', 'TargetName']);
+
+        if (target) {
+          const [index, name] = ['NamespaceIndex', 'Name']
+            .map(tagName => textContent(findChild(target, tagName)));
+
+          const parsedIndex = parseInt(index, 10);
+
+          param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
+        }
+      }
+
+      return param;
     });
   }
 
   /**
-   * Creates a script from the collected files.
-   * @param {Map<String, AtviseFile>} files The collected files, stored against their extension.
-   * @param {AtviseFile} lastFile The last file read. *Used for error messages only*.
-   * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
-   * while creating the script or the resulting file.
+   * Splits a node into multiple source nodes.
+   * @param {Node} node A server node.
+   * @param {Object} context The current transform context.
    */
-  createCombinedFile(files, lastFile, callback) {
-    const configFile = files['.json'];
+  async transformFromDB(node, context) {
+    if (!this.shouldBeTransformed(node)) { return undefined; }
+
+    if (node.arrayType !== VariantArrayType.Scalar) {
+      // FIXME: Instead of throwing we could simply pass the original node to the callback
+      throw new Error('Array of scripts not supported');
+    }
+
+    const xml = this.decodeContents(node);
+    if (!xml) { throw new Error('Error parsing script'); }
+
+    const document = findChild(xml, 'script');
+    if (!document) {
+      throw new Error(`Empty document at ${node.nodeId}`);
+    }
+
+    // Extract metadata and parameters
+    const config = {
+      ...this.processMetadata(document),
+      parameters: this.processParameters(document),
+    };
+
+    // Write config file
+    const configFile = this.constructor.splitFile(node, '.json');
+    configFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: JSON.stringify(config, null, '  '),
+    };
+    context.addNode(configFile);
+
+    // Write JavaScript file
+    const codeNode = findChild(document, 'code');
+    const scriptFile = this.constructor.splitFile(node, '.js');
+    scriptFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: textContent(codeNode) || '',
+    };
+    context.addNode(scriptFile);
+
+    return super.transformFromDB(node);
+  }
+
+  /**
+   * Inlines the passed source nodes to the given container node.
+   * @param {Node} node The container node.
+   * @param {{ [ext: string]: Node }} sources The source nodes to inline.
+   */
+  combineNodes(node, sources) {
+    const configFile = sources['.json'];
     let config = {};
 
     if (configFile) {
       try {
-        config = JSON.parse(configFile.contents.toString());
+        config = JSON.parse(configFile.stringValue);
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
-        return;
+        throw new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`);
       }
     }
 
-    const scriptFile = files['.js'];
+    const scriptFile = sources['.js'];
     let code = '';
 
     if (scriptFile) {
-      code = scriptFile.contents.toString();
+      code = scriptFile.stringValue;
     }
 
     const document = createElement('script', []);
 
     const result = {
-      elements: [
+      childNodes: [
+        { type: 'directive', value: '<?xml version="1.0" encoding="UTF-8"?>' },
         document,
       ],
     };
@@ -170,7 +196,7 @@ export default class ScriptTransformer extends XMLTransformer {
     // Insert metadata
     const meta = [];
 
-    if (lastFile.isQuickDynamic) {
+    if (node.isQuickDynamic) {
       // - Icon
       if (config.icon) {
         const icon = config.icon.content;
@@ -202,8 +228,8 @@ export default class ScriptTransformer extends XMLTransformer {
         });
     }
 
-    if (lastFile.isQuickDynamic || meta.length) {
-      document.elements.push(createElement('metadata', meta));
+    if (node.isQuickDynamic || meta.length) {
+      prependChild(document, createElement('metadata', meta));
     }
 
     // Insert parameters
@@ -219,7 +245,7 @@ export default class ScriptTransformer extends XMLTransformer {
           elements = [createElement('RelativePath', [targetElements])];
 
           if (name !== undefined) {
-            targetElements.elements = [
+            targetElements.childNodes = [
               createElement('RelativePathElement', [
                 createElement('TargetName', [
                   createElement('NamespaceIndex', [createTextNode(`${namespaceIndex}`)]),
@@ -233,27 +259,57 @@ export default class ScriptTransformer extends XMLTransformer {
           delete attributes.target;
         }
 
-        document.elements.push(createElement('parameter', elements, attributes));
+        appendChild(document, createElement('parameter', elements, attributes));
       });
     }
 
     // Insert script code
-    document.elements.push(createElement('code', [createCDataNode(code)]));
+    appendChild(document, createElement('code', [createCDataNode(code)]));
 
-    const script = ScriptTransformer.combineFiles(
-      Object.keys(files).map(ext => files[ext]),
-      '.xml'
-    );
+    // eslint-disable-next-line no-param-reassign
+    node.value.value = this.encodeContents(result);
+  }
 
-    this.encodeContents(result, (encodeErr, xmlString) => {
-      if (encodeErr) {
-        callback(encodeErr);
-      } else {
-        script.contents = Buffer.from(xmlString);
+}
 
-        callback(null, script);
-      }
-    });
+/**
+ * A transformer that splits atvise server scripts into multiple files.
+ */
+export class ServerscriptTransformer extends AtviseScriptTransformer {
+
+  /** The container's extension. */
+  static get extension() {
+    return '.script';
+  }
+
+  /**
+   * Returns `true` for all script nodes.
+   * @param {Node} node The node to check.
+   * @return {boolean} If the node is a server script.
+   */
+  shouldBeTransformed(node) {
+    return node.isVariable && node.isScript;
+  }
+
+}
+
+/**
+ * A transformer that splits atvise quickdynamics into multiple files.
+ */
+export class QuickDynamicTransformer extends AtviseScriptTransformer {
+
+  /** The container's extension. */
+  static get extension() {
+    return '.qd';
+  }
+
+  /**
+   * Returns `true` for all nodes containing quick dynamics.
+   * @param {Node} node The node to check.
+   * @return {boolean} If the node is a quick dynamic.
+   */
+  shouldBeTransformed(node) {
+    return node.isVariable && node.isQuickDynamic;
   }
 
 }

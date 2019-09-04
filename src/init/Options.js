@@ -15,6 +15,19 @@ export const ConfigLangs = {
 };
 
 /**
+ * Suggests a project name based on the name of the directory 'atscm init' was called in.
+ * @param {string} dirname The current working directory's name.
+ * @return {string} The suggested name.
+ */
+function projectName(dirname) {
+  if (dirname === 'atscm') {
+    return 'atscm-project';
+  }
+
+  return dirname;
+}
+
+/**
  * Options available for the "atscm init" command.
  * @type {Object}
  * @property {InitOption<input>} name The new project's name.
@@ -31,7 +44,7 @@ export const ConfigLangs = {
 export const InitOptions = {
   name: new InitOption({
     message: 'Project name',
-    default: basename(process.cwd()),
+    default: projectName(basename(process.cwd())),
     validate: Validator.name,
   }),
   description: new InitOption('Project description'),

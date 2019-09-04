@@ -7,17 +7,17 @@ export default class InitOption {
   /**
    * Creates a new option based either on a message and (optionally) a default value or some
    * options.
-   * @param {String|Object} messageOrOptions The message or options to use.
+   * @param {string|Object} messageOrOptions The message or options to use.
    * @param {inquirer~PromptType} [messageOrOptions.type] The option's type.
    * @param {string} messageOrOptions.message The option's message. Required if `messageOrOptions`
    * is an object.
-   * @param {String|Number} [messageOrOptions.default] The options's default value.
+   * @param {string|number} [messageOrOptions.default] The options's default value.
    * @param {inquirer~Validator} [messageOrOptions.validate] A function that validates user input.
-   * @param {String[]|Number[]} [messageOrOptions.choices] The options's choices. Applies to to list
+   * @param {string[]|number[]} [messageOrOptions.choices] The options's choices. Applies to to list
    * types only.
-   * @param {Boolean|function(answers: Object): Boolean} [messageOrOptions.when] Weather or not to
+   * @param {boolean|function(answers: Object): boolean} [messageOrOptions.when] Weather or not to
    * prompt this option.
-   * @param {String|Number} [defaultOrUndefined] The default value to use.
+   * @param {string|number} [defaultOrUndefined] The default value to use.
    */
   constructor(messageOrOptions, defaultOrUndefined) {
     if (messageOrOptions === undefined) {

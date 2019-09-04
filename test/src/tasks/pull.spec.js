@@ -1,4 +1,3 @@
-import { Stream } from 'stream';
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 import { ctor as throughStreamClass } from 'through2';
@@ -24,12 +23,12 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
     },
   },
-  '../lib/gulp/PullStream': {
+  '../lib/server/NodeBrowser': {
     _esModule: true,
-    default: class PStream {
+    default: class NBrowser {
 
-      constructor(readStream) {
-        return readStream;
+      async browse() {
+        return true;
       }
 
     },
@@ -38,12 +37,11 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
 /** @test {pull} */
 describe('pull', function() {
-  it('should return a stream', function(done) {
-    const stream = pull();
+  it('should return a promise', function() {
+    const task = pull();
 
-    expect(stream, 'to be a', Stream);
+    expect(task, 'to be a', Promise);
 
-    stream.on('data', () => {}); // Unpipe readable stream
-    stream.once('end', done);
+    return task;
   });
 });

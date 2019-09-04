@@ -16,6 +16,7 @@ class StubNodeStream extends NodeStream {
 
 class NoWriteNodeStream extends StubNodeStream {
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   _writeNodesToBrowse() {}
 
 }
@@ -34,7 +35,7 @@ class NonRecursive extends NodeStream {
 }
 
 /** @test {NodeStream} */
-describe('NodeStream', function() {
+describe.skip('NodeStream', function() {
   const testNodes = [
     new NodeId('ns=1;s=AGENT.DISPLAYS'),
     new NodeId('ns=1;s=AGENT.OBJECTS'),

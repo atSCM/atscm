@@ -1,5 +1,5 @@
 import { sep } from 'path';
-import { NodeId as OpcNodeId } from 'node-opcua';
+import { NodeId as OpcNodeId } from 'node-opcua/lib/datamodel/nodeid';
 
 /**
  * OPC-UA node id types.
@@ -37,8 +37,8 @@ export default class NodeId extends OpcNodeId {
    *  - with a {@link node-opcua~NodeIdType}, a value and a namespace (defaults to 0),
    *  - with a value only (type will be taken from it, namespace defaults to 1) or
    *  - with a {@link NodeId}s string representation (for example `ns=1;s=AGENT.DISPLAYS`).
-   * @param {node-opcua~NodeIdType|String|Number} typeOrValue The type or value to use.
-   * @param {(Number|String)} [value] The value to use.
+   * @param {node-opcua~NodeIdType|string|number} typeOrValue The type or value to use.
+   * @param {(number|string)} [value] The value to use.
    * @param {number} [namespace=1] The namespace to use.
    */
   constructor(typeOrValue, value, namespace = 1) {
@@ -132,9 +132,29 @@ export default class NodeId extends OpcNodeId {
       return null;
     }
 
+    /*
+      Known aliases:
+        - AGENT and SYSTEM are children of "Objects"
+        - ObjectTypes.PROJECT and VariableTypes.PROJECT are children of their base Types
+    */
+    // FIXME: Should be in mapping transformer
+    if (this.value === 'AGENT' || this.value === 'SYSTEM') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 85, 0); // "Objects"
+    } else if (this.value === 'ObjectTypes.PROJECT') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 58, 0); // "BaseObjectType"
+    } else if (this.value === 'VariableTypes.PROJECT') {
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0); // "BaseVariableType"
+    }
+
+    const parentValue = this.value.substr(0, this.value.lastIndexOf(this._lastSeparator));
+
+    if (!parentValue) { // Root node -> 'Objects' is parent
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 85, 0);
+    }
+
     return new NodeId(
       NodeId.NodeIdType.STRING,
-      this.value.substr(0, this.value.lastIndexOf(this._lastSeparator)),
+      parentValue,
       this.namespace
     );
   }

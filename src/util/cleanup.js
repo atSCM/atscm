@@ -4,7 +4,7 @@ import Session from '../lib/server/Session';
 
 /**
  * Cleans up after the app ended with the specified code or signal.
- * @param {?Number} exitCode The exit code received.
+ * @param {?number} exitCode The exit code received.
  * @param {?string} signal The signal that triggered the exit.
  * @param {function()} uninstall The uninstall script to run.
  * @return {boolean} `true` if the process should continue exiting.

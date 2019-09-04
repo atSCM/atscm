@@ -1,31 +1,9 @@
-import { Buffer } from 'buffer';
-import XMLTransformer from '../lib/transform/XMLTransformer';
+import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
+import Logger from 'gulplog';
 import {
-  findChild, removeChild,
-  removeChildren,
-  createTextNode, createCDataNode, createElement,
-} from '../lib/helpers/xml';
-
-/**
- * Names of the tags to come before <metadata> in output files.
- * @type {Set<string>}
- */
-const tagsBeforeMetadata = new Set(['defs', 'desc', 'title']);
-
-/**
- * Returns the index at which the <metadata> section should be inserted in the resulting xml.
- * @param {Object[]} elements The elements to look at.
- * @return {number} The insertion index.
- */
-function metadataIndex(elements) {
-  let index = 0;
-
-  while (elements.length > index && tagsBeforeMetadata.has(elements[index].name)) {
-    index += 1;
-  }
-
-  return index;
-}
+  findChild, removeChildren, createCDataNode, createElement, appendChild, prependChild, textContent,
+} from 'modify-xml';
+import XMLTransformer from '../lib/transform/XMLTransformer';
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -34,204 +12,196 @@ function metadataIndex(elements) {
 export default class DisplayTransformer extends XMLTransformer {
 
   /**
-   * Returns true for all files containing atvise displays.
-   * @param {AtviseFile} file The file to check.
-   * @return {boolean} `true` for all atvise display files.
+   * The extension to add to display container node names when they are pulled.
+   * @type {string}
    */
-  shouldBeTransformed(file) {
-    return file.isDisplay;
+  static get extension() {
+    return '.display';
+  }
+
+  /**
+   * The source file extensions to allow.
+   * @type {string[]}
+   */
+  static get sourceExtensions() {
+    return ['.json', '.svg', '.js'];
+  }
+
+  /**
+   * Returns `true` for all display nodes.
+   * @param {Node} node The node to check.
+   */
+  shouldBeTransformed(node) {
+    return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
-   * @param {AtviseFile} file The display file to split.
-   * @param {string} enc The encoding used.
-   * @param {function(err: Error, file: AtviseFile)} callback Called with the error that occured
-   * while transforming the display, or the file passed through.
+   * @param {BrowsedNode} node The node to split.
+   * @param {Object} context The transform context.
    */
-  transformFromDB(file, enc, callback) {
-    this.decodeContents(file, (err, results) => {
-      if (err) {
-        callback(err);
-      } else if (!results) {
-        callback(new Error('Error parsing display: No `svg` tag'));
-      } else {
-        const xml = results;
-        const document = findChild(xml, 'svg');
+  async transformFromDB(node, context) {
+    if (!this.shouldBeTransformed(node)) { return undefined; }
 
-        if (!document) {
-          callback(new Error('Error parsing display: No `svg` tag'));
-          return;
-        }
+    if (node.arrayType !== VariantArrayType.Scalar) {
+      // FIXME: Instead of throwing we could simply pass the original node to the callback
+      throw new Error('Array of displays not supported');
+    }
 
-        const config = {};
-        const scriptTags = removeChildren(document, 'script');
+    const xml = this.decodeContents(node);
+    if (!xml) { throw new Error('Error parsing display'); }
 
-        // Extract JavaScript
-        if (scriptTags.length) {
-          scriptTags.forEach(script => {
-            if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
-              if (!config.dependencies) {
-                config.dependencies = [];
-              }
+    const document = findChild(xml, 'svg');
+    if (!document) { throw new Error('Error parsing display: No `svg` tag'); }
 
-              config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
-            } else {
-              // TODO: Warn on multiple inline scripts
+    const config = {};
+    const scriptTags = removeChildren(document, 'script');
+    let inlineScript;
 
-              const scriptContentNode = script.elements ? script.elements[0] : createTextNode();
-
-              const scriptFile = DisplayTransformer.splitFile(file, '.js');
-
-              const scriptText = scriptContentNode[scriptContentNode.type] || '';
-
-              scriptFile.contents = Buffer.from(scriptText);
-              this.push(scriptFile);
-            }
-          });
-        }
-
-        // Extract metadata
-        const metaTag = findChild(document, 'metadata');
-        if (metaTag && metaTag.elements) {
-          // TODO: Warn on multiple metadata tags
-
-          // - Parameters
-          const paramTags = removeChildren(metaTag, 'atv:parameter');
-          if (paramTags.length) {
-            config.parameters = [];
-
-            paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
+    // Extract JavaScript
+    if (scriptTags.length) {
+      scriptTags.forEach(script => {
+        if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
+          if (!config.dependencies) {
+            config.dependencies = [];
           }
-        }
 
-        const configFile = DisplayTransformer.splitFile(file, '.json');
-
-        configFile.contents = Buffer.from(JSON.stringify(config, null, '  '));
-        this.push(configFile);
-
-        const svgFile = DisplayTransformer.splitFile(file, '.svg');
-
-        this.encodeContents(xml, (encodeErr, stringValue) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            svgFile.contents = Buffer.from(stringValue);
-            this.push(svgFile);
-
-            callback(null);
+          config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
+        } else {
+          // Warn on multiple inline scripts
+          if (inlineScript) {
+            Logger[
+              node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'
+            ](`'${node.id.value}' contains multiple inline scripts.`);
+            document.childNodes.push(inlineScript);
           }
-        });
+          inlineScript = script;
+        }
+      });
+    }
+    if (inlineScript) {
+      const scriptFile = this.constructor.splitFile(node, '.js');
+      const scriptText = textContent(inlineScript);
+
+      scriptFile.value = {
+        dataType: DataType.String,
+        arrayType: VariantArrayType.Scalar,
+        value: scriptText,
+      };
+      context.addNode(scriptFile);
+    }
+
+    // Extract metadata
+    const metaTag = findChild(document, 'metadata');
+    if (metaTag && metaTag.childNodes) {
+      // TODO: Warn on multiple metadata tags
+
+      // - Parameters
+      const paramTags = removeChildren(metaTag, 'atv:parameter');
+      if (paramTags.length) {
+        config.parameters = [];
+
+        paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
       }
-    });
+    }
+
+    const configFile = this.constructor.splitFile(node, '.json');
+    configFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: JSON.stringify(config, null, '  '),
+    };
+    context.addNode(configFile);
+
+    const svgFile = this.constructor.splitFile(node, '.svg');
+    svgFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: this.encodeContents(xml),
+    };
+    context.addNode(svgFile);
+
+    // equals: node.renameTo(`${node.name}.display`);
+    return super.transformFromDB(node);
   }
 
   /**
-   * Creates a display from the collected files.
-   * @param {Map<String, vinyl~File>} files The collected files, stored against their extension.
-   * @param {vinyl~File} lastFile The last file read. *Used for error messages only*.
-   * @param {function(err: ?Error, data: vinyl~File)} callback Called with the error that occured
-   * while creating the display or the resulting file.
+   * Creates a display from the collected nodes.
+   * @param {BrowsedNode} node The container node.
+   * @param {Map<string, BrowsedNode>} sources The collected files, stored against their
+   * extension.
    */
-  createCombinedFile(files, lastFile, callback) {
-    const configFile = files['.json'];
+  combineNodes(node, sources) {
+    const configFile = sources['.json'];
     let config = {};
 
     if (configFile) {
       try {
-        config = JSON.parse(configFile.contents.toString());
+        config = JSON.parse(configFile.stringValue);
       } catch (e) {
-        callback(new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`));
-        return;
+        throw new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`);
       }
     }
 
-    const svgFile = files['.svg'];
+    const svgFile = sources['.svg'];
     if (!svgFile) {
-      callback(new Error(`No display SVG in ${lastFile.dirname}`));
-      return;
+      throw new Error(`No display SVG for ${node.nodeId}`);
     }
 
-    const scriptFile = files['.js'];
+    const scriptFile = sources['.js'];
     let inlineScript = '';
     if (scriptFile) {
-      inlineScript = scriptFile.contents.toString();
+      inlineScript = scriptFile.stringValue;
     }
 
-    this.decodeContents(svgFile, (err, xml) => {
-      if (err) {
-        callback(err);
-      } else {
-        const result = xml;
-        const svg = findChild(result, 'svg');
+    const xml = this.decodeContents(svgFile);
+    const result = xml;
+    const svg = findChild(result, 'svg');
 
-        if (!svg) {
-          callback(new Error('Error parsing display SVG: No `svg` tag'));
-          return;
-        }
+    if (!svg) {
+      throw new Error('Error parsing display SVG: No `svg` tag');
+    }
 
-        // Handle empty svg tag
-        if (!svg.elements) {
-          svg.elements = [];
-        }
+    // Insert dependencies
+    if (config.dependencies) {
+      config.dependencies.forEach(s => {
+        appendChild(svg, createElement('script', undefined, { 'xlink:href': s }));
+      });
+    }
 
-        // Insert dependencies
-        if (config.dependencies) {
-          config.dependencies.forEach(src => {
-            svg.elements.push(createElement('script', undefined, { 'xlink:href': src }));
-          });
-        }
+    // Insert script
+    // FIXME: Import order is not preserved!
+    if (scriptFile) {
+      appendChild(svg, createElement('script', [createCDataNode(inlineScript)], {
+        type: 'text/ecmascript',
+      }));
+    }
 
-        // Insert script
-        // FIXME: Import order is not preserved!
-        if (scriptFile) {
-          svg.elements.push(createElement('script', [createCDataNode(inlineScript)], {
-            type: 'text/ecmascript',
-          }));
-        }
+    // Insert metadata
+    // - Parameters
+    if (config.parameters && config.parameters.length > 0) {
+      let [metaTag] = removeChildren(svg, 'metadata');
 
-        // Insert metadata
-        // - Parameters
-        if (config.parameters && config.parameters.length > 0) {
-          let metaTag = removeChild(svg, 'metadata');
+      // FIXME: Warn on multiple metadata tags
 
-          if (!metaTag) {
-            metaTag = createElement('metadata');
-          }
-
-          if (!metaTag.elements) {
-            metaTag.elements = [];
-          }
-
-          // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
-          for (let i = config.parameters.length - 1; i >= 0; i--) {
-            metaTag.elements.unshift(
-              createElement('atv:parameter', undefined, config.parameters[i])
-            );
-          }
-
-          // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
-          // <title> if defined
-          svg.elements.splice(metadataIndex(svg.elements), 0, metaTag);
-        }
-
-        const display = DisplayTransformer.combineFiles(
-          Object.keys(files).map(ext => files[ext]),
-          '.xml'
-        );
-
-        this.encodeContents(result, (encodeErr, xmlString) => {
-          if (encodeErr) {
-            callback(encodeErr);
-          } else {
-            display.contents = Buffer.from(xmlString);
-
-            callback(null, display);
-          }
-        });
+      if (!metaTag) {
+        metaTag = createElement('metadata');
       }
-    });
+
+      // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
+      for (let i = config.parameters.length - 1; i >= 0; i--) {
+        prependChild(metaTag, createElement('atv:parameter', undefined, config.parameters[i]));
+      }
+
+      // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
+      // <title> if defined (nothing to do, they are ordered inside #encodeContents)
+      prependChild(svg, metaTag);
+    }
+
+    // eslint-disable-next-line
+    node.value.value = this.encodeContents(result);
+    return node;
   }
 
 }

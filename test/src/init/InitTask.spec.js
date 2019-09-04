@@ -38,9 +38,9 @@ describe('InitTask', function() {
   describe('.filesToHandle', function() {
     it('should return array of absolute paths', function() {
       expect(InitTask.filesToHandle('es2015'), 'to have items satisfying', 'to be a', 'string');
-      expect(InitTask.filesToHandle('es2015'), 'to have items satisfying', path => {
-        expect(isAbsolute(path), 'to be', true);
-      });
+      expect(InitTask.filesToHandle('es2015'), 'to have items satisfying',
+        expect.it('when passed as parameter to', isAbsolute, 'to equal', true)
+      );
     });
   });
 

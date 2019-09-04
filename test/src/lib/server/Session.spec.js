@@ -1,26 +1,30 @@
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
-import { ClientSession, StatusCodes } from 'node-opcua';
+import { StatusCodes } from 'node-opcua';
+import { ClientSession, OPCUAClient } from 'node-opcua/lib/client/opcua_client';
 import Logger from 'gulplog';
 import expect from '../../../expect';
 import Session from '../../../../src/lib/server/Session';
-import Client from '../../../../src/lib/server/Client';
+import ProjectConfig from '../../../../src/config/ProjectConfig';
 
 function sessionWithLogin(login) {
   return proxyquire('../../../../src/lib/server/Session', {
     '../../config/ProjectConfig': {
-      default: { login },
+      default: {
+        host: ProjectConfig.host,
+        port: ProjectConfig.port,
+        login,
+      },
     },
   }).default;
 }
 
 const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
-  './Client': {
-    __esModule: true,
-    default: class StubClient {
+  'node-opcua/lib/client/opcua_client': {
+    OPCUAClient: class StubClient {
 
-      static create() {
-        return Promise.reject(new Error('Client.create error'));
+      connect(endpoint, cb) {
+        cb(new Error('Client.create error'));
       }
 
     },
@@ -28,21 +32,11 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
 }).default;
 
 const FailingSession = proxyquire('../../../../src/lib/server/Session', {
-  './Client': {
-    __esModule: true,
-    default: class StubClient extends Client {
+  'node-opcua/lib/client/opcua_client': {
+    OPCUAClient: class StubClient extends OPCUAClient {
 
-      static create() {
-        return super.create()
-          .then(client => {
-            Object.assign(client, {
-              createSession(login, callback) {
-                callback(new Error('Client.createSession error'));
-              },
-            });
-
-            return client;
-          });
+      createSession(login, callback) {
+        callback(new Error('Client.createSession error'));
       }
 
     },
@@ -100,20 +94,6 @@ describe('Session', function() {
     it('should forward non-login errors', function() {
       return expect(FailingSession.create(), 'to be rejected with', /Client\.createSession error/);
     });
-
-    it('should emit "all-open" once all opening sessions are open', function() {
-      const listener = spy();
-      Session.emitter.on('all-open', listener);
-
-      return expect(Promise.all([
-        Session.create(),
-        Session.create(),
-      ]), 'to be fulfilled')
-        .then(sessions => {
-          expect(sessions, 'to have length', 2);
-          expect(listener, 'was called once');
-        });
-    });
   });
 
   /** @test {Session.close} */
@@ -143,7 +123,7 @@ describe('Session', function() {
         });
     });
 
-    it('should warn if session does not exist', function() {
+    it.skip('should warn if session does not exist', function() {
       const logListener = spy();
       Logger.on('debug', logListener);
 
@@ -182,18 +162,21 @@ describe('Session', function() {
         .then(session => expect(Session.close(session), 'to be fulfilled'));
     });
 
-    it('should forward other errors', function() {
+    it('should ignore errors closing session', function() {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
           callback(new Error('Test error'));
         },
+        disconnect(cb) {
+          cb();
+        },
       };
 
-      return expect(Session.close(session), 'to be rejected with', /Test error/);
+      return expect(Session.close(session), 'to be fulfilled');
     });
 
-    it('should forward other errors disconnecting client', function() {
+    it('should ignore errors disconnecting client', function() {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
@@ -204,7 +187,7 @@ describe('Session', function() {
         },
       };
 
-      return expect(Session.close(session), 'to be rejected with', /Test client error/);
+      return expect(Session.close(session), 'to be fulfilled');
     });
   });
 

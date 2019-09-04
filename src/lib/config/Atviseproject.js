@@ -2,7 +2,12 @@
 
 import NodeId from '../model/opcua/NodeId';
 import DisplayTransformer from '../../transform/DisplayTransformer';
-import ScriptTransformer from '../../transform/ScriptTransformer';
+import {
+  ServerscriptTransformer,
+  QuickDynamicTransformer,
+} from '../../transform/ScriptTransformer.js';
+import MappingTransformer from '../../transform/Mapping';
+import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
 
 /**
  * An *atscm* project's configuration.
@@ -33,7 +38,7 @@ export default class Atviseproject {
 
   /**
    * The login to use. Return `false` if no login is required (default).
-   * @type {Boolean|Object}
+   * @type {boolean|Object}
    * @property {string} username The username to log in with.
    * @property {string} password The password to log in with.
    */
@@ -42,20 +47,24 @@ export default class Atviseproject {
   }
 
   /**
-   * The transformers to use in this project. Defaults to a single {@link DisplayTransformer}.
+   * The transformers to use in this project. Returns a {@link DisplayTransformer}, a
+   * {@link ScriptTransformer} and a {@link NewlinesTransformer} by default.
    * @type {Transformer[]}
    */
   static get useTransformers() {
     return [
+      new AlarmConfigTransformer(),
       new DisplayTransformer(),
-      new ScriptTransformer(),
+      new ServerscriptTransformer(),
+      new QuickDynamicTransformer(),
+      new MappingTransformer(),
     ];
   }
 
   /**
    * The atvise-server nodes that atscm should sync. Defaults to the nodes
    * *AGENT*, *SYSTEM*, *ObjectTypes.PROJECT* and *VariableTypes.PROJECT*.
-   * @type {String[]|NodeId[]}
+   * @type {string[]|NodeId[]}
    */
   static get nodes() {
     return [
@@ -69,7 +78,7 @@ export default class Atviseproject {
   /**
    * The atvise-server nodes to watch in the corresponding tasks. Defaults to all nodes containing
    * displays.
-   * @type {String[]|NodeId[]}
+   * @type {string[]|NodeId[]}
    */
   static get nodesToWatch() {
     return [
@@ -103,6 +112,18 @@ export default class Atviseproject {
       new NodeId('AGENT\.HISTORY\.METHODS'),
       new NodeId('AGENT\.SCRIPT\.METHODS'),
       new NodeId('AGENT\.OPCUA\.METHODS'),
+      new NodeId('AGENT\.ALARMING\.METHODS'),
+    ];
+  }
+
+  /**
+   * Server nodes atscm manages itself. These include the serverscripts used during pull/push for
+   * example.
+   * @type {NodeId[]}
+   */
+  static get AtscmRelatedNodes() {
+    return [
+      new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm'),
     ];
   }
 
@@ -113,7 +134,11 @@ export default class Atviseproject {
    * @type {NodeId[]}
    */
   static get ignoreNodes() {
-    return this.EditorRelatedNodes.concat(this.ServerRelatedNodes);
+    return [
+      ...this.EditorRelatedNodes,
+      ...this.ServerRelatedNodes,
+      ...this.AtscmRelatedNodes,
+    ];
   }
 
   /**
@@ -131,6 +156,25 @@ export default class Atviseproject {
       nodesToWatch: this.nodesToWatch,
       ignoreNodes: this.ignoreNodes,
     };
+  }
+
+  /**
+   * The *version control system* to optimize tasks for.
+   * @type {'git' | 'svn'}
+   * @since 1.0.0
+   */
+  static get vcs() {
+    return 'git';
+  }
+
+  /**
+   * If atvise builder sort order nodes should be stored.
+   * @type {boolean}
+   * @since 1.0.0
+   * @deprecated Mapping source order nodes leads to inconsistent results in many cases.
+   */
+  static get preserveSortOrderNodes() {
+    return false;
   }
 
 }

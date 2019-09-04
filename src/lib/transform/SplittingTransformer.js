@@ -1,228 +1,137 @@
-import { readdir } from 'fs';
 import { extname, basename, join } from 'path';
-import Logger from 'gulplog';
-import AtviseFile from '../server/AtviseFile';
-import PartialTransformer from './PartialTransformer';
+import { readdir } from 'fs-extra';
+import PartialTransformer from './PartialTransformer.js';
 
 /**
- * Determines which files are needed to create a combined file and stores these files as long as
- * some of them are missing.
- */
-export class CombineFilesCache {
-
-  /**
-   * Creates a new DisplayCache.
-   */
-  constructor() {
-    /**
-     * The files caches for the given path.
-     * @type {Map<String, vinyl~File>}
-     */
-    this._files = {};
-
-    /**
-     * The extensions of the files required.
-     * @type {String[]}
-     */
-    this._required = {};
-  }
-
-  /**
-   * Returns the extensions of the missing files for the given `dirname`.
-   * @param {string} dirname The cache key to look for.
-   * @return {String[]} Extensions of the missing files.
-   */
-  missingExtensions(dirname) {
-    const required = this._required[dirname];
-    const files = this._files[dirname];
-
-    return required.filter(ext => files[ext] === undefined);
-  }
-
-  /**
-   * Checks if, when `file` is added, all required files are cached.
-   * @param {vinyl~File} file The file to add before checking.
-   * @param {function(err: ?Error, files: ?Map<String, vinyl~File>)} callback Called with the error
-   * that occured while checking or all files related to `file` if all required files are already
-   * cached.
-   */
-  gotAllFiles(file, callback) {
-    const dirname = file.dirname;
-
-    if (!this._required[dirname]) {
-      readdir(dirname, (err, files) => {
-        if (err) {
-          callback(err);
-        } else {
-          this._files[dirname] = {};
-          this._required[dirname] = files
-            .filter(name => name[0] !== '.')
-            .map(name => extname(name));
-
-          this.gotAllFiles(file, callback);
-        }
-      });
-    } else {
-      this._files[dirname][file.extname] = file;
-
-      if (this.missingExtensions(dirname).length === 0) {
-        const files = this._files[dirname];
-        callback(null, files);
-
-        delete this._files[dirname];
-        delete this._required[dirname];
-      } else {
-        callback(null);
-      }
-    }
-  }
-
-}
-
-/**
- * A transformer that splits files into multiple others.
- * @abstract
+ * A transformer that splits a node into multiple source nodes when pulling.
  */
 export default class SplittingTransformer extends PartialTransformer {
 
   /**
-   * Creates a new SplittingTransformer.
-   * @param {Object} options The options to apply.
-   */
-  constructor(options) {
-    super(options);
-
-    /**
-     * The cache used when collecting files to combine.
-     * @type {CombineFilesCache}
-     */
-    this._combineFilesCache = new CombineFilesCache();
-  }
-
-  /**
-   * Creates a combined file from the cached split files.
-   * @param {Map<String, AtviseFile>} files The cached files stored against their extensions.
-   * @param {AtviseFile} lastFile The last file collected. This is the only file guaranteed to be
-   * set, therefore us if for error messages, etc.
-   * @param {function(err: ?Error, data: ?AtviseFile)} callback Should be called with any errors
-   * that occur while combining the files, or optionally the resulting file.
+   * The extension to add to container node names when they are pulled.
    * @abstract
+   * @type {string}
    */
-  createCombinedFile(files, lastFile, callback) { // eslint-disable-line no-unused-vars
-    throw new Error(
-      'SplittingTransformer#createCombinedFile must be implemented by all subclasses'
-    );
+  static get extension() {
+    throw new Error('Must be implemented by all subclasses');
   }
 
   /**
-   * Calls {@link SplittingTransformer#createCombinedFile} as soon as all dependencies are
-   * required files are cached.
-   * @param {AtviseFile} file The read file.
-   * @param {string} enc The encoding used.
-   * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with the error occured while
-   * caching files or creating the combined file or optionally the resulting combined file.
+   * The source file extensions to allow.
+   * @abstract
+   * @type {string[]}
    */
-  transformFromFilesystem(file, enc, callback) {
-    this._combineFilesCache.gotAllFiles(file, (err, allFiles) => {
-      if (err) {
-        callback(err);
-      } else if (allFiles) {
-        this.createCombinedFile(allFiles, file, callback);
-      } else {
-        callback(null);
-      }
+  static get sourceExtensions() {
+    throw new Error('Must be implemented by all subclasses');
+  }
+
+  /**
+   * Splits a {@link Node}: The resulting is a clone of the input file, with a different path.
+   * @param {Node} node The file to split.
+   * @param {?string} newExtension The extension the resulting file gets.
+   * @return {Node} The resulting node.
+   */
+  static splitFile(node, newExtension) {
+    Object.assign(node, {
+      fullyMapped: true,
+      value: Object.assign(node.value, {
+        noWrite: true,
+      }),
     });
+
+    return node.createChild({ extension: newExtension });
   }
 
   /**
-   * Splits a {@link vinyl~File}: The resulting is a clone of the input file, with a different path.
-   * @param {vinyl~File} file The file to split.
-   * @param {?String} newExtension The extension the resulting file gets.
-   * @return {vinyl~File} The resulting file.
-   * @example
-   * // Assuming that `original` is a File with the path "path/to/file.type.xml":
-   * const result = SplittingTransformer.splitFile(original, '.another');
-   * // `result` is a new File, with the contents of `original` and the path
-   * // "path/to/file.type/file.another"
+   * Renames a container node, should be called by all subclasses.
+   * @param {BrowsedNode} node A container node.
    */
-  static splitFile(file, newExtension) {
-    const newFile = file.clone();
-
-    newFile.basename = `${newFile.stem}/${newFile.stem}`;
-    newFile.extname = newExtension;
-
-    return newFile;
+  async transformFromDB(node) {
+    node.renameTo(`${node.name}${this.constructor.extension}`);
   }
 
   /**
-   * Combines split files to a single one.
-   * @param {vinyl~File[]} files The files to combine.
-   * @param {string} newExtension The extension the resulting file gets.
-   * @return {vinyl~File} The resulting file.
+   * Returns `false` for all container nodes, so they don't get read.
+   * @param {BrowsedNode} node The node to check.
+   * @return {?boolean} If the node should be read.
    */
-  static combineFiles(files, newExtension) {
-    const newFile = files[0].clone();
-
-    newFile.path = `${newFile.dirname}${newExtension}`;
-    newFile._name = null;
-
-    return newFile;
+  readNodeFile(node) {
+    return this.shouldBeTransformed(node) ? false : undefined;
   }
 
   /**
-   * If there are any missing files this method loads these files and calls
-   * {SplittingTransformer#createCombinedFile} with them.
-   * @param {function(err: ?Error)} callback Called with the error that occurred while loading
-   * missing files.
+   * Combines the container node and the source nodes to one single node.
+   * @abstract
+   * @param {BrowsedNode} node The container node.
+   * @param {Map<string, BrowsedNode>} sourceNodes The source nodes.
    */
-  _flush(callback) {
-    const missingDirnames = Object.keys(this._combineFilesCache._files);
+  combineNodes(node, sourceNodes) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    throw new Error('Must be implemented by all subclasses');
+  }
 
-    if (missingDirnames.length > 0) {
-      Promise.all(
-        missingDirnames.map(dirname => {
-          const files = this._combineFilesCache._files[dirname];
-          const firstFile = files[Object.keys(files)[0]];
+  /**
+   * Combines the container node and the source nodes to one single node by calling
+   * {@link SplittingTransformer#combineNodes}.
+   * @param {BrowsedNode} node The container node.
+   * @param {{ [extension: string]: BrowedNode }} sourceNodes The source nodes.
+   */
+  _combineNodes(node, sourceNodes) {
+    this.combineNodes(node, sourceNodes);
+    node.renameTo(basename(node.name, this.constructor.extension));
+  }
 
-          const missing = this._combineFilesCache.missingExtensions(dirname);
-          const stem = basename(dirname, extname(dirname));
-          const paths = missing.map(ext => join(dirname, '/', `${stem}${ext}`));
+  /**
+   * Reads a given container nodes source nodes and combines them.
+   * @param {BrowsedNode} node The node to transform.
+   * @param {Object} context The browser context.
+   */
+  async transformFromFilesystem(node, context) {
+    if (!this.shouldBeTransformed(node)) { return; }
 
-          delete this._combineFilesCache._files[dirname];
-          delete this._combineFilesCache._required[dirname];
+    const [name, hasExtension] = node.fileName.split(this.constructor.extension);
 
-          Logger.debug('Loading', paths.length, 'required file(s)');
-
-          return Promise.all(
-            paths.map((path, i) => AtviseFile.read({
-              cwd: firstFile.cwd,
-              base: firstFile.base,
-              path,
-            })
-              .then(file => {
-                files[missing[i]] = file;
-              })
-            )
-          )
-            .then(() => new Promise((resolve, reject) => {
-              this.createCombinedFile(files, firstFile, (err, file) => {
-                if (err) {
-                  reject(err);
-                } else {
-                  this.push(file);
-
-                  resolve(file);
-                }
-              });
-            }));
-        })
-      )
-        .then(files => Logger.debug('Created', files.length, 'additional file(s)'))
-        .then(() => callback())
-        .catch(err => callback(err));
-    } else {
-      callback();
+    if (hasExtension !== '') { // FIXME: Remove
+      throw new Error(`${node.relative} shouldn't be transformed`);
     }
+
+    const regExp = new RegExp(`^\\.${name}(${
+      this.constructor.sourceExtensions.join('|')
+    })\\.json$`);
+
+    // Find source files an child definition files
+    const sourceFiles = [];
+    const childFiles = [];
+
+    const children = (await readdir(node.relative))
+      .reduce((current, f) => {
+        if (f.match(regExp)) {
+          sourceFiles.push(f);
+        } else if (f.match(/^\..*\.json$/)) { // Other definition file -> child node
+          current.push({ name: f, path: join(node.relative, f) });
+          childFiles.push(f);
+        } else if (!sourceFiles.includes(`.${f}.json`) && !childFiles.includes(`.${f}.json`)) {
+          // This might be a child object's folder...
+          current.push({ name: f, path: join(node.relative, f) });
+        }
+
+        return current;
+      }, []);
+
+    // Manually set node.children for the container as source browser only handles definition files
+    Object.assign(node, { children });
+
+    const sourceNodes = await Promise.all(sourceFiles
+      .map(f => context.readNode({
+        path: join(node.relative, f),
+        tree: { parent: node },
+      }))
+    );
+
+
+    this._combineNodes(node, sourceNodes
+      .reduce((result, n) => Object.assign(result, {
+        [extname(n.fileName)]: n,
+      }), {}));
   }
 
 }

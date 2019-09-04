@@ -1,43 +1,32 @@
-import { join } from 'path';
+import { join, sep } from 'path';
 import replace from 'buffer-replace';
 import promisify from 'stream-to-promise';
 import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
-import { src, dest } from 'gulp';
+import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { xml2js } from 'xml-js';
+import { parse } from 'modify-xml';
 import expect from '../expect';
-import PushStream from '../../src/lib/gulp/PushStream';
-import NodeStream from '../../src/lib/server/NodeStream';
-import ReadStream from '../../src/lib/server/ReadStream';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
 import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
+import dest from '../../src/lib/gulp/dest';
+import { performPush } from '../../src/tasks/push';
 import { id, tmpDir, readFile } from './util';
 
 export function pull(nodes, destination) {
-  const PullStream = proxyquire('../../src/lib/gulp/PullStream', {
-    gulp: {
-      dest() {
-        return dest(destination);
-      },
+  const { performPull } = proxyquire('../../src/tasks/pull', {
+    '../lib/gulp/dest': {
+      default: () => dest(destination),
     },
-  }).default;
+  });
 
-  return promisify(
-    new PullStream(
-      (new NodeStream(nodes.map(n => new NodeId(n))))
-        .pipe(new ReadStream())
-    )
-  );
+  return performPull(nodes.map(n => new NodeId(n)));
 }
 
 export function push(source) {
-  return promisify(new PushStream(src(
-    [`${source}/**/*`, `!${source}/**/.*.rc`],
-    { base: source, dot: true },
-  )));
+  return performPush(source);
 }
 
 export const setupDir = join(__dirname, '../fixtures/setup');
@@ -61,7 +50,7 @@ export function importSetup(name, ...rename) {
     }));
   });
 
-  const sourceStream = src(setupPath(name));
+  const sourceStream = gulpSrc(setupPath(name));
   const importStream = new ImportStream();
 
   return promisify(
@@ -197,7 +186,9 @@ export function expectCorrectMapping(setup, node) {
 
   it('should recreate all fields', async function() {
     // Run atscm push
-    await push(destination);
+    await push(join(destination, node.path.replace(/\./g, sep)));
+
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const rawPushed = await exportNodes(nodeIds);
     const pushed = originalNames.reduce((str, original, i) => str
@@ -214,45 +205,42 @@ export function expectCorrectMapping(setup, node) {
 
       if (element.type === 'cdata') {
         // eslint-disable-next-line no-param-reassign
-        element.cdata = element.cdata
+        element.value = element.value
+          .replace(/\?>\s/, '?>')
           .replace(/(^\s+|\r?\n?)/gm, '')
           .replace(/ standalone="no"/, '');
       }
+
+      // eslint-disable-next-line no-param-reassign
+      delete element.rawValue;
 
       return element;
     }
 
     function sortElements(current) {
       return Object.assign(current, {
-        elements: current.elements && current.elements
-          .filter(({ type }) => type !== 'comment')
-          .filter(({ name }) => name !== 'Aliases')
-          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
+        childNodes: current.childNodes && current.childNodes
+          .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
+          .sort(({ attributes: a }, { attributes: b }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
 
-            if (!gotA && !gotB) {
-              if (nameA < nameB) {
-                return -1;
+            if (gotA) {
+              if (gotB) {
+                return a.NodeId < b.NodeId ? -1 : 1;
               }
 
-              return nameA > nameB ? 1 : 0;
-            }
-            if (!gotA) { return 1; }
-            if (!gotB) { return -1; }
-
-            if (gotA < gotB) {
               return -1;
-            }
+            } else if (gotB) { return 1; }
 
-            return (gotA > gotB) ? 1 : 0;
+            return 0;
           })
           .map(n => normalize(sortElements(n))),
       });
     }
 
     function sortedTree(xml) {
-      return sortElements(xml2js(xml, { compact: false, alwaysChildren: true }));
+      return sortElements(parse(xml));
     }
 
     expect(sortedTree(pushed), 'to equal', sortedTree(original));
