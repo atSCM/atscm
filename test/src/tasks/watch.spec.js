@@ -43,6 +43,7 @@ const stubModule = proxyquire('../../../src/tasks/watch', {
           this.emitter.emit('service:running', true);
         },
         emitter: new TestEmitter(),
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         reload() {},
       };
     },

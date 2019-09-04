@@ -117,9 +117,8 @@ export function performPush(path, options) {
       return r === undefined ? true : r;
     },
     async handleNode(node) {
-      const context = this;
-
-      await applyTransforms(node, context);
+      // NOTE: context = this
+      await applyTransforms(node, this);
 
       if (node.push === false) { // Skip write
         return false;

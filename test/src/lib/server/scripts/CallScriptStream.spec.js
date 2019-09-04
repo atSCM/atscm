@@ -63,11 +63,12 @@ describe('CallScriptStream', function() {
       const stream = new StubImplementation();
 
       return expect(() => stream.inputArguments({}),
-        'when called with', [{}], 'to have items satisfying', (item) => {
+        'when called with', [{}], 'to have items satisfying', expect.it(item => {
           expect(item, 'to be an object');
           expect(item, 'to have property', 'dataType');
           expect(item, 'to have property', 'value');
-        });
+        })
+      );
     });
 
     it('should return names and values from #scriptParameters', function() {
