@@ -114,5 +114,13 @@
     "hooks": {
       "commit-msg": "conventional-changelog-lint -e"
     }
+  },
+  "renovate": {
+    "extends": [
+      "@ls-age:automergeDev"
+    ],
+    "baseBranches": [
+      "beta"
+    ]
   }
 }
