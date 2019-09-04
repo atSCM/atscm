@@ -143,7 +143,7 @@ export default abstract class Node {
   /** The node's resolved refernces. */
   protected _unresolvedReferences = new ReferenceMap();
   /** If the parent node resolves metadata. */
-  protected _parentResolvesMetadata: boolean = false;
+  protected _parentResolvesMetadata = false;
 
   /**
    * Creates a new node.

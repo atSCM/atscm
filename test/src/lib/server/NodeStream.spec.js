@@ -16,6 +16,7 @@ class StubNodeStream extends NodeStream {
 
 class NoWriteNodeStream extends StubNodeStream {
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   _writeNodesToBrowse() {}
 
 }
