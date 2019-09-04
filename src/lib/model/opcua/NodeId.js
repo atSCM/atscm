@@ -146,9 +146,15 @@ export default class NodeId extends OpcNodeId {
       return new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0); // "BaseVariableType"
     }
 
+    const parentValue = this.value.substr(0, this.value.lastIndexOf(this._lastSeparator));
+
+    if (!parentValue) { // Root node -> 'Objects' is parent
+      return new NodeId(NodeId.NodeIdType.NUMERIC, 85, 0);
+    }
+
     return new NodeId(
       NodeId.NodeIdType.STRING,
-      this.value.substr(0, this.value.lastIndexOf(this._lastSeparator)),
+      parentValue,
       this.namespace
     );
   }
