@@ -122,7 +122,7 @@ export default class Watcher extends Emitter {
         reject(err instanceof Error ? err : new Error(err));
       });
     })
-      .catch(err => { throw Object.assign(err, { node }) });
+      .catch(err => { throw Object.assign(err, { node }); });
   }
 
   /**
