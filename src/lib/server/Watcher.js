@@ -99,7 +99,13 @@ export default class Watcher extends Emitter {
       // Fixes #202
       const timeout = setTimeout(() => {
         Logger.debug(`Error monitoring '${nodeId.value}': Did not receive initial value. Retry...`);
-        item.terminate();
+
+        try {
+          item.terminate();
+        } catch (e) {
+          console.warn('Failed to terminate subscription', e);
+        }
+
         return this._subscribe(node).then(resolve, reject);
       }, 1000);
 
@@ -115,7 +121,8 @@ export default class Watcher extends Emitter {
         clearTimeout(timeout);
         reject(err instanceof Error ? err : new Error(err));
       });
-    });
+    })
+      .catch(err => { throw Object.assign(err, { node }); });
   }
 
   /**
