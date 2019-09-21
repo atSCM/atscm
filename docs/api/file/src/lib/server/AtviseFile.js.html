@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/lib/server/AtviseFile.js | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addReferences">addReferences</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-callMethod">callMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-callScript">callScript</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createNode">createNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-readNode">readNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-writeNode">writeNode</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#config">config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/config/ProjectConfig.js~ProjectConfig.html">ProjectConfig</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#init">init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/InitTask.js~InitTask.html">InitTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/init/OptionsValidator.js~InitOptionsValidator.html">InitOptionsValidator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ConfigLangs">ConfigLangs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptions">InitOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.js~Atviseproject.html">Atviseproject</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PushStream.js~PushStream.html">PushStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/dest.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/src.ts~FileNode.html">FileNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/src.ts~SourceBrowser.html">SourceBrowser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dest">dest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isDefinitionFile">isDefinitionFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-src">src</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-renameConfigPath">renameConfigPath</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-helpers">lib/helpers</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pick">pick</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reverse">reverse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-delay">delay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-reportProgress">reportProgress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sortReferences">sortReferences</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-finishTask">finishTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-handleTaskError">handleTaskError</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-init">lib/init</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/init/Option.js~InitOption.html">InitOption</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-model">lib/model</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/model/Node.ts~Node.html">Node</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/model/Node.ts~ServerNode.html">ServerNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/model/Node.ts~SourceNode.html">SourceNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReferenceTypeIds">ReferenceTypeIds</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReferenceTypeNames">ReferenceTypeNames</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-model-opcua">lib/model/opcua</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/model/opcua/NodeId.js~NodeId.html">NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ReverseReferenceTypeIds">ReverseReferenceTypeIds</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-server">lib/server</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/AddReferencesStream.js~AddReferencesStream.html">AddReferencesStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/AtviseFile.js~AtviseFile.html">AtviseFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/CreateNodeStream.js~CreateNodeStream.html">CreateNodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeBrowser.js~BrowsedNode.html">BrowsedNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeBrowser.js~NodeBrowser.html">NodeBrowser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/NodeStream.js~NodeStream.html">NodeStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/QueueStream.js~QueueStream.html">QueueStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Session.js~Session.html">Session</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Stream.js~Stream.html">Stream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Types.js~AtviseResourceType.html">AtviseResourceType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Types.js~AtviseType.html">AtviseType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/WaitingStream.js~WaitingStream.html">WaitingStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/Watcher.js~Watcher.html">Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/WriteStream.js~WriteStream.html">WriteStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-waitForDependencies">waitForDependencies</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DataTypeForExtension">DataTypeForExtension</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ExtensionForDataType">ExtensionForDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AtviseTypes">AtviseTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#instance-typedef-WWaiting#dependenciesFor">WWaiting#dependenciesFor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-server-scripts">lib/server/scripts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/scripts/CallMethodStream.js~CallMethodStream.html">CallMethodStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/server/scripts/CallScriptStream.js~CallScriptStream.html">CallScriptStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-versionNode">versionNode</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-transform">lib/transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/PartialTransformer.js~ModernPartialTransformer.html">ModernPartialTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/SplittingTransformer.js~SplittingTransformer.html">SplittingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/Transformer.js~Transformer.html">Transformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/transform/XMLTransformer.js~XMLTransformer.html">XMLTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-TransformDirection">TransformDirection</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#tasks">tasks</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/tasks/watch.js~WatchTask.html">WatchTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-importTask">importTask</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-performPull">performPull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pull">pull</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-performPush">performPush</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/AlarmConfigTransformer.ts~LintTransformer.html">LintTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.js~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Newlines.js~NewlinesTransformer.html">NewlinesTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html">AtviseScriptTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~QuickDynamicTransformer.html">QuickDynamicTransformer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/ScriptTransformer.js~ServerscriptTransformer.html">ServerscriptTransformer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef">typedef</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeStream.BrowseResult">NodeStream.BrowseResult</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ReadStream.ReadResult">ReadStream.ReadResult</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef-external">typedef/external</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~PromptType">inquirer~PromptType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-inquirer~Validator">inquirer~Validator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sboudrias/Inquirer.js">Inquirer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/">node-opcua</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/CallMethodRequest.html">node-opcua~CallMethodRequest</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/ClientSession.html">node-opcua~ClientSession</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/ClientSubscription.html">node-opcua~ClientSubscription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/DataType_enum.ts">node-opcua~DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/DataValue.html">node-opcua~DataValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-data-model/schemas/NodeClass_enum.js">node-opcua~NodeClass</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/NodeId.html">node-opcua~NodeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/NodeIdType.html">node-opcua~NodeIdType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/OPCUAClient.html">node-opcua~OPCUAClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/ReferenceDescription.html">node-opcua~ReferenceDescription</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/608771099fbfaa42195e150bdf36956affbb53e9/packages/node-opcua-constants/src/opcua_node_ids.js">node-opcua~ReferenceTypeId</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/v0.0.60/lib/raw_status_codes.js">node-opcua~StatusCodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html">node-opcua~Variant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/VariantArrayType_enum.ts">node-opcua~VariantArrayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">events~Emitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/fs.html#fs_class_fs_stats">fs~Stats</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_inspect_object_options">util~inspect</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/sindresorhus/p-queue#api">p-queue~PQueue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/amasad/sane">sane~Watcher</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/gulpjs/vinyl#new-vinyloptions">vinyl~File</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://github.com/Leonidas-from-XIV/node-xml2js#options-for-the-builder-class">xml2js~Builder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanup">cleanup</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getStat">getStat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-validateDirectoryExists">validateDirectoryExists</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/lib/server/AtviseFile.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { readFile } from &apos;fs&apos;;
+import { dirname } from &apos;path&apos;;
+import { NodeClass } from &apos;node-opcua/lib/datamodel/nodeclass&apos;;
+import { DataType, VariantArrayType, Variant } from &apos;node-opcua/lib/datamodel/variant&apos;;
+import { resolveNodeId } from &apos;node-opcua/lib/datamodel/nodeid&apos;;
+import { LocalizedText } from &apos;node-opcua/lib/datamodel/localized_text&apos;;
+import { StatusCodes } from &apos;node-opcua/lib/datamodel/opcua_status_code&apos;;
+import { QualifiedName } from &apos;node-opcua/lib/datamodel/qualified_name&apos;;
+import { DataValue } from &apos;node-opcua/lib/datamodel/datavalue&apos;;
+import { ReferenceTypeIds } from &apos;node-opcua/lib/opcua_node_ids&apos;;
+import { ExpandedNodeId } from &apos;node-opcua/lib/datamodel/expanded_nodeid&apos;;
+import { DiagnosticInfo } from &apos;node-opcua/lib/datamodel/diagnostic_info&apos;;
+import File from &apos;vinyl&apos;;
+import NodeId from &apos;../model/opcua/NodeId&apos;;
+import { reverse, pick } from &apos;../helpers/Object&apos;;
+import { sortReferences } from &apos;../helpers/mapping&apos;;
+import AtviseTypes, { AtviseResourceType } from &apos;./Types&apos;;
+
+/**
+ * A map of AtviseTypes against their definition id&apos;s value.
+ * @type {Map&lt;String, AtivseType&gt;}
+ */
+const AtviseTypesByValue = AtviseTypes
+  .reduce((result, type) =&gt; Object.assign(result, {
+    [type.typeDefinition.value]: type,
+  }), {});
+
+/**
+ * A map of AtviseTypes against their identifiers.
+ * @type {Map&lt;String, AtivseType&gt;}
+ */
+const AtviseTypesByIdentifier = AtviseTypes
+  .reduce((result, type) =&gt; Object.assign(result, {
+    [type.identifier]: type,
+  }), {});
+
+/**
+ * A map providing shorter extensions for data types
+ * @type {Map&lt;node-opcua~DataType, String&gt;}
+ */
+export const ExtensionForDataType = {
+  [DataType.Boolean]: &apos;bool&apos;,
+  [DataType.XmlElement]: &apos;xml&apos;,
+};
+
+/**
+ * A map providing data types for shorter extensions (Reverse of {@link DataTypeForExtension}).
+ * * @type {Map&lt;String, node-opcua~DataType&gt;}
+ */
+export const DataTypeForExtension = reverse(ExtensionForDataType);
+
+// Cache DataType
+/**
+ * OPC-UA data type names.
+ * @type {String[]}
+ */
+const types = Object.keys(DataType);
+
+/**
+ * OPC-UA data type extensions.
+ * @type {String[]}
+ */
+const typeExtensions = types.map(t =&gt; t.toLowerCase());
+
+// Cache TypeDefinitions
+/**
+ * Variable data type definition node id.
+ * @type {NodeId}
+ */
+const VariableTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0);
+/**
+ * Property data type definition node id.
+ * @type {NodeId}
+ */
+const PropertyTypeDefinition = new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0);
+
+// Cache Regular expressions
+/**
+ * A regular expression picking file extensions from file names.
+ * @type {RegExp}
+ */
+const ExtensionRegExp = /\.([^/\\]*)$/;
+
+/**
+ * Function that returns the passed argument as is.
+ * @param {*} b The input argument.
+ * @return {*} The value passed.
+ */
+const asIs = b =&gt; b;
+
+/**
+ * Maps a single property of an object using the the mapper defined in *map* for the given
+ * *dataType*.
+ * @param {Map&lt;node-opcua~DataType, function} map The mappings to use.
+ * @param {Object} obj The object to process.
+ * @param {string} key Name of the property to map.
+ * @param {node-opcua~DataType} dataType The data type to map the property to.
+ */
+const mapPropertyAs = (map, obj, key, dataType) =&gt; {
+  if (obj[key]) {
+    return Object.assign(obj, {
+      [key]: map[dataType](obj[key]),
+    });
+  }
+
+  return obj;
+};
+
+/**
+ * Mapping functions that return serializable values for a node of the given
+ * {@link node-opcua~DataType}.
+ * @type {Map&lt;node-opcua~DataType, function&gt;}
+ */
+const toRawValue = {
+  [DataType.Null]: () =&gt; null,
+  [DataType.StatusCode]: ({ name }) =&gt; name,
+  [DataType.QualifiedName]: ({ namespaceIndex, name }) =&gt; ({ namespaceIndex, name }),
+  [DataType.LocalizedText]: ({ text, locale }) =&gt; ({ text, locale }),
+  [DataType.DataValue]: value =&gt; {
+    const options = pick(value, [&apos;value&apos;, &apos;statusCode&apos;, &apos;sourceTimestamp&apos;, &apos;sourcePicoseconds&apos;,
+      &apos;serverTimestamp&apos;, &apos;serverPicoseconds&apos;]);
+
+    mapPropertyAs(toRawValue, options, &apos;value&apos;, DataType.Variant);
+    mapPropertyAs(toRawValue, options, &apos;statusCode&apos;, DataType.StatusCode);
+    // NOTE: server- and sourceTimstamps get mapped as dates
+
+    return options;
+  },
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) =&gt; ({
+    dataType,
+    arrayType,
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    value: getRawValue(value, dataType, arrayType),
+    dimensions,
+  }),
+  [DataType.DiagnosticInfo]: info =&gt; {
+    const options = pick(info, [&apos;namespaceUri&apos;, &apos;symbolicId&apos;, &apos;locale&apos;, &apos;localizedText&apos;,
+      &apos;additionalInfo&apos;, &apos;innerStatusCode&apos;, &apos;innerDiagnosticInfo&apos;]);
+
+    mapPropertyAs(toRawValue, options, &apos;innerStatusCode&apos;, DataType.StatusCode);
+    mapPropertyAs(toRawValue, options, &apos;innerDiagnosticInfo&apos;, DataType.DiagnosticInfo);
+
+    return options;
+  },
+};
+
+/**
+ * Decodes a buffer to a string.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {string} The buffer&apos;s string representation.
+ */
+const decodeAsString = b =&gt; b.toString().trim();
+
+/**
+ * Decodes a buffer to an integer value.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {number} The decoded integer.
+ */
+const decodeAsInt = b =&gt; parseInt(decodeAsString(b), 10);
+
+/**
+ * Decodes a buffer to a float value.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {number} The decoded float.
+ */
+const decodeAsFloat = b =&gt; parseFloat(decodeAsString(b));
+
+/**
+ * Decodes a buffer using JSON.
+ * @param {Buffer} b The buffer to decode from.
+ * @return {*} The decoded value, most likely an Object.
+ */
+const decodeAsJson = b =&gt; JSON.parse(b.toString());
+
+/**
+ * Mapping functions that return raw values for a stored value of the given type.
+ * @type {Map&lt;node-opcua~DataType, function&gt;}
+ */
+const decodeRawValue = {
+  [DataType.Null]: () =&gt; null,
+  [DataType.Boolean]: b =&gt; decodeAsString(b) === &apos;true&apos;,
+  [DataType.SByte]: decodeAsInt,
+  [DataType.Byte]: decodeAsInt,
+  [DataType.Int16]: decodeAsInt,
+  [DataType.UInt16]: decodeAsInt,
+  [DataType.Int32]: decodeAsInt,
+  [DataType.UInt32]: decodeAsInt,
+  [DataType.Int64]: decodeAsJson,
+  [DataType.UInt64]: decodeAsJson,
+  [DataType.Float]: decodeAsFloat,
+  [DataType.Double]: decodeAsFloat,
+  [DataType.String]: decodeAsString,
+  [DataType.DateTime]: decodeAsString,
+  [DataType.Guid]: decodeAsString,
+  // ByteString maps to Buffer
+  [DataType.XmlElement]: decodeAsString,
+  [DataType.NodeId]: decodeAsString,
+  [DataType.ExpandedNodeId]: decodeAsString,
+  [DataType.StatusCode]: decodeAsString,
+  [DataType.QualifiedName]: decodeAsJson,
+  [DataType.LocalizedText]: decodeAsJson,
+  // FIXME: Add ExtensionObject
+  [DataType.DataValue]: decodeAsJson,
+  [DataType.Variant]: decodeAsJson,
+  [DataType.DiagnosticInfo]: decodeAsJson,
+};
+
+/**
+ * Mapping functions that return OPC-UA node values for raw values.
+ * @type {Map&lt;node-opcua~DataType, function&gt;}
+ */
+const toNodeValue = {
+  [DataType.DateTime]: s =&gt; new Date(s),
+  [DataType.ByteString]: b =&gt; {
+    if (b instanceof Buffer) { return b; }
+
+    return Buffer.from(b.data, &apos;binary&apos;);
+  },
+  [DataType.NodeId]: s =&gt; resolveNodeId(s),
+
+  // Jep, node-opcua does not provide a resolve function for expanded nodeids
+  [DataType.ExpandedNodeId]: s =&gt; {
+    const nodeId = resolveNodeId(s);
+    const [value, ...defs] = nodeId.value.split(&apos;;&apos;);
+
+    const { identifierType, namespace, namespaceUri, serverIndex } = defs.reduce((opts, def) =&gt; {
+      const match = def.match(/^([^:]+):(.*)/);
+      if (!match) { return opts; }
+
+      let [key, val] = match.slice(1); // eslint-disable-line prefer-const
+
+      if (key === &apos;serverIndex&apos;) {
+        val = parseInt(val, 10);
+      }
+
+      return Object.assign(opts, { [key]: val });
+    }, Object.assign({}, nodeId));
+
+    return new ExpandedNodeId(identifierType, value, namespace, namespaceUri, serverIndex);
+  },
+
+  [DataType.StatusCode]: name =&gt; StatusCodes[name],
+  [DataType.QualifiedName]: options =&gt; new QualifiedName(options),
+  [DataType.LocalizedText]: options =&gt; new LocalizedText(options),
+  [DataType.DataValue]: options =&gt; {
+    const opts = options;
+
+    mapPropertyAs(toNodeValue, opts, &apos;value&apos;, DataType.Variant);
+    mapPropertyAs(toNodeValue, opts, &apos;statusCode&apos;, DataType.StatusCode);
+    mapPropertyAs(toNodeValue, opts, &apos;sourceTimestamp&apos;, DataType.DateTime);
+    mapPropertyAs(toNodeValue, opts, &apos;serverTimestamp&apos;, DataType.DateTime);
+
+    return new DataValue(opts);
+  },
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) =&gt; new Variant({
+    dataType,
+    arrayType: VariantArrayType[arrayType],
+    value,
+    dimensions,
+  }),
+  [DataType.DiagnosticInfo]: options =&gt; {
+    const opts = options;
+
+    mapPropertyAs(toNodeValue, opts, &apos;innerStatusCode&apos;, DataType.StatusCode);
+    mapPropertyAs(toNodeValue, opts, &apos;innerDiagnosticInfo&apos;, DataType.DiagnosticInfo);
+
+    return new DiagnosticInfo(opts);
+  },
+};
+
+/**
+ * Returns a node&apos;s raw value based on it&apos;s OPC-UA value and type.
+ * @param {*} value A node&apos;s OPC-UA value.
+ * @param {node-opcua~DataType} dataType The node&apos;s data type.
+ * @param {node-opcua~VariantArrayType} arrayType The node&apos;s array type.
+ * @return {*} The raw value of the given node.
+ */
+const getRawValue = (value, dataType, arrayType) =&gt; {
+  if (arrayType.value !== VariantArrayType.Scalar.value) {
+    const array = Array.isArray(value) ? value : Array.from(value);
+
+    return array.map(val =&gt; getRawValue(val, dataType, VariantArrayType[arrayType.value - 1]));
+  }
+
+  return (toRawValue[dataType] || asIs)(value);
+};
+
+/**
+ * Returns a node&apos;s OPC-UA value based on it&apos;s raw value and type.
+ * @param {*} rawValue A node&apos;s raw value.
+ * @param {node-opcua~DataType} dataType A node&apos;s data type.
+ * @param {node-opcua~VariantArrayType} arrayType A node&apos;s array type.
+ */
+const getNodeValue = (rawValue, dataType, arrayType) =&gt; {
+  if (arrayType.value !== VariantArrayType.Scalar.value) {
+    if (!Array.isArray(rawValue)) {
+      throw new Error(&apos;Value is not an array&apos;);
+    }
+
+    return rawValue.map(raw =&gt; getNodeValue(raw, dataType, VariantArrayType[arrayType.value - 1]));
+  }
+
+  return (toNodeValue[dataType] || asIs)(rawValue);
+};
+
+/**
+ * Returns the extension for a specific {@link node-opcua~DataType}.
+ * Algorithm:
+ *   - if the type has a shortened extension defined in {@link ExtensionForDataType}, return it.
+ *   - else return the DataType&apos;s name, in lowercase letters.
+ * @param {node-opcua~DataType} dataType The datatype to get the extension for.
+ * @return {string} The resulting extension.
+ */
+function extensionForDataType(dataType) {
+  return ExtensionForDataType[dataType] || dataType.toString().toLowerCase();
+}
+
+/**
+ * A regular expression that maches all reference definition files.
+ * @type {RegExp}
+ */
+const ConfigFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Data)Type)\.json$/;
+
+/**
+ * An extension to {@link vinyl~File} providing some additional, atvise-related properties.
+ * @property {node-opcua~DataType} AtviseFile#dataType The {@link node-opcua~DataType} the node is
+ * stored against on atvise server.
+ * @property {NodeId} typeDefinition The file&apos;s type definition on atvise server.
+ * FIXME: Additional properties not showing in API docs.
+ */
+export default class AtviseFile extends File {
+
+  /**
+   * Returns a storage path for a {@link ReadStream.ReadResult}.
+   * @param {ReadStream.ReadResult} readResult The read result to get a path for.
+   */
+  static pathForReadResult(readResult) {
+    let path = readResult.nodeId.filePath;
+
+    if (readResult.nodeClass.value !== NodeClass.Variable.value) {
+      return `${path}/.${readResult.nodeClass.key}.json`;
+    }
+
+    const dataType = readResult.value.$dataType;
+    const arrayType = readResult.value.$arrayType;
+    const typeDefinition = readResult.references.HasTypeDefinition[0];
+
+    if (typeDefinition.value === VariableTypeDefinition.value) {
+      // Variable nodes are stored with their lowercase datatype as an extension
+      path += `.${extensionForDataType(dataType)}`;
+    } else if (typeDefinition.value === PropertyTypeDefinition.value) {
+      // Property nodes are stored with &quot;.prop&quot; and their lowercase datatype as an extension
+      path += `.prop.${extensionForDataType(dataType)}`;
+    } else {
+      // Handle custom types
+      let identifier = &apos;var&apos;;
+      let fileExtension = false;
+      let keepExtension = false;
+
+      const atType = AtviseTypesByValue[typeDefinition.value];
+      if (atType) {
+        identifier = atType.identifier;
+        fileExtension = atType.fileExtension;
+        keepExtension = atType.keepExtension;
+      }
+
+      if (!keepExtension) {
+        path += `.${identifier}.${fileExtension || extensionForDataType(dataType)}`;
+      }
+    }
+
+    // Add &quot;array&quot; or &quot;matrix&quot; extensions for corresponding array types
+    if (arrayType.value !== VariantArrayType.Scalar.value) {
+      path += `.${arrayType === VariantArrayType.Array ? &apos;array&apos; : &apos;matrix&apos;}`;
+    }
+
+    return path;
+  }
+
+  /**
+   * Encodes a node&apos;s value to file contents.
+   * @param {*} value The value to encode.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to encode the value for.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
+   * @return {?Buffer} The encoded file contents or null.
+   */
+  static encodeValue(value, dataType, arrayType) {
+    if (value.value === null) {
+      return Buffer.from(&apos;&apos;);
+    }
+
+    const rawValue = getRawValue(value.value, dataType, arrayType);
+
+    if (rawValue instanceof Buffer) {
+      return rawValue;
+    }
+
+    const stringify = a =&gt; (a.toJSON ? a.toJSON() : JSON.stringify(a, null, &apos;  &apos;));
+    const stringified = (typeof rawValue === &apos;object&apos;) ?
+      stringify(rawValue) :
+      rawValue.toString().trim();
+
+    return Buffer.from(stringified);
+  }
+
+  /**
+   * Decodes a file&apos;s contents to a node&apos;s value.
+   * @param {Buffer} buffer The file contents to decode.
+   * @param {node-opcua~DataType} dataType The {@link node-opcua~DataType} to decode the contents.
+   * @param {node-opcua~VariantArrayType} arrayType The files array type.
+   * @return {?*} The decoded node value or null.
+   */
+  static decodeValue(buffer, dataType, arrayType) {
+    if (buffer === null || buffer.length === 0) {
+      return null;
+    }
+
+    if (dataType === DataType.ByteString &amp;&amp; arrayType === VariantArrayType.Scalar) {
+      return buffer;
+    }
+
+    const rawValue = arrayType === VariantArrayType.Scalar ?
+      (decodeRawValue[dataType] || asIs)(buffer) :
+      JSON.parse(buffer.toString());
+
+    return getNodeValue(rawValue, dataType, arrayType);
+  }
+
+  /**
+   * As file mtimes do not support millisecond resolution these must be removed before storing
+   * files.
+   * @param {Date} date The original mtime.
+   * @return {Date} The normalized mtime.
+   */
+  static normalizeMtime(date) {
+    date.setMilliseconds(0);
+
+    return date;
+  }
+
+  /**
+   * Creates a new {@link AtviseFile} for the given {@link ReadStream.ReadResult}.
+   * @param {ReadStream.ReadResult} readResult The read result to create the file for.
+   * @return {AtviseFile} The resulting file.
+   */
+  static fromReadResult(readResult) {
+    const { nodeClass, references, value, mtime } = readResult;
+
+    if (nodeClass.value === NodeClass.Variable.value &amp;&amp; !value) {
+      throw new Error(&apos;no value&apos;);
+    }
+
+    return new AtviseFile({
+      path: AtviseFile.pathForReadResult(readResult),
+      contents: value ?
+        AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) : // Variables
+        Buffer.from(JSON.stringify({
+          references: sortReferences(references),
+        }, null, &apos;  &apos;)), // Objects, types, ...
+      _nodeClass: nodeClass,
+      _dataType: value &amp;&amp; value.$dataType,
+      _arrayType: value &amp;&amp; value.$arrayType,
+      _references: references,
+      stat: { mtime: mtime ? this.normalizeMtime(mtime) : undefined },
+    });
+  }
+
+  /**
+   * Recalculates {@link AtviseFile#dataType}, {@link AtviseFile#arrayType} and
+   * {@link AtviseFile#typeDefinition}. **Never call this method directly.**.
+   */
+  _getMetadata() {
+    if (this.stem[0] === &apos;.&apos;) { // Got non-variable node
+      /**
+       * The node&apos;s class.
+       * @type {node-opcua~NodeClass}
+       */
+      this._nodeClass = NodeClass[this.stem.split(&apos;.&apos;)[1]];
+
+      const { references = {} } = JSON.parse(this.contents.toString());
+
+      /**
+       * References the node holds: In most cases this will be a single entry for
+       * `&apos;HasTypeDefinition&apos;`.
+       * @type {Map&lt;String, NodeId[]&gt;}
+       */
+      this._references = Object.entries(references)
+        .reduce((result, [type, refs]) =&gt; Object.assign(result, {
+          [type]: Array.isArray(refs) ? refs.map(v =&gt; new NodeId(v)) : new NodeId(refs),
+        }), {});
+
+      return;
+    }
+
+    this._nodeClass = NodeClass.Variable;
+
+    // Set default metadata
+    /**
+     * The node&apos;s stored {@link node-opcua~VariantArrayType}.
+     * @type {?node-opcua~VariantArrayType}
+     */
+    this._arrayType = VariantArrayType.Scalar;
+
+    this._references = {};
+
+    /**
+     * A node&apos;s browse- and display name.
+     * @type {?string}
+     */
+    this._name = this.stem.split(&apos;.&apos;)[0];
+
+    let extensions = [];
+    const m = this.relative.match(ExtensionRegExp);
+    if (m) {
+      extensions = m[1].split(&apos;.&apos;);
+    }
+
+    // For split files, add the directory name extension
+    const dirnameExts = this.dirname.split(&apos;.&apos;);
+    if (dirnameExts.length &gt; 1) {
+      extensions.unshift(dirnameExts[dirnameExts.length - 1]);
+    }
+
+    function ifLastExtensionMatches(matches, fn) {
+      if (matches(extensions[extensions.length - 1])) {
+        fn(extensions.pop());
+      }
+    }
+
+    const complete = () =&gt; this._dataType !== undefined &amp;&amp;
+      this._references.HasTypeDefinition !== undefined;
+
+    // Handle array types
+    ifLastExtensionMatches(ext =&gt; ext === &apos;array&apos;, () =&gt; {
+      this._arrayType = VariantArrayType.Array;
+    });
+
+    ifLastExtensionMatches(ext =&gt; ext === &apos;matrix&apos;, () =&gt; {
+      this._arrayType = VariantArrayType.Matrix;
+    });
+
+    ifLastExtensionMatches(ext =&gt; typeExtensions.includes(ext), ext =&gt; {
+      /**
+       * The node&apos;s stored {@link node-opcua~DataType}.
+       * @type {?node-opcua~DataType}
+       */
+      this._dataType = DataType[types[typeExtensions.indexOf(ext)]];
+    });
+
+    // Handle wrapped data types (e.g. &quot;bool&quot; for DataType.Boolean)
+    ifLastExtensionMatches(ext =&gt; DataTypeForExtension[ext], ext =&gt; {
+      this._dataType = DataType[DataTypeForExtension[ext]];
+    });
+
+    if (extensions.length === 0) { // Got variable
+      /**
+       * The node&apos;s stored type definition.
+       * @type {?node-opcua~NodeId}
+       */
+      this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0)];
+    }
+
+    ifLastExtensionMatches(ext =&gt; ext === &apos;prop&apos;, () =&gt; {
+      this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
+      this._references.toParent = ReferenceTypeIds.HasProperty;
+    });
+
+    ifLastExtensionMatches(ext =&gt; ext === &apos;var&apos;, () =&gt; {
+      this._references.HasTypeDefinition = [new NodeId(&apos;Custom.VarResourceType&apos;)];
+    });
+
+    if (!complete()) {
+      // Handle atvise types
+      let foundAtType = false;
+
+      Object.entries(AtviseTypesByIdentifier).forEach(([identifier, type]) =&gt; {
+        if (!foundAtType &amp;&amp; extensions.includes(identifier)) {
+          foundAtType = true;
+
+          if (!(type instanceof AtviseResourceType)) {
+            extensions = extensions.filter(e =&gt; e !== identifier);
+          }
+
+          this._references.HasTypeDefinition = [type.typeDefinition];
+          this._dataType = type.dataType;
+        }
+      });
+    }
+
+    if (!complete()) {
+      this._references.HasTypeDefinition = [
+        new NodeId(&apos;VariableTypes.ATVISE.Resource.OctetStream&apos;),
+      ];
+      this._dataType = DataType.ByteString;
+    }
+
+    this._name = [this._name, ...extensions.filter(e =&gt; !dirnameExts.includes(e))].join(&apos;.&apos;);
+  }
+
+  /**
+   * Computes a file&apos;s metadata if needed.
+   * @return {AtviseFile} The file.
+   */
+  getMetadata() {
+    if (!this._nodeClass) {
+      this._getMetadata();
+    }
+
+    return this;
+  }
+
+  /**
+   * The node&apos;s class.
+   * @type {node-opcua~NodeClass}
+   */
+  get nodeClass() {
+    if (!this._nodeClass) {
+      this._getMetadata();
+    }
+
+    return this._nodeClass;
+  }
+
+  /**
+   * The file&apos;s {@link node-opcua~DataType}.
+   * @type {node-opcua~DataType}
+   */
+  get dataType() {
+    if (!this._dataType) {
+      this._getMetadata();
+    }
+
+    return this._dataType;
+  }
+
+  /**
+   * The file&apos;s {@link node-opcua~VariantArrayType}.
+   * @type {node-opcua~VariantArrayType}
+   */
+  get arrayType() {
+    if (!this._arrayType) {
+      this._getMetadata();
+    }
+
+    return this._arrayType;
+  }
+
+  /**
+   * The files&apos;s references.
+   * @type {Map&lt;string, NodeId|NodeId[]&gt;}
+   */
+  get references() {
+    if (!this._references) {
+      this._getMetadata();
+    }
+
+    return this._references;
+  }
+
+  /**
+   * The file&apos;s type definition.
+   * @type {node-opcua~NodeId}
+   */
+  get typeDefinition() {
+    const refs = this.references;
+
+    if (refs &amp;&amp; refs.HasTypeDefinition) {
+      return refs.HasTypeDefinition[0];
+    }
+
+    return new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
+  }
+
+  // eslint-disable-next-line jsdoc/require-description-complete-sentence
+  /**
+   * `true` for reference config files (for example `.index.htm.json`).
+   * @type {boolean}
+   */
+  get isReferenceConfig() {
+    return this.stem[0] === &apos;.&apos; &amp;&amp; !this.stem.match(ConfigFileRegexp);
+  }
+
+  /**
+   * `true` for files containing atvise displays.
+   * @type {boolean}
+   */
+  get isDisplay() {
+    return this.typeDefinition.value === &apos;VariableTypes.ATVISE.Display&apos;;
+  }
+
+  /**
+   * `true` for files containing atvise scripts.
+   * @type {boolean}
+   */
+  get isScript() {
+    return this.typeDefinition.value === &apos;VariableTypes.ATVISE.ScriptCode&apos;;
+  }
+
+  /**
+   * `true` for files containing atvise quick dynamics.
+   * @type {boolean}
+   */
+  get isQuickDynamic() {
+    return this.typeDefinition.value === &apos;VariableTypes.ATVISE.QuickDynamic&apos;;
+  }
+
+  /**
+   * Sets the node value for the file.
+   * @param {?*} newValue The value to set.
+   */
+  set value(newValue) {
+    /**
+     * The file&apos;s contents.
+     * @type {?Buffer}
+     */
+    this.contents = AtviseFile.encodeValue(newValue, this.dataType, this.arrayType);
+  }
+
+  /**
+   * Returns the decoded node value for the file.
+   * @type {?*} The file&apos;s decoded value.
+   */
+  get value() {
+    return AtviseFile.decodeValue(this.contents, this.dataType, this.arrayType);
+  }
+
+  /**
+   * Returns the decoded node value for create node serverscript.
+   * @type {?*} The file&apos;s decoded value.
+   */
+  get createNodeValue() {
+    const value = this.value;
+
+    if (this.dataType === DataType.DateTime) {
+      return value.valueOf();
+    }
+
+    if (value instanceof Buffer) {
+      return value.toString();
+    }
+
+    return value;
+  }
+
+  /**
+   * Returns the node id associated with the file.
+   * @type {NodeId} The file&apos;s node id.
+   */
+  get nodeId() {
+    if (this.nodeClass.value !== NodeClass.Variable.value) {
+      return NodeId.fromFilePath(dirname(this.relative));
+    }
+    const atType = AtviseTypesByValue[this.typeDefinition.value];
+    let idPath = this.relative;
+
+    if (!atType || !atType.keepExtension) {
+      const exts = idPath.match(ExtensionRegExp)[1];
+      idPath = idPath.split(`.${exts}`)[0];
+    }
+
+    return NodeId.fromFilePath(idPath);
+  }
+
+  /**
+   * A file&apos;s browse and display name.
+   * @type {string}
+   */
+  get name() {
+    if (!this._name) {
+      this._getMetadata();
+    }
+
+    return this._name;
+  }
+
+  /**
+   * A file&apos;s parent&apos;s node id.
+   * @type {NodeId}
+   */
+  get parentNodeId() {
+    const name = this.name;
+    const id = this.nodeId;
+
+    if (name) {
+      const parts = this.nodeId.value.split(name);
+
+      if (parts.length &gt; 1) {
+        return new NodeId(id.identifierType, parts[0].slice(0, -1), id.namespaceIndex);
+      }
+    }
+
+    return this.nodeId.parent;
+  }
+
+  /**
+   * Returns a new file with all attributes of the current file.
+   * @param {Object} options See the {@link vinyl~File} docs for all options available.
+   * @return {AtviseFile} The cloned file.
+   * @see https://github.com/gulpjs/vinyl#filecloneoptions
+   */
+  clone(options) {
+    const clonedFile = super.clone(options);
+
+    clonedFile._nodeClass = this._nodeClass;
+    clonedFile._dataType = this._dataType;
+    clonedFile._arrayType = this._arrayType;
+    clonedFile._references = this._references;
+
+    return clonedFile;
+  }
+
+  /**
+   * Creates a new AtviseFile and reads it&apos;s contents.
+   * @param {Object} options See {@link vinyl~File} for available options.
+   * @return {Promise} Resolved with the new file of rejected with the error that occured while
+   * trying to read it&apos;s path.
+   */
+  static read(options = {}) {
+    return new Promise((resolve, reject) =&gt; {
+      if (!options.path) {
+        reject(new Error(&apos;options.path is required&apos;));
+      } else {
+        readFile(options.path, (err, contents) =&gt; {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(new AtviseFile(Object.assign(options, { contents })));
+          }
+        });
+      }
+    });
+  }
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
