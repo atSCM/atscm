@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.41"></a>
-# 1.0.0-beta.41 (2019-09-04)
+<a name="1.0.0-beta.42"></a>
+# 1.0.0-beta.42 (2019-09-21)
 
 
 ### Bug Fixes
@@ -46,6 +46,7 @@
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
+* **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
 * Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
