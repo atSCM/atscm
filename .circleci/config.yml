@@ -243,7 +243,8 @@ workflows:
   test-and-deploy:
     jobs:
       - install-deps
-      - start-testserver
+      - start-testserver:
+          context: atscm
       - build:
           requires:
             - install-deps
