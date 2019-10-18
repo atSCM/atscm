@@ -63,9 +63,22 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {Node} node The node to process.
    */
   decodeContents(node) {
-    return parse(this.direction === TransformDirection.FromDB ?
-      node.value.value.toString() :
-      node.stringValue);
+    const rawLines = this.direction === TransformDirection.FromDB
+      ? node.value.value.toString()
+      : node.stringValue;
+
+    try {
+      return parse(rawLines);
+    } catch (error) {
+      if (error.line) {
+        Object.assign(error, { rawLines, location: { start: {
+          line: error.line + 1,
+          column: error.column + 1,
+        } } });
+      }
+
+      throw error;
+    }
   }
 
   /**

@@ -1,3 +1,5 @@
+import { codeFrameColumns } from '@babel/code-frame';
+import Logger from 'gulplog';
 import Session from '../server/Session';
 
 /**
@@ -6,6 +8,12 @@ import Session from '../server/Session';
  * @throws {Error} The extended error.
  */
 export function handleTaskError(error) {
+  if (error.location && error.rawLines) {
+    error.originalStack = error.stack;
+    error.stack = `${error.message}
+${codeFrameColumns(error.rawLines, error.location, { message: error.message })}`;
+  }
+
   const additionalMessage = error.node ? `
  - Node: ${error.node.nodeId}` : '';
 
