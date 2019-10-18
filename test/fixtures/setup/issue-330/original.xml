@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2019-10-18 11:11:47 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<Extensions>
+		<atvise Version="3.3"/>
+	</Extensions>
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<Alias Alias="HasCondition">i=9006</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<Alias Alias="AlarmConditionStateType">ns=1;i=1001</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+		<!-- other -->
+		<Alias Alias="Server">i=2253</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=AGENT" BrowseName="1:AGENT">
+		<DisplayName Locale="en">AGENT</DisplayName>
+		<Description Locale="en">AGENT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=AGENT.DISPLAYS.HEADER.Header" ExportedBrowseName="1:Header" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.DISPLAYS" BrowseName="1:DISPLAYS">
+		<DisplayName Locale="en">DISPLAYS</DisplayName>
+		<Description Locale="en">DISPLAYS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.DISPLAYS.HEADER" BrowseName="1:HEADER">
+		<DisplayName Locale="en">HEADER</DisplayName>
+		<Description Locale="en">HEADER</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.DISPLAYS.HEADER.Header" BrowseName="1:Header" DataType="XmlElement" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Header</DisplayName>
+		<Description Locale="en">Header</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.DISPLAYS.HEADER</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=VariableTypes.ATVISE.Display</Reference>
+		</References>
+		<Value>
+			<uax:XmlElement><![CDATA[<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<svg xmlns:atv="http://webmi.atvise.com/2007/svgext" xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="1920" version="1.2" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" height="60" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd">
+ <defs/>
+ <metadata>
+  <atv:parameter config="SYSTEM.GLOBALS.Colors" defaultvalue="HeaderBackground" group="Appearance" substitute="$BACKGROUND$" name="background" behavior="optional" valuetype="global" desc="Background"/>
+  <atv:parameter config="SYSTEM.GLOBALS.Settings" defaultvalue="homeDisplay" group="Appearance" substitute="$HOMEDISPLAY$" name="homeDisplay" behavior="optional" valuetype="global" desc="Home Display"/>
+  <atv:parameter config="SYSTEM.GLOBALS.Settings" defaultvalue="map" group="Appearance" substitute="$MAP$" name="map" behavior="hidden" valuetype="global" desc="Enable map"/>
+  <atv:parameter config="SYSTEM.GLOBALS.Colors" defaultvalue="Active" substitute="$ACTIVE$" name="active" behavior="hidden" valuetype="global" desc=""/>
+  <atv:parameter config="SYSTEM.GLOBALS.Colors" defaultvalue="HeaderText" substitute="$HEADERTEXT$" name="header-1dnf1j42f-1dnf1giq8text" behavior="hidden" valuetype="global"/>
+  <atv:parameter config="SYSTEM.GLOBALS.Appearance" defaultvalue="layers" name="layers" behavior="hidden" valuetype="global"/>
+  <atv:gridconfig width="10" gridstyle="lines" enabled="true" height="10"/>
+  <atv:snapconfig width="1" enabled="true" height="1"/>
+ </metadata>
+ <g id="id_1" atv:insensitive="true" atv:refpy="0" transform="matrix(1.1999,0,0,0.3,0,0)" atv:refpx="0">
+  <rect id="id_4" width="1600.00" atv:refpy="50" y="0" x="0" fill="$BACKGROUND$" atv:refpx="800" height="200.00"/>
+ </g>
+ <svg id="id_0" width="80" atv:refpy="0" y="0" x="1840" atv:refpx="330" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.user" height="60">
+  <atv:argument prefix="base" name="base"/>
+ </svg>
+ <svg id="btnHome" width="80" atv:refpy="30" y="0" x="1520" atv:refpx="1560" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.header-1dnf1j42f-1dnf1giq8button" height="60">
+  <atv:argument name="symbol" value="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.Symbols.20x20.home"/>
+  <atv:argument name="text" value="T{HOME}"/>
+  <atv:argument name="display" value="AGENT.DISPLAYS.Main"/>
+  <atv:argument prefix="base" name="base"/>
+ </svg>
+ <svg id="id_9" width="80" atv:refpy="30" y="0" x="1599" atv:refpx="1639" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.header-1dnf1j42f-1dnf1giq8button" height="60">
+  <atv:argument name="symbol" value="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.Symbols.20x20.alarm"/>
+  <atv:argument name="text" value="T{ALARM}"/>
+  <atv:overwrite id="symbol>body" d="M7.658,1.148L7.117,1.3L8,4.438L8.542,4.284ZM12.573,1.148L11.688,4.284L12.23,4.438L13.113,1.3ZM3.799,3.541L3.41,3.93L5.662,6.18L6.051,5.791ZM16.432,3.541L14.179,5.791L14.566,6.18L16.82,3.93ZM9.828,6.562C9.788,6.563 9.749,6.567 9.71,6.57C9.571,6.581 9.433,6.599 9.297,6.619C9.16,6.643 9.026,6.671 8.894,6.703C8.76,6.736 8.63,6.774 8.502,6.817C8.375,6.859 8.249,6.907 8.127,6.961C8.005,7.013 7.887,7.07 7.773,7.131C7.659,7.193 7.549,7.258 7.443,7.327C7.337,7.4 7.235,7.473 7.14,7.551C7.043,7.628 6.951,7.709 6.867,7.796C6.781,7.881 6.701,7.969 6.627,8.061C6.552,8.151 6.484,8.246 6.422,8.343C6.359,8.439 6.304,8.538 6.254,8.638C6.206,8.74 6.161,8.843 6.125,8.947C6.097,9.033 6.074,9.119 6.054,9.207L6.026,10.216L5.833,17.151L5,17.151L5,18.612L15.254,18.612L15.254,17.151L14.499,17.151L14.305,10.179L14.279,9.26C14.267,9.192 14.252,9.124 14.232,9.056C14.199,8.952 14.163,8.848 14.118,8.745C14.074,8.643 14.021,8.543 13.965,8.445C13.906,8.346 13.842,8.251 13.772,8.157C13.702,8.064 13.626,7.975 13.545,7.887C13.462,7.799 13.376,7.716 13.283,7.634C13.191,7.555 13.093,7.477 12.99,7.405C12.886,7.331 12.779,7.263 12.669,7.197C12.557,7.132 12.442,7.071 12.323,7.016C12.203,6.961 12.08,6.909 11.955,6.864C11.829,6.817 11.698,6.777 11.569,6.74C11.438,6.703 11.304,6.673 11.169,6.645C11.033,6.619 10.897,6.599 10.759,6.582C10.659,6.574 10.559,6.567 10.458,6.562ZM1.228,7.138L1.085,7.669L4.163,8.492L4.304,7.961ZM19.003,7.138L15.927,7.961L16.067,8.492L19.144,7.669Z"/>
+  <atv:argument prefix="base" name="base"/>
+  <atv:argument name="display" value="AGENT.DISPLAYS.SYSTEM.Status.Alarm"/>
+ </svg>
+ <svg id="id_10" width="80" atv:refpy="20" y="0" x="1679" atv:refpx="1719" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.header-1dnf1j42f-1dnf1giq8button" height="60">
+  <atv:argument name="symbol" value="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.Symbols.20x20.trend"/>
+  <atv:argument name="text" value="T{TREND}"/>
+  <atv:argument name="display" value="AGENT.DISPLAYS.REPORT.Highchart"/>
+  <atv:argument prefix="base" name="base"/>
+ </svg>
+ <svg id="id_3" width="80" atv:refpy="20" y="0" x="1759" atv:refpx="1799" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.header-1dnf1j42f-1dnf1giq8button" height="60">
+  <atv:argument name="symbol" value="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.Symbols.20x20.history"/>
+  <atv:argument name="text" value="T{REPORT}"/>
+  <atv:argument name="display" value="AGENT.DISPLAYS.SYSTEM.REPORT.Heatmap"/>
+  <atv:argument prefix="base" name="base"/>
+ </svg>
+ <svg id="id_6" width="166" atv:refpy="29.032" y="0" x="606" atv:refpx="692" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.tabButton" height="60">
+  <atv:argument name="tabListener" value="1"/>
+ </svg>
+ <svg id="id_11" width="166" atv:refpy="29.032" y="0" x="1109" atv:refpx="1194" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.tabButton" height="60">
+  <atv:argument name="text" value=""/>
+  <atv:argument name="tabListener" value="4"/>
+ </svg>
+ <svg id="id_2" width="166" atv:refpy="29.032" y="0" x="775.667" atv:refpx="861.667" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.tabButton" height="60">
+  <atv:argument name="tabListener" value="2"/>
+ </svg>
+ <svg id="id_8" width="166" atv:refpy="29.032" y="0" x="942.333" atv:refpx="1028.333" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.tabButton" height="60">
+  <atv:argument name="tabListener" value="3"/>
+ </svg>
+ <g id="path" atv:refpy="30.54" visibility="hidden" atv:refpx="314.18">
+  <text id="site" atv:refpy="29.893" transform="matrix(1.295,0,0,1.295,-79.355,-4.807)" visibility="hidden" y="31.295" x="273.5" fill="$HEADERTEXT$" atv:refpx="274.828" font-size="15" font-weight="bold" font-family="Calibri"/>
+  <g id="buildingPoint" atv:refpy="30.54" atv:refpx="306.004">
+   <text id="building" atv:refpy="29.893" transform="matrix(1.295,0,0,1.295,-91.155,-4.425)" y="31" x="313.5" fill="$HEADERTEXT$" atv:refpx="314.827" font-size="15" font-weight="bold" font-family="Calibri"/>
+   <circle stroke="none" id="id_15" cx="295.885" atv:refpy="31.541" r="3.238" fill="$ACTIVE$" atv:refpx="309.873" cy="30.541" stroke-width="0"/>
+  </g>
+  <g id="floorPoint" atv:refpy="30.54" atv:refpx="346.004">
+   <text id="floor" atv:refpy="29.893" transform="matrix(1.295,0,0,1.295,-102.955,-4.425)" y="31" x="353.5" fill="$HEADERTEXT$" atv:refpx="354.179" font-size="15" font-weight="bold" font-family="Calibri"/>
+   <circle stroke="none" id="id_16" cx="335.885" atv:refpy="30.541" r="3.238" fill="$ACTIVE$" atv:refpx="425.775" cy="30.541" stroke-width="0"/>
+  </g>
+ </g>
+ <svg id="id_17" width="265" atv:refpy="30" y="0" x="0" atv:refpx="132.5" xlink:href="AGENT.DISPLAYS.MENU.Logo" height="60"/>
+ <svg id="btnMap" width="80" atv:refpy="30" visibility="hidden" y="0" x="1520" atv:refpx="1560" xlink:href="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.HEADER.buttons.header-1dnf1j42f-1dnf1giq8button" height="60">
+  <atv:argument name="symbol" value="SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS.Symbols.20x20.location"/>
+  <atv:argument name="text" value="T{MAP}"/>
+  <atv:argument name="display" value="AGENT.DISPLAYS.MAIN.Map"/>
+  <atv:argument prefix="base" name="base"/>
+ </svg>
+ <script type="text/ecmascript"><![CDATA[// Init and Param
+
+});]]]]><![CDATA[></script>
+</svg>
+]]></uax:XmlElement>
+		</Value>
+	</UAVariable>
+</UANodeSet>
