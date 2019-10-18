@@ -50,6 +50,17 @@ jobs:
           paths:
             - .
 
+  start-testserver:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run:
+          name: Login to google cloud
+          command: echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+      - run:
+          name: Starting atserver in google cloud
+          command: gcloud compute instances start instance-1 --project=atscm-ci --zone=us-central1-f
+
   build:
     <<: *defaults
     steps:
@@ -232,6 +243,8 @@ workflows:
   test-and-deploy:
     jobs:
       - install-deps
+      - start-testserver:
+          context: atscm
       - build:
           requires:
             - install-deps
@@ -247,12 +260,14 @@ workflows:
       - unit-tests:
           requires:
             - install-deps
+            - start-testserver
       - test-coverage:
           requires:
             - unit-tests
       - integration-tests:
           requires:
             - build
+            - start-testserver
       - test-docs:
           requires:
             - build-docs
