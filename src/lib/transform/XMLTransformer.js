@@ -71,10 +71,13 @@ export default class XMLTransformer extends SplittingTransformer {
       return parse(rawLines);
     } catch (error) {
       if (error.line) {
-        Object.assign(error, { rawLines, location: { start: {
-          line: error.line + 1,
-          column: error.column + 1,
-        } } });
+        Object.assign(error, {
+          rawLines,
+          location: { start: {
+            line: error.line + 1,
+            column: error.column + 1,
+          },
+          } });
       }
 
       throw error;
