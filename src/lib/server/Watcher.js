@@ -103,7 +103,7 @@ export default class Watcher extends Emitter {
         try {
           item.terminate();
         } catch (e) {
-          console.warn('Failed to terminate subscription', e);
+          Logger.warn('Failed to terminate subscription', e);
         }
 
         return this._subscribe(node).then(resolve, reject);
