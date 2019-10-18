@@ -74,7 +74,7 @@ jobs:
           paths:
             - out
 
-  build-docs:
+  docs:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -82,6 +82,13 @@ jobs:
       - run:
           name: Creating API documentation
           command: npm run docs
+      - run:
+          name: Checking documentation for broken links
+          command: npm run test:docs
+      - run:
+          name: Check documentation coverage
+          command: npm run docs:coverage
+          when: always
       - persist_to_workspace:
           root: .
           paths:
@@ -174,19 +181,6 @@ jobs:
           path: ~/reports
           when: always
 
-  test-docs:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Checking documentation for broken links
-          command: npm run test:docs
-      - run:
-          name: Check documentation coverage
-          command: npm run docs:coverage
-          when: always
-
   update-lockfile:
     <<: *defaults
     steps:
@@ -248,7 +242,7 @@ workflows:
       - build:
           requires:
             - install-deps
-      - build-docs:
+      - docs:
           requires:
             - install-deps
       - lint-source:
@@ -268,15 +262,12 @@ workflows:
           requires:
             - build
             - start-testserver
-      - test-docs:
-          requires:
-            - build-docs
       - update-lockfile:
           requires:
             - lint-source
             - test-coverage
             - integration-tests
-            - test-docs
+            - docs
           filters:
             branches:
               only: /greenkeeper\//
@@ -286,7 +277,7 @@ workflows:
             - type-check
             - test-coverage
             - integration-tests
-            - test-docs
+            - docs
       - update-hosted-docs:
           requires:
             - deploy
