@@ -98,7 +98,7 @@ export default class QueueStream extends Stream {
    * @return {string} The error message to use.
    * @abstract
    */
-  processErrorMessage(chunk) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  processErrorMessage(chunk) { // eslint-disable-line no-unused-vars
     throw new Error('QueueStream#processErrorMessage must be implemented by all subclasses');
   }
 

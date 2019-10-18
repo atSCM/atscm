@@ -86,7 +86,7 @@ export default class Transformer {
    * @return {boolean?} *true* if the node's value file should be read, undefined to let other
    * transformers decide.
    */
-  readNodeFile(node) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  readNodeFile(node) { // eslint-disable-line no-unused-vars
     return undefined;
   }
 
@@ -96,7 +96,7 @@ export default class Transformer {
    * @param {BrowsedNode} node The node to split.
    * @param {Object} context The transform context.
    */
-  async transformFromDB(node, context) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  async transformFromDB(node, context) { // eslint-disable-line no-unused-vars
     throw new Error('Transformer#transformFromDB must be overridden by all subclasses');
   }
 
@@ -106,7 +106,7 @@ export default class Transformer {
    * @param {BrowsedNode} node The node to transform.
    * @param {Object} context The browser context.
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   async transformFromFilesystem(node, context) {
     throw new Error('Transformer#transformFromFilesystem must be overridden by all subclasses');
   }

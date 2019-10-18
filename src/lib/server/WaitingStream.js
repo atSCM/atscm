@@ -63,7 +63,7 @@ export const waitForDependencies = Stream => class Waiting extends Stream {
    * @return {NodeId[]} The file's dependencies.
    * @abstract
    */
-  dependenciesFor(file) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  dependenciesFor(file) { // eslint-disable-line no-unused-vars
     throw new Error('#dependenciesFor must be implemented by all subclasses');
   }
 

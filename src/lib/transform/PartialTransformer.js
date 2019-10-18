@@ -22,7 +22,7 @@ export default class ModernPartialTransformer extends Transformer {
    * @param {AtviseFile} file The file to transform or not.
    * @abstract
    */
-  shouldBeTransformed(file) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  shouldBeTransformed(file) { // eslint-disable-line no-unused-vars
     throw new Error('PartialTransformer#shouldBeTransformed must be implemented by all subclasses');
   }
 
