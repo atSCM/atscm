@@ -1,3 +1,4 @@
+import { codeFrameColumns } from '@babel/code-frame';
 import Session from '../server/Session';
 
 /**
@@ -6,6 +7,13 @@ import Session from '../server/Session';
  * @throws {Error} The extended error.
  */
 export function handleTaskError(error) {
+  if (error.location && error.rawLines) {
+    error.originalStack = error.stack; // eslint-disable-line no-param-reassign
+    // eslint-disable-next-line no-param-reassign
+    error.stack = `${error.message}
+${codeFrameColumns(error.rawLines, error.location, { message: error.message })}`;
+  }
+
   const additionalMessage = error.node ? `
  - Node: ${error.node.nodeId}` : '';
 
