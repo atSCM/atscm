@@ -1,5 +1,4 @@
 import { codeFrameColumns } from '@babel/code-frame';
-import Logger from 'gulplog';
 import Session from '../server/Session';
 
 /**
@@ -9,7 +8,8 @@ import Session from '../server/Session';
  */
 export function handleTaskError(error) {
   if (error.location && error.rawLines) {
-    error.originalStack = error.stack;
+    error.originalStack = error.stack; // eslint-disable-line no-param-reassign
+    // eslint-disable-next-line no-param-reassign
     error.stack = `${error.message}
 ${codeFrameColumns(error.rawLines, error.location, { message: error.message })}`;
   }
