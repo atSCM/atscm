@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.42"></a>
-# 1.0.0-beta.42 (2019-09-21)
+<a name="1.0.0-beta.43"></a>
+# 1.0.0-beta.43 (2019-10-18)
 
 
 ### Bug Fixes
@@ -71,6 +71,7 @@
 * **pull:** Remove unused renames with --clean ([#287](https://github.com/atSCM/atscm/issues/287)) ([06243ff](https://github.com/atSCM/atscm/commits/06243ff))
 * **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 * Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
+* Show location of XML parsing errors ([#336](https://github.com/atSCM/atscm/issues/336)) ([509da3c](https://github.com/atSCM/atscm/commits/509da3c))
 * Use `modify-xml` instead of `xml-js` ([#306](https://github.com/atSCM/atscm/issues/306)) ([1232555](https://github.com/atSCM/atscm/commits/1232555))
 
 
