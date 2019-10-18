@@ -2,7 +2,7 @@ import expect from '../../expect';
 import { importSetup, pull, deleteNode } from '../../helpers/atscm';
 import { tmpDir } from '../../helpers/util';
 
-describe.only('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function() {
+describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function() {
   const originalNames = ['Header'];
   const nodePaths = ['AGENT.DISPLAYS.HEADER'];
 
