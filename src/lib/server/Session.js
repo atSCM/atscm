@@ -41,7 +41,7 @@ export default class Session {
     await new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(
         new Error(`Unable to connect to ${endpoint}: Connection timed out`)
-      ), 5000);
+      ), 10000);
 
       client.connect(endpoint, err => {
         clearTimeout(timer);
