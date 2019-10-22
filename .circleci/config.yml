@@ -178,10 +178,10 @@ jobs:
             fi
 
             echo "Testing against atserver $ATSERVER_VERSION.x"
-            MOCHA_FILE="/home/circleci/reports/integration-$ATSERVER_VERSION-$CIRCLE_NODE_INDEX.xml"
             npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --total=2 --split-by=timings)
           environment:
             NODE_ENV: test
+            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
       - store_test_results:
           path: ~/reports
           when: always
