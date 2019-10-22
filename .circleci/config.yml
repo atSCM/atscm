@@ -161,7 +161,7 @@ jobs:
 
   integration-tests:
     <<: *defaults
-    parallelism: 2
+    parallelism: 4
     steps:
       - attach_workspace:
           at: .
@@ -170,10 +170,20 @@ jobs:
           command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
       - run:
           name: Running tests
-          command: npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings)
+          command: |
+            ATSERVER_VERSION='3.2'
+            ATSCM_PROJECT__PORT__OPC='4840'
+
+            if [ CIRCLE_NODE_INDEX = 1 ]; then
+              ATSERVER_VERSION='3.3'
+              ATSCM_PROJECT__PORT__OPC='4841'
+            fi
+
+            echo "Testing against atserver $ATSERVER_VERSION.x"
+            MOCHA_FILE="../reports/integration-$ATSERVER_VERSION-$CIRCLE_NODE_INDEX.xml"
+            npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --total=2 --split-by=timings)
           environment:
             NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
       - store_test_results:
           path: ~/reports
           when: always
