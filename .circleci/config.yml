@@ -161,7 +161,7 @@ jobs:
 
   integration-tests:
     <<: *defaults
-    parallelism: 4
+    parallelism: 2
     steps:
       - attach_workspace:
           at: .
@@ -178,7 +178,7 @@ jobs:
             fi
 
             echo "Testing against atserver $ATSERVER_VERSION.x"
-            npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --total=2 --split-by=timings)
+            npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
           environment:
             NODE_ENV: test
             MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
