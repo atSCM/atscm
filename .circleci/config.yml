@@ -171,7 +171,7 @@ jobs:
             ATSERVER_VERSION='3.2'
             ATSCM_PROJECT__PORT__OPC='4840'
 
-            if [ $CIRCLE_NODE_INDEX -gt 1 ]; then
+            if [ $CIRCLE_NODE_INDEX -gt 0 ]; then
               ((CIRCLE_NODE_INDEX=CIRCLE_NODE_INDEX-2))
               ATSERVER_VERSION='3.3'
               ATSCM_PROJECT__PORT__OPC='4841'
