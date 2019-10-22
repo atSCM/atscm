@@ -166,9 +166,6 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Printing test files to run
-          command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
-      - run:
           name: Running tests
           command: |
             ATSERVER_VERSION='3.2'
