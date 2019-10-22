@@ -5,7 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { parse } from 'modify-xml';
+import { parse, removeChildren, isElement } from 'modify-xml';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -240,7 +240,12 @@ export function expectCorrectMapping(setup, node) {
     }
 
     function sortedTree(xml) {
-      return sortElements(parse(xml));
+      const parsed = parse(xml);
+
+      // Atserver 3.3 adds <Extensions><atvise Version="3.3"/></Extensions> to <UANodeSet>s
+      removeChildren(parsed.childNodes.find(isElement), 'Extensions');
+
+      return sortElements(parsed);
     }
 
     expect(sortedTree(pushed), 'to equal', sortedTree(original));
