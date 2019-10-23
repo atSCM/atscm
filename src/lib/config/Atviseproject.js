@@ -177,4 +177,12 @@ export default class Atviseproject {
     return false;
   }
 
+  /**
+   * The connection timeout, in milliseconds.
+   * @type {number}
+   */
+  static get timeout() {
+    return 10000;
+  }
+
 }
