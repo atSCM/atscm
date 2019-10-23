@@ -188,7 +188,7 @@ jobs:
           path: coverage
           when: always
 
-  32x-integration:
+  integration-32x:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -200,7 +200,7 @@ jobs:
       - store_artifacts:
           path: ~/reports
 
-  33x-integration:
+  integration-33x:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -276,11 +276,11 @@ workflows:
       - test-coverage:
           requires:
             - unit-tests
-      - 32x-integration:
+      - integration-32x:
           requires:
             - build
             - start-testserver
-      - 33x-integration:
+      - integration-33x:
           requires:
             - build
             - start-testserver
@@ -289,8 +289,8 @@ workflows:
             - lint-source
             - type-check
             - test-coverage
-            - 32x-integration
-            - 33x-integration
+            - integration-32x
+            - integration-33x
             - docs
       - update-hosted-docs:
           requires:
