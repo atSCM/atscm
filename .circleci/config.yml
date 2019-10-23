@@ -10,7 +10,36 @@ npm-login: &npm-login
   name: Logging in to npm
   command: echo "$NPM_TOKEN" > ~/.npmrc
 
-version: 2
+version: 2.1
+commands:
+  run-integration-tests:
+    parameters:
+      atserver:
+        type: string
+    steps:
+      - run:
+          name: Running tests
+          command: |
+            ATSERVER_VERSION='<< parameters.atserver >>'
+
+            case "$ATSERVER_VERSION" in
+              '3.2')
+                ATSCM_PROJECT__PORT__OPC=4840
+                ;;
+              '3.3')
+                ATSCM_PROJECT__PORT__OPC=4841
+                ;;
+              *)
+                echo "Invalid atserver version $ATSERVER_VERSION"
+                exit 1;
+            esac
+
+            echo "Testing against atserver $ATSERVER_VERSION.x (at port $ATSCM_PROJECT__PORT__OPC)"
+            npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
+          environment:
+            NODE_ENV: test
+            MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+
 jobs:
   install-deps:
     <<: *defaults
@@ -159,35 +188,29 @@ jobs:
           path: coverage
           when: always
 
-  integration-tests:
+  integration-32x:
     <<: *defaults
-    parallelism: 2
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: Running tests
-          command: |
-            ATSERVER_VERSION='3.2'
-            ATSCM_PROJECT__PORT__OPC='4840'
-
-            if [ $CIRCLE_NODE_INDEX -gt 0 ]; then
-              ((CIRCLE_NODE_INDEX=CIRCLE_NODE_INDEX-2))
-              ATSERVER_VERSION='3.3'
-              ATSCM_PROJECT__PORT__OPC='4841'
-            fi
-
-            echo "Testing against atserver $ATSERVER_VERSION.x"
-            npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
+      - run-integration-tests:
+          atserver: '3.2'
       - store_test_results:
           path: ~/reports
-          when: always
       - store_artifacts:
           path: ~/reports
-          when: always
+
+  integration-33x:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run-integration-tests:
+          atserver: '3.3'
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports
 
   update-lockfile:
     <<: *defaults
@@ -266,7 +289,11 @@ workflows:
       - test-coverage:
           requires:
             - unit-tests
-      - integration-tests:
+      - integration-32x:
+          requires:
+            - build
+            - start-testserver
+      - integration-33x:
           requires:
             - build
             - start-testserver
@@ -274,7 +301,8 @@ workflows:
           requires:
             - lint-source
             - test-coverage
-            - integration-tests
+            - integration-32x
+            - integration-33x
             - docs
           filters:
             branches:
@@ -284,7 +312,8 @@ workflows:
             - lint-source
             - type-check
             - test-coverage
-            - integration-tests
+            - integration-32x
+            - integration-33x
             - docs
       - update-hosted-docs:
           requires:
