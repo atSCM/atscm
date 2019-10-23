@@ -212,19 +212,6 @@ jobs:
       - store_artifacts:
           path: ~/reports
 
-  update-lockfile:
-    <<: *defaults
-    steps:
-      - checkout
-      - add_ssh_keys
-      - attach_workspace:
-          at: .
-      - run:
-          <<: *git-login
-      - run:
-          name: Updating lockfile
-          command: git push origin $CIRCLE_BRANCH
-
   deploy:
     <<: *defaults
     steps:
@@ -297,16 +284,6 @@ workflows:
           requires:
             - build
             - start-testserver
-      - update-lockfile:
-          requires:
-            - lint-source
-            - test-coverage
-            - integration-32x
-            - integration-33x
-            - docs
-          filters:
-            branches:
-              only: /greenkeeper\//
       - deploy:
           requires:
             - lint-source
