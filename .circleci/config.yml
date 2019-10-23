@@ -44,6 +44,7 @@ orbs:
                 npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
               environment:
                 NODE_ENV: test
+                ATSCM_PROJECT__TIMEOUT: '20000'
                 MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
     jobs:
       integration:
