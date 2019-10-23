@@ -11,34 +11,55 @@ npm-login: &npm-login
   command: echo "$NPM_TOKEN" > ~/.npmrc
 
 version: 2.1
-commands:
-  run-integration-tests:
-    parameters:
-      atserver:
-        type: string
-    steps:
-      - run:
-          name: Running tests
-          command: |
-            ATSERVER_VERSION='<< parameters.atserver >>'
+orbs:
+  atscm:
+    executors:
+      node:
+        docker:
+          - image: circleci/node:8
+    commands:
+      run-integration-tests:
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - run:
+              name: Running tests
+              command: |
+                ATSERVER_VERSION='<< parameters.atserver >>'
 
-            case "$ATSERVER_VERSION" in
-              '3.2')
-                ATSCM_PROJECT__PORT__OPC=4840
-                ;;
-              '3.3')
-                ATSCM_PROJECT__PORT__OPC=4841
-                ;;
-              *)
-                echo "Invalid atserver version $ATSERVER_VERSION"
-                exit 1;
-            esac
+                case "$ATSERVER_VERSION" in
+                  '3.2')
+                    ATSCM_PROJECT__PORT__OPC=4840
+                    ;;
+                  '3.3')
+                    ATSCM_PROJECT__PORT__OPC=4841
+                    ;;
+                  *)
+                    echo "Invalid atserver version $ATSERVER_VERSION"
+                    exit 1;
+                esac
 
-            echo "Testing against atserver $ATSERVER_VERSION.x (at port $ATSCM_PROJECT__PORT__OPC)"
-            npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+                echo "Testing against atserver $ATSERVER_VERSION.x (at port $ATSCM_PROJECT__PORT__OPC)"
+                npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
+              environment:
+                NODE_ENV: test
+                MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+    jobs:
+      integration:
+        executor: node
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - attach_workspace:
+              at: .
+          - run-integration-tests:
+              atserver: << parameters.atserver >>
+          - store_test_results:
+              path: ~/reports
+          - store_artifacts:
+              path: ~/reports
 
 jobs:
   install-deps:
@@ -188,30 +209,6 @@ jobs:
           path: coverage
           when: always
 
-  integration-32x:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run-integration-tests:
-          atserver: '3.2'
-      - store_test_results:
-          path: ~/reports
-      - store_artifacts:
-          path: ~/reports
-
-  integration-33x:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run-integration-tests:
-          atserver: '3.3'
-      - store_test_results:
-          path: ~/reports
-      - store_artifacts:
-          path: ~/reports
-
   deploy:
     <<: *defaults
     steps:
@@ -276,15 +273,18 @@ workflows:
       - test-coverage:
           requires:
             - unit-tests
-      - integration-32x:
+      - atscm/integration:
+          name: integration-32x
+          atserver: '3.2'
           requires:
             - build
             - start-testserver
-      - integration-33x:
+      - atscm/integration:
+          name: integration-33x
+          atserver: '3.3'
           requires:
             - build
             - start-testserver
-            - integration-32x
       - deploy:
           requires:
             - lint-source
