@@ -280,17 +280,18 @@ workflows:
           requires:
             - build
             - start-testserver
-      # - integration-33x:
-      #     requires:
-      #       - build
-      #       - start-testserver
+      - integration-33x:
+          requires:
+            - build
+            - start-testserver
+            - integration-32x
       - deploy:
           requires:
             - lint-source
             - type-check
             - test-coverage
             - integration-32x
-            # - integration-33x
+            - integration-33x
             - docs
       - update-hosted-docs:
           requires:
