@@ -10,7 +10,58 @@ npm-login: &npm-login
   name: Logging in to npm
   command: echo "$NPM_TOKEN" > ~/.npmrc
 
-version: 2
+version: 2.1
+orbs:
+  atscm:
+    executors:
+      node:
+        docker:
+          - image: circleci/node:8
+    commands:
+      run-integration-tests:
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - run:
+              name: Running tests
+              command: |
+                ATSERVER_VERSION='<< parameters.atserver >>'
+
+                case "$ATSERVER_VERSION" in
+                  '3.2')
+                    ATSCM_PROJECT__PORT__OPC=4840
+                    ;;
+                  '3.3')
+                    ATSCM_PROJECT__PORT__OPC=4841
+                    ;;
+                  *)
+                    echo "Invalid atserver version $ATSERVER_VERSION"
+                    exit 1;
+                esac
+
+                echo "Testing against atserver $ATSERVER_VERSION.x (at port $ATSCM_PROJECT__PORT__OPC)"
+                npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
+              environment:
+                NODE_ENV: test
+                ATSCM_PROJECT__TIMEOUT: '20000'
+                MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+    jobs:
+      integration:
+        executor: node
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - attach_workspace:
+              at: .
+          - run-integration-tests:
+              atserver: << parameters.atserver >>
+          - store_test_results:
+              path: ~/reports
+          - store_artifacts:
+              path: ~/reports
+
 jobs:
   install-deps:
     <<: *defaults
@@ -159,41 +210,6 @@ jobs:
           path: coverage
           when: always
 
-  integration-tests:
-    <<: *defaults
-    parallelism: 2
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Printing test files to run
-          command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
-      - run:
-          name: Running tests
-          command: npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings)
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
-
-  update-lockfile:
-    <<: *defaults
-    steps:
-      - checkout
-      - add_ssh_keys
-      - attach_workspace:
-          at: .
-      - run:
-          <<: *git-login
-      - run:
-          name: Updating lockfile
-          command: git push origin $CIRCLE_BRANCH
-
   deploy:
     <<: *defaults
     steps:
@@ -258,25 +274,25 @@ workflows:
       - test-coverage:
           requires:
             - unit-tests
-      - integration-tests:
+      - atscm/integration:
+          name: integration-32x
+          atserver: '3.2'
           requires:
             - build
             - start-testserver
-      - update-lockfile:
+      - atscm/integration:
+          name: integration-33x
+          atserver: '3.3'
           requires:
-            - lint-source
-            - test-coverage
-            - integration-tests
-            - docs
-          filters:
-            branches:
-              only: /greenkeeper\//
+            - build
+            - start-testserver
       - deploy:
           requires:
             - lint-source
             - type-check
             - test-coverage
-            - integration-tests
+            - integration-32x
+            - integration-33x
             - docs
       - update-hosted-docs:
           requires:

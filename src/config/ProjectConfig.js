@@ -105,4 +105,14 @@ export default class ProjectConfig extends Config {
     return !id.match(this.sourceNodeRegExp) || !!id.match(this.ignoredNodesRegExp);
   }
 
+  /**
+   * The connection timeout, in milliseconds. Can be overridden with the `ATSCM_PROJECT__TIMEOUT`
+   * env variable.
+   * @type {number}
+   */
+  static get timeout() {
+    const env = this._env('TIMEOUT');
+    return env ? parseInt(env, 10) : super.timeout;
+  }
+
 }

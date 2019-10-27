@@ -14,6 +14,7 @@ function sessionWithLogin(login) {
         host: ProjectConfig.host,
         port: ProjectConfig.port,
         login,
+        timeout: ProjectConfig.timeout,
       },
     },
   }).default;
