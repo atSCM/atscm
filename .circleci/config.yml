@@ -220,8 +220,14 @@ jobs:
       - run:
           <<: *git-login
       - run:
+          name: Build organization page
+          command: curl -X POST https://circleci.com/api/v1.1/project/github/atSCM/docs/build?circle-token=${CIRCLE_API_USER_TOKEN}
+      - run:
           name: Updating hosted API documentation
           command: |
+            if [ "$CIRCLE_BRANCH" = "beta" ]; then
+              circleci-agent step halt
+            fi
             version=$(node -e "console.log(require('./package.json').version)")
             git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
             cp -r docs/api/* ../pages
@@ -278,9 +284,11 @@ workflows:
             - test-coverage
             - integration-tests
             - docs
+          filters:
+            branches:
+              only:
+                - master
+                - beta
       - update-hosted-docs:
           requires:
             - deploy
-          filters:
-            branches:
-              only: master
