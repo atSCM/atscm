@@ -31,11 +31,32 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html" data-ice="link">Node ID conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-atscm-handles-id-conflicts" data-ice="link">How atscm handles id conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-to-resolve-id-conflicts" data-ice="link">How to resolve id conflicts</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
     <li data-ice="manualNav" class="indent-h1" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-transformer--em--class" data-ice="link">Using Transformer class</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-partialtransformer--em--class" data-ice="link">Using PartialTransformer class</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/debugging.html"><a href="manual/debugging.html" data-ice="link">Guide: Debugging atscm</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/error-handling.html"><a href="manual/error-handling.html" data-ice="link">Guide: Error handling</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/error-handling.html"><a href="manual/error-handling.html#adding-source-locations" data-ice="link">Adding source locations</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -83,7 +104,12 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-6-0--2018-06-17-" data-ice="link">0.6.0 (2018-06-17)</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0-beta-43--2019-10-18-" data-ice="link">1.0.0-beta.43 (2019-10-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#breaking-changes" data-ice="link">BREAKING CHANGES</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-6-0--2018-06-17-" data-ice="link">0.6.0 (2018-06-17)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#0-5-1--2018-02-16-" data-ice="link">0.5.1 (2018-02-16)</a></li>
@@ -141,6 +167,20 @@
     
   <div class="manual-card-wrap" data-ice="cards">
       <div class="manual-card">
+        <div data-ice="card"><h1>Node ID conflicts</h1><blockquote>
+<p><strong>Note that rename files are not available for atscm &lt; v1.0.0.</strong> Use <code>atscm update</code> to use the latest version</p>
+</blockquote><h2>How atscm handles id conflicts</h2><p>Let&apos;s assume we have two atvise server nodes, <em>AGENT.OBJECT.conflictingnode</em> and <em>AGENT.OBJECT.ConflictingNode</em>. These are valid node ids on the server, but when stored to the (case-insensitive) filesystem, the behaviour is undefined.</p><p>When <em>atscm</em> discovers such a name conflict it creates a <em>rename file</em> at <code>./atscm/rename.json</code>. This file will contain a map where the conflicting ids stored against the name to use to resolve the conflict. by default <em>insert node name</em> is used, e.g.:</p><pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;AGENT.OBJECTS.ConflictingNode&quot;: &quot;insert node name&quot;
+}</code>
+</code></pre><h2>How to resolve id conflicts</h2><p>Once an id conflict is recognized and added to the rename file, it is your responsibility to provide non-conflicting node names, e.g.:</p><pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;AGENT.OBJECTS.ConflictingNode&quot;: &quot;ConflictingNode-renamed&quot;
+}</code>
+</code></pre><p>After that <strong>run <code>atscm pull</code> again</strong> to pull the conflicting nodes.</p></div>
+        <a data-ice="link" href="manual/id-conflicts.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
         <div data-ice="card"><h1>Guide: gulp.js plugins</h1><blockquote>
 <p><strong>Please note:</strong> This guide assumes you have a basic knowledge on how gulp.js and custom <em>atscm</em> transformers work. You may go through <a href="https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md">gulp&apos;s getting started guide</a> or the <a href="https://atscm.github.io/atscm/manual/tutorial/custom-transformer.html">custom transformer tutorial</a> first otherwise.</p>
 </blockquote><p><em>atscm</em> heavily relies on the <a href="http://gulpjs.com">gulp.js</a> build tool. Therefore it&apos;s pretty easy to integrate existing <a href="http://gulpjs.com/plugins/">gulp plugins</a> into <em>atscm</em> transformers.</p><h2>Using <em>Transformer</em> class</h2><p>Basically, the only Transformer method you have to override is <a href="https://atscm.github.io/atscm/class/src/lib/transform/Transformer.js~Transformer.html#instance-method-applyToStream">Transformer#applyToStream</a>. In there, you can pipe your gulp plugin just as you would do in a regular gulp project. The only difference is, that you have to handle the current transform direction as well:</p><p><strong>A basic example:</strong></p><pre><code class="lang-javascript"><code class="source-code prettyprint">import { Transformer, TransformDirection } from &apos;atscm&apos;;
@@ -181,6 +221,54 @@ class MyPartialTransformer extends PartialTransformer {
 <li>Take a look at <a href="http://gulpjs.com/plugins/">gulp&apos;s plugin page</a> for a list of available plugins.</li>
 </ul></div>
         <a data-ice="link" href="manual/gulp-plugins.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>Guide: Debugging atscm</h1><p><em>atscm</em> can be easily debugged using Google Chrome&apos;s developer tools. All you have to do to attach the debugger, is to start the command line interface with the <code>--inspect</code> or <code>--inspect-brk</code> flag. For this to work you must first find the path to <em>atscm-cli</em>&apos;s executable:</p><pre><code class="lang-bash"><code class="source-code prettyprint">which atscm</code>
+</code></pre><p><strong>Note: This only works on Linux and macOS only</strong></p><p>You can now use this executable directly and run it with the inspector flags, e.g.:</p><pre><code class="lang-bash"><code class="source-code prettyprint">node --inspect-brk &quot;$(which atscm)&quot; [arguments passed to atscm]</code>
+</code></pre><p><a href="https://nodejs.org/en/docs/guides/debugging-getting-started/">For further details on how to use the debugger, visit the offical nodejs docs on debugging.</a></p></div>
+        <a data-ice="link" href="manual/debugging.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>Guide: Error handling</h1><h2>Adding source locations</h2><p>When a throwing an Error that was caused by client code, you should provide location info so it can be traced back to the source code.</p><p>To do so, simply add additional properties to the error object, containing the source code, the start location and (optionally) the end location.</p><pre><code class="lang-javascript"><code class="source-code prettyprint">function myTransformCode() {
+  const sourceCode = &apos;the code transformed&apos;;
+
+  try {
+    // Do something that may throw an error...
+  } catch (error) {
+    Object.assign(error, {
+      rawLines: sourceCode, // A string containing the raw source code
+      location: {
+        start: {
+          line: 1, // The line number
+          column: 1, // The column number
+        },
+        // you could add a &apos;end&apos; property here, with the same signature as &apos;start&apos;
+      },
+    });
+
+    // Finally re-throw the error
+    throw error;
+  }
+}</code>
+</code></pre><p><strong>Example output: XML Parse error</strong></p><pre><code><code class="source-code prettyprint">[13:30:28] Using gulpfile ~/Downloads/delete/atscm-330/node_modules/atscm/out/Gulpfile.js
+[13:30:28] Starting &apos;pull&apos;...
+[13:30:30] &apos;pull&apos; errored after 1.09 s
+[13:30:30] closing tag mismatch
+  5 |   &lt;atv:gridconfig width=&quot;20&quot; gridstyle=&quot;lines&quot; enabled=&quot;false&quot; height=&quot;20&quot;/&gt;
+  6 |   &lt;atv:snapconfig width=&quot;10&quot; enabled=&quot;false&quot; height=&quot;10&quot;/&gt;
+&gt; 7 |  &lt;/metadata&gt;
+    |  ^ closing tag mismatch
+  8 | &lt;/svg&gt;
+  9 |
+   - Node: AGENT.DISPLAYS.Main</code>
+</code></pre><p><strong>Details</strong></p><ul>
+<li><a href="https://babeljs.io/docs/en/babel-code-frame"><code>@babel/code-frame</code></a> is used to render the frame.</li>
+</ul></div>
+        <a data-ice="link" href="manual/error-handling.html"></a>
       </div>
     </div>
 <div class="manual-card-wrap" data-ice="cards">
@@ -451,7 +539,7 @@ Closes #123</code>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>
