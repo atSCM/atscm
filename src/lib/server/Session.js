@@ -2,7 +2,9 @@ import { join } from 'path';
 import Emitter from 'events';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import { OPCUAClient, ClientSession } from 'node-opcua/lib/client/opcua_client';
+import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
+import { promisified } from '../helpers/async';
 
 /**
  * The currently open sessions.
@@ -38,44 +40,36 @@ export default class Session {
 
     const endpoint = `opc.tcp://${ProjectConfig.host}:${ProjectConfig.port.opc}`;
 
-    await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(
-        new Error(`Unable to connect to ${endpoint}: Connection timed out`)
-      ), ProjectConfig.timeout);
+    const timer = setTimeout(() => {
+      Logger.warn(`It takes unusually long to connect to the atvise server at ${endpoint}.
+ - Are you sure it is running?`);
+    }, ProjectConfig.timeout);
 
-      client.connect(endpoint, err => {
-        clearTimeout(timer);
-        return err ? reject(err) : resolve();
-      });
-    });
+    await promisified(cb => client.connect(endpoint, cb));
+    Logger.debug(`Connected to ${endpoint}`);
+    clearTimeout(timer);
 
-    return new Promise((resolve, reject) => {
-      client.createSession({
-        userName: ProjectConfig.login.username,
-        password: ProjectConfig.login.password,
-      }, (err, session) => {
-        if (err) {
-          if (
-            [
-              'userName === null || typeof userName === "string"',
-              'password === null || typeof password === "string"',
-            ].includes(err.message) ||
-            (err.response &&
-            err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
-          ) {
-            reject(new Error('Unable to create session: Invalid login'));
-          } else {
-            reject(err);
-          }
-        } else {
-          Object.assign(session, { _emitter: new Emitter() });
-
-          openSessions.add(session);
-
-          resolve(session);
+    const session = await promisified(cb => client.createSession({
+      userName: ProjectConfig.login.username,
+      password: ProjectConfig.login.password,
+    }, cb))
+      .catch(err => {
+        if (
+          [
+            'userName === null || typeof userName === "string"',
+            'password === null || typeof password === "string"',
+          ].includes(err.message) ||
+          (err.response &&
+          err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
+        ) {
+          throw new Error('Unable to create session: Invalid login');
         }
+
+        throw err;
       });
-    });
+
+    openSessions.add(session);
+    return Object.assign(session, { _emitter: new Emitter() });
   }
 
   /**
