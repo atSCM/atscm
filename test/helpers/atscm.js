@@ -221,7 +221,7 @@ export function expectCorrectMapping(setup, node) {
       return Object.assign(current, {
         childNodes: current.childNodes && current.childNodes
           .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
-          .sort(({ attributes: a }, { attributes: b }) => {
+          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
             const gotA = a && a.NodeId;
             const gotB = b && b.NodeId;
 
@@ -233,7 +233,7 @@ export function expectCorrectMapping(setup, node) {
               return -1;
             } else if (gotB) { return 1; }
 
-            return 0;
+            return nameA < nameB ? -1 : 1;
           })
           .map(n => normalize(sortElements(n))),
       });
