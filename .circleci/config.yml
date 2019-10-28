@@ -1,15 +1,3 @@
-defaults: &defaults
-  docker:
-    - image: circleci/node:8
-
-git-login: &git-login
-  name: Setting up git user
-  command: git config --global user.email circleci@circleci && git config --global user.name CircleCI
-
-npm-login: &npm-login
-  name: Logging in to npm
-  command: echo "$NPM_TOKEN" > ~/.npmrc
-
 version: 2.1
 orbs:
   atscm:
@@ -18,6 +6,16 @@ orbs:
         docker:
           - image: circleci/node:8
     commands:
+      git-login:
+        steps:
+          - run:
+              name: Setting up git user
+              command: git config --global user.email circleci@circleci && git config --global user.name CircleCI
+      npm-login:
+        steps:
+          - run:
+              name: Logging in to npm
+              command: echo "$NPM_TOKEN" > ~/.npmrc
       run-integration-tests:
         parameters:
           atserver:
@@ -64,7 +62,7 @@ orbs:
 
 jobs:
   install-deps:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - restore_cache:
@@ -73,8 +71,7 @@ jobs:
       - run:
           name: Installing npm dependencies
           command: npm install
-      - run:
-          <<: *git-login
+      - atscm/git-login
       - run:
           name: Handling package-lock changes
           command: |
@@ -113,7 +110,7 @@ jobs:
           command: gcloud compute instances start instance-1 --project=atscm-ci --zone=us-central1-f
 
   build:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -126,7 +123,7 @@ jobs:
             - out
 
   docs:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -146,7 +143,7 @@ jobs:
             - docs/api
 
   lint-source:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -155,13 +152,11 @@ jobs:
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
       - store_test_results:
           path: ~/reports
-          when: always
       - store_artifacts:
           path: ~/reports
-          when: always
 
   type-check:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -170,7 +165,7 @@ jobs:
           command: npm run typecheck
 
   unit-tests:
-    <<: *defaults
+    executor: atscm/node
     parallelism: 4
     steps:
       - attach_workspace:
@@ -190,13 +185,11 @@ jobs:
             - coverage
       - store_test_results:
           path: ~/reports
-          when: always
       - store_artifacts:
           path: ~/reports
-          when: always
 
   test-coverage:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -208,50 +201,45 @@ jobs:
           command: npx codecov
       - store_artifacts:
           path: coverage
-          when: always
 
   deploy:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - add_ssh_keys
       - attach_workspace:
           at: .
-      - run:
-          <<: *git-login
-      - run:
-          <<: *npm-login
+      - atscm/git-login
+      - atscm/npm-login
       - run:
           name: Deploying changes
           command:
             npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
 
   update-hosted-docs:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - add_ssh_keys
       - attach_workspace:
           at: .
-      - run:
-          <<: *git-login
+      - atscm/git-login
       - run:
           name: Build organization page
           command: curl -X POST https://circleci.com/api/v1.1/project/github/atSCM/docs/build?circle-token=${CIRCLE_API_USER_TOKEN}
       - run:
           name: Updating hosted API documentation
           command: |
-            if [ "$CIRCLE_BRANCH" = "beta" ]; then
-              circleci-agent step halt
+            if [ "$CIRCLE_BRANCH" = "master" ]; then
+              version=$(node -e "console.log(require('./package.json').version)")
+              git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
+              cp -r docs/api/* ../pages
+              cd ../pages
+              git add .
+              git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
+              git push origin gh-pages
+              cd ../project
             fi
-            version=$(node -e "console.log(require('./package.json').version)")
-            git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
-            cp -r docs/api/* ../pages
-            cd ../pages
-            git add .
-            git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
-            git push origin gh-pages
-            cd ../project
 
 workflows:
   version: 2
