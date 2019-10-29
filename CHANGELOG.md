@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.43"></a>
-# 1.0.0-beta.43 (2019-10-18)
+<a name="1.0.0-beta.44"></a>
+# 1.0.0-beta.44 (2019-10-29)
 
 
 ### Bug Fixes
@@ -46,10 +46,11 @@
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
-* **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
 * Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
+* **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
+* Prevent connection timeouts on unstable connections ([#343](https://github.com/atSCM/atscm/issues/343)) ([d4a73a2](https://github.com/atSCM/atscm/commits/d4a73a2))
 * Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
 * Prevent errors with atvise 3.2.2+ ([#324](https://github.com/atSCM/atscm/issues/324)) ([e8a8b4a](https://github.com/atSCM/atscm/commits/e8a8b4a)), closes [#323](https://github.com/atSCM/atscm/issues/323)
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
