@@ -11,7 +11,7 @@ describe('delay', function() {
 /** @test {promisified} */
 describe('promisified', function() {
   it('should be fulfilled when async function calls callback', function() {
-    expect(promisified(cb => process.nextTick(cb)), 'to be fulfilled');
+    return expect(promisified(cb => process.nextTick(cb)), 'to be fulfilled');
   });
 
   it('should be rejected when async function fails', function() {
@@ -21,6 +21,6 @@ describe('promisified', function() {
       });
     }
 
-    expect(promisified(cb => failingAsync(cb)), 'to be rejected with', 'Oops');
+    return expect(promisified(cb => failingAsync(cb)), 'to be rejected with', 'Oops');
   });
 });
