@@ -3,7 +3,7 @@ import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
 import ServerWatcher from '../lib/server/Watcher';
-import { delay } from '../lib/helpers/async.js';
+import { delay } from '../lib/helpers/async';
 import { handleTaskError } from '../lib/helpers/tasks';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';

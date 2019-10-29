@@ -280,6 +280,7 @@ workflows:
           requires:
             - build
             - start-testserver
+            - integration-32x
       - deploy:
           requires:
             - lint-source
