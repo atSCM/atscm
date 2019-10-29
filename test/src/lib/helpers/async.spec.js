@@ -4,7 +4,7 @@ import { delay, promisified } from '../../../../src/lib/helpers/async';
 /** @test {delay} */
 describe('delay', function() {
   it('should resolve after duration', function() {
-    expect(() => delay(100), 'to be fulfilled');
+    return expect(() => delay(100), 'to be fulfilled');
   });
 });
 
