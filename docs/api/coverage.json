@@ -1,0 +1,300 @@
+{
+  "coverage": "94.17%",
+  "expectCount": 498,
+  "actualCount": 469,
+  "files": {
+    "src/api.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/config/ProjectConfig.js": {
+      "expectCount": 13,
+      "actualCount": 11,
+      "undocumentLines": [
+        76,
+        90
+      ]
+    },
+    "src/init/InitTask.js": {
+      "expectCount": 3,
+      "actualCount": 3,
+      "undocumentLines": []
+    },
+    "src/init/Options.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/init/OptionsValidator.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/coding.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "src/lib/config/Atviseproject.js": {
+      "expectCount": 15,
+      "actualCount": 15,
+      "undocumentLines": []
+    },
+    "src/lib/gulp/ImportStream.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/lib/gulp/PullStream.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/gulp/PushStream.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/gulp/dest.js": {
+      "expectCount": 29,
+      "actualCount": 24,
+      "undocumentLines": [
+        35,
+        85,
+        86,
+        147,
+        294
+      ]
+    },
+    "src/lib/gulp/src.ts": {
+      "expectCount": 29,
+      "actualCount": 24,
+      "undocumentLines": [
+        70,
+        197,
+        200,
+        201,
+        218
+      ]
+    },
+    "src/lib/helpers/Object.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/async.ts": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/log.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/mapping.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/tasks.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/init/Option.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/lib/model/Node.ts": {
+      "expectCount": 52,
+      "actualCount": 45,
+      "undocumentLines": [
+        148,
+        149,
+        150,
+        151,
+        152,
+        592,
+        624
+      ]
+    },
+    "src/lib/model/opcua/NodeId.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/lib/model/opcua/ReverseReferenceTypeIds.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/server/AddReferencesStream.js": {
+      "expectCount": 11,
+      "actualCount": 9,
+      "undocumentLines": [
+        9,
+        11
+      ]
+    },
+    "src/lib/server/AtviseFile.js": {
+      "expectCount": 53,
+      "actualCount": 53,
+      "undocumentLines": []
+    },
+    "src/lib/server/CreateNodeStream.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/lib/server/NodeBrowser.js": {
+      "expectCount": 32,
+      "actualCount": 27,
+      "undocumentLines": [
+        115,
+        140,
+        495,
+        499,
+        507
+      ]
+    },
+    "src/lib/server/NodeStream.js": {
+      "expectCount": 11,
+      "actualCount": 11,
+      "undocumentLines": []
+    },
+    "src/lib/server/QueueStream.js": {
+      "expectCount": 17,
+      "actualCount": 17,
+      "undocumentLines": []
+    },
+    "src/lib/server/Session.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/lib/server/Stream.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/lib/server/Types.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/lib/server/WaitingStream.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/server/Watcher.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/lib/server/WriteStream.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/lib/server/scripts/CallMethodStream.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/lib/server/scripts/CallScriptStream.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/lib/server/scripts/version.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/lib/transform/PartialTransformer.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/transform/SplittingTransformer.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/lib/transform/Transformer.js": {
+      "expectCount": 11,
+      "actualCount": 10,
+      "undocumentLines": [
+        59
+      ]
+    },
+    "src/lib/transform/XMLTransformer.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "src/tasks/import.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/tasks/pull.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/tasks/push.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
+    "src/tasks/watch.js": {
+      "expectCount": 18,
+      "actualCount": 17,
+      "undocumentLines": [
+        166
+      ]
+    },
+    "src/transform/AlarmConfigTransformer.ts": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/transform/DisplayTransformer.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/transform/Mapping.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    },
+    "src/transform/Newlines.js": {
+      "expectCount": 8,
+      "actualCount": 8,
+      "undocumentLines": []
+    },
+    "src/transform/ScriptTransformer.js": {
+      "expectCount": 12,
+      "actualCount": 12,
+      "undocumentLines": []
+    },
+    "src/util/cleanup.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/util/fs.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    }
+  }
+}
