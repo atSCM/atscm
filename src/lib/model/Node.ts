@@ -37,7 +37,7 @@ export interface NodeDefinition {
 /**
  * Names for references.
  */
-export const ReferenceTypeNames = reverse(ReferenceTypeIds);
+export const ReferenceTypeNames = reverse(ReferenceTypeIds) as { [key: number]: string };
 
 /**
  * A map specialized for holding references.
