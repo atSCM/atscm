@@ -2,13 +2,8 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
-  "extends": [
-    "@ls-age",
-    "plugin:import/typescript"
-  ],
+  "plugins": ["@typescript-eslint"],
+  "extends": ["@ls-age", "plugin:import/typescript", "prettier"],
   "rules": {
     "compat/compat": "off"
   },
@@ -22,7 +17,9 @@
       "extends": [
         "@ls-age",
         "plugin:@typescript-eslint/recommended",
-        "plugin:import/typescript"
+        "plugin:import/typescript",
+        "prettier",
+        "prettier/@typescript-eslint"
       ],
       "rules": {
         "compat/compat": "off",
