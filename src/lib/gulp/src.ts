@@ -5,9 +5,7 @@ import { DataType, VariantArrayType, Variant } from 'node-opcua/lib/datamodel/va
 import { KeyOf } from 'node-opcua/lib/misc/enum.js';
 import Logger from 'gulplog';
 import PromiseQueue from 'p-queue';
-import {
-  SourceNode, ReferenceTypeIds, NodeOptions, NodeDefinition,
-} from '../model/Node';
+import { SourceNode, ReferenceTypeIds, NodeOptions, NodeDefinition } from '../model/Node';
 import ProjectConfig from '../../config/ProjectConfig';
 import { decodeVariant } from '../coding';
 import { Omit } from '../helpers/types';
@@ -18,13 +16,16 @@ type FileNodeOptions = Omit<NodeOptions, 'nodeClass'> & NodeDefinition;
  * A node returned by the {@link SourceStream}.
  */
 export class FileNode extends SourceNode {
-
   /**
    * Creates a new node.
    * @param options The options to use.
    */
   public constructor({
-    nodeClass, dataType, arrayType, references, nodeId,
+    nodeClass,
+    dataType,
+    arrayType,
+    references,
+    nodeId,
     ...options
   }: FileNodeOptions) {
     super({
@@ -36,20 +37,22 @@ export class FileNode extends SourceNode {
       /**
        * The id stored in the definition file
        * @type {NodeId}
-      */
+       */
       this.specialId = nodeId;
     }
 
     if (references) {
-      (Object.entries(references) as ([keyof typeof ReferenceTypeIds, (string | number)[]])[])
-        .forEach(([ref, ids]) => {
-          const type = ReferenceTypeIds[ref] || parseInt(ref, 10);
+      (Object.entries(references) as ([
+        keyof typeof ReferenceTypeIds,
+        (string | number)[]
+      ])[]).forEach(([ref, ids]) => {
+        const type = ReferenceTypeIds[ref] || parseInt(ref, 10);
 
-          ids.forEach(id => {
-            this.references.addReference(type, id);
-            this._resolvedReferences.addReference(type, id);
-          });
+        ids.forEach(id => {
+          this.references.addReference(type, id);
+          this._resolvedReferences.addReference(type, id);
         });
+      });
     }
 
     if (dataType) {
@@ -75,7 +78,9 @@ export class FileNode extends SourceNode {
    * A node's raw value, decoded into a string.
    */
   public get stringValue(): string {
-    if (!this.hasRawValue()) { throw new Error('No value read yet. Ensure to call #setRawValue'); }
+    if (!this.hasRawValue()) {
+      throw new Error('No value read yet. Ensure to call #setRawValue');
+    }
 
     return this._rawValue.toString();
   }
@@ -105,13 +110,12 @@ export class FileNode extends SourceNode {
       }
     }
 
-    return (this.valueSoFar as Variant);
+    return this.valueSoFar as Variant;
   }
 
   public get value(): Variant {
     return this.variantValue;
   }
-
 }
 
 // Helpers
@@ -140,7 +144,6 @@ interface SourceBrowserOptions {
  * Browses the local file system for nodes.
  */
 export class SourceBrowser {
-
   /** The queue processing incoming paths / nodes. @type {p-queue~PQueue} */
   private _queue: PromiseQueue;
 
@@ -207,12 +210,16 @@ export class SourceBrowser {
       this.processPath({ path, ...options });
 
       this._queue.onIdle().then(() => {
-        if (processError) { return; }
+        if (processError) {
+          return;
+        }
 
         if (this._dependingOn.size) {
-          reject(new Error(`Some nodes are still waiting for dependencies
+          reject(
+            new Error(`Some nodes are still waiting for dependencies
   Missing nodes: ${Array.from(this._dependingOn.keys()).join(', ')}
-  - Pull these nodes or add them to the ignored ones`));
+  - Pull these nodes or add them to the ignored ones`)
+          );
         }
 
         resolve();
@@ -248,15 +255,18 @@ export class SourceBrowser {
    * @param {Object} options The options to use.
    */
   private async _processPath({
-    path, parent, children,
-    push = true, singleNode = false,
+    path,
+    parent,
+    children,
+    push = true,
+    singleNode = false,
   }: ProcessPathOptions): Promise<void | FileNode> {
     const s = await stat(path);
 
     if (s.isDirectory()) {
       let container;
-      const nextChildren = (await readdir(path))
-        .reduce((nodes, p) => {
+      const nextChildren = (await readdir(path)).reduce(
+        (nodes, p) => {
           const node = {
             name: p,
             path: join(path, p),
@@ -272,11 +282,14 @@ export class SourceBrowser {
           let parts: string[];
           const noProcessingNeeded = nodes.find(current => {
             const n = current.name;
-            if (n === `.${p}.json`) { return true; } // Skip files with definitions already present
+            if (n === `.${p}.json`) {
+              return true;
+            } // Skip files with definitions already present
 
             const [raw, rest] = parts || (parts = p.split('.inner'));
 
-            if (rest === '' && (n === raw || n === `.${raw}.json`)) { // Got an *.inner directory
+            if (rest === '' && (n === raw || n === `.${raw}.json`)) {
+              // Got an *.inner directory
               // eslint-disable-next-line no-param-reassign
               current.children = (current.children || []).concat(node);
               return true;
@@ -286,7 +299,9 @@ export class SourceBrowser {
           });
 
           return noProcessingNeeded ? nodes : nodes.concat(node);
-        }, [] as DiscoveredNodeFile[]);
+        },
+        [] as DiscoveredNodeFile[]
+      );
 
       if (container) {
         return this._processPath(Object.assign(container, { children: nextChildren, parent }));
@@ -297,8 +312,10 @@ export class SourceBrowser {
 
       const inheritParent = path.endsWith('.inner');
       nextChildren.forEach(node => {
-        // eslint-disable-next-line no-param-reassign
-        if (inheritParent) { node.parent = parent; }
+        if (inheritParent) {
+          // eslint-disable-next-line no-param-reassign
+          node.parent = parent;
+        }
         this.processPath(node);
       });
     } else if (s.isFile()) {
@@ -327,16 +344,19 @@ export class SourceBrowser {
 
       const dir = dirname(path);
       const rel = join(dir, name);
-      const node: BrowsedFileNode = Object.assign(new FileNode({
-        name,
-        parent,
-        ...(await readJSON(path) as NodeDefinition),
-      }), {
-        push, // FIXME: Remove?
-        children,
-        relative: rel,
-        definitionPath: path,
-      });
+      const node: BrowsedFileNode = Object.assign(
+        new FileNode({
+          name,
+          parent,
+          ...((await readJSON(path)) as NodeDefinition),
+        }),
+        {
+          push, // FIXME: Remove?
+          children,
+          relative: rel,
+          definitionPath: path,
+        }
+      );
 
       return this._processNode(node);
     }
@@ -351,22 +371,27 @@ export class SourceBrowser {
   private _processNode(node: BrowsedFileNode): Promise<void | FileNode> {
     // Build dependency map
     if (!node.waitingFor) {
-      const deps = Array.from(node.references)
-        .reduce((result, [, ids]) => result
-          .concat(Array.from(ids)
-            .filter(id => {
-              if (typeof id === 'number') { // OPC-UA node
-                return false;
-              }
+      const deps = Array.from(node.references).reduce(
+        (result, [, ids]) =>
+          result.concat(Array.from(ids).filter(id => {
+            if (typeof id === 'number') {
+              // OPC-UA node
+              return false;
+            }
 
-              return !(this._pushed.has(id)) && !ProjectConfig.isExternal(id);
-            }) as string[]),
-        [] as string[]);
+            return !this._pushed.has(id) && !ProjectConfig.isExternal(id);
+          }) as string[]),
+        [] as string[]
+      );
       // eslint-disable-next-line no-param-reassign
       node.waitingFor = new Set(deps);
       deps.forEach(d => {
-        this._dependingOn.set(d, (this._dependingOn.get(d) || [])
-          .concat(node as BrowsedFileNode & { waitingFor: Set<string> }));
+        this._dependingOn.set(
+          d,
+          (this._dependingOn.get(d) || []).concat(node as BrowsedFileNode & {
+            waitingFor: Set<string>;
+          })
+        );
       });
     }
 
@@ -390,50 +415,50 @@ export class SourceBrowser {
       await readFile(node.relative)
         .then(value => node.setRawValue(value))
         .catch(err => {
-          if (err.code === 'EISDIR') { return; }
+          if (err.code === 'EISDIR') {
+            return;
+          }
           throw new Error(`${err.code}: Error reading ${node.relative}`);
         });
     }
 
-    return this._nodeHandler(node)
-      .then(() => {
-        // Handle children
-        if (node.children) {
-          node.children.forEach(child => {
-            // eslint-disable-next-line no-param-reassign
-            child.parent = node;
-            this.processPath(child);
-          });
-        }
+    return this._nodeHandler(node).then(() => {
+      // Handle children
+      if (node.children) {
+        node.children.forEach(child => {
+          // eslint-disable-next-line no-param-reassign
+          child.parent = node;
+          this.processPath(child);
+        });
+      }
 
-        // Handle dependencies
-        const depending = this._dependingOn.get(node.nodeId);
-        if (depending) {
-          depending.forEach(dep => {
-            dep.waitingFor.delete(node.nodeId);
+      // Handle dependencies
+      const depending = this._dependingOn.get(node.nodeId);
+      if (depending) {
+        depending.forEach(dep => {
+          dep.waitingFor.delete(node.nodeId);
 
-            if (!dep.waitingFor.size) {
-              // All dependencies resolved
-              return this._pushNode(dep);
-            }
+          if (!dep.waitingFor.size) {
+            // All dependencies resolved
+            return this._pushNode(dep);
+          }
 
-            // Still waiting
-            return Logger.debug('Still waiting', dep.nodeId, Array.from(dep.waitingFor));
-          });
-        }
+          // Still waiting
+          return Logger.debug('Still waiting', dep.nodeId, Array.from(dep.waitingFor));
+        });
+      }
 
-        // eslint-disable-next-line no-param-reassign
-        delete node.waitingFor;
-        this._dependingOn.delete(node.nodeId);
-        this._pushed.add(node.nodeId);
+      // eslint-disable-next-line no-param-reassign
+      delete node.waitingFor;
+      this._dependingOn.delete(node.nodeId);
+      this._pushed.add(node.nodeId);
 
-        // Mark as pushed
-        this._pushedPath.add(node.definitionPath);
+      // Mark as pushed
+      this._pushedPath.add(node.definitionPath);
 
-        return node;
-      });
+      return node;
+    });
   }
-
 }
 
 /**
@@ -443,7 +468,10 @@ export class SourceBrowser {
  * @return A promise resolved once browsing is finished, with an addional *browser* property holding
  * the SourceBrowser instance created.
  */
-export default function src(path: string, options: SourceBrowserOptions): Promise<void> & {
+export default function src(
+  path: string,
+  options: SourceBrowserOptions
+): Promise<void> & {
   browser: SourceBrowser;
 } {
   const browser = new SourceBrowser(options);
@@ -459,7 +487,7 @@ type BrowsedFileNode = FileNode & {
   children?: DiscoveredNodeFile[];
   relative: string;
   definitionPath: string;
-}
+};
 
 interface DiscoveredNodeFile {
   path: string;
@@ -472,4 +500,4 @@ interface DiscoveredNodeFile {
 type ProcessPathOptions = Partial<DiscoveredNodeFile> & {
   path: string;
   singleNode?: boolean;
-}
+};

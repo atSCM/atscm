@@ -14,8 +14,10 @@ export function handleTaskError(error) {
 ${codeFrameColumns(error.rawLines, error.location, { message: error.message })}`;
   }
 
-  const additionalMessage = error.node ? `
- - Node: ${error.node.nodeId}` : '';
+  const additionalMessage = error.node
+    ? `
+ - Node: ${error.node.nodeId}`
+    : '';
 
   Object.assign(error, {
     message: `${error.message}${additionalMessage}`,

@@ -8,7 +8,6 @@ const pull = proxyquire('../../../src/tasks/pull', {
   '../lib/server/NodeStream': {
     _esModule: true,
     default: class StubStream extends throughStreamClass({ objectMode: true }) {
-
       constructor() {
         super();
 
@@ -20,17 +19,14 @@ const pull = proxyquire('../../../src/tasks/pull', {
 
         this.end();
       }
-
     },
   },
   '../lib/server/NodeBrowser': {
     _esModule: true,
     default: class NBrowser {
-
       async browse() {
         return true;
       }
-
     },
   },
 }).default;

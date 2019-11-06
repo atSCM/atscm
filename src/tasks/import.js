@@ -22,9 +22,7 @@ export default function importTask() {
 
   Session.pool();
 
-  return toPromise(srcStream
-    .pipe(new ImportStream())
-  )
+  return toPromise(srcStream.pipe(new ImportStream()))
     .then(() => writeNode(versionNode, versionVariant))
     .catch(err => {
       if (err.statusCode === StatusCodes.BadNodeIdUnknown) {
@@ -38,25 +36,23 @@ export default function importTask() {
           return createNode(versionNode, {
             name: 'version',
             value: versionVariant,
-          })
-            .then(async ({ outputArguments }) => {
-              if (outputArguments[3].value.length < 2) {
-                if (tryNo < maxTries) {
-                  Logger.debug(`Create script is not ready yet. Retrying after ${retryDelay}ms`);
+          }).then(async ({ outputArguments }) => {
+            if (outputArguments[3].value.length < 2) {
+              if (tryNo < maxTries) {
+                Logger.debug(`Create script is not ready yet. Retrying after ${retryDelay}ms`);
 
-                  await delay(retryDelay);
-                  return tryToCreate();
-                }
-
-                throw new Error('CreateNode script is not ready yet. Try again later');
+                await delay(retryDelay);
+                return tryToCreate();
               }
 
-              return true;
-            });
+              throw new Error('CreateNode script is not ready yet. Try again later');
+            }
+
+            return true;
+          });
         };
 
-        return tryToCreate()
-          .then(() => Logger.debug(`Import worked on attempt # ${tryNo}`));
+        return tryToCreate().then(() => Logger.debug(`Import worked on attempt # ${tryNo}`));
       }
 
       throw err;

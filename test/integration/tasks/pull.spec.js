@@ -5,11 +5,13 @@ import { copy, outputJson, outputFile, readdir, remove } from 'fs-extra';
 import { tmpDir } from '../../helpers/util';
 
 const runPull = proxyquire('../../../src/tasks/pull', {
-  '../lib/server/NodeBrowser': { default: class PullStub {
-
-    async browse() { return false; }
-
-  } },
+  '../lib/server/NodeBrowser': {
+    default: class PullStub {
+      async browse() {
+        return false;
+      }
+    },
+  },
 }).default;
 
 describe('pull task', function() {
@@ -20,14 +22,16 @@ describe('pull task', function() {
 
     const originalCwd = process.cwd();
 
-    before(() => Promise.all([
-      copy(
-        join(__dirname, '../../fixtures/Atviseproject.babel.js'),
-        join(projectDir, 'Atviseproject.babel.js')),
-      outputJson(join(projectDir, 'package.json'), {}),
-      outputFile(testFile, 'Testing...'),
-    ])
-      .then(() => process.chdir(projectDir)));
+    before(() =>
+      Promise.all([
+        copy(
+          join(__dirname, '../../fixtures/Atviseproject.babel.js'),
+          join(projectDir, 'Atviseproject.babel.js')
+        ),
+        outputJson(join(projectDir, 'package.json'), {}),
+        outputFile(testFile, 'Testing...'),
+      ]).then(() => process.chdir(projectDir))
+    );
 
     it('should empty the source directory first', function() {
       return expect(readdir(sourceDir), 'when fulfilled', 'not to be empty')

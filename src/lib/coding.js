@@ -44,8 +44,14 @@ const toRawValue = {
   [DataType.QualifiedName]: ({ namespaceIndex, name }) => ({ namespaceIndex, name }),
   [DataType.LocalizedText]: ({ text, locale }) => ({ text: text || null, locale }),
   [DataType.DataValue]: value => {
-    const options = pick(value, ['value', 'statusCode', 'sourceTimestamp', 'sourcePicoseconds',
-      'serverTimestamp', 'serverPicoseconds']);
+    const options = pick(value, [
+      'value',
+      'statusCode',
+      'sourceTimestamp',
+      'sourcePicoseconds',
+      'serverTimestamp',
+      'serverPicoseconds',
+    ]);
 
     mapPropertyAs(toRawValue, options, 'value', DataType.Variant);
     mapPropertyAs(toRawValue, options, 'statusCode', DataType.StatusCode);
@@ -61,8 +67,15 @@ const toRawValue = {
     dimensions,
   }),
   [DataType.DiagnosticInfo]: info => {
-    const options = pick(info, ['namespaceUri', 'symbolicId', 'locale', 'localizedText',
-      'additionalInfo', 'innerStatusCode', 'innerDiagnosticInfo']);
+    const options = pick(info, [
+      'namespaceUri',
+      'symbolicId',
+      'locale',
+      'localizedText',
+      'additionalInfo',
+      'innerStatusCode',
+      'innerDiagnosticInfo',
+    ]);
 
     mapPropertyAs(toRawValue, options, 'innerStatusCode', DataType.StatusCode);
     mapPropertyAs(toRawValue, options, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
@@ -77,12 +90,13 @@ const toRawValue = {
  */
 function getRawValue({ value, dataType, arrayType }) {
   if (arrayType !== VariantArrayType.Scalar) {
-    return (Array.isArray(value) ? value : Array.from(value))
-      .map(val => getRawValue({
+    return (Array.isArray(value) ? value : Array.from(value)).map(val =>
+      getRawValue({
         value: val,
         dataType,
         arrayType: VariantArrayType[arrayType.value - 1],
-      }));
+      })
+    );
   }
 
   return (toRawValue[dataType] || asIs)(value);
@@ -94,7 +108,9 @@ function getRawValue({ value, dataType, arrayType }) {
  * @return {Buffer} A buffer containing the encoded value.
  */
 export function encodeVariant({ value, dataType, arrayType }) {
-  if (value === null) { return Buffer.from([]); }
+  if (value === null) {
+    return Buffer.from([]);
+  }
 
   const rawValue = getRawValue({ value, dataType, arrayType });
 
@@ -104,9 +120,8 @@ export function encodeVariant({ value, dataType, arrayType }) {
 
   const stringify = a => (a.toJSON ? a.toJSON() : JSON.stringify(a, null, '  '));
 
-  const stringified = (typeof rawValue === 'object') ?
-    stringify(rawValue) :
-    rawValue.toString().trim();
+  const stringified =
+    typeof rawValue === 'object' ? stringify(rawValue) : rawValue.toString().trim();
 
   return Buffer.from(stringified);
 }
@@ -179,7 +194,9 @@ const decodeRawValue = {
 const toNodeValue = {
   [DataType.DateTime]: s => new Date(s),
   [DataType.ByteString]: b => {
-    if (b instanceof Buffer) { return b; }
+    if (b instanceof Buffer) {
+      return b;
+    }
 
     return Buffer.from(b.data, 'binary');
   },
@@ -192,7 +209,9 @@ const toNodeValue = {
 
     const { identifierType, namespace, namespaceUri, serverIndex } = defs.reduce((opts, def) => {
       const match = def.match(/^([^:]+):(.*)/);
-      if (!match) { return opts; }
+      if (!match) {
+        return opts;
+      }
 
       let [key, val] = match.slice(1); // eslint-disable-line prefer-const
 
@@ -219,12 +238,13 @@ const toNodeValue = {
 
     return new DataValue(opts);
   },
-  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => new Variant({
-    dataType,
-    arrayType: VariantArrayType[arrayType],
-    value,
-    dimensions,
-  }),
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) =>
+    new Variant({
+      dataType,
+      arrayType: VariantArrayType[arrayType],
+      value,
+      dimensions,
+    }),
   [DataType.DiagnosticInfo]: options => {
     const opts = options;
 
@@ -269,9 +289,10 @@ export function decodeVariant(buffer, { dataType, arrayType }) {
     return buffer;
   }
 
-  const rawValue = arrayType === VariantArrayType.Scalar ?
-    (decodeRawValue[dataType] || asIs)(buffer) :
-    JSON.parse(buffer.toString());
+  const rawValue =
+    arrayType === VariantArrayType.Scalar
+      ? (decodeRawValue[dataType] || asIs)(buffer)
+      : JSON.parse(buffer.toString());
 
   return getNodeValue(rawValue, dataType, arrayType);
 }

@@ -5,7 +5,6 @@ import NodeId from '../model/opcua/NodeId';
  * Special, atvise releated OPC-UA type.
  */
 class AtviseType {
-
   /**
    * Creates a new atvise type.
    * @param {string} nodeIdValue The type's OPC-UA node id value.
@@ -47,14 +46,12 @@ class AtviseType {
       }
     }
   }
-
 }
 
 /**
  * An atvise-related resource type.
  */
 export class AtviseResourceType extends AtviseType {
-
   /**
    * Creates a new resource type.
    * @param {string} name The type's OPC-UA node id value.
@@ -63,7 +60,6 @@ export class AtviseResourceType extends AtviseType {
   constructor(name, identifier) {
     super(`Resource.${name}`, identifier, DataType.ByteString, true);
   }
-
 }
 
 /**

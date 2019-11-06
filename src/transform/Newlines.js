@@ -13,7 +13,6 @@ const trailingNewlineRegExp = /\r?\n$/;
  * On push, CRLF characters are used and those trailing newlines are removed again.
  */
 export default class NewlinesTransformer extends PartialTransformer {
-
   /**
    * Creates a new newline transformer.
    * @param {Object} [options={}] The options to use.
@@ -64,8 +63,7 @@ export default class NewlinesTransformer extends PartialTransformer {
    * @param {function(err: ?Error, data: ?AtviseFile)} callback Called with resulting file.
    */
   transformFromFilesystem(file, enc, callback) {
-    let str = file.contents.toString()
-      .replace(/\r?\n/g, '\r\n');
+    let str = file.contents.toString().replace(/\r?\n/g, '\r\n');
 
     if (this._addTrailingNewlines) {
       str = str.replace(trailingNewlineRegExp, '');
@@ -83,5 +81,4 @@ export default class NewlinesTransformer extends PartialTransformer {
   get transformsReferenceConfigFiles() {
     return true;
   }
-
 }

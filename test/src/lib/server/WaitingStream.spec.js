@@ -6,7 +6,6 @@ import QueueStream from '../../../../src/lib/server/QueueStream';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 
 class StubStream extends Emitter {
-
   constructor() {
     super();
 
@@ -26,17 +25,15 @@ class StubStream extends Emitter {
 
     callback(null);
   }
-
 }
 
 class NoDeps extends waitForDependencies(StubStream) {
-
-  dependenciesFor() { return []; }
-
+  dependenciesFor() {
+    return [];
+  }
 }
 
 class WithDeps extends waitForDependencies(StubStream) {
-
   constructor(deps = [new NodeId('Testing')]) {
     super();
     this._deps = deps;
@@ -49,7 +46,6 @@ class WithDeps extends waitForDependencies(StubStream) {
 
     return deps;
   }
-
 }
 
 /** @test {WaitingStream} */
@@ -67,8 +63,7 @@ describe('WaitingStream', function() {
   /** @test {WaitingStream#dependenciesFor} */
   describe('#dependenciesFor', function() {
     it('should throw if not overridden', function() {
-      return expect(WaitingStream.prototype.dependenciesFor,
-        'to throw', /must be implemented/);
+      return expect(WaitingStream.prototype.dependenciesFor, 'to throw', /must be implemented/);
     });
   });
 
@@ -119,7 +114,7 @@ describe('WaitingStream', function() {
       it('should ignore already processed nodes', function() {
         const dep = new NodeId('TestDep');
         const stream = new WithDeps([dep]);
-        stream._finishedProcessing[(dep.toString())] = true;
+        stream._finishedProcessing[dep.toString()] = true;
         stream._enqueueChunk({ nodeId: new NodeId('Source') });
 
         expect(stream._waitingFor['ns=1;s=Testing'], 'to be undefined');
@@ -162,7 +157,7 @@ describe('WaitingStream', function() {
     context('without pending operations', function() {
       it('should call super', function() {
         const stream = new NoDeps();
-        stream._flush((() => {}));
+        stream._flush(() => {});
         return expect(stream.spies._flush, 'was called once');
       });
     });
@@ -172,8 +167,7 @@ describe('WaitingStream', function() {
         const stream = new WithDeps([new NodeId('Dep')]);
         stream._enqueueChunk({ nodeId: new NodeId('Depending') });
 
-        return expect(cb => stream._flush(cb),
-          'to call the callback without error');
+        return expect(cb => stream._flush(cb), 'to call the callback without error');
       });
     });
   });

@@ -17,7 +17,9 @@ import NodeId from './lib/model/opcua/NodeId';
  */
 function promisifiedCallback(resolve, reject) {
   return (err, result) => {
-    if (err) { return reject(err); }
+    if (err) {
+      return reject(err);
+    }
     return resolve(result);
   };
 }
@@ -47,7 +49,9 @@ async function withSession(action) {
 
   await Session.close(session);
 
-  if (error) { throw error; }
+  if (error) {
+    throw error;
+  }
 
   return result;
 }
@@ -60,14 +64,15 @@ async function withSession(action) {
  * @return {Promise<any>} The read value.
  */
 export async function readNode(nodeId) {
-  return withSession(session => promisified(cb => session.readVariableValue(nodeId, cb)))
-    .then(({ value, statusCode }) => {
+  return withSession(session => promisified(cb => session.readVariableValue(nodeId, cb))).then(
+    ({ value, statusCode }) => {
       if (statusCode !== StatusCodes.Good) {
         throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
       }
 
       return value;
-    });
+    }
+  );
 }
 
 /**
@@ -77,14 +82,15 @@ export async function readNode(nodeId) {
  * @return {Promise<node-opcua~StatusCodes} The operation status result.
  */
 export function writeNode(nodeId, value) {
-  return withSession(session => promisified(cb => session.writeSingleNode(nodeId, value, cb)))
-    .then(statusCode => {
+  return withSession(session => promisified(cb => session.writeSingleNode(nodeId, value, cb))).then(
+    statusCode => {
       if (statusCode !== StatusCodes.Good) {
         throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
       }
 
       return statusCode;
-    });
+    }
+  );
 }
 
 // Methods / Scripts
@@ -95,23 +101,29 @@ export function writeNode(nodeId, value) {
  * @param {Array<Variant>} args The arguments to pass.
  */
 export function callMethod(methodId, args = []) {
-  return withSession(session => promisified(cb => session.call([
-    {
-      objectId: methodId.parent,
-      methodId,
-      inputArguments: args,
-    },
-  ], cb)))
-    .then(([result] = []) => {
-      if (result.statusCode.value) {
-        throw Object.assign(new Error(result.statusCode.description), {
-          methodId,
-          inputArguments: args,
-        });
-      }
+  return withSession(session =>
+    promisified(cb =>
+      session.call(
+        [
+          {
+            objectId: methodId.parent,
+            methodId,
+            inputArguments: args,
+          },
+        ],
+        cb
+      )
+    )
+  ).then(([result] = []) => {
+    if (result.statusCode.value) {
+      throw Object.assign(new Error(result.statusCode.description), {
+        methodId,
+        inputArguments: args,
+      });
+    }
 
-      return result;
-    });
+    return result;
+  });
 }
 
 /**
@@ -140,20 +152,22 @@ export function callScript(scriptId, parameters = {}) {
       arrayType: VariantArrayType.Array,
       value: Object.values(parameters),
     },
-  ])
-    .then(result => {
-      const statusCode = result.outputArguments[0].value;
+  ]).then(result => {
+    const statusCode = result.outputArguments[0].value;
 
-      if (statusCode.value) {
-        throw Object.assign(new Error(`Script failed: ${statusCode.description}
-${result.outputArguments[1].value}`), {
+    if (statusCode.value) {
+      throw Object.assign(
+        new Error(`Script failed: ${statusCode.description}
+${result.outputArguments[1].value}`),
+        {
           scriptId,
           parameters,
-        });
-      }
+        }
+      );
+    }
 
-      return result;
-    });
+    return result;
+  });
 }
 
 /**
@@ -171,49 +185,62 @@ ${result.outputArguments[1].value}`), {
  * @param {string} [options.reference] Name of the type of the node's reference to it's parent.
  * @param {node-opcua~Variant} [options.value] The node's value, required for all variable nodes.
  */
-export function createNode(nodeId, {
-  name,
-  parentNodeId = nodeId.parent,
-  nodeClass = NodeClass.Variable,
-  typeDefinition = new NodeId('ns=0;i=62'),
-  modellingRule,
-  reference,
-  value,
-}) {
-  const variableOptions = nodeClass === NodeClass.Variable ? {
-    dataType: value.dataType.value,
-    valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
-    value: value.arrayType && value.arrayType !== VariantArrayType.Scalar ?
-      Array.from(value.value) :
-      value.value,
-  } : {};
+export function createNode(
+  nodeId,
+  {
+    name,
+    parentNodeId = nodeId.parent,
+    nodeClass = NodeClass.Variable,
+    typeDefinition = new NodeId('ns=0;i=62'),
+    modellingRule,
+    reference,
+    value,
+  }
+) {
+  const variableOptions =
+    nodeClass === NodeClass.Variable
+      ? {
+          dataType: value.dataType.value,
+          valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
+          value:
+            value.arrayType && value.arrayType !== VariantArrayType.Scalar
+              ? Array.from(value.value)
+              : value.value,
+        }
+      : {};
 
   const is64Bit = value.dataType === DataType.Int64 || value.dataType === DataType.UInt64;
-  if (is64Bit) { variableOptions.value = 0; }
+  if (is64Bit) {
+    variableOptions.value = 0;
+  }
 
   return callScript(new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.CreateNode'), {
     paramObjString: {
       dataType: DataType.String,
-      value: JSON.stringify(Object.assign({
-        nodeId,
-        browseName: name,
-        parentNodeId: parentNodeId || nodeId.parent,
-        nodeClass: nodeClass.value,
-        typeDefinition,
-        modellingRule,
-        reference,
-      }, variableOptions)),
+      value: JSON.stringify(
+        Object.assign(
+          {
+            nodeId,
+            browseName: name,
+            parentNodeId: parentNodeId || nodeId.parent,
+            nodeClass: nodeClass.value,
+            typeDefinition,
+            modellingRule,
+            reference,
+          },
+          variableOptions
+        )
+      ),
     },
-  })
-    .then(async result => {
-      const [{ value: createdNode }] = result.outputArguments[3].value;
+  }).then(async result => {
+    const [{ value: createdNode }] = result.outputArguments[3].value;
 
-      if (createdNode && is64Bit) {
-        await writeNode(nodeId, value);
-      }
+    if (createdNode && is64Bit) {
+      await writeNode(nodeId, value);
+    }
 
-      return result;
-    });
+    return result;
+  });
 }
 
 /**

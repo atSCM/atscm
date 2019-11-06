@@ -28,9 +28,7 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
   it('should not create duplicate entries in rename.json', async function() {
     const renames = await readJson(renamePath);
 
-    expect(Object.keys(renames), 'to equal', [
-      `${nodeIds[0]}.Parent`,
-    ]);
+    expect(Object.keys(renames), 'to equal', [`${nodeIds[0]}.Parent`]);
   });
 
   after('delete tmp node', function() {

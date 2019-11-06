@@ -7,7 +7,6 @@ import SplittingTransformer from './SplittingTransformer';
  * A transformer used to transform XML documents.
  */
 export default class XMLTransformer extends SplittingTransformer {
-
   /**
    * Creates a new XMLTransformer based on some options.
    * @param {Object} options The options to use.
@@ -53,9 +52,9 @@ export default class XMLTransformer extends SplittingTransformer {
    * @type {function(object: Object): string}
    */
   get builder() {
-    return this.direction === TransformDirection.FromDB ?
-      this._fromDBBuilder :
-      this._fromFilesystemBuilder;
+    return this.direction === TransformDirection.FromDB
+      ? this._fromDBBuilder
+      : this._fromFilesystemBuilder;
   }
 
   /**
@@ -63,9 +62,8 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {Node} node The node to process.
    */
   decodeContents(node) {
-    const rawLines = this.direction === TransformDirection.FromDB
-      ? node.value.value.toString()
-      : node.stringValue;
+    const rawLines =
+      this.direction === TransformDirection.FromDB ? node.value.value.toString() : node.stringValue;
 
     try {
       return parse(rawLines);
@@ -73,11 +71,13 @@ export default class XMLTransformer extends SplittingTransformer {
       if (error.line) {
         Object.assign(error, {
           rawLines,
-          location: { start: {
-            line: error.line + 1,
-            column: error.column + 1,
+          location: {
+            start: {
+              line: error.line + 1,
+              column: error.column + 1,
+            },
           },
-          } });
+        });
       }
 
       throw error;
@@ -91,5 +91,4 @@ export default class XMLTransformer extends SplittingTransformer {
   encodeContents(object) {
     return this.builder(object);
   }
-
 }

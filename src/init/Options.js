@@ -76,7 +76,8 @@ export const InitOptions = {
  * {@link InitOptions}, exported as an array. Required to run {@link Inquirer}.
  * @type {InitOption[]}
  */
-const InitOptionsAsArray = Object.keys(InitOptions)
-  .map(name => Object.assign({ name }, InitOptions[name]));
+const InitOptionsAsArray = Object.keys(InitOptions).map(name =>
+  Object.assign({ name }, InitOptions[name])
+);
 
 export default InitOptionsAsArray;

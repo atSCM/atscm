@@ -15,11 +15,15 @@ describe.skip('watch task', function() {
       const isTestNode = r => r.nodeId.value.split(nodeId).length > 1;
       const changeCalled = new Promise((resolve, reject) => {
         serverWatcher.on('change', r => {
-          if (isTestNode(r)) { reject(); }
+          if (isTestNode(r)) {
+            reject();
+          }
         });
 
         serverWatcher.on('delete', r => {
-          if (isTestNode(r)) { resolve(); }
+          if (isTestNode(r)) {
+            resolve();
+          }
         });
       });
 

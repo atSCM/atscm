@@ -1,7 +1,13 @@
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import {
-  findChild, removeChildren, createCDataNode, createElement, appendChild, prependChild, textContent,
+  findChild,
+  removeChildren,
+  createCDataNode,
+  createElement,
+  appendChild,
+  prependChild,
+  textContent,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
@@ -10,7 +16,6 @@ import XMLTransformer from '../lib/transform/XMLTransformer';
  * alongside with a .json file containing the display's parameters.
  */
 export default class DisplayTransformer extends XMLTransformer {
-
   /**
    * The extension to add to display container node names when they are pulled.
    * @type {string}
@@ -42,7 +47,9 @@ export default class DisplayTransformer extends XMLTransformer {
    * @param {Object} context The transform context.
    */
   async transformFromDB(node, context) {
-    if (!this.shouldBeTransformed(node)) { return undefined; }
+    if (!this.shouldBeTransformed(node)) {
+      return undefined;
+    }
 
     if (node.arrayType !== VariantArrayType.Scalar) {
       // FIXME: Instead of throwing we could simply pass the original node to the callback
@@ -50,10 +57,14 @@ export default class DisplayTransformer extends XMLTransformer {
     }
 
     const xml = this.decodeContents(node);
-    if (!xml) { throw new Error('Error parsing display'); }
+    if (!xml) {
+      throw new Error('Error parsing display');
+    }
 
     const document = findChild(xml, 'svg');
-    if (!document) { throw new Error('Error parsing display: No `svg` tag'); }
+    if (!document) {
+      throw new Error('Error parsing display: No `svg` tag');
+    }
 
     const config = {};
     const scriptTags = removeChildren(document, 'script');
@@ -71,9 +82,9 @@ export default class DisplayTransformer extends XMLTransformer {
         } else {
           // Warn on multiple inline scripts
           if (inlineScript) {
-            Logger[
-              node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'
-            ](`'${node.id.value}' contains multiple inline scripts.`);
+            Logger[node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'](
+              `'${node.id.value}' contains multiple inline scripts.`
+            );
             document.childNodes.push(inlineScript);
           }
           inlineScript = script;
@@ -173,9 +184,12 @@ export default class DisplayTransformer extends XMLTransformer {
     // Insert script
     // FIXME: Import order is not preserved!
     if (scriptFile) {
-      appendChild(svg, createElement('script', [createCDataNode(inlineScript)], {
-        type: 'text/ecmascript',
-      }));
+      appendChild(
+        svg,
+        createElement('script', [createCDataNode(inlineScript)], {
+          type: 'text/ecmascript',
+        })
+      );
     }
 
     // Insert metadata
@@ -203,5 +217,4 @@ export default class DisplayTransformer extends XMLTransformer {
     node.value.value = this.encodeContents(result);
     return node;
   }
-
 }

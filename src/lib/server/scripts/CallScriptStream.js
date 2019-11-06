@@ -8,7 +8,6 @@ import CallMethodStream from './CallMethodStream';
  * @abstract
  */
 export default class CallScriptStream extends CallMethodStream {
-
   /**
    * The id of the *callScript* method.
    * @type {NodeId}
@@ -39,7 +38,8 @@ export default class CallScriptStream extends CallMethodStream {
    * @param {AtviseFile} file The processed file.
    * @return {Object} The parameters passed to the script.
    */
-  scriptParameters(file) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  scriptParameters(file) {
     return {};
   }
 
@@ -94,7 +94,7 @@ export default class CallScriptStream extends CallMethodStream {
    * @param {vinyl~File} file The file being processed.
    * @param {function(err: Error, status: node-opcua~StatusCodes, success: function)} handleErrors
    * The error handler to call. See {@link QueueStream#processChunk} for details.
-  */
+   */
   processChunk(file, handleErrors) {
     super.processChunk(file, (err, status, success) => {
       const processedStatus = status;
@@ -108,5 +108,4 @@ export default class CallScriptStream extends CallMethodStream {
       handleErrors(err, processedStatus, success);
     });
   }
-
 }

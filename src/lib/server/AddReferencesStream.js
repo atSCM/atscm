@@ -18,7 +18,6 @@ const ignoredReferences = new Set([
  * A stream that adds non-standard references to nodes when pushed.
  */
 export default class AddReferencesStream extends waitForDependencies(CallScriptStream) {
-
   /**
    * Creates a new stream for adding references to pushed nodes.
    * @param {Object} options The options to pass to the {@link CallScriptStream}.
@@ -65,7 +64,8 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
    * @type {NodeId}
    */
   get scriptId() {
-    return new NodeId(NodeId.NodeIdType.STRING,
+    return new NodeId(
+      NodeId.NodeIdType.STRING,
       'SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm.AddReferences',
       1
     );
@@ -77,14 +77,15 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
    * @return {Object} The options passed to the *AddReferences* script.
    */
   scriptParameters(file) {
-    const references = [...file.references]
-      .reduce((result, [key, value]) => {
-        if (ignoredReferences.has(key)) { return result; }
+    const references = [...file.references].reduce((result, [key, value]) => {
+      if (ignoredReferences.has(key)) {
+        return result;
+      }
 
-        return Object.assign(result, {
-          [key]: [...value].map(s => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
-        });
-      }, {});
+      return Object.assign(result, {
+        [key]: [...value].map(s => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
+      });
+    }, {});
 
     const referenceKeys = Object.keys(references);
 
@@ -94,11 +95,10 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
           dataType: DataType.String,
           value: JSON.stringify({
             nodeId: file.nodeId,
-            references: referenceKeys
-              .map(type => ({
-                referenceIdValue: parseInt(type, 10),
-                items: references[type],
-              })),
+            references: referenceKeys.map(type => ({
+              referenceIdValue: parseInt(type, 10),
+              items: references[type],
+            })),
           }),
         },
       };
@@ -150,5 +150,4 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
       callback(null);
     }
   }
-
 }

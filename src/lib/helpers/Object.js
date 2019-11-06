@@ -4,10 +4,13 @@
  * @return {Object} The reversed object.
  */
 export function reverse(obj) {
-  return Object.keys(obj)
-    .reduce((result, key) => Object.assign(result, {
-      [obj[key]]: key,
-    }), {});
+  return Object.keys(obj).reduce(
+    (result, key) =>
+      Object.assign(result, {
+        [obj[key]]: key,
+      }),
+    {}
+  );
 }
 
 /**
@@ -17,6 +20,5 @@ export function reverse(obj) {
  * @return {Object} The resulting object.
  */
 export function pick(obj, properties) {
-  return properties
-    .reduce((props, key) => Object.assign(props, { [key]: obj[key] }), {});
+  return properties.reduce((props, key) => Object.assign(props, { [key]: obj[key] }), {});
 }

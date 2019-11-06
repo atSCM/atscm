@@ -43,7 +43,6 @@ export const ReferenceTypeNames = reverse(ReferenceTypeIds) as { [key: number]: 
  * A map specialized for holding references.
  */
 class ReferenceMap extends Map<ReferenceType, Set<number | string>> {
-
   /**
    * Adds a new reference.
    * @param {number} type The reference id.
@@ -95,12 +94,14 @@ class ReferenceMap extends Map<ReferenceType, Set<number | string>> {
    * @return A string describing the reference map.
    */
   public toJSON(): ReferenceDefinitions {
-    return [...this]
-      .reduce((result, [key, value]) => Object.assign(result, {
-        [ReferenceTypeNames[key] || key]: [...value],
-      }), {});
+    return [...this].reduce(
+      (result, [key, value]) =>
+        Object.assign(result, {
+          [ReferenceTypeNames[key] || key]: [...value],
+        }),
+      {}
+    );
   }
-
 }
 
 interface WithValue {
@@ -119,7 +120,6 @@ type NodeResolveKey = 'nodeClass' | 'dataType' | 'arrayType';
  * The main model class.
  */
 export default abstract class Node {
-
   /** The node's name when stored to a file. */
   protected fileName: string;
   /** The node's name when written to the server. */
@@ -152,7 +152,7 @@ export default abstract class Node {
    * @param {Node} options.parent The node's parent node.
    * @param {node-opcua~NodeClass} options.nodeClass The node's class.
    */
-  public constructor({ name, parent, nodeClass/* , referenceToParent */ }: NodeOptions) {
+  public constructor({ name, parent, nodeClass /* , referenceToParent */ }: NodeOptions) {
     this.fileName = name;
     this.idName = name;
     this.parent = parent;
@@ -223,7 +223,9 @@ export default abstract class Node {
    * The node's file path, used to compute {@link Node#filePath}.
    */
   private get _filePath(): string[] {
-    if (!this.parent) { return [this.fileName]; }
+    if (!this.parent) {
+      return [this.fileName];
+    }
     return this.parent._filePath.concat(this.fileName);
   }
 
@@ -231,7 +233,9 @@ export default abstract class Node {
    * The node's file path.
    */
   public get filePath(): string[] {
-    if (!this.parent) { return []; }
+    if (!this.parent) {
+      return [];
+    }
     return this.parent._filePath;
   }
 
@@ -326,7 +330,9 @@ export default abstract class Node {
    * @type {Object}
    */
   public get metadata(): NodeDefinition {
-    if (this._parentResolvesMetadata) { return {}; }
+    if (this._parentResolvesMetadata) {
+      return {};
+    }
 
     const meta: Partial<NodeDefinition> = {};
 
@@ -394,7 +400,9 @@ export default abstract class Node {
    * The node's data type.
    */
   public get dataType(): ItemOf<typeof DataType> {
-    if (!this.isVariableNode()) { throw new TypeError('Not a variable node'); }
+    if (!this.isVariableNode()) {
+      throw new TypeError('Not a variable node');
+    }
 
     return this.value.dataType;
   }
@@ -403,7 +411,9 @@ export default abstract class Node {
    * The node's array type.
    */
   public get arrayType(): ItemOf<typeof VariantArrayType> {
-    if (!this.isVariableNode()) { throw new TypeError('Not a variable node'); }
+    if (!this.isVariableNode()) {
+      throw new TypeError('Not a variable node');
+    }
 
     return this.value.arrayType;
   }
@@ -442,14 +452,12 @@ export default abstract class Node {
   public get isQuickDynamic(): boolean {
     return this.hasTypeDefinition('VariableTypes.ATVISE.QuickDynamic');
   }
-
 }
 
 /**
  * A node during a *pull*.
  */
 export abstract class ServerNode extends Node {
-
   /**
    * The node's name.
    */
@@ -464,14 +472,12 @@ export abstract class ServerNode extends Node {
   public renameTo(name: string): void {
     this.fileName = name;
   }
-
 }
 
 /**
  * A node during a *push*.
  */
 export abstract class SourceNode extends Node {
-
   /**
    * The node's name.
    */
@@ -486,5 +492,4 @@ export abstract class SourceNode extends Node {
   public renameTo(name: string): void {
     this.idName = name;
   }
-
 }

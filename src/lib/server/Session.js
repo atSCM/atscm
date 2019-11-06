@@ -24,7 +24,6 @@ const openingSessions = new Set();
  * @type {Set<node-opcua~ClientSession>}
  */
 export default class Session {
-
   /**
    * Creates an {@link node-opcuaOPCUAClient} and opens a new  {@link node-opcua~ClientSession}.
    * @return {Promise<node-opcua~ClientSession, Error>} Fulfilled with an already opened
@@ -49,24 +48,28 @@ export default class Session {
     Logger.debug(`Connected to ${endpoint}`);
     clearTimeout(timer);
 
-    const session = await promisified(cb => client.createSession({
-      userName: ProjectConfig.login.username,
-      password: ProjectConfig.login.password,
-    }, cb))
-      .catch(err => {
-        if (
-          [
-            'userName === null || typeof userName === "string"',
-            'password === null || typeof password === "string"',
-          ].includes(err.message) ||
-          (err.response &&
+    const session = await promisified(cb =>
+      client.createSession(
+        {
+          userName: ProjectConfig.login.username,
+          password: ProjectConfig.login.password,
+        },
+        cb
+      )
+    ).catch(err => {
+      if (
+        [
+          'userName === null || typeof userName === "string"',
+          'password === null || typeof password === "string"',
+        ].includes(err.message) ||
+        (err.response &&
           err.response.responseHeader.serviceResult === StatusCodes.BadUserAccessDenied)
-        ) {
-          throw new Error('Unable to create session: Invalid login');
-        }
+      ) {
+        throw new Error('Unable to create session: Invalid login');
+      }
 
-        throw err;
-      });
+      throw err;
+    });
 
     openSessions.add(session);
     return Object.assign(session, { _emitter: new Emitter() });
@@ -141,7 +144,9 @@ export default class Session {
       return Promise.reject(new Error('session is required'));
     }
 
-    if (this._pool) { return Promise.resolve(); }
+    if (this._pool) {
+      return Promise.resolve();
+    }
 
     return this._close(session);
   }
@@ -162,9 +167,6 @@ export default class Session {
   static async closeOpen() {
     await Promise.all(openingSessions);
 
-    return Promise.all(
-      Array.from(openSessions).map(session => this._close(session))
-    );
+    return Promise.all(Array.from(openSessions).map(session => this._close(session)));
   }
-
 }

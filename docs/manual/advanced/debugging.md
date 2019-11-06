@@ -1,6 +1,6 @@
 # Guide: Debugging atscm
 
-*atscm* can be easily debugged using Google Chrome's developer tools. All you have to do to attach the debugger, is to start the command line interface with the `--inspect` or `--inspect-brk` flag. For this to work you must first find the path to *atscm-cli*'s executable:
+_atscm_ can be easily debugged using Google Chrome's developer tools. All you have to do to attach the debugger, is to start the command line interface with the `--inspect` or `--inspect-brk` flag. For this to work you must first find the path to _atscm-cli_'s executable:
 
 ```bash
 which atscm

@@ -17,13 +17,17 @@ describe('importTask', function() {
     const session = await Session.create();
     const scriptNames = scriptFiles.map(s => basename(s, '.xml'));
 
-    const results = await expect(cb => session.read(
-      scriptNames.map(script => ({
-        nodeId: `${base}.${script}`,
-        attributeId: ReadService.AttributeIds.ServerTimestamp,
-      })),
-      cb
-    ), 'to call the callback without error').then((all) => all[1]);
+    const results = await expect(
+      cb =>
+        session.read(
+          scriptNames.map(script => ({
+            nodeId: `${base}.${script}`,
+            attributeId: ReadService.AttributeIds.ServerTimestamp,
+          })),
+          cb
+        ),
+      'to call the callback without error'
+    ).then(all => all[1]);
 
     return expect(results.map(r => r.serverTimestamp), 'to have items satisfying', item => {
       expect(item, 'to be a', Date);

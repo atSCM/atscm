@@ -63,7 +63,6 @@ const extensionForArrayType = {
  * A Transformer that maps {@link ReadStream.ReadResult}s to {@link AtviseFile}s.
  */
 export default class MappingTransformer extends Transformer {
-
   /**
    * Creates a new mapping transformer.
    * @param {any[]} args The arguments passed to the {@link Transformer} constructor.
@@ -87,7 +86,8 @@ export default class MappingTransformer extends Transformer {
    * while transforming the read result or the resulting file.
    */
   transformFromDB(node, encoding, callback) {
-    if (!node.fullyMapped && !node.parentResolvesMetadata) { // Skip mapping for e.g. split files
+    if (!node.fullyMapped && !node.parentResolvesMetadata) {
+      // Skip mapping for e.g. split files
       const typeDefinition = node.typeDefinition;
       let isStandardTypeNode = false;
 
@@ -208,5 +208,4 @@ export default class MappingTransformer extends Transformer {
   get transformsReferenceConfigFiles() {
     return true;
   }
-
 }

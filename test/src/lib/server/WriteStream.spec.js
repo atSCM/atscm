@@ -8,20 +8,18 @@ import AtviseFile from '../../../../src/lib/server/AtviseFile';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 
 class CreateNodeStream extends _CreateNodeStream {
-
   processChunk(file, handleErrors) {
     setTimeout(() => {
       handleErrors(null, StatusCodes.Good, done => done());
     }, 10);
   }
-
 }
 
 // Ignore dependencies in tests
 class WriteStream extends _WriteStream {
-
-  dependenciesFor() { return []; }
-
+  dependenciesFor() {
+    return [];
+  }
 }
 
 /** @test {WriteStream} */
@@ -29,10 +27,16 @@ describe('WriteStream', function() {
   /** @test {WriteStream#processErrorMessage} */
   describe('#processErrorMessage', function() {
     it('should include nodeId', function() {
-      expect(WriteStream.prototype.processErrorMessage(new AtviseFile({
-        path: 'src/AGENT/DISPLAYS/Main.display',
-        base: 'src',
-      })), 'to contain', 'AGENT.DISPLAYS.Main');
+      expect(
+        WriteStream.prototype.processErrorMessage(
+          new AtviseFile({
+            path: 'src/AGENT/DISPLAYS/Main.display',
+            base: 'src',
+          })
+        ),
+        'to contain',
+        'AGENT.DISPLAYS.Main'
+      );
     });
   });
 
@@ -46,13 +50,18 @@ describe('WriteStream', function() {
       });
 
       return expect(
-        [{
-          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-          typeDefinition: new NodeId('VariableTypes.ATVISE.Display', 0),
-          nodeClass: NodeClass.Variable,
-        }],
-        'when piped through', stream,
-        'to error with', /Test/);
+        [
+          {
+            nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+            typeDefinition: new NodeId('VariableTypes.ATVISE.Display', 0),
+            nodeClass: NodeClass.Variable,
+          },
+        ],
+        'when piped through',
+        stream,
+        'to error with',
+        /Test/
+      );
     });
 
     it('should forward synchronous errors', function() {
@@ -65,13 +74,18 @@ describe('WriteStream', function() {
       });
 
       return expect(
-        [{
-          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-          typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
-          nodeClass: NodeClass.Variable,
-        }],
-        'when piped through', stream,
-        'to error with', /Sync test/);
+        [
+          {
+            nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+            typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
+            nodeClass: NodeClass.Variable,
+          },
+        ],
+        'when piped through',
+        stream,
+        'to error with',
+        /Sync test/
+      );
     });
 
     it('should warn if access is denied', function() {
@@ -86,13 +100,19 @@ describe('WriteStream', function() {
       Logger.on('warn', warnSpy);
 
       return expect(
-        [{
-          nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
-          typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
-          nodeClass: NodeClass.Variable,
-        }],
-        'when piped through', stream,
-        'to yield objects satisfying', 'to have length', 0)
+        [
+          {
+            nodeId: new NodeId('ns=1;s=AGENT.DISPLAYS.Main'),
+            typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
+            nodeClass: NodeClass.Variable,
+          },
+        ],
+        'when piped through',
+        stream,
+        'to yield objects satisfying',
+        'to have length',
+        0
+      )
         .then(() => expect(warnSpy, 'was called once'))
         .then(() => expect(warnSpy.lastCall, 'to satisfy', [/opened in atvise builder/]));
     });
@@ -112,11 +132,9 @@ describe('WriteStream', function() {
         typeDefinition: new NodeId('ns=0;i=61'),
         nodeClass: NodeClass.Object,
       };
-      return expect([file],
-        'when piped through', stream,
-        'to yield objects satisfying', [
-          expect.it('to be', file),
-        ]);
+      return expect([file], 'when piped through', stream, 'to yield objects satisfying', [
+        expect.it('to be', file),
+      ]);
     });
 
     it('should push files where no node can be found', function() {
@@ -134,11 +152,9 @@ describe('WriteStream', function() {
         typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
         nodeClass: NodeClass.Variable,
       };
-      return expect([file],
-        'when piped through', stream,
-        'to yield objects satisfying', [
-          expect.it('to be', file),
-        ]);
+      return expect([file], 'when piped through', stream, 'to yield objects satisfying', [
+        expect.it('to be', file),
+      ]);
     });
 
     it('should push files with good status to add references stream', async function() {
@@ -157,9 +173,14 @@ describe('WriteStream', function() {
         typeDefinition: new NodeId('ns=1;s=VariableTypes.ATVISE.Display'),
         nodeClass: NodeClass.Variable,
       };
-      await expect([file],
-        'when piped through', stream,
-        'to yield objects satisfying', 'to have length', 0);
+      await expect(
+        [file],
+        'when piped through',
+        stream,
+        'to yield objects satisfying',
+        'to have length',
+        0
+      );
 
       return expect(pushToAddRefsStream, 'was called once');
     });
