@@ -16,15 +16,13 @@ import Transformer from './Transformer';
  * }
  */
 export default class ModernPartialTransformer extends Transformer {
-
   /**
    * `true` if `file` should be transformed.
    * @param {AtviseFile} file The file to transform or not.
    * @abstract
    */
-  shouldBeTransformed(file) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  shouldBeTransformed(file) {
     throw new Error('PartialTransformer#shouldBeTransformed must be implemented by all subclasses');
   }
-
-
 }

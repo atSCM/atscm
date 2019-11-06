@@ -4,15 +4,12 @@ import CallMethodStream from '../../../../../src/lib/server/scripts/CallMethodSt
 import NodeId from '../../../../../src/lib/model/opcua/NodeId';
 
 class InvalidMethodStub extends CallMethodStream {
-
   get methodId() {
     return new NodeId(NodeId.NodeIdType.STRING, 'path.to.unknown.method', 1);
   }
-
 }
 
 class ValidMethodStub extends CallMethodStream {
-
   get methodId() {
     return new NodeId(NodeId.NodeIdType.STRING, 'AGENT.OPCUA.METHODS.importNodes', 1);
   }
@@ -29,7 +26,6 @@ class ValidMethodStub extends CallMethodStream {
       },
     ];
   }
-
 }
 
 /** @test {CallMethodStream} */
@@ -37,14 +33,17 @@ describe('CallMethodStream', function() {
   /** @test {CallMethodStream#methodId} */
   describe('#methodId', function() {
     it('throws an error if not overridden', function() {
-      return expect(() => CallMethodStream.prototype.methodId,
-        'to throw error', /must be implemented/i);
+      return expect(
+        () => CallMethodStream.prototype.methodId,
+        'to throw error',
+        /must be implemented/i
+      );
     });
   });
 
   /** @test {CallMethodStream#methodBaseId} */
   describe('#methodBaseId', function() {
-    it('defaults to the method\'s parent id', function() {
+    it("defaults to the method's parent id", function() {
       const base = InvalidMethodStub.prototype.methodBaseId;
 
       expect(base, 'to be a', NodeId);
@@ -77,8 +76,11 @@ describe('CallMethodStream', function() {
   /** @test {CallMethodStream#handleOutputArguments} */
   describe('#handleOutputArguments', function() {
     it('throws if not overridden', function() {
-      return expect(CallMethodStream.prototype.handleOutputArguments,
-        'to throw error', /must be implemented/i);
+      return expect(
+        CallMethodStream.prototype.handleOutputArguments,
+        'to throw error',
+        /must be implemented/i
+      );
     });
   });
 
@@ -136,8 +138,12 @@ describe('CallMethodStream', function() {
         callback(new Error('Test error'));
       };
 
-      const error = await expect([{ contents: Buffer.from('invalid') }], 'when piped through',
-        importStream, 'to error');
+      const error = await expect(
+        [{ contents: Buffer.from('invalid') }],
+        'when piped through',
+        importStream,
+        'to error'
+      );
 
       expect(error.message, 'to end with', 'Test error');
     });

@@ -23,15 +23,15 @@ describe('InitOption', function() {
       });
 
       it('should set default type', function() {
-        expect((new InitOption('message')).type, 'to equal', InitOption.DefaultType);
+        expect(new InitOption('message').type, 'to equal', InitOption.DefaultType);
       });
 
       it('should add `?` to message', function() {
-        expect((new InitOption('message')).message, 'to equal', 'message?');
+        expect(new InitOption('message').message, 'to equal', 'message?');
       });
 
       it('should store default if given', function() {
-        expect((new InitOption('message', 'default')).default, 'to equal', 'default');
+        expect(new InitOption('message', 'default').default, 'to equal', 'default');
       });
     });
 
@@ -45,11 +45,11 @@ describe('InitOption', function() {
       });
 
       it('should add `?` to message', function() {
-        expect((new InitOption({ message: 'message' })).message, 'to equal', 'message?');
+        expect(new InitOption({ message: 'message' }).message, 'to equal', 'message?');
       });
 
       it('should set default type', function() {
-        expect((new InitOption({ message: 'message' })).type, 'to equal', InitOption.DefaultType);
+        expect(new InitOption({ message: 'message' }).type, 'to equal', InitOption.DefaultType);
       });
 
       it('should store type, message, default and validate', function() {
@@ -62,7 +62,7 @@ describe('InitOption', function() {
 
         const result = Object.assign({}, opts, { message: `${opts.message}?` });
 
-        expect((new InitOption(opts)), 'to have properties', result);
+        expect(new InitOption(opts), 'to have properties', result);
       });
     });
   });

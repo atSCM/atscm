@@ -15,10 +15,7 @@ export const TransformDirection = {
  * @return {boolean} `true` if the direction is valid.
  */
 function isValidDirection(direction) {
-  return [
-    TransformDirection.FromDB,
-    TransformDirection.FromFilesystem,
-  ].includes(direction);
+  return [TransformDirection.FromDB, TransformDirection.FromFilesystem].includes(direction);
 }
 
 /**
@@ -26,7 +23,6 @@ function isValidDirection(direction) {
  * @abstract
  */
 export default class Transformer {
-
   /**
    * Returns a function that combines multiple transformer actions.
    * @param {Transformer[]} transformers An array of transformers.
@@ -36,11 +32,13 @@ export default class Transformer {
   static combinedTransformer(transformers, direction) {
     const directed = transformers.map(t => t.withDirection(direction));
 
-    if (direction === TransformDirection.FromFilesystem) { directed.reverse(); }
+    if (direction === TransformDirection.FromFilesystem) {
+      directed.reverse();
+    }
 
     return async (node, context) => {
       for (const transformer of directed) {
-        if (await transformer.compatTransform(direction, node, context) !== undefined) {
+        if ((await transformer.compatTransform(direction, node, context)) !== undefined) {
           // break;
         }
       }
@@ -55,7 +53,9 @@ export default class Transformer {
    */
   constructor({ direction } = {}) {
     if (direction) {
-      if (!isValidDirection(direction)) { throw new Error('Invalid direction'); }
+      if (!isValidDirection(direction)) {
+        throw new Error('Invalid direction');
+      }
       this.direction = direction;
     }
   }
@@ -86,7 +86,8 @@ export default class Transformer {
    * @return {boolean?} *true* if the node's value file should be read, undefined to let other
    * transformers decide.
    */
-  readNodeFile(node) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  readNodeFile(node) {
     return undefined;
   }
 
@@ -96,7 +97,8 @@ export default class Transformer {
    * @param {BrowsedNode} node The node to split.
    * @param {Object} context The transform context.
    */
-  async transformFromDB(node, context) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  async transformFromDB(node, context) {
     throw new Error('Transformer#transformFromDB must be overridden by all subclasses');
   }
 
@@ -119,9 +121,10 @@ export default class Transformer {
    * @param {Object} context The browser context.
    */
   compatTransform(direction, node, context) {
-    const transform = (direction === TransformDirection.FromDB ?
-      this.transformFromDB :
-      this.transformFromFilesystem).bind(this);
+    const transform = (direction === TransformDirection.FromDB
+      ? this.transformFromDB
+      : this.transformFromFilesystem
+    ).bind(this);
 
     const fnName = `${this.constructor.name}#transform${
       direction === TransformDirection.FromDB ? 'FromDB' : 'FromFilesystem'
@@ -133,10 +136,14 @@ export default class Transformer {
           this.constructor._warnedStreamAPI = true;
           Logger.debug(`Deprecated: ${fnName} uses the Stream API instead of async/await.`);
         }
-        if (err) { return reject(Object.assign(err, { node })); }
+        if (err) {
+          return reject(Object.assign(err, { node }));
+        }
 
         // Handle "repush"
-        if (result === node) { return resolve(); }
+        if (result === node) {
+          return resolve();
+        }
 
         return resolve(result);
       });
@@ -144,10 +151,11 @@ export default class Transformer {
       if (promise instanceof Promise) {
         promise.then(resolve, err => reject(Object.assign(err, { node })));
       } else if (this.transformFromDB.length < 3) {
-        reject(new Error(`${fnName} did not return a Promise.
-  - Did you forget \`async\`?`));
+        reject(
+          new Error(`${fnName} did not return a Promise.
+  - Did you forget \`async\`?`)
+        );
       }
     });
   }
-
 }

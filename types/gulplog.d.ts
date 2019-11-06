@@ -1,5 +1,4 @@
 declare module 'gulplog' {
-
   import { EventEmitter } from 'events';
   // sparkles
   class Sparkles extends EventEmitter {}
@@ -15,12 +14,10 @@ declare module 'gulplog' {
   }
 
   class Logger extends Sparkles implements WithLogMethods {
-
     public debug: LogMethod;
     public info: LogMethod;
     public warn: LogMethod;
     public error: LogMethod;
-
   }
 
   function getLogger(namespace: string): Logger;
@@ -28,5 +25,4 @@ declare module 'gulplog' {
   // finally, gulplog
   const gulplog: Logger;
   export default gulplog;
-
 }

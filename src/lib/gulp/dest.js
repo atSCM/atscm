@@ -38,7 +38,6 @@ const escapePathComponent = a => a.replace(/\//g, '%2F');
  * A stream that writes {@link Node}s to the file system.
  */
 export class WriteStream extends Writable {
-
   /**
    * Creates a new WriteStream.
    * @param {Object} options The options to use.
@@ -137,7 +136,9 @@ export class WriteStream extends Writable {
     let current = node.parent;
 
     while (current) {
-      if (this._conflictingIds.has(current.nodeId.toLowerCase())) { return true; }
+      if (this._conflictingIds.has(current.nodeId.toLowerCase())) {
+        return true;
+      }
       current = current.parent;
     }
 
@@ -146,8 +147,7 @@ export class WriteStream extends Writable {
 
   async _outputFile(path, content) {
     if (useChecksums) {
-      const oldSum = await hasha.fromFile(path, hashaOptions)
-        .catch(() => null);
+      const oldSum = await hasha.fromFile(path, hashaOptions).catch(() => null);
 
       if (oldSum) {
         if (oldSum === hasha(content, hashaOptions)) {
@@ -188,8 +188,9 @@ export class WriteStream extends Writable {
 
     // Resolve invalid ids
     if (!node._renamed && node.nodeId !== node.id.value) {
-      Logger.debug(`Resolved ID conflict: '${
-        node.id.value}' should be renamed to '${node.nodeId}'`);
+      Logger.debug(
+        `Resolved ID conflict: '${node.id.value}' should be renamed to '${node.nodeId}'`
+      );
     }
 
     Object.assign(node, { specialId: node.id.value });
@@ -201,14 +202,15 @@ export class WriteStream extends Writable {
     }
 
     // Detect "duplicate" ids (as file names are case insensitive)
-    const pathKey = dirPath.concat(node.fileName).join('/').toLowerCase();
+    const pathKey = dirPath
+      .concat(node.fileName)
+      .join('/')
+      .toLowerCase();
     if (this._idMap.has(pathKey)) {
       if (this._parentHasIdConflict(node)) {
         Logger.debug(`ID conflict: Skipping '${node.nodeId}'`);
       } else {
-        Logger.error(`ID conflict: '${node.nodeId}' conflicts with '${
-          this._idMap.get(pathKey)
-        }'`);
+        Logger.error(`ID conflict: '${node.nodeId}' conflicts with '${this._idMap.get(pathKey)}'`);
 
         this._discoveredIdConflicts++;
 
@@ -216,10 +218,14 @@ export class WriteStream extends Writable {
         if (existingRename) {
           if (existingRename === renameDefaultName) {
             // eslint-disable-next-line max-len
-            Logger.error(` - '${node.nodeId}' is present inside the rename file at './atscm/rename.json', but no name has been inserted yet.`);
+            Logger.error(
+              ` - '${node.nodeId}' is present inside the rename file at './atscm/rename.json', but no name has been inserted yet.`
+            );
           } else {
             // eslint-disable-next-line max-len
-            Logger.error(` - The name for '${node.nodeId}' inside './atscm/rename.json' is not unique.`);
+            Logger.error(
+              ` - The name for '${node.nodeId}' inside './atscm/rename.json' is not unique.`
+            );
           }
 
           Logger.info(" - Edit the node's name and run 'atscm pull' again");
@@ -238,14 +244,17 @@ export class WriteStream extends Writable {
 
     // Write definition file (if needed)
     if (node.hasUnresolvedMetadata) {
-      const name = node.nodeClass === NodeClass.Variable ?
-        `./.${escapePathComponent(node.fileName)}.json` :
-        `./${escapePathComponent(node.fileName)}/.${node.nodeClass.key}.json`;
+      const name =
+        node.nodeClass === NodeClass.Variable
+          ? `./.${escapePathComponent(node.fileName)}.json`
+          : `./${escapePathComponent(node.fileName)}/.${node.nodeClass.key}.json`;
 
       if (this._performWrites) {
         writeOps.push(
-          this._outputFile(join(this._base, dirPath.join('/'), name),
-            JSON.stringify(node.metadata, null, '  '))
+          this._outputFile(
+            join(this._base, dirPath.join('/'), name),
+            JSON.stringify(node.metadata, null, '  ')
+          )
         );
       }
     }
@@ -258,7 +267,8 @@ export class WriteStream extends Writable {
             writeOps.push(
               this._outputFile(
                 join(this._base, dirPath.join('/'), escapePathComponent(node.fileName)),
-                encodeVariant(node.value))
+                encodeVariant(node.value)
+              )
             );
           }
 
@@ -303,12 +313,12 @@ export class WriteStream extends Writable {
    * @param {function(error: ?Error): void} callback Called once all nodes have been written.
    */
   _writev(nodes, callback) {
-    if (this.isDestroyed) { return; }
+    if (this.isDestroyed) {
+      return;
+    }
 
     this._loadRenameConfig
-      .then(() => Promise.all(nodes
-        .map(({ chunk }) => this._writeNode(chunk)))
-      )
+      .then(() => Promise.all(nodes.map(({ chunk }) => this._writeNode(chunk))))
       .then(() => callback())
       .catch(err => callback(err));
   }
@@ -330,19 +340,25 @@ export class WriteStream extends Writable {
     if (this._discoveredIdConflicts) {
       Logger.error(
         `Discovered ${this._discoveredIdConflicts} node id conflicts, results are incomplete.
- - Resolve all conflicts inside '${renameConfigPath}' and run 'atscm pull' again`);
+ - Resolve all conflicts inside '${renameConfigPath}' and run 'atscm pull' again`
+      );
       // FIXME: Insert link to node id conflict manual here once 1.0.0 is released.
     }
 
     let renameConfig = this._renameConfig;
     if (!this._discoveredIdConflicts && this._cleanRenameConfig) {
-      renameConfig = Object.keys(this._renamesUsed).sort()
-        .reduce((result, key) => Object.assign(result, {
-          [key]: this._renameConfig[key],
-        }), {});
+      renameConfig = Object.keys(this._renamesUsed)
+        .sort()
+        .reduce(
+          (result, key) =>
+            Object.assign(result, {
+              [key]: this._renameConfig[key],
+            }),
+          {}
+        );
 
-      const renamesRemoved = Object.keys(this._renameConfig).length -
-        Object.keys(renameConfig).length;
+      const renamesRemoved =
+        Object.keys(this._renameConfig).length - Object.keys(renameConfig).length;
 
       if (renamesRemoved > 0) {
         Logger.info(`Removed ${renamesRemoved} unused renames from rename configuration.`);
@@ -351,7 +367,6 @@ export class WriteStream extends Writable {
 
     return outputFile(renameConfigPath, `${JSON.stringify(renameConfig, null, '  ')}${EOL}`);
   }
-
 }
 
 /**

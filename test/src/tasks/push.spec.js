@@ -16,12 +16,12 @@ describe('push', function() {
     const promise = push();
     expect(promise, 'to be a', Promise);
 
-    return promise
-      .catch(err => {
-        if (err.message === 'Test') { return; }
+    return promise.catch(err => {
+      if (err.message === 'Test') {
+        return;
+      }
 
-        throw err;
-      });
+      throw err;
+    });
   });
 });
-

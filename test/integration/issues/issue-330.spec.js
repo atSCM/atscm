@@ -27,8 +27,11 @@ describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function() {
     });
 
     it('should error', function() {
-      return expect(pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination),
-        'to be rejected with', 'closing tag mismatch');
+      return expect(
+        pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination),
+        'to be rejected with',
+        'closing tag mismatch'
+      );
     });
 
     after('delete tmp node', function() {
@@ -50,8 +53,10 @@ describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function() {
     });
 
     it('should not error', function() {
-      return expect(pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination),
-        'to be fulfilled');
+      return expect(
+        pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination),
+        'to be fulfilled'
+      );
     });
 
     after('delete tmp node', function() {

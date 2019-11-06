@@ -5,11 +5,10 @@ process.on('unhandledRejection', e => {
 });
 
 beforeEach(function() {
-  return Session.closeOpen()
-    .then(results => {
-      if (results.length > 0) {
-        // eslint-disable-next-line no-console
-        console.log('Maintenance: Closed', results.length, 'open session');
-      }
-    });
+  return Session.closeOpen().then(results => {
+    if (results.length > 0) {
+      // eslint-disable-next-line no-console
+      console.log('Maintenance: Closed', results.length, 'open session');
+    }
+  });
 });

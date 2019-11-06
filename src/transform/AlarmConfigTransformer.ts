@@ -11,16 +11,20 @@ const limitNodeNameRegExp = /\.(upper|lower)_limit(_deadband)?$/;
  * **Source** > AlarmConfiguration > AlarmCondition > FilterNode.
  * @param node The limit node to check.
  */
-function getLimitTriggerType(node: Node): (ItemOf<typeof DataType> | undefined) {
-  return node && node.parent && node.parent.parent &&
-    node.parent.parent.parent && node.parent.parent.parent.dataType;
+function getLimitTriggerType(node: Node): ItemOf<typeof DataType> | undefined {
+  return (
+    node &&
+    node.parent &&
+    node.parent.parent &&
+    node.parent.parent.parent &&
+    node.parent.parent.parent.dataType
+  );
 }
 
 /**
  * A transformer ensuring no invalid alarm condition filter nodes are pulled.
  */
 export default class LintTransformer extends PartialTransformer {
-
   /**
    * Returns `true` for all alarm condition filter nodes.
    * @param node The node to check.
@@ -28,8 +32,8 @@ export default class LintTransformer extends PartialTransformer {
   public shouldBeTransformed(node: Node): boolean {
     return Boolean(
       node.parent &&
-      node.parent.hasTypeDefinition('ObjectTypes.ATVISE.AlarmConditionControl.Limit') &&
-      node.nodeId.match(limitNodeNameRegExp)
+        node.parent.hasTypeDefinition('ObjectTypes.ATVISE.AlarmConditionControl.Limit') &&
+        node.nodeId.match(limitNodeNameRegExp)
     );
   }
 
@@ -52,6 +56,7 @@ export default class LintTransformer extends PartialTransformer {
   }
 
   /** Does nothing. */
-  public async transformFromFilesystem(): Promise<void> { return; }
-
+  public async transformFromFilesystem(): Promise<void> {
+    return;
+  }
 }

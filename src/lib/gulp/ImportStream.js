@@ -13,7 +13,6 @@ const scopeId = new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
  * A stream that imports xml files in parallel.
  */
 export default class ImportStream extends CallMethodStream {
-
   /**
    * Id of the `importNodes` OPC-UA method.
    * @type {NodeId}
@@ -70,5 +69,4 @@ export default class ImportStream extends CallMethodStream {
       callback(new Error('Import failed'));
     }
   }
-
 }

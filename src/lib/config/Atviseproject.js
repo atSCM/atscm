@@ -14,7 +14,6 @@ import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
  * @abstract
  */
 export default class Atviseproject {
-
   /**
    * The atvise-server's host. Defaults to *localhost*.
    * @type {string}
@@ -81,10 +80,7 @@ export default class Atviseproject {
    * @type {string[]|NodeId[]}
    */
   static get nodesToWatch() {
-    return [
-      new NodeId('AGENT.DISPLAYS'),
-      new NodeId('SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS'),
-    ];
+    return [new NodeId('AGENT.DISPLAYS'), new NodeId('SYSTEM.LIBRARY.PROJECT.OBJECTDISPLAYS')];
   }
 
   /**
@@ -92,9 +88,7 @@ export default class Atviseproject {
    * @type {NodeId[]}
    */
   static get EditorRelatedNodes() {
-    return [
-      new NodeId('SYSTEM\.JOURNALS\.ProjectHistory'),
-    ];
+    return [new NodeId('SYSTEM.JOURNALS.ProjectHistory')];
   }
 
   /**
@@ -104,15 +98,15 @@ export default class Atviseproject {
    */
   static get ServerRelatedNodes() {
     return [
-      new NodeId('AGENT\.OPCUA\.server_url'),
-      new NodeId('AGENT\.WEBACCESS\.https?[^\.]+\.(state)'),
-      new NodeId('SYSTEM\.INFORMATION\.LOGS\.'),
-      new NodeId('AGENT\.GENERATOR\.METHODS'),
-      new NodeId('AGENT\.MIRROR\.METHODS'),
-      new NodeId('AGENT\.HISTORY\.METHODS'),
-      new NodeId('AGENT\.SCRIPT\.METHODS'),
-      new NodeId('AGENT\.OPCUA\.METHODS'),
-      new NodeId('AGENT\.ALARMING\.METHODS'),
+      new NodeId('AGENT.OPCUA.server_url'),
+      new NodeId('AGENT.WEBACCESS.https?[^.]+.(state)'),
+      new NodeId('SYSTEM.INFORMATION.LOGS.'),
+      new NodeId('AGENT.GENERATOR.METHODS'),
+      new NodeId('AGENT.MIRROR.METHODS'),
+      new NodeId('AGENT.HISTORY.METHODS'),
+      new NodeId('AGENT.SCRIPT.METHODS'),
+      new NodeId('AGENT.OPCUA.METHODS'),
+      new NodeId('AGENT.ALARMING.METHODS'),
     ];
   }
 
@@ -122,9 +116,7 @@ export default class Atviseproject {
    * @type {NodeId[]}
    */
   static get AtscmRelatedNodes() {
-    return [
-      new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm'),
-    ];
+    return [new NodeId('SYSTEM.LIBRARY.ATVISE.SERVERSCRIPTS.atscm')];
   }
 
   /**
@@ -134,11 +126,7 @@ export default class Atviseproject {
    * @type {NodeId[]}
    */
   static get ignoreNodes() {
-    return [
-      ...this.EditorRelatedNodes,
-      ...this.ServerRelatedNodes,
-      ...this.AtscmRelatedNodes,
-    ];
+    return [...this.EditorRelatedNodes, ...this.ServerRelatedNodes, ...this.AtscmRelatedNodes];
   }
 
   /**
@@ -184,5 +172,4 @@ export default class Atviseproject {
   static get timeout() {
     return 10000;
   }
-
 }

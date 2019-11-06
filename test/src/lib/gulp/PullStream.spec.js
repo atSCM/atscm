@@ -30,14 +30,16 @@ const PullStream = proxyquire('../../../../src/lib/gulp/PullStream', {
 }).default;
 
 class StubReadStream extends ReadStream {
-
-  processChunk({
-    nodeId,
-    references = {},
-    dataType = DataType.XmlElement,
-    value = '<svg></svg>',
-    nodeClass = NodeClass.Variable,
-  }, handleErrors) {
+  processChunk(
+    {
+      nodeId,
+      references = {},
+      dataType = DataType.XmlElement,
+      value = '<svg></svg>',
+      nodeClass = NodeClass.Variable,
+    },
+    handleErrors
+  ) {
     handleErrors(null, StatusCodes.Good, done => {
       this.push({
         nodeId,
@@ -52,7 +54,6 @@ class StubReadStream extends ReadStream {
       done();
     });
   }
-
 }
 
 /** @test {PullStream} */
@@ -83,21 +84,25 @@ describe('PullStream', function() {
       const readStream = new PassThrough({ objectMode: true });
       const stream = new PullStream(readStream);
 
-      readStream.write(new ServerNode({
-        name: 'Main',
-        parent: null,
-        nodeClass: NodeClass.Variable,
-      }));
+      readStream.write(
+        new ServerNode({
+          name: 'Main',
+          parent: null,
+          nodeClass: NodeClass.Variable,
+        })
+      );
       readStream.end();
 
-      return expect(stream, 'to yield objects satisfying', [
-        expect.it('to be a', ServerNode),
-      ])
-        .then(() => {
+      return expect(stream, 'to yield objects satisfying', [expect.it('to be a', ServerNode)]).then(
+        () => {
           expect(StubTransformer.applyTransformers.calledOnce, 'to be', true);
-          expect(StubTransformer.applyTransformers.lastCall.args[2],
-            'to be', TransformDirection.FromDB);
-        });
+          expect(
+            StubTransformer.applyTransformers.lastCall.args[2],
+            'to be',
+            TransformDirection.FromDB
+          );
+        }
+      );
     });
 
     it.skip('should print progress', function() {
@@ -108,13 +113,12 @@ describe('PullStream', function() {
       logListener = spy().named('logListener');
       Logger.on('info', logListener);
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          // expect(logListener, 'was called once');
-          expect(logListener.lastCall, 'to satisfy', [/Pulled: 12 \([0-9.]+ ops\/s\)/]);
-          expect(readline.clearLine, 'was called once');
-          expect(readline.moveCursor, 'was called once');
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        // expect(logListener, 'was called once');
+        expect(logListener.lastCall, 'to satisfy', [/Pulled: 12 \([0-9.]+ ops\/s\)/]);
+        expect(readline.clearLine, 'was called once');
+        expect(readline.moveCursor, 'was called once');
+      });
     });
 
     it.skip('should work without log listeners', function() {
@@ -122,11 +126,10 @@ describe('PullStream', function() {
 
       setTimeout(() => stream.end(), 1200);
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          expect(readline.clearLine, 'was not called');
-          expect(readline.moveCursor, 'was not called');
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        expect(readline.clearLine, 'was not called');
+        expect(readline.moveCursor, 'was not called');
+      });
     });
   });
 });

@@ -12,7 +12,7 @@ describe('NodeId', function() {
   /** @test {NodeId#constructor} */
   describe('#constructor', function() {
     function expectType(type, ...args) {
-      expect((new NodeId(...args)).identifierType, 'to equal', type);
+      expect(new NodeId(...args).identifierType, 'to equal', type);
     }
 
     context('when called with value only', function() {
@@ -21,7 +21,7 @@ describe('NodeId', function() {
       });
 
       it('should set namespace to 1', function() {
-        expect((new NodeId('AGENT.DISPLAYS')).namespace, 'to equal', 1);
+        expect(new NodeId('AGENT.DISPLAYS').namespace, 'to equal', 1);
       });
 
       it('should set indentifierType to string if string is passed', function() {
@@ -39,7 +39,7 @@ describe('NodeId', function() {
       });
 
       it('should get namespace from string', function() {
-        expect((new NodeId('ns=13;s=AGENT.DISPLAYS')).namespace, 'to equal', 13);
+        expect(new NodeId('ns=13;s=AGENT.DISPLAYS').namespace, 'to equal', 13);
       });
 
       it('should get identifierType from string', function() {
@@ -57,12 +57,12 @@ describe('NodeId', function() {
 
       it('should set namespace to 1 if omitted', function() {
         expect(() => new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS'), 'not to throw');
-        expect((new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS')).namespace, 'to equal', 1);
+        expect(new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS').namespace, 'to equal', 1);
       });
     });
 
-    it('should extend node-opcua\'s NodeId', function() {
-      expect((new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)), 'to be a', OpcNodeId);
+    it("should extend node-opcua's NodeId", function() {
+      expect(new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1), 'to be a', OpcNodeId);
     });
   });
 
@@ -79,22 +79,30 @@ describe('NodeId', function() {
     });
 
     it('should work with resource paths', function() {
-      expect(NodeId.fromFilePath(
-        join('SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif')
-      ).value,
-      'to equal', 'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif');
+      expect(
+        NodeId.fromFilePath(
+          join('SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif')
+        ).value,
+        'to equal',
+        'SYSTEM.LIBRARY.ATVISE.RESOURCES/timer/imgs_glossy/top-separator.gif'
+      );
     });
 
     it('should work with multi extension resource paths', function() {
-      expect(NodeId.fromFilePath(
-        join('SYSTEM/LIBRARY/PROJECT/RESOURCES/styles/bootstrap.min.css')
-      ).value,
-      'to equal', 'SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css');
+      expect(
+        NodeId.fromFilePath(join('SYSTEM/LIBRARY/PROJECT/RESOURCES/styles/bootstrap.min.css'))
+          .value,
+        'to equal',
+        'SYSTEM.LIBRARY.PROJECT.RESOURCES/styles/bootstrap.min.css'
+      );
     });
 
     it('should unescape slashes', function() {
-      return expect(NodeId.fromFilePath(join('test/no%2Ffolder')).value, 'to equal',
-        'test.no/folder');
+      return expect(
+        NodeId.fromFilePath(join('test/no%2Ffolder')).value,
+        'to equal',
+        'test.no/folder'
+      );
     });
   });
 
@@ -115,8 +123,11 @@ describe('NodeId', function() {
     });
 
     it('should escape slashes', function() {
-      return expect(new NodeId('AGENT.OBJECTS.Test/node').filePath,
-        'to equal', 'AGENT/OBJECTS/Test%2Fnode');
+      return expect(
+        new NodeId('AGENT.OBJECTS.Test/node').filePath,
+        'to equal',
+        'AGENT/OBJECTS/Test%2Fnode'
+      );
     });
   });
 
@@ -265,14 +276,14 @@ describe('NodeId', function() {
     });
 
     it('should style string id as string', function() {
-      (new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS', 1)).inspect(0, opts);
+      new NodeId(NodeId.NodeIdType.STRING, 'AGENT.DISPLAYS', 1).inspect(0, opts);
 
       expect(opts.stylize.calledTwice, 'to be true');
       expect(opts.stylize.lastCall.args, 'to equal', ['AGENT.DISPLAYS', 'string']);
     });
 
     it('should style numeric id as number', function() {
-      (new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)).inspect(0, opts);
+      new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1).inspect(0, opts);
 
       expect(opts.stylize.calledTwice, 'to be true');
       expect(opts.stylize.lastCall.args, 'to equal', [123, 'number']);

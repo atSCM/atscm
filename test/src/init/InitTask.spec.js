@@ -12,8 +12,7 @@ const destSpy = spy((c, e, cb) => cb(null));
 const srcSpy = spy((c, e, cb) => cb(null, c));
 
 const gulpStub = {
-  src: (...args) => src(...args)
-    .pipe(createStream(srcSpy)),
+  src: (...args) => src(...args).pipe(createStream(srcSpy)),
   dest: () => createStream(destSpy),
 };
 
@@ -38,7 +37,9 @@ describe('InitTask', function() {
   describe('.filesToHandle', function() {
     it('should return array of absolute paths', function() {
       expect(InitTask.filesToHandle('es2015'), 'to have items satisfying', 'to be a', 'string');
-      expect(InitTask.filesToHandle('es2015'), 'to have items satisfying',
+      expect(
+        InitTask.filesToHandle('es2015'),
+        'to have items satisfying',
         expect.it('when passed as parameter to', isAbsolute, 'to equal', true)
       );
     });
@@ -47,53 +48,46 @@ describe('InitTask', function() {
   /** @test {InitTask.run} */
   describe('.run', function() {
     it('should handle all general files', function() {
-      const files = readdirSync(
-        join(__dirname, '../../../res/init/templates/general')
-      );
+      const files = readdirSync(join(__dirname, '../../../res/init/templates/general'));
 
-      return InitTask.run({ configLang: 'es2015' })
-        .then(() => {
-          expect(srcSpy.callCount, 'to be greater than', 0);
+      return InitTask.run({ configLang: 'es2015' }).then(() => {
+        expect(srcSpy.callCount, 'to be greater than', 0);
 
-          const handled = srcSpy.args.map(args => args[0]);
-          const resulting = destSpy.args.map(args => args[0]);
-          expect(handled, 'to have values satisfying',
-            'to have properties', { _isVinyl: true });
+        const handled = srcSpy.args.map(args => args[0]);
+        const resulting = destSpy.args.map(args => args[0]);
+        expect(handled, 'to have values satisfying', 'to have properties', { _isVinyl: true });
 
-          expect(handled.map(f => f.relative), 'to contain', ...files);
-          expect(resulting.map(f => f.relative), 'to contain', ...files);
-        });
+        expect(handled.map(f => f.relative), 'to contain', ...files);
+        expect(resulting.map(f => f.relative), 'to contain', ...files);
+      });
     });
 
     it('should not escape author field in package.json (#52)', function() {
       const author = 'Sample name <mail@example.com>';
 
-      return InitTask.run({ configLang: 'es2015', author })
-        .then(() => {
-          expect(srcSpy.callCount, 'to be greater than', 0);
+      return InitTask.run({ configLang: 'es2015', author }).then(() => {
+        expect(srcSpy.callCount, 'to be greater than', 0);
 
-          const pkgOut = destSpy.args
-            .map(args => args[0])
-            .filter(f => f.relative === 'package.json')[0].contents.toString();
+        const pkgOut = destSpy.args
+          .map(args => args[0])
+          .filter(f => f.relative === 'package.json')[0]
+          .contents.toString();
 
-          expect(JSON.parse(pkgOut).author, 'to equal', author);
-        });
+        expect(JSON.parse(pkgOut).author, 'to equal', author);
+      });
     });
 
     function expectHandlingLangFiles(configLang) {
-      const files = readdirSync(
-        join(__dirname, '../../../res/init/templates/lang', configLang)
-      );
+      const files = readdirSync(join(__dirname, '../../../res/init/templates/lang', configLang));
 
       it(`should handle ${configLang} files`, function() {
-        return InitTask.run({ configLang })
-          .then(() => {
-            const handled = srcSpy.args.map(args => args[0].relative);
-            const resulting = destSpy.args.map(args => args[0].relative);
+        return InitTask.run({ configLang }).then(() => {
+          const handled = srcSpy.args.map(args => args[0].relative);
+          const resulting = destSpy.args.map(args => args[0].relative);
 
-            expect(handled, 'to contain', ...files);
-            expect(resulting, 'to contain', ...files);
-          });
+          expect(handled, 'to contain', ...files);
+          expect(resulting, 'to contain', ...files);
+        });
       });
     }
 

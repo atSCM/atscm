@@ -35,7 +35,7 @@ describe('InitOptionsValidator', function() {
       expect(Validator.name('node_modules'), 'to match', /is a blacklisted name/);
     });
 
-    it('should fail with \'atscm\'', function() {
+    it("should fail with 'atscm'", function() {
       expect(Validator.name('atscm'), 'to match', /is not allowed/);
     });
 

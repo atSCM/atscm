@@ -19,7 +19,6 @@ import NodeBrowser from './NodeBrowser';
  * @emit {ReadStream.ReadResult} Emits `change` events when a watched node changes.
  */
 export default class Watcher extends Emitter {
-
   /**
    * Creates a new Watcher with the given nodes.
    * @param {NodeId[]} nodes The nodes to watch (recursively).
@@ -46,8 +45,7 @@ export default class Watcher extends Emitter {
      * Resolved once the server subscription is set up.
      * @type {Promise<any>}
      */
-    this.subscriptionStarted = this._setupSubscription()
-      .catch(err => this.emit('error', err));
+    this.subscriptionStarted = this._setupSubscription().catch(err => this.emit('error', err));
   }
 
   /**
@@ -55,23 +53,25 @@ export default class Watcher extends Emitter {
    * @return {Promise<node-opcua~ClientSubscription>} A setup subscription.
    */
   _setupSubscription() {
-    return Session.create()
-      .then(session => new Promise((resolve, reject) => {
-        /** The current session, if connected @type {Session} */
-        this._session = session;
+    return Session.create().then(
+      session =>
+        new Promise((resolve, reject) => {
+          /** The current session, if connected @type {Session} */
+          this._session = session;
 
-        const subscription = new ClientSubscription(session, {
-          requestedPublishingInterval: 100,
-          requestedLifetimeCount: 1000,
-          requestedMaxKeepAliveCount: 12,
-          maxNotificationsPerPublish: 10,
-          publishingEnabled: true,
-          priority: 10,
-        });
+          const subscription = new ClientSubscription(session, {
+            requestedPublishingInterval: 100,
+            requestedLifetimeCount: 1000,
+            requestedMaxKeepAliveCount: 12,
+            maxNotificationsPerPublish: 10,
+            publishingEnabled: true,
+            priority: 10,
+          });
 
-        subscription.on('started', () => resolve(subscription));
-        subscription.on('failure', err => reject(err));
-      }));
+          subscription.on('started', () => resolve(subscription));
+          subscription.on('failure', err => reject(err));
+        })
+    );
   }
 
   /**
@@ -79,20 +79,25 @@ export default class Watcher extends Emitter {
    * @param {BrowsedNode} node A browsed node.
    */
   async _subscribe(node) {
-    if (node.nodeClass !== NodeClass.Variable) { return undefined; }
+    if (node.nodeClass !== NodeClass.Variable) {
+      return undefined;
+    }
     const subscription = await this.subscriptionStarted;
 
     const nodeId = node.id;
 
-    const item = subscription.monitor({
-      nodeId,
-      attributeId: AttributeIds.Value,
-    }, {
-      clientHandle: 13,
-      samplingInterval: 250,
-      queueSize: 123,
-      discardOldest: true,
-    });
+    const item = subscription.monitor(
+      {
+        nodeId,
+        attributeId: AttributeIds.Value,
+      },
+      {
+        clientHandle: 13,
+        samplingInterval: 250,
+        queueSize: 123,
+        discardOldest: true,
+      }
+    );
 
     return new Promise((resolve, reject) => {
       // Sometimes the changed event is not emitted...
@@ -111,9 +116,12 @@ export default class Watcher extends Emitter {
 
       item.once('changed', () => {
         clearTimeout(timeout);
-        item.on('changed', this._handleChange.bind(this, {
-          nodeId,
-        }));
+        item.on(
+          'changed',
+          this._handleChange.bind(this, {
+            nodeId,
+          })
+        );
 
         resolve();
       });
@@ -121,8 +129,9 @@ export default class Watcher extends Emitter {
         clearTimeout(timeout);
         reject(err instanceof Error ? err : new Error(err));
       });
-    })
-      .catch(err => { throw Object.assign(err, { node }); });
+    }).catch(err => {
+      throw Object.assign(err, { node });
+    });
   }
 
   /**
@@ -144,9 +153,7 @@ export default class Watcher extends Emitter {
    */
   close() {
     if (this._session) {
-      Session.close(this._session)
-        .catch(err => this.emit('error', err));
+      Session.close(this._session).catch(err => this.emit('error', err));
     }
   }
-
 }

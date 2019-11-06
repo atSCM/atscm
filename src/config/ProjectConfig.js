@@ -15,7 +15,6 @@ const Config = require(path).default;
  * handled.
  */
 export default class ProjectConfig extends Config {
-
   /**
    * Return the project configuration override for the given name if available.
    * @param {string} name The variable to return.
@@ -73,9 +72,9 @@ export default class ProjectConfig extends Config {
    */
   static get sourceNodeRegExp() {
     if (!this._sourceNodeRegExp) {
-      this._sourceNodesRegExp = new RegExp(`^(${this.nodes
-        .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
-        .join('|')})`);
+      this._sourceNodesRegExp = new RegExp(
+        `^(${this.nodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
+      );
     }
 
     return this._sourceNodesRegExp;
@@ -87,9 +86,9 @@ export default class ProjectConfig extends Config {
    */
   static get ignoredNodesRegExp() {
     if (!this._ignoredNodesRegExp) {
-      this._ignoredNodesRegExp = new RegExp(`^(${this.ignoreNodes
-        .map(({ value }) => `${value.replace(/\./g, '\\.')}`)
-        .join('|')})`);
+      this._ignoredNodesRegExp = new RegExp(
+        `^(${this.ignoreNodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
+      );
     }
 
     return this._ignoredNodesRegExp;
@@ -114,5 +113,4 @@ export default class ProjectConfig extends Config {
     const env = this._env('TIMEOUT');
     return env ? parseInt(env, 10) : super.timeout;
   }
-
 }

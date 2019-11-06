@@ -9,7 +9,6 @@ import deps from '../../res/init/templates/dependencies.json';
  * The action run when running "atscm init".
  */
 export default class InitTask {
-
   /**
    * Returns the globs of the processed files for the given config lanugage.
    * @param {string} langId The configuration language used.
@@ -36,13 +35,13 @@ export default class InitTask {
     const install = deps.lang[langId];
 
     const stream = src(this.filesToHandle(langId))
-      .pipe(handlebars(options, {
-        helpers: helpers(),
-      }))
+      .pipe(
+        handlebars(options, {
+          helpers: helpers(),
+        })
+      )
       .pipe(dest('./'));
 
-    return streamToPromise(stream)
-      .then(() => ({ install }));
+    return streamToPromise(stream).then(() => ({ install }));
   }
-
 }

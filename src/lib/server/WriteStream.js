@@ -15,7 +15,6 @@ import WaitingStream from './WaitingStream';
  * processed.
  */
 export default class WriteStream extends WaitingStream {
-
   /**
    * Creates a new write stream with the given {@link CreateNodeStream} and
    * {@link AddReferencesStream}. Implementer have to ensure this create stream is actually piped.
@@ -86,28 +85,27 @@ export default class WriteStream extends WaitingStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   processChunk(file, handleErrors) {
-    if (file.nodeClass.value !== NodeClass.Variable.value) { // Non-variable nodes are just pushed
+    if (file.nodeClass.value !== NodeClass.Variable.value) {
+      // Non-variable nodes are just pushed
       this._createNode(file, handleErrors);
       return;
     }
 
     try {
-      this.session.writeSingleNode(`ns=1;s=${file.nodeId}`, file.variantValue,
+      this.session.writeSingleNode(
+        `ns=1;s=${file.nodeId}`,
+        file.variantValue,
         (err, statusCode) => {
           if (
-            (statusCode === StatusCodes.BadUserAccessDenied) ||
-            (statusCode === StatusCodes.BadNotWritable)
+            statusCode === StatusCodes.BadUserAccessDenied ||
+            statusCode === StatusCodes.BadNotWritable
           ) {
-            Logger.warn(`Error writing node ${
-              file.nodeId
-            }
+            Logger.warn(`Error writing node ${file.nodeId}
   - Make sure it is not opened in atvise builder
   - Make sure the corresponding datasource is connected`);
             handleErrors(err, StatusCodes.Good, done => done());
           } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
-            Logger.debug(`Node ${
-              file.nodeId
-            } does not exist: Attempting to create it...`);
+            Logger.debug(`Node ${file.nodeId} does not exist: Attempting to create it...`);
 
             this._createNode(file, handleErrors);
           } else {
@@ -118,10 +116,10 @@ export default class WriteStream extends WaitingStream {
               done();
             });
           }
-        });
+        }
+      );
     } catch (e) {
       handleErrors(e);
     }
   }
-
 }

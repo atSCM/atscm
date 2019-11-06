@@ -17,7 +17,9 @@ import Session from '../lib/server/Session';
 export function performPull(nodes, options = {}) {
   const writeStream = dest('./src', { cleanRenameConfig: options.clean });
   const applyTransforms = Transformer.combinedTransformer(
-    ProjectConfig.useTransformers, TransformDirection.FromDB);
+    ProjectConfig.useTransformers,
+    TransformDirection.FromDB
+  );
 
   const browser = new NodeBrowser({
     ...options,
@@ -37,7 +39,9 @@ export function performPull(nodes, options = {}) {
         await applyTransforms(node, context);
       }
 
-      if (removed) { return; }
+      if (removed) {
+        return;
+      }
       await writeStream.writeAsync(node);
 
       // Enqueue added nodes
@@ -47,10 +51,9 @@ export function performPull(nodes, options = {}) {
     },
   });
 
-  return Object.assign(
-    browser.browse(nodes)
-      .then(() => writeStream.writeRenamefile())
-    , { browser });
+  return Object.assign(browser.browse(nodes).then(() => writeStream.writeRenamefile()), {
+    browser,
+  });
 }
 
 /**

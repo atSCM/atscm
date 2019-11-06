@@ -21,14 +21,12 @@ const PushStream = proxyquire('../../../../src/lib/gulp/PushStream', {
   '../server/WriteStream': {
     _esModule: true,
     default: class WriteStream {
-
       constructor() {
         return Object.assign(createTransformStream(), {
           opsPerSecond: 13.2,
           _processed: 12,
         });
       }
-
     },
   },
   '../transform/Transformer': {
@@ -65,18 +63,22 @@ describe('PushStream', function() {
       const srcStream = createTransformStream();
       const stream = new PushStream(srcStream);
 
-      srcStream.write(new File({
-        path: 'src/AGENT/DISPLAYS/Main.display',
-        base: 'src',
-      }));
+      srcStream.write(
+        new File({
+          path: 'src/AGENT/DISPLAYS/Main.display',
+          base: 'src',
+        })
+      );
       srcStream.end();
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          expect(StubTransformer.applyTransformers.calledOnce, 'to be', true);
-          expect(StubTransformer.applyTransformers.lastCall.args[2],
-            'to be', TransformDirection.FromFilesystem);
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        expect(StubTransformer.applyTransformers.calledOnce, 'to be', true);
+        expect(
+          StubTransformer.applyTransformers.lastCall.args[2],
+          'to be',
+          TransformDirection.FromFilesystem
+        );
+      });
     });
 
     it.skip('should print progress', function() {
@@ -87,13 +89,12 @@ describe('PushStream', function() {
       logListener = spy().named('logListener');
       Logger.on('info', logListener);
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          expect(logListener, 'was called once');
-          expect(logListener.lastCall, 'to satisfy', [/Pushed: 12 \([0-9.]+ ops\/s\)/]);
-          expect(readline.clearLine, 'was called once');
-          expect(readline.moveCursor, 'was called once');
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        expect(logListener, 'was called once');
+        expect(logListener.lastCall, 'to satisfy', [/Pushed: 12 \([0-9.]+ ops\/s\)/]);
+        expect(readline.clearLine, 'was called once');
+        expect(readline.moveCursor, 'was called once');
+      });
     });
 
     it('should work without log listeners', function() {
@@ -101,11 +102,10 @@ describe('PushStream', function() {
 
       setTimeout(() => stream.end(), 1200);
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          expect(readline.clearLine, 'was not called');
-          expect(readline.moveCursor, 'was not called');
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        expect(readline.clearLine, 'was not called');
+        expect(readline.moveCursor, 'was not called');
+      });
     });
   });
 });

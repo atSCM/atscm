@@ -5,7 +5,6 @@ import Session from './Session';
  * An object transform stream connected to atvise server.
  */
 export default class Stream extends throughStreamClass({ objectMode: true }) {
-
   /**
    * Creates a new Stream and starts opening a new session to atvise server.
    * @param {Object} [options] The options to use. See the through2 documentation for details.
@@ -43,5 +42,4 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
       callback();
     }
   }
-
 }

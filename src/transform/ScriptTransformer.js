@@ -1,8 +1,15 @@
 import Logger from 'gulplog';
 import { DataType, VariantArrayType } from 'node-opcua/lib/datamodel/variant';
 import {
-  findChild, findChildren, textContent, createElement, createTextNode, createCDataNode,
-  prependChild, appendChild, isElement,
+  findChild,
+  findChildren,
+  textContent,
+  createElement,
+  createTextNode,
+  createCDataNode,
+  prependChild,
+  appendChild,
+  isElement,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
@@ -11,7 +18,6 @@ import XMLTransformer from '../lib/transform/XMLTransformer';
  * containing parameters and metadata.
  */
 export class AtviseScriptTransformer extends XMLTransformer {
-
   /**
    * The source file extensions to allow.
    * @type {string[]}
@@ -30,16 +36,23 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     const metaTag = findChild(document, 'metadata');
     // console.error('Meta', metaTag);
-    if (!metaTag || !metaTag.childNodes) { return config; }
+    if (!metaTag || !metaTag.childNodes) {
+      return config;
+    }
 
     metaTag.childNodes.forEach(child => {
-      if (child.type !== 'element') { return; }
+      if (child.type !== 'element') {
+        return;
+      }
 
       switch (child.name) {
         case 'icon':
-          config.icon = Object.assign({
-            content: textContent(child) || '',
-          }, child.attributes);
+          config.icon = Object.assign(
+            {
+              content: textContent(child) || '',
+            },
+            child.attributes
+          );
           break;
         case 'visible':
           config.visible = Boolean(parseInt(textContent(child), 10));
@@ -51,7 +64,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
           config.description = textContent(child);
           break;
         default: {
-          if (!config.metadata) { config.metadata = {}; }
+          if (!config.metadata) {
+            config.metadata = {};
+          }
 
           const value = textContent(child);
 
@@ -65,9 +80,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
             config.metadata[child.name] = textContent(child);
           }
 
-          if (![
-            'longrunning',
-          ].includes(child.name)) {
+          if (!['longrunning'].includes(child.name)) {
             Logger.debug(`Generic metadata element '${child.name}'`); // FIXME:  at ${node.nodeId}
           }
           break;
@@ -85,7 +98,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
    */
   processParameters(document) {
     const paramTags = findChildren(document, 'parameter');
-    if (!paramTags.length) { return undefined; }
+    if (!paramTags.length) {
+      return undefined;
+    }
 
     return paramTags.map(({ attributes, childNodes }) => {
       const param = Object.assign({}, attributes);
@@ -94,12 +109,16 @@ export class AtviseScriptTransformer extends XMLTransformer {
       if (attributes.relative === 'true') {
         param.target = {};
 
-        const target = findChild(childNodes.find(isElement),
-          ['Elements', 'RelativePathElement', 'TargetName']);
+        const target = findChild(childNodes.find(isElement), [
+          'Elements',
+          'RelativePathElement',
+          'TargetName',
+        ]);
 
         if (target) {
-          const [index, name] = ['NamespaceIndex', 'Name']
-            .map(tagName => textContent(findChild(target, tagName)));
+          const [index, name] = ['NamespaceIndex', 'Name'].map(tagName =>
+            textContent(findChild(target, tagName))
+          );
 
           const parsedIndex = parseInt(index, 10);
 
@@ -117,7 +136,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
    * @param {Object} context The current transform context.
    */
   async transformFromDB(node, context) {
-    if (!this.shouldBeTransformed(node)) { return undefined; }
+    if (!this.shouldBeTransformed(node)) {
+      return undefined;
+    }
 
     if (node.arrayType !== VariantArrayType.Scalar) {
       // FIXME: Instead of throwing we could simply pass the original node to the callback
@@ -125,7 +146,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
     }
 
     const xml = this.decodeContents(node);
-    if (!xml) { throw new Error('Error parsing script'); }
+    if (!xml) {
+      throw new Error('Error parsing script');
+    }
 
     const document = findChild(xml, 'script');
     if (!document) {
@@ -221,11 +244,11 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     // - Additional fields
     if (config.metadata !== undefined) {
-      Object.entries(config.metadata)
-        .forEach(([name, value]) => {
-          (Array.isArray(value) ? value : [value])
-            .forEach(v => meta.push(createElement(name, [createTextNode(v)])));
-        });
+      Object.entries(config.metadata).forEach(([name, value]) => {
+        (Array.isArray(value) ? value : [value]).forEach(v =>
+          meta.push(createElement(name, [createTextNode(v)]))
+        );
+      });
     }
 
     if (node.isQuickDynamic || meta.length) {
@@ -269,14 +292,12 @@ export class AtviseScriptTransformer extends XMLTransformer {
     // eslint-disable-next-line no-param-reassign
     node.value.value = this.encodeContents(result);
   }
-
 }
 
 /**
  * A transformer that splits atvise server scripts into multiple files.
  */
 export class ServerscriptTransformer extends AtviseScriptTransformer {
-
   /** The container's extension. */
   static get extension() {
     return '.script';
@@ -290,14 +311,12 @@ export class ServerscriptTransformer extends AtviseScriptTransformer {
   shouldBeTransformed(node) {
     return node.isVariable && node.isScript;
   }
-
 }
 
 /**
  * A transformer that splits atvise quickdynamics into multiple files.
  */
 export class QuickDynamicTransformer extends AtviseScriptTransformer {
-
   /** The container's extension. */
   static get extension() {
     return '.qd';
@@ -311,5 +330,4 @@ export class QuickDynamicTransformer extends AtviseScriptTransformer {
   shouldBeTransformed(node) {
     return node.isVariable && node.isQuickDynamic;
   }
-
 }

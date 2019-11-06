@@ -20,27 +20,48 @@ describe.skip('NewlinesTransformer', function() {
   /** @test {NewlinesTransformer#shouldBeTransformed} */
   describe('#shouldBeTransformed', function() {
     it('should return true for reference files', function() {
-      expect(NewlinesTransformer.prototype.shouldBeTransformed, 'called with',
-        [new File({
-          path: './src/test/.Object.json',
-          contents: Buffer.from('{}'),
-        })], 'to be', true);
+      expect(
+        NewlinesTransformer.prototype.shouldBeTransformed,
+        'called with',
+        [
+          new File({
+            path: './src/test/.Object.json',
+            contents: Buffer.from('{}'),
+          }),
+        ],
+        'to be',
+        true
+      );
     });
 
     it('should return true for source files', function() {
-      expect(NewlinesTransformer.prototype.shouldBeTransformed, 'called with',
-        [new File({
-          path: './src/test/Test.script/Test.js',
-          contents: Buffer.from(''),
-        })], 'to be', true);
+      expect(
+        NewlinesTransformer.prototype.shouldBeTransformed,
+        'called with',
+        [
+          new File({
+            path: './src/test/Test.script/Test.js',
+            contents: Buffer.from(''),
+          }),
+        ],
+        'to be',
+        true
+      );
     });
 
     it('should return false for binary files', function() {
-      expect(NewlinesTransformer.prototype.shouldBeTransformed, 'called with',
-        [new File({
-          path: './src/test/Test.jpg',
-          contents: Buffer.from(''),
-        })], 'to be', false);
+      expect(
+        NewlinesTransformer.prototype.shouldBeTransformed,
+        'called with',
+        [
+          new File({
+            path: './src/test/Test.jpg',
+            contents: Buffer.from(''),
+          }),
+        ],
+        'to be',
+        false
+      );
     });
   });
 
@@ -50,24 +71,40 @@ describe.skip('NewlinesTransformer', function() {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = ['first line', 'second'];
 
-      return expect(cb => transformer.transformFromDB(new File({
-        path: './src/test/Test.script/Test.js',
-        contents: Buffer.from(lines.join('\r\n')),
-      }), 'utf8', cb), 'to call the callback without error')
-        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
-          'to equal', lines.join(EOL)));
+      return expect(
+        cb =>
+          transformer.transformFromDB(
+            new File({
+              path: './src/test/Test.script/Test.js',
+              contents: Buffer.from(lines.join('\r\n')),
+            }),
+            'utf8',
+            cb
+          ),
+        'to call the callback without error'
+      ).then(([file]) =>
+        expect(file.contents, 'when decoded as', 'utf8', 'to equal', lines.join(EOL))
+      );
     });
 
     it('should add trailing newlines if set', function() {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
-      return expect(cb => transformer.transformFromDB(new File({
-        path: './src/test/Test.script/Test.js',
-        contents: Buffer.from(lines.join('\r\n')),
-      }), 'utf8', cb), 'to call the callback without error')
-        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
-          'to equal', lines.concat('').join(EOL)));
+      return expect(
+        cb =>
+          transformer.transformFromDB(
+            new File({
+              path: './src/test/Test.script/Test.js',
+              contents: Buffer.from(lines.join('\r\n')),
+            }),
+            'utf8',
+            cb
+          ),
+        'to call the callback without error'
+      ).then(([file]) =>
+        expect(file.contents, 'when decoded as', 'utf8', 'to equal', lines.concat('').join(EOL))
+      );
     });
   });
 
@@ -77,36 +114,65 @@ describe.skip('NewlinesTransformer', function() {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = ['first line', 'second'];
 
-      return expect(cb => transformer.transformFromFilesystem(new File({
-        path: './src/test/Test.script/Test.js',
-        contents: Buffer.from(lines.join(EOL)),
-      }), 'utf8', cb), 'to call the callback without error')
-        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
-          'to equal', lines.join('\r\n')));
+      return expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({
+              path: './src/test/Test.script/Test.js',
+              contents: Buffer.from(lines.join(EOL)),
+            }),
+            'utf8',
+            cb
+          ),
+        'to call the callback without error'
+      ).then(([file]) =>
+        expect(file.contents, 'when decoded as', 'utf8', 'to equal', lines.join('\r\n'))
+      );
     });
 
     it('should remove trailing newlines if set', function() {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
-      return expect(cb => transformer.transformFromFilesystem(new File({
-        path: './src/test/Test.script/Test.js',
-        contents: Buffer.from(lines.concat('').join(EOL)),
-      }), 'utf8', cb), 'to call the callback without error')
-        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
-          'to equal', lines.join('\r\n')));
+      return expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({
+              path: './src/test/Test.script/Test.js',
+              contents: Buffer.from(lines.concat('').join(EOL)),
+            }),
+            'utf8',
+            cb
+          ),
+        'to call the callback without error'
+      ).then(([file]) =>
+        expect(file.contents, 'when decoded as', 'utf8', 'to equal', lines.join('\r\n'))
+      );
     });
 
     it('should remove only one trailing newline if set', function() {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
-      return expect(cb => transformer.transformFromFilesystem(new File({
-        path: './src/test/Test.script/Test.js',
-        contents: Buffer.from(lines.concat('').concat('').join(EOL)),
-      }), 'utf8', cb), 'to call the callback without error')
-        .then(([file]) => expect(file.contents, 'when decoded as', 'utf8',
-          'to equal', lines.concat('').join('\r\n')));
+      return expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({
+              path: './src/test/Test.script/Test.js',
+              contents: Buffer.from(
+                lines
+                  .concat('')
+                  .concat('')
+                  .join(EOL)
+              ),
+            }),
+            'utf8',
+            cb
+          ),
+        'to call the callback without error'
+      ).then(([file]) =>
+        expect(file.contents, 'when decoded as', 'utf8', 'to equal', lines.concat('').join('\r\n'))
+      );
     });
   });
 });

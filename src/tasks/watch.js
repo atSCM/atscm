@@ -14,7 +14,6 @@ import { performPush } from './push';
  * The task executed when running `atscm watch`.
  */
 export class WatchTask {
-
   /**
    * Creates a new watch task instance. Also creates a new Browsersync instance.
    */
@@ -90,10 +89,14 @@ export class WatchTask {
 
         throw err;
       })
-      .then(() => this._waitForWatcher(sane(this.directoryToWatch, {
-        glob: '**/*.*',
-        watchman: process.platform === 'darwin',
-      })));
+      .then(() =>
+        this._waitForWatcher(
+          sane(this.directoryToWatch, {
+            glob: '**/*.*',
+            watchman: process.platform === 'darwin',
+          })
+        )
+      );
   }
 
   /**
@@ -111,12 +114,17 @@ export class WatchTask {
    * @see https://browsersync.io/docs/options
    */
   initBrowserSync(options) {
-    this.browserSyncInstance.init(Object.assign({
-      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-      ws: true,
-      // logLevel: 'debug', FIXME: Use log level specified in cli options
-      // logPrefix: '',
-    }, options));
+    this.browserSyncInstance.init(
+      Object.assign(
+        {
+          proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+          ws: true,
+          // logLevel: 'debug', FIXME: Use log level specified in cli options
+          // logPrefix: '',
+        },
+        options
+      )
+    );
 
     /* bs.logger.logOne = function(args, msg, level, unprefixed) {
       args = args.slice(2);
@@ -212,11 +220,8 @@ export class WatchTask {
    * all watchers are set up and Browsersync was initialized.
    */
   run({ open = true } = {}) {
-    return Promise.all([
-      this.startFileWatcher(),
-      this.startServerWatcher(),
-    ])
-      .then(([fileWatcher, serverWatcher]) => {
+    return Promise.all([this.startFileWatcher(), this.startServerWatcher()]).then(
+      ([fileWatcher, serverWatcher]) => {
         this.browserSyncInstance.emitter.on('service:running', () => {
           Logger.info('Watching for changes...');
           Logger.debug('Press Ctrl-C to exit');
@@ -228,9 +233,9 @@ export class WatchTask {
         this.initBrowserSync({ open });
 
         return { fileWatcher, serverWatcher };
-      });
+      }
+    );
   }
-
 }
 
 /**
@@ -241,7 +246,7 @@ export class WatchTask {
  * all watchers are set up and Browsersync was initialized.
  */
 export default function watch(options) {
-  return (new WatchTask()).run(options);
+  return new WatchTask().run(options);
 }
 
 watch.description = 'Watch local files and atvise server nodes to trigger pull/push on change';

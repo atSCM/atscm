@@ -3,7 +3,6 @@
  * TODO: Support function values for name, message, default, choices...
  */
 export default class InitOption {
-
   /**
    * Creates a new option based either on a message and (optionally) a default value or some
    * options.
@@ -82,5 +81,4 @@ export default class InitOption {
   static get DefaultType() {
     return 'input';
   }
-
 }

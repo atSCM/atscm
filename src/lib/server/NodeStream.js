@@ -7,7 +7,6 @@ import NodeBrowser from './NodeBrowser';
  * A stream of server nodes.
  */
 export default class NodeStream extends Readable {
-
   /**
    * Creates new node stream.
    * @param {NodeId[]} nodesToBrowse The nodes to browse.
@@ -86,7 +85,9 @@ export default class NodeStream extends Readable {
         Logger.warn(`Node '${node.nodeId}' has trailing spaces in it's name.`);
         Logger.info(' - Rename it to prevent errors on windows.');
       }
-      if (!this.push(node)) { this._browser.stop(); }
+      if (!this.push(node)) {
+        this._browser.stop();
+      }
     };
 
     this._browser.onEnd = () => {
@@ -95,7 +96,9 @@ export default class NodeStream extends Readable {
     };
 
     this._browser.onError = err => {
-      if (this.isDestroyed) { return; }
+      if (this.isDestroyed) {
+        return;
+      }
       this.emit('error', err);
       this.destroy();
     };
@@ -125,7 +128,8 @@ export default class NodeStream extends Readable {
     this._isDestroyed = true;
 
     super.destroy(err, () => {
-      this._browser.destroy()
+      this._browser
+        .destroy()
         .then(() => callback(err))
         .catch(destroyErr => callback(err || destroyErr));
     });
@@ -144,7 +148,6 @@ export default class NodeStream extends Readable {
    * @type {number}
    */
   get opsPerSecond() {
-    return (this.processed / ((Date.now() - this._start) / 1000)) || 0;
+    return this.processed / ((Date.now() - this._start) / 1000) || 0;
   }
-
 }

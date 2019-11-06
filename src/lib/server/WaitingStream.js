@@ -21,110 +21,116 @@ import QueueStream from './QueueStream';
  *
  * }
  */
-export const waitForDependencies = Stream => class Waiting extends Stream {
+export const waitForDependencies = Stream =>
+  class Waiting extends Stream {
+    /**
+     * Creates a new WaitingStream.
+     * @param {Object} options Options passed to the underlying {@link Stream} subclass.
+     */
+    constructor(options = {}) {
+      super(options);
 
-  /**
-   * Creates a new WaitingStream.
-   * @param {Object} options Options passed to the underlying {@link Stream} subclass.
-   */
-  constructor(options = {}) {
-    super(options);
+      this._dependencies = {};
+      this._waitingFor = {};
+      this._finishedProcessing = {};
 
-    this._dependencies = {};
-    this._waitingFor = {};
-    this._finishedProcessing = {};
+      this.on('processed-chunk', file => {
+        const key = file.nodeId.toString();
+        const dependents = this._waitingFor[key];
+        delete this._waitingFor[key];
+        this._finishedProcessing[key] = true;
 
-    this.on('processed-chunk', file => {
-      const key = file.nodeId.toString();
-      const dependents = this._waitingFor[key];
-      delete this._waitingFor[key];
-      this._finishedProcessing[key] = true;
+        if (dependents) {
+          dependents.forEach(d => {
+            const k = d.nodeId.toString();
+            this._dependencies[k] -= 1;
 
-      if (dependents) {
-        dependents.forEach(d => {
-          const k = d.nodeId.toString();
-          this._dependencies[k] -= 1;
-
-          if (this._dependencies[k] === 0) {
-            super._enqueueChunk(d);
-            delete this._dependencies[k];
-          }
-        });
-      }
-
-      this.emit('finished-chunk');
-    });
-  }
-
-  /**
-   * **Must be implemented by all subclasses:** Returns the dependencies for a given file.
-   * @typedef {function(file: AtviseFile): NodeId[]} WWaiting#dependenciesFor
-   * @param {AtviseFile} file The file to get the dependencies for.
-   * @return {NodeId[]} The file's dependencies.
-   * @abstract
-   */
-  dependenciesFor(file) { // eslint-disable-line no-unused-vars
-    throw new Error('#dependenciesFor must be implemented by all subclasses');
-  }
-
-  /**
-   * Enqueues a file after it's dependencies.
-   * @param {AtviseFile} file The file to process.
-   */
-  _enqueueChunk(file) {
-    const dependencies = this.dependenciesFor(file)
-      .filter(id => {
-        if (id.namespace === 0 || !id.value || ProjectConfig.nodes.includes(id)) { return false; }
-
-        return !id.value.match(/^(Object|Variable)Types$/) &&
-          !id.value.match(/^(Object|Variable)Types\.ATVISE/) &&
-          !id.value.match(/^SYSTEM\.LIBRARY\.ATVISE/);
-      })
-      .map(id => id.toString());
-
-    if (dependencies && dependencies.length) {
-      const needToWait = dependencies.reduce((wait, dependency) => {
-        if (!this._finishedProcessing[dependency]) {
-          const name = file.nodeId.toString();
-
-          this._waitingFor[dependency] = (this._waitingFor[dependency] || []).concat(file);
-          this._dependencies[name] = (this._dependencies[name] || 0) + 1;
-
-          return true;
+            if (this._dependencies[k] === 0) {
+              super._enqueueChunk(d);
+              delete this._dependencies[k];
+            }
+          });
         }
-        return wait;
-      }, false);
 
-      if (needToWait) { return; }
+        this.emit('finished-chunk');
+      });
     }
 
-    super._enqueueChunk(file);
-  }
+    /**
+     * **Must be implemented by all subclasses:** Returns the dependencies for a given file.
+     * @typedef {function(file: AtviseFile): NodeId[]} WWaiting#dependenciesFor
+     * @param {AtviseFile} file The file to get the dependencies for.
+     * @return {NodeId[]} The file's dependencies.
+     * @abstract
+     */
+    // eslint-disable-next-line no-unused-vars
+    dependenciesFor(file) {
+      throw new Error('#dependenciesFor must be implemented by all subclasses');
+    }
 
-  /**
-   * Delays the streams end until all chunks have been processed.
-   * @param {function(err: Error)} callback Called once all chunks have been processed.
-   */
-  _flush(callback) {
-    const checkProcessing = () => {
-      if (this._processing || this.hasPending) {
-        this.once('finished-chunk', () => checkProcessing());
-      } else if (Object.keys(this._waitingFor).length > 0) {
-        const first = Object.keys(this._waitingFor)[0];
+    /**
+     * Enqueues a file after it's dependencies.
+     * @param {AtviseFile} file The file to process.
+     */
+    _enqueueChunk(file) {
+      const dependencies = this.dependenciesFor(file)
+        .filter(id => {
+          if (id.namespace === 0 || !id.value || ProjectConfig.nodes.includes(id)) {
+            return false;
+          }
 
-        Logger.debug(`Missing dependency. Trying to process dependents of ${first}`);
+          return (
+            !id.value.match(/^(Object|Variable)Types$/) &&
+            !id.value.match(/^(Object|Variable)Types\.ATVISE/) &&
+            !id.value.match(/^SYSTEM\.LIBRARY\.ATVISE/)
+          );
+        })
+        .map(id => id.toString());
 
-        this.once('finished-chunk', () => checkProcessing());
-        this.emit('processed-chunk', { nodeId: first });
-      } else {
-        super._flush(callback);
+      if (dependencies && dependencies.length) {
+        const needToWait = dependencies.reduce((wait, dependency) => {
+          if (!this._finishedProcessing[dependency]) {
+            const name = file.nodeId.toString();
+
+            this._waitingFor[dependency] = (this._waitingFor[dependency] || []).concat(file);
+            this._dependencies[name] = (this._dependencies[name] || 0) + 1;
+
+            return true;
+          }
+          return wait;
+        }, false);
+
+        if (needToWait) {
+          return;
+        }
       }
-    };
 
-    checkProcessing();
-  }
+      super._enqueueChunk(file);
+    }
 
-};
+    /**
+     * Delays the streams end until all chunks have been processed.
+     * @param {function(err: Error)} callback Called once all chunks have been processed.
+     */
+    _flush(callback) {
+      const checkProcessing = () => {
+        if (this._processing || this.hasPending) {
+          this.once('finished-chunk', () => checkProcessing());
+        } else if (Object.keys(this._waitingFor).length > 0) {
+          const first = Object.keys(this._waitingFor)[0];
+
+          Logger.debug(`Missing dependency. Trying to process dependents of ${first}`);
+
+          this.once('finished-chunk', () => checkProcessing());
+          this.emit('processed-chunk', { nodeId: first });
+        } else {
+          super._flush(callback);
+        }
+      };
+
+      checkProcessing();
+    }
+  };
 
 /**
  * A {@link QueueStream} that waits for a file's dependencies to be processed before the file is

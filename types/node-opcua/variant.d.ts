@@ -27,7 +27,7 @@ declare module 'node-opcua/lib/datamodel/variant' {
     ExtensionObject = 22,
     DataValue = 23,
     Variant = 24,
-    DiagnosticInfo = 25
+    DiagnosticInfo = 25,
   }
 
   export const DataType: Enum<typeof DataTypeEnum>;
@@ -35,18 +35,15 @@ declare module 'node-opcua/lib/datamodel/variant' {
   enum VariantArrayTypeEnum {
     Scalar = 0x00,
     Array = 0x01,
-    Matrix = 0x02
+    Matrix = 0x02,
   }
 
   export const VariantArrayType: Enum<typeof VariantArrayTypeEnum>;
 
   export class Variant {
-
     public dataType: ItemOf<typeof DataType>;
     public arrayType: ItemOf<typeof VariantArrayType>;
     public value: any; // FIXME: Conditional on dataType...
     public dimensions: number[] | null;
-
   }
-
 }

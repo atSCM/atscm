@@ -4,7 +4,6 @@ import validatePackageName from 'validate-npm-package-name';
  * A static class containing validators for the options used when running "atscm init".
  */
 export default class InitOptionsValidator {
-
   /**
    * Validates a project name to be a valid npm package name.
    * @param {string} value The name to validate.
@@ -14,7 +13,9 @@ export default class InitOptionsValidator {
   static name(value) {
     const result = validatePackageName(value);
 
-    if (result.errors) { return result.errors[0]; }
+    if (result.errors) {
+      return result.errors[0];
+    }
 
     // First letter must be a letter
     if (value.match(/^@?[a-z]+/i) === null) {
@@ -27,5 +28,4 @@ export default class InitOptionsValidator {
 
     return result.validForNewPackages ? true : result.warnings[0];
   }
-
 }

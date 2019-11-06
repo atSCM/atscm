@@ -37,33 +37,36 @@ export function setupPath(name) {
 
 export function importSetup(name, ...rename) {
   const uniqueId = id();
-  const nodeNames = rename
-    .map(r => {
-      const parts = r.split('.');
+  const nodeNames = rename.map(r => {
+    const parts = r.split('.');
 
-      return [`${parts[0]}-${uniqueId}`, ...(parts.slice(1))].join('.');
-    });
-
-  const createReplaceStream = (original, renamed) => createTransformStream((file, _, callback) => {
-    callback(null, Object.assign(file, {
-      contents: replace(file.contents, original, renamed),
-    }));
+    return [`${parts[0]}-${uniqueId}`, ...parts.slice(1)].join('.');
   });
+
+  const createReplaceStream = (original, renamed) =>
+    createTransformStream((file, _, callback) => {
+      callback(
+        null,
+        Object.assign(file, {
+          contents: replace(file.contents, original, renamed),
+        })
+      );
+    });
 
   const sourceStream = gulpSrc(setupPath(name));
   const importStream = new ImportStream();
 
   return promisify(
-    rename.reduce((current, original, i) => current
-      .pipe(createReplaceStream(original, nodeNames[i])),
-    sourceStream)
+    rename
+      .reduce(
+        (current, original, i) => current.pipe(createReplaceStream(original, nodeNames[i])),
+        sourceStream
+      )
       .pipe(importStream)
-  )
-    .then(() => nodeNames);
+  ).then(() => nodeNames);
 }
 
 class SingleCallScriptStream extends CallScriptStream {
-
   constructor(options) {
     super(options);
 
@@ -86,7 +89,6 @@ class SingleCallScriptStream extends CallScriptStream {
       callback(null, outArgs.slice(2).map(a => a.value));
     }
   }
-
 }
 
 export function callScript(name, parameters) {
@@ -115,7 +117,6 @@ export function deleteNode(nodeName) {
 }
 
 class ExportStream extends CallMethodStream {
-
   get methodId() {
     return new NodeId('AGENT.OPCUA.METHODS.exportNodes');
   }
@@ -135,7 +136,6 @@ class ExportStream extends CallMethodStream {
       }),
     ];
   }
-
 }
 
 export function exportNodes(nodeIds) {
@@ -191,9 +191,10 @@ export function expectCorrectMapping(setup, node) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     const rawPushed = await exportNodes(nodeIds);
-    const pushed = originalNames.reduce((str, original, i) => str
-      .replace(new RegExp(nodeNames[i], 'g'), original),
-    rawPushed.toString());
+    const pushed = originalNames.reduce(
+      (str, original, i) => str.replace(new RegExp(nodeNames[i], 'g'), original),
+      rawPushed.toString()
+    );
 
     const original = await readFile(setupPath(setup), 'utf8');
 
@@ -219,23 +220,27 @@ export function expectCorrectMapping(setup, node) {
 
     function sortElements(current) {
       return Object.assign(current, {
-        childNodes: current.childNodes && current.childNodes
-          .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
-          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
-            const gotA = a && a.NodeId;
-            const gotB = b && b.NodeId;
+        childNodes:
+          current.childNodes &&
+          current.childNodes
+            .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
+            .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
+              const gotA = a && a.NodeId;
+              const gotB = b && b.NodeId;
 
-            if (gotA) {
-              if (gotB) {
-                return a.NodeId < b.NodeId ? -1 : 1;
+              if (gotA) {
+                if (gotB) {
+                  return a.NodeId < b.NodeId ? -1 : 1;
+                }
+
+                return -1;
+              } else if (gotB) {
+                return 1;
               }
 
-              return -1;
-            } else if (gotB) { return 1; }
-
-            return nameA < nameB ? -1 : 1;
-          })
-          .map(n => normalize(sortElements(n))),
+              return nameA < nameB ? -1 : 1;
+            })
+            .map(n => normalize(sortElements(n))),
       });
     }
 

@@ -23,11 +23,9 @@ function sessionWithLogin(login) {
 const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
   'node-opcua/lib/client/opcua_client': {
     OPCUAClient: class StubClient {
-
       connect(endpoint, cb) {
         cb(new Error('Client.create error'));
       }
-
     },
   },
 }).default;
@@ -35,11 +33,9 @@ const FailingClientSession = proxyquire('../../../../src/lib/server/Session', {
 const FailingSession = proxyquire('../../../../src/lib/server/Session', {
   'node-opcua/lib/client/opcua_client': {
     OPCUAClient: class StubClient extends OPCUAClient {
-
       createSession(login, callback) {
         callback(new Error('Client.createSession error'));
       }
-
     },
   },
 }).default;
@@ -69,22 +65,34 @@ describe('Session', function() {
     it('should fail with invalid credentials', function() {
       return Promise.all([
         // Missing username
-        expect(sessionWithLogin({
-          username: false,
-          password: 'invalid password',
-        }).create(), 'to be rejected with', /Invalid login/),
+        expect(
+          sessionWithLogin({
+            username: false,
+            password: 'invalid password',
+          }).create(),
+          'to be rejected with',
+          /Invalid login/
+        ),
 
         // Missing password
-        expect(sessionWithLogin({
-          username: 'invalid username',
-          password: false,
-        }).create(), 'to be rejected with', /Invalid login/),
+        expect(
+          sessionWithLogin({
+            username: 'invalid username',
+            password: false,
+          }).create(),
+          'to be rejected with',
+          /Invalid login/
+        ),
 
         // Invalid credentials
-        expect(sessionWithLogin({
-          username: 'invalid username',
-          password: 'invalid password',
-        }).create(), 'to be rejected with', /Invalid login/),
+        expect(
+          sessionWithLogin({
+            username: 'invalid username',
+            password: 'invalid password',
+          }).create(),
+          'to be rejected with',
+          /Invalid login/
+        ),
       ]);
     });
 
@@ -115,10 +123,9 @@ describe('Session', function() {
           spy(session, 'close');
           return session;
         })
-        .then(session => expect(Promise.all([
-          Session.close(session),
-          Session.close(session),
-        ]), 'to be fulfilled'))
+        .then(session =>
+          expect(Promise.all([Session.close(session), Session.close(session)]), 'to be fulfilled')
+        )
         .then(sessions => {
           expect(sessions, 'to have length', 2);
         });
@@ -142,24 +149,26 @@ describe('Session', function() {
         },
       };
 
-      return expect(Session.close(session), 'to be fulfilled')
-        .then(() => {
-          expect(logListener, 'was called once');
-          expect(logListener.lastCall, 'to satisfy', [/close a session that does not exist/]);
-        });
+      return expect(Session.close(session), 'to be fulfilled').then(() => {
+        expect(logListener, 'was called once');
+        expect(logListener.lastCall, 'to satisfy', [/close a session that does not exist/]);
+      });
     });
 
     it('should do nothing if client is not connected', function() {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => new Promise((resolve, reject) => {
-          session._client.disconnect(err => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(session);
-            }
-          });
-        }))
+        .then(
+          session =>
+            new Promise((resolve, reject) => {
+              session._client.disconnect(err => {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve(session);
+                }
+              });
+            })
+        )
         .then(session => expect(Session.close(session), 'to be fulfilled'));
     });
 
@@ -200,18 +209,18 @@ describe('Session', function() {
 
     it('should close open sessions', function() {
       expect(Session.open, 'to have length', 0);
-      return expect(Session.create(), 'to be fulfilled')
-        .then(session => expect(Session.closeOpen(), 'to be fulfilled with', [session]));
+      return expect(Session.create(), 'to be fulfilled').then(session =>
+        expect(Session.closeOpen(), 'to be fulfilled with', [session])
+      );
     });
 
     it('should wait for opening sessions to open before closing', function() {
       let session;
       Session.create().then(sess => (session = sess));
 
-      return expect(Session.closeOpen(), 'to be fulfilled')
-        .then(sessions => {
-          expect(sessions, 'to equal', [session]);
-        });
+      return expect(Session.closeOpen(), 'to be fulfilled').then(sessions => {
+        expect(sessions, 'to equal', [session]);
+      });
     });
   });
 });

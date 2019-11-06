@@ -150,6 +150,9 @@ jobs:
       - run:
           name: Linting source files
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
+      - run:
+          name: Checking formatting
+          command: npm run format -- --check
       - store_test_results:
           path: ~/reports
       - store_artifacts:
@@ -213,8 +216,7 @@ jobs:
       - atscm/npm-login
       - run:
           name: Deploying changes
-          command:
-            npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
+          command: npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
 
   update-hosted-docs:
     executor: atscm/node

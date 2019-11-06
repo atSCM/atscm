@@ -4,7 +4,6 @@ import { TransformDirection } from '../../src/lib/transform/Transformer';
 import AtviseFile from '../../src/lib/server/AtviseFile';
 
 export default class TransformerHelper {
-
   constructor(TransformerClass) {
     this.TransformerClass = TransformerClass;
   }
@@ -31,14 +30,16 @@ export default class TransformerHelper {
   }
 
   writeXMLToTransformer(path, xmlString, direction = TransformDirection.FromDB) {
-    return this.writeToTransformer(path, `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-${xmlString}`, direction);
+    return this.writeToTransformer(
+      path,
+      `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+${xmlString}`,
+      direction
+    );
   }
 
   expectFileContents(files) {
-    return Promise.all(
-      files.map(file => expect(file.contents, 'when decoded as', 'utf-8'))
-    );
+    return Promise.all(files.map(file => expect(file.contents, 'when decoded as', 'utf-8')));
   }
 
   createCombinedFileWithContents(path, contents, direction = TransformDirection.FromFilesystem) {
@@ -58,5 +59,4 @@ ${xmlString}`, direction);
 
     return cb => transformer.createCombinedFile(files, lastFile, cb);
   }
-
 }

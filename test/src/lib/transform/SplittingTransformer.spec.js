@@ -14,15 +14,13 @@ class StubSplittingTransformer extends proxyquire(
     '../server/AtviseFile': {
       _esModule: true,
       default: class StubAtviseFile extends AtviseFile {
-
         static read(options) {
           return Promise.resolve(options);
         }
-
       },
     },
-  }).default {
-
+  }
+).default {
   constructor(combineError) {
     super();
 
@@ -36,7 +34,6 @@ class StubSplittingTransformer extends proxyquire(
       callback(null, last);
     }
   }
-
 }
 
 /** @test {CombineFilesCache} */
@@ -123,9 +120,16 @@ describe('SplittingTransformer', function() {
       });
       transformer._combineFilesCache.gotAllFiles = (file, cb) => cb(new Error('Cache error'));
 
-      expect(cb => transformer.transformFromFilesystem(
-        new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-      'to call the callback with error', 'Cache error');
+      expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({ path: 'path/name.display/name.js' }),
+            'utf8',
+            cb
+          ),
+        'to call the callback with error',
+        'Cache error'
+      );
     });
 
     it.skip('should cache display files', function() {
@@ -134,14 +138,17 @@ describe('SplittingTransformer', function() {
       });
       transformer._combineFilesCache.gotAllFiles = (files, cb) => cb(null, false);
 
-      return expect(cb =>
-        transformer.transformFromFilesystem(
-          new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-      'to call the callback'
-      )
-        .then(args => {
-          expect(args[0], 'to be falsy');
-        });
+      return expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({ path: 'path/name.display/name.js' }),
+            'utf8',
+            cb
+          ),
+        'to call the callback'
+      ).then(args => {
+        expect(args[0], 'to be falsy');
+      });
     });
 
     it.skip('should call #createCombinedFile if all required files are cached', function() {
@@ -152,15 +159,18 @@ describe('SplittingTransformer', function() {
       transformer._combineFilesCache.gotAllFiles = (files, cb) => cb(null, [{}]);
       transformer.createCombinedFile = (files, last, cb) => cb(null, stubDisplay);
 
-      return expect(cb =>
-        transformer.transformFromFilesystem(
-          new File({ path: 'path/name.display/name.js' }), 'utf8', cb),
-      'to call the callback'
-      )
-        .then(args => {
-          expect(args[0], 'to be falsy');
-          expect(args[1], 'to be', stubDisplay);
-        });
+      return expect(
+        cb =>
+          transformer.transformFromFilesystem(
+            new File({ path: 'path/name.display/name.js' }),
+            'utf8',
+            cb
+          ),
+        'to call the callback'
+      ).then(args => {
+        expect(args[0], 'to be falsy');
+        expect(args[1], 'to be', stubDisplay);
+      });
     });
   });
 
