@@ -150,6 +150,9 @@ jobs:
       - run:
           name: Linting source files
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
+      - run:
+          name: Checking formatting
+          command: npm run format -- --check
       - store_test_results:
           path: ~/reports
       - store_artifacts:
