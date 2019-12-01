@@ -145,6 +145,12 @@ export class AtviseScriptTransformer extends XMLTransformer {
       throw new Error('Array of scripts not supported');
     }
 
+    // If scripts are empty (e.g. created by atvise builder, but never edited) we display a warning and ignore them.
+    if (!node.value.value) {
+      Logger.warn(`The script '${node.id.value}' is empty, skipping...`);
+      return context.remove(node);
+    }
+
     const xml = this.decodeContents(node);
     if (!xml) {
       throw new Error('Error parsing script');
@@ -152,7 +158,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     const document = findChild(xml, 'script');
     if (!document) {
-      throw new Error(`Empty document at ${node.nodeId}`);
+      throw new Error(`Empty document at ${node.id.value}`);
     }
 
     // Extract metadata and parameters
