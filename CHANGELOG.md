@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.44"></a>
-# 1.0.0-beta.44 (2019-10-29)
+<a name="1.0.0-beta.45"></a>
+# 1.0.0-beta.45 (2019-12-01)
 
 
 ### Bug Fixes
@@ -29,6 +29,7 @@
 * **pull:** Warn if node names contain trailing spaces ([#223](https://github.com/atSCM/atscm/issues/223)) ([3eeee49](https://github.com/atSCM/atscm/commits/3eeee49))
 * **pull:** Warn on incomplete results ([dbef5b1](https://github.com/atSCM/atscm/commits/dbef5b1))
 * **pull:** Warn on multiple parent nodes only if needed ([#322](https://github.com/atSCM/atscm/issues/322)) ([de87862](https://github.com/atSCM/atscm/commits/de87862))
+* **pull:** Warn when pulling empty scripts ([#347](https://github.com/atSCM/atscm/issues/347)) ([a929192](https://github.com/atSCM/atscm/commits/a929192)), closes [#345](https://github.com/atSCM/atscm/issues/345)
 * **pull:** Write rename.json after pull ([#257](https://github.com/atSCM/atscm/issues/257)) ([468fb52](https://github.com/atSCM/atscm/commits/468fb52))
 * **push:** Allow non-standard root nodes ([#236](https://github.com/atSCM/atscm/issues/236)) ([6da0bcc](https://github.com/atSCM/atscm/commits/6da0bcc))
 * **push:** Allow quotes in xml attribute values ([#316](https://github.com/atSCM/atscm/issues/316)) ([6e8b954](https://github.com/atSCM/atscm/commits/6e8b954))
@@ -44,10 +45,11 @@
 * **push:** Restrict split transformer source files ([5b38467](https://github.com/atSCM/atscm/commits/5b38467))
 * **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
+* Resolve correct parent node for root nodes ([#326](https://github.com/atSCM/atscm/issues/326)) ([399d11f](https://github.com/atSCM/atscm/commits/399d11f))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
-* Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
 * **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
+* Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
 * Prevent connection timeouts on unstable connections ([#343](https://github.com/atSCM/atscm/issues/343)) ([d4a73a2](https://github.com/atSCM/atscm/commits/d4a73a2))
@@ -55,7 +57,6 @@
 * Prevent errors with atvise 3.2.2+ ([#324](https://github.com/atSCM/atscm/issues/324)) ([e8a8b4a](https://github.com/atSCM/atscm/commits/e8a8b4a)), closes [#323](https://github.com/atSCM/atscm/issues/323)
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
-* Resolve correct parent node for root nodes ([#326](https://github.com/atSCM/atscm/issues/326)) ([399d11f](https://github.com/atSCM/atscm/commits/399d11f))
 
 
 ### Features
