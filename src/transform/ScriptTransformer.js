@@ -145,10 +145,10 @@ export class AtviseScriptTransformer extends XMLTransformer {
       throw new Error('Array of scripts not supported');
     }
 
+    // If scripts are empty (e.g. created by atvise builder, but never edited) we display a warning and ignore them.
     if (!node.value.value) {
       Logger.warn(`The script '${node.id.value}' is empty, skipping...`);
-      context.remove(node);
-      return;
+      return context.remove(node);
     }
 
     const xml = this.decodeContents(node);
