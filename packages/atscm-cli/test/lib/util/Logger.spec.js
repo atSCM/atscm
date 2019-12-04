@@ -54,7 +54,7 @@ describe('LogFormat', function() {
 /** @test {Logger} */
 describe('Logger', function() {
   function getText() {
-    return `Text ${(new Date())}`;
+    return `Text ${new Date()}`;
   }
 
   let debugSpy;

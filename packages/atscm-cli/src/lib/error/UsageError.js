@@ -2,7 +2,6 @@
  * An error reported when {@link yargs} fails to parse arguments.
  */
 export default class UsageError extends Error {
-
   /**
    * Creates a new {@link UsageError} based on an error message and the failing parser.
    * @param {string} message The error message.
@@ -17,5 +16,4 @@ export default class UsageError extends Error {
      */
     this.help = help;
   }
-
 }

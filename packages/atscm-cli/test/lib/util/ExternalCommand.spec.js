@@ -30,21 +30,19 @@ describe('External', function() {
     it('should be fulfilled with which results', function() {
       which.callsArgWith(1, null, 'bin');
 
-      return expect(External.resolveBin('asdf'), 'to be fulfilled with', 'bin')
-        .then(() => {
-          expect(which.calledOnce, 'to be', true);
-          expect(which.lastCall.args[0], 'to equal', 'asdf');
-        });
+      return expect(External.resolveBin('asdf'), 'to be fulfilled with', 'bin').then(() => {
+        expect(which.calledOnce, 'to be', true);
+        expect(which.lastCall.args[0], 'to equal', 'asdf');
+      });
     });
 
     it('should reject on which error', function() {
       which.callsArgWith(1, new Error('which error'));
 
-      return expect(External.resolveBin('asdf'), 'to be rejected with', 'which error')
-        .then(() => {
-          expect(which.calledOnce, 'to be', true);
-          expect(which.lastCall.args[0], 'to equal', 'asdf');
-        });
+      return expect(External.resolveBin('asdf'), 'to be rejected with', 'which error').then(() => {
+        expect(which.calledOnce, 'to be', true);
+        expect(which.lastCall.args[0], 'to equal', 'asdf');
+      });
     });
   });
 
@@ -77,8 +75,9 @@ describe('External', function() {
 
     it('should pass args to spawn', function() {
       const args = ['--test'];
-      const p = expect(External.spawn('asdf', args), 'to be fulfilled')
-        .then(() => expect(spawn.calledWith('asdf', args), 'to be true'));
+      const p = expect(External.spawn('asdf', args), 'to be fulfilled').then(() =>
+        expect(spawn.calledWith('asdf', args), 'to be true')
+      );
 
       stubProcess.emit('close', 0);
 
@@ -87,8 +86,10 @@ describe('External', function() {
 
     it('should pass options.spawn to spawn', function() {
       const spawnOpts = { opt: 13 };
-      const p = expect(External.spawn('asdf', [], { spawn: spawnOpts }), 'to be fulfilled')
-        .then(() => expect(spawn.calledWith('asdf', [], spawnOpts), 'to be true'));
+      const p = expect(
+        External.spawn('asdf', [], { spawn: spawnOpts }),
+        'to be fulfilled'
+      ).then(() => expect(spawn.calledWith('asdf', [], spawnOpts), 'to be true'));
 
       stubProcess.emit('close', 0);
 
@@ -110,21 +111,27 @@ describe('External', function() {
   /** @test {ExternalCommand#run} */
   describe('#run', function() {
     it('should call #resolveBin with name', function() {
-      return expect(External.run('asdf', [], {
-        onspawn() {
-          stubProcess.emit('close', 0);
-        },
-      }), 'to be fulfilled')
+      return expect(
+        External.run('asdf', [], {
+          onspawn() {
+            stubProcess.emit('close', 0);
+          },
+        }),
+        'to be fulfilled'
+      )
         .then(() => expect(which.calledOnce, 'to be true'))
         .then(() => expect(which.lastCall.args[0], 'to equal', 'asdf'));
     });
 
     it('should call #spawn with which results and other args', function() {
-      return expect(External.run('asdf', [], {
-        onspawn() {
-          stubProcess.emit('close', 0);
-        },
-      }), 'to be fulfilled')
+      return expect(
+        External.run('asdf', [], {
+          onspawn() {
+            stubProcess.emit('close', 0);
+          },
+        }),
+        'to be fulfilled'
+      )
         .then(() => expect(which.calledOnce, 'to be true'))
         .then(() => expect(which.lastCall.args[0], 'to equal', 'asdf'));
     });

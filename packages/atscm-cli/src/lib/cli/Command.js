@@ -3,7 +3,6 @@
  * @abstract
  */
 export default class Command {
-
   /**
    * Creates a new Command with the given name and options.
    * @param {string} name The command's name.
@@ -33,8 +32,11 @@ export default class Command {
      */
     this.description = description;
 
-    if (options.minArguments && options.maxArguments !== undefined
-      && options.maxArguments < options.minArguments) {
+    if (
+      options.minArguments &&
+      options.maxArguments !== undefined &&
+      options.maxArguments < options.minArguments
+    ) {
       throw new Error('options.maxArguments must not be less than options.minArguments');
     }
 
@@ -51,7 +53,8 @@ export default class Command {
    * here.**.
    * @param {AtSCMCli} cli The current cli instance.
    */
-  run(cli) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  run(cli) {
     throw new Error('Must be implemented by all subclasses');
   }
 
@@ -60,7 +63,8 @@ export default class Command {
    * @param {AtSCMCli} cli The current cli instance.
    * @return {boolean} `true` if the command requires a {@link Liftoff.Environment}.
    */
-  requiresEnvironment(cli) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  requiresEnvironment(cli) {
     return true;
   }
 
@@ -105,5 +109,4 @@ export default class Command {
   get strict() {
     return this._options.strict !== undefined ? this._options.strict : true;
   }
-
 }

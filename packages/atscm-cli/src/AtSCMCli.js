@@ -17,7 +17,6 @@ import UsageError from './lib/error/UsageError';
  * @extends {Liftoff}
  */
 export default class AtSCMCli extends Liftoff {
-
   /**
    * The name under which the module is available from the command line.
    * @type {string}
@@ -120,8 +119,7 @@ export default class AtSCMCli extends Liftoff {
         } else {
           throw err;
         }
-      })
-      .argv;
+      }).argv;
 
     if (!this.options.help && !this.options.version) {
       if (this.options._.filter(e => commandNames.includes(e)).length === 0) {
@@ -138,10 +136,12 @@ export default class AtSCMCli extends Liftoff {
      * An instance of {@link yargs} responible for parsing options.
      * @type {yargs}
      */
-    this.argumentsParser = Commands
-      .reduce(
-        (parser, command) => parser
-          .command(command.usage, command.description, y => {
+    this.argumentsParser = Commands.reduce(
+      (parser, command) =>
+        parser.command(
+          command.usage,
+          command.description,
+          y => {
             y.usage(`Usage: $0 ${command.usage}`);
             y.option(command.options);
 
@@ -151,17 +151,19 @@ export default class AtSCMCli extends Liftoff {
             y.strict(command.strict);
             y.help('help', Options.help.desc);
             y.demandCommand(...command.demandCommand);
-          }, () => (this.command = command)),
-        yargs()
-          .env('ATSCM')
-          .usage('Usage: $0 [cmd=run]')
-          .version(false)
-          .options(GlobalOptions)
-          .global(globalOptionNames)
-          .strict()
-          .help('help', Options.help.desc)
-          .alias('help', 'h')
-      );
+          },
+          () => (this.command = command)
+        ),
+      yargs()
+        .env('ATSCM')
+        .usage('Usage: $0 [cmd=run]')
+        .version(false)
+        .options(GlobalOptions)
+        .global(globalOptionNames)
+        .strict()
+        .help('help', Options.help.desc)
+        .alias('help', 'h')
+    );
   }
 
   /**
@@ -195,8 +197,9 @@ export default class AtSCMCli extends Liftoff {
         .fail((msg, err, y) => reject(new UsageError(msg, y.help())))
         .parse(this._argv);
 
-      Object.keys(this.options.project)
-        .forEach(key => this._exposeOverride(this.options.project, key));
+      Object.keys(this.options.project).forEach(key =>
+        this._exposeOverride(this.options.project, key)
+      );
 
       resolve(this.options);
     });
@@ -210,13 +213,16 @@ export default class AtSCMCli extends Liftoff {
    */
   getEnvironment(findUp = true) {
     return new Promise(resolve => {
-      super.launch({
-        cwd: this.options.cwd,
-        configPath: findUp ?
-          this.options.projectfile :
-          join((this.options.cwd || process.cwd()), `${this.constructor.ConfigName}.js`),
-        require: this.options.require,
-      }, env => resolve(this.environment = env));
+      super.launch(
+        {
+          cwd: this.options.cwd,
+          configPath: findUp
+            ? this.options.projectfile
+            : join(this.options.cwd || process.cwd(), `${this.constructor.ConfigName}.js`),
+          require: this.options.require,
+        },
+        env => resolve((this.environment = env))
+      );
     });
   }
 
@@ -226,18 +232,17 @@ export default class AtSCMCli extends Liftoff {
    * config file or the local module cannot be found.
    */
   requireEnvironment() {
-    return this.getEnvironment()
-      .then(env => {
-        if (!env.modulePath) {
-          throw new Error(`Local ${AtSCMCli.BinName} not found`);
-        }
+    return this.getEnvironment().then(env => {
+      if (!env.modulePath) {
+        throw new Error(`Local ${AtSCMCli.BinName} not found`);
+      }
 
-        if (!env.configPath) {
-          throw new Error('No config file found');
-        }
+      if (!env.configPath) {
+        throw new Error('No config file found');
+      }
 
-        return env;
-      });
+      return env;
+    });
   }
 
   /**
@@ -246,11 +251,10 @@ export default class AtSCMCli extends Liftoff {
    * version.
    */
   getVersion() {
-    return this.getEnvironment()
-      .then(env => ({
-        cli: pkg.version,
-        local: env.modulePath ? env.modulePackage.version : null,
-      }));
+    return this.getEnvironment().then(env => ({
+      cli: pkg.version,
+      local: env.modulePath ? env.modulePackage.version : null,
+    }));
   }
 
   /**
@@ -259,16 +263,15 @@ export default class AtSCMCli extends Liftoff {
    * version.
    */
   printVersion() {
-    return this.getVersion()
-      .then(version => {
-        Logger.info('CLI version', Logger.format.number(version.cli));
+    return this.getVersion().then(version => {
+      Logger.info('CLI version', Logger.format.number(version.cli));
 
-        if (version.local) {
-          Logger.info('Local version', Logger.format.number(version.local));
-        }
+      if (version.local) {
+        Logger.info('Local version', Logger.format.number(version.local));
+      }
 
-        return version;
-      });
+      return version;
+    });
   }
 
   /**
@@ -282,11 +285,10 @@ export default class AtSCMCli extends Liftoff {
     }
 
     if (this.command) {
-      return (this.command.requiresEnvironment(this) ?
-        this.requireEnvironment() :
-        Promise.resolve()
-      )
-        .then(() => this.command.run(this));
+      return (this.command.requiresEnvironment(this)
+        ? this.requireEnvironment()
+        : Promise.resolve()
+      ).then(() => this.command.run(this));
     }
 
     Logger.warn('No command specified');
@@ -310,11 +312,9 @@ export default class AtSCMCli extends Liftoff {
       .then(() => this.runCommand());
 
     if (this.runViaCli) {
-      return app
-        .catch(err => this._reportCliError(err));
+      return app.catch(err => this._reportCliError(err));
     }
 
     return app;
   }
-
 }

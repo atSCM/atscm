@@ -16,15 +16,15 @@ This module can be installed via [npm](https://www.npmjs.com). With [node.js](ht
 npm install -g atscm-cli
 ```
 
-*You may have to run this command as an administrator.*
+_You may have to run this command as an administrator._
 
 ## Basic usage
 
 > You can find more detailed usage information in the [usage manuals](https://atscm.github.io/atscm-cli/manual/CLI.html).
 
-### Creating a new *atSCM* project
+### Creating a new _atSCM_ project
 
-Running `atscm init` will prompt you for a project name, description, etc. and create a new *atSCM* project.
+Running `atscm init` will prompt you for a project name, description, etc. and create a new _atSCM_ project.
 
 For more detailed information on the init command look at the [manuals](https://atscm.github.io/atscm-cli/manual/index.html).
 
@@ -36,4 +36,4 @@ Lookup the tasks available in [the atscm manuals](https://atscm.github.io/atscm/
 
 ### Open documentation
 
-Running `atscm docs` will open the API documentation of the *atscm* module, running `atscm docs --cli` will open the documentation of this module.
+Running `atscm docs` will open the API documentation of the _atscm_ module, running `atscm docs --cli` will open the documentation of this module.

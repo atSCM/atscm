@@ -9,7 +9,6 @@ import CliOptions from '../Options';
  * The command invoked by running "update".
  */
 export default class UpdateCommand extends Command {
-
   /**
    * Creates a new {@link UpdateCommand} with the specified name and description.
    * @param {string} name The command's name.
@@ -29,8 +28,9 @@ export default class UpdateCommand extends Command {
    * @return {Promise<string>} Fulfilled with the latest atscm version available.
    */
   getLatestVersion(useBetaRelease = false) {
-    return get('https://registry.npmjs.org/-/package/atscm/dist-tags')
-      .then(res => res.data[useBetaRelease ? 'beta' : 'latest']);
+    return get('https://registry.npmjs.org/-/package/atscm/dist-tags').then(
+      res => res.data[useBetaRelease ? 'beta' : 'latest']
+    );
   }
 
   /**
@@ -55,13 +55,15 @@ export default class UpdateCommand extends Command {
    * error code.
    */
   update(cli, useBetaRelease = false) {
-    return ExternalCommand.run('npm',
+    return ExternalCommand.run(
+      'npm',
       ['install', '--save-dev', `atscm@${useBetaRelease ? 'beta' : 'latest'}`],
       {
         spawn: {
           cwd: cli.environment.cwd,
         },
-      });
+      }
+    );
   }
 
   /**
@@ -80,8 +82,7 @@ export default class UpdateCommand extends Command {
         if (needed) {
           Logger.info('Updating to version', Logger.format.value(needed));
 
-          return this.update(cli, cli.options.beta)
-            .then(() => Logger.info('Done.'));
+          return this.update(cli, cli.options.beta).then(() => Logger.info('Done.'));
         }
 
         return Logger.info('Already up-to-date.');
@@ -95,5 +96,4 @@ export default class UpdateCommand extends Command {
   requiresEnvironment() {
     return true;
   }
-
 }
