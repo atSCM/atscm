@@ -7,7 +7,6 @@ import CliOptions from '../Options';
  * The command invoked when running "run".
  */
 export default class RunCommand extends Command {
-
   /**
    * Creates a new {@link RunCommand} with the specified name and description.
    * @param {string} name The command's name.
@@ -48,9 +47,10 @@ export default class RunCommand extends Command {
       {
         configPath: join(cli.environment.modulePath, '../Gulpfile.js'),
         modulePath: join(cli.environment.cwd, 'node_modules/gulp'),
-      }, {
+      },
+      {
         description: colors.bold('Available tasks:'),
-      });
+      }
+    );
   }
-
 }

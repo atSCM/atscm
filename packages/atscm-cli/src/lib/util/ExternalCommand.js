@@ -6,7 +6,6 @@ import Logger from './Logger';
  * A static class providing utilities to run external commands.
  */
 export default class ExternalCommand {
-
   /**
    * Resolves the executable path for the given command.
    * @param {string} name The command to resolve.
@@ -75,8 +74,6 @@ export default class ExternalCommand {
    * @see {@link node.ChildProcess}
    */
   static run(name, args, options) {
-    return this.resolveBin(name)
-      .then(bin => this.spawn(bin, args, options));
+    return this.resolveBin(name).then(bin => this.spawn(bin, args, options));
   }
-
 }

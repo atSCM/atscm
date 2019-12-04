@@ -10,7 +10,6 @@ const logConsole = new Console(process.stdout, process.stderr);
  * Formats strings to be used in the {@link Logger}.
  */
 export class LogFormat {
-
   /**
    * Formats a string to represent a path.
    * @param {string} path The path to format.
@@ -46,7 +45,6 @@ export class LogFormat {
   static number(number) {
     return chalk.magenta(number);
   }
-
 }
 
 /**
@@ -55,7 +53,6 @@ export class LogFormat {
  * Log levels, `--silent`-flags etc. are handled automatically by {@link gulplog}.
  */
 export default class Logger {
-
   /**
    * An instance of {@link chalk}.
    * @type {chalk}
@@ -83,11 +80,7 @@ export default class Logger {
     }
 
     const now = new Date();
-    const timestamp = [
-      pad(now.getHours()),
-      pad(now.getMinutes()),
-      pad(now.getSeconds()),
-    ].join(':');
+    const timestamp = [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join(':');
 
     return `[${chalk.gray(timestamp)}]`;
   }
@@ -151,15 +144,17 @@ export default class Logger {
 
     this.types
       .filter((item, i) => {
-        const handle = (i < options.logLevel);
+        const handle = i < options.logLevel;
 
         this._handled[item] = handle;
 
         return handle;
       })
-      .forEach(level => gulplog.on(level, (...args) => {
-        logConsole[level === 'error' ? 'error' : 'info'](...[this.prefix].concat(args));
-      }));
+      .forEach(level =>
+        gulplog.on(level, (...args) => {
+          logConsole[level === 'error' ? 'error' : 'info'](...[this.prefix].concat(args));
+        })
+      );
   }
 
   /**
@@ -171,7 +166,10 @@ export default class Logger {
 
     stream
       .on('data', d => {
-        const lines = d.toString().split('\n').filter(l => l.trim() !== '');
+        const lines = d
+          .toString()
+          .split('\n')
+          .filter(l => l.trim() !== '');
 
         if (loggedBefore && this._handled.info) {
           readline.moveCursor(process.stdout, 0, -1);
@@ -189,5 +187,4 @@ export default class Logger {
         }
       });
   }
-
 }

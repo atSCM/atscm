@@ -45,11 +45,12 @@ Take the following steps:
 - Create a new branch / fork of the **[beta branch](https://github.com/LukasHechenberger/utils-test/tree/beta)**, which is our development branch
 - Make your changes
 - Make sure [CI tests](https://circleci.com/gh/LukasHechenberger/workflows/utils-test) pass
-- Send a pull request to merge back to *beta*
+- Send a pull request to merge back to _beta_
 
 Once we reviewed your changes, we'll merge your pull request.
 
 > **Merge strategy (Maintainers only)**
+>
 > - Accepted changes from fix/feature branches **should always be squash-merged** to beta.
 > - Once beta is stable **create a regular merge commit** to merge back to master.
 > - After merging to master, changes should be synced back to the beta branch. To do so, run:

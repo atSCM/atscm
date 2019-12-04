@@ -7,7 +7,7 @@ import rmdir from 'rimraf';
  * @param {function(path: String)} run The action to run in the temporary directory.
  */
 export default function inTmpDir(run) {
-  const path = join(__dirname, `../tmp_${(new Date()).getTime()}`);
+  const path = join(__dirname, `../tmp_${new Date().getTime()}`);
 
   before(done => mkdir(path, done));
   after(done => rmdir(path, done));

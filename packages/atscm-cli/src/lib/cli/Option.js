@@ -2,7 +2,6 @@
  * A command line option.
  */
 export default class Option {
-
   /**
    * Creates a new {@link Option} based on a description and some options.
    * @param {string} desc A string describing the option. Used for help texts.
@@ -17,8 +16,7 @@ export default class Option {
      */
     this.desc = desc;
 
-    Object.keys(options)
-      .forEach(k => (this[k] = options[k]));
+    Object.keys(options).forEach(k => (this[k] = options[k]));
   }
 
   /**
@@ -41,5 +39,4 @@ export default class Option {
   static string(desc, options = {}) {
     return new this(desc, Object.assign(options, { type: 'string', requiresArg: true }));
   }
-
 }

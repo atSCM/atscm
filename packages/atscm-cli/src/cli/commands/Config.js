@@ -6,7 +6,6 @@ import Command from '../../lib/cli/Command';
  * The command invoked when running "config".
  */
 export default class ConfigCommand extends Command {
-
   /**
    * Creates a new {@link ConfigCommand} with the specified name and description.
    * @param {string} name The command's name.
@@ -25,15 +24,18 @@ export default class ConfigCommand extends Command {
   run(cli) {
     process.env.ATSCM_CONFIG_PATH = cli.environment.configPath;
 
-    // eslint-disable-next-line global-require
-    const config = require(cli.environment.modulePath).ProjectConfig ||
-      require(cli.environment.configPath).default; // eslint-disable-line global-require
+    /* eslint-disable global-require */
+    const config =
+      require(cli.environment.modulePath).ProjectConfig ||
+      require(cli.environment.configPath).default;
+    /* eslint-enable global-require */
 
     inspect.styles.number = 'magenta';
     inspect.styles.string = 'cyan';
 
     Logger.info(
-      'Configuration at', Logger.format.path(cli.environment.configPath),
+      'Configuration at',
+      Logger.format.path(cli.environment.configPath),
       `\n${inspect(config, { colors: true, depth: null, breakLength: 0 })}`
     );
 
@@ -42,5 +44,4 @@ export default class ConfigCommand extends Command {
       Logger.info('Run', Logger.format.command('atscm update'), 'to update to the newest version');
     }
   }
-
 }

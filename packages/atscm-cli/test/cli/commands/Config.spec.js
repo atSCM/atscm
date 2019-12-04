@@ -21,7 +21,7 @@ describe('ConfigCommand', function() {
     const command = new ConfigCommand('config', 'Print configuration.');
 
     context('when overrides are available (atscm >= v0.4)', function() {
-      it('should print local module\'s ProjectConfig class', function() {
+      it("should print local module's ProjectConfig class", function() {
         command.run({
           options: {
             project: {},
@@ -38,7 +38,7 @@ describe('ConfigCommand', function() {
     });
 
     context('when overrides are not available (atscm < v0.4)', function() {
-      it('should print local module\'s Atviseproject class', function() {
+      it("should print local module's Atviseproject class", function() {
         command.run({
           options: {
             project: {},
@@ -65,8 +65,11 @@ describe('ConfigCommand', function() {
         });
 
         expect(Logger.warn.calledOnce, 'to be', true);
-        expect(Logger.warn.lastCall.args[0], 'to contain',
-          'Overriding runtime configuration requires atscm version >= 0.4');
+        expect(
+          Logger.warn.lastCall.args[0],
+          'to contain',
+          'Overriding runtime configuration requires atscm version >= 0.4'
+        );
       });
     });
   });
