@@ -1,7 +1,7 @@
 # Programmatic usage
- 
-> Please note that using the *atscm-cli* API is an advanced topic.  
-> 
+
+> Please note that using the _atscm-cli_ API is an advanced topic.
+>
 > **It's recommended to use the [command line interface](usage/CLI.html) whenever possible.**
 
 ## ES6 JavaScript
@@ -29,20 +29,19 @@ const cli = new AtSCMCli(['--version']);
 cli.launch();
 ```
 
-will print the version, just as if we ran the *atscm-cli* from the command line.
+will print the version, just as if we ran the _atscm-cli_ from the command line.
 
 The main difference between API and command line usage is, that **exceptions are not handled**. You'll have to do that yourself:
 
 ```javascript
 import AtSCMCli from 'atscm-cli';
 
-(new AtSCMCli(['--version'])).launch() // Note: AtSCMCli#launch returns a Promise
+new AtSCMCli(['--version'])
+  .launch() // Note: AtSCMCli#launch returns a Promise
   .then(() => console.log('success!'))
   .catch(err => console.error(`Oops! An error occured: ${err.message}`));
 ```
 
-----
+---
 
 Please refer to [AtSCMCli's class reference](../../class/src/AtSCMCli.js~AtSCMCli.html) in order to see all methods and properties available.
-
-

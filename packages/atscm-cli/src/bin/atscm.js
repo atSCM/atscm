@@ -6,4 +6,4 @@ import AtscmCli from '../AtSCMCli';
 
 updateNotifier({ pkg }).notify();
 
-(new AtscmCli(process.argv.slice(2))).launch();
+new AtscmCli(process.argv.slice(2)).launch();

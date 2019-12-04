@@ -22,7 +22,8 @@ describe('DocsCommand', function() {
             modulePath: '/path/to/package.json',
           },
         }),
-        'to equal', join('/path/docs/api/index.html')
+        'to equal',
+        join('/path/docs/api/index.html')
       );
     });
 
@@ -31,7 +32,8 @@ describe('DocsCommand', function() {
         command.localDocsPath({
           options: { cli: true },
         }),
-        'to equal', join(__dirname, '../../../docs/api/index.html')
+        'to equal',
+        join(__dirname, '../../../docs/api/index.html')
       );
     });
   });
@@ -39,13 +41,22 @@ describe('DocsCommand', function() {
   /** @test {DocsCommand#remoteDocsUrl} */
   describe('#remoteDocsUrl', function() {
     it('should return path to atscm docs by default', function() {
-      expect(command.remoteDocsUrl({ options: {} }),
-        'to equal', `${DocsCommand.RemoteDocsBase}atscm`);
+      expect(
+        command.remoteDocsUrl({
+          options: {},
+          environment: { modulePackage: { version: '1.2.3' } },
+        }),
+        'to equal',
+        'https://atscm.github.io/from-cli/?version=1.2.3'
+      );
     });
 
     it('should return path to atscm-cli docs with `--cli` option passed', function() {
-      expect(command.remoteDocsUrl({ options: { cli: true } }),
-        'to equal', `${DocsCommand.RemoteDocsBase}atscm-cli`);
+      expect(
+        command.remoteDocsUrl({ options: { cli: true } }),
+        'to equal',
+        `${DocsCommand.RemoteDocsBase}atscm-cli`
+      );
     });
   });
 
@@ -73,7 +84,7 @@ describe('DocsCommand', function() {
     it('should return remote url if remote was set to true', function() {
       const { isPath } = command.addressToOpen({
         options: { remote: true },
-        environment: { modulePath: '/path/to/package.json' },
+        environment: { modulePath: '/path/to/package.json', modulePackage: {} },
       });
 
       expect(isPath, 'to equal', false);
@@ -103,12 +114,13 @@ describe('DocsCommand', function() {
     beforeEach(() => openSpy.resetHistory());
 
     it('should open local api docs by default', function() {
-      command.run({
-        options: {},
-        environment: {
-          modulePath: '/path/to/package.json',
-        },
-      })
+      return command
+        .run({
+          options: {},
+          environment: {
+            modulePath: '/path/to/package.json',
+          },
+        })
         .then(() => {
           expect(openSpy.calledOnce, 'to be', true);
           expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
@@ -117,33 +129,38 @@ describe('DocsCommand', function() {
     });
 
     it('should open cli api docs with --cli option', function() {
-      command.run({
-        options: {
-          cli: true,
-        },
-      })
+      return command
+        .run({
+          options: {
+            cli: true,
+          },
+        })
         .then(() => {
           expect(openSpy.calledOnce, 'to be', true);
-          expect(openSpy.lastCall.args[0],
-            'to equal', join(__dirname, '../../../docs/api/index.html'));
+          expect(
+            openSpy.lastCall.args[0],
+            'to equal',
+            join(__dirname, '../../../docs/api/index.html')
+          );
           expect(openSpy.lastCall.args[1], 'to be undefined');
         });
     });
 
     it('should open in specific browser with --browser option', function() {
-      command.run({
-        options: {
-          cli: false,
-          browser: 'custombrowser',
-        },
-        environment: {
-          modulePath: '/path/to/package.json',
-        },
-      })
+      return command
+        .run({
+          options: {
+            cli: false,
+            browser: 'custombrowser',
+          },
+          environment: {
+            modulePath: '/path/to/package.json',
+          },
+        })
         .then(() => {
           expect(openSpy.calledOnce, 'to be', true);
           expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
-          expect(openSpy.lastCall.args[1], 'to equal', 'custombrowser');
+          expect(openSpy.lastCall.args[1], 'to equal', { app: 'custombrowser' });
         });
     });
 
@@ -153,31 +170,33 @@ describe('DocsCommand', function() {
           cli: false,
         },
         getEnvironment() {
-          return Promise.resolve((this.environment = {
-            modulePath: '/path/to/package.json',
-          }));
+          return Promise.resolve(
+            (this.environment = {
+              modulePath: '/path/to/package.json',
+            })
+          );
         },
       };
 
       spy(cli, 'getEnvironment');
 
-      command.run(cli)
-        .then(() => {
-          expect(cli.getEnvironment.calledOnce, 'to be', true);
-          expect(openSpy.calledOnce, 'to be', true);
-          expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
-        });
+      return command.run(cli).then(() => {
+        expect(cli.getEnvironment.calledOnce, 'to be', true);
+        expect(openSpy.calledOnce, 'to be', true);
+        expect(openSpy.lastCall.args[0], 'to equal', join('/path/docs/api/index.html'));
+      });
     });
 
     it('should open remote docs with --remote option passed', function() {
-      command.run({
-        options: {
-          remote: true,
-        },
-        environment: {
-          modulePath: '/path/to/package.json',
-        },
-      })
+      return command
+        .run({
+          options: {
+            remote: true,
+          },
+          environment: {
+            modulePath: '/path/to/package.json',
+          },
+        })
         .then(() => {
           expect(openSpy.calledOnce, 'to be', true);
           expect(openSpy.lastCall.args[0], 'to begin with', DocsCommand.RemoteDocsBase);
@@ -196,14 +215,20 @@ describe('DocsCommand', function() {
     });
 
     it('should return false if no `--remote` option is passed', function() {
-      expect(command.requiresEnvironment({ options: { } }), 'to be', false);
+      expect(command.requiresEnvironment({ options: {} }), 'to be', false);
     });
 
     it('should return false if `--no-remote` and `--cli` option is passed', function() {
-      expect(command.requiresEnvironment({ options: {
-        remote: false,
-        cli: true,
-      } }), 'to be', false);
+      expect(
+        command.requiresEnvironment({
+          options: {
+            remote: false,
+            cli: true,
+          },
+        }),
+        'to be',
+        false
+      );
     });
 
     it('should return true if `--no-remote` and no `--cli` option is passed', function() {
