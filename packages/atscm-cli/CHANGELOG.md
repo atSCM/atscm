@@ -1,209 +1,296 @@
-<a name="0.8.2"></a>
+<a name="0.9.0"></a>
+# 0.9.0 (2019-12-04)
 
+
+### Bug Fixes
+
+* **docs:** Open specific browser if specified ([#162](https://github.com/atSCM/atscm-cli/issues/162)) ([c4d6197](https://github.com/atSCM/atscm-cli/commits/c4d6197))
+
+
+### Features
+
+* **docs:** Use new remote docs ([#163](https://github.com/atSCM/atscm-cli/issues/163)) ([a101e8c](https://github.com/atSCM/atscm-cli/commits/a101e8c))
+
+
+
+
+<a name="0.8.2"></a>
 ## 0.8.2 (2019-06-21)
 
+
 ### Bug Fixes
 
-- Better error messages for failed requires ([#145](https://github.com/atSCM/atscm-cli/issues/145)) ([e3a63f2](https://github.com/atSCM/atscm-cli/commits/e3a63f2))
-- **package:** Update insecure dependencies ([#146](https://github.com/atSCM/atscm-cli/issues/146)) ([47dd413](https://github.com/atSCM/atscm-cli/commits/47dd413))
+* Better error messages for failed requires ([#145](https://github.com/atSCM/atscm-cli/issues/145)) ([e3a63f2](https://github.com/atSCM/atscm-cli/commits/e3a63f2))
+* **package:** Update insecure dependencies ([#146](https://github.com/atSCM/atscm-cli/issues/146)) ([47dd413](https://github.com/atSCM/atscm-cli/commits/47dd413))
+
 
 ### Reverts
 
-- chore: Release 0.8.2 ([#147](https://github.com/atSCM/atscm-cli/issues/147)) ([d60b9c8](https://github.com/atSCM/atscm-cli/commits/d60b9c8))
+* chore: Release 0.8.2 ([#147](https://github.com/atSCM/atscm-cli/issues/147)) ([d60b9c8](https://github.com/atSCM/atscm-cli/commits/d60b9c8))
+
+
+
 
 <a name="0.8.1"></a>
-
 ## 0.8.1 (2019-06-01)
 
+
 ### Bug Fixes
 
-- **package:** Update dependency axios to ^0.19.0 ([#140](https://github.com/atSCM/atscm-cli/issues/140)) ([93d2c4c](https://github.com/atSCM/atscm-cli/commits/93d2c4c))
+* **package:** Update dependency axios to ^0.19.0 ([#140](https://github.com/atSCM/atscm-cli/issues/140)) ([93d2c4c](https://github.com/atSCM/atscm-cli/commits/93d2c4c))
+
+
+
 
 <a name="0.8.0"></a>
-
 # 0.8.0 (2019-05-21)
 
+
 ### Features
 
-- **init:** Add '--yes' and '--link' options ([#138](https://github.com/atSCM/atscm-cli/issues/138)) ([d18dcf6](https://github.com/atSCM/atscm-cli/commits/d18dcf6))
+* **init:** Add '--yes' and '--link' options ([#138](https://github.com/atSCM/atscm-cli/issues/138)) ([d18dcf6](https://github.com/atSCM/atscm-cli/commits/d18dcf6))
+
+
+
 
 <a name="0.7.1"></a>
-
 ## 0.7.1 (2019-03-08)
 
+
 ### Bug Fixes
 
-- **init:** Allow rollup-bundled atscm module ([#95](https://github.com/atSCM/atscm-cli/issues/95)) ([3a0059a](https://github.com/atSCM/atscm-cli/commits/3a0059a))
+* **init:** Allow rollup-bundled atscm module ([#95](https://github.com/atSCM/atscm-cli/issues/95)) ([3a0059a](https://github.com/atSCM/atscm-cli/commits/3a0059a))
+
+
+
 
 <a name="0.7.0"></a>
-
 # 0.7.0 (2018-09-27)
 
+
 ### Features
 
-- Allow flags in run tasks ([#87](https://github.com/atSCM/atscm-cli/issues/87)) ([4d14f29](https://github.com/atSCM/atscm-cli/commits/4d14f29))
+* Allow flags in run tasks ([#87](https://github.com/atSCM/atscm-cli/issues/87)) ([4d14f29](https://github.com/atSCM/atscm-cli/commits/4d14f29))
+
+
+
 
 <a name="0.6.1"></a>
-
 ## 0.6.1 (2018-09-27)
 
+
 ### Bug Fixes
 
-- Support babel v7 ([#86](https://github.com/atSCM/atscm-cli/issues/86)) ([1bbf3bd](https://github.com/atSCM/atscm-cli/commits/1bbf3bd))
+* Support babel v7 ([#86](https://github.com/atSCM/atscm-cli/issues/86)) ([1bbf3bd](https://github.com/atSCM/atscm-cli/commits/1bbf3bd))
+
+
+
 
 <a name="0.6.0"></a>
-
 # 0.6.0 (2018-07-23)
 
+
 ### Features
 
-- Use the `--debug` flag to start debug mode ([#85](https://github.com/atSCM/atscm-cli/issues/85)) ([a929e0e](https://github.com/atSCM/atscm-cli/commits/a929e0e))
+* Use the `--debug` flag to start debug mode ([#85](https://github.com/atSCM/atscm-cli/issues/85)) ([a929e0e](https://github.com/atSCM/atscm-cli/commits/a929e0e))
+
+
+
 
 <a name="0.5.0"></a>
-
 # 0.5.0 (2018-06-17)
 
+
 ### Features
 
-- Continue task execution if `--continue` is used ([#82](https://github.com/atSCM/atscm-cli/issues/82)) ([92ff5a6](https://github.com/atSCM/atscm-cli/commits/92ff5a6))
+* Continue task execution if `--continue` is used ([#82](https://github.com/atSCM/atscm-cli/issues/82)) ([92ff5a6](https://github.com/atSCM/atscm-cli/commits/92ff5a6))
+
+
+
 
 <a name="0.4.0"></a>
-
 # 0.4.0 (2018-02-09)
+
 
 ### Features
 
-- Update nodejs to version 8 ([#70](https://github.com/atSCM/atscm-cli/issues/70)) ([ad62730](https://github.com/atSCM/atscm-cli/commits/ad62730))
+* Update nodejs to version 8 ([#70](https://github.com/atSCM/atscm-cli/issues/70)) ([ad62730](https://github.com/atSCM/atscm-cli/commits/ad62730))
+
+
+
 
 <a name="0.3.6"></a>
-
 ## 0.3.6 (2018-01-25)
 
+
 ### Bug Fixes
 
-- Allow running without tasks ([#64](https://github.com/atSCM/atscm-cli/issues/64)) ([d102534](https://github.com/atSCM/atscm-cli/commits/d102534)), closes [#62](https://github.com/atSCM/atscm-cli/issues/62)
+* Allow running without tasks ([#64](https://github.com/atSCM/atscm-cli/issues/64)) ([d102534](https://github.com/atSCM/atscm-cli/commits/d102534)), closes [#62](https://github.com/atSCM/atscm-cli/issues/62)
+
+
+
 
 <a name="0.3.5"></a>
-
 ## 0.3.5 (2018-01-25)
 
+
 ### Bug Fixes
 
-- **npm:** Update package-lock ([11142f2](https://github.com/atSCM/atscm-cli/commits/11142f2))
-- Disable yargs' version ([8878643](https://github.com/atSCM/atscm-cli/commits/8878643))
-- Update yargs to prevent missing option argument error ([c852fb5](https://github.com/atSCM/atscm-cli/commits/c852fb5))
-- Use non-alpha gulp-cli ([d36c25d](https://github.com/atSCM/atscm-cli/commits/d36c25d))
+* **npm:** Update package-lock ([11142f2](https://github.com/atSCM/atscm-cli/commits/11142f2))
+* Disable yargs' version ([8878643](https://github.com/atSCM/atscm-cli/commits/8878643))
+* Update yargs to prevent missing option argument error ([c852fb5](https://github.com/atSCM/atscm-cli/commits/c852fb5))
+* Use non-alpha gulp-cli ([d36c25d](https://github.com/atSCM/atscm-cli/commits/d36c25d))
+
+
+
 
 <a name="0.3.4"></a>
-
 ## 0.3.4 (2018-01-25)
 
+
 ### Bug Fixes
 
-- **package:** Force gulp-cli version 1.2.2 ([244f9e6](https://github.com/atSCM/atscm-cli/commits/244f9e6)), closes [#52](https://github.com/atSCM/atscm-cli/issues/52)
+* **package:** Force gulp-cli version 1.2.2 ([244f9e6](https://github.com/atSCM/atscm-cli/commits/244f9e6)), closes [#52](https://github.com/atSCM/atscm-cli/issues/52)
+
+
+
 
 <a name="0.3.3"></a>
-
 ## 0.3.3 (2018-01-25)
+
 
 ### Bug Fixes
 
-- Downgrade gulp-cli ([4e61612](https://github.com/atSCM/atscm-cli/commits/4e61612)), closes [#41](https://github.com/atSCM/atscm-cli/issues/41)
+* Downgrade gulp-cli ([4e61612](https://github.com/atSCM/atscm-cli/commits/4e61612)), closes [#41](https://github.com/atSCM/atscm-cli/issues/41)
+
 
 ### Reverts
 
-- fix(package): update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([7ae6b1f](https://github.com/atSCM/atscm-cli/commits/7ae6b1f))
+* fix(package): update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([7ae6b1f](https://github.com/atSCM/atscm-cli/commits/7ae6b1f))
+
+
+
 
 <a name="0.3.2"></a>
-
 ## 0.3.2 (2018-01-08)
 
+
 ### Bug Fixes
 
-- **package:** update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([f4415a9](https://github.com/atSCM/atscm-cli/commits/f4415a9))
-- **package:** update inquirer to version 5.0.0 ([#42](https://github.com/atSCM/atscm-cli/issues/42)) ([09c576c](https://github.com/atSCM/atscm-cli/commits/09c576c))
-- Rename tasks option to prevent name conflict with gulp-cli 2.0 ([4d138be](https://github.com/atSCM/atscm-cli/commits/4d138be))
+* **package:** update gulp-cli to version 2.0.0 ([#41](https://github.com/atSCM/atscm-cli/issues/41)) ([f4415a9](https://github.com/atSCM/atscm-cli/commits/f4415a9))
+* **package:** update inquirer to version 5.0.0 ([#42](https://github.com/atSCM/atscm-cli/issues/42)) ([09c576c](https://github.com/atSCM/atscm-cli/commits/09c576c))
+* Rename tasks option to prevent name conflict with gulp-cli 2.0 ([4d138be](https://github.com/atSCM/atscm-cli/commits/4d138be))
+
+
+
 
 <a name="0.3.1"></a>
-
 ## 0.3.1 (2017-12-19)
 
+
 ### Bug Fixes
 
-- Host API docs on github pages ([#38](https://github.com/atSCM/atscm-cli/issues/38)) ([951f588](https://github.com/atSCM/atscm-cli/commits/951f588)), closes [#36](https://github.com/atSCM/atscm-cli/issues/36)
-- Use [@ls-age](https://github.com/ls-age)/bump-version for automated releases ([#37](https://github.com/atSCM/atscm-cli/issues/37)) ([c556a15](https://github.com/atSCM/atscm-cli/commits/c556a15)), closes [#34](https://github.com/atSCM/atscm-cli/issues/34)
+* Host API docs on github pages ([#38](https://github.com/atSCM/atscm-cli/issues/38)) ([951f588](https://github.com/atSCM/atscm-cli/commits/951f588)), closes [#36](https://github.com/atSCM/atscm-cli/issues/36)
+* Use [@ls-age](https://github.com/ls-age)/bump-version for automated releases ([#37](https://github.com/atSCM/atscm-cli/issues/37)) ([c556a15](https://github.com/atSCM/atscm-cli/commits/c556a15)), closes [#34](https://github.com/atSCM/atscm-cli/issues/34)
+
+
+
 
 <a name="0.3.0"></a>
-
 # 0.3.0 (2017-11-06)
 
+
 ### Bug Fixes
 
-- **ci:** Deploy master and beta only ([63393b8](https://github.com/atSCM/atscm-cli/commits/63393b8))
-- **docs:** Document deployment process ([#29](https://github.com/atSCM/atscm-cli/issues/29)) ([782d826](https://github.com/atSCM/atscm-cli/commits/782d826))
+* **ci:** Deploy master and beta only ([63393b8](https://github.com/atSCM/atscm-cli/commits/63393b8))
+* **docs:** Document deployment process ([#29](https://github.com/atSCM/atscm-cli/issues/29)) ([782d826](https://github.com/atSCM/atscm-cli/commits/782d826))
+
 
 ### Features
 
-- **ci:** Automated release ([#27](https://github.com/atSCM/atscm-cli/issues/27)) ([ff9f82a](https://github.com/atSCM/atscm-cli/commits/ff9f82a))
-- **init:** Use `--beta` flag to update prerelease versions ([#31](https://github.com/atSCM/atscm-cli/issues/31)) ([7f8b9ed](https://github.com/atSCM/atscm-cli/commits/7f8b9ed))
+* **ci:** Automated release ([#27](https://github.com/atSCM/atscm-cli/issues/27)) ([ff9f82a](https://github.com/atSCM/atscm-cli/commits/ff9f82a))
+* **init:** Use `--beta` flag to update prerelease versions ([#31](https://github.com/atSCM/atscm-cli/issues/31)) ([7f8b9ed](https://github.com/atSCM/atscm-cli/commits/7f8b9ed))
+
+
+
 
 <a name="0.2.4"></a>
-
 ## 0.2.4 (2017-10-17)
 
+
 ### Bug Fixes
 
-- **init:** Always run in current working directory unless `--cwd` is passed ([#16](https://github.com/atSCM/atscm-cli/issues/16)) ([4beabdf](https://github.com/atSCM/atscm-cli/commits/4beabdf)), closes [#14](https://github.com/atSCM/atscm-cli/issues/14)
-- **run:** Allow `atscm --tasks` with current gulp-cli version ([#24](https://github.com/atSCM/atscm-cli/issues/24)) ([1820107](https://github.com/atSCM/atscm-cli/commits/1820107))
+* **init:** Always run in current working directory unless `--cwd` is passed ([#16](https://github.com/atSCM/atscm-cli/issues/16)) ([4beabdf](https://github.com/atSCM/atscm-cli/commits/4beabdf)), closes [#14](https://github.com/atSCM/atscm-cli/issues/14)
+* **run:** Allow `atscm --tasks` with current gulp-cli version ([#24](https://github.com/atSCM/atscm-cli/issues/24)) ([1820107](https://github.com/atSCM/atscm-cli/commits/1820107))
+
 
 ### Features
 
-- **docs:** Open hosted API documentation with `--remote` option passed ([#18](https://github.com/atSCM/atscm-cli/issues/18)) ([2cb4ca7](https://github.com/atSCM/atscm-cli/commits/2cb4ca7)), closes [#13](https://github.com/atSCM/atscm-cli/issues/13)
-- **init:** Override existing files using the `--force` option ([#15](https://github.com/atSCM/atscm-cli/issues/15)) ([ccd4abf](https://github.com/atSCM/atscm-cli/commits/ccd4abf)), closes [#10](https://github.com/atSCM/atscm-cli/issues/10)
-- Add source maps and beta flag ([#26](https://github.com/atSCM/atscm-cli/issues/26)) ([bf7e748](https://github.com/atSCM/atscm-cli/commits/bf7e748))
-- Automatically check for package updates ([#21](https://github.com/atSCM/atscm-cli/issues/21)) ([19afc94](https://github.com/atSCM/atscm-cli/commits/19afc94)), closes [#19](https://github.com/atSCM/atscm-cli/issues/19)
-- Pass options by setting env vars named `ATSCM_{options}={value}` ([#23](https://github.com/atSCM/atscm-cli/issues/23)) ([4f23e91](https://github.com/atSCM/atscm-cli/commits/4f23e91))
-- Update atscm by running `atscm update` ([bdce6f3](https://github.com/atSCM/atscm-cli/commits/bdce6f3)), closes [#5](https://github.com/atSCM/atscm-cli/issues/5)
-- Update atscm by running `atscm update` ([6adfa60](https://github.com/atSCM/atscm-cli/commits/6adfa60))
+* **docs:** Open hosted API documentation with `--remote` option passed ([#18](https://github.com/atSCM/atscm-cli/issues/18)) ([2cb4ca7](https://github.com/atSCM/atscm-cli/commits/2cb4ca7)), closes [#13](https://github.com/atSCM/atscm-cli/issues/13)
+* **init:** Override existing files using the `--force` option ([#15](https://github.com/atSCM/atscm-cli/issues/15)) ([ccd4abf](https://github.com/atSCM/atscm-cli/commits/ccd4abf)), closes [#10](https://github.com/atSCM/atscm-cli/issues/10)
+* Add source maps and beta flag ([#26](https://github.com/atSCM/atscm-cli/issues/26)) ([bf7e748](https://github.com/atSCM/atscm-cli/commits/bf7e748))
+* Automatically check for package updates ([#21](https://github.com/atSCM/atscm-cli/issues/21)) ([19afc94](https://github.com/atSCM/atscm-cli/commits/19afc94)), closes [#19](https://github.com/atSCM/atscm-cli/issues/19)
+* Pass options by setting env vars named `ATSCM_{options}={value}` ([#23](https://github.com/atSCM/atscm-cli/issues/23)) ([4f23e91](https://github.com/atSCM/atscm-cli/commits/4f23e91))
+* Update atscm by running `atscm update` ([bdce6f3](https://github.com/atSCM/atscm-cli/commits/bdce6f3)), closes [#5](https://github.com/atSCM/atscm-cli/issues/5)
+* Update atscm by running `atscm update` ([6adfa60](https://github.com/atSCM/atscm-cli/commits/6adfa60))
+
+
+
 
 <a name="0.2.2"></a>
-
 ## 0.2.2 (2017-03-15)
 
+
 ### Bug Fixes
 
-- **Logger:** Use windows-friendly stdout API ([2693bbd](https://github.com/atSCM/atscm-cli/commits/2693bbd))
-- **test:** Use windows-friendly paths ([3ff7018](https://github.com/atSCM/atscm-cli/commits/3ff7018))
+* **Logger:** Use windows-friendly stdout API ([2693bbd](https://github.com/atSCM/atscm-cli/commits/2693bbd))
+* **test:** Use windows-friendly paths ([3ff7018](https://github.com/atSCM/atscm-cli/commits/3ff7018))
+
+
+
 
 <a name="0.2.1"></a>
-
 ## 0.2.1 (2017-03-13)
+
 
 ### Bug Fixes
 
-- **Logger:** Print as single message ([a251179](https://github.com/atSCM/atscm-cli/commits/a251179))
+* **Logger:** Print as single message ([a251179](https://github.com/atSCM/atscm-cli/commits/a251179))
+
+
+
 
 <a name="0.2.0"></a>
-
 # 0.2.0 (2017-03-13)
+
 
 ### Features
 
-- **Logger:** Ignore empty lines when using #pipeLastLine ([f3d34cc](https://github.com/atSCM/atscm-cli/commits/f3d34cc))
-- **Logger:** Print to own Console instance ([b77c0eb](https://github.com/atSCM/atscm-cli/commits/b77c0eb))
+* **Logger:** Ignore empty lines when using #pipeLastLine ([f3d34cc](https://github.com/atSCM/atscm-cli/commits/f3d34cc))
+* **Logger:** Print to own Console instance ([b77c0eb](https://github.com/atSCM/atscm-cli/commits/b77c0eb))
+
+
+
 
 <a name="0.1.2"></a>
-
 ## 0.1.2 (2017-02-22)
+
 
 ### Bug Fixes
 
-- **test:** Fixed invalid test paths ([055edf5](https://github.com/atSCM/atscm-cli/commits/055edf5))
+* **test:** Fixed invalid test paths ([055edf5](https://github.com/atSCM/atscm-cli/commits/055edf5))
+
+
+
 
 <a name="0.1.1"></a>
-
 ## 0.1.1 (2017-02-21)
 
-<a name="0.1.0"></a>
 
+
+
+<a name="0.1.0"></a>
 # 0.1.0 (2017-02-21)
+
+
+
