@@ -20,6 +20,7 @@ export default class XMLTransformer extends SplittingTransformer {
       if (root) {
         moveToTop(root, 'metadata');
         moveToTop(root, 'defs');
+        moveToTop(root, 'desc');
         moveToTop(root, 'title');
       }
 
