@@ -198,12 +198,12 @@ export function createNode(
   }
 ) {
   const variableOptions =
-    nodeClass === NodeClass.Variable
+    nodeClass.value === NodeClass.Variable.value
       ? {
           dataType: value.dataType.value,
           valueRank: value.arrayType ? value.arrayType.value : VariantArrayType.Scalar.value,
           value:
-            value.arrayType && value.arrayType !== VariantArrayType.Scalar
+            value.arrayType && value.arrayType.value !== VariantArrayType.Scalar.value
               ? Array.from(value.value)
               : value.value,
         }

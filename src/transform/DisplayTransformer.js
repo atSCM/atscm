@@ -8,8 +8,11 @@ import {
   appendChild,
   prependChild,
   textContent,
+  createTextNode,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+
+const rootMetaTags = [{ tag: 'title' }, { tag: 'desc', key: 'description' }];
 
 /**
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
@@ -102,6 +105,17 @@ export default class DisplayTransformer extends XMLTransformer {
       };
       context.addNode(scriptFile);
     }
+
+    rootMetaTags.forEach(({ tag, key }) => {
+      const [element, ...additional] = removeChildren(document, tag);
+      if (!element) return;
+
+      config[key || tag] = textContent(element);
+
+      if (additional.length) {
+        Logger.warn(`Removed additional <${tag} /> element inside ${node.nodeId}`);
+      }
+    });
 
     // Extract metadata
     const metaTag = findChild(document, 'metadata');
@@ -212,6 +226,15 @@ export default class DisplayTransformer extends XMLTransformer {
       // <title> if defined (nothing to do, they are ordered inside #encodeContents)
       prependChild(svg, metaTag);
     }
+
+    // - Title and description
+    rootMetaTags.reverse().forEach(({ tag, key }) => {
+      const value = config[key || tag];
+
+      if (value !== undefined) {
+        prependChild(svg, createElement(tag, [createTextNode(value)]));
+      }
+    });
 
     // eslint-disable-next-line
     node.value.value = this.encodeContents(result);
