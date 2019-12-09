@@ -108,6 +108,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     rootMetaTags.forEach(({ tag, key }) => {
       const [element, ...additional] = removeChildren(document, tag);
+      if (!element) return;
 
       config[key || tag] = textContent(element);
 
