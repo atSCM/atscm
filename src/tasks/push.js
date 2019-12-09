@@ -90,7 +90,8 @@ export function performPush(path, options) {
       typeDefinition: node.typeDefinition,
       modellingRule: node.modellingRule,
       reference: ReferenceTypeNames[node.references.getSingle(ReferenceTypeIds.toParent)],
-      value: node.nodeClass === NodeClass.Variable && node.variantValue,
+      value:
+        node.nodeClass && node.nodeClass.value === NodeClass.Variable.value && node.variantValue,
     })
       .then(({ outputArguments }) => {
         const [{ value: createdNode }, { value: createFailed }] = outputArguments[3].value;
@@ -129,7 +130,7 @@ export function performPush(path, options) {
       }
 
       // Create / write node
-      if (node.nodeClass !== NodeClass.Variable) {
+      if (node.nodeClass.value !== NodeClass.Variable.value) {
         return create(node);
       }
 
