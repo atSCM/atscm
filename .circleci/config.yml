@@ -158,14 +158,18 @@ jobs:
       - store_artifacts:
           path: ~/reports
 
-  type-check:
+  types:
     executor: atscm/node
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Running type checks
-          command: npm run typecheck
+          name: Build type declaration files
+          command: npm run types
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out/types
 
   unit-tests:
     executor: atscm/node
@@ -260,7 +264,7 @@ workflows:
       - lint-source:
           requires:
             - install-deps
-      - type-check:
+      - types:
           requires:
             - install-deps
       - unit-tests:
@@ -286,7 +290,7 @@ workflows:
       - deploy:
           requires:
             - lint-source
-            - type-check
+            - types
             - test-coverage
             - integration-32x
             - integration-33x
