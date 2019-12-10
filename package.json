@@ -3,6 +3,7 @@
   "version": "1.0.0-beta.46",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
+  "types": "out/types/index.d.ts",
   "engines": {
     "node": ">=8.0",
     "atscm-cli": ">=0.7.0"
@@ -22,7 +23,7 @@
     "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm run test:unit",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/workflows/atscm",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "types": "tsc"
   },
   "repository": {
     "type": "git",
@@ -90,7 +91,7 @@
     "mri": "^1.1.4",
     "node-cleanup": "^2.1.2",
     "node-opcua": "0.0.60",
-    "p-queue": "^5.0.0",
+    "p-queue": "^6.2.1",
     "sane": "^2.5.2",
     "semver": "^5.7.1",
     "stream-to-promise": "^2.2.0",

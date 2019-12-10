@@ -158,14 +158,18 @@ jobs:
       - store_artifacts:
           path: ~/reports
 
-  type-check:
+  types:
     executor: atscm/node
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Running type checks
-          command: npm run typecheck
+          name: Build type declaration files
+          command: npm run types
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out/types
 
   unit-tests:
     executor: atscm/node
