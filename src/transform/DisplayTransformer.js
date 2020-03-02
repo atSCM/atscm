@@ -9,6 +9,7 @@ import {
   prependChild,
   textContent,
   createTextNode,
+  attributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
@@ -127,7 +128,7 @@ export default class DisplayTransformer extends XMLTransformer {
       if (paramTags.length) {
         config.parameters = [];
 
-        paramTags.forEach(({ attributes }) => config.parameters.push(attributes));
+        paramTags.forEach(n => config.parameters.push(attributeValues(n)));
       }
     }
 

@@ -10,6 +10,7 @@ import {
   prependChild,
   appendChild,
   isElement,
+  attributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
@@ -51,7 +52,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
             {
               content: textContent(child) || '',
             },
-            child.attributes
+            attributeValues(child)
           );
           break;
         case 'visible':
@@ -102,7 +103,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
       return undefined;
     }
 
-    return paramTags.map(({ attributes, childNodes }) => {
+    return paramTags.map(node => {
+      const { childNodes } = node;
+      const attributes = attributeValues(node);
       const param = Object.assign({}, attributes);
 
       // Handle relative parameter targets
