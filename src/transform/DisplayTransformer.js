@@ -9,6 +9,7 @@ import {
   prependChild,
   textContent,
   createTextNode,
+  attributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 
