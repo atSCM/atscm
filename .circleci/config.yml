@@ -33,6 +33,9 @@ orbs:
                   '3.3')
                     ATSCM_PROJECT__PORT__OPC=4841
                     ;;
+                  '3.4')
+                    ATSCM_PROJECT__PORT__OPC=4842
+                    ;;
                   *)
                     echo "Invalid atserver version $ATSERVER_VERSION"
                     exit 1;
@@ -286,7 +289,12 @@ workflows:
           requires:
             - build
             - start-testserver
-            - integration-32x
+      - atscm/integration:
+          name: integration-34x
+          atserver: '3.4'
+          requires:
+            - build
+            - start-testserver
       - deploy:
           requires:
             - lint-source
@@ -294,6 +302,7 @@ workflows:
             - test-coverage
             - integration-32x
             - integration-33x
+            - integration-34x
             - docs
           filters:
             branches:
