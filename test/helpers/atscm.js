@@ -5,7 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { parse, removeChildren, isElement } from 'modify-xml';
+import { parse, removeChildren, isElement, attributeValues } from 'modify-xml';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -199,21 +199,27 @@ export function expectCorrectMapping(setup, node) {
     const original = await readFile(setupPath(setup), 'utf8');
 
     function normalize(element) {
+      /* eslint-disable no-param-reassign */
+      delete element.tokens;
       if (element.attributes) {
-        // eslint-disable-next-line no-param-reassign
-        delete element.attributes.EventNotifier;
+        element.attributes = element.attributes
+          .filter(a => a.name !== 'EventNotifier')
+          .map(a => {
+            delete a.tokens;
+            return a;
+          });
       }
 
       if (element.type === 'cdata') {
-        // eslint-disable-next-line no-param-reassign
         element.value = element.value
           .replace(/\?>\s/, '?>')
           .replace(/(^\s+|\r?\n?)/gm, '')
           .replace(/ standalone="no"/, '');
       }
 
-      // eslint-disable-next-line no-param-reassign
       delete element.rawValue;
+
+      /* eslint-enable no-param-reassign */
 
       return element;
     }
@@ -224,7 +230,12 @@ export function expectCorrectMapping(setup, node) {
           current.childNodes &&
           current.childNodes
             .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
-            .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
+            .sort((nodeA, nodeB) => {
+              const nameA = nodeA.name;
+              const a = attributeValues(nodeA);
+              const nameB = nodeB.name;
+              const b = attributeValues(nodeB);
+
               const gotA = a && a.NodeId;
               const gotB = b && b.NodeId;
 
