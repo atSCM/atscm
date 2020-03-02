@@ -14,7 +14,7 @@ _atscm_ is a [node.js](https://nodejs.org) based utility that stores the content
 - easier unit testing
 - easier source code linting / static analysis
 - source files can be preprocessed by using custom transformers: <!-- TODO: Insert links -->
-  - using alternate programming languages such as [ES2015 JavaScript](http://babeljs.io/learn-es2015/) or [TypeScript](http://www.typescriptlang.org)
+  - using alternate programming languages such as [ES2015 JavaScript](http://babeljs.io/learn-es2015/) or [TypeScript](https://www.typescriptlang.org)
   - using alternate markup languages such as [pug](https://pugjs.org)
   - using templating engines such as [handlebars](http://handlebarsjs.com)
 
