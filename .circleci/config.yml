@@ -4,7 +4,7 @@ orbs:
     executors:
       node:
         docker:
-          - image: circleci/node:8
+          - image: circleci/node:10
     commands:
       git-login:
         steps:
