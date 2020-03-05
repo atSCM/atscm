@@ -77,12 +77,13 @@ export default class DisplayTransformer extends XMLTransformer {
     // Extract JavaScript
     if (scriptTags.length) {
       scriptTags.forEach(script => {
-        if (script.attributes && (script.attributes.src || script.attributes['xlink:href'])) {
+        const attributes = attributeValues(script);
+        if (attributes && (attributes.src || attributes['xlink:href'])) {
           if (!config.dependencies) {
             config.dependencies = [];
           }
 
-          config.dependencies.push(script.attributes.src || script.attributes['xlink:href']);
+          config.dependencies.push(attributes.src || attributes['xlink:href']);
         } else {
           // Warn on multiple inline scripts
           if (inlineScript) {
