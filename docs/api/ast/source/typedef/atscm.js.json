@@ -1,0 +1,162 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 653,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 16,
+      "column": 0
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 653,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 16,
+        "column": 0
+      }
+    },
+    "sourceType": "module",
+    "body": [],
+    "directives": [],
+    "leadingComments": null,
+    "innerComments": [
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @typedef {Object} NodeStream.BrowseResult\n * @property {NodeId} nodeId The discovered node's id.\n * @property {node-opcua~NodeClass} nodeClass The discovered node's class.\n * @property {Map<String, NodeId[]>} references An object holding arrays of references from the\n * discovered node to others, mapped by {@link node-opcua~ReferenceTypeId} keys.\n ",
+        "start": 0,
+        "end": 359,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 3
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n * @typedef {NodeStream.BrowseResult} ReadStream.ReadResult\n * @property {?node-opcua~DataValue} value For *Variable* nodes this property holds the read data\n * value.\n * @property {?Date} mtime For *Variable* nodes this property holds the timestamp the node's value\n * last changed.\n ",
+        "start": 361,
+        "end": 652,
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 15,
+            "column": 3
+          }
+        }
+      }
+    ]
+  },
+  "comments": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @typedef {Object} NodeStream.BrowseResult\n * @property {NodeId} nodeId The discovered node's id.\n * @property {node-opcua~NodeClass} nodeClass The discovered node's class.\n * @property {Map<String, NodeId[]>} references An object holding arrays of references from the\n * discovered node to others, mapped by {@link node-opcua~ReferenceTypeId} keys.\n ",
+      "start": 0,
+      "end": 359,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @typedef {NodeStream.BrowseResult} ReadStream.ReadResult\n * @property {?node-opcua~DataValue} value For *Variable* nodes this property holds the read data\n * value.\n * @property {?Date} mtime For *Variable* nodes this property holds the timestamp the node's value\n * last changed.\n ",
+      "start": 361,
+      "end": 652,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @typedef {Object} NodeStream.BrowseResult\n * @property {NodeId} nodeId The discovered node's id.\n * @property {node-opcua~NodeClass} nodeClass The discovered node's class.\n * @property {Map<String, NodeId[]>} references An object holding arrays of references from the\n * discovered node to others, mapped by {@link node-opcua~ReferenceTypeId} keys.\n ",
+      "start": 0,
+      "end": 359,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n * @typedef {NodeStream.BrowseResult} ReadStream.ReadResult\n * @property {?node-opcua~DataValue} value For *Variable* nodes this property holds the read data\n * value.\n * @property {?Date} mtime For *Variable* nodes this property holds the timestamp the node's value\n * last changed.\n ",
+      "start": 361,
+      "end": 652,
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 653,
+      "end": 653,
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 0
+        },
+        "end": {
+          "line": 16,
+          "column": 0
+        }
+      }
+    }
+  ]
+}
