@@ -28,7 +28,7 @@ const openInBuilderStatus = new Set([StatusCodes.BadUserAccessDenied, StatusCode
 const ignoredReferences = new Set([
   ReferenceTypeIds.toParent,
   ReferenceTypeIds.HasTypeDefinition,
-  ReferenceTypeIds.HasModellingRule,
+  // ReferenceTypeIds.HasModellingRule,
 ]);
 
 /**
