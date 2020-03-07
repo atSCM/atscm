@@ -80,28 +80,12 @@
 			<Reference ReferenceType="HasTypeDefinition">ns=1;s=VariableTypes.ATVISE.ScriptCode</Reference>
 		</References>
 		<Value>
-			<uax:XmlElement><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<script>
-  <parameter name="trigger" type="node" trigger="true" relative="true">
-    <RelativePath>
-      <Elements>
-        <RelativePathElement>
-          <TargetName>
-            <NamespaceIndex>1</NamespaceIndex>
-            <Name>Node</Name>
-          </TargetName>
-        </RelativePathElement>
-      </Elements>
-    </RelativePath>
-  </parameter>
-  <parameter name="parent" type="node" trigger="true" relative="true">
-    <RelativePath>
-      <Elements/>
-    </RelativePath>
-  </parameter>
-  <code><![CDATA[]]]]><![CDATA[></code>
-</script>
-]]></uax:XmlElement>
+			<uax:XmlElement><![CDATA[<?xml version="1.0" encoding="UTF-8"?><script>
+ <metadata><priority>0</priority></metadata>
+ <parameter name="trigger" type="node" trigger="true" relative="true"><RelativePath><Elements><RelativePathElement><TargetName><NamespaceIndex>1</NamespaceIndex><Name>Node</Name></TargetName></RelativePathElement></Elements></RelativePath></parameter>
+ <parameter name="parent" type="node" trigger="true" relative="true"><RelativePath><Elements/></RelativePath></parameter>
+ <code><![CDATA[/* insert script here... */]]]]><![CDATA[></code>
+</script>]]></uax:XmlElement>
 		</Value>
 	</UAVariable>
 </UANodeSet>
