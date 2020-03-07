@@ -11,7 +11,6 @@ export const ConfigLangs = {
   'ES2015 JavaScript': 'es2015',
   'Regular JavaScript': 'es5',
   TypeScript: 'ts',
-  'CoffeeScript (alpha)': 'coffee',
 };
 
 /**
