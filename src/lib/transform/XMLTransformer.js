@@ -9,9 +9,9 @@ import SplittingTransformer from './SplittingTransformer';
 export default class XMLTransformer extends SplittingTransformer {
   /**
    * Creates a new XMLTransformer based on some options.
-   * @param {Object} options The options to use.
+   * @param {Object} [options] The options to use.
    */
-  constructor(options) {
+  constructor(options = {}) {
     super(options);
 
     function build(object, buildOptions) {
