@@ -248,5 +248,3 @@ export class WatchTask {
 export default function watch(options) {
   return new WatchTask().run(options);
 }
-
-watch.description = 'Watch local files and atvise server nodes to trigger pull/push on change';

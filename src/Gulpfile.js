@@ -1,11 +1,33 @@
 import cleanup from 'node-cleanup';
 import cleanupHandler from './util/cleanup';
 
+function lazyTask(loader, description) {
+  async function task(...args) {
+    const taskModule = await loader();
+    return (taskModule.default || taskModule)(...args);
+  }
+
+  task.description = description;
+
+  return task;
+}
+
 // Register tasks
-export { default as pull } from './tasks/pull';
-export { default as push } from './tasks/push';
-export { default as watch } from './tasks/watch';
-export { default as import } from './tasks/import';
+export const pull = lazyTask(() => import('./tasks/pull'), 'Pull all nodes from atvise server');
+export const push = lazyTask(
+  () => import('./tasks/push'),
+  'Push all stored nodes to atvise server'
+);
+export const watch = lazyTask(
+  () => import('./tasks/watch'),
+  'Watch local files and atvise server nodes to trigger pull/push on change'
+);
+const importTask = lazyTask(
+  () => import('./tasks/import'),
+  'Pull all nodes',
+  'Imports all xml resources needed for atscm usage'
+);
+export { importTask as import };
 
 // Register cleanup
 /* istanbul ignore if */

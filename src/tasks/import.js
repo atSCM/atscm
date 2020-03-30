@@ -59,5 +59,3 @@ export default function importTask() {
     })
     .then(finishTask, handleTaskError);
 }
-
-importTask.description = 'Imports all xml resources needed for atscm usage';

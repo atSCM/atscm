@@ -83,5 +83,3 @@ export default function pull(options) {
     })
     .then(finishTask, handleTaskError);
 }
-
-pull.description = 'Pull all nodes from atvise server';

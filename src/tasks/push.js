@@ -210,5 +210,3 @@ export default function push() {
     })
     .then(finishTask, handleTaskError);
 }
-
-push.description = 'Push all stored nodes to atvise server';
