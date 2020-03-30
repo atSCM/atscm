@@ -3,7 +3,7 @@ import cleanupHandler from './util/cleanup';
 
 /**
  * Defines a lazy-loaded task.
- * @param {function} loader Loads a task module.
+ * @param {function(): function(): Promise<void>} loader Loads a task module.
  * @param {string} description A short description of what the task does.
  */
 function lazyTask(loader, description) {
@@ -22,15 +22,22 @@ function lazyTask(loader, description) {
 }
 
 // Register tasks
+/** The gulp task for 'atscm pull' */
 export const pull = lazyTask(() => import('./tasks/pull'), 'Pull all nodes from atvise server');
+
+/** The gulp task for 'atscm push' */
 export const push = lazyTask(
   () => import('./tasks/push'),
   'Push all stored nodes to atvise server'
 );
+
+/** The gulp task for 'atscm watch' */
 export const watch = lazyTask(
   () => import('./tasks/watch'),
   'Watch local files and atvise server nodes to trigger pull/push on change'
 );
+
+/** The gulp task for 'atscm import' */
 const importTask = lazyTask(
   () => import('./tasks/import'),
   'Pull all nodes',
