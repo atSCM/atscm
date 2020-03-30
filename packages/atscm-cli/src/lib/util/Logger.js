@@ -150,7 +150,7 @@ export default class Logger {
 
         return handle;
       })
-      .forEach(level =>
+      .forEach((level) =>
         gulplog.on(level, (...args) => {
           logConsole[level === 'error' ? 'error' : 'info'](...[this.prefix].concat(args));
         })
@@ -165,11 +165,11 @@ export default class Logger {
     let loggedBefore = false;
 
     stream
-      .on('data', d => {
+      .on('data', (d) => {
         const lines = d
           .toString()
           .split('\n')
-          .filter(l => l.trim() !== '');
+          .filter((l) => l.trim() !== '');
 
         if (loggedBefore && this._handled.info) {
           readline.moveCursor(process.stdout, 0, -1);

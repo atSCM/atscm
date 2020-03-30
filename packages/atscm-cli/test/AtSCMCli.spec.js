@@ -27,7 +27,7 @@ const AtSCMCli = proxyquire('../src/AtSCMCli', {
 }).default;
 
 /** @test {AtSCMCli} */
-describe('AtSCMCli', function() {
+describe('AtSCMCli', function () {
   beforeEach(() => {
     LoggerSpy.debug.resetHistory();
     LoggerSpy.info.resetHistory();
@@ -37,54 +37,54 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#constructor} */
-  describe('#constructor', function() {
-    it('should throw UsageError with invalid options', function() {
+  describe('#constructor', function () {
+    it('should throw UsageError with invalid options', function () {
       expect(() => new AtSCMCli(['--cwd']), 'to throw');
     });
 
-    it('should create an instance of Liftoff', function() {
+    it('should create an instance of Liftoff', function () {
       expect(new AtSCMCli(), 'to be a', Liftoff);
     });
 
-    it('should not add run argument if valid command is given', function() {
+    it('should not add run argument if valid command is given', function () {
       expect(new AtSCMCli(['docs'])._argv, 'to equal', ['docs']);
     });
 
-    it('should not add run argument if --help is given', function() {
+    it('should not add run argument if --help is given', function () {
       expect(new AtSCMCli(['--help'])._argv, 'to equal', ['--help']);
     });
 
-    it('should not add run argument if --version is given', function() {
+    it('should not add run argument if --version is given', function () {
       expect(new AtSCMCli(['--version'])._argv, 'to equal', ['--version']);
     });
 
-    it('should add run argument if no command is given', function() {
+    it('should add run argument if no command is given', function () {
       expect(new AtSCMCli()._argv, 'to equal', ['run']);
     });
 
-    it('should set runViaCli', function() {
+    it('should set runViaCli', function () {
       // runViaCli is always set to false as we don't run this test from the command line directly.
       expect(new AtSCMCli().runViaCli, 'to equal', false);
     });
   });
 
   /** @test {AtSCMCli#_exposeOverride} */
-  describe('#_exposeOverride', function() {
-    it('should set single options', function() {
+  describe('#_exposeOverride', function () {
+    it('should set single options', function () {
       AtSCMCli.prototype._exposeOverride({ test: 13 }, 'test', 'TEST_ENVS__');
 
       expect(process.env.TEST_ENVS__TEST, 'to be defined');
       expect(process.env.TEST_ENVS__TEST, 'to equal', '13');
     });
 
-    it('should set object options', function() {
+    it('should set object options', function () {
       AtSCMCli.prototype._exposeOverride({ test: { another: 13 } }, 'test', 'TEST_ENVS__');
 
       expect(process.env.TEST_ENVS__TEST__ANOTHER, 'to be defined');
       expect(process.env.TEST_ENVS__TEST__ANOTHER, 'to equal', '13');
     });
 
-    it('should use default base', function() {
+    it('should use default base', function () {
       AtSCMCli.prototype._exposeOverride({ test: 13 }, 'test');
 
       expect(process.env.ATSCM_PROJECT__TEST, 'to be defined');
@@ -95,15 +95,15 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#parseArguments} */
-  describe('#parseArguments', function() {
+  describe('#parseArguments', function () {
     const unknownArgCli = new AtSCMCli(['config', '--unknown']);
     const unknownRunArgCli = new AtSCMCli(['run', '--unknown']);
 
-    it('should fail with UsageError with an unknown argument', function() {
+    it('should fail with UsageError with an unknown argument', function () {
       return expect(unknownArgCli.parseArguments(), 'when rejected', 'to be a', UsageError);
     });
 
-    it('should report unknown arguments for strict commands', function() {
+    it('should report unknown arguments for strict commands', function () {
       return expect(
         unknownArgCli.parseArguments(),
         'when rejected',
@@ -112,13 +112,13 @@ describe('AtSCMCli', function() {
       );
     });
 
-    it('should not report unknown arguments for non-strict commands', function() {
+    it('should not report unknown arguments for non-strict commands', function () {
       return expect(unknownRunArgCli.parseArguments(), 'when fulfilled', 'to have properties', {
         unknown: true,
       });
     });
 
-    it('should return options with valid arguments', function() {
+    it('should return options with valid arguments', function () {
       return expect(
         new AtSCMCli(['docs', '--cli']).parseArguments(),
         'when fulfilled',
@@ -127,19 +127,19 @@ describe('AtSCMCli', function() {
       );
     });
 
-    it('should set AtSCMCli#options with valid arguments', function() {
+    it('should set AtSCMCli#options with valid arguments', function () {
       const cli = new AtSCMCli(['docs', '--cli']);
 
-      return cli.parseArguments().then(opts => expect(cli.options, 'to equal', opts));
+      return cli.parseArguments().then((opts) => expect(cli.options, 'to equal', opts));
     });
 
-    it('should set AtSCMCli#command with valid command', function() {
+    it('should set AtSCMCli#command with valid command', function () {
       const cli = new AtSCMCli(['docs', '--cli']);
 
       return cli.parseArguments().then(() => expect(cli.command.name, 'to equal', 'docs'));
     });
 
-    it('should expose project options as environment variables', function() {
+    it('should expose project options as environment variables', function () {
       const cli = new AtSCMCli(['--tasks', '--project.test', 'test']);
 
       return cli
@@ -149,7 +149,7 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#getEnvironment} */
-  describe('#getEnvironment', function() {
+  describe('#getEnvironment', function () {
     beforeEach(() => spy(Liftoff.prototype, 'launch'));
     afterEach(() => Liftoff.prototype.launch.restore());
 
@@ -160,7 +160,7 @@ describe('AtSCMCli', function() {
       'test/fixtures/Atviseproject.js',
     ]);
 
-    it('should call Liftoff#launch with cwd and projectfile option', function() {
+    it('should call Liftoff#launch with cwd and projectfile option', function () {
       return cli.getEnvironment().then(() => {
         expect(Liftoff.prototype.launch.calledOnce, 'to be', true);
         expect(Liftoff.prototype.launch.lastCall.args[0], 'to equal', {
@@ -170,8 +170,8 @@ describe('AtSCMCli', function() {
       });
     });
 
-    it('should set AtSCMCli#environment', function() {
-      return cli.getEnvironment().then(env => {
+    it('should set AtSCMCli#environment', function () {
+      return cli.getEnvironment().then((env) => {
         expect(cli.environment, 'to be defined');
         expect(cli.environment, 'to equal', env);
         expect(cli.environment, 'to have keys', [
@@ -184,22 +184,22 @@ describe('AtSCMCli', function() {
       });
     });
 
-    context('when not looking up parent directories', function() {
-      it('should resolve to initial cwd', function() {
+    context('when not looking up parent directories', function () {
+      it('should resolve to initial cwd', function () {
         return new AtSCMCli()
           .getEnvironment(false)
-          .then(env => expect(env.cwd, 'to equal', process.cwd()));
+          .then((env) => expect(env.cwd, 'to equal', process.cwd()));
       });
 
       const projChildDir = join('test/fixtures/node_modules');
 
-      it('should resolve to initial cwd in project child directories', function() {
+      it('should resolve to initial cwd in project child directories', function () {
         return new AtSCMCli(['--cwd', projChildDir])
           .getEnvironment(false)
-          .then(env => expect(env.cwd, 'to end with', projChildDir));
+          .then((env) => expect(env.cwd, 'to end with', projChildDir));
       });
 
-      it('should ignore --projectfile option', function() {
+      it('should ignore --projectfile option', function () {
         return new AtSCMCli([
           '--cwd',
           projChildDir,
@@ -207,14 +207,14 @@ describe('AtSCMCli', function() {
           join(projChildDir, '../Atviseproject.js'),
         ])
           .getEnvironment(false)
-          .then(env => expect(env.cwd, 'to end with', projChildDir));
+          .then((env) => expect(env.cwd, 'to end with', projChildDir));
       });
     });
   });
 
   /** @test {AtSCMCli#requireEnvironment} */
-  describe('#requireEnvironment', function() {
-    it('should fail without local module', function() {
+  describe('#requireEnvironment', function () {
+    it('should fail without local module', function () {
       return expect(
         new AtSCMCli().requireEnvironment(),
         'to be rejected with',
@@ -222,7 +222,7 @@ describe('AtSCMCli', function() {
       );
     });
 
-    it('should return environment if successful', function() {
+    it('should return environment if successful', function () {
       const cli = new AtSCMCli(['--cwd', 'test/fixtures']);
 
       return expect(
@@ -235,15 +235,15 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#getVersion} */
-  describe('#getVersion', function() {
-    it('should return cli version without local module', function() {
+  describe('#getVersion', function () {
+    it('should return cli version without local module', function () {
       return expect(new AtSCMCli().getVersion(), 'when fulfilled', 'to equal', {
         cli: pkg.version,
         local: null,
       });
     });
 
-    it('should even return cli version with invalid cwd', function() {
+    it('should even return cli version with invalid cwd', function () {
       return expect(
         new AtSCMCli(['--cwd', 'invalid/path']).getVersion(),
         'when fulfilled',
@@ -252,7 +252,7 @@ describe('AtSCMCli', function() {
       );
     });
 
-    it('should return local version with local module', function() {
+    it('should return local version with local module', function () {
       return expect(new AtSCMCli(['--cwd', 'test/fixtures']).getVersion(), 'to be fulfilled with', {
         cli: pkg.version,
         local: 'latest',
@@ -261,8 +261,8 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#printVersion} */
-  describe('#printVersion', function() {
-    it('should print cli version only without local module', function() {
+  describe('#printVersion', function () {
+    it('should print cli version only without local module', function () {
       return expect(new AtSCMCli().printVersion(), 'to be fulfilled').then(() => {
         expect(LoggerSpy.info.calledOnce, 'to be', true);
         expect(LoggerSpy.info.lastCall.args[0], 'to match', /CLI version/);
@@ -270,7 +270,7 @@ describe('AtSCMCli', function() {
       });
     });
 
-    it('should print cli and local version with local module', function() {
+    it('should print cli and local version with local module', function () {
       return expect(
         new AtSCMCli(['--cwd', 'test/fixtures']).printVersion(),
         'to be fulfilled'
@@ -283,8 +283,8 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#runCommand} */
-  describe('#runCommand', function() {
-    it('should print version if --version is used', function() {
+  describe('#runCommand', function () {
+    it('should print version if --version is used', function () {
       const cli = new AtSCMCli(['--version']);
       cli.options.version = true;
 
@@ -295,7 +295,7 @@ describe('AtSCMCli', function() {
       });
     });
 
-    it('should run command if used', function() {
+    it('should run command if used', function () {
       const command = new Command('cmd', 'Just testing');
       stub(command, 'run');
       const cli = new AtSCMCli(['--cwd', 'test/fixtures']);
@@ -306,7 +306,7 @@ describe('AtSCMCli', function() {
       });
     });
 
-    it('should warn if no command is used', function() {
+    it('should warn if no command is used', function () {
       const cli = new AtSCMCli(['--cwd', 'test/fixtures']);
 
       return cli.runCommand().then(() => {
@@ -317,8 +317,8 @@ describe('AtSCMCli', function() {
   });
 
   /** @test {AtSCMCli#launch} */
-  describe('#launch', function() {
-    it('should call AtSCMCli#parseArguments', function() {
+  describe('#launch', function () {
+    it('should call AtSCMCli#parseArguments', function () {
       const cli = new AtSCMCli();
       spy(cli, 'parseArguments');
       stub(cli, 'runCommand').callsFake(() => Promise.resolve(true));
@@ -329,7 +329,7 @@ describe('AtSCMCli', function() {
       });
     });
 
-    it('should handle all exceptions if run via cli', function() {
+    it('should handle all exceptions if run via cli', function () {
       const cli = new AtSCMCli();
       cli.runViaCli = true;
       stub(cli, 'runCommand').callsFake(() => Promise.reject(new Error('test')));
@@ -337,14 +337,14 @@ describe('AtSCMCli', function() {
       return expect(cli.launch(), 'to be fulfilled');
     });
 
-    it('should report help on usage errors if run via cli', function() {
+    it('should report help on usage errors if run via cli', function () {
       const cli = new AtSCMCli(['--unknown']);
       cli.runViaCli = true;
 
       return expect(cli.launch(), 'to be fulfilled');
     });
 
-    it('should start debug mode with `--debug` option', function() {
+    it('should start debug mode with `--debug` option', function () {
       const cli = new AtSCMCli(['--debug']);
       cli.runViaCli = true;
 
@@ -353,7 +353,7 @@ describe('AtSCMCli', function() {
       );
     });
 
-    context('with ATSCM_DEBUG env var', function() {
+    context('with ATSCM_DEBUG env var', function () {
       before(() => {
         process.env.ATSCM_DEBUG = 'yes';
       });
@@ -361,7 +361,7 @@ describe('AtSCMCli', function() {
         process.env.ATSCM_DEBUG = undefined;
       });
 
-      it('should start debug mode', function() {
+      it('should start debug mode', function () {
         const cli = new AtSCMCli(['--debug']);
         cli.runViaCli = true;
 

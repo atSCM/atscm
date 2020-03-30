@@ -16,15 +16,15 @@ const UpdateCommand = proxyquire('../../../src/cli/commands/Update', {
 }).default;
 
 /** @test {UpdateCommand} */
-describe('UpdateCommand', function() {
-  beforeEach(function() {
+describe('UpdateCommand', function () {
+  beforeEach(function () {
     get.resetHistory();
     run.resetHistory();
   });
 
   /** @test {UpdateCommand#getLatestVersion} */
-  describe('#getLatestVersion', function() {
-    it('should call npm api', function() {
+  describe('#getLatestVersion', function () {
+    it('should call npm api', function () {
       return expect(
         UpdateCommand.prototype.getLatestVersion(),
         'to be fulfilled with',
@@ -32,31 +32,31 @@ describe('UpdateCommand', function() {
       ).then(() => expect(get.calledOnce, 'to be', true));
     });
 
-    it('should return beta versions with `useBetaRelease`', function() {
+    it('should return beta versions with `useBetaRelease`', function () {
       return expect(UpdateCommand.prototype.getLatestVersion(true), 'to be fulfilled')
-        .then(version => expect(version, 'to match', /.*-beta.[0-9]+/))
+        .then((version) => expect(version, 'to match', /.*-beta.[0-9]+/))
         .then(() => expect(get.calledOnce, 'to be', true));
     });
   });
 
   /** @test {UpdateCommand#updateNeeded} */
-  describe('#updateNeeded', function() {
-    it('should return false if latest is older than current version', function() {
+  describe('#updateNeeded', function () {
+    it('should return false if latest is older than current version', function () {
       return expect(UpdateCommand.prototype.updateNeeded('0.1.0', '0.2.0'), 'to be', false);
     });
 
-    it('should return false if latest equals current version', function() {
+    it('should return false if latest equals current version', function () {
       return expect(UpdateCommand.prototype.updateNeeded('0.2.0', '0.2.0'), 'to be', false);
     });
 
-    it('should return latest version if latest is newer than current version', function() {
+    it('should return latest version if latest is newer than current version', function () {
       return expect(UpdateCommand.prototype.updateNeeded('0.3.0', '0.2.0'), 'to be', '0.3.0');
     });
   });
 
   /** @test {UpdateCommand#update} */
-  describe('#update', function() {
-    it('should run npm install', function() {
+  describe('#update', function () {
+    it('should run npm install', function () {
       return expect(
         UpdateCommand.prototype.update({
           environment: {
@@ -79,7 +79,7 @@ describe('UpdateCommand', function() {
         );
     });
 
-    it('should install beta with `useBetaRelease`', function() {
+    it('should install beta with `useBetaRelease`', function () {
       return expect(
         UpdateCommand.prototype.update(
           {
@@ -107,17 +107,17 @@ describe('UpdateCommand', function() {
   });
 
   /** @test {UpdateCommand#requiresEnvironment} */
-  describe('#requiresEnvironment', function() {
-    it('should always return true', function() {
+  describe('#requiresEnvironment', function () {
+    it('should always return true', function () {
       expect(UpdateCommand.prototype.requiresEnvironment(), 'to be', true);
     });
   });
 
   /** @test {UpdateCommand#run} */
-  describe('#run', function() {
+  describe('#run', function () {
     const command = new UpdateCommand();
 
-    it('should not call #update if not required', function() {
+    it('should not call #update if not required', function () {
       return expect(
         command.run({
           environment: {
@@ -131,7 +131,7 @@ describe('UpdateCommand', function() {
       ).then(() => expect(run.callCount, 'to equal', 0));
     });
 
-    it('should call #update if required', function() {
+    it('should call #update if required', function () {
       return expect(
         command.run({
           environment: {
