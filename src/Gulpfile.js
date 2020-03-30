@@ -1,9 +1,18 @@
 import cleanup from 'node-cleanup';
 import cleanupHandler from './util/cleanup';
 
+/**
+ * Defines a lazy-loaded task.
+ * @param {function} loader Loads a task module.
+ * @param {string} description A short description of what the task does.
+ */
 function lazyTask(loader, description) {
   async function task(...args) {
     const taskModule = await loader();
+
+    // Prevent node-opcua logging
+    console.log = () => {}; // eslint-disable-line no-console
+
     return (taskModule.default || taskModule)(...args);
   }
 
@@ -29,12 +38,11 @@ const importTask = lazyTask(
 );
 export { importTask as import };
 
+console.timeEnd('load gulpfile');
+
 // Register cleanup
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
-  // Prevent node-opcua logging
-  console.log = () => {}; // eslint-disable-line no-console
-
   cleanup((code, signal) => cleanupHandler(code, signal, cleanup.uninstall), {
     ctrl_C: '',
     unhandledRejection: '',
