@@ -45,8 +45,6 @@ const importTask = lazyTask(
 );
 export { importTask as import };
 
-console.timeEnd('load gulpfile');
-
 // Register cleanup
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {
