@@ -1,3 +1,19 @@
+<a name="1.0.0"></a>
+# 1.0.0 (2020-03-30)
+
+
+### Chores
+
+* **package:** Update babel ([#175](https://github.com/atSCM/atscm-cli/issues/175)) ([e80c0ab](https://github.com/atSCM/atscm-cli/commits/e80c0ab))
+
+
+### BREAKING CHANGES
+
+* **package:** Requires node v10 or above
+
+
+
+
 <a name="0.9.0"></a>
 # 0.9.0 (2019-12-04)
 
