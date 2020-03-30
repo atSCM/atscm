@@ -6,7 +6,7 @@ import { obj as createStream } from 'through2';
 import Logger from '../../../src/lib/util/Logger';
 
 /** @test {LogFormat} */
-describe('LogFormat', function() {
+describe('LogFormat', function () {
   const text = 'Test string';
 
   const orgEnabled = Logger.colors.supportsColor;
@@ -19,40 +19,40 @@ describe('LogFormat', function() {
   }
 
   /** @test {LogFormat.path} */
-  describe('.path', function() {
-    it('should change color to magenta', function() {
+  describe('.path', function () {
+    it('should change color to magenta', function () {
       expectStyle(Logger.format.path(text), Logger.colors.magenta);
     });
 
-    it('should prettify user path', function() {
+    it('should prettify user path', function () {
       expect(Logger.format.path(process.env.HOME), 'to contain', '~');
     });
   });
 
   /** @test {LogFormat.command} */
-  describe('.command', function() {
-    it('should return bold text', function() {
+  describe('.command', function () {
+    it('should return bold text', function () {
       expectStyle(Logger.format.command(text), Logger.colors.bold);
     });
   });
 
   /** @test {LogFormat.value} */
-  describe('.value', function() {
-    it('should return cyan colored text', function() {
+  describe('.value', function () {
+    it('should return cyan colored text', function () {
       expectStyle(Logger.format.value(text), Logger.colors.cyan);
     });
   });
 
   /** @test {LogFormat.number} */
-  describe('.number', function() {
-    it('should return magenta colored text', function() {
+  describe('.number', function () {
+    it('should return magenta colored text', function () {
       expectStyle(Logger.format.number(text), Logger.colors.magenta);
     });
   });
 });
 
 /** @test {Logger} */
-describe('Logger', function() {
+describe('Logger', function () {
   function getText() {
     return `Text ${new Date()}`;
   }
@@ -62,14 +62,14 @@ describe('Logger', function() {
   let warnSpy;
   let errorSpy;
 
-  beforeEach(function() {
+  beforeEach(function () {
     debugSpy = stub(gulplog, 'debug');
     infoSpy = stub(gulplog, 'info');
     warnSpy = stub(gulplog, 'warn');
     errorSpy = stub(gulplog, 'error');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     gulplog.debug.restore();
     gulplog.info.restore();
     gulplog.warn.restore();
@@ -77,8 +77,8 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.debug} */
-  describe('.debug', function() {
-    it('should call gulplog.debug', function() {
+  describe('.debug', function () {
+    it('should call gulplog.debug', function () {
       const t = getText();
       Logger.debug(t);
 
@@ -88,8 +88,8 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.info} */
-  describe('.info', function() {
-    it('should call gulplog.info', function() {
+  describe('.info', function () {
+    it('should call gulplog.info', function () {
       const t = getText();
       Logger.info(t);
 
@@ -99,8 +99,8 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.warn} */
-  describe('.warn', function() {
-    it('should call gulplog.warn', function() {
+  describe('.warn', function () {
+    it('should call gulplog.warn', function () {
       const t = getText();
       Logger.warn(t);
 
@@ -110,8 +110,8 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.warn} */
-  describe('.error', function() {
-    it('should call gulplog.error', function() {
+  describe('.error', function () {
+    it('should call gulplog.error', function () {
       const t = getText();
       Logger.error(t);
 
@@ -122,9 +122,9 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.applyOptions} */
-  describe('.applyOptions', function() {
+  describe('.applyOptions', function () {
     afterEach(() => {
-      Logger.types.forEach(name => gulplog.removeAllListeners(name));
+      Logger.types.forEach((name) => gulplog.removeAllListeners(name));
     });
 
     function expectListeners(levels) {
@@ -133,48 +133,48 @@ describe('Logger', function() {
       });
     }
 
-    context('when using option "silent"', function() {
-      it('should only add a noop listener for "error" events', function() {
+    context('when using option "silent"', function () {
+      it('should only add a noop listener for "error" events', function () {
         Logger.applyOptions({ silent: true });
 
         expectListeners([true, false, false, false]);
       });
     });
 
-    context('when using "logLevel" 0', function() {
-      it('should only add a noop listener for "error" events', function() {
+    context('when using "logLevel" 0', function () {
+      it('should only add a noop listener for "error" events', function () {
         Logger.applyOptions({ logLevel: 0 });
 
         expectListeners([true, false, false, false]);
       });
     });
 
-    context('when using "logLevel" 1', function() {
-      it('should only add a listener for "error" events', function() {
+    context('when using "logLevel" 1', function () {
+      it('should only add a listener for "error" events', function () {
         Logger.applyOptions({ logLevel: 1 });
 
         expectListeners([true, false, false, false]);
       });
     });
 
-    context('when using "logLevel" 2', function() {
-      it('should add listeners for "error" and "warn" events', function() {
+    context('when using "logLevel" 2', function () {
+      it('should add listeners for "error" and "warn" events', function () {
         Logger.applyOptions({ logLevel: 2 });
 
         expectListeners([true, true, false, false]);
       });
     });
 
-    context('when using "logLevel" 3', function() {
-      it('should add listeners for "error", "warn" and "info" events', function() {
+    context('when using "logLevel" 3', function () {
+      it('should add listeners for "error", "warn" and "info" events', function () {
         Logger.applyOptions({ logLevel: 3 });
 
         expectListeners([true, true, true, false]);
       });
     });
 
-    context('when using "logLevel" 4', function() {
-      it('should add listeners for all events', function() {
+    context('when using "logLevel" 4', function () {
+      it('should add listeners for all events', function () {
         Logger.applyOptions({ logLevel: 4 });
 
         expectListeners([true, true, true, true]);
@@ -183,8 +183,8 @@ describe('Logger', function() {
   });
 
   /** @test {Logger.pipeLastLine} */
-  describe('.pipeLastLine', function() {
-    it('should print last line of each chunk', function(done) {
+  describe('.pipeLastLine', function () {
+    it('should print last line of each chunk', function (done) {
       const stream = createStream((c, e, cb) => cb(null, c));
 
       Logger.pipeLastLine(stream);
@@ -202,7 +202,7 @@ describe('Logger', function() {
       stream.end();
     });
 
-    it('should ignore empty lines', function(done) {
+    it('should ignore empty lines', function (done) {
       const stream = createStream((c, e, cb) => cb(null, c));
 
       Logger.pipeLastLine(stream);

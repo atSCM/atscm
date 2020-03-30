@@ -1,7 +1,7 @@
 import expect from 'unexpected';
 import proxyquire from 'proxyquire';
 
-describe('bin', function() {
+describe('bin', function () {
   class StubCli {
     constructor(...args) {
       if (!StubCli.constructorCalled) {
@@ -29,7 +29,7 @@ describe('bin', function() {
     },
   });
 
-  it('should call launch', function() {
+  it('should call launch', function () {
     require('../../src/bin/atscm'); // eslint-disable-line global-require
 
     expect(StubCli.constructorCalled, 'to equal', 1);

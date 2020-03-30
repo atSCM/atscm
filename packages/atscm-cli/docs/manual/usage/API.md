@@ -39,7 +39,7 @@ import AtSCMCli from 'atscm-cli';
 new AtSCMCli(['--version'])
   .launch() // Note: AtSCMCli#launch returns a Promise
   .then(() => console.log('success!'))
-  .catch(err => console.error(`Oops! An error occured: ${err.message}`));
+  .catch((err) => console.error(`Oops! An error occured: ${err.message}`));
 ```
 
 ---

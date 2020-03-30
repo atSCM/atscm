@@ -73,7 +73,7 @@ export default class InitCommand extends Command {
           } else {
             reject(err);
           }
-        } else if (files.filter(f => !IgnoredFiles.includes(f.toLowerCase())).length > 0) {
+        } else if (files.filter((f) => !IgnoredFiles.includes(f.toLowerCase())).length > 0) {
           const message = `${Logger.format.path(path)} is not empty`;
 
           if (overwrite) {
@@ -97,7 +97,7 @@ export default class InitCommand extends Command {
    */
   createEmptyPackage(path) {
     return new Promise((resolve, reject) => {
-      writeFile(join(path, 'package.json'), '{}', err => {
+      writeFile(join(path, 'package.json'), '{}', (err) => {
         if (err) {
           // FIXME: Call with SystemError class
           reject(
@@ -132,8 +132,8 @@ export default class InitCommand extends Command {
             /* stdio: 'inherit' */
           })
         )
-          .on('error', npmErr => reject(npmErr))
-          .on('close', code => {
+          .on('error', (npmErr) => reject(npmErr))
+          .on('close', (code) => {
             if (code > 0) {
               reject(new Error(`npm ${args[0]} returned code ${code}`));
             } else {
@@ -281,17 +281,17 @@ export default class InitCommand extends Command {
   run(cli) {
     return cli
       .getEnvironment(false)
-      .then(env => this.checkDirectory(env.cwd, cli.options.force))
+      .then((env) => this.checkDirectory(env.cwd, cli.options.force))
       .then(() => this.createEmptyPackage(cli.environment.cwd))
       .then(() => this.installLocal(cli.environment.cwd, cli.options))
       .then(() => cli.getEnvironment(false))
-      .then(env => this.checkCliVersion(env))
-      .then(env => process.chdir(env.cwd))
+      .then((env) => this.checkCliVersion(env))
+      .then((env) => process.chdir(env.cwd))
       .then(() => this.getOptions(cli.environment.modulePath, { useDefaults: cli.options.yes }))
-      .then(options =>
+      .then((options) =>
         this.writeFiles(cli.environment.modulePath, Object.assign({}, cli.environment, options))
       )
-      .then(result => this.installDependencies(cli.environment.cwd, result.install))
+      .then((result) => this.installDependencies(cli.environment.cwd, result.install))
       .then(async () => {
         if (cli.options.link) {
           Logger.info('Linking atscm...');

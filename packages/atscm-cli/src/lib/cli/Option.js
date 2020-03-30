@@ -16,7 +16,7 @@ export default class Option {
      */
     this.desc = desc;
 
-    Object.keys(options).forEach(k => (this[k] = options[k]));
+    Object.keys(options).forEach((k) => (this[k] = options[k]));
   }
 
   /**
