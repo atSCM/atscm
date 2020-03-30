@@ -67,7 +67,7 @@ export default class AtSCMCli extends Liftoff {
       extensions: jsVariants,
     });
 
-    this.on('require', function(name) {
+    this.on('require', function (name) {
       Logger.debug('Requiring external module', Logger.colors.magenta(name));
     });
 
@@ -75,7 +75,7 @@ export default class AtSCMCli extends Liftoff {
      * @type {string[]} */
     this._failedRequires = [];
 
-    this.on('requireFail', function(name) {
+    this.on('requireFail', function (name) {
       this._failedRequires.push(name);
 
       Logger.debug(
@@ -97,7 +97,7 @@ export default class AtSCMCli extends Liftoff {
     this._argv = argv;
 
     // If no command is given, default to "run"
-    const commandNames = Commands.map(c => c.name);
+    const commandNames = Commands.map((c) => c.name);
 
     /**
      * The options parsed from {@link AtSCMCli#_argv}. Note that **these options are not complete**
@@ -122,7 +122,7 @@ export default class AtSCMCli extends Liftoff {
       }).argv;
 
     if (!this.options.help && !this.options.version) {
-      if (this.options._.filter(e => commandNames.includes(e)).length === 0) {
+      if (this.options._.filter((e) => commandNames.includes(e)).length === 0) {
         this._argv.unshift('run');
       }
     }
@@ -141,7 +141,7 @@ export default class AtSCMCli extends Liftoff {
         parser.command(
           command.usage,
           command.description,
-          y => {
+          (y) => {
             y.usage(`Usage: $0 ${command.usage}`);
             y.option(command.options);
 
@@ -179,7 +179,7 @@ export default class AtSCMCli extends Liftoff {
     if (typeof config[key] === 'object') {
       const c = config[key];
 
-      Object.keys(c).forEach(k => this._exposeOverride(c, k, `${currentKey}__`));
+      Object.keys(c).forEach((k) => this._exposeOverride(c, k, `${currentKey}__`));
     } else {
       process.env[currentKey] = config[key];
       Logger.debug(`Setting ${currentKey}:`, Logger.format.value(config[key]));
@@ -197,7 +197,7 @@ export default class AtSCMCli extends Liftoff {
         .fail((msg, err, y) => reject(new UsageError(msg, y.help())))
         .parse(this._argv);
 
-      Object.keys(this.options.project).forEach(key =>
+      Object.keys(this.options.project).forEach((key) =>
         this._exposeOverride(this.options.project, key)
       );
 
@@ -212,7 +212,7 @@ export default class AtSCMCli extends Liftoff {
    * @return {Promise<Object>} Fulfilled with a {@link Liftoff} environment.
    */
   getEnvironment(findUp = true) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       super.launch(
         {
           cwd: this.options.cwd,
@@ -221,7 +221,7 @@ export default class AtSCMCli extends Liftoff {
             : join(this.options.cwd || process.cwd(), `${this.constructor.ConfigName}.js`),
           require: this.options.require,
         },
-        env => resolve((this.environment = env))
+        (env) => resolve((this.environment = env))
       );
     });
   }
@@ -232,7 +232,7 @@ export default class AtSCMCli extends Liftoff {
    * config file or the local module cannot be found.
    */
   requireEnvironment() {
-    return this.getEnvironment().then(env => {
+    return this.getEnvironment().then((env) => {
       if (!env.modulePath) {
         throw new Error(`Local ${AtSCMCli.BinName} not found`);
       }
@@ -251,7 +251,7 @@ export default class AtSCMCli extends Liftoff {
    * version.
    */
   getVersion() {
-    return this.getEnvironment().then(env => ({
+    return this.getEnvironment().then((env) => ({
       cli: pkg.version,
       local: env.modulePath ? env.modulePackage.version : null,
     }));
@@ -263,7 +263,7 @@ export default class AtSCMCli extends Liftoff {
    * version.
    */
   printVersion() {
-    return this.getVersion().then(version => {
+    return this.getVersion().then((version) => {
       Logger.info('CLI version', Logger.format.number(version.cli));
 
       if (version.local) {
@@ -312,7 +312,7 @@ export default class AtSCMCli extends Liftoff {
       .then(() => this.runCommand());
 
     if (this.runViaCli) {
-      return app.catch(err => this._reportCliError(err));
+      return app.catch((err) => this._reportCliError(err));
     }
 
     return app;

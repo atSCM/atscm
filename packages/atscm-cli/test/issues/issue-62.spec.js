@@ -8,8 +8,8 @@ const RunCommand = proxyquire('../../src/cli/commands/Run', {
   'gulp-cli/lib/versioned/^4.0.0/': gulpCli,
 }).default;
 
-describe('Issue #62', function() {
-  it('should not throw on missing task', function() {
+describe('Issue #62', function () {
+  it('should not throw on missing task', function () {
     const command = new RunCommand('run', 'Run tasks.');
 
     command.run({

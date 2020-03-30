@@ -14,7 +14,7 @@ readFile(join(__dirname, '../../README.md'), 'utf8', (readErr, data) => {
 
     const path = join(__dirname, '../README.md');
 
-    writeFile(path, result, writeErr => {
+    writeFile(path, result, (writeErr) => {
       if (writeErr) {
         console.error('Error writing README', readErr.message);
         process.exitCode = 1;
