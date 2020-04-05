@@ -1,11 +1,8 @@
-import { satisfies as validVersion } from 'semver';
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import src from '../lib/gulp/src';
-import { readNode, writeNode, createNode, addReferences } from '../api';
-import { versionNode } from '../lib/server/scripts/version';
-import { dependencies } from '../../package.json';
+import { writeNode, createNode, addReferences } from '../api';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
 import NodeId from '../lib/model/opcua/NodeId.js';
 import { ReferenceTypeIds, ReferenceTypeNames } from '../lib/model/Node';
@@ -13,6 +10,9 @@ import { reportProgress } from '../lib/helpers/log.js';
 import ProjectConfig from '../config/ProjectConfig.js';
 import { finishTask, handleTaskError } from '../lib/helpers/tasks.js';
 import Session from '../lib/server/Session.js';
+import checkServerscripts from '../hooks/check-serverscripts';
+import checkAtserver from '../hooks/check-atserver';
+import { setupContext } from '../hooks/hooks';
 
 /**
  * Status codes indicating a node is opened in atvise builder and therefore not writable right now.
@@ -165,6 +165,8 @@ export default async function push() {
   Session.pool();
 
   const context = setupContext();
+
+  await checkAtserver(context);
   await checkServerscripts(context);
 
   const promise = performPush('./src');

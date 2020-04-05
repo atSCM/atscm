@@ -8,6 +8,8 @@ import dest from '../lib/gulp/dest';
 import { reportProgress } from '../lib/helpers/log';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
+import checkAtserver from '../hooks/check-atserver';
+import { setupContext } from '../hooks/hooks';
 
 /**
  * Pulls the given nodes from the server.
@@ -61,27 +63,26 @@ export function performPull(nodes, options = {}) {
  * @param {Object} [options] The options to use.
  * @param {boolean} [options.clean] If the source directory should be cleaned first.
  */
-export default function pull(options) {
+export default async function pull(options) {
   const { clean } = typeof options === 'object' ? options : parseOptions(process.argv.slice(2));
 
   Session.pool();
 
-  return Promise.resolve()
-    .then(async () => {
-      if (clean) {
-        Logger.info('Using --clean, removing pulled files first');
-        await emptyDir('./src');
-      }
-    })
-    .then(() => {
-      const promise = performPull(ProjectConfig.nodes, { clean });
+  // Run hooks
+  const context = setupContext();
+  await checkAtserver(context);
 
-      return reportProgress(promise, {
-        getter: () => promise.browser._pushed,
-        formatter: count => `Processed ${count} nodes`,
-      });
-    })
-    .then(finishTask, handleTaskError);
+  if (clean) {
+    Logger.info('Using --clean, removing pulled files first');
+    await emptyDir('./src');
+  }
+
+  const promise = performPull(ProjectConfig.nodes, { clean });
+
+  return reportProgress(promise, {
+    getter: () => promise.browser._pushed,
+    formatter: count => `Processed ${count} nodes`,
+  }).then(finishTask, handleTaskError);
 }
 
 pull.description = 'Pull all nodes from atvise server';
