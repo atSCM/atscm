@@ -1,3 +1,14 @@
+<a name="1.1.0"></a>
+# 1.1.0 (2020-04-05)
+
+
+### Features
+
+* Print atvise server version if available ([#179](https://github.com/atSCM/atscm-cli/issues/179)) ([d3b74c8](https://github.com/atSCM/atscm-cli/commits/d3b74c8))
+
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2020-03-30)
 
