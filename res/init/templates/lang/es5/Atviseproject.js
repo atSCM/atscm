@@ -7,7 +7,7 @@ class {{pascalcase name}} extends Atviseproject {
 
   /**
    * The atvise-server's host
-   * @type {String}
+   * @type {string}
    */
   static get host() {
     return '{{atviseHost}}';
@@ -16,8 +16,8 @@ class {{pascalcase name}} extends Atviseproject {
   /**
    * The atvise-server ports to use.
    * @type {Object}
-   * @property {Number} opc The OPC-UA port the atvise-server runs on.
-   * @property {Number} http The HTTP port the atvise-server can be reached at.
+   * @property {number} opc The OPC-UA port the atvise-server runs on.
+   * @property {number} http The HTTP port the atvise-server can be reached at.
    */
   static get port() {
     return {
@@ -30,8 +30,8 @@ class {{pascalcase name}} extends Atviseproject {
   /**
    * The login to use. Return `false` if no login is required.
    * @type {Boolean|Object}
-   * @property {String} username The username to log in with.
-   * @property {String} password The password to log in with.
+   * @property {string} username The username to log in with.
+   * @property {string} password The password to log in with.
    */
   static get login() {
     return {
