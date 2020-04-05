@@ -239,7 +239,6 @@ describe('AtSCMCli', function () {
     it('should return cli version without local module', function () {
       return expect(new AtSCMCli().getVersion(), 'when fulfilled', 'to equal', {
         cli: pkg.version,
-        local: null,
       });
     });
 
@@ -248,7 +247,7 @@ describe('AtSCMCli', function () {
         new AtSCMCli(['--cwd', 'invalid/path']).getVersion(),
         'when fulfilled',
         'to equal',
-        { cli: pkg.version, local: null }
+        { cli: pkg.version }
       );
     });
 
@@ -265,20 +264,18 @@ describe('AtSCMCli', function () {
     it('should print cli version only without local module', function () {
       return expect(new AtSCMCli().printVersion(), 'to be fulfilled').then(() => {
         expect(LoggerSpy.info.calledOnce, 'to be', true);
-        expect(LoggerSpy.info.lastCall.args[0], 'to match', /CLI version/);
+        expect(LoggerSpy.info.lastCall.args[0], 'to match', /atscm-cli/);
         expect(LoggerSpy.info.lastCall.args[1], 'to match', new RegExp(pkg.version));
       });
     });
 
-    it('should print cli and local version with local module', function () {
-      return expect(
-        new AtSCMCli(['--cwd', 'test/fixtures']).printVersion(),
-        'to be fulfilled'
-      ).then(() => {
-        expect(LoggerSpy.info.calledTwice, 'to be', true);
-        expect(LoggerSpy.info.lastCall.args[0], 'to match', /Local version/);
-        expect(LoggerSpy.info.lastCall.args[1], 'to match', /latest/);
-      });
+    it('should print cli, local and atserver version with local module', async function () {
+      await expect(new AtSCMCli(['--cwd', 'test/fixtures']).printVersion(), 'to be fulfilled');
+
+      expect(LoggerSpy.info.calledThrice, 'to be', true);
+
+      expect(LoggerSpy.info.getCall(1).args, 'to satisfy', [/atscm/, /latest/]);
+      expect(LoggerSpy.info.getCall(2).args, 'to satisfy', [/atvise server/, /3.4.0/]);
     });
   });
 
