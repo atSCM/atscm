@@ -1,3 +1,14 @@
+<a name="1.1.1"></a>
+## 1.1.1 (2020-04-05)
+
+
+### Bug Fixes
+
+* Print command help with '-h' option ([#180](https://github.com/atSCM/atscm-cli/issues/180)) ([ae2c4e8](https://github.com/atSCM/atscm-cli/commits/ae2c4e8))
+
+
+
+
 <a name="1.1.0"></a>
 # 1.1.0 (2020-04-05)
 
