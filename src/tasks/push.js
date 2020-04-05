@@ -161,54 +161,17 @@ export function performPush(path, options) {
 /**
  * Pushes {@link AtviseFile}s to atvise server.
  */
-export default function push() {
+export default async function push() {
   Session.pool();
 
-  Logger.debug('Checking server setup');
+  await checkServerscripts({ log: Logger });
 
-  return readNode(versionNode)
-    .catch(err => {
-      if (err.statusCode && err.statusCode === StatusCodes.BadNodeIdUnknown) {
-        throw Object.assign(
-          new Error(`Invalid server scripts version
-- Please run 'atscm import' again to update`),
-          { originalError: err }
-        );
-      }
+  const promise = performPush('./src');
 
-      throw err;
-    })
-    .then(({ value: version }) => {
-      const required = dependencies['@atscm/server-scripts'];
-      Logger.debug(`Found server scripts version: ${version}`);
-
-      try {
-        const valid = validVersion(version.split('-beta')[0], required);
-
-        return { version, valid, required };
-      } catch (err) {
-        throw Object.assign(
-          new Error(`Invalid server scripts version
-- Please run 'atscm import' again to update`),
-          { originalError: err }
-        );
-      }
-    })
-    .then(({ valid, version, required }) => {
-      if (!valid) {
-        throw new Error(`Invalid server scripts version: ${version} (${required} required)
-- Please run 'atscm import' again to update`);
-      }
-    })
-    .then(() => {
-      const promise = performPush('./src');
-
-      return reportProgress(promise, {
-        getter: () => promise.browser._pushedPath.size,
-        formatter: count => `Processed ${count} files`,
-      });
-    })
-    .then(finishTask, handleTaskError);
+  return reportProgress(promise, {
+    getter: () => promise.browser._pushedPath.size,
+    formatter: count => `Processed ${count} files`,
+  }).then(finishTask, handleTaskError);
 }
 
 push.description = 'Push all stored nodes to atvise server';
