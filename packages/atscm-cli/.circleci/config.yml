@@ -64,6 +64,7 @@ jobs:
       - run:
           name: Check documentation coverage
           command: npm run docs:coverage
+          when: always
 
       # Store Results
       - store_test_results:

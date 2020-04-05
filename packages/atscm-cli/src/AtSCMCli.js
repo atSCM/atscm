@@ -11,6 +11,7 @@ import Logger from './lib/util/Logger';
 import Options, { GlobalOptions } from './cli/Options';
 import Commands from './cli/Commands';
 import UsageError from './lib/error/UsageError';
+import { readJson } from './lib/util/fs';
 
 /**
  * The main class. Handles arguments and runs commands.
@@ -250,11 +251,17 @@ export default class AtSCMCli extends Liftoff {
    * @return {Promise<{cli: string, local: ?string}>} Fulfilled with the found cli and local
    * version.
    */
-  getVersion() {
-    return this.getEnvironment().then((env) => ({
+  async getVersion() {
+    const env = await this.getEnvironment();
+
+    const projectPackage =
+      env.modulePath && (await readJson(join(env.cwd, 'package.json')).catch(() => undefined));
+
+    return {
       cli: pkg.version,
-      local: env.modulePath ? env.modulePackage.version : null,
-    }));
+      local: env.modulePath ? env.modulePackage.version : undefined,
+      server: projectPackage && projectPackage.engines && projectPackage.engines.atserver,
+    };
   }
 
   /**
@@ -262,16 +269,20 @@ export default class AtSCMCli extends Liftoff {
    * @return {Promise<{cli: string, local: ?string}>} Fulfilled with the found cli and local
    * version.
    */
-  printVersion() {
-    return this.getVersion().then((version) => {
-      Logger.info('CLI version', Logger.format.number(version.cli));
+  async printVersion() {
+    const { cli, local, server } = await this.getVersion();
 
-      if (version.local) {
-        Logger.info('Local version', Logger.format.number(version.local));
-      }
+    const versions = [
+      ['atscm-cli', cli],
+      local && ['atscm', local],
+      server && ['atvise server', server],
+    ].filter((v) => v);
 
-      return version;
-    });
+    const maxLength = versions.reduce((length, [label]) => Math.max(length, label.length), 0);
+
+    versions.forEach(([label, version]) =>
+      Logger.info(label.padEnd(maxLength + 1), Logger.format.number(version))
+    );
   }
 
   /**
