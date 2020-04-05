@@ -1,14 +1,10 @@
-import Logger from 'gulplog';
 import { satisfies as validVersion } from 'semver';
 import { readNode } from '../api';
 import { versionNode } from '../lib/server/scripts/version';
 import { dependencies } from '../../package.json';
+import { HookContext } from './hooks';
 
-interface Options {
-  log: typeof Logger;
-}
-
-export default async function checkServerscripts({ log }: Options): Promise<void> {
+export default async function checkServerscripts({ log }: HookContext): Promise<void> {
   log.debug('Checking installed serverscripts');
 
   const required = dependencies['@atscm/server-scripts'];

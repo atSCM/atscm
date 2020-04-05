@@ -164,7 +164,8 @@ export function performPush(path, options) {
 export default async function push() {
   Session.pool();
 
-  await checkServerscripts({ log: Logger });
+  const context = setupContext();
+  await checkServerscripts(context);
 
   const promise = performPush('./src');
 
