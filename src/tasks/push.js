@@ -1,11 +1,8 @@
-import { satisfies as validVersion } from 'semver';
 import Logger from 'gulplog';
 import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
 import src from '../lib/gulp/src';
-import { readNode, writeNode, createNode, addReferences } from '../api';
-import { versionNode } from '../lib/server/scripts/version';
-import { dependencies } from '../../package.json';
+import { writeNode, createNode, addReferences } from '../api';
 import Transformer, { TransformDirection } from '../lib/transform/Transformer.js';
 import NodeId from '../lib/model/opcua/NodeId.js';
 import { ReferenceTypeIds, ReferenceTypeNames } from '../lib/model/Node';
@@ -13,6 +10,9 @@ import { reportProgress } from '../lib/helpers/log.js';
 import ProjectConfig from '../config/ProjectConfig.js';
 import { finishTask, handleTaskError } from '../lib/helpers/tasks.js';
 import Session from '../lib/server/Session.js';
+import checkServerscripts from '../hooks/check-serverscripts';
+import checkAtserver from '../hooks/check-atserver';
+import { setupContext } from '../hooks/hooks';
 
 /**
  * Status codes indicating a node is opened in atvise builder and therefore not writable right now.
@@ -161,54 +161,20 @@ export function performPush(path, options) {
 /**
  * Pushes {@link AtviseFile}s to atvise server.
  */
-export default function push() {
+export default async function push() {
   Session.pool();
 
-  Logger.debug('Checking server setup');
+  const context = setupContext();
 
-  return readNode(versionNode)
-    .catch(err => {
-      if (err.statusCode && err.statusCode === StatusCodes.BadNodeIdUnknown) {
-        throw Object.assign(
-          new Error(`Invalid server scripts version
-- Please run 'atscm import' again to update`),
-          { originalError: err }
-        );
-      }
+  await checkAtserver(context);
+  await checkServerscripts(context);
 
-      throw err;
-    })
-    .then(({ value: version }) => {
-      const required = dependencies['@atscm/server-scripts'];
-      Logger.debug(`Found server scripts version: ${version}`);
+  const promise = performPush('./src');
 
-      try {
-        const valid = validVersion(version.split('-beta')[0], required);
-
-        return { version, valid, required };
-      } catch (err) {
-        throw Object.assign(
-          new Error(`Invalid server scripts version
-- Please run 'atscm import' again to update`),
-          { originalError: err }
-        );
-      }
-    })
-    .then(({ valid, version, required }) => {
-      if (!valid) {
-        throw new Error(`Invalid server scripts version: ${version} (${required} required)
-- Please run 'atscm import' again to update`);
-      }
-    })
-    .then(() => {
-      const promise = performPush('./src');
-
-      return reportProgress(promise, {
-        getter: () => promise.browser._pushedPath.size,
-        formatter: count => `Processed ${count} files`,
-      });
-    })
-    .then(finishTask, handleTaskError);
+  return reportProgress(promise, {
+    getter: () => promise.browser._pushedPath.size,
+    formatter: count => `Processed ${count} files`,
+  }).then(finishTask, handleTaskError);
 }
 
 push.description = 'Push all stored nodes to atvise server';

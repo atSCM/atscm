@@ -11,16 +11,21 @@ import { versionNode } from '../lib/server/scripts/version';
 import { delay } from '../lib/helpers/async';
 import { handleTaskError, finishTask } from '../lib/helpers/tasks';
 import Session from '../lib/server/Session';
+import { setupContext } from '../hooks/hooks';
+import checkAtserver from '../hooks/check-atserver';
 
 /**
  * Imports all xml files needed for atscm usage.
  * @return {Promise<void>} The running task.
  */
-export default function importTask() {
+export default async function importTask() {
   const srcStream = src(scripts);
   const versionVariant = { dataType: DataType.String, value: version };
 
   Session.pool();
+
+  const context = setupContext();
+  await checkAtserver(context);
 
   return toPromise(srcStream.pipe(new ImportStream()))
     .then(() => writeNode(versionNode, versionVariant))

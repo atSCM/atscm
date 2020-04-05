@@ -11,9 +11,6 @@
     {
       "files": ["*.ts"],
       "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "project": "./tsconfig.json"
-      },
       "extends": [
         "@ls-age",
         "plugin:@typescript-eslint/recommended",

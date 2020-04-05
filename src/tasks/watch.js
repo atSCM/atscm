@@ -7,6 +7,9 @@ import { delay } from '../lib/helpers/async';
 import { handleTaskError } from '../lib/helpers/tasks';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
+import { setupContext } from '../hooks/hooks';
+import checkAtserver from '../hooks/check-atserver';
+import checkServerscripts from '../hooks/check-serverscripts';
 import { performPull } from './pull';
 import { performPush } from './push';
 
@@ -245,7 +248,11 @@ export class WatchTask {
  * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
  * all watchers are set up and Browsersync was initialized.
  */
-export default function watch(options) {
+export default async function watch(options) {
+  const context = setupContext();
+  await checkAtserver(context);
+  await checkServerscripts(context);
+
   return new WatchTask().run(options);
 }
 
