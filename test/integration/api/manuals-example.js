@@ -1,8 +1,8 @@
 import { promises as fsp } from 'fs';
 import { join, dirname } from 'path';
-import { NodeId } from 'atscm';
-import { callMethod } from 'atscm/api';
 import { Variant, DataType, VariantArrayType } from 'node-opcua';
+import { NodeId } from '../../..';
+import { callMethod } from '../../../api';
 import expect from '../../expect';
 import { tmpDir } from '../../helpers/util';
 
