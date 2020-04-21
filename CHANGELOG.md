@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.50"></a>
-# 1.0.0-beta.50 (2020-04-05)
+<a name="1.0.0-beta.51"></a>
+# 1.0.0-beta.51 (2020-04-21)
 
 
 ### Bug Fixes
@@ -69,17 +69,18 @@
 * Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
 * Implement async/await-based tasks ([4d59989](https://github.com/atSCM/atscm/commits/4d59989))
 * Implement async/await-based transformers ([99376ba](https://github.com/atSCM/atscm/commits/99376ba))
-* **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
+* Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
+* Show location of XML parsing errors ([#336](https://github.com/atSCM/atscm/issues/336)) ([509da3c](https://github.com/atSCM/atscm/commits/509da3c))
+* Store display title and description in definition file ([#349](https://github.com/atSCM/atscm/issues/349)) ([bc88827](https://github.com/atSCM/atscm/commits/bc88827))
+* **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
+* **api:** Add convenient api entry file ([#366](https://github.com/atSCM/atscm/issues/366)) ([4d3e626](https://github.com/atSCM/atscm/commits/4d3e626))
+* Use `modify-xml` instead of `xml-js` ([#306](https://github.com/atSCM/atscm/issues/306)) ([1232555](https://github.com/atSCM/atscm/commits/1232555))
 * **api:** Handle invalid status codes in methods and scripts ([c68250d](https://github.com/atSCM/atscm/commits/c68250d))
 * **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
 * **pull:** Ignore sort order nodes by default ([#314](https://github.com/atSCM/atscm/issues/314)) ([91eaa5e](https://github.com/atSCM/atscm/commits/91eaa5e))
 * **pull:** Remove unused renames with --clean ([#287](https://github.com/atSCM/atscm/issues/287)) ([06243ff](https://github.com/atSCM/atscm/commits/06243ff))
 * **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
-* Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
-* Show location of XML parsing errors ([#336](https://github.com/atSCM/atscm/issues/336)) ([509da3c](https://github.com/atSCM/atscm/commits/509da3c))
-* Store display title and description in definition file ([#349](https://github.com/atSCM/atscm/issues/349)) ([bc88827](https://github.com/atSCM/atscm/commits/bc88827))
-* Use `modify-xml` instead of `xml-js` ([#306](https://github.com/atSCM/atscm/issues/306)) ([1232555](https://github.com/atSCM/atscm/commits/1232555))
 
 
 ### Performance Improvements
