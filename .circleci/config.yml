@@ -266,7 +266,7 @@ workflows:
             - install-deps
       - lint-source:
           requires:
-            - install-deps
+            - build
       - types:
           requires:
             - install-deps
