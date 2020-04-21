@@ -6,10 +6,10 @@ import { callMethod } from '../../../api';
 import expect from '../../expect';
 import { tmpDir } from '../../helpers/util';
 
-describe('Manual API example', async () => {
+describe('Manual API example', () => {
   // Configuration: You could also use process.argv here...
   const nodesToExport = ['AGENT.DISPLAYS.Main'];
-  const outDir = tmpDir();
+  const outDir = tmpDir('manuals-example');
   const exportPath = join(outDir, 'export.xml');
 
   // Our main function
@@ -36,5 +36,7 @@ describe('Manual API example', async () => {
     console.log(`Export written to ${exportPath}`);
   }
 
-  await expect(createExportFile(), 'to be fulfilled');
+  it('should work as promised', async () => {
+    await expect(createExportFile(), 'to be fulfilled');
+  });
 });
