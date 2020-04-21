@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2015",
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "isolatedModules": true
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
