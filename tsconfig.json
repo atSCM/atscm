@@ -2,11 +2,15 @@
   "compilerOptions": {
     "allowJs": true,
     "target": "es2018",
-    "strict": true,
+    "strict": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "outDir": "out/ts",
-    "lib": ["es2018"]
+    "lib": ["es2018"],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "out/types"
   },
   "include": ["types/**/*", "src/**/*"],
   "exclude": ["node_modules"]

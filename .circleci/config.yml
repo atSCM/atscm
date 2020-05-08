@@ -4,7 +4,7 @@ orbs:
     executors:
       node:
         docker:
-          - image: circleci/node:8
+          - image: circleci/node:10
     commands:
       git-login:
         steps:
@@ -32,6 +32,9 @@ orbs:
                     ;;
                   '3.3')
                     ATSCM_PROJECT__PORT__OPC=4841
+                    ;;
+                  '3.4')
+                    ATSCM_PROJECT__PORT__OPC=4842
                     ;;
                   *)
                     echo "Invalid atserver version $ATSERVER_VERSION"
@@ -158,14 +161,18 @@ jobs:
       - store_artifacts:
           path: ~/reports
 
-  type-check:
+  types:
     executor: atscm/node
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: Running type checks
-          command: npm run typecheck
+          name: Build type declaration files
+          command: npm run types
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out/types
 
   unit-tests:
     executor: atscm/node
@@ -259,8 +266,8 @@ workflows:
             - install-deps
       - lint-source:
           requires:
-            - install-deps
-      - type-check:
+            - build
+      - types:
           requires:
             - install-deps
       - unit-tests:
@@ -280,16 +287,20 @@ workflows:
           name: integration-33x
           atserver: '3.3'
           requires:
-            - build
-            - start-testserver
             - integration-32x
+      - atscm/integration:
+          name: integration-34x
+          atserver: '3.4'
+          requires:
+            - integration-33x
       - deploy:
           requires:
             - lint-source
-            - type-check
+            - types
             - test-coverage
             - integration-32x
             - integration-33x
+            - integration-34x
             - docs
           filters:
             branches:

@@ -26,11 +26,10 @@ describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function() {
       destination = tmpDir(setup.replace(/\//g, '-'));
     });
 
-    it('should error', function() {
+    it('should not error', function() {
       return expect(
         pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination),
-        'to be rejected with',
-        'closing tag mismatch'
+        'to be fulfilled'
       );
     });
 

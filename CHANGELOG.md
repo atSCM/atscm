@@ -1,5 +1,5 @@
-<a name="1.0.0-beta.46"></a>
-# 1.0.0-beta.46 (2019-12-09)
+<a name="1.0.0-beta.51"></a>
+# 1.0.0-beta.51 (2020-04-21)
 
 
 ### Bug Fixes
@@ -35,6 +35,7 @@
 * **push:** Allow quotes in xml attribute values ([#316](https://github.com/atSCM/atscm/issues/316)) ([6e8b954](https://github.com/atSCM/atscm/commits/6e8b954))
 * **push:** Correctly create 64 bit integers ([11394cd](https://github.com/atSCM/atscm/commits/11394cd))
 * **push:** Correctly create array variables ([40ec3c1](https://github.com/atSCM/atscm/commits/40ec3c1))
+* **push:** Ensure correct modelling rules ([#360](https://github.com/atSCM/atscm/issues/360)) ([88faccf](https://github.com/atSCM/atscm/commits/88faccf)), closes [#354](https://github.com/atSCM/atscm/issues/354)
 * **push:** Ensure parent node for '.inner'-node ([#311](https://github.com/atSCM/atscm/issues/311)) ([1dae982](https://github.com/atSCM/atscm/commits/1dae982))
 * **push:** Fix typo in external node handling ([#302](https://github.com/atSCM/atscm/issues/302)) ([b5e9b5f](https://github.com/atSCM/atscm/commits/b5e9b5f))
 * **push:** Force exit on error ([#273](https://github.com/atSCM/atscm/issues/273)) ([f5afadd](https://github.com/atSCM/atscm/commits/f5afadd))
@@ -44,36 +45,40 @@
 * **push:** Properly wait for dependencies ([#298](https://github.com/atSCM/atscm/issues/298)) ([ebae772](https://github.com/atSCM/atscm/commits/ebae772))
 * **push:** Restrict split transformer source files ([5b38467](https://github.com/atSCM/atscm/commits/5b38467))
 * **push:** Use correct root objects folder id ([#245](https://github.com/atSCM/atscm/issues/245)) ([4c2b057](https://github.com/atSCM/atscm/commits/4c2b057)), closes [#241](https://github.com/atSCM/atscm/issues/241)
+* Prevent errors with atvise 3.2.2+ ([#324](https://github.com/atSCM/atscm/issues/324)) ([e8a8b4a](https://github.com/atSCM/atscm/commits/e8a8b4a)), closes [#323](https://github.com/atSCM/atscm/issues/323)
 * **push:** Use right modelling rule for new nodes ([8beb8c4](https://github.com/atSCM/atscm/commits/8beb8c4))
-* Resolve correct parent node for root nodes ([#326](https://github.com/atSCM/atscm/issues/326)) ([399d11f](https://github.com/atSCM/atscm/commits/399d11f))
+* Prevent connection timeouts on unstable connections ([#343](https://github.com/atSCM/atscm/issues/343)) ([d4a73a2](https://github.com/atSCM/atscm/commits/d4a73a2))
 * **push:** Write empty string for null values ([#234](https://github.com/atSCM/atscm/issues/234)) ([0fed027](https://github.com/atSCM/atscm/commits/0fed027))
+* Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
 * **transform:** Do not add trailing newlines by default ([ca347a1](https://github.com/atSCM/atscm/commits/ca347a1))
-* **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
 * Consistent mapping for lcoalized text nodes ([#317](https://github.com/atSCM/atscm/issues/317)) ([31c56b4](https://github.com/atSCM/atscm/commits/31c56b4))
 * Don't depend on openssl ([#221](https://github.com/atSCM/atscm/issues/221)) ([67993bf](https://github.com/atSCM/atscm/commits/67993bf)), closes [#95](https://github.com/atSCM/atscm/issues/95)
 * Enforce tag order in display svgs ([#209](https://github.com/atSCM/atscm/issues/209)) ([7d88a20](https://github.com/atSCM/atscm/commits/7d88a20))
-* Prevent connection timeouts on unstable connections ([#343](https://github.com/atSCM/atscm/issues/343)) ([d4a73a2](https://github.com/atSCM/atscm/commits/d4a73a2))
-* Prevent duplicate entries in rename file ([#284](https://github.com/atSCM/atscm/issues/284)) ([ba8d885](https://github.com/atSCM/atscm/commits/ba8d885)), closes [#265](https://github.com/atSCM/atscm/issues/265)
-* Prevent errors with atvise 3.2.2+ ([#324](https://github.com/atSCM/atscm/issues/324)) ([e8a8b4a](https://github.com/atSCM/atscm/commits/e8a8b4a)), closes [#323](https://github.com/atSCM/atscm/issues/323)
+* Properly detect external scripts in displays ([#358](https://github.com/atSCM/atscm/issues/358)) ([693d94e](https://github.com/atSCM/atscm/commits/693d94e))
 * Read disconnected nodes if possible ([#207](https://github.com/atSCM/atscm/issues/207)) ([258f115](https://github.com/atSCM/atscm/commits/258f115))
 * Remove one trailing newline at most ([1409ff0](https://github.com/atSCM/atscm/commits/1409ff0))
+* **watch:** Prevent error when terminating pending subscription ([#331](https://github.com/atSCM/atscm/issues/331)) ([56b5ba0](https://github.com/atSCM/atscm/commits/56b5ba0)), closes [#329](https://github.com/atSCM/atscm/issues/329)
+* Resolve correct parent node for root nodes ([#326](https://github.com/atSCM/atscm/issues/326)) ([399d11f](https://github.com/atSCM/atscm/commits/399d11f))
+* Use new XML parser ([#357](https://github.com/atSCM/atscm/issues/357)) ([d8688b1](https://github.com/atSCM/atscm/commits/d8688b1)), closes [#330](https://github.com/atSCM/atscm/issues/330)
 
 
 ### Features
 
+* Check atvise server version ([#365](https://github.com/atSCM/atscm/issues/365)) ([34374b2](https://github.com/atSCM/atscm/commits/34374b2))
 * Check server scripts version on push ([#230](https://github.com/atSCM/atscm/issues/230)) ([84c843a](https://github.com/atSCM/atscm/commits/84c843a))
 * Export programmic API ([#229](https://github.com/atSCM/atscm/issues/229)) ([2742bc2](https://github.com/atSCM/atscm/commits/2742bc2)), closes [#168](https://github.com/atSCM/atscm/issues/168)
 * Implement async/await-based tasks ([4d59989](https://github.com/atSCM/atscm/commits/4d59989))
 * Implement async/await-based transformers ([99376ba](https://github.com/atSCM/atscm/commits/99376ba))
 * Rename conflicting nodes based on contents of ./atscm/rename.json ([#211](https://github.com/atSCM/atscm/issues/211)) ([c592790](https://github.com/atSCM/atscm/commits/c592790))
-* **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
-* **api:** Handle invalid status codes in methods and scripts ([c68250d](https://github.com/atSCM/atscm/commits/c68250d))
-* **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
-* **pull:** Ignore sort order nodes by default ([#314](https://github.com/atSCM/atscm/issues/314)) ([91eaa5e](https://github.com/atSCM/atscm/commits/91eaa5e))
 * Reuse server sessions ([#279](https://github.com/atSCM/atscm/issues/279)) ([940fb7d](https://github.com/atSCM/atscm/commits/940fb7d)), closes [#277](https://github.com/atSCM/atscm/issues/277)
 * Show location of XML parsing errors ([#336](https://github.com/atSCM/atscm/issues/336)) ([509da3c](https://github.com/atSCM/atscm/commits/509da3c))
 * Store display title and description in definition file ([#349](https://github.com/atSCM/atscm/issues/349)) ([bc88827](https://github.com/atSCM/atscm/commits/bc88827))
+* **api:** Add addReferences ([f367331](https://github.com/atSCM/atscm/commits/f367331))
+* **api:** Add convenient api entry file ([#366](https://github.com/atSCM/atscm/issues/366)) ([4d3e626](https://github.com/atSCM/atscm/commits/4d3e626))
 * Use `modify-xml` instead of `xml-js` ([#306](https://github.com/atSCM/atscm/issues/306)) ([1232555](https://github.com/atSCM/atscm/commits/1232555))
+* **api:** Handle invalid status codes in methods and scripts ([c68250d](https://github.com/atSCM/atscm/commits/c68250d))
+* **pull:** Compare checksums before writing ([#244](https://github.com/atSCM/atscm/issues/244)) ([0c9360d](https://github.com/atSCM/atscm/commits/0c9360d)), closes [#238](https://github.com/atSCM/atscm/issues/238)
+* **pull:** Ignore sort order nodes by default ([#314](https://github.com/atSCM/atscm/issues/314)) ([91eaa5e](https://github.com/atSCM/atscm/commits/91eaa5e))
 * **pull:** Remove unused renames with --clean ([#287](https://github.com/atSCM/atscm/issues/287)) ([06243ff](https://github.com/atSCM/atscm/commits/06243ff))
 * **pull:** Use `--clean` to remove existing files ([#222](https://github.com/atSCM/atscm/issues/222)) ([e003187](https://github.com/atSCM/atscm/commits/e003187))
 

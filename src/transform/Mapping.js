@@ -65,10 +65,10 @@ const extensionForArrayType = {
 export default class MappingTransformer extends Transformer {
   /**
    * Creates a new mapping transformer.
-   * @param {any[]} args The arguments passed to the {@link Transformer} constructor.
+   * @param {Object} [options] The arguments passed to the {@link Transformer} constructor.
    */
-  constructor(...args) {
-    super(...args);
+  constructor(options = {}) {
+    super(options);
 
     /**
      * Contents of the reference files read but not used yet.

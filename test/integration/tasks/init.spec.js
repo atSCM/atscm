@@ -103,12 +103,4 @@ describe('InitTask', function() {
 
     return tsTransform(code, rc).outputText;
   });
-
-  // FIXME: CoffeeScript does not yet work.
-  /*
-  expectValidConfig('coffee', (code, createdFiles) => {
-
-    return coffeeTransform(code);
-  });
-  */
 });

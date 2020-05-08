@@ -5,7 +5,7 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { parse, removeChildren, isElement } from 'modify-xml';
+import { parse, removeChildren, isElement, attributeValues, render } from 'modify-xml';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -35,7 +35,7 @@ export function setupPath(name) {
   return join(setupDir, `${name}.xml`);
 }
 
-export function importSetup(name, ...rename) {
+export async function importSetup(name, ...rename) {
   const uniqueId = id();
   const nodeNames = rename.map(r => {
     const parts = r.split('.');
@@ -53,17 +53,30 @@ export function importSetup(name, ...rename) {
       );
     });
 
-  const sourceStream = gulpSrc(setupPath(name));
-  const importStream = new ImportStream();
+  const doImport = async () => {
+    const sourceStream = gulpSrc(setupPath(name));
+    const importStream = new ImportStream();
 
-  return promisify(
-    rename
-      .reduce(
-        (current, original, i) => current.pipe(createReplaceStream(original, nodeNames[i])),
-        sourceStream
-      )
-      .pipe(importStream)
-  ).then(() => nodeNames);
+    return promisify(
+      rename
+        .reduce(
+          (current, original, i) => current.pipe(createReplaceStream(original, nodeNames[i])),
+          sourceStream
+        )
+
+        .pipe(importStream)
+    ).then(() => nodeNames);
+  };
+
+  let result;
+  try {
+    result = await doImport();
+  } catch (error) {
+    console.warn('Import failed, retry...');
+    result = await doImport();
+  }
+
+  return result;
 }
 
 class SingleCallScriptStream extends CallScriptStream {
@@ -132,7 +145,7 @@ class ExportStream extends CallMethodStream {
       new Variant({
         dataType: DataType.NodeId,
         arrayType: VariantArrayType.Array,
-        value: nodeIds,
+        value: nodeIds.slice().reverse(),
       }),
     ];
   }
@@ -153,6 +166,67 @@ export function exportNodes(nodeIds) {
 
 export function exportNode(nodeId) {
   return exportNodes([nodeId]);
+}
+
+function removeComments(xml) {
+  const doc = parse(xml);
+
+  // Atserver 3.3+ adds <Extensions><atvise Version="3.x"/></Extensions> to <UANodeSet>s
+  removeChildren(doc.childNodes.find(isElement), 'Extensions');
+
+  // This is just a collection of references that differs between atserver versions
+  removeChildren(doc.childNodes.find(isElement), 'Aliases');
+
+  /* eslint-disable no-param-reassign */
+  const walk = n => {
+    n.childNodes = n.childNodes
+      .reduce((all, child) => {
+        if (child.type === 'comment' || (child.type === 'text' && child.value.match(/^\s*$/))) {
+          return all;
+        }
+
+        return all.concat(child.type === 'element' ? walk(child) : child);
+      }, [])
+      .sort((nodeA, nodeB) => {
+        const nameA = nodeA.name;
+        const a = attributeValues(nodeA);
+        const nameB = nodeB.name;
+        const b = attributeValues(nodeB);
+
+        const gotA = a && a.NodeId;
+        const gotB = b && b.NodeId;
+
+        if (gotA) {
+          if (gotB) {
+            return a.NodeId < b.NodeId ? -1 : 1;
+          }
+
+          return -1;
+        } else if (gotB) {
+          return 1;
+        }
+
+        return nameA < nameB ? -1 : 1;
+      });
+
+    delete n.tokens;
+    if (n.attributes) {
+      n.attributes = n.attributes.map(a => {
+        delete a.tokens;
+        return a;
+      });
+    }
+
+    return n;
+  };
+
+  /* eslint-enable no-param-reassign */
+
+  return walk(doc);
+}
+
+export function compareXml(value, expected) {
+  return expect(render(removeComments(value)), 'to equal', render(removeComments(expected)));
 }
 
 export function expectCorrectMapping(setup, node) {
@@ -186,7 +260,14 @@ export function expectCorrectMapping(setup, node) {
 
   it('should recreate all fields', async function() {
     // Run atscm push
-    await push(join(destination, node.path.replace(/\./g, sep)));
+    const paths = (Array.isArray(node.path)
+      ? [...new Set(Array.from(node.path))]
+      : [node.path]
+    ).map(path => join(destination, path.replace(/\./g, sep)));
+
+    for (const path of paths) {
+      await push(path);
+    }
 
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -198,62 +279,7 @@ export function expectCorrectMapping(setup, node) {
 
     const original = await readFile(setupPath(setup), 'utf8');
 
-    function normalize(element) {
-      if (element.attributes) {
-        // eslint-disable-next-line no-param-reassign
-        delete element.attributes.EventNotifier;
-      }
-
-      if (element.type === 'cdata') {
-        // eslint-disable-next-line no-param-reassign
-        element.value = element.value
-          .replace(/\?>\s/, '?>')
-          .replace(/(^\s+|\r?\n?)/gm, '')
-          .replace(/ standalone="no"/, '');
-      }
-
-      // eslint-disable-next-line no-param-reassign
-      delete element.rawValue;
-
-      return element;
-    }
-
-    function sortElements(current) {
-      return Object.assign(current, {
-        childNodes:
-          current.childNodes &&
-          current.childNodes
-            .filter(({ type, name }) => type !== 'text' && type !== 'comment' && name !== 'Aliases')
-            .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
-              const gotA = a && a.NodeId;
-              const gotB = b && b.NodeId;
-
-              if (gotA) {
-                if (gotB) {
-                  return a.NodeId < b.NodeId ? -1 : 1;
-                }
-
-                return -1;
-              } else if (gotB) {
-                return 1;
-              }
-
-              return nameA < nameB ? -1 : 1;
-            })
-            .map(n => normalize(sortElements(n))),
-      });
-    }
-
-    function sortedTree(xml) {
-      const parsed = parse(xml);
-
-      // Atserver 3.3 adds <Extensions><atvise Version="3.3"/></Extensions> to <UANodeSet>s
-      removeChildren(parsed.childNodes.find(isElement), 'Extensions');
-
-      return sortElements(parsed);
-    }
-
-    expect(sortedTree(pushed), 'to equal', sortedTree(original));
+    return compareXml(pushed, original);
   });
 
   after('delete tmp node', function() {
