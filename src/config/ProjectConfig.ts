@@ -1,3 +1,5 @@
+import Atviseproject from '../lib/config/Atviseproject';
+
 /**
  * The path to the project's configuration file.
  * @type {string}
@@ -6,9 +8,8 @@ export const path = process.env.ATSCM_CONFIG_PATH;
 
 /**
  * The current project's configuration.
- * @type {Atviseproject}
  */
-const Config = require(path).default;
+const Config = require(path).default as typeof Atviseproject; // eslint-disable-line global-require
 
 /**
  * The current project's configuration, with overrides (through `ATSCM_PROJECT__` env vars) already
@@ -17,18 +18,17 @@ const Config = require(path).default;
 export default class ProjectConfig extends Config {
   /**
    * Return the project configuration override for the given name if available.
-   * @param {string} name The variable to return.
-   * @type {string|undefined} The variables's value or `undefined`.
+   * @param name The variable to return.
+   * @return The variables's value or `undefined`.
    */
-  static _env(name) {
+  static _env(name): string | undefined {
     return process.env[`ATSCM_PROJECT__${name}`];
   }
 
   /**
    * The atvise server's host. Can be overridden with the `ATSCM_PROJECT__HOST` env variable.
-   * @type {string}
    */
-  static get host() {
+  static get host(): string {
     return this._env('HOST') || super.host;
   }
 
@@ -66,25 +66,27 @@ export default class ProjectConfig extends Config {
     return super.login;
   }
 
+  private static _sourceNodeRegExp: RegExp;
+
   /**
    * A regular expression matching all source nodes.
-   * @type {RegExp};
    */
-  static get sourceNodeRegExp() {
+  static get sourceNodeRegExp(): RegExp {
     if (!this._sourceNodeRegExp) {
-      this._sourceNodesRegExp = new RegExp(
+      this._sourceNodeRegExp = new RegExp(
         `^(${this.nodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
       );
     }
 
-    return this._sourceNodesRegExp;
+    return this._sourceNodeRegExp;
   }
+
+  private static _ignoredNodesRegExp: RegExp;
 
   /**
    * A regular expression matching all ignored nodes.
-   * @type {RegExp};
    */
-  static get ignoredNodesRegExp() {
+  static get ignoredNodesRegExp(): RegExp {
     if (!this._ignoredNodesRegExp) {
       this._ignoredNodesRegExp = new RegExp(
         `^(${this.ignoreNodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
@@ -97,10 +99,10 @@ export default class ProjectConfig extends Config {
   /**
    * Returns `true` for all external (not in {@link Atviseproject.nodes} or ignored by
    * {@link Atviseproject.ignoreNodes}).
-   * @param {string} id The node id to check.
-   * @return {boolean} If the node is external.
+   * @param id The node id to check.
+   * @return If the node is external.
    */
-  static isExternal(id) {
+  static isExternal(id: string) {
     return !id.match(this.sourceNodeRegExp) || !!id.match(this.ignoredNodesRegExp);
   }
 
