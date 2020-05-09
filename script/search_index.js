@@ -66,14 +66,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mappingtransformer#constructor src/transform/mapping.js~mappingtransformer#constructor,mappingtransformer#constructor",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber8",
+    "nodestream#constructor src/lib/server/nodestream.js~nodestream#constructor,nodestream#constructor",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber40",
     "#constructor",
     "test"
   ],
   [
-    "nodestream#constructor src/lib/server/nodestream.js~nodestream#constructor,nodestream#constructor",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber40",
+    "mappingtransformer#constructor src/transform/mapping.js~mappingtransformer#constructor,mappingtransformer#constructor",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber8",
     "#constructor",
     "test"
   ],
@@ -420,14 +420,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "nodestream#processchunk nodestream#processchunk,nodestream#processchunk",
-    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber144",
+    "subscribestream#processchunk subscribestream#processchunk,subscribestream#processchunk",
+    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber114",
     "#processChunk",
     "test"
   ],
   [
-    "subscribestream#processchunk subscribestream#processchunk,subscribestream#processchunk",
-    "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber114",
+    "nodestream#processchunk nodestream#processchunk,nodestream#processchunk",
+    "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber144",
     "#processChunk",
     "test"
   ],
@@ -552,6 +552,12 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
+    "newlinestransformer#shouldbetransformed src/transform/newlines.js~newlinestransformer#shouldbetransformed,newlinestransformer#shouldbetransformed",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber21",
+    "#shouldBeTransformed",
+    "test"
+  ],
+  [
     "scripttransformer#shouldbetransformed scripttransformer#shouldbetransformed,scripttransformer#shouldbetransformed",
     "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber15",
     "#shouldBeTransformed",
@@ -560,12 +566,6 @@ window.esdocSearchIndex = [
   [
     "displaytransformer#shouldbetransformed src/transform/displaytransformer.js~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
     "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
-    "#shouldBeTransformed",
-    "test"
-  ],
-  [
-    "newlinestransformer#shouldbetransformed src/transform/newlines.js~newlinestransformer#shouldbetransformed,newlinestransformer#shouldbetransformed",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber21",
     "#shouldBeTransformed",
     "test"
   ],
@@ -606,12 +606,6 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "newlinestransformer#transformfromdb src/transform/newlines.js~newlinestransformer#transformfromdb,newlinestransformer#transformfromdb",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber69",
-    "#transformFromDB",
-    "test"
-  ],
-  [
     "scripttransformer#transformfromdb scripttransformer#transformfromdb,scripttransformer#transformfromdb",
     "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber29",
     "#transformFromDB",
@@ -630,6 +624,12 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
+    "newlinestransformer#transformfromdb src/transform/newlines.js~newlinestransformer#transformfromdb,newlinestransformer#transformfromdb",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber69",
+    "#transformFromDB",
+    "test"
+  ],
+  [
     "",
     "test-file/test/src/transform/Newlines.spec.js.html#lineNumber90",
     "#transformFromDB should add trailing newlines if set",
@@ -643,13 +643,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber30",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber44",
     "#transformFromDB should forward parse errors",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber44",
+    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber30",
     "#transformFromDB should forward parse errors",
     "test"
   ],
@@ -900,14 +900,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "newlinestransformer#transformfromfilesystem src/transform/newlines.js~newlinestransformer#transformfromfilesystem,newlinestransformer#transformfromfilesystem",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber112",
+    "mappingtransformer#transformfromfilesystem src/transform/mapping.js~mappingtransformer#transformfromfilesystem,mappingtransformer#transformfromfilesystem",
+    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber224",
     "#transformFromFilesystem",
     "test"
   ],
   [
-    "mappingtransformer#transformfromfilesystem src/transform/mapping.js~mappingtransformer#transformfromfilesystem,mappingtransformer#transformfromfilesystem",
-    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber224",
+    "newlinestransformer#transformfromfilesystem src/transform/newlines.js~newlinestransformer#transformfromfilesystem,newlinestransformer#transformfromfilesystem",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber112",
     "#transformFromFilesystem",
     "test"
   ],
@@ -2827,6 +2827,18 @@ window.esdocSearchIndex = [
   ],
   [
     "",
+    "test-file/test/integration/issues/issue-239.spec.js.html#lineNumber3",
+    "Issue #239 (https://github.com/atSCM/atscm/issues/239)",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/integration/issues/issue-239.spec.js.html#lineNumber4",
+    "Issue #239 (https://github.com/atSCM/atscm/issues/239) Should not add empty newlines after pull and push",
+    "test"
+  ],
+  [
+    "",
     "test-file/test/integration/issues/issue-253.spec.js.html#lineNumber3",
     "Issue #253 (https://github.com/atSCM/atscm/issues/253)",
     "test"
@@ -3811,13 +3823,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber187",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber203",
     "SplittingTransformer should apply the new extension",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber203",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber187",
     "SplittingTransformer should apply the new extension",
     "test"
   ],
@@ -3841,13 +3853,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber199",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber183",
     "SplittingTransformer should return a file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber183",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber199",
     "SplittingTransformer should return a file",
     "test"
   ],
@@ -6205,13 +6217,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
@@ -7695,6 +7707,12 @@ window.esdocSearchIndex = [
     "test/integration/issues/issue-170.spec.js",
     "test-file/test/integration/issues/issue-170.spec.js.html",
     "test/integration/issues/issue-170.spec.js",
+    "testFile"
+  ],
+  [
+    "test/integration/issues/issue-239.spec.js",
+    "test-file/test/integration/issues/issue-239.spec.js.html",
+    "test/integration/issues/issue-239.spec.js",
     "testFile"
   ],
   [
