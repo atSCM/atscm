@@ -57,9 +57,11 @@ export default class ProjectConfig extends Config {
    */
   static get login() {
     if (this._env('LOGIN__USERNAME') || this._env('LOGIN__PASSWORD')) {
+      const { username, password }: { username?: string; password?: string } = super.login || {};
+
       return {
-        username: this._env('LOGIN__USERNAME') || super.login.username,
-        password: this._env('LOGIN__PASSWORD') || super.login.password,
+        username: this._env('LOGIN__USERNAME') || username,
+        password: this._env('LOGIN__PASSWORD') || password,
       };
     }
 

@@ -24,7 +24,7 @@ interface AtserverCredentials {
   password: string;
 }
 
-type NodesConfiguration = Array<string | NodeId>;
+type NodesConfiguration = Array<NodeId>;
 
 /**
  * An *atscm* project's configuration.
