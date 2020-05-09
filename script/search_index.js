@@ -6205,13 +6205,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
