@@ -4,15 +4,18 @@ import expect from '../../../expect';
 import QueueStream from '../../../../src/lib/server/QueueStream';
 
 function fakeQueueStream(
-  err = null, status = StatusCodes.Good, onSuccess = done => done(), options = {}
+  err = null,
+  status = StatusCodes.Good,
+  onSuccess = done => done(),
+  options = {}
 ) {
   return new (class FakeQueueStream extends QueueStream {
-
-    processErrorMessage(chunk) { return `Error processing ${chunk}`; }
+    processErrorMessage(chunk) {
+      return `Error processing ${chunk}`;
+    }
     processChunk(chunk, handle) {
       handle(err, status, onSuccess);
     }
-
   })(options);
 }
 
@@ -25,15 +28,15 @@ describe('QueueStream', function() {
     });
 
     it('should store maxParallel option', function() {
-      expect((new QueueStream({ maxParallel: 99 }))._maxParallel, 'to equal', 99);
+      expect(new QueueStream({ maxParallel: 99 })._maxParallel, 'to equal', 99);
     });
 
     it('should store start date', function() {
-      expect((new QueueStream())._start, 'to be a', 'number');
+      expect(new QueueStream()._start, 'to be a', 'number');
     });
 
     it('should listen for processed-chunk events', function() {
-      expect((new QueueStream()).listenerCount('processed-chunk'), 'to be', 1);
+      expect(new QueueStream().listenerCount('processed-chunk'), 'to be', 1);
     });
   });
 
@@ -54,14 +57,14 @@ describe('QueueStream', function() {
     });
 
     it('should return false otherwise', function() {
-      expect((new QueueStream()).hasPending, 'to be', false);
+      expect(new QueueStream().hasPending, 'to be', false);
     });
   });
 
   /** @test {QueueStream#queueEmpty} */
   describe('#queueEmpty', function() {
     it('should return true if not operations are queued', function() {
-      expect((new QueueStream()).queueEmpty, 'to be', true);
+      expect(new QueueStream().queueEmpty, 'to be', true);
     });
 
     it('should return false if there are queued operations', function() {
@@ -85,7 +88,7 @@ describe('QueueStream', function() {
   /** @test {QueueStream#opsPerSecond} */
   describe('#opsPerSecond', function() {
     it('should return 0 right after creating the stream', function() {
-      expect((new QueueStream()).opsPerSecond, 'to be', 0);
+      expect(new QueueStream().opsPerSecond, 'to be', 0);
     });
 
     it('should return the number of processed items after one second', function() {
@@ -100,15 +103,18 @@ describe('QueueStream', function() {
   /** @test {QueueStream#processErrorMessage} */
   describe('#processErrorMessage', function() {
     it('should throw if not overridden', function() {
-      expect(() => (new QueueStream()).processErrorMessage({}), 'to throw', /must be implemented/);
+      expect(() => new QueueStream().processErrorMessage({}), 'to throw', /must be implemented/);
     });
   });
 
   /** @test {QueueStream#processChunk} */
   describe('#processChunk', function() {
     it('should throw if not overridden', function() {
-      expect(cb => (new QueueStream()).processChunk({}, cb),
-        'to call the callback with error', /must be implemented/);
+      expect(
+        cb => new QueueStream().processChunk({}, cb),
+        'to call the callback with error',
+        /must be implemented/
+      );
     });
   });
 

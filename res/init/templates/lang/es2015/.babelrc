@@ -1,5 +1,12 @@
 {
   "presets": [
-    "@ls-age/babel-preset"
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": 10
+        }
+      }
+    ]
   ]
 }

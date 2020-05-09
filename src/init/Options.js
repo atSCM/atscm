@@ -11,8 +11,20 @@ export const ConfigLangs = {
   'ES2015 JavaScript': 'es2015',
   'Regular JavaScript': 'es5',
   TypeScript: 'ts',
-  'CoffeeScript (alpha)': 'coffee',
 };
+
+/**
+ * Suggests a project name based on the name of the directory 'atscm init' was called in.
+ * @param {string} dirname The current working directory's name.
+ * @return {string} The suggested name.
+ */
+function projectName(dirname) {
+  if (dirname === 'atscm') {
+    return 'atscm-project';
+  }
+
+  return dirname;
+}
 
 /**
  * Options available for the "atscm init" command.
@@ -31,7 +43,7 @@ export const ConfigLangs = {
 export const InitOptions = {
   name: new InitOption({
     message: 'Project name',
-    default: basename(process.cwd()),
+    default: projectName(basename(process.cwd())),
     validate: Validator.name,
   }),
   description: new InitOption('Project description'),
@@ -63,7 +75,8 @@ export const InitOptions = {
  * {@link InitOptions}, exported as an array. Required to run {@link Inquirer}.
  * @type {InitOption[]}
  */
-const InitOptionsAsArray = Object.keys(InitOptions)
-  .map(name => Object.assign({ name }, InitOptions[name]));
+const InitOptionsAsArray = Object.keys(InitOptions).map(name =>
+  Object.assign({ name }, InitOptions[name])
+);
 
 export default InitOptionsAsArray;

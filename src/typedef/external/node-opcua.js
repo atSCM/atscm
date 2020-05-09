@@ -35,15 +35,15 @@
  */
 
 /**
- * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/DataType_enum.js
+ * @external {node-opcua~DataType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/DataType_enum.ts
  */
 
 /**
- * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/schemas/VariantArrayType_enum.js
+ * @external {node-opcua~VariantArrayType} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-variant/source/VariantArrayType_enum.ts
  */
 
 /**
- * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/master/packages/node-opcua-constants/src/raw_status_codes.js
+ * @external {node-opcua~StatusCodes} https://github.com/node-opcua/node-opcua/blob/v0.0.60/lib/raw_status_codes.js
  */
 
 /**

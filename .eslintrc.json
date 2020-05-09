@@ -1,0 +1,32 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["@ls-age", "plugin:import/typescript", "prettier"],
+  "rules": {
+    "compat/compat": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "@ls-age",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/typescript",
+        "prettier",
+        "prettier/@typescript-eslint"
+      ],
+      "rules": {
+        "compat/compat": "off",
+        "no-use-before-define": "off",
+        "jsdoc/require-param-type": "off",
+        "jsdoc/require-returns-type": "off",
+        "@typescript-eslint/camelcase": ["error", { "properties": "never" }],
+        "@typescript-eslint/no-unused-vars": ["error", { "vars": "local", "args": "after-used" }],
+        "@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }]
+      }
+    }
+  ]
+}

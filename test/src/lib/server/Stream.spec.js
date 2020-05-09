@@ -31,20 +31,17 @@ describe('Stream', function() {
         './Session': {
           _esModule: true,
           default: class FailingSession {
-
             static create() {
               return Promise.reject(new Error('Failed'));
             }
-
           },
         },
       }).default;
 
-      (new FailingStream())
-        .on('error', err => {
-          expect(err, 'to have message', 'Failed');
-          done();
-        });
+      new FailingStream().on('error', err => {
+        expect(err, 'to have message', 'Failed');
+        done();
+      });
     });
 
     it('should close session on end', function() {
@@ -56,17 +53,17 @@ describe('Stream', function() {
         stream.end();
       });
 
-      return expect(stream, 'to yield objects satisfying', 'to have length', 0)
-        .then(() => {
-          expect(Session.close, 'was called once');
-        });
+      return expect(stream, 'to yield objects satisfying', 'to have length', 0).then(() => {
+        expect(Session.close, 'was called once');
+      });
     });
 
     it('should be endable even if session was not opened yet', function(done) {
       const stream = new Stream();
       const listener = spy();
 
-      stream.on('error', listener)
+      stream
+        .on('error', listener)
         .on('end', () => {
           expect(listener.callCount, 'to equal', 0);
           done();
@@ -81,16 +78,14 @@ describe('Stream', function() {
         './Session': {
           _esModule: true,
           default: class FailingStream extends Session {
-
             static close() {
               return Promise.reject(new Error('Failed'));
             }
-
           },
         },
       }).default;
 
-      const stream = (new FailingStream())
+      const stream = new FailingStream()
         .on('error', err => {
           expect(err, 'to have message', 'Failed');
           done();

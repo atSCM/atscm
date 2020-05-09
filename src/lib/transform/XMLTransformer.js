@@ -1,5 +1,5 @@
 import { EOL } from 'os';
-import { xml2js, js2xml } from 'xml-js';
+import { parse, render, isElement, moveToTop } from 'modify-xml';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -7,30 +7,24 @@ import SplittingTransformer from './SplittingTransformer';
  * A transformer used to transform XML documents.
  */
 export default class XMLTransformer extends SplittingTransformer {
-
   /**
    * Creates a new XMLTransformer based on some options.
-   * @param {Object} options The options to use.
+   * @param {Object} [options] The options to use.
    */
-  constructor(options) {
+  constructor(options = {}) {
     super(options);
 
     function build(object, buildOptions) {
-      if (!object.declaration) {
-        Object.assign(object, {
-          declaration: {
-            attributes: { version: '1.0', encoding: 'UTF-8', standalone: 'no' },
-          },
-        });
+      const root = object.childNodes.find(n => isElement(n));
+
+      if (root) {
+        moveToTop(root, 'metadata');
+        moveToTop(root, 'defs');
+        moveToTop(root, 'desc');
+        moveToTop(root, 'title');
       }
 
-      return js2xml(object, Object.assign(buildOptions, {
-        attributeValueFn(val) {
-          return val
-            .replace(/&(?!(amp|quot);)/g, '&amp;')
-            .replace(/</g, '&lt;');
-        },
-      }));
+      return render(object, { indent: ' '.repeat(buildOptions.spaces) });
     }
 
     // eslint-disable-next-line jsdoc/require-param
@@ -50,7 +44,7 @@ export default class XMLTransformer extends SplittingTransformer {
      */
     this._fromFilesystemBuilder = object => {
       const xml = build(object, { compact: false, spaces: 1 });
-      return xml.replace(/\r?\n/g, '\r\n');
+      return xml.replace(/\r?\n/g, '\n');
     };
   }
 
@@ -59,37 +53,43 @@ export default class XMLTransformer extends SplittingTransformer {
    * @type {function(object: Object): string}
    */
   get builder() {
-    return this.direction === TransformDirection.FromDB ?
-      this._fromDBBuilder :
-      this._fromFilesystemBuilder;
+    return this.direction === TransformDirection.FromDB
+      ? this._fromDBBuilder
+      : this._fromFilesystemBuilder;
   }
 
   /**
-   * Parses XML in a file's contents.
-   * @param {AtviseFile} file The file to process.
-   * @param {function(err: ?Error, result: ?Object)} callback Called with the parsed document or the
-   * parse error that occurred.
+   * Parses XML in a node's contents.
+   * @param {Node} node The node to process.
    */
-  decodeContents(file, callback) {
+  decodeContents(node) {
+    const rawLines =
+      this.direction === TransformDirection.FromDB ? node.value.value.toString() : node.stringValue;
+
     try {
-      callback(null, xml2js(file.contents, { compact: false }));
-    } catch (e) {
-      callback(e);
+      return parse(rawLines);
+    } catch (error) {
+      if (error.line) {
+        Object.assign(error, {
+          rawLines,
+          location: {
+            start: {
+              line: error.line + 1,
+              column: error.column + 1,
+            },
+          },
+        });
+      }
+
+      throw error;
     }
   }
 
   /**
    * Builds an XML string from an object.
    * @param {Object} object The object to encode.
-   * @param {function(err: ?Error, result: ?String)} callback Called with the resulting string or
-   * the error that occurred while building.
    */
-  encodeContents(object, callback) {
-    try {
-      callback(null, this.builder(object));
-    } catch (e) {
-      callback(e);
-    }
+  encodeContents(object) {
+    return this.builder(object);
   }
-
 }

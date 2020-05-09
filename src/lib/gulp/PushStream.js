@@ -2,23 +2,19 @@ import readline from 'readline';
 import Logger from 'gulplog';
 import ProjectConfig from '../../config/ProjectConfig';
 import Transformer, { TransformDirection } from '../transform/Transformer';
-import MappingTransformer from '../../transform/Mapping';
 import WriteStream from '../server/WriteStream';
 import CreateNodeStream from '../server/CreateNodeStream';
 import AddReferencesStream from '../server/AddReferencesStream';
-import NewlinesTransformer from '../../transform/Newlines';
 
 /**
  * A stream that transforms read {@link vinyl~File}s and pushes them to atvise server.
  */
 export default class PushStream {
-
   /**
    * Creates a new PushSteam based on a source file stream.
    * @param {Stream} srcStream The file stream to read from.
    */
   constructor(srcStream) {
-    const mappingStream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
     const createStream = new CreateNodeStream();
     const addReferencesStream = new AddReferencesStream();
     const writeStream = new WriteStream(createStream, addReferencesStream);
@@ -35,10 +31,8 @@ export default class PushStream {
     }, 1000);
 
     return Transformer.applyTransformers(
-      srcStream
-        .pipe(mappingStream),
-      ProjectConfig.useTransformers
-        .concat(new NewlinesTransformer()),
+      srcStream,
+      ProjectConfig.useTransformers,
       TransformDirection.FromFilesystem
     )
       .pipe(writeStream)
@@ -53,5 +47,4 @@ export default class PushStream {
         clearInterval(printProgress);
       });
   }
-
 }

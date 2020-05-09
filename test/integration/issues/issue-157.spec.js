@@ -2,7 +2,7 @@ import { DataType } from 'node-opcua';
 import watch from '../../../src/tasks/watch';
 import { importSetup, callScript } from '../../helpers/atscm';
 
-describe('watch task', function() {
+describe.skip('watch task', function() {
   context('when a watched node is deleted', function() {
     it('should not error', async function() {
       const nodeName = await importSetup('issue-157', 'DeleteDisplay');
@@ -15,11 +15,15 @@ describe('watch task', function() {
       const isTestNode = r => r.nodeId.value.split(nodeId).length > 1;
       const changeCalled = new Promise((resolve, reject) => {
         serverWatcher.on('change', r => {
-          if (isTestNode(r)) { reject(); }
+          if (isTestNode(r)) {
+            reject();
+          }
         });
 
         serverWatcher.on('delete', r => {
-          if (isTestNode(r)) { resolve(); }
+          if (isTestNode(r)) {
+            resolve();
+          }
         });
       });
 

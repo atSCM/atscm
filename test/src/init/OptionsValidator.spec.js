@@ -35,12 +35,20 @@ describe('InitOptionsValidator', function() {
       expect(Validator.name('node_modules'), 'to match', /is a blacklisted name/);
     });
 
+    it("should fail with 'atscm'", function() {
+      expect(Validator.name('atscm'), 'to match', /is not allowed/);
+    });
+
     it('should fail with names longer than 214 characters', function() {
       expect(Validator.name('a'.repeat(215)), 'to match', /can no longer contain more than 214/);
     });
 
     it('should work for valid package names', function() {
-      expect(Validator.name('atscm'), 'to be', true);
+      expect(Validator.name('project-name'), 'to be', true);
+    });
+
+    it('should work for scoped package names', function() {
+      expect(Validator.name('@project/name'), 'to be', true);
     });
   });
 });

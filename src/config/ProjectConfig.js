@@ -15,7 +15,6 @@ const Config = require(path).default;
  * handled.
  */
 export default class ProjectConfig extends Config {
-
   /**
    * Return the project configuration override for the given name if available.
    * @param {string} name The variable to return.
@@ -67,4 +66,51 @@ export default class ProjectConfig extends Config {
     return super.login;
   }
 
+  /**
+   * A regular expression matching all source nodes.
+   * @type {RegExp};
+   */
+  static get sourceNodeRegExp() {
+    if (!this._sourceNodeRegExp) {
+      this._sourceNodesRegExp = new RegExp(
+        `^(${this.nodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
+      );
+    }
+
+    return this._sourceNodesRegExp;
+  }
+
+  /**
+   * A regular expression matching all ignored nodes.
+   * @type {RegExp};
+   */
+  static get ignoredNodesRegExp() {
+    if (!this._ignoredNodesRegExp) {
+      this._ignoredNodesRegExp = new RegExp(
+        `^(${this.ignoreNodes.map(({ value }) => `${value.replace(/\./g, '\\.')}`).join('|')})`
+      );
+    }
+
+    return this._ignoredNodesRegExp;
+  }
+
+  /**
+   * Returns `true` for all external (not in {@link Atviseproject.nodes} or ignored by
+   * {@link Atviseproject.ignoreNodes}).
+   * @param {string} id The node id to check.
+   * @return {boolean} If the node is external.
+   */
+  static isExternal(id) {
+    return !id.match(this.sourceNodeRegExp) || !!id.match(this.ignoredNodesRegExp);
+  }
+
+  /**
+   * The connection timeout, in milliseconds. Can be overridden with the `ATSCM_PROJECT__TIMEOUT`
+   * env variable.
+   * @type {number}
+   */
+  static get timeout() {
+    const env = this._env('TIMEOUT');
+    return env ? parseInt(env, 10) : super.timeout;
+  }
 }

@@ -1,19 +1,71 @@
-defaults: &defaults
-  docker:
-    - image: circleci/node:8
+version: 2.1
+orbs:
+  atscm:
+    executors:
+      node:
+        docker:
+          - image: circleci/node:10
+    commands:
+      git-login:
+        steps:
+          - run:
+              name: Setting up git user
+              command: git config --global user.email circleci@circleci && git config --global user.name CircleCI
+      npm-login:
+        steps:
+          - run:
+              name: Logging in to npm
+              command: echo "$NPM_TOKEN" > ~/.npmrc
+      run-integration-tests:
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - run:
+              name: Running tests
+              command: |
+                ATSERVER_VERSION='<< parameters.atserver >>'
 
-git-login: &git-login
-  name: Setting up git user
-  command: git config --global user.email circleci@circleci && git config --global user.name CircleCI
+                case "$ATSERVER_VERSION" in
+                  '3.2')
+                    ATSCM_PROJECT__PORT__OPC=4840
+                    ;;
+                  '3.3')
+                    ATSCM_PROJECT__PORT__OPC=4841
+                    ;;
+                  '3.4')
+                    ATSCM_PROJECT__PORT__OPC=4842
+                    ;;
+                  *)
+                    echo "Invalid atserver version $ATSERVER_VERSION"
+                    exit 1;
+                esac
 
-npm-login: &npm-login
-  name: Logging in to npm
-  command: echo "$NPM_TOKEN" > ~/.npmrc
+                echo "Testing against atserver $ATSERVER_VERSION.x (at port $ATSCM_PROJECT__PORT__OPC)"
+                npm run test:base -- --reporter mocha-circleci-reporter "test/integration/**/*.spec.js"
+              environment:
+                NODE_ENV: test
+                ATSCM_PROJECT__TIMEOUT: '20000'
+                MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+    jobs:
+      integration:
+        executor: node
+        parameters:
+          atserver:
+            type: string
+        steps:
+          - attach_workspace:
+              at: .
+          - run-integration-tests:
+              atserver: << parameters.atserver >>
+          - store_test_results:
+              path: ~/reports
+          - store_artifacts:
+              path: ~/reports
 
-version: 2
 jobs:
   install-deps:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - restore_cache:
@@ -22,8 +74,7 @@ jobs:
       - run:
           name: Installing npm dependencies
           command: npm install
-      - run:
-          <<: *git-login
+      - atscm/git-login
       - run:
           name: Handling package-lock changes
           command: |
@@ -50,8 +101,19 @@ jobs:
           paths:
             - .
 
+  start-testserver:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run:
+          name: Login to google cloud
+          command: echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+      - run:
+          name: Starting atserver in google cloud
+          command: gcloud compute instances start instance-1 --project=atscm-ci --zone=us-central1-f
+
   build:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -63,36 +125,57 @@ jobs:
           paths:
             - out
 
-  build-docs:
-    <<: *defaults
+  docs:
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Creating API documentation
           command: npm run docs
+      - run:
+          name: Checking documentation for broken links
+          command: npm run test:docs
+      - run:
+          name: Check documentation coverage
+          command: npm run docs:coverage
+          when: always
       - persist_to_workspace:
           root: .
           paths:
             - docs/api
 
   lint-source:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Linting source files
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
+      - run:
+          name: Checking formatting
+          command: npm run format -- --check
       - store_test_results:
           path: ~/reports
-          when: always
       - store_artifacts:
           path: ~/reports
-          when: always
+
+  types:
+    executor: atscm/node
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build type declaration files
+          command: npm run types
+      - persist_to_workspace:
+          root: .
+          paths:
+            - out/types
 
   unit-tests:
-    <<: *defaults
+    executor: atscm/node
     parallelism: 4
     steps:
       - attach_workspace:
@@ -112,13 +195,11 @@ jobs:
             - coverage
       - store_test_results:
           path: ~/reports
-          when: always
       - store_artifacts:
           path: ~/reports
-          when: always
 
   test-coverage:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - attach_workspace:
           at: .
@@ -130,92 +211,44 @@ jobs:
           command: npx codecov
       - store_artifacts:
           path: coverage
-          when: always
-
-  integration-tests:
-    <<: *defaults
-    parallelism: 2
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Printing test files to run
-          command: circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings
-      - run:
-          name: Running tests
-          command: npm run test:base -- --reporter mocha-circleci-reporter $(circleci tests glob "test/integration/**/*.spec.js" | circleci tests split --split-by=timings)
-          environment:
-            NODE_ENV: test
-            MOCHA_FILE: ../reports/integration-$CIRCLE_NODE_INDEX.xml
-      - store_test_results:
-          path: ~/reports
-          when: always
-      - store_artifacts:
-          path: ~/reports
-          when: always
-
-  test-docs:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Checking documentation for broken links
-          command: npm run test:docs
-      - run:
-          name: Check documentation coverage
-          command: npm run docs:coverage
-          when: always
-
-  update-lockfile:
-    <<: *defaults
-    steps:
-      - checkout
-      - add_ssh_keys
-      - attach_workspace:
-          at: .
-      - run:
-          <<: *git-login
-      - run:
-          name: Updating lockfile
-          command: git push origin $CIRCLE_BRANCH
 
   deploy:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - add_ssh_keys
       - attach_workspace:
           at: .
-      - run:
-          <<: *git-login
-      - run:
-          <<: *npm-login
+      - atscm/git-login
+      - atscm/npm-login
       - run:
           name: Deploying changes
-          command:
-            npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
+          command: npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
 
   update-hosted-docs:
-    <<: *defaults
+    executor: atscm/node
     steps:
       - checkout
       - add_ssh_keys
       - attach_workspace:
           at: .
+      - atscm/git-login
       - run:
-          <<: *git-login
+          name: Build organization page
+          command: curl -X POST https://circleci.com/api/v1.1/project/github/atSCM/docs/build?circle-token=${CIRCLE_API_USER_TOKEN}
       - run:
           name: Updating hosted API documentation
           command: |
-            version=$(node -e "console.log(require('./package.json').version)")
-            git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
-            cp -r docs/api/* ../pages
-            cd ../pages
-            git add .
-            git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
-            git push origin gh-pages
-            cd ../project
+            if [ "$CIRCLE_BRANCH" = "master" ]; then
+              version=$(node -e "console.log(require('./package.json').version)")
+              git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
+              cp -r docs/api/* ../pages
+              cd ../pages
+              git add .
+              git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
+              git push origin gh-pages
+              cd ../project
+            fi
 
 workflows:
   version: 2
@@ -223,45 +256,57 @@ workflows:
   test-and-deploy:
     jobs:
       - install-deps
+      - start-testserver:
+          context: atscm
       - build:
           requires:
             - install-deps
-      - build-docs:
+      - docs:
           requires:
             - install-deps
       - lint-source:
+          requires:
+            - build
+      - types:
           requires:
             - install-deps
       - unit-tests:
           requires:
             - install-deps
+            - start-testserver
       - test-coverage:
           requires:
             - unit-tests
-      - integration-tests:
+      - atscm/integration:
+          name: integration-32x
+          atserver: '3.2'
           requires:
             - build
-      - test-docs:
+            - start-testserver
+      - atscm/integration:
+          name: integration-33x
+          atserver: '3.3'
           requires:
-            - build-docs
-      - update-lockfile:
+            - integration-32x
+      - atscm/integration:
+          name: integration-34x
+          atserver: '3.4'
           requires:
-            - lint-source
-            - test-coverage
-            - integration-tests
-            - test-docs
-          filters:
-            branches:
-              only: /greenkeeper\//
+            - integration-33x
       - deploy:
           requires:
             - lint-source
+            - types
             - test-coverage
-            - integration-tests
-            - test-docs
+            - integration-32x
+            - integration-33x
+            - integration-34x
+            - docs
+          filters:
+            branches:
+              only:
+                - master
+                - beta
       - update-hosted-docs:
           requires:
             - deploy
-          filters:
-            branches:
-              only: master

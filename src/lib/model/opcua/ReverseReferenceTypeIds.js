@@ -1,4 +1,4 @@
-import { ReferenceTypeIds } from 'node-opcua';
+import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
 import { reverse } from '../../helpers/Object';
 
 /**

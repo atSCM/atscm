@@ -1,5 +1,14 @@
-import { DataType, NodeId, StatusCodes, Variant, VariantArrayType, NodeClass, LocalizedText,
-  QualifiedName, DataValue } from 'node-opcua';
+import {
+  DataType,
+  NodeId,
+  StatusCodes,
+  Variant,
+  VariantArrayType,
+  NodeClass,
+  LocalizedText,
+  QualifiedName,
+  DataValue,
+} from 'node-opcua';
 import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
 import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 
@@ -133,22 +142,22 @@ export const samples = [
     }),
     dataType: DataType.DiagnosticInfo,
   },
-]
-  .map(s => Object.assign({ nodeClass: NodeClass.Variable }, s));
+].map(s => Object.assign({ nodeClass: NodeClass.Variable }, s));
 
-export const scalar = samples
-  .map(s => Object.assign({ arrayType: VariantArrayType.Scalar }, s));
+export const scalar = samples.map(s => Object.assign({ arrayType: VariantArrayType.Scalar }, s));
 
-export const array = samples
-  .map(s => Object.assign({}, s, {
+export const array = samples.map(s =>
+  Object.assign({}, s, {
     arrayType: VariantArrayType.Array,
     value: [s.value, s.value],
-  }));
+  })
+);
 
-export const matrix = array
-  .map(s => Object.assign({}, s, {
+export const matrix = array.map(s =>
+  Object.assign({}, s, {
     arrayType: VariantArrayType.Matrix,
     value: [s.value, s.value],
-  }));
+  })
+);
 
 export const all = [...scalar, ...array, ...matrix];

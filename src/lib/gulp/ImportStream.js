@@ -1,4 +1,4 @@
-import { DataType } from 'node-opcua';
+import { DataType } from 'node-opcua/lib/datamodel/variant';
 import Logger from 'gulplog';
 import NodeId from '../model/opcua/NodeId';
 import CallMethodStream from '../server/scripts/CallMethodStream';
@@ -13,7 +13,6 @@ const scopeId = new NodeId(NodeId.NodeIdType.NUMERIC, 0, 0);
  * A stream that imports xml files in parallel.
  */
 export default class ImportStream extends CallMethodStream {
-
   /**
    * Id of the `importNodes` OPC-UA method.
    * @type {NodeId}
@@ -28,6 +27,7 @@ export default class ImportStream extends CallMethodStream {
    * @return {node-opcua~Variant[]} The arguments for the `importNodes` method:
    *  - The import scope (which is set to be absolute)
    *  - The XML code (read from *file*)
+   * .
    */
   inputArguments(file) {
     return [
@@ -69,5 +69,4 @@ export default class ImportStream extends CallMethodStream {
       callback(new Error('Import failed'));
     }
   }
-
 }

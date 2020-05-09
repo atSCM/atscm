@@ -1,7 +1,13 @@
 import { readFile } from 'fs';
 import { dirname } from 'path';
-import { NodeClass, DataType, VariantArrayType, resolveNodeId, Variant, LocalizedText, StatusCodes,
-  QualifiedName, DataValue, ReferenceTypeIds } from 'node-opcua';
+import { NodeClass } from 'node-opcua/lib/datamodel/nodeclass';
+import { DataType, VariantArrayType, Variant } from 'node-opcua/lib/datamodel/variant';
+import { resolveNodeId } from 'node-opcua/lib/datamodel/nodeid';
+import { LocalizedText } from 'node-opcua/lib/datamodel/localized_text';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
+import { QualifiedName } from 'node-opcua/lib/datamodel/qualified_name';
+import { DataValue } from 'node-opcua/lib/datamodel/datavalue';
+import { ReferenceTypeIds } from 'node-opcua/lib/opcua_node_ids';
 import { ExpandedNodeId } from 'node-opcua/lib/datamodel/expanded_nodeid';
 import { DiagnosticInfo } from 'node-opcua/lib/datamodel/diagnostic_info';
 import File from 'vinyl';
@@ -14,19 +20,25 @@ import AtviseTypes, { AtviseResourceType } from './Types';
  * A map of AtviseTypes against their definition id's value.
  * @type {Map<String, AtivseType>}
  */
-const AtviseTypesByValue = AtviseTypes
-  .reduce((result, type) => Object.assign(result, {
-    [type.typeDefinition.value]: type,
-  }), {});
+const AtviseTypesByValue = AtviseTypes.reduce(
+  (result, type) =>
+    Object.assign(result, {
+      [type.typeDefinition.value]: type,
+    }),
+  {}
+);
 
 /**
  * A map of AtviseTypes against their identifiers.
  * @type {Map<String, AtivseType>}
  */
-const AtviseTypesByIdentifier = AtviseTypes
-  .reduce((result, type) => Object.assign(result, {
-    [type.identifier]: type,
-  }), {});
+const AtviseTypesByIdentifier = AtviseTypes.reduce(
+  (result, type) =>
+    Object.assign(result, {
+      [type.identifier]: type,
+    }),
+  {}
+);
 
 /**
  * A map providing shorter extensions for data types
@@ -111,8 +123,14 @@ const toRawValue = {
   [DataType.QualifiedName]: ({ namespaceIndex, name }) => ({ namespaceIndex, name }),
   [DataType.LocalizedText]: ({ text, locale }) => ({ text, locale }),
   [DataType.DataValue]: value => {
-    const options = pick(value, ['value', 'statusCode', 'sourceTimestamp', 'sourcePicoseconds',
-      'serverTimestamp', 'serverPicoseconds']);
+    const options = pick(value, [
+      'value',
+      'statusCode',
+      'sourceTimestamp',
+      'sourcePicoseconds',
+      'serverTimestamp',
+      'serverPicoseconds',
+    ]);
 
     mapPropertyAs(toRawValue, options, 'value', DataType.Variant);
     mapPropertyAs(toRawValue, options, 'statusCode', DataType.StatusCode);
@@ -123,12 +141,20 @@ const toRawValue = {
   [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => ({
     dataType,
     arrayType,
-    value: getRawValue(value, dataType, arrayType), // eslint-disable-line no-use-before-define
+    // eslint-disable-next-line no-use-before-define
+    value: getRawValue(value, dataType, arrayType),
     dimensions,
   }),
   [DataType.DiagnosticInfo]: info => {
-    const options = pick(info, ['namespaceUri', 'symbolicId', 'locale', 'localizedText',
-      'additionalInfo', 'innerStatusCode', 'innerDiagnosticInfo']);
+    const options = pick(info, [
+      'namespaceUri',
+      'symbolicId',
+      'locale',
+      'localizedText',
+      'additionalInfo',
+      'innerStatusCode',
+      'innerDiagnosticInfo',
+    ]);
 
     mapPropertyAs(toRawValue, options, 'innerStatusCode', DataType.StatusCode);
     mapPropertyAs(toRawValue, options, 'innerDiagnosticInfo', DataType.DiagnosticInfo);
@@ -205,7 +231,9 @@ const decodeRawValue = {
 const toNodeValue = {
   [DataType.DateTime]: s => new Date(s),
   [DataType.ByteString]: b => {
-    if (b instanceof Buffer) { return b; }
+    if (b instanceof Buffer) {
+      return b;
+    }
 
     return Buffer.from(b.data, 'binary');
   },
@@ -218,7 +246,9 @@ const toNodeValue = {
 
     const { identifierType, namespace, namespaceUri, serverIndex } = defs.reduce((opts, def) => {
       const match = def.match(/^([^:]+):(.*)/);
-      if (!match) { return opts; }
+      if (!match) {
+        return opts;
+      }
 
       let [key, val] = match.slice(1); // eslint-disable-line prefer-const
 
@@ -245,12 +275,13 @@ const toNodeValue = {
 
     return new DataValue(opts);
   },
-  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) => new Variant({
-    dataType,
-    arrayType: VariantArrayType[arrayType],
-    value,
-    dimensions,
-  }),
+  [DataType.Variant]: ({ dataType, arrayType, value, dimensions }) =>
+    new Variant({
+      dataType,
+      arrayType: VariantArrayType[arrayType],
+      value,
+      dimensions,
+    }),
   [DataType.DiagnosticInfo]: options => {
     const opts = options;
 
@@ -322,7 +353,6 @@ const ConfigFileRegexp = /^\.((Object|Variable)(Type)?|Method|View|(Reference|Da
  * FIXME: Additional properties not showing in API docs.
  */
 export default class AtviseFile extends File {
-
   /**
    * Returns a storage path for a {@link ReadStream.ReadResult}.
    * @param {ReadStream.ReadResult} readResult The read result to get a path for.
@@ -389,9 +419,8 @@ export default class AtviseFile extends File {
     }
 
     const stringify = a => (a.toJSON ? a.toJSON() : JSON.stringify(a, null, '  '));
-    const stringified = (typeof rawValue === 'object') ?
-      stringify(rawValue) :
-      rawValue.toString().trim();
+    const stringified =
+      typeof rawValue === 'object' ? stringify(rawValue) : rawValue.toString().trim();
 
     return Buffer.from(stringified);
   }
@@ -412,9 +441,10 @@ export default class AtviseFile extends File {
       return buffer;
     }
 
-    const rawValue = arrayType === VariantArrayType.Scalar ?
-      (decodeRawValue[dataType] || asIs)(buffer) :
-      JSON.parse(buffer.toString());
+    const rawValue =
+      arrayType === VariantArrayType.Scalar
+        ? (decodeRawValue[dataType] || asIs)(buffer)
+        : JSON.parse(buffer.toString());
 
     return getNodeValue(rawValue, dataType, arrayType);
   }
@@ -445,11 +475,17 @@ export default class AtviseFile extends File {
 
     return new AtviseFile({
       path: AtviseFile.pathForReadResult(readResult),
-      contents: value ?
-        AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) : // Variables
-        Buffer.from(JSON.stringify({
-          references: sortReferences(references),
-        }, null, '  ')), // Objects, types, ...
+      contents: value
+        ? AtviseFile.encodeValue(value, value.$dataType, value.$arrayType) // Variables
+        : Buffer.from(
+            JSON.stringify(
+              {
+                references: sortReferences(references),
+              },
+              null,
+              '  '
+            )
+          ), // Objects, types, ...
       _nodeClass: nodeClass,
       _dataType: value && value.$dataType,
       _arrayType: value && value.$arrayType,
@@ -463,7 +499,8 @@ export default class AtviseFile extends File {
    * {@link AtviseFile#typeDefinition}. **Never call this method directly.**.
    */
   _getMetadata() {
-    if (this.stem[0] === '.') { // Got non-variable node
+    if (this.stem[0] === '.') {
+      // Got non-variable node
       /**
        * The node's class.
        * @type {node-opcua~NodeClass}
@@ -477,10 +514,13 @@ export default class AtviseFile extends File {
        * `'HasTypeDefinition'`.
        * @type {Map<String, NodeId[]>}
        */
-      this._references = Object.entries(references)
-        .reduce((result, [type, refs]) => Object.assign(result, {
-          [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
-        }), {});
+      this._references = Object.entries(references).reduce(
+        (result, [type, refs]) =>
+          Object.assign(result, {
+            [type]: Array.isArray(refs) ? refs.map(v => new NodeId(v)) : new NodeId(refs),
+          }),
+        {}
+      );
 
       return;
     }
@@ -520,32 +560,45 @@ export default class AtviseFile extends File {
       }
     }
 
-    const complete = () => this._dataType !== undefined &&
-      this._references.HasTypeDefinition !== undefined;
+    const complete = () =>
+      this._dataType !== undefined && this._references.HasTypeDefinition !== undefined;
 
     // Handle array types
-    ifLastExtensionMatches(ext => ext === 'array', () => {
-      this._arrayType = VariantArrayType.Array;
-    });
+    ifLastExtensionMatches(
+      ext => ext === 'array',
+      () => {
+        this._arrayType = VariantArrayType.Array;
+      }
+    );
 
-    ifLastExtensionMatches(ext => ext === 'matrix', () => {
-      this._arrayType = VariantArrayType.Matrix;
-    });
+    ifLastExtensionMatches(
+      ext => ext === 'matrix',
+      () => {
+        this._arrayType = VariantArrayType.Matrix;
+      }
+    );
 
-    ifLastExtensionMatches(ext => typeExtensions.includes(ext), ext => {
-      /**
-       * The node's stored {@link node-opcua~DataType}.
-       * @type {?node-opcua~DataType}
-       */
-      this._dataType = DataType[types[typeExtensions.indexOf(ext)]];
-    });
+    ifLastExtensionMatches(
+      ext => typeExtensions.includes(ext),
+      ext => {
+        /**
+         * The node's stored {@link node-opcua~DataType}.
+         * @type {?node-opcua~DataType}
+         */
+        this._dataType = DataType[types[typeExtensions.indexOf(ext)]];
+      }
+    );
 
     // Handle wrapped data types (e.g. "bool" for DataType.Boolean)
-    ifLastExtensionMatches(ext => DataTypeForExtension[ext], ext => {
-      this._dataType = DataType[DataTypeForExtension[ext]];
-    });
+    ifLastExtensionMatches(
+      ext => DataTypeForExtension[ext],
+      ext => {
+        this._dataType = DataType[DataTypeForExtension[ext]];
+      }
+    );
 
-    if (extensions.length === 0) { // Got variable
+    if (extensions.length === 0) {
+      // Got variable
       /**
        * The node's stored type definition.
        * @type {?node-opcua~NodeId}
@@ -553,14 +606,20 @@ export default class AtviseFile extends File {
       this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 62, 0)];
     }
 
-    ifLastExtensionMatches(ext => ext === 'prop', () => {
-      this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
-      this._references.toParent = ReferenceTypeIds.HasProperty;
-    });
+    ifLastExtensionMatches(
+      ext => ext === 'prop',
+      () => {
+        this._references.HasTypeDefinition = [new NodeId(NodeId.NodeIdType.NUMERIC, 68, 0)];
+        this._references.toParent = ReferenceTypeIds.HasProperty;
+      }
+    );
 
-    ifLastExtensionMatches(ext => ext === 'var', () => {
-      this._references.HasTypeDefinition = [new NodeId('Custom.VarResourceType')];
-    });
+    ifLastExtensionMatches(
+      ext => ext === 'var',
+      () => {
+        this._references.HasTypeDefinition = [new NodeId('Custom.VarResourceType')];
+      }
+    );
 
     if (!complete()) {
       // Handle atvise types
@@ -823,5 +882,4 @@ export default class AtviseFile extends File {
       }
     });
   }
-
 }

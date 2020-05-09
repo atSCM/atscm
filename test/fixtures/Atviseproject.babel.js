@@ -2,7 +2,6 @@ import Atviseproject from '../../src/lib/config/Atviseproject';
 import NodeId from '../../src/lib/model/opcua/NodeId';
 
 export default class TestProject extends Atviseproject {
-
   static get host() {
     return 'localhost';
   }
@@ -22,9 +21,6 @@ export default class TestProject extends Atviseproject {
   }
 
   static get nodesToWatch() {
-    return [
-      new NodeId('AGENT.DISPLAYS.atSCM.watch'),
-    ];
+    return [new NodeId('AGENT.DISPLAYS.atSCM.watch')];
   }
-
 }

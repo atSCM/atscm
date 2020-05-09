@@ -5,4 +5,5 @@ export { default as Transformer, TransformDirection } from './lib/transform/Tran
 export { default as PartialTransformer } from './lib/transform/PartialTransformer';
 export { default as SplittingTransformer } from './lib/transform/SplittingTransformer';
 export { default as DisplayTransformer } from './transform/DisplayTransformer';
-export { default as ScriptTransformer } from './transform/ScriptTransformer';
+export * from './transform/ScriptTransformer';
+export { default as NewlinesTransformer } from './transform/Newlines';

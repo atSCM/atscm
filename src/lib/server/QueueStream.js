@@ -1,7 +1,7 @@
 /* Needed as long as https://github.com/gajus/eslint-plugin-jsdoc/issues/56 is open */
 /* eslint-disable jsdoc/check-param-names */
 
-import { StatusCodes } from 'node-opcua';
+import { StatusCodes } from 'node-opcua/lib/datamodel/opcua_status_code';
 import Logger from 'gulplog';
 import Stream from './Stream';
 
@@ -10,7 +10,6 @@ import Stream from './Stream';
  * @abstract
  */
 export default class QueueStream extends Stream {
-
   /**
    * Creates a new QueueStream with the given options.
    * @param {Object} [options] The options to use.
@@ -48,7 +47,7 @@ export default class QueueStream extends Stream {
      * The timestamp of the date when the stream was created.
      * @type {Number}
      */
-    this._start = (new Date()).getTime();
+    this._start = new Date().getTime();
 
     this.on('processed-chunk', () => {
       if (!this.queueEmpty) {
@@ -88,7 +87,7 @@ export default class QueueStream extends Stream {
    * @type {number}
    */
   get opsPerSecond() {
-    return (this._processed / (((new Date()).getTime() - this._start) / 1000)) || 0;
+    return this._processed / ((new Date().getTime() - this._start) / 1000) || 0;
   }
 
   /**
@@ -98,7 +97,8 @@ export default class QueueStream extends Stream {
    * @return {string} The error message to use.
    * @abstract
    */
-  processErrorMessage(chunk) { // eslint-disable-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
+  processErrorMessage(chunk) {
     throw new Error('QueueStream#processErrorMessage must be implemented by all subclasses');
   }
 
@@ -155,7 +155,8 @@ export default class QueueStream extends Stream {
    * }
    * @abstract
    */
-  processChunk(chunk, handleErrors) { // eslint-disable-line no-unused-vars
+  processChunk(chunk, handleErrors) {
+    // eslint-disable-line no-unused-vars
     handleErrors(new Error('QueueStream#processChunk must be implemented by all subclasses'));
   }
 
@@ -168,7 +169,7 @@ export default class QueueStream extends Stream {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
-      const finished = (error) => {
+      const finished = error => {
         this._processing--;
         this._processed++;
         this.emit('processed-chunk', chunk, error);
@@ -245,5 +246,4 @@ export default class QueueStream extends Stream {
       super._flush(callback);
     }
   }
-
 }

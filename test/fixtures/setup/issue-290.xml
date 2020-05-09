@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2019-04-09 10:20:58 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=SYSTEM" BrowseName="1:SYSTEM">
+		<DisplayName Locale="en">SYSTEM</DisplayName>
+		<Description Locale="en">SYSTEM</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">i=85</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=SYSTEM.SECURITY-Test" ExportedBrowseName="1:SECURITY-Test" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test" BrowseName="1:SECURITY-Test">
+		<DisplayName Locale="en">SECURITY-Test</DisplayName>
+		<Description Locale="en">SECURITY-Test</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS" BrowseName="1:USERS">
+		<DisplayName Locale="en">USERS</DisplayName>
+		<Description Locale="en">USERS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser" BrowseName="1:CustomUser">
+		<DisplayName Locale="en">CustomUser</DisplayName>
+		<Description Locale="en">CustomUser</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.User</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.description" BrowseName="1:description" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">description</DisplayName>
+		<Description Locale="en">description</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>A custom user</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.language" BrowseName="1:language" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">language</DisplayName>
+		<Description Locale="en">language</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>en</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.name" BrowseName="1:name" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">name</DisplayName>
+		<Description Locale="en">name</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>Custom user</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.password" BrowseName="1:password" DataType="ByteString" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">password</DisplayName>
+		<Description Locale="en">password</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:ByteString>k+DGj+E13MAcLHhxAdkCKg==</uax:ByteString>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.Additional" BrowseName="1:Additional" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Additional</DisplayName>
+		<Description Locale="en">Additional</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>info</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser.IsCool" BrowseName="1:IsCool" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">IsCool</DisplayName>
+		<Description Locale="en">IsCool</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.RIGHTS" BrowseName="1:RIGHTS">
+		<DisplayName Locale="en">RIGHTS</DisplayName>
+		<Description Locale="en">RIGHTS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.RIGHTS.USER" BrowseName="1:USER">
+		<DisplayName Locale="en">USER</DisplayName>
+		<Description Locale="en">USER</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.RIGHTS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.RIGHTS.USER.Test" BrowseName="1:Test">
+		<DisplayName Locale="en">Test</DisplayName>
+		<Description Locale="en">Test</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.RIGHTS.USER</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.GROUPS" BrowseName="1:GROUPS">
+		<DisplayName Locale="en">GROUPS</DisplayName>
+		<Description Locale="en">GROUPS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=SYSTEM.SECURITY-Test.GROUPS.CustomGroup" BrowseName="1:CustomGroup">
+		<DisplayName Locale="en">CustomGroup</DisplayName>
+		<Description Locale="en">CustomGroup</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.GROUPS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Group</Reference>
+			<Reference ReferenceType="Organizes">ns=1;s=SYSTEM.SECURITY-Test.USERS.CustomUser</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=SYSTEM.SECURITY-Test.GROUPS.CustomGroup.description" BrowseName="1:description" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">description</DisplayName>
+		<Description Locale="en">description</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=SYSTEM.SECURITY-Test.GROUPS.CustomGroup</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>My custom group</uax:String>
+		</Value>
+	</UAVariable>
+</UANodeSet>

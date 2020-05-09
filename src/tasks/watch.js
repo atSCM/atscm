@@ -1,21 +1,22 @@
 import { join } from 'path';
-import { src } from 'gulp';
 import sane from 'sane';
 import browserSync from 'browser-sync';
 import Logger from 'gulplog';
-import { obj as createStream } from 'through2';
-import PushStream from '../lib/gulp/PushStream';
-import PullStream from '../lib/gulp/PullStream';
-import AtviseFile from '../lib/server/AtviseFile';
 import ServerWatcher from '../lib/server/Watcher';
+import { delay } from '../lib/helpers/async';
+import { handleTaskError } from '../lib/helpers/tasks';
 import ProjectConfig from '../config/ProjectConfig';
 import { validateDirectoryExists } from '../util/fs';
+import { setupContext } from '../hooks/hooks';
+import checkAtserver from '../hooks/check-atserver';
+import checkServerscripts from '../hooks/check-serverscripts';
+import { performPull } from './pull';
+import { performPush } from './push';
 
 /**
  * The task executed when running `atscm watch`.
  */
 export class WatchTask {
-
   /**
    * Creates a new watch task instance. Also creates a new Browsersync instance.
    */
@@ -91,10 +92,14 @@ export class WatchTask {
 
         throw err;
       })
-      .then(() => this._waitForWatcher(sane(this.directoryToWatch, {
-        glob: '**/*.*',
-        watchman: process.platform === 'darwin',
-      })));
+      .then(() =>
+        this._waitForWatcher(
+          sane(this.directoryToWatch, {
+            glob: '**/*.*',
+            watchman: process.platform === 'darwin',
+          })
+        )
+      );
   }
 
   /**
@@ -112,12 +117,17 @@ export class WatchTask {
    * @see https://browsersync.io/docs/options
    */
   initBrowserSync(options) {
-    this.browserSyncInstance.init(Object.assign({
-      proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
-      ws: true,
-      // logLevel: 'debug', FIXME: Use log level specified in cli options
-      // logPrefix: '',
-    }, options));
+    this.browserSyncInstance.init(
+      Object.assign(
+        {
+          proxy: `${ProjectConfig.host}:${ProjectConfig.port.http}`,
+          ws: true,
+          // logLevel: 'debug', FIXME: Use log level specified in cli options
+          // logPrefix: '',
+        },
+        options
+      )
+    );
 
     /* bs.logger.logOne = function(args, msg, level, unprefixed) {
       args = args.slice(2);
@@ -139,33 +149,43 @@ export class WatchTask {
   }
 
   /**
+   * Prints an error that happened while handling a change.
+   * @param {string} contextMessage Describes the currently run action.
+   * @param {Error} err The error that occured.
+   */
+  printTaskError(contextMessage, err) {
+    try {
+      handleTaskError(err);
+    } catch (refined) {
+      Logger.error(contextMessage, refined.message, refined.stack);
+    }
+  }
+
+  /**
    * Handles a file change.
    * @param {string} path The path of the file that changed.
    * @param {string} root The root of the file that changed.
-   * @param {fs~Stats} stats The stats of the file that changed.
    * @return {Promise<boolean>} Resolved with `true` if the change triggered a push operation,
    * with `false` otherwise.
    */
-  handleFileChange(path, root, stats) {
-    return new Promise(resolve => {
-      if (!this._pulling && AtviseFile.normalizeMtime(stats.mtime) > this._lastPull) {
-        this._pushing = true;
-        Logger.info(path, 'changed');
+  handleFileChange(path, root) {
+    if (this._handlingChange) {
+      Logger.debug('Ignoring', path, 'changed');
+      return Promise.resolve(false);
+    }
 
-        const source = src(join(root, path), { base: root });
+    this._handlingChange = true;
+    Logger.info(path, 'changed');
 
-        (new PushStream(source))
-          .on('data', file => (this._lastPushed = file.nodeId.toString()))
-          .on('end', () => {
-            this._pushing = false;
-            this.browserSyncInstance.reload();
+    return performPush(join(root, path), { singleNode: true })
+      .catch(err => this.printTaskError('Push failed', err))
+      .then(async () => {
+        this.browserSyncInstance.reload();
 
-            resolve(true);
-          });
-      } else {
-        resolve(false);
-      }
-    });
+        await delay(500);
+
+        this._handlingChange = false;
+      });
   }
 
   /**
@@ -175,33 +195,23 @@ export class WatchTask {
    * with `false` otherwise.
    */
   handleServerChange(readResult) {
-    return new Promise(resolve => {
-      if (!this._pushing) {
-        if (readResult.nodeId.toString() !== this._lastPushed) {
-          this._pulling = true;
-          Logger.info(readResult.nodeId.toString(), 'changed');
+    if (this._handlingChange) {
+      Logger.debug('Ignoring', readResult.nodeId.value, 'changed');
+      return Promise.resolve(false);
+    }
 
-          const readStream = createStream();
-          readStream.write(readResult);
-          readStream.end();
+    this._handlingChange = true;
+    Logger.info(readResult.nodeId.value, 'changed');
 
-          (new PullStream(readStream))
-            .on('end', () => {
-              this._pulling = false;
-              this._lastPull = AtviseFile.normalizeMtime(readResult.mtime);
-              this.browserSyncInstance.reload();
+    return performPull([readResult.nodeId], { recursive: false })
+      .catch(err => this.printTaskError('Pull failed', err))
+      .then(async () => {
+        this.browserSyncInstance.reload();
 
-              resolve(true);
-            });
-        } else {
-          this._lastPushed = null;
+        await delay(500);
 
-          resolve(false);
-        }
-      } else {
-        resolve(false);
-      }
-    });
+        this._handlingChange = false;
+      });
   }
 
   /**
@@ -212,12 +222,9 @@ export class WatchTask {
    * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
    * all watchers are set up and Browsersync was initialized.
    */
-  run({ open = true } = { open: true }) {
-    return Promise.all([
-      this.startFileWatcher(),
-      this.startServerWatcher(),
-    ])
-      .then(([fileWatcher, serverWatcher]) => {
+  run({ open = true } = {}) {
+    return Promise.all([this.startFileWatcher(), this.startServerWatcher()]).then(
+      ([fileWatcher, serverWatcher]) => {
         this.browserSyncInstance.emitter.on('service:running', () => {
           Logger.info('Watching for changes...');
           Logger.debug('Press Ctrl-C to exit');
@@ -229,9 +236,9 @@ export class WatchTask {
         this.initBrowserSync({ open });
 
         return { fileWatcher, serverWatcher };
-      });
+      }
+    );
   }
-
 }
 
 /**
@@ -241,8 +248,12 @@ export class WatchTask {
  * @return {Promise<{ serverWatcher: Watcher, fileWatcher: sane~Watcher }, Error>} Fulfilled once
  * all watchers are set up and Browsersync was initialized.
  */
-export default function watch(options) {
-  return (new WatchTask()).run(options);
+export default async function watch(options) {
+  const context = setupContext();
+  await checkAtserver(context);
+  await checkServerscripts(context);
+
+  return new WatchTask().run(options);
 }
 
 watch.description = 'Watch local files and atvise server nodes to trigger pull/push on change';

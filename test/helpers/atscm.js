@@ -1,43 +1,32 @@
-import { join } from 'path';
+import { join, sep } from 'path';
 import replace from 'buffer-replace';
 import promisify from 'stream-to-promise';
 import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
-import { src, dest } from 'gulp';
+import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { xml2js } from 'xml-js';
+import { parse, removeChildren, isElement, attributeValues, render } from 'modify-xml';
 import expect from '../expect';
-import PushStream from '../../src/lib/gulp/PushStream';
-import NodeStream from '../../src/lib/server/NodeStream';
-import ReadStream from '../../src/lib/server/ReadStream';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
 import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
+import dest from '../../src/lib/gulp/dest';
+import { performPush } from '../../src/tasks/push';
 import { id, tmpDir, readFile } from './util';
 
 export function pull(nodes, destination) {
-  const PullStream = proxyquire('../../src/lib/gulp/PullStream', {
-    gulp: {
-      dest() {
-        return dest(destination);
-      },
+  const { performPull } = proxyquire('../../src/tasks/pull', {
+    '../lib/gulp/dest': {
+      default: () => dest(destination),
     },
-  }).default;
+  });
 
-  return promisify(
-    new PullStream(
-      (new NodeStream(nodes.map(n => new NodeId(n))))
-        .pipe(new ReadStream())
-    )
-  );
+  return performPull(nodes.map(n => new NodeId(n)));
 }
 
 export function push(source) {
-  return promisify(new PushStream(src(
-    [`${source}/**/*`, `!${source}/**/.*.rc`],
-    { base: source, dot: true },
-  )));
+  return performPush(source);
 }
 
 export const setupDir = join(__dirname, '../fixtures/setup');
@@ -46,35 +35,51 @@ export function setupPath(name) {
   return join(setupDir, `${name}.xml`);
 }
 
-export function importSetup(name, ...rename) {
+export async function importSetup(name, ...rename) {
   const uniqueId = id();
-  const nodeNames = rename
-    .map(r => {
-      const parts = r.split('.');
+  const nodeNames = rename.map(r => {
+    const parts = r.split('.');
 
-      return [`${parts[0]}-${uniqueId}`, ...(parts.slice(1))].join('.');
-    });
-
-  const createReplaceStream = (original, renamed) => createTransformStream((file, _, callback) => {
-    callback(null, Object.assign(file, {
-      contents: replace(file.contents, original, renamed),
-    }));
+    return [`${parts[0]}-${uniqueId}`, ...parts.slice(1)].join('.');
   });
 
-  const sourceStream = src(setupPath(name));
-  const importStream = new ImportStream();
+  const createReplaceStream = (original, renamed) =>
+    createTransformStream((file, _, callback) => {
+      callback(
+        null,
+        Object.assign(file, {
+          contents: replace(file.contents, original, renamed),
+        })
+      );
+    });
 
-  return promisify(
-    rename.reduce((current, original, i) => current
-      .pipe(createReplaceStream(original, nodeNames[i])),
-    sourceStream)
-      .pipe(importStream)
-  )
-    .then(() => nodeNames);
+  const doImport = async () => {
+    const sourceStream = gulpSrc(setupPath(name));
+    const importStream = new ImportStream();
+
+    return promisify(
+      rename
+        .reduce(
+          (current, original, i) => current.pipe(createReplaceStream(original, nodeNames[i])),
+          sourceStream
+        )
+
+        .pipe(importStream)
+    ).then(() => nodeNames);
+  };
+
+  let result;
+  try {
+    result = await doImport();
+  } catch (error) {
+    console.warn('Import failed, retry...');
+    result = await doImport();
+  }
+
+  return result;
 }
 
 class SingleCallScriptStream extends CallScriptStream {
-
   constructor(options) {
     super(options);
 
@@ -97,7 +102,6 @@ class SingleCallScriptStream extends CallScriptStream {
       callback(null, outArgs.slice(2).map(a => a.value));
     }
   }
-
 }
 
 export function callScript(name, parameters) {
@@ -126,7 +130,6 @@ export function deleteNode(nodeName) {
 }
 
 class ExportStream extends CallMethodStream {
-
   get methodId() {
     return new NodeId('AGENT.OPCUA.METHODS.exportNodes');
   }
@@ -142,11 +145,10 @@ class ExportStream extends CallMethodStream {
       new Variant({
         dataType: DataType.NodeId,
         arrayType: VariantArrayType.Array,
-        value: nodeIds,
+        value: nodeIds.slice().reverse(),
       }),
     ];
   }
-
 }
 
 export function exportNodes(nodeIds) {
@@ -164,6 +166,67 @@ export function exportNodes(nodeIds) {
 
 export function exportNode(nodeId) {
   return exportNodes([nodeId]);
+}
+
+function removeComments(xml) {
+  const doc = parse(xml);
+
+  // Atserver 3.3+ adds <Extensions><atvise Version="3.x"/></Extensions> to <UANodeSet>s
+  removeChildren(doc.childNodes.find(isElement), 'Extensions');
+
+  // This is just a collection of references that differs between atserver versions
+  removeChildren(doc.childNodes.find(isElement), 'Aliases');
+
+  /* eslint-disable no-param-reassign */
+  const walk = n => {
+    n.childNodes = n.childNodes
+      .reduce((all, child) => {
+        if (child.type === 'comment' || (child.type === 'text' && child.value.match(/^\s*$/))) {
+          return all;
+        }
+
+        return all.concat(child.type === 'element' ? walk(child) : child);
+      }, [])
+      .sort((nodeA, nodeB) => {
+        const nameA = nodeA.name;
+        const a = attributeValues(nodeA);
+        const nameB = nodeB.name;
+        const b = attributeValues(nodeB);
+
+        const gotA = a && a.NodeId;
+        const gotB = b && b.NodeId;
+
+        if (gotA) {
+          if (gotB) {
+            return a.NodeId < b.NodeId ? -1 : 1;
+          }
+
+          return -1;
+        } else if (gotB) {
+          return 1;
+        }
+
+        return nameA < nameB ? -1 : 1;
+      });
+
+    delete n.tokens;
+    if (n.attributes) {
+      n.attributes = n.attributes.map(a => {
+        delete a.tokens;
+        return a;
+      });
+    }
+
+    return n;
+  };
+
+  /* eslint-enable no-param-reassign */
+
+  return walk(doc);
+}
+
+export function compareXml(value, expected) {
+  return expect(render(removeComments(value)), 'to equal', render(removeComments(expected)));
 }
 
 export function expectCorrectMapping(setup, node) {
@@ -197,65 +260,26 @@ export function expectCorrectMapping(setup, node) {
 
   it('should recreate all fields', async function() {
     // Run atscm push
-    await push(destination);
+    const paths = (Array.isArray(node.path)
+      ? [...new Set(Array.from(node.path))]
+      : [node.path]
+    ).map(path => join(destination, path.replace(/\./g, sep)));
+
+    for (const path of paths) {
+      await push(path);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const rawPushed = await exportNodes(nodeIds);
-    const pushed = originalNames.reduce((str, original, i) => str
-      .replace(new RegExp(nodeNames[i], 'g'), original),
-    rawPushed.toString());
+    const pushed = originalNames.reduce(
+      (str, original, i) => str.replace(new RegExp(nodeNames[i], 'g'), original),
+      rawPushed.toString()
+    );
 
     const original = await readFile(setupPath(setup), 'utf8');
 
-    function normalize(element) {
-      if (element.attributes) {
-        // eslint-disable-next-line no-param-reassign
-        delete element.attributes.EventNotifier;
-      }
-
-      if (element.type === 'cdata') {
-        // eslint-disable-next-line no-param-reassign
-        element.cdata = element.cdata
-          .replace(/(^\s+|\r?\n?)/gm, '')
-          .replace(/ standalone="no"/, '');
-      }
-
-      return element;
-    }
-
-    function sortElements(current) {
-      return Object.assign(current, {
-        elements: current.elements && current.elements
-          .filter(({ type }) => type !== 'comment')
-          .filter(({ name }) => name !== 'Aliases')
-          .sort(({ attributes: a, name: nameA }, { attributes: b, name: nameB }) => {
-            const gotA = a && a.NodeId;
-            const gotB = b && b.NodeId;
-
-            if (!gotA && !gotB) {
-              if (nameA < nameB) {
-                return -1;
-              }
-
-              return nameA > nameB ? 1 : 0;
-            }
-            if (!gotA) { return 1; }
-            if (!gotB) { return -1; }
-
-            if (gotA < gotB) {
-              return -1;
-            }
-
-            return (gotA > gotB) ? 1 : 0;
-          })
-          .map(n => normalize(sortElements(n))),
-      });
-    }
-
-    function sortedTree(xml) {
-      return sortElements(xml2js(xml, { compact: false, alwaysChildren: true }));
-    }
-
-    expect(sortedTree(pushed), 'to equal', sortedTree(original));
+    return compareXml(pushed, original);
   });
 
   after('delete tmp node', function() {
