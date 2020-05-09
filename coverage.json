@@ -1,7 +1,7 @@
 {
-  "coverage": "94.16%",
-  "expectCount": 497,
-  "actualCount": 468,
+  "coverage": "93.9%",
+  "expectCount": 509,
+  "actualCount": 478,
   "files": {
     "src/api.js": {
       "expectCount": 9,
@@ -12,9 +12,26 @@
       "expectCount": 13,
       "actualCount": 11,
       "undocumentLines": [
-        76,
-        90
+        75,
+        89
       ]
+    },
+    "src/hooks/check-atserver.ts": {
+      "expectCount": 6,
+      "actualCount": 5,
+      "undocumentLines": [
+        11
+      ]
+    },
+    "src/hooks/check-serverscripts.ts": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/hooks/hooks.ts": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
     },
     "src/init/InitTask.js": {
       "expectCount": 3,
@@ -36,7 +53,7 @@
       "actualCount": 13,
       "undocumentLines": []
     },
-    "src/lib/config/Atviseproject.js": {
+    "src/lib/config/Atviseproject.ts": {
       "expectCount": 15,
       "actualCount": 15,
       "undocumentLines": []
@@ -61,21 +78,21 @@
       "actualCount": 24,
       "undocumentLines": [
         35,
+        84,
         85,
-        86,
-        147,
-        294
+        148,
+        304
       ]
     },
     "src/lib/gulp/src.ts": {
       "expectCount": 29,
       "actualCount": 24,
       "undocumentLines": [
-        68,
-        191,
-        194,
-        195,
-        212
+        69,
+        196,
+        199,
+        200,
+        217
       ]
     },
     "src/lib/helpers/Object.js": {
@@ -83,9 +100,14 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/lib/helpers/async.js": {
-      "expectCount": 1,
-      "actualCount": 1,
+    "src/lib/helpers/async.ts": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/lib/helpers/fs.ts": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/lib/helpers/log.js": {
@@ -112,13 +134,13 @@
       "expectCount": 52,
       "actualCount": 45,
       "undocumentLines": [
-        142,
-        143,
-        144,
-        145,
-        146,
-        562,
-        592
+        147,
+        148,
+        149,
+        150,
+        151,
+        591,
+        623
       ]
     },
     "src/lib/model/opcua/NodeId.js": {
@@ -153,11 +175,11 @@
       "expectCount": 32,
       "actualCount": 27,
       "undocumentLines": [
-        115,
-        140,
-        495,
-        499,
-        507
+        113,
+        136,
+        523,
+        527,
+        535
       ]
     },
     "src/lib/server/NodeStream.js": {
@@ -256,7 +278,7 @@
       "expectCount": 18,
       "actualCount": 17,
       "undocumentLines": [
-        166
+        177
       ]
     },
     "src/transform/AlarmConfigTransformer.ts": {
@@ -267,9 +289,11 @@
       ]
     },
     "src/transform/DisplayTransformer.js": {
-      "expectCount": 6,
+      "expectCount": 7,
       "actualCount": 6,
-      "undocumentLines": []
+      "undocumentLines": [
+        16
+      ]
     },
     "src/transform/Mapping.js": {
       "expectCount": 9,

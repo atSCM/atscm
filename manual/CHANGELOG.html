@@ -62,6 +62,16 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/api.html"><a href="manual/api.html" data-ice="link">Guide: Using the API</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#examples" data-ice="link">Examples</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
     <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
@@ -75,6 +85,15 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/testing.html"><a href="manual/testing.html" data-ice="link">Contribute: Testing atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#unit-tests" data-ice="link">Unit tests</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#integration-tests" data-ice="link">Integration tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/testing.html"><a href="manual/testing.html#test-setups" data-ice="link">Test setups</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -104,7 +123,7 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0-beta-43--2019-10-18-" data-ice="link">1.0.0-beta.43 (2019-10-18)</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0-beta-51--2020-04-21-" data-ice="link">1.0.0-beta.51 (2020-04-21)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
@@ -158,8 +177,8 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><p><a name="1.0.0-beta.43"></a></p>
-<h1 id="1-0-0-beta-43--2019-10-18-">1.0.0-beta.43 (2019-10-18)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><p><a name="1.0.0-beta.51"></a></p>
+<h1 id="1-0-0-beta-51--2020-04-21-">1.0.0-beta.51 (2020-04-21)</h1><h3 id="bug-fixes">Bug Fixes</h3><ul>
 <li><strong>displays:</strong> Warn on multiple inline scripts (<a href="https://github.com/atSCM/atscm/issues/216">#216</a>) (<a href="https://github.com/atSCM/atscm/commits/6e62a21">6e62a21</a>)</li>
 <li><strong>import:</strong> Retry if serverscripts are not ready yet (<a href="https://github.com/atSCM/atscm/issues/267">#267</a>) (<a href="https://github.com/atSCM/atscm/commits/413045a">413045a</a>), closes <a href="https://github.com/atSCM/atscm/issues/252">#252</a></li>
 <li><strong>init:</strong> Add babel core package (<a href="https://github.com/atSCM/atscm/commits/3d74eb5">3d74eb5</a>)</li>
@@ -185,11 +204,13 @@
 <li><strong>pull:</strong> Warn if node names contain trailing spaces (<a href="https://github.com/atSCM/atscm/issues/223">#223</a>) (<a href="https://github.com/atSCM/atscm/commits/3eeee49">3eeee49</a>)</li>
 <li><strong>pull:</strong> Warn on incomplete results (<a href="https://github.com/atSCM/atscm/commits/dbef5b1">dbef5b1</a>)</li>
 <li><strong>pull:</strong> Warn on multiple parent nodes only if needed (<a href="https://github.com/atSCM/atscm/issues/322">#322</a>) (<a href="https://github.com/atSCM/atscm/commits/de87862">de87862</a>)</li>
+<li><strong>pull:</strong> Warn when pulling empty scripts (<a href="https://github.com/atSCM/atscm/issues/347">#347</a>) (<a href="https://github.com/atSCM/atscm/commits/a929192">a929192</a>), closes <a href="https://github.com/atSCM/atscm/issues/345">#345</a></li>
 <li><strong>pull:</strong> Write rename.json after pull (<a href="https://github.com/atSCM/atscm/issues/257">#257</a>) (<a href="https://github.com/atSCM/atscm/commits/468fb52">468fb52</a>)</li>
 <li><strong>push:</strong> Allow non-standard root nodes (<a href="https://github.com/atSCM/atscm/issues/236">#236</a>) (<a href="https://github.com/atSCM/atscm/commits/6da0bcc">6da0bcc</a>)</li>
 <li><strong>push:</strong> Allow quotes in xml attribute values (<a href="https://github.com/atSCM/atscm/issues/316">#316</a>) (<a href="https://github.com/atSCM/atscm/commits/6e8b954">6e8b954</a>)</li>
 <li><strong>push:</strong> Correctly create 64 bit integers (<a href="https://github.com/atSCM/atscm/commits/11394cd">11394cd</a>)</li>
 <li><strong>push:</strong> Correctly create array variables (<a href="https://github.com/atSCM/atscm/commits/40ec3c1">40ec3c1</a>)</li>
+<li><strong>push:</strong> Ensure correct modelling rules (<a href="https://github.com/atSCM/atscm/issues/360">#360</a>) (<a href="https://github.com/atSCM/atscm/commits/88faccf">88faccf</a>), closes <a href="https://github.com/atSCM/atscm/issues/354">#354</a></li>
 <li><strong>push:</strong> Ensure parent node for &apos;.inner&apos;-node (<a href="https://github.com/atSCM/atscm/issues/311">#311</a>) (<a href="https://github.com/atSCM/atscm/commits/1dae982">1dae982</a>)</li>
 <li><strong>push:</strong> Fix typo in external node handling (<a href="https://github.com/atSCM/atscm/issues/302">#302</a>) (<a href="https://github.com/atSCM/atscm/commits/b5e9b5f">b5e9b5f</a>)</li>
 <li><strong>push:</strong> Force exit on error (<a href="https://github.com/atSCM/atscm/issues/273">#273</a>) (<a href="https://github.com/atSCM/atscm/commits/f5afadd">f5afadd</a>)</li>
@@ -199,34 +220,40 @@
 <li><strong>push:</strong> Properly wait for dependencies (<a href="https://github.com/atSCM/atscm/issues/298">#298</a>) (<a href="https://github.com/atSCM/atscm/commits/ebae772">ebae772</a>)</li>
 <li><strong>push:</strong> Restrict split transformer source files (<a href="https://github.com/atSCM/atscm/commits/5b38467">5b38467</a>)</li>
 <li><strong>push:</strong> Use correct root objects folder id (<a href="https://github.com/atSCM/atscm/issues/245">#245</a>) (<a href="https://github.com/atSCM/atscm/commits/4c2b057">4c2b057</a>), closes <a href="https://github.com/atSCM/atscm/issues/241">#241</a></li>
+<li>Prevent errors with atvise 3.2.2+ (<a href="https://github.com/atSCM/atscm/issues/324">#324</a>) (<a href="https://github.com/atSCM/atscm/commits/e8a8b4a">e8a8b4a</a>), closes <a href="https://github.com/atSCM/atscm/issues/323">#323</a></li>
 <li><strong>push:</strong> Use right modelling rule for new nodes (<a href="https://github.com/atSCM/atscm/commits/8beb8c4">8beb8c4</a>)</li>
+<li>Prevent connection timeouts on unstable connections (<a href="https://github.com/atSCM/atscm/issues/343">#343</a>) (<a href="https://github.com/atSCM/atscm/commits/d4a73a2">d4a73a2</a>)</li>
 <li><strong>push:</strong> Write empty string for null values (<a href="https://github.com/atSCM/atscm/issues/234">#234</a>) (<a href="https://github.com/atSCM/atscm/commits/0fed027">0fed027</a>)</li>
+<li>Prevent duplicate entries in rename file (<a href="https://github.com/atSCM/atscm/issues/284">#284</a>) (<a href="https://github.com/atSCM/atscm/commits/ba8d885">ba8d885</a>), closes <a href="https://github.com/atSCM/atscm/issues/265">#265</a></li>
 <li><strong>transform:</strong> Do not add trailing newlines by default (<a href="https://github.com/atSCM/atscm/commits/ca347a1">ca347a1</a>)</li>
-<li><strong>watch:</strong> Prevent error when terminating pending subscription (<a href="https://github.com/atSCM/atscm/issues/331">#331</a>) (<a href="https://github.com/atSCM/atscm/commits/56b5ba0">56b5ba0</a>), closes <a href="https://github.com/atSCM/atscm/issues/329">#329</a></li>
 <li>Consistent mapping for lcoalized text nodes (<a href="https://github.com/atSCM/atscm/issues/317">#317</a>) (<a href="https://github.com/atSCM/atscm/commits/31c56b4">31c56b4</a>)</li>
 <li>Don&apos;t depend on openssl (<a href="https://github.com/atSCM/atscm/issues/221">#221</a>) (<a href="https://github.com/atSCM/atscm/commits/67993bf">67993bf</a>), closes <a href="https://github.com/atSCM/atscm/issues/95">#95</a></li>
 <li>Enforce tag order in display svgs (<a href="https://github.com/atSCM/atscm/issues/209">#209</a>) (<a href="https://github.com/atSCM/atscm/commits/7d88a20">7d88a20</a>)</li>
-<li>Prevent duplicate entries in rename file (<a href="https://github.com/atSCM/atscm/issues/284">#284</a>) (<a href="https://github.com/atSCM/atscm/commits/ba8d885">ba8d885</a>), closes <a href="https://github.com/atSCM/atscm/issues/265">#265</a></li>
-<li>Prevent errors with atvise 3.2.2+ (<a href="https://github.com/atSCM/atscm/issues/324">#324</a>) (<a href="https://github.com/atSCM/atscm/commits/e8a8b4a">e8a8b4a</a>), closes <a href="https://github.com/atSCM/atscm/issues/323">#323</a></li>
+<li>Properly detect external scripts in displays (<a href="https://github.com/atSCM/atscm/issues/358">#358</a>) (<a href="https://github.com/atSCM/atscm/commits/693d94e">693d94e</a>)</li>
 <li>Read disconnected nodes if possible (<a href="https://github.com/atSCM/atscm/issues/207">#207</a>) (<a href="https://github.com/atSCM/atscm/commits/258f115">258f115</a>)</li>
 <li>Remove one trailing newline at most (<a href="https://github.com/atSCM/atscm/commits/1409ff0">1409ff0</a>)</li>
+<li><strong>watch:</strong> Prevent error when terminating pending subscription (<a href="https://github.com/atSCM/atscm/issues/331">#331</a>) (<a href="https://github.com/atSCM/atscm/commits/56b5ba0">56b5ba0</a>), closes <a href="https://github.com/atSCM/atscm/issues/329">#329</a></li>
 <li>Resolve correct parent node for root nodes (<a href="https://github.com/atSCM/atscm/issues/326">#326</a>) (<a href="https://github.com/atSCM/atscm/commits/399d11f">399d11f</a>)</li>
+<li>Use new XML parser (<a href="https://github.com/atSCM/atscm/issues/357">#357</a>) (<a href="https://github.com/atSCM/atscm/commits/d8688b1">d8688b1</a>), closes <a href="https://github.com/atSCM/atscm/issues/330">#330</a></li>
 </ul>
 <h3 id="features">Features</h3><ul>
+<li>Check atvise server version (<a href="https://github.com/atSCM/atscm/issues/365">#365</a>) (<a href="https://github.com/atSCM/atscm/commits/34374b2">34374b2</a>)</li>
 <li>Check server scripts version on push (<a href="https://github.com/atSCM/atscm/issues/230">#230</a>) (<a href="https://github.com/atSCM/atscm/commits/84c843a">84c843a</a>)</li>
 <li>Export programmic API (<a href="https://github.com/atSCM/atscm/issues/229">#229</a>) (<a href="https://github.com/atSCM/atscm/commits/2742bc2">2742bc2</a>), closes <a href="https://github.com/atSCM/atscm/issues/168">#168</a></li>
 <li>Implement async/await-based tasks (<a href="https://github.com/atSCM/atscm/commits/4d59989">4d59989</a>)</li>
 <li>Implement async/await-based transformers (<a href="https://github.com/atSCM/atscm/commits/99376ba">99376ba</a>)</li>
 <li>Rename conflicting nodes based on contents of ./atscm/rename.json (<a href="https://github.com/atSCM/atscm/issues/211">#211</a>) (<a href="https://github.com/atSCM/atscm/commits/c592790">c592790</a>)</li>
+<li>Reuse server sessions (<a href="https://github.com/atSCM/atscm/issues/279">#279</a>) (<a href="https://github.com/atSCM/atscm/commits/940fb7d">940fb7d</a>), closes <a href="https://github.com/atSCM/atscm/issues/277">#277</a></li>
+<li>Show location of XML parsing errors (<a href="https://github.com/atSCM/atscm/issues/336">#336</a>) (<a href="https://github.com/atSCM/atscm/commits/509da3c">509da3c</a>)</li>
+<li>Store display title and description in definition file (<a href="https://github.com/atSCM/atscm/issues/349">#349</a>) (<a href="https://github.com/atSCM/atscm/commits/bc88827">bc88827</a>)</li>
 <li><strong>api:</strong> Add addReferences (<a href="https://github.com/atSCM/atscm/commits/f367331">f367331</a>)</li>
+<li><strong>api:</strong> Add convenient api entry file (<a href="https://github.com/atSCM/atscm/issues/366">#366</a>) (<a href="https://github.com/atSCM/atscm/commits/4d3e626">4d3e626</a>)</li>
+<li>Use <code>modify-xml</code> instead of <code>xml-js</code> (<a href="https://github.com/atSCM/atscm/issues/306">#306</a>) (<a href="https://github.com/atSCM/atscm/commits/1232555">1232555</a>)</li>
 <li><strong>api:</strong> Handle invalid status codes in methods and scripts (<a href="https://github.com/atSCM/atscm/commits/c68250d">c68250d</a>)</li>
 <li><strong>pull:</strong> Compare checksums before writing (<a href="https://github.com/atSCM/atscm/issues/244">#244</a>) (<a href="https://github.com/atSCM/atscm/commits/0c9360d">0c9360d</a>), closes <a href="https://github.com/atSCM/atscm/issues/238">#238</a></li>
 <li><strong>pull:</strong> Ignore sort order nodes by default (<a href="https://github.com/atSCM/atscm/issues/314">#314</a>) (<a href="https://github.com/atSCM/atscm/commits/91eaa5e">91eaa5e</a>)</li>
 <li><strong>pull:</strong> Remove unused renames with --clean (<a href="https://github.com/atSCM/atscm/issues/287">#287</a>) (<a href="https://github.com/atSCM/atscm/commits/06243ff">06243ff</a>)</li>
 <li><strong>pull:</strong> Use <code>--clean</code> to remove existing files (<a href="https://github.com/atSCM/atscm/issues/222">#222</a>) (<a href="https://github.com/atSCM/atscm/commits/e003187">e003187</a>)</li>
-<li>Reuse server sessions (<a href="https://github.com/atSCM/atscm/issues/279">#279</a>) (<a href="https://github.com/atSCM/atscm/commits/940fb7d">940fb7d</a>), closes <a href="https://github.com/atSCM/atscm/issues/277">#277</a></li>
-<li>Show location of XML parsing errors (<a href="https://github.com/atSCM/atscm/issues/336">#336</a>) (<a href="https://github.com/atSCM/atscm/commits/509da3c">509da3c</a>)</li>
-<li>Use <code>modify-xml</code> instead of <code>xml-js</code> (<a href="https://github.com/atSCM/atscm/issues/306">#306</a>) (<a href="https://github.com/atSCM/atscm/commits/1232555">1232555</a>)</li>
 </ul>
 <h3 id="performance-improvements">Performance Improvements</h3><ul>
 <li>Implement tree aware pull task (<a href="https://github.com/atSCM/atscm/commits/e800b7a">e800b7a</a>)</li>

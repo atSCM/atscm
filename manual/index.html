@@ -62,6 +62,16 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/api.html"><a href="manual/api.html" data-ice="link">Guide: Using the API</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#examples" data-ice="link">Examples</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
     <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
@@ -75,6 +85,15 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/testing.html"><a href="manual/testing.html" data-ice="link">Contribute: Testing atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#unit-tests" data-ice="link">Unit tests</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#integration-tests" data-ice="link">Integration tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/testing.html"><a href="manual/testing.html#test-setups" data-ice="link">Test setups</a></li>
 </ul>
   </div>
 <div data-ice="manual">
@@ -104,7 +123,7 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0-beta-43--2019-10-18-" data-ice="link">1.0.0-beta.43 (2019-10-18)</a></li>
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0-beta-51--2020-04-21-" data-ice="link">1.0.0-beta.51 (2020-04-21)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
@@ -188,7 +207,6 @@ import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
 import fromFSGulpPlugin from &apos;gulp-plugin-to-use-from-fs&apos;;
 
 class MyTransformer extends Transformer {
-
   applyToStream(stream, direction) {
     if (direction === TransformDirection.FromDB) {
       return stream.pipe(fromDBGulpPlugin(/* plugin options */));
@@ -196,14 +214,12 @@ class MyTransformer extends Transformer {
 
     return stream.pipe(fromFSGulpPlugin(/* plugin options */));
   }
-
 }</code>
 </code></pre><h2>Using <em>PartialTransformer</em> class</h2><p>In most cases you&apos;ll have to transform only parts of the piped files. This can be done by inheriting from <a href="https://atscm.github.io/atscm/class/src/lib/transform/PartialTransformer.js~PartialTransformer.html">PartialTransfomer class</a>:</p><p><strong>Transforming only JavaScript files:</strong></p><pre><code class="lang-javascript"><code class="source-code prettyprint">import { PartialTransformer, TransformDirection } from &apos;atscm&apos;;
 import fromDBGulpPlugin from &apos;gulp-plugin-to-use-from-db&apos;;
 import fromFSGulpPlugin from &apos;gulp-plugin-to-use-from-fs&apos;;
 
 class MyPartialTransformer extends PartialTransformer {
-
   shouldBeTransformed(file) {
     return file.extname === &apos;.js&apos;;
   }
@@ -215,7 +231,6 @@ class MyPartialTransformer extends PartialTransformer {
 
     return stream.pipe(fromFSGulpPlugin(/* plugin options */));
   }
-
 }</code>
 </code></pre><h2>Conclusion</h2><p>Using existing gulp plugins is probably the easiest way to use custom transformers inside an <em>atscm</em> project. As there are <strong>thousands of well-tested gulp-plugins</strong> out there, you won&apos;t have to implemtent any transform logic in most cases.</p><p>Give it a try!</p><h2>Further reading</h2><ul>
 <li>Take a look at <a href="http://gulpjs.com/plugins/">gulp&apos;s plugin page</a> for a list of available plugins.</li>
@@ -273,6 +288,114 @@ class MyPartialTransformer extends PartialTransformer {
     </div>
 <div class="manual-card-wrap" data-ice="cards">
       <div class="manual-card">
+        <div data-ice="card"><h1>Guide: Using the API</h1><blockquote>
+<p>Learn how to use the atscm API to e.g. run server serverscripts in your node application.
+<strong>The atscm API is currently in beta.</strong></p>
+</blockquote><h2>Installation</h2><p>First of all, make sure your project has atscm installed: Take a look at your <em>package.json</em> file and make sure, atscm is present in the <em>dependencies</em> or (depending on your use case) <em>devDependencies</em> section. Otherwise, <strong>install atscm if necessary</strong>:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># If you need atscm as a runtime-dependency
+npm install --save atscm@beta
+
+# If you need atscm as a development dependency
+npm install --save-dev atscm@beta</code>
+</code></pre><p><!-- FIXME: Remove once 1.0.0 is realease -->
+</p><blockquote>
+<p>Once atscm v1.0.0 is released, you can omit the <code>@beta</code>.</p>
+</blockquote><h2>Configuration</h2><p>Similar to regular atscm projects, you need an <em>Atviseproject</em> file that contains atscm&apos;s configuration. A minimal example may look like this:</p><pre><code class="lang-js"><code class="source-code prettyprint">// Atviseproject.js
+const { Atviseproject } = require(&apos;atscm&apos;);
+
+module.exports = class ApiProject extends Atviseproject {
+  // Add your configuration here, if needed.
+  // By default, atvise server is assumed to run on opc.tcp://localhost:4840
+};</code>
+</code></pre><p>Before you can finally require the atscm API in your project, you have to <strong>set the <code>ATSCM_CONFIG_PATH</code> environment variable</strong>, pointing to your <em>Atviseproject</em> file. You can do this in multiple ways:</p><ul>
+<li><p>You can set it in your app at runtime (<em>recommended</em>)</p>
+<p>Adjust your app&apos;s entry file (assuming it&apos;s called <em>app.js</em> in these examples) to set the variable <strong>before you import atscm</strong>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// app.js
+const { join } = require(&apos;path&apos;);
+
+process.env.ATSCM_CONFIG_PATH = join(__dirname, &apos;../Atviseproject.js&apos;);
+
+// Your app comes here...</code>
+</code></pre>
+</li>
+<li><p>You can set it every time you run your application:</p>
+<p>E.g. instead of running your app with <code>node ./app.js</code> you can use <code>ATSCM_CONFIG_PATH=&quot;/my-project/Atviseproject.js&quot; node ./app.js</code>.</p>
+<p>You can also use npm scripts so you simply have to run <code>npm run start</code>:</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">// package.json
+{
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;ATSCM_CONFIG_PATH=&apos;/my-project/Atviseproject.js&apos; node ./app.js&quot;
+  }
+}</code>
+</code></pre>
+<p>If your running on windows, use <a href="https://www.npmjs.com/package/cross-env"><code>cross-env</code></a> to set the environment variable (don&apos;t forget <code>npm install cross-env</code>):</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">// package.json
+{
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;cross-env ATSCM_CONFIG_PATH=&apos;/my-project/Atviseproject.js&apos; node ./app.js&quot;
+  }
+}</code>
+</code></pre>
+</li>
+</ul><h2>Usage</h2><p>Require <code>atscm/api</code> and call the methods you need:</p><pre><code class="lang-js"><code class="source-code prettyprint">// Set process.env.ATSCM_CONFIG_PATH here...
+
+const atscm = require(&apos;atscm/api&apos;);
+
+// You can use atscm here...</code>
+</code></pre><h2>Examples</h2><p><strong>Create an export file for a node</strong></p><pre><code class="lang-js"><code class="source-code prettyprint">// app.js
+
+// Import node core modules
+const { promises: fsp } = require(&apos;fs&apos;);
+const { join, dirname } = require(&apos;path&apos;);
+
+// Set atscm config env variable
+process.env.ATSCM_CONFIG_PATH = join(__dirname, &apos;./Atviseproject.js&apos;);
+
+// Require atscm and node-opcua APIs
+const { NodeId } = require(&apos;atscm&apos;);
+const { callMethod } = require(&apos;atscm/api&apos;);
+const { Variant, DataType, VariantArrayType } = require(&apos;node-opcua&apos;);
+
+// Configuration: You could also use process.argv here...
+const nodesToExport = [&apos;AGENT.DISPLAYS.Main&apos;];
+const exportPath = &apos;./out/export.xml&apos;;
+
+// Our main function
+async function createExportFile() {
+  console.log(`Exporting nodes: ${nodesToExport.join(&apos;,&apos;)}`);
+
+  // Use the &apos;exportNodes&apos; method to create an xml export on the server
+  const {
+    outputArguments: [{ value }],
+  } = await callMethod(new NodeId(&apos;AGENT.OPCUA.METHODS.exportNodes&apos;), [
+    new Variant({
+      dataType: DataType.NodeId,
+      arrayType: VariantArrayType.Array,
+      value: nodesToExport.map(id =&gt; new NodeId(id)),
+    }),
+  ]);
+
+  // Create the output directory if needed
+  await fsp.mkdir(dirname(exportPath), { recursive: true });
+
+  // Write the export to the file
+  await fsp.writeFile(exportPath, value);
+
+  console.log(`Export written to ${exportPath}`);
+}
+
+// Run it and catch any errors
+createExportFile().catch(error =&gt; {
+  console.error(error);
+  process.exitCode = 1;
+});</code>
+</code></pre><blockquote>
+<p>Note: The example assumes the Atviseproject file is located in the same directory as the app&apos;s entry file. Otherwise you have to adjust you code accordingly.</p>
+</blockquote></div>
+        <a data-ice="link" href="manual/api.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
         <div data-ice="card"><h1>Tutorial: Custom Transformer</h1><blockquote>
 <p>tl;dr: Jump to the <a href="https://github.com/atSCM/tutorial-custom-transformer">tutorial-custom-transformer repository</a> to see the results.</p>
 </blockquote><p>In this document we&apos;ll guide you through the steps necessary to implement a custom Transformer.
@@ -300,9 +423,7 @@ import { PartialTransformer } from &apos;atscm&apos;;</code>
 
 import { PartialTransformer } from &apos;atscm&apos;;
 
-export default class BabelTransformer extends PartialTransformer {
-
-}</code>
+export default class BabelTransformer extends PartialTransformer {}</code>
 </code></pre><p>We just created a <em>PartialTransformer</em> subclass that is exported as the file&apos;s default export. For more detailed information on ES2015&apos;s module system <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">take a look at the docs</a>.</p><h2>Step 3: Use <em>BabelTransformer</em></h2><p>By default, <em>atscm</em> uses just some standard transformers. Any additional transformers must be configured to use inside the project&apos;s <em>Atviseproject</em> file.</p><p>First of all, we have to import our newly created <em>BabelTransformer</em> class:</p><pre><code class="lang-javascript"><code class="source-code prettyprint">// Atviseproject.babel.js
 
 import { Atviseproject } from &apos;atscm&apos;
@@ -385,12 +506,11 @@ export default class BabelTransformer extends PartialTransformer {
 
 // Class syntax
 class Test {
-
-  constructor(options = {}, ...otherArgs) { // Default values and rest params
+  constructor(options = {}, ...otherArgs) {
+    // Default values and rest params
     this.options = options;
     this.args = otherArgs.map(arg =&gt; parseInt(arg, 10)); // Arrows and Lexical This
   }
-
 }
 
 const a = 13; // Constants
@@ -415,7 +535,6 @@ import { PartialTransformer } from &apos;atscm&apos;;
 import { transform } from &apos;babel-core&apos;;
 
 export default class BabelTransformer extends PartialTransformer {
-
   shouldBeTransformed(file) {
     return file.extname === &apos;.js&apos;;
   }
@@ -437,7 +556,6 @@ export default class BabelTransformer extends PartialTransformer {
   transformFromDB(file, enc, callback) {
     callback(null); // Ignore file, remove it from the stream
   }
-
 }</code>
 </code></pre><h2>Conclusion</h2><p>We just created a custom Transformer in no time. It transpiles ES2015 code on push and prevents overriding this code on pull.</p><p>Of course there are many ways to improve the transformer, for example:</p><ul>
 <li>Handle options to configure how babel transpiles the source code</li>
@@ -445,6 +563,46 @@ export default class BabelTransformer extends PartialTransformer {
 <li><a href="http://babeljs.io/learn-es2015/">babeljs.io</a> provides a nice overview of ES2015 features. You can also use the <a href="http://babeljs.io/repl/">REPL</a> to try out these features.</li>
 </ul></div>
         <a data-ice="link" href="manual/custom-transformer.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>Contribute: Testing atscm</h1><p>atscm uses both unit and integration tests. <a href="https://mochajs.org">Mocha</a> is used as a test runner and <a href="https://github.com/istanbuljs/nyc#readme">nyc</a> for test coverage reports.</p><p><strong>Test scripts:</strong></p><table>
+<thead>
+<tr>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>npm run test</code></td>
+<td style="text-align:left">Run all tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:unit</code></td>
+<td style="text-align:left">Run all unit tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:integration</code></td>
+<td style="text-align:left">Run all integration tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:watch</code></td>
+<td style="text-align:left">Re-run all tests when files change</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:coverage</code></td>
+<td style="text-align:left">Check test coverage</td>
+</tr>
+</tbody>
+</table><h2>Unit tests</h2><p>The unit tests are located inside <code>./test/src</code>. Test files are named after the module they test, e.g. unit tests for <code>./src/my/module.js</code> are inside <code>./test/src/my/module.spec.js</code>.</p><h2>Integration tests</h2><p>Integration tests are used to ensure cross-version and -platform compatibility. They are located inside <code>./test/integration</code>.</p><h3>Test setups</h3><p>For most integration tests, we use test setups to create the proper project structure to test against. These are XML files that can be imported to the running atserver before the tests are run. <strong>The easiest way to create such files is with atbuilder:</strong></p><ul>
+<li>First <em>connect atvise builder</em> to your running atserver</li>
+<li>Create and <em>configure the node(s)</em> you want to test against</li>
+<li>Select theses nodes, right-click them and choose <em>&quot;Export hierarchy to XML&quot;</em> from the context menu.</li>
+<li>Save the export file to <code>./test/fixtures/setup</code>.</li>
+</ul><p>After this, you can use the <em>importSetup</em> method exported from <a href="./manual/./test/helpers/atscm.js"><code>./test/helpers/atscm.js</code></a> to import this setup. See the existing integration tests for examples.</p></div>
+        <a data-ice="link" href="manual/testing.html"></a>
       </div>
     </div>
 <div class="manual-card-wrap" data-ice="cards">

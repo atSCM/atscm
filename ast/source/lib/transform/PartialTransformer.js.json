@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 843,
+  "end": 847,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 31,
+      "line": 29,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 843,
+    "end": 847,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 31,
+        "line": 29,
         "column": 0
       }
     },
@@ -118,28 +118,28 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 465,
-        "end": 842,
+        "end": 846,
         "loc": {
           "start": {
             "line": 18,
             "column": 0
           },
           "end": {
-            "line": 30,
+            "line": 28,
             "column": 1
           }
         },
         "declaration": {
           "type": "ClassDeclaration",
           "start": 480,
-          "end": 842,
+          "end": 846,
           "loc": {
             "start": {
               "line": 18,
               "column": 15
             },
             "end": {
-              "line": 30,
+              "line": 28,
               "column": 1
             }
           },
@@ -181,22 +181,22 @@
           "body": {
             "type": "ClassBody",
             "start": 531,
-            "end": 842,
+            "end": 846,
             "loc": {
               "start": {
                 "line": 18,
                 "column": 66
               },
               "end": {
-                "line": 30,
+                "line": 28,
                 "column": 1
               }
             },
             "body": [
               {
                 "type": "ClassMethod",
-                "start": 668,
-                "end": 838,
+                "start": 712,
+                "end": 844,
                 "loc": {
                   "start": {
                     "line": 25,
@@ -211,8 +211,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 668,
-                  "end": 687,
+                  "start": 712,
+                  "end": 731,
                   "loc": {
                     "start": {
                       "line": 25,
@@ -235,8 +235,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 688,
-                    "end": 692,
+                    "start": 732,
+                    "end": 736,
                     "loc": {
                       "start": {
                         "line": 25,
@@ -253,8 +253,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 694,
-                  "end": 838,
+                  "start": 738,
+                  "end": 844,
                   "loc": {
                     "start": {
                       "line": 25,
@@ -268,8 +268,8 @@
                   "body": [
                     {
                       "type": "ThrowStatement",
-                      "start": 738,
-                      "end": 834,
+                      "start": 744,
+                      "end": 840,
                       "loc": {
                         "start": {
                           "line": 26,
@@ -282,8 +282,8 @@
                       },
                       "argument": {
                         "type": "NewExpression",
-                        "start": 744,
-                        "end": 833,
+                        "start": 750,
+                        "end": 839,
                         "loc": {
                           "start": {
                             "line": 26,
@@ -296,8 +296,8 @@
                         },
                         "callee": {
                           "type": "Identifier",
-                          "start": 748,
-                          "end": 753,
+                          "start": 754,
+                          "end": 759,
                           "loc": {
                             "start": {
                               "line": 26,
@@ -314,8 +314,8 @@
                         "arguments": [
                           {
                             "type": "StringLiteral",
-                            "start": 754,
-                            "end": 832,
+                            "start": 760,
+                            "end": 838,
                             "loc": {
                               "start": {
                                 "line": 26,
@@ -332,27 +332,8 @@
                             },
                             "value": "PartialTransformer#shouldBeTransformed must be implemented by all subclasses"
                           }
-                        ],
-                        "leadingComments": null
-                      },
-                      "leadingComments": [
-                        {
-                          "type": "CommentLine",
-                          "value": " eslint-disable-line no-unused-vars",
-                          "start": 696,
-                          "end": 733,
-                          "loc": {
-                            "start": {
-                              "line": 25,
-                              "column": 30
-                            },
-                            "end": {
-                              "line": 25,
-                              "column": 67
-                            }
-                          }
-                        }
-                      ]
+                        ]
+                      }
                     }
                   ],
                   "directives": []
@@ -361,16 +342,32 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * `true` if `file` should be transformed.\n   * @param {AtviseFile} file The file to transform or not.\n   * @abstract\n   ",
-                    "start": 536,
-                    "end": 665,
+                    "start": 535,
+                    "end": 664,
                     "loc": {
                       "start": {
-                        "line": 20,
+                        "line": 19,
+                        "column": 2
+                      },
+                      "end": {
+                        "line": 23,
+                        "column": 5
+                      }
+                    }
+                  },
+                  {
+                    "type": "CommentLine",
+                    "value": " eslint-disable-next-line no-unused-vars",
+                    "start": 667,
+                    "end": 709,
+                    "loc": {
+                      "start": {
+                        "line": 24,
                         "column": 2
                       },
                       "end": {
                         "line": 24,
-                        "column": 5
+                        "column": 44
                       }
                     }
                   }
@@ -440,32 +437,32 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * `true` if `file` should be transformed.\n   * @param {AtviseFile} file The file to transform or not.\n   * @abstract\n   ",
-      "start": 536,
-      "end": 665,
+      "start": 535,
+      "end": 664,
       "loc": {
         "start": {
-          "line": 20,
+          "line": 19,
           "column": 2
         },
         "end": {
-          "line": 24,
+          "line": 23,
           "column": 5
         }
       }
     },
     {
       "type": "CommentLine",
-      "value": " eslint-disable-line no-unused-vars",
-      "start": 696,
-      "end": 733,
+      "value": " eslint-disable-next-line no-unused-vars",
+      "start": 667,
+      "end": 709,
       "loc": {
         "start": {
-          "line": 25,
-          "column": 30
+          "line": 24,
+          "column": 2
         },
         "end": {
-          "line": 25,
-          "column": 67
+          "line": 24,
+          "column": 44
         }
       }
     }
@@ -812,16 +809,32 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * `true` if `file` should be transformed.\n   * @param {AtviseFile} file The file to transform or not.\n   * @abstract\n   ",
-      "start": 536,
-      "end": 665,
+      "start": 535,
+      "end": 664,
       "loc": {
         "start": {
-          "line": 20,
+          "line": 19,
+          "column": 2
+        },
+        "end": {
+          "line": 23,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "CommentLine",
+      "value": " eslint-disable-next-line no-unused-vars",
+      "start": 667,
+      "end": 709,
+      "loc": {
+        "start": {
+          "line": 24,
           "column": 2
         },
         "end": {
           "line": 24,
-          "column": 5
+          "column": 44
         }
       }
     },
@@ -838,8 +851,8 @@
         "binop": null
       },
       "value": "shouldBeTransformed",
-      "start": 668,
-      "end": 687,
+      "start": 712,
+      "end": 731,
       "loc": {
         "start": {
           "line": 25,
@@ -863,8 +876,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 687,
-      "end": 688,
+      "start": 731,
+      "end": 732,
       "loc": {
         "start": {
           "line": 25,
@@ -889,8 +902,8 @@
         "binop": null
       },
       "value": "file",
-      "start": 688,
-      "end": 692,
+      "start": 732,
+      "end": 736,
       "loc": {
         "start": {
           "line": 25,
@@ -914,8 +927,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 692,
-      "end": 693,
+      "start": 736,
+      "end": 737,
       "loc": {
         "start": {
           "line": 25,
@@ -939,8 +952,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 694,
-      "end": 695,
+      "start": 738,
+      "end": 739,
       "loc": {
         "start": {
           "line": 25,
@@ -949,22 +962,6 @@
         "end": {
           "line": 25,
           "column": 29
-        }
-      }
-    },
-    {
-      "type": "CommentLine",
-      "value": " eslint-disable-line no-unused-vars",
-      "start": 696,
-      "end": 733,
-      "loc": {
-        "start": {
-          "line": 25,
-          "column": 30
-        },
-        "end": {
-          "line": 25,
-          "column": 67
         }
       }
     },
@@ -983,8 +980,8 @@
         "updateContext": null
       },
       "value": "throw",
-      "start": 738,
-      "end": 743,
+      "start": 744,
+      "end": 749,
       "loc": {
         "start": {
           "line": 26,
@@ -1011,8 +1008,8 @@
         "updateContext": null
       },
       "value": "new",
-      "start": 744,
-      "end": 747,
+      "start": 750,
+      "end": 753,
       "loc": {
         "start": {
           "line": 26,
@@ -1037,8 +1034,8 @@
         "binop": null
       },
       "value": "Error",
-      "start": 748,
-      "end": 753,
+      "start": 754,
+      "end": 759,
       "loc": {
         "start": {
           "line": 26,
@@ -1062,8 +1059,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 753,
-      "end": 754,
+      "start": 759,
+      "end": 760,
       "loc": {
         "start": {
           "line": 26,
@@ -1089,8 +1086,8 @@
         "updateContext": null
       },
       "value": "PartialTransformer#shouldBeTransformed must be implemented by all subclasses",
-      "start": 754,
-      "end": 832,
+      "start": 760,
+      "end": 838,
       "loc": {
         "start": {
           "line": 26,
@@ -1114,8 +1111,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 832,
-      "end": 833,
+      "start": 838,
+      "end": 839,
       "loc": {
         "start": {
           "line": 26,
@@ -1140,8 +1137,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 833,
-      "end": 834,
+      "start": 839,
+      "end": 840,
       "loc": {
         "start": {
           "line": 26,
@@ -1165,8 +1162,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 837,
-      "end": 838,
+      "start": 843,
+      "end": 844,
       "loc": {
         "start": {
           "line": 27,
@@ -1190,15 +1187,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 841,
-      "end": 842,
+      "start": 845,
+      "end": 846,
       "loc": {
         "start": {
-          "line": 30,
+          "line": 28,
           "column": 0
         },
         "end": {
-          "line": 30,
+          "line": 28,
           "column": 1
         }
       }
@@ -1216,15 +1213,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 843,
-      "end": 843,
+      "start": 847,
+      "end": 847,
       "loc": {
         "start": {
-          "line": 31,
+          "line": 29,
           "column": 0
         },
         "end": {
-          "line": 31,
+          "line": 29,
           "column": 0
         }
       }
