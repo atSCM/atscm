@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+## 1.0.1 (2020-05-14)
+
+
+### Bug Fixes
+
+* **package:** Update type declaration file path ([#394](https://github.com/atSCM/atscm/issues/394)) ([f7d8875](https://github.com/atSCM/atscm/commits/f7d8875))
+
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2020-05-09)
 
