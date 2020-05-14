@@ -1,7 +1,7 @@
 # Guide: Using the API
 
 > Learn how to use the atscm API to e.g. run server serverscripts in your node application.
-> **The atscm API is currently in beta.**
+> **Available since atscm v1.0.0.** Use `atscm update` to use the latest version
 
 ## Installation
 
@@ -9,15 +9,11 @@ First of all, make sure your project has atscm installed: Take a look at your _p
 
 ```bash
 # If you need atscm as a runtime-dependency
-npm install --save atscm@beta
+npm install --save atscm
 
-# If you need atscm as a development dependency
-npm install --save-dev atscm@beta
+# If you need atscm as a development dependency (most likely)
+npm install --save-dev atscm
 ```
-
-<!-- FIXME: Remove once 1.0.0 is realease -->
-
-> Once atscm v1.0.0 is released, you can omit the `@beta`.
 
 ## Configuration
 
