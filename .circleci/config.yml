@@ -120,6 +120,12 @@ jobs:
       - run:
           name: Transpiling source code
           command: npm run compile
+      - run:
+          name: Build type declaration files
+          command: npm run types
+      - run:
+          name: Check package file paths
+          command: npx pkg-ok
       - persist_to_workspace:
           root: .
           paths:
@@ -160,19 +166,6 @@ jobs:
           path: ~/reports
       - store_artifacts:
           path: ~/reports
-
-  types:
-    executor: atscm/node
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Build type declaration files
-          command: npm run types
-      - persist_to_workspace:
-          root: .
-          paths:
-            - out/types
 
   unit-tests:
     executor: atscm/node
@@ -267,9 +260,6 @@ workflows:
       - lint-source:
           requires:
             - build
-      - types:
-          requires:
-            - install-deps
       - unit-tests:
           requires:
             - install-deps
@@ -296,7 +286,6 @@ workflows:
       - deploy:
           requires:
             - lint-source
-            - types
             - test-coverage
             - integration-32x
             - integration-33x
