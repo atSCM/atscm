@@ -131,7 +131,9 @@
 <div data-ice="manual">
     <ul class="manual-toc">
       
-    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0--2020-05-09-" data-ice="link">1.0.0 (2020-05-09)</a></li>
+    <li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-1--2020-05-14-" data-ice="link">1.0.1 (2020-05-14)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-0-0--2020-05-09-" data-ice="link">1.0.0 (2020-05-09)</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#performance-improvements" data-ice="link">Performance Improvements</a></li>
@@ -187,20 +189,15 @@
 
 <div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="guide--using-the-api">Guide: Using the API</h1><blockquote>
 <p>Learn how to use the atscm API to e.g. run server serverscripts in your node application.
-<strong>The atscm API is currently in beta.</strong></p>
+<strong>Available since atscm v1.0.0.</strong> Use <code>atscm update</code> to use the latest version</p>
 </blockquote>
 <h2 id="installation">Installation</h2><p>First of all, make sure your project has atscm installed: Take a look at your <em>package.json</em> file and make sure, atscm is present in the <em>dependencies</em> or (depending on your use case) <em>devDependencies</em> section. Otherwise, <strong>install atscm if necessary</strong>:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># If you need atscm as a runtime-dependency
-npm install --save atscm@beta
+npm install --save atscm
 
-# If you need atscm as a development dependency
-npm install --save-dev atscm@beta</code>
+# If you need atscm as a development dependency (most likely)
+npm install --save-dev atscm</code>
 </code></pre>
-<p><!-- FIXME: Remove once 1.0.0 is realease -->
-</p>
-<blockquote>
-<p>Once atscm v1.0.0 is released, you can omit the <code>@beta</code>.</p>
-</blockquote>
 <h2 id="configuration">Configuration</h2><p>Similar to regular atscm projects, you need an <em>Atviseproject</em> file that contains atscm&apos;s configuration. A minimal example may look like this:</p>
 <pre><code class="lang-js"><code class="source-code prettyprint">// Atviseproject.js
 const { Atviseproject } = require(&apos;atscm&apos;);
