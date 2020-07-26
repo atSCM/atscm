@@ -1,3 +1,14 @@
+<a name="1.1.0"></a>
+# 1.1.0 (2020-07-26)
+
+
+### Features
+
+* **transform:** Allow non-js script files ([#406](https://github.com/atSCM/atscm/issues/406)) ([f07976b](https://github.com/atSCM/atscm/commits/f07976b))
+
+
+
+
 <a name="1.0.1"></a>
 ## 1.0.1 (2020-05-14)
 
