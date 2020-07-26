@@ -20,11 +20,18 @@ import XMLTransformer from '../lib/transform/XMLTransformer';
  */
 export class AtviseScriptTransformer extends XMLTransformer {
   /**
+   * The source file extension to allow for scripts.
+   */
+  static get scriptSourceExtension() {
+    return '.js';
+  }
+
+  /**
    * The source file extensions to allow.
    * @type {string[]}
    */
   static get sourceExtensions() {
-    return ['.json', '.js'];
+    return ['.json', this.scriptSourceExtension];
   }
 
   /**
@@ -209,7 +216,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       }
     }
 
-    const scriptFile = sources['.js'];
+    const scriptFile = sources[this.constructor.scriptSourceExtension];
     let code = '';
 
     if (scriptFile) {
