@@ -188,11 +188,18 @@ export default class DisplayTransformer extends XMLTransformer {
   }
 
   /**
+   * The source file extension to allow for scripts.
+   */
+  static get scriptSourceExtension() {
+    return &apos;.js&apos;;
+  }
+
+  /**
    * The source file extensions to allow.
    * @type {string[]}
    */
   static get sourceExtensions() {
-    return [&apos;.json&apos;, &apos;.svg&apos;, &apos;.js&apos;];
+    return [&apos;.json&apos;, &apos;.svg&apos;, this.scriptSourceExtension];
   }
 
   /**
@@ -335,7 +342,7 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error(`No display SVG for ${node.nodeId}`);
     }
 
-    const scriptFile = sources[&apos;.js&apos;];
+    const scriptFile = sources[this.constructor.scriptSourceExtension];
     let inlineScript = &apos;&apos;;
     if (scriptFile) {
       inlineScript = scriptFile.stringValue;
