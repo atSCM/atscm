@@ -70,36 +70,31 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-pnpm-deps-{{ checksum "pnpm-lock.yaml" }}
       - run:
-          name: Installing npm dependencies
-          command: npm install
-      - atscm/git-login
+          name: Install dependencies
+          command: pnpm install --prefer-frozen-lockfile
       - run:
           name: Handling package-lock changes
           command: |
-            if git diff --exit-code package-lock.json; then
-              echo "package-lock did not change"
+            if git diff --exit-code pnpm-lock.yaml; then
+              echo "Lockfile up to date"
             else
-              if [[ $CIRCLE_BRANCH = *"greenkeeper/"* ]]; then
-                echo "Committing package-lock changes"
-                git add package-lock.json
-                git commit -m 'chore(package): Update lockfile [ci skip]';
-              else
-                echo "Resetting package-lock changes"
-                git checkout -- package-lock.json
-              fi
-            fi
+              echo "Lockfile is out of date."
+              echo "Run 'git add pnpm-lock.yaml' and 'git commit' to update it."
 
-            echo "Done"
+              exit 1
+            fi
       - save_cache:
-          key: v3-npm-deps-{{ checksum "package-lock.json" }}
+          key: v1-pnpm-deps-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            - node_modules
+            - ~/.pnpm-store
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - .
+            - ./node_modules
+            - ./*/node_modules
+            - ./packages/*/node_modules
 
   start-testserver:
     docker:
