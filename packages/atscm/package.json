@@ -1,6 +1,6 @@
 {
   "name": "atscm",
-  "version": "1.1.0",
+  "version": "1.1.0-modified",
   "description": "Source code management utilities for atvise",
   "main": "out/index.js",
   "types": "out/types/src/index.d.ts",
@@ -12,6 +12,7 @@
   "scripts": {
     "compile": "babel src --out-dir out --source-maps --extensions .js,.ts",
     "compile:watch": "npm run compile -- --watch --verbose",
+    "dev": "npm run -s compile -- --watch",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
     "format": "prettier --ignore-path .gitignore \"**/*\" \"!{.{git,npm}ignore,CHANGELOG.md}\" \"!res/**/*\" \"!**/*.xml\"",
@@ -49,6 +50,7 @@
     "@ls-age/esdoc-coverage": "0.1.6",
     "@ls-age/eslint-config": "0.9.2",
     "@types/fs-extra": "8.1.0",
+    "@types/mri": "1.1.0",
     "@types/semver": "7.1.0",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
