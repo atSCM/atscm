@@ -6,6 +6,12 @@ orbs:
         docker:
           - image: lsage/pnpm-circleci-node:12
     commands:
+      attach:
+        steps:
+          - checkout:
+              path: ~/project
+          - attach_workspace:
+              at: ~/project
       git-login:
         steps:
           - run:
@@ -111,8 +117,7 @@ jobs:
     executor: atscm/node
     working_directory: ~/project/packages/atscm
     steps:
-      - attach_workspace:
-          at: ~/project
+      - atscm/attach
       - run:
           name: Transpiling source code
           command: npm run compile
@@ -131,8 +136,7 @@ jobs:
     executor: atscm/node
     working_directory: ~/project/packages/atscm
     steps:
-      - attach_workspace:
-          at: ~/project
+      - atscm/attach
       - run:
           name: Creating API documentation
           command: npm run docs
@@ -151,8 +155,7 @@ jobs:
   lint-source:
     executor: atscm/node
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Linting source files
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
@@ -168,8 +171,7 @@ jobs:
     executor: atscm/node
     parallelism: 4
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Printing test files to run
           command: circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings
@@ -191,8 +193,7 @@ jobs:
   test-coverage:
     executor: atscm/node
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Combining coverage reports
           command: npx istanbul-combine -r lcov -r html coverage/**/*.json
@@ -205,10 +206,8 @@ jobs:
   deploy:
     executor: atscm/node
     steps:
-      - checkout
       - add_ssh_keys
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - atscm/git-login
       - atscm/npm-login
       - run:
@@ -218,10 +217,8 @@ jobs:
   update-hosted-docs:
     executor: atscm/node
     steps:
-      - checkout
       - add_ssh_keys
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - atscm/git-login
       - run:
           name: Build organization page
