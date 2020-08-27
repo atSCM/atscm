@@ -4,7 +4,7 @@
   "description": "The atscm monorepo",
   "private": true,
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"res/**/*\"  --ext .js,.ts",
+    "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"packages/atscm/res/**/*\"  --ext .js,.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

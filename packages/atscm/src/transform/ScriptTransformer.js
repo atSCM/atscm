@@ -136,8 +136,6 @@ export class AtviseScriptTransformer extends XMLTransformer {
         }
       }
 
-      return Object.fromEntries(Object.entries(param).sort(([a], [b]) => b - a));
-
       return param;
     });
   }

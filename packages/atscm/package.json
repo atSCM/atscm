@@ -16,7 +16,6 @@
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json -t 80",
     "format": "prettier --ignore-path .gitignore \"**/*\" \"!{.{git,npm}ignore,CHANGELOG.md}\" \"!res/**/*\" \"!**/*.xml\"",
-    "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"res/**/*\"  --ext .js,.ts",
     "prepublishOnly": "npm run compile && npm run docs",
     "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
     "test:base": "cross-env NODE_ENV=test mocha --recursive --require ./test/prepare --timeout 20000 --exit test/src/maintenance.spec.js",
