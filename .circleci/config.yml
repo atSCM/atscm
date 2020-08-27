@@ -128,9 +128,9 @@ jobs:
           name: Check package file paths
           command: npx pkg-ok
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - out
+            - packages/atscm/out
 
   docs:
     executor: atscm/node
@@ -148,9 +148,9 @@ jobs:
           command: npm run docs:coverage
           when: always
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - docs/api
+            - packages/atscm/docs/api
 
   lint-source:
     executor: atscm/node
@@ -182,9 +182,9 @@ jobs:
             NODE_ENV: test
             MOCHA_FILE: ../reports/unit-tests-$CIRCLE_NODE_INDEX.xml
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - coverage
+            - packages/atscm/coverage
       - store_test_results:
           path: ~/reports
       - store_artifacts:
