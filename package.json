@@ -1,23 +1,23 @@
 {
   "name": "@atscm/monorepo",
   "version": "0.0.0",
-  "description": "The atscm monorepo",
   "private": true,
+  "description": "The atscm monorepo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm.git"
+  },
+  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
+  "homepage": "https://github.com/atSCM/atscm#readme",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm/issues"
+  },
   "scripts": {
     "format": "prettier --ignore-path .gitignore \"**/*\" \"!**/{.{git,npm}ignore,CHANGELOG.md,.nojekyll}\" \"!packages/atscm/res/**/*\" \"!**/*.xml\" \"!pnpm-lock.yaml\"",
     "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"packages/atscm/res/**/*\"  --ext .js,.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/atSCM/atscm.git"
-  },
-  "author": "Lukas Hechenberger <npm@ls-age.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/atSCM/atscm/issues"
-  },
-  "homepage": "https://github.com/atSCM/atscm#readme",
   "devDependencies": {
     "@ls-age/bump-version": "1.0.0-beta.5",
     "@ls-age/commitlint-config": "0.0.1",
