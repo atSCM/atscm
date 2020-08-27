@@ -109,9 +109,10 @@ jobs:
 
   build:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
       - attach_workspace:
-          at: .
+          at: ~/project
       - run:
           name: Transpiling source code
           command: npm run compile
@@ -128,9 +129,10 @@ jobs:
 
   docs:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
       - attach_workspace:
-          at: .
+          at: ~/project
       - run:
           name: Creating API documentation
           command: npm run docs
