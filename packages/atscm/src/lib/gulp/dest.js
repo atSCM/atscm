@@ -254,7 +254,6 @@ export class WriteStream extends Writable {
           this._outputFile(
             join(this._base, dirPath.join('/'), name),
             JSON.stringify(node.metadata, null, '  ')
-            // `${JSON.stringify(node.metadata, null, '  ')}\n`
           )
         );
       }
