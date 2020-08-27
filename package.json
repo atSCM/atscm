@@ -4,6 +4,7 @@
   "description": "The atscm monorepo",
   "private": true,
   "scripts": {
+    "format": "prettier --ignore-path .gitignore \"**/*\" \"!**/{.{git,npm}ignore,CHANGELOG.md,.nojekyll}\" \"!packages/atscm/res/**/*\" \"!**/*.xml\" \"!pnpm-lock.yaml\"",
     "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"packages/atscm/res/**/*\"  --ext .js,.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
     "eslint": "7.7.0",
-    "eslint-config-prettier": "6.11.0"
+    "eslint-config-prettier": "6.11.0",
+    "prettier": "1.18.2"
   }
 }
