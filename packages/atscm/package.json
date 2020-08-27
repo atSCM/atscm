@@ -53,13 +53,11 @@
     "broken-link-checker-local": "0.2.1",
     "buffer-replace": "1.0.0",
     "codecov": "3.7.2",
-    "conventional-changelog-lint": "2.1.1",
     "cross-env": "7.0.2",
     "esdoc": "1.1.0",
     "esdoc-ecmascript-proposal-plugin": "1.0.0",
     "esdoc-standard-plugin": "1.0.0",
     "eval": "0.1.4",
-    "husky": "4.2.5",
     "istanbul-combine": "0.3.0",
     "mocha": "8.1.1",
     "mocha-circleci-reporter": "0.0.3",
@@ -112,15 +110,5 @@
     "sourceMap": false,
     "instrument": false,
     "check-coverage": true
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "conventional-changelog-lint -e"
-    }
-  },
-  "renovate": {
-    "extends": [
-      "@ls-age:automergeDev"
-    ]
   }
 }
