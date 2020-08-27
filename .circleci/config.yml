@@ -207,7 +207,6 @@ jobs:
 
   deploy:
     executor: atscm/node
-    working_directory: ~/project/packages/atscm
     steps:
       - add_ssh_keys
       - atscm/attach
@@ -215,7 +214,12 @@ jobs:
       - atscm/npm-login
       - run:
           name: Deploying changes
-          command: npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
+          command: |
+            npx bump-version release \
+              --package-manager pnpm \
+              --dir packages/atscm \
+              --release-files out docs/api \
+              --gh-token $RELEASE_GITHUB_TOKEN
 
   update-hosted-docs:
     executor: atscm/node
