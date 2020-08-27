@@ -52,16 +52,16 @@ orbs:
               environment:
                 NODE_ENV: test
                 ATSCM_PROJECT__TIMEOUT: '20000'
-                MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+                MOCHA_FILE: /home/circleci/reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
     jobs:
       integration:
         executor: node
+        working_directory: ~/project/packages/atscm
         parameters:
           atserver:
             type: string
         steps:
-          - attach_workspace:
-              at: .
+          - attach
           - run-integration-tests:
               atserver: << parameters.atserver >>
           - store_test_results:
