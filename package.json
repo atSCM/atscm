@@ -16,6 +16,7 @@
   "scripts": {
     "format": "prettier --ignore-path .gitignore \"**/*\" \"!**/{.{git,npm}ignore,CHANGELOG.md,.nojekyll}\" \"!packages/atscm/res/**/*\" \"!**/*.xml\" \"!pnpm-lock.yaml\"",
     "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"packages/atscm/res/**/*\"  --ext .js,.ts",
+    "preinstall": "node ./scripts/pnpm-only.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
