@@ -1,7 +1,7 @@
 importers:
   .:
     devDependencies:
-      '@ls-age/bump-version': 1.0.0-beta.5
+      '@ls-age/bump-version': 1.0.0-beta.6
       '@ls-age/commitlint-config': 0.0.1
       '@ls-age/eslint-config': 0.9.2_eslint@7.7.0
       '@ls-age/update-section': 0.2.0
@@ -16,7 +16,7 @@ importers:
       prettier: 1.18.2
       sucrase: 3.15.0
     specifiers:
-      '@ls-age/bump-version': 1.0.0-beta.5
+      '@ls-age/bump-version': 1.0.0-beta.6
       '@ls-age/commitlint-config': 0.0.1
       '@ls-age/eslint-config': 0.9.2
       '@ls-age/update-section': 0.2.0
@@ -1368,7 +1368,7 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
-  /@ls-age/bump-version/1.0.0-beta.5:
+  /@ls-age/bump-version/1.0.0-beta.6:
     dependencies:
       '@ls-age/expose': 0.3.0
       bitbucket-url-to-object: 0.3.0
@@ -1388,7 +1388,7 @@ packages:
     dev: true
     hasBin: true
     resolution:
-      integrity: sha512-61p7neW4jgNFhQxuQqip9SthrPJrtYxkP7et6QrhlB7VTt31UlGNoM2pAQCWeKqxbuGAOnZomhl5+Aksk/0CAg==
+      integrity: sha512-611gxsp6alV52UHzaoDuMHWFZnwP7h+GaZCcSZbtOYL23C9Phh+3bHcbrmjVS0+6V3h3E+wmqH3PTmDNYIqbXA==
   /@ls-age/commitlint-config/0.0.1:
     dependencies:
       '@commitlint/config-conventional': 8.3.4
@@ -6196,7 +6196,7 @@ packages:
       node: '>=0.4.7'
     hasBin: true
     optionalDependencies:
-      uglify-js: 3.10.2
+      uglify-js: 3.10.4
     resolution:
       integrity: sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
   /har-validator/2.0.6:
@@ -11510,14 +11510,14 @@ packages:
       uglify-to-browserify: 1.0.2
     resolution:
       integrity: sha512-WqKNbmNJKzIdIEQu/U2ytgGBbhCy2PVks94GoetczOAJ/zCgVu2CuO7gguI5KPFGPtUtI1dmPQl6h0D4cPzypA==
-  /uglify-js/3.10.2:
+  /uglify-js/3.10.4:
     dev: true
     engines:
       node: '>=0.8.0'
     hasBin: true
     optional: true
     resolution:
-      integrity: sha512-GXCYNwqoo0MbLARghYjxVBxDCnU0tLqN7IPLdHHbibCb1NI5zBkU2EPcy/GaVxc0BtTjqyGXJCINe6JMR2Dpow==
+      integrity: sha512-kBFT3U4Dcj4/pJ52vfjCSfyLyvG9VYYuGYPmrPvAxRw/i7xHiT4VvCev+uiEMcEEiu6UNB6KgWmGtSUYIWScbw==
   /uglify-to-browserify/1.0.2:
     optional: true
     resolution:
