@@ -18,9 +18,10 @@ _atscm_ is a [node.js](https://nodejs.org) based utility that stores the content
   - using templating engines such as [handlebars](http://handlebarsjs.com)
 
 <!-- BEGIN overview -->
+
 ## Installation
 
-*atscm* can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
 
 <details>
 <summary><strong>Installing <i>atscm-cli</i></strong></summary>
@@ -50,6 +51,7 @@ Running `atscm push` will update all nodes from the contents of your `./src` fol
 After running `atscm watch` files and atvise server nodes are watched for changes. If a file changes, the file is pushed, if a node changes this node is pulled.
 
 `atscm watch` is very useful if you want edit source files in an external editor but still have the ability to use _atvise builder_'s drag and drop functionality.
+
 <!-- END overview -->
 
 ## Project configuration

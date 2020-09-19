@@ -13,7 +13,7 @@ For more details visit our docs at [atscm.github.io](https://atscm.github.io). W
 
 ### Installation
 
-*atscm* can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
 
 <details>
 <summary><strong>Installing <i>atscm-cli</i></strong></summary>
