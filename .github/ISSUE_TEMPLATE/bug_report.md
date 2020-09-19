@@ -1,12 +1,30 @@
-_Insert error description here_
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: 'bug'
+assignees: ''
 
-**Steps to reproduce error**
+---
 
-- _Insert steps to reproduce error here_
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-**Original error message**
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-_Insert error message (or screenshot) here_
+**Expected behavior**
+A clear and concise description of what you expected to happen.
+
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
+**Additional context**
+Add any other context about the problem here.
 
 ---
 
@@ -20,15 +38,5 @@ _Insert error message (or screenshot) here_
 | atvise server | atvise server version |
 | node          |          node version | <!-- run `node --version` --> |
 | npm           |           npm version | <!-- run `npm --version` --> |
-
-</details>
-
-<details><summary><strong>Project configuration</strong></summary>
-
-```javascript
-// Atviseproject.babel.js
-
-// Insert contents of Atviseproject here
-```
 
 </details>
