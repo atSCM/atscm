@@ -48,7 +48,7 @@ After running `atscm watch` files and atvise server nodes are watched for change
 
 ## Packages
 
-> _Note: We switched to a monorepo after version 1.0. This is an ongoing process, expect more packages to appear here soon._
+> _Note: We switched to a monorepo after version 1.1. This is an ongoing process, expect more packages to appear here soon._
 
 This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/workspaces) holding these packages:
 
