@@ -14,7 +14,7 @@ importers:
       eslint-config-prettier: 6.11.0_eslint@7.7.0
       husky: 4.2.5
       prettier: 2.1.2
-      prettier-plugin-package: 1.0.0_prettier@2.1.2
+      prettier-plugin-package: 1.0.0
       sucrase: 3.15.0
     specifiers:
       '@ls-age/bump-version': 1.0.0-beta.6
@@ -30,7 +30,7 @@ importers:
       eslint-config-prettier: 6.11.0
       husky: 4.2.5
       prettier: 2.1.2
-      prettier-plugin-package: ^1.0.0
+      prettier-plugin-package: 1.0.0
       sucrase: 3.15.0
   packages/atscm:
     dependencies:
@@ -9413,9 +9413,7 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
-  /prettier-plugin-package/1.0.0_prettier@2.1.2:
-    dependencies:
-      prettier: 2.1.2
+  /prettier-plugin-package/1.0.0:
     dev: true
     engines:
       node: '>= 8.0.0'
