@@ -83,7 +83,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // Extract JavaScript
     if (scriptTags.length) {
-      scriptTags.forEach(script => {
+      scriptTags.forEach((script) => {
         const attributes = attributeValues(script);
         if (attributes && (attributes.src || attributes['xlink:href'])) {
           if (!config.dependencies) {
@@ -136,7 +136,7 @@ export default class DisplayTransformer extends XMLTransformer {
       if (paramTags.length) {
         config.parameters = [];
 
-        paramTags.forEach(n => config.parameters.push(attributeValues(n)));
+        paramTags.forEach((n) => config.parameters.push(attributeValues(n)));
       }
     }
 
@@ -199,7 +199,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // Insert dependencies
     if (config.dependencies) {
-      config.dependencies.forEach(s => {
+      config.dependencies.forEach((s) => {
         appendChild(svg, createElement('script', undefined, { 'xlink:href': s }));
       });
     }

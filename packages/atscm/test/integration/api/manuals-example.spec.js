@@ -23,7 +23,7 @@ describe('Manual API example', () => {
       new Variant({
         dataType: DataType.NodeId,
         arrayType: VariantArrayType.Array,
-        value: nodesToExport.map(id => new NodeId(id)),
+        value: nodesToExport.map((id) => new NodeId(id)),
       }),
     ]);
 

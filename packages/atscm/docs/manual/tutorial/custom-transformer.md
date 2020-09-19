@@ -224,7 +224,7 @@ class Test {
   constructor(options = {}, ...otherArgs) {
     // Default values and rest params
     this.options = options;
-    this.args = otherArgs.map(arg => parseInt(arg, 10)); // Arrows and Lexical This
+    this.args = otherArgs.map((arg) => parseInt(arg, 10)); // Arrows and Lexical This
   }
 }
 

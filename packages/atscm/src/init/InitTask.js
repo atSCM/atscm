@@ -20,7 +20,7 @@ export default class InitTask {
       './general/**/.*',
       `./lang/${langId}/**/*.*`,
       `./lang/${langId}/**/.*`,
-    ].map(p => join(__dirname, '../../res/init/templates', p));
+    ].map((p) => join(__dirname, '../../res/init/templates', p));
   }
 
   /**

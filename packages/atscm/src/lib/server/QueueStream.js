@@ -169,7 +169,7 @@ export default class QueueStream extends Stream {
     this._processing++;
 
     this.processChunk(chunk, (err, statusCode, onSuccess) => {
-      const finished = error => {
+      const finished = (error) => {
         this._processing--;
         this._processed++;
         this.emit('processed-chunk', chunk, error);

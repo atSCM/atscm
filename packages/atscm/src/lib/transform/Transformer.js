@@ -30,7 +30,7 @@ export default class Transformer {
    * @return {function(node: Node): Promise<any>} The combined transform function.
    */
   static combinedTransformer(transformers, direction) {
-    const directed = transformers.map(t => t.withDirection(direction));
+    const directed = transformers.map((t) => t.withDirection(direction));
 
     if (direction === TransformDirection.FromFilesystem) {
       directed.reverse();
@@ -149,7 +149,7 @@ export default class Transformer {
       });
 
       if (promise instanceof Promise) {
-        promise.then(resolve, err => reject(Object.assign(err, { node })));
+        promise.then(resolve, (err) => reject(Object.assign(err, { node })));
       } else if (this.transformFromDB.length < 3) {
         reject(
           new Error(`${fnName} did not return a Promise.

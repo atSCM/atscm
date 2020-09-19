@@ -2,12 +2,22 @@
   "name": "atscm",
   "version": "1.1.0-modified",
   "description": "Source code management utilities for atvise",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm.git",
+    "directory": "packages/atscm"
+  },
+  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
+  "homepage": "https://github.com/atSCM/packages/atscm#readme",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm/issues"
+  },
   "main": "out/index.js",
-  "types": "out/types/src/index.d.ts",
   "engines": {
-    "node": ">=10.0",
     "atscm-cli": ">=0.7.0",
-    "atserver": ">=3.2.0 <3.5.0"
+    "atserver": ">=3.2.0 <3.5.0",
+    "node": ">=10.0"
   },
   "scripts": {
     "compile": "babel src --out-dir out --source-maps --extensions .js,.ts",
@@ -18,24 +28,38 @@
     "prepublishOnly": "npm run compile && npm run docs",
     "test": "npm run -s test:base -- \"test/**/*.spec.js\"",
     "test:base": "cross-env NODE_ENV=test mocha --recursive --require ./test/prepare --timeout 20000 --exit test/src/maintenance.spec.js",
-    "test:unit": "npm run -s test:base -- \"test/src/**/*.spec.js\"",
-    "test:integration": "npm run -s test:base -- \"test/integration/**/*.spec.js\"",
-    "test:watch": "npm test -- --watch --reporter min",
     "test:coverage": "nyc --reporter=html npm run test:unit",
     "test:docs": "blcl docs/api --exclude https://circleci.com/gh/atSCM/workflows/atscm",
+    "test:integration": "npm run -s test:base -- \"test/integration/**/*.spec.js\"",
+    "test:unit": "npm run -s test:base -- \"test/src/**/*.spec.js\"",
+    "test:watch": "npm test -- --watch --reporter min",
     "types": "tsc"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/atSCM/atscm.git",
-    "directory": "packages/atscm"
+  "dependencies": {
+    "@atscm/server-scripts": "0.3.1",
+    "@babel/code-frame": "^7.5.5",
+    "browser-sync": "^2.26.7",
+    "chalk": "^4.0.0",
+    "detect-indent": "^6.0.0",
+    "fs-extra": "^6.0.1",
+    "gulp": "^4.0.2",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulplog": "^1.0.0",
+    "handlebars-helpers": "^0.10.0",
+    "hasha": "^3.0.0",
+    "modify-xml": "^1.0.0-beta.0",
+    "mri": "^1.1.4",
+    "node-cleanup": "^2.1.2",
+    "node-opcua": "0.0.60",
+    "p-queue": "^6.2.1",
+    "prompts": "^2.3.2",
+    "sane": "^2.5.2",
+    "semver": "^5.7.1",
+    "stream-to-promise": "^2.2.0",
+    "through2": "^2.0.5",
+    "validate-npm-package-name": "^3.0.0",
+    "vinyl": "^2.2.0"
   },
-  "author": "Lukas Hechenberger <lukas.hechenberger@bachmann.info>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/atSCM/atscm/issues"
-  },
-  "homepage": "https://github.com/atSCM/packages/atscm#readme",
   "devDependencies": {
     "@atscm/esdoc-typescript-plugin": "0.1.0",
     "@babel/cli": "7.10.5",
@@ -70,31 +94,7 @@
     "unexpected-stream": "4.0.0",
     "yargs": "15.4.1"
   },
-  "dependencies": {
-    "@atscm/server-scripts": "0.3.1",
-    "@babel/code-frame": "^7.5.5",
-    "browser-sync": "^2.26.7",
-    "chalk": "^4.0.0",
-    "detect-indent": "^6.0.0",
-    "fs-extra": "^6.0.1",
-    "gulp": "^4.0.2",
-    "gulp-compile-handlebars": "^0.6.1",
-    "gulplog": "^1.0.0",
-    "handlebars-helpers": "^0.10.0",
-    "hasha": "^3.0.0",
-    "modify-xml": "^1.0.0-beta.0",
-    "mri": "^1.1.4",
-    "node-cleanup": "^2.1.2",
-    "node-opcua": "0.0.60",
-    "p-queue": "^6.2.1",
-    "prompts": "^2.3.2",
-    "sane": "^2.5.2",
-    "semver": "^5.7.1",
-    "stream-to-promise": "^2.2.0",
-    "through2": "^2.0.5",
-    "validate-npm-package-name": "^3.0.0",
-    "vinyl": "^2.2.0"
-  },
+  "types": "out/types/src/index.d.ts",
   "nyc": {
     "all": true,
     "include": [

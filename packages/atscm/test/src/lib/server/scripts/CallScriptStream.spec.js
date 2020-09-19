@@ -28,10 +28,10 @@ class WithParams extends StubImplementation {
 }
 
 /** @test {CallScriptStream} */
-describe('CallScriptStream', function() {
+describe('CallScriptStream', function () {
   /** @test {CallScriptStream#methodId} */
-  describe('#methodId', function() {
-    it("should return the callScript method's id", function() {
+  describe('#methodId', function () {
+    it("should return the callScript method's id", function () {
       return expect(
         CallScriptStream.prototype.methodId.value,
         'to equal',
@@ -41,15 +41,15 @@ describe('CallScriptStream', function() {
   });
 
   /** @test {CallScriptStream#scriptId} */
-  describe('#scriptId', function() {
-    it('should throw if not overridden', function() {
+  describe('#scriptId', function () {
+    it('should throw if not overridden', function () {
       return expect(() => CallScriptStream.prototype.scriptId, 'to throw', /must be implemented/i);
     });
   });
 
   /** @test {CallScriptStream#scriptParameters} */
-  describe('#scriptParameters', function() {
-    it('should return an empty object if not overridden', function() {
+  describe('#scriptParameters', function () {
+    it('should return an empty object if not overridden', function () {
       return expect(
         CallScriptStream.prototype.scriptParameters,
         'when called with',
@@ -61,8 +61,8 @@ describe('CallScriptStream', function() {
   });
 
   /** @test {CallScriptStream#inputArguments} */
-  describe('#inputArguments', function() {
-    it('should return an array of node-opcua~Variants', function() {
+  describe('#inputArguments', function () {
+    it('should return an array of node-opcua~Variants', function () {
       const stream = new StubImplementation();
 
       return expect(
@@ -70,7 +70,7 @@ describe('CallScriptStream', function() {
         'when called with',
         [{}],
         'to have items satisfying',
-        expect.it(item => {
+        expect.it((item) => {
           expect(item, 'to be an object');
           expect(item, 'to have property', 'dataType');
           expect(item, 'to have property', 'value');
@@ -78,7 +78,7 @@ describe('CallScriptStream', function() {
       );
     });
 
-    it('should return names and values from #scriptParameters', function() {
+    it('should return names and values from #scriptParameters', function () {
       const stream = new WithParams();
       const file = { stem: 'test' };
       const [{ value: paramNames }, { value: paramValues }] = stream.inputArguments(file).slice(2);
@@ -94,10 +94,10 @@ describe('CallScriptStream', function() {
   });
 
   /** @test {CallScriptStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it("should include the file's name", function() {
+  describe('#processErrorMessage', function () {
+    it("should include the file's name", function () {
       return expect(
-        f => new StubImplementation().processErrorMessage(f),
+        (f) => new StubImplementation().processErrorMessage(f),
         'when called with',
         [{ relative: './path/file' }],
         'to end with',
@@ -105,9 +105,9 @@ describe('CallScriptStream', function() {
       );
     });
 
-    it("should include the called script's id", function() {
+    it("should include the called script's id", function () {
       return expect(
-        f => new StubImplementation().processErrorMessage(f),
+        (f) => new StubImplementation().processErrorMessage(f),
         'when called with',
         [{ relative: './path/file' }],
         'to contain',
@@ -117,8 +117,8 @@ describe('CallScriptStream', function() {
   });
 
   /** @test {CallScriptStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should process as usual if not called on atscm script', function() {
+  describe('#processChunk', function () {
+    it('should process as usual if not called on atscm script', function () {
       const stream = new StubImplementation();
 
       return expect(
@@ -130,7 +130,7 @@ describe('CallScriptStream', function() {
       );
     });
 
-    it("should suggest running 'atscm import' if atscm script is missing", function() {
+    it("should suggest running 'atscm import' if atscm script is missing", function () {
       const stream = new StubAtscmImplementation();
 
       return expect(

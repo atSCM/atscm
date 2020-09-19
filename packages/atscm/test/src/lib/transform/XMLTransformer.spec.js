@@ -9,21 +9,21 @@ function nativeEOLs(string) {
 }
 
 /** @test {XMLTransformer} */
-describe('XMLTransformer', function() {
+describe('XMLTransformer', function () {
   /** @test {XMLTransformer#constructor} */
-  describe('#constructor', function() {
-    it('should return a SplittingTransformer', function() {
+  describe('#constructor', function () {
+    it('should return a SplittingTransformer', function () {
       expect(new XMLTransformer(), 'to be a', Transformer);
     });
 
-    it('should create a _fromDBBuilder', function() {
+    it('should create a _fromDBBuilder', function () {
       const transformer = new XMLTransformer();
 
       expect(transformer._fromDBBuilder, 'to be defined');
       expect(transformer._fromDBBuilder, 'to be a', 'function');
     });
 
-    it('should create a _fromFilesystemBuilder', function() {
+    it('should create a _fromFilesystemBuilder', function () {
       const transformer = new XMLTransformer();
 
       expect(transformer._fromDBBuilder, 'to be defined');
@@ -32,22 +32,22 @@ describe('XMLTransformer', function() {
   });
 
   /** @test {XMLTransformer#builder} */
-  describe('#builder', function() {
-    it('should return the #_fromDBBuilder if direction is FromDB', function() {
+  describe('#builder', function () {
+    it('should return the #_fromDBBuilder if direction is FromDB', function () {
       const transformer = new XMLTransformer({ direction: TransformDirection.FromDB });
 
       expect(transformer.builder, 'to be defined');
       expect(transformer.builder, 'to be', transformer._fromDBBuilder);
     });
 
-    it('should return the #_fromDBBuilder if direction is FromFilesystem', function() {
+    it('should return the #_fromDBBuilder if direction is FromFilesystem', function () {
       const transformer = new XMLTransformer({ direction: TransformDirection.FromFilesystem });
 
       expect(transformer.builder, 'to be defined');
       expect(transformer.builder, 'to be', transformer._fromFilesystemBuilder);
     });
 
-    it('should enforce tag order', function() {
+    it('should enforce tag order', function () {
       const transformer = new XMLTransformer({ direction: TransformDirection.FromDB });
       const dom = xml2js(
         `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -82,20 +82,20 @@ describe('XMLTransformer', function() {
   });
 
   /** @test {XMLTransformer#decodeContents} */
-  describe.skip('#decodeContents', function() {
-    it('should forward errors', function(done) {
+  describe.skip('#decodeContents', function () {
+    it('should forward errors', function (done) {
       expect(
-        cb => new XMLTransformer().decodeContents({ contents: 'no valid xml' }, cb),
+        (cb) => new XMLTransformer().decodeContents({ contents: 'no valid xml' }, cb),
         'to call the callback with error',
         /Text data outside of root node./
       ).then(() => done());
     });
 
-    it('should return object for valid xml', function(done) {
+    it('should return object for valid xml', function (done) {
       expect(
-        cb => new XMLTransformer().decodeContents({ contents: '<tag>value</tag>' }, cb),
+        (cb) => new XMLTransformer().decodeContents({ contents: '<tag>value</tag>' }, cb),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args[0], 'to be falsy');
         expect(args[1], 'to equal', {
           elements: [
@@ -130,7 +130,7 @@ describe('XMLTransformer', function() {
   function testBuilder(direction, object, expectedResult, callback) {
     const transformer = new XMLTransformer({ direction });
 
-    expect(cb => transformer.encodeContents(object, cb), 'to call the callback').then(args => {
+    expect((cb) => transformer.encodeContents(object, cb), 'to call the callback').then((args) => {
       expect(args[0], 'to be falsy');
       expect(args[1], 'to contain', expectedResult);
       callback();
@@ -138,17 +138,17 @@ describe('XMLTransformer', function() {
   }
 
   /** @test {XMLTransformer#encodeContents} */
-  describe.skip('#encodeContents', function() {
-    it('should forward errors', function() {
+  describe.skip('#encodeContents', function () {
+    it('should forward errors', function () {
       expect(
-        cb => new XMLTransformer().encodeContents(null, cb),
+        (cb) => new XMLTransformer().encodeContents(null, cb),
         'to call the callback with error',
         /Cannot read property/
       );
     });
 
-    context('when direction is FromDB', function() {
-      it('should indent with double space', function(done) {
+    context('when direction is FromDB', function () {
+      it('should indent with double space', function (done) {
         testBuilder(
           TransformDirection.FromDB,
           baseXmlObject,
@@ -160,8 +160,8 @@ describe('XMLTransformer', function() {
       });
     });
 
-    context('when direction is FromFilesytem', function() {
-      it('should indent with single space', function(done) {
+    context('when direction is FromFilesytem', function () {
+      it('should indent with single space', function (done) {
         testBuilder(
           TransformDirection.FromFilesystem,
           baseXmlObject,
@@ -171,15 +171,15 @@ describe('XMLTransformer', function() {
       });
     });
 
-    it('should support CDATA', function() {
+    it('should support CDATA', function () {
       return expect(
-        cb =>
+        (cb) =>
           new XMLTransformer({ direction: TransformDirection.FromDB }).encodeContents(
             cdataXmlObject,
             cb
           ),
         'to call the callback'
-      ).then(args =>
+      ).then((args) =>
         expect(
           args[1],
           'to end with',
@@ -190,7 +190,7 @@ describe('XMLTransformer', function() {
       );
     });
 
-    it("should escape '&' in attribute values", function(done) {
+    it("should escape '&' in attribute values", function (done) {
       const xml = nativeEOLs(`<root>
   <node attribute="escape &amp; this"/>
 </root>`);
@@ -199,7 +199,7 @@ describe('XMLTransformer', function() {
       testBuilder(TransformDirection.FromDB, xmlObject, xml, done);
     });
 
-    it("should escape '<' in attribute values", function(done) {
+    it("should escape '<' in attribute values", function (done) {
       const xml = nativeEOLs(`<root>
   <node attribute="escape &lt; this"/>
 </root>`);

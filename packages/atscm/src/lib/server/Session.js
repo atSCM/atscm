@@ -44,11 +44,11 @@ export default class Session {
  - Are you sure it is running?`);
     }, ProjectConfig.timeout);
 
-    await promisified(cb => client.connect(endpoint, cb));
+    await promisified((cb) => client.connect(endpoint, cb));
     Logger.debug(`Connected to ${endpoint}`);
     clearTimeout(timer);
 
-    const session = await promisified(cb =>
+    const session = await promisified((cb) =>
       client.createSession(
         {
           userName: ProjectConfig.login.username,
@@ -56,7 +56,7 @@ export default class Session {
         },
         cb
       )
-    ).catch(err => {
+    ).catch((err) => {
       if (
         [
           'userName === null || typeof userName === "string"',
@@ -86,7 +86,7 @@ export default class Session {
       const c = this._create();
       openingSessions.add(c);
 
-      return c.then(s => openingSessions.delete(c) && s);
+      return c.then((s) => openingSessions.delete(c) && s);
     };
 
     if (!this._pool) {
@@ -126,8 +126,8 @@ export default class Session {
   static async _close(session) {
     openSessions.delete(session);
 
-    await new Promise(resolve => session.close(true, () => resolve()));
-    await new Promise(resolve => session._client && session._client.disconnect(() => resolve()));
+    await new Promise((resolve) => session.close(true, () => resolve()));
+    await new Promise((resolve) => session._client && session._client.disconnect(() => resolve()));
 
     return session;
   }
@@ -167,6 +167,6 @@ export default class Session {
   static async closeOpen() {
     await Promise.all(openingSessions);
 
-    return Promise.all(Array.from(openSessions).map(session => this._close(session)));
+    return Promise.all(Array.from(openSessions).map((session) => this._close(session)));
   }
 }

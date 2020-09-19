@@ -26,7 +26,7 @@ export function getStat(path) {
  * error that occurred.
  */
 export function validateDirectoryExists(directoryPath) {
-  return getStat(directoryPath).then(stats => {
+  return getStat(directoryPath).then((stats) => {
     if (!stats.isDirectory()) {
       throw new Error(`${resolvePath(directoryPath)} is not a directory`);
     }

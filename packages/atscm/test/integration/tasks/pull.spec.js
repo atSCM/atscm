@@ -14,8 +14,8 @@ const runPull = proxyquire('../../../src/tasks/pull', {
   },
 }).default;
 
-describe('pull task', function() {
-  context('with the `--clean` flag', function() {
+describe('pull task', function () {
+  context('with the `--clean` flag', function () {
     const projectDir = tmpDir('pull-clean');
     const sourceDir = join(projectDir, 'src');
     const testFile = join(sourceDir, 'file-that-exists.txt');
@@ -33,7 +33,7 @@ describe('pull task', function() {
       ]).then(() => process.chdir(projectDir))
     );
 
-    it('should empty the source directory first', function() {
+    it('should empty the source directory first', function () {
       return expect(readdir(sourceDir), 'when fulfilled', 'not to be empty')
         .then(() => runPull({ clean: true }))
         .then(() => expect(readdir(sourceDir), 'when fulfilled', 'to be empty'));

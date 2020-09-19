@@ -36,16 +36,16 @@ export default class Watcher extends Emitter {
 
     reportProgress(this._nodeBrowser.browse(nodes), {
       getter: () => this._nodeBrowser._pushed,
-      formatter: count => `Subscribed to ${count} nodes`,
+      formatter: (count) => `Subscribed to ${count} nodes`,
     })
       .then(() => this.emit('ready'))
-      .catch(err => this.emit('error', err));
+      .catch((err) => this.emit('error', err));
 
     /**
      * Resolved once the server subscription is set up.
      * @type {Promise<any>}
      */
-    this.subscriptionStarted = this._setupSubscription().catch(err => this.emit('error', err));
+    this.subscriptionStarted = this._setupSubscription().catch((err) => this.emit('error', err));
   }
 
   /**
@@ -54,7 +54,7 @@ export default class Watcher extends Emitter {
    */
   _setupSubscription() {
     return Session.create().then(
-      session =>
+      (session) =>
         new Promise((resolve, reject) => {
           /** The current session, if connected @type {Session} */
           this._session = session;
@@ -69,7 +69,7 @@ export default class Watcher extends Emitter {
           });
 
           subscription.on('started', () => resolve(subscription));
-          subscription.on('failure', err => reject(err));
+          subscription.on('failure', (err) => reject(err));
         })
     );
   }
@@ -125,11 +125,11 @@ export default class Watcher extends Emitter {
 
         resolve();
       });
-      item.on('err', err => {
+      item.on('err', (err) => {
         clearTimeout(timeout);
         reject(err instanceof Error ? err : new Error(err));
       });
-    }).catch(err => {
+    }).catch((err) => {
       throw Object.assign(err, { node });
     });
   }
@@ -153,7 +153,7 @@ export default class Watcher extends Emitter {
    */
   close() {
     if (this._session) {
-      Session.close(this._session).catch(err => this.emit('error', err));
+      Session.close(this._session).catch((err) => this.emit('error', err));
     }
   }
 }

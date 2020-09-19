@@ -3,8 +3,8 @@ import expect from '../../expect';
 import { TransformDirection } from '../../../src/lib/transform/Transformer';
 import XMLTransformer from '../../../src/lib/transform/XMLTransformer';
 
-describe('XMLTransformer', function() {
-  it('should keep element order', async function() {
+describe('XMLTransformer', function () {
+  it('should keep element order', async function () {
     const testContents = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <svg version="1.2" xmlns="http://www.w3.org/2000/svg" width="1280" height="680">
   <text>text1</text>

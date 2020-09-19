@@ -69,7 +69,7 @@ export class WatchTask {
    */
   _waitForWatcher(watcher) {
     return new Promise((resolve, reject) => {
-      watcher.on('error', err => reject(err));
+      watcher.on('error', (err) => reject(err));
       watcher.on('ready', () => resolve(watcher));
     });
   }
@@ -81,7 +81,7 @@ export class WatchTask {
    */
   startFileWatcher() {
     return validateDirectoryExists(this.directoryToWatch)
-      .catch(err => {
+      .catch((err) => {
         if (err.code === 'ENOENT') {
           Logger.info(`Create a directory at ${this.directoryToWatch} or run \`atscm pull\` first`);
 
@@ -178,7 +178,7 @@ export class WatchTask {
     Logger.info(path, 'changed');
 
     return performPush(join(root, path), { singleNode: true })
-      .catch(err => this.printTaskError('Push failed', err))
+      .catch((err) => this.printTaskError('Push failed', err))
       .then(async () => {
         this.browserSyncInstance.reload();
 
@@ -204,7 +204,7 @@ export class WatchTask {
     Logger.info(readResult.nodeId.value, 'changed');
 
     return performPull([readResult.nodeId], { recursive: false })
-      .catch(err => this.printTaskError('Pull failed', err))
+      .catch((err) => this.printTaskError('Pull failed', err))
       .then(async () => {
         this.browserSyncInstance.reload();
 

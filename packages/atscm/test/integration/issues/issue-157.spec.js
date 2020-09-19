@@ -2,9 +2,9 @@ import { DataType } from 'node-opcua';
 import watch from '../../../src/tasks/watch';
 import { importSetup, callScript } from '../../helpers/atscm';
 
-describe.skip('watch task', function() {
-  context('when a watched node is deleted', function() {
-    it('should not error', async function() {
+describe.skip('watch task', function () {
+  context('when a watched node is deleted', function () {
+    it('should not error', async function () {
       const nodeName = await importSetup('issue-157', 'DeleteDisplay');
       const nodeId = `AGENT.DISPLAYS.atSCM.watch.${nodeName}`;
 
@@ -12,15 +12,15 @@ describe.skip('watch task', function() {
       const { serverWatcher } = await watch({ open: false });
 
       // Wait until deletion is recognized
-      const isTestNode = r => r.nodeId.value.split(nodeId).length > 1;
+      const isTestNode = (r) => r.nodeId.value.split(nodeId).length > 1;
       const changeCalled = new Promise((resolve, reject) => {
-        serverWatcher.on('change', r => {
+        serverWatcher.on('change', (r) => {
           if (isTestNode(r)) {
             reject();
           }
         });
 
-        serverWatcher.on('delete', r => {
+        serverWatcher.on('delete', (r) => {
           if (isTestNode(r)) {
             resolve();
           }

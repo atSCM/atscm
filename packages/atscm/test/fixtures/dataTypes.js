@@ -142,18 +142,18 @@ export const samples = [
     }),
     dataType: DataType.DiagnosticInfo,
   },
-].map(s => Object.assign({ nodeClass: NodeClass.Variable }, s));
+].map((s) => Object.assign({ nodeClass: NodeClass.Variable }, s));
 
-export const scalar = samples.map(s => Object.assign({ arrayType: VariantArrayType.Scalar }, s));
+export const scalar = samples.map((s) => Object.assign({ arrayType: VariantArrayType.Scalar }, s));
 
-export const array = samples.map(s =>
+export const array = samples.map((s) =>
   Object.assign({}, s, {
     arrayType: VariantArrayType.Array,
     value: [s.value, s.value],
   })
 );
 
-export const matrix = array.map(s =>
+export const matrix = array.map((s) =>
   Object.assign({}, s, {
     arrayType: VariantArrayType.Matrix,
     value: [s.value, s.value],

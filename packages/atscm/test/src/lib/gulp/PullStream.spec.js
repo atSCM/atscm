@@ -10,7 +10,7 @@ import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 import { ServerNode } from '../../../../src/lib/model/Node';
 
 const StubTransformer = {
-  applyTransformers: spy(stream => stream),
+  applyTransformers: spy((stream) => stream),
 };
 
 const readline = {
@@ -40,7 +40,7 @@ class StubReadStream extends ReadStream {
     },
     handleErrors
   ) {
-    handleErrors(null, StatusCodes.Good, done => {
+    handleErrors(null, StatusCodes.Good, (done) => {
       this.push({
         nodeId,
         value: new Variant({
@@ -57,9 +57,9 @@ class StubReadStream extends ReadStream {
 }
 
 /** @test {PullStream} */
-describe('PullStream', function() {
+describe('PullStream', function () {
   /** @test {PullStream#constructor} */
-  describe('#constructor', function() {
+  describe('#constructor', function () {
     let logListener;
 
     beforeEach(() => {
@@ -72,7 +72,7 @@ describe('PullStream', function() {
       }
     });
 
-    it('should return a stream', function() {
+    it('should return a stream', function () {
       const stream = new PullStream(new PassThrough({ objectMode: true }));
       expect(stream, 'to be a', Stream);
       stream.end();
@@ -80,7 +80,7 @@ describe('PullStream', function() {
       expect(stream, 'to yield objects satisfying', 'to have length', 0);
     });
 
-    it('should apply transformers from db', function() {
+    it('should apply transformers from db', function () {
       const readStream = new PassThrough({ objectMode: true });
       const stream = new PullStream(readStream);
 
@@ -105,7 +105,7 @@ describe('PullStream', function() {
       );
     });
 
-    it.skip('should print progress', function() {
+    it.skip('should print progress', function () {
       const stream = new PullStream(Object.assign(new StubReadStream(), { _processed: 12 }));
 
       setTimeout(() => stream.end(), 1200);
@@ -121,7 +121,7 @@ describe('PullStream', function() {
       });
     });
 
-    it.skip('should work without log listeners', function() {
+    it.skip('should work without log listeners', function () {
       const stream = new PullStream(new StubReadStream());
 
       setTimeout(() => stream.end(), 1200);

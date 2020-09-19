@@ -13,7 +13,8 @@ importers:
       eslint: 7.7.0
       eslint-config-prettier: 6.11.0_eslint@7.7.0
       husky: 4.2.5
-      prettier: 1.18.2
+      prettier: 2.1.2
+      prettier-plugin-package: 1.0.0_prettier@2.1.2
       sucrase: 3.15.0
     specifiers:
       '@ls-age/bump-version': 1.0.0-beta.6
@@ -28,7 +29,8 @@ importers:
       eslint: 7.7.0
       eslint-config-prettier: 6.11.0
       husky: 4.2.5
-      prettier: 1.18.2
+      prettier: 2.1.2
+      prettier-plugin-package: ^1.0.0
       sucrase: 3.15.0
   packages/atscm:
     dependencies:
@@ -9411,13 +9413,23 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
-  /prettier/1.18.2:
+  /prettier-plugin-package/1.0.0_prettier@2.1.2:
+    dependencies:
+      prettier: 2.1.2
     dev: true
     engines:
-      node: '>=4'
+      node: '>= 8.0.0'
+    peerDependencies:
+      prettier: ^2.0.0
+    resolution:
+      integrity: sha512-flbKuLB7ftrW2zQYJjb0mF6zY7R0jDrYatpr0BBNj04Eb+g1RLbquOQSJE1LffDZfzU03fwJQ74grqQjQjYa3Q==
+  /prettier/2.1.2:
+    dev: true
+    engines:
+      node: '>=10.13.0'
     hasBin: true
     resolution:
-      integrity: sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
+      integrity: sha512-16c7K+x4qVlJg9rEbXl7HEGmQyZlG4R9AgP+oHKRMsMsuk8s+ATStlf1NpDqyBI1HpVyfjLOeMhH2LvuNvV5Vg==
   /pretty-hrtime/1.0.3:
     dev: false
     engines:

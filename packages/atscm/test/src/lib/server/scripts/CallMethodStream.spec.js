@@ -29,10 +29,10 @@ class ValidMethodStub extends CallMethodStream {
 }
 
 /** @test {CallMethodStream} */
-describe('CallMethodStream', function() {
+describe('CallMethodStream', function () {
   /** @test {CallMethodStream#methodId} */
-  describe('#methodId', function() {
-    it('throws an error if not overridden', function() {
+  describe('#methodId', function () {
+    it('throws an error if not overridden', function () {
       return expect(
         () => CallMethodStream.prototype.methodId,
         'to throw error',
@@ -42,8 +42,8 @@ describe('CallMethodStream', function() {
   });
 
   /** @test {CallMethodStream#methodBaseId} */
-  describe('#methodBaseId', function() {
-    it("defaults to the method's parent id", function() {
+  describe('#methodBaseId', function () {
+    it("defaults to the method's parent id", function () {
       const base = InvalidMethodStub.prototype.methodBaseId;
 
       expect(base, 'to be a', NodeId);
@@ -53,8 +53,8 @@ describe('CallMethodStream', function() {
   });
 
   /** @test {CallMethodStream#inputArguments} */
-  describe('#inputArguments', function() {
-    it('defaults to an empty array', function() {
+  describe('#inputArguments', function () {
+    it('defaults to an empty array', function () {
       const args = CallMethodStream.prototype.inputArguments({});
 
       expect(args, 'to equal', []);
@@ -62,8 +62,8 @@ describe('CallMethodStream', function() {
   });
 
   /** @test {CallMethodStream#callRequest} */
-  describe('#callRequest', function() {
-    it('uses #methodId, #baseMethodId and #inputArguments', function() {
+  describe('#callRequest', function () {
+    it('uses #methodId, #baseMethodId and #inputArguments', function () {
       const request = InvalidMethodStub.prototype.callRequest({});
 
       expect(request, 'to be an object');
@@ -74,8 +74,8 @@ describe('CallMethodStream', function() {
   });
 
   /** @test {CallMethodStream#handleOutputArguments} */
-  describe('#handleOutputArguments', function() {
-    it('throws if not overridden', function() {
+  describe('#handleOutputArguments', function () {
+    it('throws if not overridden', function () {
       return expect(
         CallMethodStream.prototype.handleOutputArguments,
         'to throw error',
@@ -85,56 +85,56 @@ describe('CallMethodStream', function() {
   });
 
   /** @test {CallMethodStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    context('processed message', function() {
+  describe('#processErrorMessage', function () {
+    context('processed message', function () {
       const message = InvalidMethodStub.prototype.processErrorMessage({
         relative: 'relative/path',
       });
 
-      it('should include methodId', function() {
+      it('should include methodId', function () {
         expect(message, 'to contain', 'path.to.unknown.method');
       });
 
-      it('should include relative file path', function() {
+      it('should include relative file path', function () {
         expect(message, 'to contain', 'relative/path');
       });
     });
   });
 
   /** @test {CallMethodStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should handle synchronous errors', function() {
+  describe('#processChunk', function () {
+    it('should handle synchronous errors', function () {
       const stream = new CallMethodStream();
 
-      return expect([{}], 'when piped through', stream, 'to error').then(error => {
+      return expect([{}], 'when piped through', stream, 'to error').then((error) => {
         expect(error.message, 'to match', /must be implemented/i);
       });
     });
 
-    it('should handle asynchronous errors', function() {
+    it('should handle asynchronous errors', function () {
       const stream = new InvalidMethodStub();
 
       stream.once('session-open', () => {
         stream.session.close(() => {});
       });
 
-      return expect([{}], 'when piped through', stream, 'to error').then(error => {
+      return expect([{}], 'when piped through', stream, 'to error').then((error) => {
         expect(error.message, 'to contain', 'BadSessionIdInvalid');
       });
     });
 
-    it('should report bad status codes', function() {
+    it('should report bad status codes', function () {
       const importStream = new InvalidMethodStub();
 
-      return expect([{}], 'when piped through', importStream, 'to error').then(error => {
+      return expect([{}], 'when piped through', importStream, 'to error').then((error) => {
         expect(error.message, 'to contain', 'does not exist in the server address space');
       });
     });
 
-    it('should report non-unsuccessful operations', async function() {
+    it('should report non-unsuccessful operations', async function () {
       const importStream = new ValidMethodStub();
 
-      importStream.handleOutputArguments = function(file, args, callback) {
+      importStream.handleOutputArguments = function (file, args, callback) {
         callback(new Error('Test error'));
       };
 

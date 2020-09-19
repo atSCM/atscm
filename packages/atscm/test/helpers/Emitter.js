@@ -7,7 +7,7 @@
  * @return {Promise} Resolves once *emitter* emits an *eventName* event.
  */
 export function waitForEvent(emitter, eventName) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     emitter.once(eventName, resolve);
   });
 }

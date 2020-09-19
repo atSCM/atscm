@@ -3,56 +3,56 @@ import Atviseproject from '../../../../src/lib/config/Atviseproject';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 
 /** @test {Atviseproject} */
-describe('Atviseproject', function() {
+describe('Atviseproject', function () {
   function expectNodeIds(arr) {
-    it('should contain NodeIds', function() {
-      arr.forEach(id => expect(id, 'to be a', NodeId));
+    it('should contain NodeIds', function () {
+      arr.forEach((id) => expect(id, 'to be a', NodeId));
     });
   }
 
   /** @test {Atviseproject.login} */
-  describe('.login', function() {
-    it('should default to false', function() {
+  describe('.login', function () {
+    it('should default to false', function () {
       expect(Atviseproject.login, 'to equal', false);
     });
   });
 
   /** @test {Atviseproject.nodes} */
-  describe('.nodes', function() {
+  describe('.nodes', function () {
     expectNodeIds(Atviseproject.nodes);
   });
 
   /** @test {Atviseproject.nodesToWatch} */
-  describe('.nodesToWatch', function() {
+  describe('.nodesToWatch', function () {
     expectNodeIds(Atviseproject.nodesToWatch);
   });
 
   /** @test {Atviseproject.EditorRelatedNodes} */
-  describe('.EditorRelatedNodes', function() {
+  describe('.EditorRelatedNodes', function () {
     expectNodeIds(Atviseproject.EditorRelatedNodes);
   });
 
   /** @test {Atviseproject.ServerRelatedNodes} */
-  describe('.ServerRelatedNodes', function() {
+  describe('.ServerRelatedNodes', function () {
     expectNodeIds(Atviseproject.ServerRelatedNodes);
   });
 
   /** @test {Atviseproject.EditorRelatedNodes} */
-  describe('.ignoreNodes', function() {
+  describe('.ignoreNodes', function () {
     expectNodeIds(Atviseproject.ignoreNodes);
 
-    it('should contain Atviseproject.EditorRelatedNodes', function() {
+    it('should contain Atviseproject.EditorRelatedNodes', function () {
       expect(Atviseproject.ignoreNodes, 'to contain', ...Atviseproject.EditorRelatedNodes);
     });
 
-    it('should contain Atviseproject.ServerRelatedNodes', function() {
+    it('should contain Atviseproject.ServerRelatedNodes', function () {
       expect(Atviseproject.ignoreNodes, 'to contain', ...Atviseproject.ServerRelatedNodes);
     });
   });
 
   /** @test {Atviseproject.inspect} */
-  describe('.inspect', function() {
-    it('should return the properties to print', function() {
+  describe('.inspect', function () {
+    it('should return the properties to print', function () {
       expect(Atviseproject.inspect(), 'to have properties', [
         'host',
         'port',
