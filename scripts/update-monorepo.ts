@@ -11,11 +11,10 @@ type PackageInfo = Project & {
 
 /* eslint-disable no-param-reassign */
 function updatePackage(project: PackageInfo): PackageInfo {
+  const base = new URL(rootManifest.homepage);
+  base.pathname += '/';
   project.manifest.bugs = rootManifest.bugs;
-  project.manifest.homepage = new URL(
-    `${project.relative}#readme`,
-    rootManifest.homepage
-  ).toString();
+  project.manifest.homepage = new URL(`tree/master/${project.relative}#readme`, base).toString();
 
   project.manifest.repository = {
     ...rootManifest.repository,
