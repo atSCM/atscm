@@ -3,9 +3,9 @@ import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
 import * as tasks from '../../src/Gulpfile';
 
-describe('Gulpfile', function() {
-  it('should export description for all tasks', function() {
-    Object.keys(tasks).forEach(name => {
+describe('Gulpfile', function () {
+  it('should export description for all tasks', function () {
+    Object.keys(tasks).forEach((name) => {
       const desc = tasks[name].description;
 
       expect(desc, 'to be defined');
@@ -13,7 +13,7 @@ describe('Gulpfile', function() {
     });
   });
 
-  it('should register cleanupHandler', function() {
+  it('should register cleanupHandler', function () {
     const nodeCleanup = spy();
 
     const orgLog = console.log; // eslint-disable-line no-console

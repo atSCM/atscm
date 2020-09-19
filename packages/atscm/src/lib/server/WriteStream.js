@@ -62,8 +62,8 @@ export default class WriteStream extends WaitingStream {
    * handleErrors The error handler to call. See {@link QueueStream#processChunk} for details.
    */
   _createNode(file, handleErrors) {
-    this._createCallbacks[file.nodeId.toString()] = err => {
-      handleErrors(err, StatusCodes.Good, done => done());
+    this._createCallbacks[file.nodeId.toString()] = (err) => {
+      handleErrors(err, StatusCodes.Good, (done) => done());
     };
 
     this.push(file);
@@ -103,13 +103,13 @@ export default class WriteStream extends WaitingStream {
             Logger.warn(`Error writing node ${file.nodeId}
   - Make sure it is not opened in atvise builder
   - Make sure the corresponding datasource is connected`);
-            handleErrors(err, StatusCodes.Good, done => done());
+            handleErrors(err, StatusCodes.Good, (done) => done());
           } else if (statusCode === StatusCodes.BadNodeIdUnknown) {
             Logger.debug(`Node ${file.nodeId} does not exist: Attempting to create it...`);
 
             this._createNode(file, handleErrors);
           } else {
-            handleErrors(err, statusCode, done => {
+            handleErrors(err, statusCode, (done) => {
               // Push to add references stream
               this._addReferencesStream.push(file);
 

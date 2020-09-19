@@ -61,7 +61,7 @@ export class BrowsedNode extends ServerNode {
    * @param {Object[]} references The references to add.
    */
   addReferences(references) {
-    references.forEach(reference => {
+    references.forEach((reference) => {
       this.addReference(reference.referenceTypeId.value, reference.nodeId.value);
     });
   }
@@ -113,7 +113,7 @@ export default class NodeBrowser {
     this._waitingFor = {};
 
     /** A regular expression matching all ignored nodes. @type {RegExp} */
-    this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes.map(n => n.value).join('|')})`);
+    this._ignoreNodesRegExp = new RegExp(`^(${ignoreNodes.map((n) => n.value).join('|')})`);
 
     /** If the browser should recurse. @type {boolean} */
     this._recursive = recursive;
@@ -151,14 +151,14 @@ export default class NodeBrowser {
         }
         return resolve(result && result.value);
       });
-    }).then(value => {
+    }).then((value) => {
       if (node.nodeId.endsWith('.SortOrder')) {
         const removed = [];
-        const siblings = node.parent.children.map(c => c.idName).filter(n => n !== 'SortOrder');
+        const siblings = node.parent.children.map((c) => c.idName).filter((n) => n !== 'SortOrder');
         const existing = value.value
           .map(({ name }) => name)
-          .filter(name => {
-            const exists = siblings.find(c => c === name);
+          .filter((name) => {
+            const exists = siblings.find((c) => c === name);
 
             if (exists) {
               return true;
@@ -172,7 +172,7 @@ export default class NodeBrowser {
 
         if (removed.length) {
           // eslint-disable-next-line no-param-reassign
-          value.value = existing.map(name => ({ namespaceIndex: 1, name }));
+          value.value = existing.map((name) => ({ namespaceIndex: 1, name }));
           Logger.warn(`Removed ${removed.length} invalid references from '${node.nodeId}'`);
         }
       }
@@ -183,7 +183,7 @@ export default class NodeBrowser {
 
       // Node is a variable but has no value -> Need to read dataType and arrayType directly.
       return new Promise((resolve, reject) => {
-        const toRead = [AttributeIds.DataType, AttributeIds.ValueRank].map(attributeId => ({
+        const toRead = [AttributeIds.DataType, AttributeIds.ValueRank].map((attributeId) => ({
           nodeId: node.id,
           attributeId,
         }));
@@ -236,19 +236,19 @@ export default class NodeBrowser {
    * @param {BrowsedNode} node The node to browse.
    */
   _browseNode(node) {
-    return this._browse({ nodeId: node.id }).then(allReferences => {
+    return this._browse({ nodeId: node.id }).then((allReferences) => {
       const children = [];
       const references = [];
 
       const typeDefinitionReference = allReferences.find(
-        ref => ref.referenceTypeId.value === ReferenceTypeIds.HasTypeDefinition
+        (ref) => ref.referenceTypeId.value === ReferenceTypeIds.HasTypeDefinition
       );
 
       const isUserGroup =
         typeDefinitionReference &&
         typeDefinitionReference.nodeId.value === 'ObjectTypes.ATVISE.Group';
 
-      allReferences.forEach(reference => {
+      allReferences.forEach((reference) => {
         // "Cast" ref.nodeId to NodeId
         Object.setPrototypeOf(reference.nodeId, NodeId.prototype);
 
@@ -375,7 +375,7 @@ export default class NodeBrowser {
       return;
     }
 
-    this.queue.addAll(node.children.map(child => () => this._process(child)));
+    this.queue.addAll(node.children.map((child) => () => this._process(child)));
 
     const idValue = node.id.value;
     this._handled.set(idValue, true);
@@ -383,7 +383,7 @@ export default class NodeBrowser {
 
     // Handle dependencies
     if (this._waitingFor[idValue]) {
-      this._waitingFor[idValue].forEach(dep => {
+      this._waitingFor[idValue].forEach((dep) => {
         // eslint-disable-next-line no-param-reassign
         if (--dep.dependencies === 0) {
           // Adding as dependencies are resolved
@@ -480,7 +480,7 @@ export default class NodeBrowser {
       this._browse({
         nodeId,
         browseDirection: BrowseDirection.Inverse,
-      }).then(references => {
+      }).then((references) => {
         for (const reference of references) {
           if (HierachicalReferencesTypeIds.has(reference.referenceTypeId.value)) {
             path.unshift(reference.nodeId);
@@ -495,19 +495,19 @@ export default class NodeBrowser {
     const browseDown = (path, target) =>
       Promise.all(
         path.map((nodeId, i) =>
-          this._browse({ nodeId }).then(references =>
+          this._browse({ nodeId }).then((references) =>
             references.find(
-              ref => ref.nodeId.value === (path[i + 1] ? path[i + 1].value : target.value)
+              (ref) => ref.nodeId.value === (path[i + 1] ? path[i + 1].value : target.value)
             )
           )
         )
       );
 
     return Promise.all(
-      nodeIds.map(nodeId =>
+      nodeIds.map((nodeId) =>
         browseUp({ nodeId })
-          .then(path => browseDown(path, nodeId))
-          .then(pathDown =>
+          .then((path) => browseDown(path, nodeId))
+          .then((pathDown) =>
             pathDown.reduce((parent, reference) => new BrowsedNode({ parent, reference }), null)
           )
       )
@@ -528,11 +528,11 @@ export default class NodeBrowser {
 
     // Add source nodes
     const nodes = await this._getSourceNodes(nodeIds);
-    this.queue.addAll(nodes.map(node => () => this._process(node)));
+    this.queue.addAll(nodes.map((node) => () => this._process(node)));
 
     // Queue error handling
     let processError = null;
-    this._reject = err => {
+    this._reject = (err) => {
       if (processError) {
         // Multiple errors occured. In most cases this means, that the server connection was closed
         // after the first error.
@@ -558,7 +558,7 @@ export default class NodeBrowser {
           const unresolved = Object.entries(this._waitingFor).reduce(
             (all, [to, children]) =>
               all.concat(
-                children.map(c => ({
+                children.map((c) => ({
                   from: c.id.value,
                   to,
                   type:

@@ -124,7 +124,7 @@ export default class SplittingTransformer extends PartialTransformer {
     Object.assign(node, { children });
 
     const sourceNodes = await Promise.all(
-      sourceFiles.map(f =>
+      sourceFiles.map((f) =>
         context.readNode({
           path: join(node.relative, f),
           tree: { parent: node },

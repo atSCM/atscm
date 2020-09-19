@@ -26,7 +26,7 @@ import Logger from 'gulplog';
  */
 export function reportProgress(task, { getter, formatter, level = 'info', logResult = true } = {}) {
   const start = Date.now();
-  const ops = value => (value / ((Date.now() - start) / 1000)).toFixed(1);
+  const ops = (value) => (value / ((Date.now() - start) / 1000)).toFixed(1);
   const message = () => {
     const value = getter();
     return `${formatter(value)} (${ops(value)}/s)`;
@@ -41,7 +41,7 @@ export function reportProgress(task, { getter, formatter, level = 'info', logRes
     }
   }, 80);
 
-  const done = err => {
+  const done = (err) => {
     clearInterval(interval);
 
     if (logResult && !err) {
@@ -56,5 +56,8 @@ export function reportProgress(task, { getter, formatter, level = 'info', logRes
     }
   };
 
-  return task.then(() => done(), err => done(err));
+  return task.then(
+    () => done(),
+    (err) => done(err)
+  );
 }

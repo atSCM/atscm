@@ -21,7 +21,7 @@ import QueueStream from './QueueStream';
  *
  * }
  */
-export const waitForDependencies = Stream =>
+export const waitForDependencies = (Stream) =>
   class Waiting extends Stream {
     /**
      * Creates a new WaitingStream.
@@ -34,14 +34,14 @@ export const waitForDependencies = Stream =>
       this._waitingFor = {};
       this._finishedProcessing = {};
 
-      this.on('processed-chunk', file => {
+      this.on('processed-chunk', (file) => {
         const key = file.nodeId.toString();
         const dependents = this._waitingFor[key];
         delete this._waitingFor[key];
         this._finishedProcessing[key] = true;
 
         if (dependents) {
-          dependents.forEach(d => {
+          dependents.forEach((d) => {
             const k = d.nodeId.toString();
             this._dependencies[k] -= 1;
 
@@ -74,7 +74,7 @@ export const waitForDependencies = Stream =>
      */
     _enqueueChunk(file) {
       const dependencies = this.dependenciesFor(file)
-        .filter(id => {
+        .filter((id) => {
           if (id.namespace === 0 || !id.value || ProjectConfig.nodes.includes(id)) {
             return false;
           }
@@ -85,7 +85,7 @@ export const waitForDependencies = Stream =>
             !id.value.match(/^SYSTEM\.LIBRARY\.ATVISE/)
           );
         })
-        .map(id => id.toString());
+        .map((id) => id.toString());
 
       if (dependencies && dependencies.length) {
         const needToWait = dependencies.reduce((wait, dependency) => {

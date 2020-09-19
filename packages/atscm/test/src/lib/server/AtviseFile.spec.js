@@ -8,10 +8,10 @@ import AtviseTypes from '../../../../src/lib/server/Types';
 import NodeId from '../../../../src/lib/model/opcua/NodeId';
 
 /** @test {AtviseFile} */
-describe('AtviseFile', function() {
+describe('AtviseFile', function () {
   /** @test {AtviseFile#constructor} */
-  describe('#constructor', function() {
-    it('should create a vinyl instance', function() {
+  describe('#constructor', function () {
+    it('should create a vinyl instance', function () {
       const file = new AtviseFile();
 
       expect(file, 'to be a', File);
@@ -100,7 +100,7 @@ describe('AtviseFile', function() {
       filePath: 'SYSTEM/LIBRARY/PROJECT/RESOURCES/Test.md',
     },
   ].concat(
-    AtviseTypes.filter(t => t.constructor.name === 'AtviseResourceType').map(t => ({
+    AtviseTypes.filter((t) => t.constructor.name === 'AtviseResourceType').map((t) => ({
       name: `should store ${t.typeDefinition.value} resources with their original extension`,
       nodeId: new NodeId(`ns=1;s=SYSTEM.LIBRARY.PROJECT.RESOURCES/Test.${t.identifier}`),
       dataType: DataType.ByteString,
@@ -111,8 +111,8 @@ describe('AtviseFile', function() {
   );
 
   /** @test {AtviseFile.pathForReadResult} */
-  describe('.pathForReadResult', function() {
-    it('should store non-variables as .{nodeClass}.json', function() {
+  describe('.pathForReadResult', function () {
+    it('should store non-variables as .{nodeClass}.json', function () {
       expect(
         AtviseFile.pathForReadResult({
           nodeId: new NodeId('Path.To.Node'),
@@ -123,8 +123,8 @@ describe('AtviseFile', function() {
       );
     });
 
-    tests.forEach(test => {
-      it(test.name, function() {
+    tests.forEach((test) => {
+      it(test.name, function () {
         expect(
           AtviseFile.pathForReadResult({
             nodeId: test.nodeId,
@@ -143,7 +143,7 @@ describe('AtviseFile', function() {
       });
     });
 
-    it('should store custom typed variables with a ".var" extension', function() {
+    it('should store custom typed variables with a ".var" extension', function () {
       expect(
         AtviseFile.pathForReadResult({
           nodeId: new NodeId('AGENT.OBJECTS.CustomVar'),
@@ -163,12 +163,12 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile.encodeValue} */
-  describe('.encodeValue', function() {
-    it('should return empty buffer for null', function() {
+  describe('.encodeValue', function () {
+    it('should return empty buffer for null', function () {
       expect(AtviseFile.encodeValue({ value: null }), 'to equal', Buffer.from(''));
     });
 
-    it('should store timestamp as string for DateTime values', function() {
+    it('should store timestamp as string for DateTime values', function () {
       const now = new Date();
 
       expect(
@@ -178,7 +178,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should store JSON encoded bytes for UInt64 values', function() {
+    it('should store JSON encoded bytes for UInt64 values', function () {
       expect(
         AtviseFile.encodeValue({ value: [1, 2] }, DataType.UInt64, VariantArrayType.Scalar),
         'to equal',
@@ -186,7 +186,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should use trimmed string value if no special encoder is used', function() {
+    it('should use trimmed string value if no special encoder is used', function () {
       const value = 'string\n ';
 
       expect(
@@ -196,7 +196,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should convert typed array', function() {
+    it('should convert typed array', function () {
       expect(
         AtviseFile.encodeValue(
           { value: new Uint16Array([1, 2]) },
@@ -208,8 +208,8 @@ describe('AtviseFile', function() {
       );
     });
 
-    context('with an array passed', function() {
-      it('should JSON encode standard values', function() {
+    context('with an array passed', function () {
+      it('should JSON encode standard values', function () {
         const value = ['test', 'another'];
 
         return expect(
@@ -219,7 +219,7 @@ describe('AtviseFile', function() {
         );
       });
 
-      it('should JSON encode special encoded values', function() {
+      it('should JSON encode special encoded values', function () {
         const value = [[0, 1]];
 
         return expect(
@@ -229,7 +229,7 @@ describe('AtviseFile', function() {
         );
       });
 
-      it('should JSON encode null values', function() {
+      it('should JSON encode null values', function () {
         const value = [null];
 
         return expect(
@@ -242,13 +242,13 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile.decodeValue} */
-  describe('.decodeValue', function() {
-    it('should forward null', function() {
+  describe('.decodeValue', function () {
+    it('should forward null', function () {
       expect(AtviseFile.decodeValue(null), 'to equal', null);
     });
 
     function testDecoderForDataType(dataType, rawValue, expectedValue) {
-      it(`decoder for ${dataType} should work`, function() {
+      it(`decoder for ${dataType} should work`, function () {
         expect(
           AtviseFile.decodeValue(Buffer.from(rawValue), dataType, VariantArrayType.Scalar),
           'to satisfy',
@@ -270,7 +270,7 @@ describe('AtviseFile', function() {
         // Long int types
         DataType.Int64,
         DataType.UInt64,
-      ].map(type => [type, JSON.stringify([1, 2], null, '  '), [1, 2]]),
+      ].map((type) => [type, JSON.stringify([1, 2], null, '  '), [1, 2]]),
       ...[
         // Int types
         DataType.SByte,
@@ -279,15 +279,15 @@ describe('AtviseFile', function() {
         DataType.UInt16,
         DataType.Int32,
         DataType.UInt32,
-      ].map(type => [type, '13', 13]),
+      ].map((type) => [type, '13', 13]),
       ...[
         // float types
         DataType.Float,
         DataType.Double,
-      ].map(type => [type, '13.5', 13.5]),
-    ].forEach(t => testDecoderForDataType(...t));
+      ].map((type) => [type, '13.5', 13.5]),
+    ].forEach((t) => testDecoderForDataType(...t));
 
-    it('should forward binary buffer for ByteString', function() {
+    it('should forward binary buffer for ByteString', function () {
       const buffer = new Buffer('test');
       expect(
         AtviseFile.decodeValue(buffer, DataType.ByteString, VariantArrayType.Scalar),
@@ -296,7 +296,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it("should throw if an array variable's value is scalar", function() {
+    it("should throw if an array variable's value is scalar", function () {
       const value = 24;
       return expect(
         () => AtviseFile.decodeValue(value, DataType.Int16, VariantArrayType.Array),
@@ -305,8 +305,8 @@ describe('AtviseFile', function() {
       );
     });
 
-    context('with an array passed', function() {
-      it('should JSON decode standard values', function() {
+    context('with an array passed', function () {
+      it('should JSON decode standard values', function () {
         const value = ['<xml />', '<xml />'];
         const buffer = new Buffer(JSON.stringify(value));
         expect(
@@ -316,7 +316,7 @@ describe('AtviseFile', function() {
         );
       });
 
-      it('should JSON decode special encoded values', function() {
+      it('should JSON decode special encoded values', function () {
         const value = [[0, 1]];
         const buffer = new Buffer(JSON.stringify(value));
         expect(
@@ -326,7 +326,7 @@ describe('AtviseFile', function() {
         );
       });
 
-      it('should JSON decode null values', function() {
+      it('should JSON decode null values', function () {
         const value = [null];
         const buffer = new Buffer(JSON.stringify(value));
         expect(
@@ -339,15 +339,15 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile.normalizeMtime} */
-  describe('.normalizeMtime', function() {
-    it('should return original without milliseconds', function() {
+  describe('.normalizeMtime', function () {
+    it('should return original without milliseconds', function () {
       const org = new Date();
       org.setMilliseconds(0);
 
       expect(AtviseFile.normalizeMtime(org), 'to equal', org);
     });
 
-    it('should remove milliseconds if provided', function() {
+    it('should remove milliseconds if provided', function () {
       const org = new Date();
       org.setMilliseconds(500);
 
@@ -356,8 +356,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile.fromReadResult} */
-  describe('.fromReadResult', function() {
-    it('should fail for variable without value', function() {
+  describe('.fromReadResult', function () {
+    it('should fail for variable without value', function () {
       expect(
         () =>
           AtviseFile.fromReadResult({
@@ -368,7 +368,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should return a new instance with valid readResult', function() {
+    it('should return a new instance with valid readResult', function () {
       const nodeId = new NodeId('AGENT.DISPLAYS.Main');
 
       expect(
@@ -390,7 +390,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should use undefined as mtime if not provided', function() {
+    it('should use undefined as mtime if not provided', function () {
       const nodeId = new NodeId('AGENT.DISPLAYS.Main');
 
       const file = AtviseFile.fromReadResult({
@@ -410,7 +410,7 @@ describe('AtviseFile', function() {
       expect(file.stat.mtime, 'to be', undefined);
     });
 
-    it('should store JSON-encoded references if not a variable-node', function() {
+    it('should store JSON-encoded references if not a variable-node', function () {
       const nodeId = new NodeId('AGENT');
       const references = {
         HasTypeDefinition: [new NodeId('ns=1;s=ObjectTypes.ATVISE.Server.Local')],
@@ -433,7 +433,7 @@ describe('AtviseFile', function() {
       });
     });
 
-    it('should sort references in JSON file', function() {
+    it('should sort references in JSON file', function () {
       const nodeId = new NodeId('AGENT');
       const references = {
         HasTypeDefinition: [new NodeId('ns=1;s=ObjectTypes.ATVISE.Server.Local')],
@@ -466,9 +466,9 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#_getMetadata} */
-  describe('#_getMetadata', function() {
-    tests.forEach(test => {
-      it(test.name, function() {
+  describe('#_getMetadata', function () {
+    tests.forEach((test) => {
+      it(test.name, function () {
         const file = new AtviseFile({ path: test.filePath });
 
         expect(() => file._getMetadata(), 'not to throw');
@@ -482,7 +482,7 @@ describe('AtviseFile', function() {
       });
     });
 
-    it('should use dirname extensions if filename has no extensions', function() {
+    it('should use dirname extensions if filename has no extensions', function () {
       const file = new AtviseFile({ path: 'dir.display/file' });
       expect(() => file._getMetadata(), 'not to throw');
       expect(
@@ -492,7 +492,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should not get tripped up by multiple dots in dirname if filename has no extensions', function() {
+    it('should not get tripped up by multiple dots in dirname if filename has no extensions', function () {
       const file = new AtviseFile({ path: 'dir.with.multiple.dots.display/file' });
       expect(() => file._getMetadata(), 'not to throw');
       expect(
@@ -502,7 +502,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should parse contents for non-variable nodes', function() {
+    it('should parse contents for non-variable nodes', function () {
       const references = {
         HasTypeDefinition: ['ns=1;s=Type.Definition'],
       };
@@ -525,7 +525,7 @@ describe('AtviseFile', function() {
     beforeEach(() => stub(AtviseFile.prototype, '_getMetadata').callsFake(() => {}));
     afterEach(() => AtviseFile.prototype._getMetadata.restore());
 
-    it('should call _getMetadata if not present', function() {
+    it('should call _getMetadata if not present', function () {
       const file = new AtviseFile({ path: 'path' });
       expect(file[`_${name}`], 'to be', undefined);
 
@@ -535,7 +535,7 @@ describe('AtviseFile', function() {
       expect(AtviseFile.prototype._getMetadata.calledOnce, 'to be', true);
     });
 
-    it('should return stored value if present', function() {
+    it('should return stored value if present', function () {
       const value = 'value';
       const file = new AtviseFile({
         path: 'path',
@@ -548,23 +548,23 @@ describe('AtviseFile', function() {
   }
 
   /** @test {AtviseFile#dataType} */
-  describe('#nodeClass', function() {
+  describe('#nodeClass', function () {
     testMetaGetter('nodeClass');
   });
 
   /** @test {AtviseFile#dataType} */
-  describe('#dataType', function() {
+  describe('#dataType', function () {
     testMetaGetter('dataType');
   });
 
   /** @test {AtviseFile#arrayType} */
-  describe('#arrayType', function() {
+  describe('#arrayType', function () {
     testMetaGetter('arrayType');
   });
 
   /** @test {AtviseFile#typeDefinition} */
-  describe('#typeDefinition', function() {
-    it('should call _getMetadata if not present', function() {
+  describe('#typeDefinition', function () {
+    it('should call _getMetadata if not present', function () {
       const file = new AtviseFile({
         path: 'path',
       });
@@ -577,7 +577,7 @@ describe('AtviseFile', function() {
       expect(file._getMetadata, 'was called once');
     });
 
-    it('should return stored value if present', function() {
+    it('should return stored value if present', function () {
       const value = 'value';
       const file = new AtviseFile({
         path: 'path',
@@ -592,7 +592,7 @@ describe('AtviseFile', function() {
       expect(file._getMetadata, 'was not called');
     });
 
-    it('should default to ns=0;i=0 for non-variable nodes', function() {
+    it('should default to ns=0;i=0 for non-variable nodes', function () {
       const file = new AtviseFile({
         path: 'path/.Object.json',
         contents: Buffer.from(JSON.stringify({ references: {} })),
@@ -603,8 +603,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#isDisplay} */
-  describe('#isDisplay', function() {
-    it('should return true for AtviseFiles with correct TypeDefinition', function() {
+  describe('#isDisplay', function () {
+    it('should return true for AtviseFiles with correct TypeDefinition', function () {
       expect(
         new AtviseFile({
           path: './src/test/path',
@@ -618,8 +618,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#isScript} */
-  describe('#isScript', function() {
-    it('should return true for AtviseFiles with correct TypeDefinition', function() {
+  describe('#isScript', function () {
+    it('should return true for AtviseFiles with correct TypeDefinition', function () {
       expect(
         new AtviseFile({
           path: './src/test/path',
@@ -633,8 +633,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#isQuickDynamic} */
-  describe('#isQuickDynamic', function() {
-    it('should return true for AtviseFiles with correct TypeDefinition', function() {
+  describe('#isQuickDynamic', function () {
+    it('should return true for AtviseFiles with correct TypeDefinition', function () {
       expect(
         new AtviseFile({
           path: './src/test/path',
@@ -648,7 +648,7 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtivseFile#value} */
-  describe('#value', function() {
+  describe('#value', function () {
     const val = new Buffer('test');
 
     before(() => {
@@ -661,8 +661,8 @@ describe('AtviseFile', function() {
       AtviseFile.encodeValue.restore();
     });
 
-    context('when used as getter', function() {
-      it('should return decodedValue', function() {
+    context('when used as getter', function () {
+      it('should return decodedValue', function () {
         const file = new AtviseFile({ path: 'path.ext' });
 
         expect(file.value, 'to equal', true);
@@ -670,8 +670,8 @@ describe('AtviseFile', function() {
       });
     });
 
-    context('when used as setter', function() {
-      it('should set encoded value as contents', function() {
+    context('when used as setter', function () {
+      it('should set encoded value as contents', function () {
         const file = new AtviseFile({ path: 'path.ext' });
         file.value = 13;
 
@@ -682,8 +682,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtivseFile#createNodeValue} */
-  describe('#createNodeValue', function() {
-    it('should return #value for non-datetime nodes', function() {
+  describe('#createNodeValue', function () {
+    it('should return #value for non-datetime nodes', function () {
       expect(
         new AtviseFile({
           path: 'AGENT/OBJECTS/Test.bool',
@@ -694,7 +694,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should return timestamp for datetime nodes', function() {
+    it('should return timestamp for datetime nodes', function () {
       const date = new Date();
       date.setMilliseconds(0);
 
@@ -710,8 +710,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#nodeId} */
-  describe('#nodeId', function() {
-    it('should return id for directory with non-variable file', function() {
+  describe('#nodeId', function () {
+    it('should return id for directory with non-variable file', function () {
       expect(
         new AtviseFile({
           path: 'SYSTEM/LIBRARY/PROJECT/.Object.json',
@@ -722,7 +722,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should keep extensions for resources', function() {
+    it('should keep extensions for resources', function () {
       expect(
         new AtviseFile({ path: 'SYSTEM/LIBRARY/PROJECT/RESOURCES/example.js' }).nodeId.value,
         'to equal',
@@ -730,7 +730,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should remove extension for non-atvise types', function() {
+    it('should remove extension for non-atvise types', function () {
       expect(
         new AtviseFile({ path: 'AGENT/OBJECTS/Test.bool' }).nodeId.value,
         'to equal',
@@ -740,8 +740,8 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile#clone} */
-  describe('#clone', function() {
-    it('should return a file again', function() {
+  describe('#clone', function () {
+    it('should return a file again', function () {
       expect(
         new AtviseFile({
           path: 'path/to/name.display.xml',
@@ -752,7 +752,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should return file with the same array type', function() {
+    it('should return file with the same array type', function () {
       expect(
         new AtviseFile({
           path: 'path/to/name.display.xml',
@@ -765,12 +765,12 @@ describe('AtviseFile', function() {
   });
 
   /** @test {AtviseFile.read} */
-  describe('.read', function() {
-    it('should fail without path', function() {
+  describe('.read', function () {
+    it('should fail without path', function () {
       return expect(AtviseFile.read(), 'to be rejected with', 'options.path is required');
     });
 
-    it('should forward read errors', function() {
+    it('should forward read errors', function () {
       return expect(
         AtviseFile.read({
           path: 'does/not/exist',
@@ -780,7 +780,7 @@ describe('AtviseFile', function() {
       );
     });
 
-    it('should return AtviseFile if read succeeds', function() {
+    it('should return AtviseFile if read succeeds', function () {
       return expect(
         AtviseFile.read({
           path: `${__filename}`,

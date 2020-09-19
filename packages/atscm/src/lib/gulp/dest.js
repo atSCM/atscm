@@ -32,7 +32,7 @@ const hashaOptions = { algorithm: 'md5' };
  */
 const useChecksums = ProjectConfig.vcs === 'svn';
 
-const escapePathComponent = a => a.replace(/\//g, '%2F');
+const escapePathComponent = (a) => a.replace(/\//g, '%2F');
 
 /**
  * A stream that writes {@link Node}s to the file system.
@@ -89,7 +89,7 @@ export class WriteStream extends Writable {
      * @type Promise<Object>
      */
     this._loadRenameConfig = readJson(renameConfigPath)
-      .then(config => (this._renameConfig = config))
+      .then((config) => (this._renameConfig = config))
       .catch(() => Logger.debug('No rename config file loaded'));
 
     /**
@@ -202,10 +202,7 @@ export class WriteStream extends Writable {
     }
 
     // Detect "duplicate" ids (as file names are case insensitive)
-    const pathKey = dirPath
-      .concat(node.fileName)
-      .join('/')
-      .toLowerCase();
+    const pathKey = dirPath.concat(node.fileName).join('/').toLowerCase();
     if (this._idMap.has(pathKey)) {
       if (this._parentHasIdConflict(node)) {
         Logger.debug(`ID conflict: Skipping '${node.nodeId}'`);
@@ -298,12 +295,12 @@ export class WriteStream extends Writable {
     this._loadRenameConfig
       .then(() => this._writeNode(node))
       .then(() => callback())
-      .catch(err => callback(err));
+      .catch((err) => callback(err));
   }
 
   writeAsync(node) {
     return new Promise((resolve, reject) => {
-      this._write(node, null, err => (err ? reject(err) : resolve()));
+      this._write(node, null, (err) => (err ? reject(err) : resolve()));
     });
   }
 
@@ -320,7 +317,7 @@ export class WriteStream extends Writable {
     this._loadRenameConfig
       .then(() => Promise.all(nodes.map(({ chunk }) => this._writeNode(chunk))))
       .then(() => callback())
-      .catch(err => callback(err));
+      .catch((err) => callback(err));
   }
 
   /**

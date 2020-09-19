@@ -58,16 +58,16 @@ export const InitOptions = {
   }),
   atviseUser: new InitOption({
     message: ' - Username',
-    when: answers => answers.useLogin,
+    when: (answers) => answers.useLogin,
   }),
   atvisePassword: new InitOption({
     message: ' - Password',
-    when: answers => answers.useLogin,
+    when: (answers) => answers.useLogin,
   }),
   configLang: new InitOption({
     type: 'list',
     message: 'Configuration language to use',
-    choices: Object.keys(ConfigLangs).map(name => ({ name, value: ConfigLangs[name] })),
+    choices: Object.keys(ConfigLangs).map((name) => ({ name, value: ConfigLangs[name] })),
   }),
 };
 
@@ -75,7 +75,7 @@ export const InitOptions = {
  * {@link InitOptions}, exported as an array. Required to run {@link Inquirer}.
  * @type {InitOption[]}
  */
-const InitOptionsAsArray = Object.keys(InitOptions).map(name =>
+const InitOptionsAsArray = Object.keys(InitOptions).map((name) =>
   Object.assign({ name }, InitOptions[name])
 );
 

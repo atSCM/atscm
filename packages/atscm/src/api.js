@@ -64,7 +64,7 @@ async function withSession(action) {
  * @return {Promise<any>} The read value.
  */
 export async function readNode(nodeId) {
-  return withSession(session => promisified(cb => session.readVariableValue(nodeId, cb))).then(
+  return withSession((session) => promisified((cb) => session.readVariableValue(nodeId, cb))).then(
     ({ value, statusCode }) => {
       if (statusCode !== StatusCodes.Good) {
         throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
@@ -82,15 +82,15 @@ export async function readNode(nodeId) {
  * @return {Promise<node-opcua~StatusCodes} The operation status result.
  */
 export function writeNode(nodeId, value) {
-  return withSession(session => promisified(cb => session.writeSingleNode(nodeId, value, cb))).then(
-    statusCode => {
-      if (statusCode !== StatusCodes.Good) {
-        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
-      }
-
-      return statusCode;
+  return withSession((session) =>
+    promisified((cb) => session.writeSingleNode(nodeId, value, cb))
+  ).then((statusCode) => {
+    if (statusCode !== StatusCodes.Good) {
+      throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
     }
-  );
+
+    return statusCode;
+  });
 }
 
 // Methods / Scripts
@@ -101,8 +101,8 @@ export function writeNode(nodeId, value) {
  * @param {Array<Variant>} args The arguments to pass.
  */
 export function callMethod(methodId, args = []) {
-  return withSession(session =>
-    promisified(cb =>
+  return withSession((session) =>
+    promisified((cb) =>
       session.call(
         [
           {
@@ -152,7 +152,7 @@ export function callScript(scriptId, parameters = {}) {
       arrayType: VariantArrayType.Array,
       value: Object.values(parameters),
     },
-  ]).then(result => {
+  ]).then((result) => {
     const statusCode = result.outputArguments[0].value;
 
     if (statusCode.value) {
@@ -232,7 +232,7 @@ export function createNode(
         )
       ),
     },
-  }).then(async result => {
+  }).then(async (result) => {
     const [{ value: createdNode }] = result.outputArguments[3].value;
 
     if (createdNode && is64Bit) {

@@ -8,7 +8,7 @@ import expect from '../../../expect';
 import { TransformDirection } from '../../../../src/lib/transform/Transformer';
 
 const StubTransformer = {
-  applyTransformers: spy(stream => stream),
+  applyTransformers: spy((stream) => stream),
 };
 
 const readline = {
@@ -36,9 +36,9 @@ const PushStream = proxyquire('../../../../src/lib/gulp/PushStream', {
 }).default;
 
 /** @test {PushStream} */
-describe('PushStream', function() {
+describe('PushStream', function () {
   /** @test {PushStream#constructor} */
-  describe('#constructor', function() {
+  describe('#constructor', function () {
     let logListener;
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe('PushStream', function() {
       }
     });
 
-    it('should return a stream', function() {
+    it('should return a stream', function () {
       const stream = new PushStream(createTransformStream());
       expect(stream, 'to be a', Stream);
       stream.end();
@@ -59,7 +59,7 @@ describe('PushStream', function() {
       return expect(stream, 'to yield objects satisfying', 'to have length', 0);
     });
 
-    it.skip('should apply transformers from db', function() {
+    it.skip('should apply transformers from db', function () {
       const srcStream = createTransformStream();
       const stream = new PushStream(srcStream);
 
@@ -81,7 +81,7 @@ describe('PushStream', function() {
       });
     });
 
-    it.skip('should print progress', function() {
+    it.skip('should print progress', function () {
       const stream = new PushStream(createTransformStream());
 
       setTimeout(() => stream.end(), 1200);
@@ -97,7 +97,7 @@ describe('PushStream', function() {
       });
     });
 
-    it('should work without log listeners', function() {
+    it('should work without log listeners', function () {
       const stream = new PushStream(createTransformStream());
 
       setTimeout(() => stream.end(), 1200);

@@ -11,7 +11,7 @@ export async function updateFile(path: string, update: UpdateFn, encoding = 'utf
 }
 
 export async function updateJson<T = {}>(path: string, update: UpdateFn<T>): Promise<void> {
-  return updateFile(path, async contents => {
+  return updateFile(path, async (contents) => {
     const indent = detectIndent(contents).indent || '  ';
     const current = JSON.parse(contents) as T;
 

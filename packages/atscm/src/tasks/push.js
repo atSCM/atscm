@@ -42,14 +42,14 @@ export function performPush(path, options) {
     TransformDirection.FromFilesystem
   );
 
-  const ensureReferences = node => {
+  const ensureReferences = (node) => {
     const references = [...node.references].reduce((result, [key, value]) => {
       if (ignoredReferences.has(key)) {
         return result;
       }
 
       return Object.assign(result, {
-        [key]: [...value].map(s => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
+        [key]: [...value].map((s) => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
       });
     }, {});
 
@@ -66,7 +66,7 @@ export function performPush(path, options) {
             Logger.debug(`Added ${Object.keys(references).length} reference(s) to ${node.nodeId}`);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           throw Object.assign(err, { node });
         });
     }
@@ -74,7 +74,7 @@ export function performPush(path, options) {
     return Promise.resolve();
   };
 
-  const create = node => {
+  const create = (node) => {
     const nodeId = new NodeId(node.nodeId);
     let parentNodeId = node.parent && node.parent.nodeId;
 
@@ -107,7 +107,7 @@ export function performPush(path, options) {
 
         return ensureReferences(node);
       })
-      .catch(err => {
+      .catch((err) => {
         throw Object.assign(err, { node });
       });
   };
@@ -137,7 +137,7 @@ export function performPush(path, options) {
       // console.error('write', node.nodeId, node.value);
       return writeNode(`ns=1;s=${node.nodeId}`, node.variantValue).then(
         () => ensureReferences(node),
-        err => {
+        (err) => {
           if (openInBuilderStatus.has(err.statusCode)) {
             Logger.warn(`Error writing node ${node.nodeId}
     - Make sure it is not opened in atvise builder
@@ -173,7 +173,7 @@ export default async function push() {
 
   return reportProgress(promise, {
     getter: () => promise.browser._pushedPath.size,
-    formatter: count => `Processed ${count} files`,
+    formatter: (count) => `Processed ${count} files`,
   }).then(finishTask, handleTaskError);
 }
 

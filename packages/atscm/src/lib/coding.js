@@ -13,7 +13,7 @@ import { pick } from './helpers/Object';
  * @param {*} b The input argument.
  * @return {*} The value passed.
  */
-const asIs = b => b;
+const asIs = (b) => b;
 
 /**
  * Maps a single property of an object using the the mapper defined in *map* for the given
@@ -43,7 +43,7 @@ const toRawValue = {
   [DataType.StatusCode]: ({ name }) => name,
   [DataType.QualifiedName]: ({ namespaceIndex, name }) => ({ namespaceIndex, name }),
   [DataType.LocalizedText]: ({ text, locale }) => ({ text: text || null, locale }),
-  [DataType.DataValue]: value => {
+  [DataType.DataValue]: (value) => {
     const options = pick(value, [
       'value',
       'statusCode',
@@ -66,7 +66,7 @@ const toRawValue = {
     value: getRawValue({ value, dataType, arrayType }),
     dimensions,
   }),
-  [DataType.DiagnosticInfo]: info => {
+  [DataType.DiagnosticInfo]: (info) => {
     const options = pick(info, [
       'namespaceUri',
       'symbolicId',
@@ -90,7 +90,7 @@ const toRawValue = {
  */
 function getRawValue({ value, dataType, arrayType }) {
   if (arrayType !== VariantArrayType.Scalar) {
-    return (Array.isArray(value) ? value : Array.from(value)).map(val =>
+    return (Array.isArray(value) ? value : Array.from(value)).map((val) =>
       getRawValue({
         value: val,
         dataType,
@@ -118,7 +118,7 @@ export function encodeVariant({ value, dataType, arrayType }) {
     return rawValue;
   }
 
-  const stringify = a => (a.toJSON ? a.toJSON() : JSON.stringify(a, null, '  '));
+  const stringify = (a) => (a.toJSON ? a.toJSON() : JSON.stringify(a, null, '  '));
 
   const stringified =
     typeof rawValue === 'object' ? stringify(rawValue) : rawValue.toString().trim();
@@ -131,28 +131,28 @@ export function encodeVariant({ value, dataType, arrayType }) {
  * @param {Buffer} b The buffer to decode from.
  * @return {string} The buffer's string representation.
  */
-const decodeAsString = b => b.toString().trim();
+const decodeAsString = (b) => b.toString().trim();
 
 /**
  * Decodes a buffer to an integer value.
  * @param {Buffer} b The buffer to decode from.
  * @return {number} The decoded integer.
  */
-const decodeAsInt = b => parseInt(decodeAsString(b), 10);
+const decodeAsInt = (b) => parseInt(decodeAsString(b), 10);
 
 /**
  * Decodes a buffer to a float value.
  * @param {Buffer} b The buffer to decode from.
  * @return {number} The decoded float.
  */
-const decodeAsFloat = b => parseFloat(decodeAsString(b));
+const decodeAsFloat = (b) => parseFloat(decodeAsString(b));
 
 /**
  * Decodes a buffer using JSON.
  * @param {Buffer} b The buffer to decode from.
  * @return {*} The decoded value, most likely an Object.
  */
-const decodeAsJson = b => JSON.parse(b.toString());
+const decodeAsJson = (b) => JSON.parse(b.toString());
 
 /**
  * Mapping functions that return raw values for a stored value of the given type.
@@ -160,7 +160,7 @@ const decodeAsJson = b => JSON.parse(b.toString());
  */
 const decodeRawValue = {
   [DataType.Null]: () => null,
-  [DataType.Boolean]: b => decodeAsString(b) === 'true',
+  [DataType.Boolean]: (b) => decodeAsString(b) === 'true',
   [DataType.SByte]: decodeAsInt,
   [DataType.Byte]: decodeAsInt,
   [DataType.Int16]: decodeAsInt,
@@ -192,18 +192,18 @@ const decodeRawValue = {
  * @type {Map<node-opcua~DataType, function>}
  */
 const toNodeValue = {
-  [DataType.DateTime]: s => new Date(s),
-  [DataType.ByteString]: b => {
+  [DataType.DateTime]: (s) => new Date(s),
+  [DataType.ByteString]: (b) => {
     if (b instanceof Buffer) {
       return b;
     }
 
     return Buffer.from(b.data, 'binary');
   },
-  [DataType.NodeId]: s => resolveNodeId(s),
+  [DataType.NodeId]: (s) => resolveNodeId(s),
 
   // Jep, node-opcua does not provide a resolve function for expanded nodeids
-  [DataType.ExpandedNodeId]: s => {
+  [DataType.ExpandedNodeId]: (s) => {
     const nodeId = resolveNodeId(s);
     const [value, ...defs] = nodeId.value.split(';');
 
@@ -225,10 +225,10 @@ const toNodeValue = {
     return new ExpandedNodeId(identifierType, value, namespace, namespaceUri, serverIndex);
   },
 
-  [DataType.StatusCode]: name => StatusCodes[name],
-  [DataType.QualifiedName]: options => new QualifiedName(options),
-  [DataType.LocalizedText]: options => new LocalizedText(options),
-  [DataType.DataValue]: options => {
+  [DataType.StatusCode]: (name) => StatusCodes[name],
+  [DataType.QualifiedName]: (options) => new QualifiedName(options),
+  [DataType.LocalizedText]: (options) => new LocalizedText(options),
+  [DataType.DataValue]: (options) => {
     const opts = options;
 
     mapPropertyAs(toNodeValue, opts, 'value', DataType.Variant);
@@ -245,7 +245,7 @@ const toNodeValue = {
       value,
       dimensions,
     }),
-  [DataType.DiagnosticInfo]: options => {
+  [DataType.DiagnosticInfo]: (options) => {
     const opts = options;
 
     mapPropertyAs(toNodeValue, opts, 'innerStatusCode', DataType.StatusCode);
@@ -267,7 +267,9 @@ const getNodeValue = (rawValue, dataType, arrayType) => {
       throw new Error('Value is not an array');
     }
 
-    return rawValue.map(raw => getNodeValue(raw, dataType, VariantArrayType[arrayType.value - 1]));
+    return rawValue.map((raw) =>
+      getNodeValue(raw, dataType, VariantArrayType[arrayType.value - 1])
+    );
   }
 
   return (toNodeValue[dataType] || asIs)(rawValue);

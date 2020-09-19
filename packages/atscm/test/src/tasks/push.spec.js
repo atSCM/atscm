@@ -11,12 +11,12 @@ const push = proxyquire('../../../src/tasks/push', {
 }).default;
 
 /** @test {push} */
-describe('push', function() {
-  it('should return a promise', function() {
+describe('push', function () {
+  it('should return a promise', function () {
     const promise = push();
     expect(promise, 'to be a', Promise);
 
-    return promise.catch(err => {
+    return promise.catch((err) => {
       if (err.message === 'Test') {
         return;
       }

@@ -5,10 +5,10 @@ import AddReferencesStream from '../../../../src/lib/server/AddReferencesStream'
 import { ReferenceTypeIds } from '../../../../src/lib/model/Node';
 
 /** @test {AddReferencesStream} */
-describe('AddReferencesStream', function() {
+describe('AddReferencesStream', function () {
   /** @test {AddReferencesStream#scriptId} */
-  describe('#scriptId', function() {
-    it("should return the AddReferences script's id", function() {
+  describe('#scriptId', function () {
+    it("should return the AddReferences script's id", function () {
       expect(
         AddReferencesStream.prototype.scriptId.value,
         'to equal',
@@ -18,8 +18,8 @@ describe('AddReferencesStream', function() {
   });
 
   /** @test {AddReferencesStream#scriptParameters} */
-  describe('#scriptParameters', function() {
-    it('should return null without references', function() {
+  describe('#scriptParameters', function () {
+    it('should return null without references', function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({ references: new Map() }),
         'to be',
@@ -27,7 +27,7 @@ describe('AddReferencesStream', function() {
       );
     });
 
-    it('should return null witout additional references', function() {
+    it('should return null witout additional references', function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({
           references: new Map([
@@ -41,7 +41,7 @@ describe('AddReferencesStream', function() {
       );
     });
 
-    it('should return JSON string for additional references', function() {
+    it('should return JSON string for additional references', function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({
           references: new Map([
@@ -67,8 +67,8 @@ describe('AddReferencesStream', function() {
   });
 
   /** @test {AddReferencesStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it('should decorate the error message', function() {
+  describe('#processErrorMessage', function () {
+    it('should decorate the error message', function () {
       expect(
         AddReferencesStream.prototype.processErrorMessage({
           nodeId: new NodeId('ns=1;s=AGENT.OBJECTS.Test'),
@@ -81,8 +81,8 @@ describe('AddReferencesStream', function() {
   });
 
   /** @test {AddReferencesStream#handleOutputArguments} */
-  describe('#handleOutputArguments', function() {
-    it('should error with bad status codes', function() {
+  describe('#handleOutputArguments', function () {
+    it('should error with bad status codes', function () {
       return expect(
         AddReferencesStream.prototype.handleOutputArguments.bind(null, {}, [
           { value: StatusCodes.Bad },
@@ -93,7 +93,7 @@ describe('AddReferencesStream', function() {
       );
     });
 
-    it('should retry when script had failures', async function() {
+    it('should retry when script had failures', async function () {
       const stream = new AddReferencesStream();
       const file = { nodeId: new NodeId('AGENT.OBJECTS.Failing') };
       const handleOutput = AddReferencesStream.prototype.handleOutputArguments.bind(stream, file, [
@@ -119,7 +119,7 @@ describe('AddReferencesStream', function() {
       );
     });
 
-    it('should continue without failures', function() {
+    it('should continue without failures', function () {
       return expect(
         AddReferencesStream.prototype.handleOutputArguments.bind(null, {}, [
           { value: StatusCodes.Good },

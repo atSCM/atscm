@@ -6,7 +6,7 @@ import Atviseproject from '../config/Atviseproject';
 import CallScriptStream from './scripts/CallScriptStream';
 import { waitForDependencies } from './WaitingStream';
 
-const serverNodes = new Set(Atviseproject.ServerRelatedNodes.map(id => id.value));
+const serverNodes = new Set(Atviseproject.ServerRelatedNodes.map((id) => id.value));
 
 const ignoredReferences = new Set([
   ReferenceTypeIds.toParent,
@@ -83,7 +83,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
       }
 
       return Object.assign(result, {
-        [key]: [...value].map(s => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
+        [key]: [...value].map((s) => (typeof s === 'string' ? `ns=1;s=${s}` : s)),
       });
     }, {});
 
@@ -95,7 +95,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
           dataType: DataType.String,
           value: JSON.stringify({
             nodeId: file.nodeId,
-            references: referenceKeys.map(type => ({
+            references: referenceKeys.map((type) => ({
               referenceIdValue: parseInt(type, 10),
               items: references[type],
             })),

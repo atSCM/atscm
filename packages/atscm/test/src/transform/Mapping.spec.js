@@ -12,12 +12,12 @@ import MappingTransformer from '../../../src/transform/Mapping';
 import { scalar, array, matrix } from '../../fixtures/dataTypes';
 
 /** @test {MappingTransformer} */
-describe.skip('MappingTransformer', function() {
+describe.skip('MappingTransformer', function () {
   before(() => Logger.on('error', () => true));
 
   /** @test {MappingTransformer#transformFromDB} */
-  describe('#transformFromDB', function() {
-    context('when AtviseFile.fromReadResult returns error', function() {
+  describe('#transformFromDB', function () {
+    context('when AtviseFile.fromReadResult returns error', function () {
       let warnListener;
       let debugListener;
 
@@ -35,11 +35,11 @@ describe.skip('MappingTransformer', function() {
         Logger.removeListener('debug', debugListener);
       });
 
-      it('should not forward errors', function() {
+      it('should not forward errors', function () {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect(
-          cb =>
+          (cb) =>
             stream.transformFromDB(
               {
                 nodeId: new NodeId('AGENT.DISPLAYS.Main'),
@@ -48,14 +48,14 @@ describe.skip('MappingTransformer', function() {
               cb
             ),
           'to call the callback'
-        ).then(args => expect(args, 'to have length', 1));
+        ).then((args) => expect(args, 'to have length', 1));
       });
 
-      it('should log warning', function() {
+      it('should log warning', function () {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect(
-          cb =>
+          (cb) =>
             stream.transformFromDB(
               {
                 nodeId: new NodeId('AGENT.DISPLAYS.Main'),
@@ -65,13 +65,13 @@ describe.skip('MappingTransformer', function() {
             ),
           'to call the callback'
         )
-          .then(args => expect(args, 'to have length', 1))
+          .then((args) => expect(args, 'to have length', 1))
           .then(() => expect(warnListener, 'was called once'))
           .then(() => expect(debugListener, 'was called once'));
       });
     });
 
-    context('when AtviseFile.fromReadResult returns "no value" error', function() {
+    context('when AtviseFile.fromReadResult returns "no value" error', function () {
       let warnListener;
       let debugListener;
 
@@ -89,11 +89,11 @@ describe.skip('MappingTransformer', function() {
         Logger.removeListener('debug', debugListener);
       });
 
-      it('should only debug log', function() {
+      it('should only debug log', function () {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect(
-          cb =>
+          (cb) =>
             stream.transformFromDB(
               {
                 nodeId: new NodeId('AGENT.DISPLAYS.Main'),
@@ -103,13 +103,13 @@ describe.skip('MappingTransformer', function() {
             ),
           'to call the callback'
         )
-          .then(args => expect(args, 'to have length', 1))
+          .then((args) => expect(args, 'to have length', 1))
           .then(() => expect(debugListener, 'was called twice'))
           .then(() => expect(warnListener, 'was not called'));
       });
     });
 
-    it('should return an AtviseFile for the given ReadResult', function() {
+    it('should return an AtviseFile for the given ReadResult', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
       return expect(
@@ -134,8 +134,8 @@ describe.skip('MappingTransformer', function() {
       );
     });
 
-    context('when file has non-standard type-definition', function() {
-      it('should push a reference config file', function() {
+    context('when file has non-standard type-definition', function () {
+      it('should push a reference config file', function () {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect(
@@ -178,7 +178,7 @@ describe.skip('MappingTransformer', function() {
         );
       });
 
-      it('should sort references', function() {
+      it('should sort references', function () {
         const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
         return expect(
@@ -197,7 +197,7 @@ describe.skip('MappingTransformer', function() {
           stream,
           'to yield chunks satisfying',
           [
-            file => {
+            (file) => {
               expect(
                 file.contents.toString(),
                 'to equal',
@@ -221,8 +221,8 @@ describe.skip('MappingTransformer', function() {
   });
 
   /** @test {MappingTransformer#transformFromFilesystem} */
-  describe('#transformFromFilesystem', function() {
-    it('should write AtviseFiles for read Files', function() {
+  describe('#transformFromFilesystem', function () {
+    it('should write AtviseFiles for read Files', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect(
@@ -234,18 +234,18 @@ describe.skip('MappingTransformer', function() {
       );
     });
 
-    it('should keep base', function() {
+    it('should keep base', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect(
-        cb =>
+        (cb) =>
           stream.transformFromFilesystem(
             new File({ path: 'folder/Test.ext', base: 'folder' }),
             'utf8',
             cb
           ),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args[0], 'to be falsy');
 
         const result = args[1];
@@ -254,38 +254,38 @@ describe.skip('MappingTransformer', function() {
       });
     });
 
-    it('should skip directories', function() {
+    it('should skip directories', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect(
-        cb => stream.transformFromFilesystem({ isDirectory: () => true }, 'utf8', cb),
+        (cb) => stream.transformFromFilesystem({ isDirectory: () => true }, 'utf8', cb),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args, 'to have length', 1);
         expect(args[0], 'to be falsy');
       });
     });
 
-    it('should skip non-atscm dot files', function() {
+    it('should skip non-atscm dot files', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect(
-        cb =>
+        (cb) =>
           stream.transformFromFilesystem(
             { isDirectory: () => false, stem: '.eslintrc' },
             'utf8',
             cb
           ),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args, 'to have length', 1);
         expect(args[0], 'to be falsy');
       });
     });
 
-    context('when file has non-standard type-definition', function() {
-      context('with reference config file', function() {
-        it('should read reference config file', function() {
+    context('when file has non-standard type-definition', function () {
+      context('with reference config file', function () {
+        it('should read reference config file', function () {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
           return expect(
@@ -312,8 +312,8 @@ describe.skip('MappingTransformer', function() {
         });
       });
 
-      context('when reference config file is missing', function() {
-        it('should forward error', function() {
+      context('when reference config file is missing', function () {
+        it('should forward error', function () {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
           const promise = expect(stream, 'to error with', /missing reference file/i);
@@ -325,8 +325,8 @@ describe.skip('MappingTransformer', function() {
         });
       });
 
-      context('when .rc file cannot be parsed', function() {
-        it('should forward error', function() {
+      context('when .rc file cannot be parsed', function () {
+        it('should forward error', function () {
           const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
           const promise = expect(stream, 'to error with', /Unexpected token/);
@@ -346,7 +346,7 @@ describe.skip('MappingTransformer', function() {
     });
   });
 
-  describe('should be able to map all types', function() {
+  describe('should be able to map all types', function () {
     async function testFromDBMapping({ sample }) {
       const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
@@ -368,7 +368,7 @@ describe.skip('MappingTransformer', function() {
         'when piped through',
         stream,
         'to yield chunks satisfying',
-        [chunk => expect(chunk, 'to be an', AtviseFile) && chunk]
+        [(chunk) => expect(chunk, 'to be an', AtviseFile) && chunk]
       );
 
       expect(err, 'to be falsy');
@@ -378,22 +378,22 @@ describe.skip('MappingTransformer', function() {
     }
 
     scalar.forEach((sample, i) => {
-      context(`when mapping ${sample.dataType}s`, function() {
-        it('should map scalar values', async function() {
+      context(`when mapping ${sample.dataType}s`, function () {
+        it('should map scalar values', async function () {
           return testFromDBMapping({ sample });
         });
-        it('should map array values', async function() {
+        it('should map array values', async function () {
           return testFromDBMapping({ sample: array[i] });
         });
-        it('should map matrix values', async function() {
+        it('should map matrix values', async function () {
           return testFromDBMapping({ sample: matrix[i] });
         });
       });
     });
   });
 
-  context('when a resource property is mapped', function() {
-    it('should wrap nodes in `.inner` folder', function() {
+  context('when a resource property is mapped', function () {
+    it('should wrap nodes in `.inner` folder', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromDB });
 
       return expect(
@@ -425,7 +425,7 @@ describe.skip('MappingTransformer', function() {
       );
     });
 
-    it('should unwrap properties `.inner` folder', function() {
+    it('should unwrap properties `.inner` folder', function () {
       const stream = new MappingTransformer({ direction: TransformDirection.FromFilesystem });
 
       return expect(

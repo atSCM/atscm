@@ -28,7 +28,7 @@ const InitTask = proxyquire('../../../src/init/InitTask', {
 }).default;
 
 /** @test {InitTask} */
-describe('InitTask', function() {
+describe('InitTask', function () {
   const baseConfig = {
     name: 'unit-testing',
     atviseHost: 'localhost',
@@ -48,12 +48,12 @@ describe('InitTask', function() {
   });
 
   function expectValidConfig(lang, transform) {
-    it(`should create valid ${lang} config`, function() {
+    it(`should create valid ${lang} config`, function () {
       return InitTask.run(optionsForLang(lang)).then(() => {
-        const createdFiles = destSpy.args.map(args => args[0]);
+        const createdFiles = destSpy.args.map((args) => args[0]);
 
         // Expect config file is created
-        const configs = createdFiles.filter(file => file.relative.match(/Atviseproject/));
+        const configs = createdFiles.filter((file) => file.relative.match(/Atviseproject/));
         expect(configs, 'to have length', 1);
 
         // Expect code can be transpiled
@@ -83,7 +83,7 @@ describe('InitTask', function() {
   }
 
   expectValidConfig('es2015', (code, createdFiles) => {
-    const rcs = createdFiles.filter(file => file.relative.match(/.babelrc/));
+    const rcs = createdFiles.filter((file) => file.relative.match(/.babelrc/));
 
     expect(rcs, 'to have length', 1);
 
@@ -92,10 +92,10 @@ describe('InitTask', function() {
     return babelTransform(code, rc).code;
   });
 
-  expectValidConfig('es5', code => code);
+  expectValidConfig('es5', (code) => code);
 
   expectValidConfig('ts', (code, createdFiles) => {
-    const rcs = createdFiles.filter(file => file.relative.match(/tsconfig.json/));
+    const rcs = createdFiles.filter((file) => file.relative.match(/tsconfig.json/));
 
     expect(rcs, 'to have length', 1);
 

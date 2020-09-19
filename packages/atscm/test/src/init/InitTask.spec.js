@@ -26,7 +26,7 @@ const InitTask = proxyquire('../../../src/init/InitTask', {
 }).default;
 
 /** @test {InitTask} */
-describe('InitTask', function() {
+describe('InitTask', function () {
   beforeEach(() => {
     srcSpy.resetHistory();
     destSpy.resetHistory();
@@ -34,8 +34,8 @@ describe('InitTask', function() {
   });
 
   /** @test {InitTask.filesToHandle} */
-  describe('.filesToHandle', function() {
-    it('should return array of absolute paths', function() {
+  describe('.filesToHandle', function () {
+    it('should return array of absolute paths', function () {
       expect(InitTask.filesToHandle('es2015'), 'to have items satisfying', 'to be a', 'string');
       expect(
         InitTask.filesToHandle('es2015'),
@@ -46,31 +46,39 @@ describe('InitTask', function() {
   });
 
   /** @test {InitTask.run} */
-  describe('.run', function() {
-    it('should handle all general files', function() {
+  describe('.run', function () {
+    it('should handle all general files', function () {
       const files = readdirSync(join(__dirname, '../../../res/init/templates/general'));
 
       return InitTask.run({ configLang: 'es2015' }).then(() => {
         expect(srcSpy.callCount, 'to be greater than', 0);
 
-        const handled = srcSpy.args.map(args => args[0]);
-        const resulting = destSpy.args.map(args => args[0]);
+        const handled = srcSpy.args.map((args) => args[0]);
+        const resulting = destSpy.args.map((args) => args[0]);
         expect(handled, 'to have values satisfying', 'to have properties', { _isVinyl: true });
 
-        expect(handled.map(f => f.relative), 'to contain', ...files);
-        expect(resulting.map(f => f.relative), 'to contain', ...files);
+        expect(
+          handled.map((f) => f.relative),
+          'to contain',
+          ...files
+        );
+        expect(
+          resulting.map((f) => f.relative),
+          'to contain',
+          ...files
+        );
       });
     });
 
-    it('should not escape author field in package.json (#52)', function() {
+    it('should not escape author field in package.json (#52)', function () {
       const author = 'Sample name <mail@example.com>';
 
       return InitTask.run({ configLang: 'es2015', author }).then(() => {
         expect(srcSpy.callCount, 'to be greater than', 0);
 
         const pkgOut = destSpy.args
-          .map(args => args[0])
-          .filter(f => f.relative === 'package.json')[0]
+          .map((args) => args[0])
+          .filter((f) => f.relative === 'package.json')[0]
           .contents.toString();
 
         expect(JSON.parse(pkgOut).author, 'to equal', author);
@@ -80,10 +88,10 @@ describe('InitTask', function() {
     function expectHandlingLangFiles(configLang) {
       const files = readdirSync(join(__dirname, '../../../res/init/templates/lang', configLang));
 
-      it(`should handle ${configLang} files`, function() {
+      it(`should handle ${configLang} files`, function () {
         return InitTask.run({ configLang }).then(() => {
-          const handled = srcSpy.args.map(args => args[0].relative);
-          const resulting = destSpy.args.map(args => args[0].relative);
+          const handled = srcSpy.args.map((args) => args[0].relative);
+          const resulting = destSpy.args.map((args) => args[0].relative);
 
           expect(handled, 'to contain', ...files);
           expect(resulting, 'to contain', ...files);
@@ -92,6 +100,6 @@ describe('InitTask', function() {
     }
 
     // Check if all lang files are handled for all config langs
-    Object.keys(ConfigLangs).forEach(l => expectHandlingLangFiles(ConfigLangs[l]));
+    Object.keys(ConfigLangs).forEach((l) => expectHandlingLangFiles(ConfigLangs[l]));
   });
 });
