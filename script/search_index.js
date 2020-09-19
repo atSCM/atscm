@@ -66,12 +66,6 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mappingtransformer#constructor src/transform/mapping.js~mappingtransformer#constructor,mappingtransformer#constructor",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber8",
-    "#constructor",
-    "test"
-  ],
-  [
     "nodestream#constructor src/lib/server/nodestream.js~nodestream#constructor,nodestream#constructor",
     "test-file/test/src/lib/server/NodeStream.spec.js.html#lineNumber40",
     "#constructor",
@@ -86,6 +80,12 @@ window.esdocSearchIndex = [
   [
     "watcher#constructor src/lib/server/watcher.js~watcher#constructor,watcher#constructor",
     "test-file/test/src/lib/server/Watcher.spec.js.html#lineNumber330",
+    "#constructor",
+    "test"
+  ],
+  [
+    "mappingtransformer#constructor src/transform/mapping.js~mappingtransformer#constructor,mappingtransformer#constructor",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber8",
     "#constructor",
     "test"
   ],
@@ -174,14 +174,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "scripttransformer#createcombinedfile scripttransformer#createcombinedfile,scripttransformer#createcombinedfile",
-    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber353",
+    "displaytransformer#createcombinedfile displaytransformer#createcombinedfile,displaytransformer#createcombinedfile",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber223",
     "#createCombinedFile",
     "test"
   ],
   [
-    "displaytransformer#createcombinedfile displaytransformer#createcombinedfile,displaytransformer#createcombinedfile",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber223",
+    "scripttransformer#createcombinedfile scripttransformer#createcombinedfile,scripttransformer#createcombinedfile",
+    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber353",
     "#createCombinedFile",
     "test"
   ],
@@ -552,8 +552,8 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "scripttransformer#shouldbetransformed scripttransformer#shouldbetransformed,scripttransformer#shouldbetransformed",
-    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber15",
+    "displaytransformer#shouldbetransformed src/transform/displaytransformer.js~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
     "#shouldBeTransformed",
     "test"
   ],
@@ -564,8 +564,8 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer#shouldbetransformed src/transform/displaytransformer.js~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
+    "scripttransformer#shouldbetransformed scripttransformer#shouldbetransformed,scripttransformer#shouldbetransformed",
+    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber15",
     "#shouldBeTransformed",
     "test"
   ],
@@ -606,14 +606,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "scripttransformer#transformfromdb scripttransformer#transformfromdb,scripttransformer#transformfromdb",
-    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber29",
+    "displaytransformer#transformfromdb src/transform/displaytransformer.js~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber21",
     "#transformFromDB",
     "test"
   ],
   [
-    "displaytransformer#transformfromdb src/transform/displaytransformer.js~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber21",
+    "mappingtransformer#transformfromdb src/transform/mapping.js~mappingtransformer#transformfromdb,mappingtransformer#transformfromdb",
+    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber19",
     "#transformFromDB",
     "test"
   ],
@@ -624,8 +624,8 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mappingtransformer#transformfromdb src/transform/mapping.js~mappingtransformer#transformfromdb,mappingtransformer#transformfromdb",
-    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber19",
+    "scripttransformer#transformfromdb scripttransformer#transformfromdb,scripttransformer#transformfromdb",
+    "test-file/test/src/transform/ScriptTransformer.spec.js.html#lineNumber29",
     "#transformFromDB",
     "test"
   ],
@@ -900,14 +900,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "newlinestransformer#transformfromfilesystem src/transform/newlines.js~newlinestransformer#transformfromfilesystem,newlinestransformer#transformfromfilesystem",
-    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber112",
+    "mappingtransformer#transformfromfilesystem src/transform/mapping.js~mappingtransformer#transformfromfilesystem,mappingtransformer#transformfromfilesystem",
+    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber224",
     "#transformFromFilesystem",
     "test"
   ],
   [
-    "mappingtransformer#transformfromfilesystem src/transform/mapping.js~mappingtransformer#transformfromfilesystem,mappingtransformer#transformfromfilesystem",
-    "test-file/test/src/transform/Mapping.spec.js.html#lineNumber224",
+    "newlinestransformer#transformfromfilesystem src/transform/newlines.js~newlinestransformer#transformfromfilesystem,newlinestransformer#transformfromfilesystem",
+    "test-file/test/src/transform/Newlines.spec.js.html#lineNumber112",
     "#transformFromFilesystem",
     "test"
   ],
@@ -2773,13 +2773,13 @@ window.esdocSearchIndex = [
   ],
   [
     "inittask src/init/inittask.js~inittask,inittask",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber29",
+    "test-file/test/integration/tasks/init.spec.js.html#lineNumber31",
     "InitTask",
     "test"
   ],
   [
     "inittask src/init/inittask.js~inittask,inittask",
-    "test-file/test/integration/tasks/init.spec.js.html#lineNumber31",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber29",
     "InitTask",
     "test"
   ],
@@ -3823,13 +3823,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber203",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber187",
     "SplittingTransformer should apply the new extension",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber187",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber203",
     "SplittingTransformer should apply the new extension",
     "test"
   ],
@@ -3853,13 +3853,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber199",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber183",
     "SplittingTransformer should return a file",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber183",
+    "test-file/test/src/lib/transform/SplittingTransformer.spec.js.html#lineNumber199",
     "SplittingTransformer should return a file",
     "test"
   ],
@@ -6217,13 +6217,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
   [
     "src/lib/server/atvisefile.js~atvisefile#value",
-    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-set-value",
+    "class/src/lib/server/AtviseFile.js~AtviseFile.html#instance-get-value",
     "src/lib/server/AtviseFile.js~AtviseFile#value",
     "member"
   ],
