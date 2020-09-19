@@ -4,8 +4,14 @@ orbs:
     executors:
       node:
         docker:
-          - image: circleci/node:10
+          - image: lsage/pnpm-circleci-node:12
     commands:
+      attach:
+        steps:
+          - checkout:
+              path: ~/project
+          - attach_workspace:
+              at: ~/project
       git-login:
         steps:
           - run:
@@ -46,16 +52,16 @@ orbs:
               environment:
                 NODE_ENV: test
                 ATSCM_PROJECT__TIMEOUT: '20000'
-                MOCHA_FILE: ../reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
+                MOCHA_FILE: /home/circleci/reports/integration-<< parameters.atserver >>-$CIRCLE_NODE_INDEX.xml
     jobs:
       integration:
         executor: node
+        working_directory: ~/project/packages/atscm
         parameters:
           atserver:
             type: string
         steps:
-          - attach_workspace:
-              at: .
+          - attach
           - run-integration-tests:
               atserver: << parameters.atserver >>
           - store_test_results:
@@ -70,36 +76,31 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-pnpm-deps-{{ checksum "pnpm-lock.yaml" }}
       - run:
-          name: Installing npm dependencies
-          command: npm install
-      - atscm/git-login
+          name: Install dependencies
+          command: pnpm install --prefer-frozen-lockfile
       - run:
           name: Handling package-lock changes
           command: |
-            if git diff --exit-code package-lock.json; then
-              echo "package-lock did not change"
+            if git diff --exit-code pnpm-lock.yaml; then
+              echo "Lockfile up to date"
             else
-              if [[ $CIRCLE_BRANCH = *"greenkeeper/"* ]]; then
-                echo "Committing package-lock changes"
-                git add package-lock.json
-                git commit -m 'chore(package): Update lockfile [ci skip]';
-              else
-                echo "Resetting package-lock changes"
-                git checkout -- package-lock.json
-              fi
-            fi
+              echo "Lockfile is out of date."
+              echo "Run 'git add pnpm-lock.yaml' and 'git commit' to update it."
 
-            echo "Done"
+              exit 1
+            fi
       - save_cache:
-          key: v3-npm-deps-{{ checksum "package-lock.json" }}
+          key: v1-pnpm-deps-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            - node_modules
+            - ~/.pnpm-store
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - .
+            - ./node_modules
+            - ./*/node_modules
+            - ./packages/*/node_modules
 
   start-testserver:
     docker:
@@ -114,9 +115,9 @@ jobs:
 
   build:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Transpiling source code
           command: npm run compile
@@ -127,15 +128,15 @@ jobs:
           name: Check package file paths
           command: npx pkg-ok
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - out
+            - packages/atscm/out
 
   docs:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Creating API documentation
           command: npm run docs
@@ -147,15 +148,14 @@ jobs:
           command: npm run docs:coverage
           when: always
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - docs/api
+            - packages/atscm/docs/api
 
   lint-source:
     executor: atscm/node
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Linting source files
           command: npm run lint -- --format junit --output-file ~/reports/eslint.xml
@@ -169,10 +169,10 @@ jobs:
 
   unit-tests:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     parallelism: 4
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Printing test files to run
           command: circleci tests glob "test/src/**/*.spec.js" | circleci tests split --split-by=timings
@@ -183,9 +183,9 @@ jobs:
             NODE_ENV: test
             MOCHA_FILE: ../reports/unit-tests-$CIRCLE_NODE_INDEX.xml
       - persist_to_workspace:
-          root: .
+          root: ~/project
           paths:
-            - coverage
+            - packages/atscm/coverage
       - store_test_results:
           path: ~/reports
       - store_artifacts:
@@ -193,9 +193,9 @@ jobs:
 
   test-coverage:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - run:
           name: Combining coverage reports
           command: npx istanbul-combine -r lcov -r html coverage/**/*.json
@@ -208,23 +208,25 @@ jobs:
   deploy:
     executor: atscm/node
     steps:
-      - checkout
       - add_ssh_keys
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - atscm/git-login
       - atscm/npm-login
       - run:
           name: Deploying changes
-          command: npx bump-version release --release-files out docs/api --gh-token $RELEASE_GITHUB_TOKEN
+          command: |
+            npx bump-version release \
+              --package-manager pnpm \
+              --dir packages/atscm \
+              --release-files out docs/api \
+              --gh-token $RELEASE_GITHUB_TOKEN
 
   update-hosted-docs:
     executor: atscm/node
+    working_directory: ~/project/packages/atscm
     steps:
-      - checkout
       - add_ssh_keys
-      - attach_workspace:
-          at: .
+      - atscm/attach
       - atscm/git-login
       - run:
           name: Build organization page
@@ -234,13 +236,13 @@ jobs:
           command: |
             if [ "$CIRCLE_BRANCH" = "master" ]; then
               version=$(node -e "console.log(require('./package.json').version)")
-              git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ../pages
-              cp -r docs/api/* ../pages
-              cd ../pages
+              git clone git@github.com:$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git -b gh-pages ~/pages
+              cp -r docs/api/* ~/pages
+              cd ~/pages
               git add .
               git commit -m "docs(gh-pages): Update for release v$version [ci skip]"
               git push origin gh-pages
-              cd ../project
+              cd ~/project
             fi
 
 workflows:

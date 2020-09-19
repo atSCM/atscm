@@ -1,9 +1,11 @@
-/.idea
-/.nyc_output
-/atscm/rename.json
-/coverage
-/coverage.lcov
-/docs/api
-/node_modules
-/out
-/test/tmp
+# General
+.nyc_output
+coverage
+coverage.lcov
+node_modules
+out
+
+# Package-specific
+packages/atscm/atscm/rename.json
+packages/atscm/docs/api
+packages/atscm/test/tmp

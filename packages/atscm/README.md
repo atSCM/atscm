@@ -1,17 +1,25 @@
 # atscm
 
-[![CircleCI](https://circleci.com/gh/atSCM/atscm/tree/master.svg?style=svg)](https://circleci.com/gh/atSCM/atscm)
+> Source code management utilities for atvise
 
-_atscm_ is a node.js-based utility that stores the contents for atvise projects on the file system. This allows you to use your favorite IDE and development tools.
+[![CircleCI](https://circleci.com/gh/atSCM/atscm.svg?style=shield)](https://circleci.com/gh/atSCM/workflows/atscm)
+[![codecov](https://codecov.io/gh/atSCM/atscm/branch/master/graph/badge.svg)](https://codecov.io/gh/atSCM/atscm)
+[![ESDoc](https://atscm.github.io/atscm/badge.svg)](https://atscm.github.io/atscm)
 
-For more details visit our docs at [atscm.github.io](https://atscm.github.io). With _atscm-cli_ installed, you can run `atscm docs` to do so 😀.
+_atscm_ is a [node.js](https://nodejs.org) based utility that stores the contents of atvise projects on the file system. This has several benefits to advanced atvise developers:
 
-## Overview
+- atvise project can be put under source control (e.g. using _git_)
+- source code can be edited in external editors
+- easier unit testing
+- easier source code linting / static analysis
+- source files can be preprocessed by using custom transformers: <!-- TODO: Insert links -->
+  - using alternate programming languages such as [ES2015 JavaScript](http://babeljs.io/learn-es2015/) or [TypeScript](https://www.typescriptlang.org)
+  - using alternate markup languages such as [pug](https://pugjs.org)
+  - using templating engines such as [handlebars](http://handlebarsjs.com)
 
 <!-- BEGIN overview -->
-<!-- This section is generated. Run `npm run update-monorepo` to update it. -->
 
-### Installation
+## Installation
 
 _atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
 
@@ -26,7 +34,7 @@ _atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
 
 With [atscm-cli](https://github.com/atSCM/atscm-cli) installed run `atscm init` to create a new _atscm_ project.
 
-### Basic usage
+## Basic usage
 
 **Pulling nodes from atvise server**
 
@@ -46,19 +54,6 @@ After running `atscm watch` files and atvise server nodes are watched for change
 
 <!-- END overview -->
 
-## Packages
+## Project configuration
 
-> _Note: We switched to a monorepo after version 1.1. This is an ongoing process, expect more packages to appear here soon._
-
-This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/workspaces) holding these packages:
-
-<!-- BEGIN packages -->
-<!-- This section is generated, do not edit it! -->
-
-- [atscm](./packages/atscm) Source code management utilities for atvise
-
-  > ![npm](https://img.shields.io/npm/v/atscm?logo=npm)
-  >
-  > [GitHub](https://github.com/atSCM/packages/atscm#readme) · [npm](https://www.npmjs.com/package/atscm)
-
-<!-- END packages -->
+An atscm project's configuration is stored inside the _Atviseproject_ file inside your project root. See the [Atviseproject class reference](https://atscm.github.io/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html) for available options.
