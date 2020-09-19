@@ -92,10 +92,7 @@ export default class NodeId extends OpcNodeId {
    */
   get filePath() {
     const parts = this.value.split('RESOURCES');
-    parts[0] = parts[0]
-      .replace('/', '%2F')
-      .split('.')
-      .join('/');
+    parts[0] = parts[0].replace('/', '%2F').split('.').join('/');
 
     return parts.join('RESOURCES');
   }

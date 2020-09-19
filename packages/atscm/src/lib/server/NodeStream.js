@@ -46,7 +46,7 @@ export default class NodeStream extends Readable {
      */
     this._start = Date.now();
 
-    const nodes = nodesToBrowse.filter(nodeId => {
+    const nodes = nodesToBrowse.filter((nodeId) => {
       // FIXME: Move to node browser and implement
       const ignored = false && this.isIgnored({ nodeId });
 
@@ -80,7 +80,7 @@ export default class NodeStream extends Readable {
       recursive: options.recursive === undefined ? true : options.recursive,
     });
 
-    this._browser.onNode = node => {
+    this._browser.onNode = (node) => {
       if (node.nodeId.match(/\s$/)) {
         Logger.warn(`Node '${node.nodeId}' has trailing spaces in it's name.`);
         Logger.info(' - Rename it to prevent errors on windows.');
@@ -95,7 +95,7 @@ export default class NodeStream extends Readable {
       this.destroy();
     };
 
-    this._browser.onError = err => {
+    this._browser.onError = (err) => {
       if (this.isDestroyed) {
         return;
       }
@@ -131,7 +131,7 @@ export default class NodeStream extends Readable {
       this._browser
         .destroy()
         .then(() => callback(err))
-        .catch(destroyErr => callback(err || destroyErr));
+        .catch((destroyErr) => callback(err || destroyErr));
     });
   }
 

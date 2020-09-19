@@ -48,7 +48,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       return config;
     }
 
-    metaTag.childNodes.forEach(child => {
+    metaTag.childNodes.forEach((child) => {
       if (child.type !== 'element') {
         return;
       }
@@ -110,7 +110,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       return undefined;
     }
 
-    return paramTags.map(node => {
+    return paramTags.map((node) => {
       const { childNodes } = node;
       const attributes = attributeValues(node);
       const param = Object.assign({}, attributes);
@@ -126,7 +126,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
         ]);
 
         if (target) {
-          const [index, name] = ['NamespaceIndex', 'Name'].map(tagName =>
+          const [index, name] = ['NamespaceIndex', 'Name'].map((tagName) =>
             textContent(findChild(target, tagName))
           );
 
@@ -261,7 +261,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     // - Additional fields
     if (config.metadata !== undefined) {
       Object.entries(config.metadata).forEach(([name, value]) => {
-        (Array.isArray(value) ? value : [value]).forEach(v =>
+        (Array.isArray(value) ? value : [value]).forEach((v) =>
           meta.push(createElement(name, [createTextNode(v)]))
         );
       });
@@ -273,7 +273,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     // Insert parameters
     if (config.parameters) {
-      config.parameters.forEach(attributes => {
+      config.parameters.forEach((attributes) => {
         let elements;
 
         // Handle relative parameter targets

@@ -116,7 +116,7 @@ async function createExportFile() {
     new Variant({
       dataType: DataType.NodeId,
       arrayType: VariantArrayType.Array,
-      value: nodesToExport.map(id => new NodeId(id)),
+      value: nodesToExport.map((id) => new NodeId(id)),
     }),
   ]);
 
@@ -130,7 +130,7 @@ async function createExportFile() {
 }
 
 // Run it and catch any errors
-createExportFile().catch(error => {
+createExportFile().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });

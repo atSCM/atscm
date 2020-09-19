@@ -22,7 +22,7 @@ export function pull(nodes, destination) {
     },
   });
 
-  return performPull(nodes.map(n => new NodeId(n)));
+  return performPull(nodes.map((n) => new NodeId(n)));
 }
 
 export function push(source) {
@@ -37,7 +37,7 @@ export function setupPath(name) {
 
 export async function importSetup(name, ...rename) {
   const uniqueId = id();
-  const nodeNames = rename.map(r => {
+  const nodeNames = rename.map((r) => {
     const parts = r.split('.');
 
     return [`${parts[0]}-${uniqueId}`, ...parts.slice(1)].join('.');
@@ -99,7 +99,10 @@ class SingleCallScriptStream extends CallScriptStream {
     if (outArgs[0].value !== StatusCodes.Good) {
       callback(new Error(outArgs[1].value));
     } else {
-      callback(null, outArgs.slice(2).map(a => a.value));
+      callback(
+        null,
+        outArgs.slice(2).map((a) => a.value)
+      );
     }
   }
 }
@@ -156,7 +159,7 @@ export function exportNodes(nodeIds) {
 
   stream.write({
     relative: 'TestHelper',
-    nodeIds: nodeIds.map(raw => new NodeId(raw)), // new NodeId(nodeId),
+    nodeIds: nodeIds.map((raw) => new NodeId(raw)), // new NodeId(nodeId),
   });
 
   stream.end();
@@ -178,7 +181,7 @@ function removeComments(xml) {
   removeChildren(doc.childNodes.find(isElement), 'Aliases');
 
   /* eslint-disable no-param-reassign */
-  const walk = n => {
+  const walk = (n) => {
     n.childNodes = n.childNodes
       .reduce((all, child) => {
         if (child.type === 'comment' || (child.type === 'text' && child.value.match(/^\s*$/))) {
@@ -211,7 +214,7 @@ function removeComments(xml) {
 
     delete n.tokens;
     if (n.attributes) {
-      n.attributes = n.attributes.map(a => {
+      n.attributes = n.attributes.map((a) => {
         delete a.tokens;
         return a;
       });
@@ -236,7 +239,7 @@ export function expectCorrectMapping(setup, node) {
   let nodeIds;
   let destination;
 
-  before(`import setup and pull ${setup}`, async function() {
+  before(`import setup and pull ${setup}`, async function () {
     if (Array.isArray(node.name)) {
       if (node.name.length !== node.path.length) {
         throw new Error('Need the same number of paths as names');
@@ -252,24 +255,27 @@ export function expectCorrectMapping(setup, node) {
     destination = tmpDir(setup.replace(/\//g, '-'));
 
     // Run atscm pull
-    await pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination);
+    await pull(
+      nodeIds.map((nodeId) => `ns=1;s=${nodeId}`),
+      destination
+    );
 
     // Delete the pulled nodes
-    await Promise.all(nodeIds.map(nodeId => deleteNode(nodeId)));
+    await Promise.all(nodeIds.map((nodeId) => deleteNode(nodeId)));
   });
 
-  it('should recreate all fields', async function() {
+  it('should recreate all fields', async function () {
     // Run atscm push
     const paths = (Array.isArray(node.path)
       ? [...new Set(Array.from(node.path))]
       : [node.path]
-    ).map(path => join(destination, path.replace(/\./g, sep)));
+    ).map((path) => join(destination, path.replace(/\./g, sep)));
 
     for (const path of paths) {
       await push(path);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     const rawPushed = await exportNodes(nodeIds);
     const pushed = originalNames.reduce(
@@ -282,8 +288,8 @@ export function expectCorrectMapping(setup, node) {
     return compareXml(pushed, original);
   });
 
-  after('delete tmp node', function() {
+  after('delete tmp node', function () {
     // Delete the pushed node
-    return Promise.all(nodeIds.map(n => deleteNode(n)));
+    return Promise.all(nodeIds.map((n) => deleteNode(n)));
   });
 }

@@ -43,25 +43,25 @@ const FailingSubscribeStream = proxyquire('../../../../src/lib/server/Watcher', 
 }).SubscribeStream;
 
 /** @test {SubscribeStream} */
-describe.skip('SubscribeStream', function() {
+describe.skip('SubscribeStream', function () {
   /** @test {SubscribeStream#constructor} */
-  describe('#constructor', function() {
-    it('should apply keepSessionAlive option', function() {
+  describe('#constructor', function () {
+    it('should apply keepSessionAlive option', function () {
       const stream = new SubscribeStream();
       stream.end();
 
       expect(stream._keepSessionAlive, 'to be', true);
     });
 
-    it('should not track changes instantly', function() {
+    it('should not track changes instantly', function () {
       const stream = new SubscribeStream();
       stream.end();
 
       expect(new SubscribeStream()._trackChanges, 'to be', false);
     });
 
-    context('once session is opened', function() {
-      it('should create subscription once session is opened', function(done) {
+    context('once session is opened', function () {
+      it('should create subscription once session is opened', function (done) {
         const stream = new SubscribeStream();
         spy(stream, 'createSubscription');
 
@@ -74,23 +74,23 @@ describe.skip('SubscribeStream', function() {
   });
 
   /** @test {SubscribeStream#createSubscription} */
-  describe('#createSubscription', function() {
-    it('should forward errors while creating subscription', function() {
+  describe('#createSubscription', function () {
+    it('should forward errors while creating subscription', function () {
       const stream = new FailingSubscribeStream();
 
       return expect(stream, 'to error with', /ClientSubscription failure/);
     });
 
-    it('should emit `subscription-started`', function(done) {
+    it('should emit `subscription-started`', function (done) {
       const stream = new SubscribeStream();
 
       stream.on('subscription-started', () => done());
     });
 
-    it('should set subscription property', function(done) {
+    it('should set subscription property', function (done) {
       const stream = new SubscribeStream();
 
-      stream.on('subscription-started', subscription => {
+      stream.on('subscription-started', (subscription) => {
         expect(stream.subscription, 'to be defined');
         expect(stream.subscription, 'to be', subscription);
         done();
@@ -99,8 +99,8 @@ describe.skip('SubscribeStream', function() {
   });
 
   /** @test {SubscribeStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it('should contain node id', function() {
+  describe('#processErrorMessage', function () {
+    it('should contain node id', function () {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
       expect(
         SubscribeStream.prototype.processErrorMessage({ nodeId }),
@@ -111,12 +111,12 @@ describe.skip('SubscribeStream', function() {
   });
 
   /** @test {SubscribeStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should call ClientSubscription#monitor', function() {
+  describe('#processChunk', function () {
+    it('should call ClientSubscription#monitor', function () {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem());
       });
 
@@ -138,11 +138,11 @@ describe.skip('SubscribeStream', function() {
       });
     });
 
-    it('should forward MonitoredItem errors', function() {
+    it('should forward MonitoredItem errors', function () {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         stub(subscription, 'monitor').callsFake(
           () => new StubMonitoredItem(new Error('item error'))
         );
@@ -162,11 +162,11 @@ describe.skip('SubscribeStream', function() {
       );
     });
 
-    it('should forward MonitoredItem errors when given as string', function() {
+    it('should forward MonitoredItem errors when given as string', function () {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
 
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         stub(subscription, 'monitor').callsFake(() => new StubMonitoredItem('item error'));
       });
 
@@ -184,7 +184,7 @@ describe.skip('SubscribeStream', function() {
       );
     });
 
-    it('should forward change events', function() {
+    it('should forward change events', function () {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
       const listener = spy();
@@ -197,7 +197,7 @@ describe.skip('SubscribeStream', function() {
 
       let item;
 
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         stub(subscription, 'monitor').callsFake(() => {
           item = new StubMonitoredItem(false);
           return item;
@@ -232,7 +232,7 @@ describe.skip('SubscribeStream', function() {
         });
     });
 
-    it('should emit delete events without a value', function() {
+    it('should emit delete events without a value', function () {
       const stream = new SubscribeStream();
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
       const listener = spy();
@@ -244,7 +244,7 @@ describe.skip('SubscribeStream', function() {
 
       let item;
 
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         stub(subscription, 'monitor').callsFake(() => {
           item = new StubMonitoredItem(false);
           return item;
@@ -279,11 +279,11 @@ describe.skip('SubscribeStream', function() {
   });
 
   /** @test {SubscribeStream#_transform} */
-  describe('#_transform', function() {
-    it('should skip non-variable nodes', function(done) {
+  describe('#_transform', function () {
+    it('should skip non-variable nodes', function (done) {
       const stream = new SubscribeStream();
       stub(stream, '_enqueueChunk').callsFake(() => {});
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         expect(stream.subscription, 'to be', subscription);
 
         stream._transform({ nodeClass: NodeClass.Object }, 'utf8', () => {});
@@ -295,10 +295,10 @@ describe.skip('SubscribeStream', function() {
 
     const chunk = { nodeId: 'chunk', nodeClass: NodeClass.Variable };
 
-    it('should call enqueue immediately if subscription started', function(done) {
+    it('should call enqueue immediately if subscription started', function (done) {
       const stream = new SubscribeStream();
       stub(stream, '_enqueueChunk').callsFake(() => {});
-      stream.once('subscription-started', subscription => {
+      stream.once('subscription-started', (subscription) => {
         expect(stream.subscription, 'to be', subscription);
 
         stream._transform(chunk, 'utf8', () => {});
@@ -309,7 +309,7 @@ describe.skip('SubscribeStream', function() {
       });
     });
 
-    it('should wait for subscription to start before calling enqueue', function(done) {
+    it('should wait for subscription to start before calling enqueue', function (done) {
       const stream = new SubscribeStream();
       stub(stream, '_enqueueChunk').callsFake(() => {});
       stream._transform(chunk, 'utf8', () => {});
@@ -325,17 +325,17 @@ describe.skip('SubscribeStream', function() {
 });
 
 /** @test {Watcher} */
-describe.skip('Watcher', function() {
+describe.skip('Watcher', function () {
   /** @test {Watcher#constructor} */
-  describe('#constructor', function() {
-    it('should work without arguments', function() {
+  describe('#constructor', function () {
+    it('should work without arguments', function () {
       let watcher;
       expect(() => (watcher = new StubWatcher()), 'not to throw');
 
       watcher.close();
     });
 
-    it('should emit ready event once subscribe stream finished', function(done) {
+    it('should emit ready event once subscribe stream finished', function (done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
       watcher.once('ready', () => {
@@ -344,13 +344,13 @@ describe.skip('Watcher', function() {
       });
     });
 
-    it.skip('should forward change events', function(done) {
+    it.skip('should forward change events', function (done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
       watcher.on('ready', () => {
         const event = {};
 
-        watcher.on('change', e => {
+        watcher.on('change', (e) => {
           expect(e, 'to be', event);
           watcher.close();
           done();
@@ -360,10 +360,10 @@ describe.skip('Watcher', function() {
       });
     });
 
-    it.skip('should forward NodeStream errors', function(done) {
+    it.skip('should forward NodeStream errors', function (done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
-      watcher.on('error', err => {
+      watcher.on('error', (err) => {
         expect(err, 'to have message', 'Test');
         done();
       });
@@ -371,10 +371,10 @@ describe.skip('Watcher', function() {
       watcher.on('ready', () => watcher._nodeStream.emit('error', new Error('Test')));
     });
 
-    it.skip('should forward SubscribeStream errors', function(done) {
+    it.skip('should forward SubscribeStream errors', function (done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
-      watcher.on('error', err => {
+      watcher.on('error', (err) => {
         expect(err, 'to have message', 'Test');
         done();
       });
@@ -384,11 +384,11 @@ describe.skip('Watcher', function() {
   });
 
   /** @test {Watcher#close} */
-  describe('#close', function() {
-    it('should forward errors', function(done) {
+  describe('#close', function () {
+    it('should forward errors', function (done) {
       const watcher = new Watcher([resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main')]);
 
-      watcher.on('error', err => {
+      watcher.on('error', (err) => {
         expect(err, 'to have message', 'session is required');
         done();
       });

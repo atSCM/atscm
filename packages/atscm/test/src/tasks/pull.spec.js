@@ -32,8 +32,8 @@ const pull = proxyquire('../../../src/tasks/pull', {
 }).default;
 
 /** @test {pull} */
-describe('pull', function() {
-  it('should return a promise', function() {
+describe('pull', function () {
+  it('should return a promise', function () {
     const task = pull();
 
     expect(task, 'to be a', Promise);

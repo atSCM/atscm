@@ -29,7 +29,7 @@ export default async function importTask() {
 
   return toPromise(srcStream.pipe(new ImportStream()))
     .then(() => writeNode(versionNode, versionVariant))
-    .catch(err => {
+    .catch((err) => {
       if (err.statusCode === StatusCodes.BadNodeIdUnknown) {
         const maxTries = 20;
         const retryDelay = 100;

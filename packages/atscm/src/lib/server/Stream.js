@@ -24,9 +24,9 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
     this._keepSessionAlive = options.keepSessionAlive || false;
 
     Session.create()
-      .then(session => (this.session = session))
-      .then(session => this.emit('session-open', session))
-      .catch(err => this.emit('error', err));
+      .then((session) => (this.session = session))
+      .then((session) => this.emit('session-open', session))
+      .catch((err) => this.emit('error', err));
   }
 
   /**
@@ -37,7 +37,7 @@ export default class Stream extends throughStreamClass({ objectMode: true }) {
     if (this.session && !this._keepSessionAlive) {
       Session.close(this.session)
         .then(() => callback())
-        .catch(err => callback(err));
+        .catch((err) => callback(err));
     } else {
       callback();
     }

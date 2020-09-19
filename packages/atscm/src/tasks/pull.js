@@ -48,14 +48,17 @@ export function performPull(nodes, options = {}) {
 
       // Enqueue added nodes
       if (context._added.length) {
-        context._added.forEach(n => this.addNode(n));
+        context._added.forEach((n) => this.addNode(n));
       }
     },
   });
 
-  return Object.assign(browser.browse(nodes).then(() => writeStream.writeRenamefile()), {
-    browser,
-  });
+  return Object.assign(
+    browser.browse(nodes).then(() => writeStream.writeRenamefile()),
+    {
+      browser,
+    }
+  );
 }
 
 /**
@@ -81,7 +84,7 @@ export default async function pull(options) {
 
   return reportProgress(promise, {
     getter: () => promise.browser._pushed,
-    formatter: count => `Processed ${count} nodes`,
+    formatter: (count) => `Processed ${count} nodes`,
   }).then(finishTask, handleTaskError);
 }
 

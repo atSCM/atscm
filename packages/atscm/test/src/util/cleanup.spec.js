@@ -23,20 +23,20 @@ function createCleanup(numberOfOpenSessions, closeOpenShouldFail) {
 }
 
 /** @test {cleanup} */
-describe('cleanup', function() {
+describe('cleanup', function () {
   before(() => stub(process, 'kill'));
   after(() => process.kill.restore());
   afterEach(() => process.kill.resetHistory());
 
-  it('should call uninstall', function() {
+  it('should call uninstall', function () {
     const uninstall = spy();
     createCleanup(0, false)(null, null, uninstall);
 
     expect(uninstall.calledOnce, 'to be', true);
   });
 
-  context('when receiving SIGINT', function() {
-    it('should log "Ctrl-C"', function() {
+  context('when receiving SIGINT', function () {
+    it('should log "Ctrl-C"', function () {
       const onWarn = spy();
       Logger.on('warn', onWarn);
 
@@ -46,12 +46,16 @@ describe('cleanup', function() {
     });
   });
 
-  context('with open sessions', function() {
-    it('should return false', function() {
-      expect(createCleanup(3, false)(null, null, () => {}), 'to be', false);
+  context('with open sessions', function () {
+    it('should return false', function () {
+      expect(
+        createCleanup(3, false)(null, null, () => {}),
+        'to be',
+        false
+      );
     });
 
-    it('should call process.kill', function(done) {
+    it('should call process.kill', function (done) {
       createCleanup(3, false)(null, null, () => {});
       setTimeout(() => {
         expect(process.kill.calledOnce, 'to be', true);
@@ -59,7 +63,7 @@ describe('cleanup', function() {
       }, 10);
     });
 
-    it('should forward Session.closeOpen errors', function(done) {
+    it('should forward Session.closeOpen errors', function (done) {
       createCleanup(3, true)(null, null, () => {});
       setTimeout(() => {
         expect(process.kill.calledOnce, 'to be', true);
@@ -68,9 +72,13 @@ describe('cleanup', function() {
     });
   });
 
-  context('without open sessions', function() {
-    it('should return true', function() {
-      expect(createCleanup(0, false)(null, null, () => {}), 'to be', true);
+  context('without open sessions', function () {
+    it('should return true', function () {
+      expect(
+        createCleanup(0, false)(null, null, () => {}),
+        'to be',
+        true
+      );
     });
   });
 });

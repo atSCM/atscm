@@ -10,7 +10,7 @@ import NodeId from '../../../../src/lib/model/opcua/NodeId';
 class CreateNodeStream extends _CreateNodeStream {
   processChunk(file, handleErrors) {
     setTimeout(() => {
-      handleErrors(null, StatusCodes.Good, done => done());
+      handleErrors(null, StatusCodes.Good, (done) => done());
     }, 10);
   }
 }
@@ -23,10 +23,10 @@ class WriteStream extends _WriteStream {
 }
 
 /** @test {WriteStream} */
-describe('WriteStream', function() {
+describe('WriteStream', function () {
   /** @test {WriteStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it('should include nodeId', function() {
+  describe('#processErrorMessage', function () {
+    it('should include nodeId', function () {
       expect(
         WriteStream.prototype.processErrorMessage(
           new AtviseFile({
@@ -41,8 +41,8 @@ describe('WriteStream', function() {
   });
 
   /** @test {WriteStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should forward errors', function() {
+  describe('#processChunk', function () {
+    it('should forward errors', function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
@@ -64,7 +64,7 @@ describe('WriteStream', function() {
       );
     });
 
-    it('should forward synchronous errors', function() {
+    it('should forward synchronous errors', function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
@@ -88,7 +88,7 @@ describe('WriteStream', function() {
       );
     });
 
-    it('should warn if access is denied', function() {
+    it('should warn if access is denied', function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener('session-open', () => {
@@ -117,7 +117,7 @@ describe('WriteStream', function() {
         .then(() => expect(warnSpy.lastCall, 'to satisfy', [/opened in atvise builder/]));
     });
 
-    it('should push non-variable files', function() {
+    it('should push non-variable files', function () {
       const createStream = new CreateNodeStream();
       const stream = new WriteStream(createStream);
       stream.pipe(createStream);
@@ -137,7 +137,7 @@ describe('WriteStream', function() {
       ]);
     });
 
-    it('should push files where no node can be found', function() {
+    it('should push files where no node can be found', function () {
       const createStream = new CreateNodeStream();
       const stream = new WriteStream(createStream);
       stream.pipe(createStream);
@@ -157,7 +157,7 @@ describe('WriteStream', function() {
       ]);
     });
 
-    it('should push files with good status to add references stream', async function() {
+    it('should push files with good status to add references stream', async function () {
       const pushToAddRefsStream = spy();
       const stream = new WriteStream(new CreateNodeStream(), {
         push: pushToAddRefsStream,

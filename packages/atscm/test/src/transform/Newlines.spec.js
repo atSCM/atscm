@@ -3,11 +3,11 @@ import expect from '../../expect';
 import NewlinesTransformer from '../../../src/transform/Newlines';
 import File from '../../../src/lib/server/AtviseFile';
 
-describe.skip('NewlinesTransformer', function() {
+describe.skip('NewlinesTransformer', function () {
   /** @test {MappingTransformer#constructor} */
-  describe('#constructor', function() {
-    context('trailingNewlines option', function() {
-      it('should default to false', function() {
+  describe('#constructor', function () {
+    context('trailingNewlines option', function () {
+      it('should default to false', function () {
         const transformer = new NewlinesTransformer();
         expect(transformer._addTrailingNewlines, 'to be', false);
 
@@ -18,8 +18,8 @@ describe.skip('NewlinesTransformer', function() {
   });
 
   /** @test {NewlinesTransformer#shouldBeTransformed} */
-  describe('#shouldBeTransformed', function() {
-    it('should return true for reference files', function() {
+  describe('#shouldBeTransformed', function () {
+    it('should return true for reference files', function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         'called with',
@@ -34,7 +34,7 @@ describe.skip('NewlinesTransformer', function() {
       );
     });
 
-    it('should return true for source files', function() {
+    it('should return true for source files', function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         'called with',
@@ -49,7 +49,7 @@ describe.skip('NewlinesTransformer', function() {
       );
     });
 
-    it('should return false for binary files', function() {
+    it('should return false for binary files', function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         'called with',
@@ -66,13 +66,13 @@ describe.skip('NewlinesTransformer', function() {
   });
 
   /** @test {NewlinesTransformer#transformFromDB} */
-  describe('#transformFromDB', function() {
-    it('should replace non-native newlines', function() {
+  describe('#transformFromDB', function () {
+    it('should replace non-native newlines', function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = ['first line', 'second'];
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromDB(
             new File({
               path: './src/test/Test.script/Test.js',
@@ -87,12 +87,12 @@ describe.skip('NewlinesTransformer', function() {
       );
     });
 
-    it('should add trailing newlines if set', function() {
+    it('should add trailing newlines if set', function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromDB(
             new File({
               path: './src/test/Test.script/Test.js',
@@ -109,13 +109,13 @@ describe.skip('NewlinesTransformer', function() {
   });
 
   /** @test {NewlinesTransformer#transformFromFilesystem} */
-  describe('#transformFromFilesystem', function() {
-    it('should replace native newlines', function() {
+  describe('#transformFromFilesystem', function () {
+    it('should replace native newlines', function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = ['first line', 'second'];
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({
               path: './src/test/Test.script/Test.js',
@@ -130,12 +130,12 @@ describe.skip('NewlinesTransformer', function() {
       );
     });
 
-    it('should remove trailing newlines if set', function() {
+    it('should remove trailing newlines if set', function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({
               path: './src/test/Test.script/Test.js',
@@ -150,21 +150,16 @@ describe.skip('NewlinesTransformer', function() {
       );
     });
 
-    it('should remove only one trailing newline if set', function() {
+    it('should remove only one trailing newline if set', function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = ['first line', 'second'];
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({
               path: './src/test/Test.script/Test.js',
-              contents: Buffer.from(
-                lines
-                  .concat('')
-                  .concat('')
-                  .join(EOL)
-              ),
+              contents: Buffer.from(lines.concat('').concat('').join(EOL)),
             }),
             'utf8',
             cb

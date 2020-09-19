@@ -37,11 +37,13 @@ export async function askForConfirmation({
 
   if (onAsk) onAsk();
 
-  return (await prompts({
-    type: 'confirm',
-    name: 'confirmed',
-    ...options,
-  })).confirmed;
+  return (
+    await prompts({
+      type: 'confirm',
+      name: 'confirmed',
+      ...options,
+    })
+  ).confirmed;
 }
 
 export async function approveToContinue(
@@ -114,7 +116,7 @@ export default async function checkAtserver(context: HookContext): Promise<void>
   }
 
   if (updatePackage) {
-    await updateJson<{ engines?: { atserver?: string } }>('./package.json', current => {
+    await updateJson<{ engines?: { atserver?: string } }>('./package.json', (current) => {
       /* eslint-disable no-param-reassign */
       if (!current.engines) current.engines = {};
       current.engines.atserver = remoteVersion;

@@ -49,10 +49,10 @@ class WithDeps extends waitForDependencies(StubStream) {
 }
 
 /** @test {WaitingStream} */
-describe('WaitingStream', function() {
+describe('WaitingStream', function () {
   /** @test {WaitingStream#constructor} */
-  describe('#constructor', function() {
-    it('should return a QueueStream, mixed with waitForDependencies', function() {
+  describe('#constructor', function () {
+    it('should return a QueueStream, mixed with waitForDependencies', function () {
       const stream = new WaitingStream();
 
       expect(stream, 'to be a', QueueStream);
@@ -61,16 +61,16 @@ describe('WaitingStream', function() {
   });
 
   /** @test {WaitingStream#dependenciesFor} */
-  describe('#dependenciesFor', function() {
-    it('should throw if not overridden', function() {
+  describe('#dependenciesFor', function () {
+    it('should throw if not overridden', function () {
       return expect(WaitingStream.prototype.dependenciesFor, 'to throw', /must be implemented/);
     });
   });
 
   /** @test {WaitingStream#_enqueueChunk} */
-  describe('#_enqueueChunk', function() {
-    context('when a dependency-free file is pushed', function() {
-      it('should just call super', function() {
+  describe('#_enqueueChunk', function () {
+    context('when a dependency-free file is pushed', function () {
+      it('should just call super', function () {
         const stream = new NoDeps();
         stream._enqueueChunk({ nodeId: new NodeId('chunk') });
 
@@ -78,15 +78,15 @@ describe('WaitingStream', function() {
       });
     });
 
-    context('when a file with dependencies is pushed', function() {
-      it('should not call super', function() {
+    context('when a file with dependencies is pushed', function () {
+      it('should not call super', function () {
         const stream = new WithDeps();
         stream._enqueueChunk({ nodeId: new NodeId('Source') });
 
         return expect(stream.spies._enqueueChunk, 'was not called');
       });
 
-      it('should add it to the dependencies map', function() {
+      it('should add it to the dependencies map', function () {
         const stream = new WithDeps();
         const chunk = { nodeId: new NodeId('Source') };
         stream._enqueueChunk(chunk);
@@ -95,7 +95,7 @@ describe('WaitingStream', function() {
         expect(stream._waitingFor['ns=1;s=Testing'], 'to have an item satisfying', 'to be', chunk);
       });
 
-      it('should ignore system types', function() {
+      it('should ignore system types', function () {
         const stream = new WithDeps([new NodeId(NodeId.NodeIdType.STRING, 'System', 0)]);
         stream._enqueueChunk({ nodeId: new NodeId('Source') });
 
@@ -103,7 +103,7 @@ describe('WaitingStream', function() {
         return expect(stream.spies._enqueueChunk, 'was called');
       });
 
-      it('should ignore atserver types', function() {
+      it('should ignore atserver types', function () {
         const stream = new WithDeps([new NodeId('VariableTypes.ATVISE.Display')]);
         stream._enqueueChunk({ nodeId: new NodeId('Source') });
 
@@ -111,7 +111,7 @@ describe('WaitingStream', function() {
         return expect(stream.spies._enqueueChunk, 'was called');
       });
 
-      it('should ignore already processed nodes', function() {
+      it('should ignore already processed nodes', function () {
         const dep = new NodeId('TestDep');
         const stream = new WithDeps([dep]);
         stream._finishedProcessing[dep.toString()] = true;
@@ -121,7 +121,7 @@ describe('WaitingStream', function() {
         return expect(stream.spies._enqueueChunk, 'was called');
       });
 
-      it('should process files once dependencies are finished', function(done) {
+      it('should process files once dependencies are finished', function (done) {
         const dep = new NodeId('TestDep');
         const dep2 = new NodeId('TestDep2');
         const source = new NodeId('Source');
@@ -153,21 +153,21 @@ describe('WaitingStream', function() {
   });
 
   /** @test {WaitingStream#_flush} */
-  describe('#_flush', function() {
-    context('without pending operations', function() {
-      it('should call super', function() {
+  describe('#_flush', function () {
+    context('without pending operations', function () {
+      it('should call super', function () {
         const stream = new NoDeps();
         stream._flush(() => {});
         return expect(stream.spies._flush, 'was called once');
       });
     });
 
-    context('with pending operations', function() {
-      it('should try to process dependents', function() {
+    context('with pending operations', function () {
+      it('should try to process dependents', function () {
         const stream = new WithDeps([new NodeId('Dep')]);
         stream._enqueueChunk({ nodeId: new NodeId('Depending') });
 
-        return expect(cb => stream._flush(cb), 'to call the callback without error');
+        return expect((cb) => stream._flush(cb), 'to call the callback without error');
       });
     });
   });

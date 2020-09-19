@@ -4,7 +4,7 @@ import expect from '../../expect';
 import { importSetup, pull, deleteNode } from '../../helpers/atscm';
 import { tmpDir } from '../../helpers/util';
 
-describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
+describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function () {
   const renamePath = './atscm/rename.json';
   const setup = 'issue-265';
   const originalName = 'conflicting-nodes';
@@ -13,7 +13,7 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
 
   const catchErrorLog = () => {};
 
-  before('reset renames, import setup and pull conflicting nodes', async function() {
+  before('reset renames, import setup and pull conflicting nodes', async function () {
     Logger.on('error', () => catchErrorLog);
     await outputJson(renamePath, {});
 
@@ -22,19 +22,22 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function() {
     nodeIds = nodeNames.map((nodeName, i) => `${nodePaths[i]}.${nodeName}`);
     const destination = tmpDir(setup.replace(/\//g, '-'));
 
-    await pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination);
+    await pull(
+      nodeIds.map((nodeId) => `ns=1;s=${nodeId}`),
+      destination
+    );
   });
 
-  it('should not create duplicate entries in rename.json', async function() {
+  it('should not create duplicate entries in rename.json', async function () {
     const renames = await readJson(renamePath);
 
     expect(Object.keys(renames), 'to equal', [`${nodeIds[0]}.Parent`]);
   });
 
-  after('delete tmp node', function() {
+  after('delete tmp node', function () {
     Logger.removeListener('error', () => catchErrorLog);
 
     // Delete the pushed node
-    return Promise.all(nodeIds.map(n => deleteNode(n)));
+    return Promise.all(nodeIds.map((n) => deleteNode(n)));
   });
 });

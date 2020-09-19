@@ -5,11 +5,11 @@ import expect from '../../expect';
 import { tmpDir } from '../../helpers/util';
 import { importSetup, pull, deleteNode } from '../../helpers/atscm';
 
-describe('Issue #345 (https://github.com/atSCM/atscm/issues/345)', function() {
+describe('Issue #345 (https://github.com/atSCM/atscm/issues/345)', function () {
   const setup = 'issue-345';
   let nodeIds;
 
-  it('pull should not error on empty script', async function() {
+  it('pull should not error on empty script', async function () {
     const nodeNames = await importSetup(setup, 'EmptyScript');
     const nodePaths = ['SYSTEM.LIBRARY.PROJECT.MENUSCRIPTS'];
     nodeIds = nodeNames.map((nodeName, i) => {
@@ -23,7 +23,10 @@ describe('Issue #345 (https://github.com/atSCM/atscm/issues/345)', function() {
     Logger.on('warn', warnSpy);
 
     // Run atscm pull
-    await pull(nodeIds.map(nodeId => `ns=1;s=${nodeId}`), destination);
+    await pull(
+      nodeIds.map((nodeId) => `ns=1;s=${nodeId}`),
+      destination
+    );
 
     // No files should be pulled, ...
     await expect(() => readdir(destination), 'to be rejected with', { code: 'ENOENT' });
@@ -33,5 +36,5 @@ describe('Issue #345 (https://github.com/atSCM/atscm/issues/345)', function() {
     return expect(warnSpy, 'to have a call satisfying', { args: [/is empty/] });
   });
 
-  after(() => nodeIds.forEach(id => deleteNode(id)));
+  after(() => nodeIds.forEach((id) => deleteNode(id)));
 });

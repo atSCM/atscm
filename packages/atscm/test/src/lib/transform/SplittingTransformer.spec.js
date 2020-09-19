@@ -37,10 +37,10 @@ class StubSplittingTransformer extends proxyquire(
 }
 
 /** @test {CombineFilesCache} */
-describe.skip('CombineFilesCache', function() {
+describe.skip('CombineFilesCache', function () {
   /** @test {CombineFilesCache#missingExtensions} */
-  describe('#missingExtensions', function() {
-    it('should return extensions if required files are missing', function() {
+  describe('#missingExtensions', function () {
+    it('should return extensions if required files are missing', function () {
       const cache = new CombineFilesCache();
       cache._files.fakeDir = { '.ext': {} };
       cache._required.fakeDir = ['.ext', '.ext2'];
@@ -48,7 +48,7 @@ describe.skip('CombineFilesCache', function() {
       expect(cache.missingExtensions('fakeDir'), 'to equal', ['.ext2']);
     });
 
-    it('should return empty array if all required files are cached', function() {
+    it('should return empty array if all required files are cached', function () {
       const cache = new CombineFilesCache();
       cache._files.fakeDir = { '.ext': {} };
       cache._required.fakeDir = ['.ext'];
@@ -111,17 +111,17 @@ describe.skip('CombineFilesCache', function() {
 });
 
 /** @test {SplittingTransformer} */
-describe('SplittingTransformer', function() {
+describe('SplittingTransformer', function () {
   /** @test {SplittingTransformer#transformFromFilesystem} */
-  describe('#transformFromFilesystem', function() {
-    it.skip('should forward cache errors', function() {
+  describe('#transformFromFilesystem', function () {
+    it.skip('should forward cache errors', function () {
       const transformer = new SplittingTransformer({
         direction: TransformDirection.FromFilesystem,
       });
       transformer._combineFilesCache.gotAllFiles = (file, cb) => cb(new Error('Cache error'));
 
       expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({ path: 'path/name.display/name.js' }),
             'utf8',
@@ -132,26 +132,26 @@ describe('SplittingTransformer', function() {
       );
     });
 
-    it.skip('should cache display files', function() {
+    it.skip('should cache display files', function () {
       const transformer = new SplittingTransformer({
         direction: TransformDirection.FromFilesystem,
       });
       transformer._combineFilesCache.gotAllFiles = (files, cb) => cb(null, false);
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({ path: 'path/name.display/name.js' }),
             'utf8',
             cb
           ),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args[0], 'to be falsy');
       });
     });
 
-    it.skip('should call #createCombinedFile if all required files are cached', function() {
+    it.skip('should call #createCombinedFile if all required files are cached', function () {
       const transformer = new SplittingTransformer({
         direction: TransformDirection.FromFilesystem,
       });
@@ -160,14 +160,14 @@ describe('SplittingTransformer', function() {
       transformer.createCombinedFile = (files, last, cb) => cb(null, stubDisplay);
 
       return expect(
-        cb =>
+        (cb) =>
           transformer.transformFromFilesystem(
             new File({ path: 'path/name.display/name.js' }),
             'utf8',
             cb
           ),
         'to call the callback'
-      ).then(args => {
+      ).then((args) => {
         expect(args[0], 'to be falsy');
         expect(args[1], 'to be', stubDisplay);
       });
@@ -175,39 +175,39 @@ describe('SplittingTransformer', function() {
   });
 
   /** @test {SplittingTransformer.splitFile} */
-  describe.skip('.splitFile', function() {
+  describe.skip('.splitFile', function () {
     const original = new File({
       path: 'path/name.type.ext',
     });
 
-    it('should return a file', function() {
+    it('should return a file', function () {
       expect(SplittingTransformer.splitFile(original, '.another'), 'to be a', File);
     });
 
-    it('should apply the new extension', function() {
+    it('should apply the new extension', function () {
       expect(SplittingTransformer.splitFile(original, '.another').extname, 'to equal', '.another');
     });
   });
 
   /** @test {SplittingTransformer.combineFiles} */
-  describe.skip('.combineFiles', function() {
+  describe.skip('.combineFiles', function () {
     const originals = [
       new File({ path: 'path/name.type/name.ext1' }),
       new File({ path: 'path/name.type/name.ext2' }),
     ];
 
-    it('should return a file', function() {
+    it('should return a file', function () {
       expect(SplittingTransformer.combineFiles(originals, '.another'), 'to be a', File);
     });
 
-    it('should apply the new extension', function() {
+    it('should apply the new extension', function () {
       expect(SplittingTransformer.combineFiles(originals, '.other').extname, 'to equal', '.other');
     });
   });
 
   /** @test {SplittingTransformer#_flush} */
-  describe.skip('#_flush', function() {
-    it('should just callback if no files are missing', function() {
+  describe.skip('#_flush', function () {
+    it('should just callback if no files are missing', function () {
       const transformer = new SplittingTransformer();
       const callback = spy();
 
@@ -216,7 +216,7 @@ describe('SplittingTransformer', function() {
       expect(callback.calledOnce, 'to be', true);
     });
 
-    it('should push additional files if some are missing', function(done) {
+    it('should push additional files if some are missing', function (done) {
       const transformer = new StubSplittingTransformer();
       const file = {
         cwd: '/fake/cwd',
@@ -229,7 +229,7 @@ describe('SplittingTransformer', function() {
       transformer._combineFilesCache._required['base/not/existent/dir'] = ['.ext', '.ext1'];
       spy(transformer, 'push');
 
-      transformer._flush(err => {
+      transformer._flush((err) => {
         expect(err, 'to be falsy');
         expect(transformer.push.calledOnce, 'to be true');
         expect(transformer.push.lastCall.args[0], 'to be', file);
@@ -238,7 +238,7 @@ describe('SplittingTransformer', function() {
       });
     });
 
-    it('should forward read errors', function(done) {
+    it('should forward read errors', function (done) {
       const transformer = new StubSplittingTransformer(new Error('Test error'));
       const file = {
         cwd: '/fake/cwd',
@@ -251,7 +251,7 @@ describe('SplittingTransformer', function() {
       transformer._combineFilesCache._required['base/not/existent/dir'] = ['.ext', '.ext1'];
       spy(transformer, 'push');
 
-      transformer._flush(err => {
+      transformer._flush((err) => {
         expect(err, 'to have message', 'Test error');
 
         done();

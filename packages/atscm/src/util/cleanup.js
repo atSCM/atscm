@@ -29,7 +29,7 @@ export default function cleanup(exitCode, signal, uninstall) {
 
     Session.closeOpen()
       .then(() => process.kill(process.pid, signal))
-      .catch(e => {
+      .catch((e) => {
         Logger.error('Error in cleanup', e.message);
         process.kill(process.pid, signal);
       });

@@ -74,7 +74,7 @@ export default class CallScriptStream extends CallMethodStream {
       {
         dataType: DataType.Variant,
         arrayType: VariantArrayType.Array,
-        value: paramNames.map(key => params[key]),
+        value: paramNames.map((key) => params[key]),
       },
     ];
   }

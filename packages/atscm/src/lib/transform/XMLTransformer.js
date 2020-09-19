@@ -15,7 +15,7 @@ export default class XMLTransformer extends SplittingTransformer {
     super(options);
 
     function build(object, buildOptions) {
-      const root = object.childNodes.find(n => isElement(n));
+      const root = object.childNodes.find((n) => isElement(n));
 
       if (root) {
         moveToTop(root, 'metadata');
@@ -32,7 +32,7 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromDB}.
      * @type {function(object: Object): string}
      */
-    this._fromDBBuilder = object => {
+    this._fromDBBuilder = (object) => {
       const xml = build(object, { compact: false, spaces: 2 });
       return xml.replace(/\r?\n/g, EOL);
     };
@@ -42,7 +42,7 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromFilesystem}.
      * @type {function(object: Object): string}
      */
-    this._fromFilesystemBuilder = object => {
+    this._fromFilesystemBuilder = (object) => {
       const xml = build(object, { compact: false, spaces: 1 });
       return xml.replace(/\r?\n/g, '\n');
     };

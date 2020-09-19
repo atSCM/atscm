@@ -20,7 +20,7 @@ class NoWriteNodeStream extends StubNodeStream {
 class NonRecursive extends NodeStream {
   processChunk(chunk, handleErrors) {
     setImmediate(() => {
-      handleErrors(null, StatusCodes.Good, done => {
+      handleErrors(null, StatusCodes.Good, (done) => {
         this.push(chunk);
         done();
       });
@@ -29,7 +29,7 @@ class NonRecursive extends NodeStream {
 }
 
 /** @test {NodeStream} */
-describe.skip('NodeStream', function() {
+describe.skip('NodeStream', function () {
   const testNodes = [new NodeId('ns=1;s=AGENT.DISPLAYS'), new NodeId('ns=1;s=AGENT.OBJECTS')];
 
   function referenceTypeId(referenceType) {
@@ -37,12 +37,12 @@ describe.skip('NodeStream', function() {
   }
 
   /** @test {NodeStream#constructor} */
-  describe('#constructor', function() {
-    it('should fail without nodesToBrowse', function() {
+  describe('#constructor', function () {
+    it('should fail without nodesToBrowse', function () {
       expect(() => new NodeStream(), 'to throw', /nodesToBrowse is required/);
     });
 
-    it('should throw with invalid ignoreNodes', function() {
+    it('should throw with invalid ignoreNodes', function () {
       expect(
         () => new NodeStream(testNodes, { ignoreNodes: 'test' }),
         'to throw',
@@ -50,11 +50,11 @@ describe.skip('NodeStream', function() {
       );
     });
 
-    it('should store "recursive" option', function() {
+    it('should store "recursive" option', function () {
       expect(new NoWriteNodeStream(testNodes, { recursive: false }).recursive, 'to be', false);
     });
 
-    it('should create ignoredRexExp', function() {
+    it('should create ignoredRexExp', function () {
       expect(
         new NoWriteNodeStream(testNodes, {
           ignoreNodes: [new NodeId('Test.Node')],
@@ -64,8 +64,8 @@ describe.skip('NodeStream', function() {
       );
     });
 
-    it('should warn on ignored nodes', function(done) {
-      Logger.once('warn', message => {
+    it('should warn on ignored nodes', function (done) {
+      Logger.once('warn', (message) => {
         expect(message, 'to match', /ignored/);
         done();
       });
@@ -78,7 +78,7 @@ describe.skip('NodeStream', function() {
       );
     });
 
-    it('should error without nodes to browse', function() {
+    it('should error without nodes to browse', function () {
       expect(
         () => new StubNodeStream(testNodes, { ignoreNodes: testNodes }),
         'to throw error',
@@ -92,8 +92,8 @@ describe.skip('NodeStream', function() {
   });
 
   /* @test {NodeStream#_writeNodesToBrowse} */
-  describe('#_writeNodesToBrowse', function() {
-    it('should forward read errors', function() {
+  describe('#_writeNodesToBrowse', function () {
+    it('should forward read errors', function () {
       const stream = new StubNodeStream(testNodes);
 
       stream.prependOnceListener('session-open', () => {
@@ -103,14 +103,14 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to error with', 'Read error');
     });
 
-    it('should error on bad status code', function() {
+    it('should error on bad status code', function () {
       const node = new NodeId('Does.Not.Exist');
       const stream = new StubNodeStream([testNodes[0], node, testNodes[1]]);
 
       return expect(stream, 'to error with', new RegExp(`^Error reading ${node}`));
     });
 
-    it('should write read results', async function() {
+    it('should write read results', async function () {
       const stream = new NonRecursive(testNodes);
 
       spy(stream, 'write');
@@ -120,7 +120,7 @@ describe.skip('NodeStream', function() {
       return expect(stream.write, 'was called times', 2);
     });
 
-    it('should call #end on drained', async function() {
+    it('should call #end on drained', async function () {
       const stream = new NonRecursive(testNodes);
 
       spy(stream, 'end');
@@ -133,16 +133,16 @@ describe.skip('NodeStream', function() {
   });
 
   /** @test {NodeStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it('should decorate error message', function() {
+  describe('#processErrorMessage', function () {
+    it('should decorate error message', function () {
       const nodeId = resolveNodeId('ns=1;s=AGENT.DISPLAYS.Main');
       expect(NodeStream.prototype.processErrorMessage({ nodeId }), 'to contain', nodeId.toString());
     });
   });
 
   /** @test {NodeStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should forward browse errors', function() {
+  describe('#processChunk', function () {
+    it('should forward browse errors', function () {
       const stream = new NodeStream(testNodes).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(new Error('Browse error'));
@@ -152,7 +152,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to error with', /Browse error/);
     });
 
-    it('should emit error without results', function() {
+    it('should emit error without results', function () {
       const stream = new NodeStream(testNodes).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(null, null);
@@ -162,7 +162,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to error with', /No results/);
     });
 
-    it('should emit error with empty results', function() {
+    it('should emit error with empty results', function () {
       const stream = new NodeStream(testNodes).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(null, []);
@@ -172,7 +172,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to error with', /No results/);
     });
 
-    it('should emit error with empty results after initial write', function() {
+    it('should emit error with empty results after initial write', function () {
       const stream = new NodeStream(testNodes).prependOnceListener('initial-read-complete', () => {
         stream.session.browse = (options, callback) => {
           callback(null, []);
@@ -182,7 +182,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to error with', /No results/);
     });
 
-    it('should not push parent nodes', function() {
+    it('should not push parent nodes', function () {
       const stream = new NodeStream(testNodes, { recursive: false }).prependOnceListener(
         'session-open',
         () => {
@@ -206,7 +206,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to yield objects satisfying', 'to have length', testNodes.length);
     });
 
-    it('should not push ignored nodes', function() {
+    it('should not push ignored nodes', function () {
       const stream = new NodeStream(testNodes, {
         recursive: false,
         ignoreNodes: [new NodeId('ns=1;s=AGENT.DISPLAYS.Main')],
@@ -230,7 +230,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to yield objects satisfying', 'to have length', testNodes.length);
     });
 
-    it('should push nodes to browse', async function() {
+    it('should push nodes to browse', async function () {
       const stream = new NodeStream(testNodes, { recursive: false });
 
       return expect(
@@ -244,7 +244,7 @@ describe.skip('NodeStream', function() {
       );
     });
 
-    it('should browse discovered nodes', async function() {
+    it('should browse discovered nodes', async function () {
       const stream = new NodeStream([testNodes[0]]).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(null, [
@@ -265,7 +265,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to yield objects satisfying', 'to have length', 2);
     });
 
-    it('should push discovered object nodes', function() {
+    it('should push discovered object nodes', function () {
       const stream = new NodeStream(testNodes).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(null, [
@@ -286,7 +286,7 @@ describe.skip('NodeStream', function() {
       return expect(stream, 'to yield objects satisfying', 'to have length', 3);
     });
 
-    it('should push discovered variable nodes', async function() {
+    it('should push discovered variable nodes', async function () {
       const stream = new NodeStream(testNodes).prependOnceListener('session-open', () => {
         stream.session.browse = (options, callback) => {
           callback(null, [
@@ -311,7 +311,7 @@ describe.skip('NodeStream', function() {
       return expect(stream.write, 'was called times', 3);
     });
 
-    it('should write discovered nodes if recursive', function() {
+    it('should write discovered nodes if recursive', function () {
       let called = 0;
       const stream = new NodeStream([testNodes[0]], { recursive: true }).prependOnceListener(
         'session-open',

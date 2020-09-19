@@ -87,7 +87,7 @@ export default class CallMethodStream extends QueueStream {
       const request = this.callRequest(file);
 
       if (!request) {
-        handleErrors(null, StatusCodes.Good, done => done());
+        handleErrors(null, StatusCodes.Good, (done) => done());
         return;
       }
 
@@ -95,10 +95,10 @@ export default class CallMethodStream extends QueueStream {
         if (err) {
           handleErrors(err);
         } else if (result.statusCode.value !== StatusCodes.Good.value) {
-          handleErrors(err, result.statusCode, done => done());
+          handleErrors(err, result.statusCode, (done) => done());
         } else {
-          this.handleOutputArguments(file, result.outputArguments, outputError => {
-            handleErrors(outputError, StatusCodes.Good, done => done());
+          this.handleOutputArguments(file, result.outputArguments, (outputError) => {
+            handleErrors(outputError, StatusCodes.Good, (done) => done());
           });
         }
       });

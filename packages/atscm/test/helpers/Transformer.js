@@ -16,10 +16,10 @@ export default class TransformerHelper {
     });
 
     const data = [];
-    transformer.on('data', d => data.push(d));
+    transformer.on('data', (d) => data.push(d));
 
     const promise = new Promise((resolve, reject) => {
-      transformer.once('error', err => reject(err));
+      transformer.once('error', (err) => reject(err));
       transformer.once('end', () => resolve(data));
     });
 
@@ -39,7 +39,7 @@ ${xmlString}`,
   }
 
   expectFileContents(files) {
-    return Promise.all(files.map(file => expect(file.contents, 'when decoded as', 'utf-8')));
+    return Promise.all(files.map((file) => expect(file.contents, 'when decoded as', 'utf-8')));
   }
 
   createCombinedFileWithContents(path, contents, direction = TransformDirection.FromFilesystem) {
@@ -57,6 +57,6 @@ ${xmlString}`,
       return result;
     }, {});
 
-    return cb => transformer.createCombinedFile(files, lastFile, cb);
+    return (cb) => transformer.createCombinedFile(files, lastFile, cb);
   }
 }

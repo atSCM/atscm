@@ -41,28 +41,28 @@ const FailingSession = proxyquire('../../../../src/lib/server/Session', {
 }).default;
 
 /** @test {Session} */
-describe('Session', function() {
+describe('Session', function () {
   /** @test {Session.create} */
-  describe('.create', function() {
-    it('should create a new ClientSession', function() {
+  describe('.create', function () {
+    it('should create a new ClientSession', function () {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => {
+        .then((session) => {
           expect(session, 'to be a', ClientSession);
           return session;
         })
-        .then(session => Session.close(session));
+        .then((session) => Session.close(session));
     });
 
-    it('should store newly created session', function() {
+    it('should store newly created session', function () {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => {
+        .then((session) => {
           expect(Session.open, 'to contain', session);
           return session;
         })
-        .then(session => Session.close(session));
+        .then((session) => Session.close(session));
     });
 
-    it('should fail with invalid credentials', function() {
+    it('should fail with invalid credentials', function () {
       return Promise.all([
         // Missing username
         expect(
@@ -96,42 +96,42 @@ describe('Session', function() {
       ]);
     });
 
-    it('should forward Client.create errors', function() {
+    it('should forward Client.create errors', function () {
       return expect(FailingClientSession.create(), 'to be rejected with', 'Client.create error');
     });
 
-    it('should forward non-login errors', function() {
+    it('should forward non-login errors', function () {
       return expect(FailingSession.create(), 'to be rejected with', /Client\.createSession error/);
     });
   });
 
   /** @test {Session.close} */
-  describe('.close', function() {
-    it('should fail without session', function() {
+  describe('.close', function () {
+    it('should fail without session', function () {
       return expect(() => Session.close(), 'to be rejected with', 'session is required');
     });
 
-    it('should return if session is already closed', function() {
+    it('should return if session is already closed', function () {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => expect(Session.close(session), 'to be fulfilled'))
-        .then(session => expect(Session.close(session), 'to be fulfilled'));
+        .then((session) => expect(Session.close(session), 'to be fulfilled'))
+        .then((session) => expect(Session.close(session), 'to be fulfilled'));
     });
 
-    it('should wait for session to close if already closing', function() {
+    it('should wait for session to close if already closing', function () {
       return expect(Session.create(), 'to be fulfilled')
-        .then(session => {
+        .then((session) => {
           spy(session, 'close');
           return session;
         })
-        .then(session =>
+        .then((session) =>
           expect(Promise.all([Session.close(session), Session.close(session)]), 'to be fulfilled')
         )
-        .then(sessions => {
+        .then((sessions) => {
           expect(sessions, 'to have length', 2);
         });
     });
 
-    it.skip('should warn if session does not exist', function() {
+    it.skip('should warn if session does not exist', function () {
       const logListener = spy();
       Logger.on('debug', logListener);
 
@@ -155,12 +155,12 @@ describe('Session', function() {
       });
     });
 
-    it('should do nothing if client is not connected', function() {
+    it('should do nothing if client is not connected', function () {
       return expect(Session.create(), 'to be fulfilled')
         .then(
-          session =>
+          (session) =>
             new Promise((resolve, reject) => {
-              session._client.disconnect(err => {
+              session._client.disconnect((err) => {
                 if (err) {
                   reject(err);
                 } else {
@@ -169,10 +169,10 @@ describe('Session', function() {
               });
             })
         )
-        .then(session => expect(Session.close(session), 'to be fulfilled'));
+        .then((session) => expect(Session.close(session), 'to be fulfilled'));
     });
 
-    it('should ignore errors closing session', function() {
+    it('should ignore errors closing session', function () {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
@@ -186,7 +186,7 @@ describe('Session', function() {
       return expect(Session.close(session), 'to be fulfilled');
     });
 
-    it('should ignore errors disconnecting client', function() {
+    it('should ignore errors disconnecting client', function () {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
@@ -202,23 +202,23 @@ describe('Session', function() {
   });
 
   /** @test {Session.closeOpen} */
-  describe('.closeOpen', function() {
-    it('should return if no sessions are open', function() {
+  describe('.closeOpen', function () {
+    it('should return if no sessions are open', function () {
       return expect(Session.closeOpen(), 'to be fulfilled with', []);
     });
 
-    it('should close open sessions', function() {
+    it('should close open sessions', function () {
       expect(Session.open, 'to have length', 0);
-      return expect(Session.create(), 'to be fulfilled').then(session =>
+      return expect(Session.create(), 'to be fulfilled').then((session) =>
         expect(Session.closeOpen(), 'to be fulfilled with', [session])
       );
     });
 
-    it('should wait for opening sessions to open before closing', function() {
+    it('should wait for opening sessions to open before closing', function () {
       let session;
-      Session.create().then(sess => (session = sess));
+      Session.create().then((sess) => (session = sess));
 
-      return expect(Session.closeOpen(), 'to be fulfilled').then(sessions => {
+      return expect(Session.closeOpen(), 'to be fulfilled').then((sessions) => {
         expect(sessions, 'to equal', [session]);
       });
     });

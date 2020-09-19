@@ -8,10 +8,10 @@ import ImportStream from '../../../../src/lib/gulp/ImportStream';
 import Session from '../../../../src/lib/server/Session';
 
 /** @test {ImportStream} */
-describe('ImportStream', function() {
+describe('ImportStream', function () {
   /** @test {ImportStream#methodId} */
-  describe('#methodId', function() {
-    it('should return importNodes method id', function() {
+  describe('#methodId', function () {
+    it('should return importNodes method id', function () {
       expect(
         ImportStream.prototype.methodId.toString(),
         'to equal',
@@ -21,8 +21,8 @@ describe('ImportStream', function() {
   });
 
   /** @test {ImportStream#inputArguments} */
-  describe('#inputArguments', function() {
-    it('should contain global scope argument', function() {
+  describe('#inputArguments', function () {
+    it('should contain global scope argument', function () {
       const [scope] = ImportStream.prototype.inputArguments({});
 
       expect(scope.value, 'to be a', NodeId);
@@ -30,7 +30,7 @@ describe('ImportStream', function() {
       expect(scope.value.value, 'to equal', 0);
     });
 
-    it('should contain file contents', function() {
+    it('should contain file contents', function () {
       const contents = 'test';
       const fileArg = ImportStream.prototype.inputArguments({ contents })[1];
 
@@ -40,8 +40,8 @@ describe('ImportStream', function() {
   });
 
   /** @test {ImportStream#processErrorMessage} */
-  describe('#processErrorMessage', function() {
-    it('should prefix file path', function() {
+  describe('#processErrorMessage', function () {
+    it('should prefix file path', function () {
       const path = 'TestPath';
 
       return expect(
@@ -53,7 +53,7 @@ describe('ImportStream', function() {
       );
     });
 
-    it('should print path relative to project directory', function() {
+    it('should print path relative to project directory', function () {
       const relative = ['path', 'to', 'file'].join(separator);
 
       return expect(
@@ -67,34 +67,34 @@ describe('ImportStream', function() {
   });
 
   /** @test {ImportStream#handleOutputArguments} */
-  describe('#handleOutputArguments', function() {
-    it('should error if import failed', function() {
+  describe('#handleOutputArguments', function () {
+    it('should error if import failed', function () {
       return expect(
-        cb => ImportStream.prototype.handleOutputArguments({}, [{ value: false }], cb),
+        (cb) => ImportStream.prototype.handleOutputArguments({}, [{ value: false }], cb),
         'to call the callback with error',
         'Import failed'
       );
     });
 
-    it('should error without status', function() {
+    it('should error without status', function () {
       return expect(
-        cb => ImportStream.prototype.handleOutputArguments({}, undefined, cb),
+        (cb) => ImportStream.prototype.handleOutputArguments({}, undefined, cb),
         'to call the callback with error',
         'Import failed'
       );
     });
 
-    it('should not error if import succeeded', function() {
+    it('should not error if import succeeded', function () {
       return expect(
-        cb => ImportStream.prototype.handleOutputArguments({}, [{ value: true }], cb),
+        (cb) => ImportStream.prototype.handleOutputArguments({}, [{ value: true }], cb),
         'to call the callback without error'
       );
     });
   });
 
   /** @test {ImportStream#processChunk} */
-  describe('#processChunk', function() {
-    it('should create new nodes on success', async function() {
+  describe('#processChunk', function () {
+    it('should create new nodes on success', async function () {
       const nodeName = `TestNode-${Date.now()}`;
       const fixturePath = join(__dirname, '../../../fixtures/TestImport.xml');
       const replaceStream = createTransformStream((file, enc, callback) => {
@@ -111,9 +111,7 @@ describe('ImportStream', function() {
       console.log(`Importing test node: ${nodeName}`);
 
       await expect(
-        src(fixturePath)
-          .pipe(replaceStream)
-          .pipe(importStream),
+        src(fixturePath).pipe(replaceStream).pipe(importStream),
         'to yield objects satisfying',
         []
       );
@@ -121,7 +119,7 @@ describe('ImportStream', function() {
       const session = await Session.create();
 
       const [value] = await expect(
-        cb => session.readVariableValue([`ns=1;s=AGENT.OBJECTS.${nodeName}`], cb),
+        (cb) => session.readVariableValue([`ns=1;s=AGENT.OBJECTS.${nodeName}`], cb),
         'to call the callback without error'
       );
 

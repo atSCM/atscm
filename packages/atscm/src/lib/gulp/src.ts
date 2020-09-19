@@ -42,13 +42,13 @@ export class FileNode extends SourceNode {
     }
 
     if (references) {
-      (Object.entries(references) as ([
+      (Object.entries(references) as [
         keyof typeof ReferenceTypeIds,
         (string | number)[]
-      ])[]).forEach(([ref, ids]) => {
+      ][]).forEach(([ref, ids]) => {
         const type = ReferenceTypeIds[ref] || parseInt(ref, 10);
 
-        ids.forEach(id => {
+        ids.forEach((id) => {
           this.references.addReference(type, id);
           this._resolvedReferences.addReference(type, id);
         });
@@ -191,7 +191,7 @@ export class SourceBrowser {
     let processError: Error;
 
     const done = new Promise<void>((resolve, reject) => {
-      this._reject = err => {
+      this._reject = (err) => {
         if (processError) {
           // Multiple errors occured. In most cases this means, that the server connection was
           // closed after the first error.
@@ -265,43 +265,40 @@ export class SourceBrowser {
 
     if (s.isDirectory()) {
       let container;
-      const nextChildren = (await readdir(path)).reduce(
-        (nodes, p) => {
-          const node = {
-            name: p,
-            path: join(path, p),
-            push,
-          };
+      const nextChildren = (await readdir(path)).reduce((nodes, p) => {
+        const node = {
+          name: p,
+          path: join(path, p),
+          push,
+        };
 
-          if (p.match(containerFileRegexp)) {
-            container = node;
+        if (p.match(containerFileRegexp)) {
+          container = node;
 
-            return nodes;
+          return nodes;
+        }
+
+        let parts: string[];
+        const noProcessingNeeded = nodes.find((current) => {
+          const n = current.name;
+          if (n === `.${p}.json`) {
+            return true;
+          } // Skip files with definitions already present
+
+          const [raw, rest] = parts || (parts = p.split('.inner'));
+
+          if (rest === '' && (n === raw || n === `.${raw}.json`)) {
+            // Got an *.inner directory
+            // eslint-disable-next-line no-param-reassign
+            current.children = (current.children || []).concat(node);
+            return true;
           }
 
-          let parts: string[];
-          const noProcessingNeeded = nodes.find(current => {
-            const n = current.name;
-            if (n === `.${p}.json`) {
-              return true;
-            } // Skip files with definitions already present
+          return false;
+        });
 
-            const [raw, rest] = parts || (parts = p.split('.inner'));
-
-            if (rest === '' && (n === raw || n === `.${raw}.json`)) {
-              // Got an *.inner directory
-              // eslint-disable-next-line no-param-reassign
-              current.children = (current.children || []).concat(node);
-              return true;
-            }
-
-            return false;
-          });
-
-          return noProcessingNeeded ? nodes : nodes.concat(node);
-        },
-        [] as DiscoveredNodeFile[]
-      );
+        return noProcessingNeeded ? nodes : nodes.concat(node);
+      }, [] as DiscoveredNodeFile[]);
 
       if (container) {
         return this._processPath(Object.assign(container, { children: nextChildren, parent }));
@@ -311,7 +308,7 @@ export class SourceBrowser {
       }
 
       const inheritParent = path.endsWith('.inner');
-      nextChildren.forEach(node => {
+      nextChildren.forEach((node) => {
         if (inheritParent) {
           // eslint-disable-next-line no-param-reassign
           node.parent = parent;
@@ -373,24 +370,28 @@ export class SourceBrowser {
     if (!node.waitingFor) {
       const deps = Array.from(node.references).reduce(
         (result, [, ids]) =>
-          result.concat(Array.from(ids).filter(id => {
-            if (typeof id === 'number') {
-              // OPC-UA node
-              return false;
-            }
+          result.concat(
+            Array.from(ids).filter((id) => {
+              if (typeof id === 'number') {
+                // OPC-UA node
+                return false;
+              }
 
-            return !this._pushed.has(id) && !ProjectConfig.isExternal(id);
-          }) as string[]),
+              return !this._pushed.has(id) && !ProjectConfig.isExternal(id);
+            }) as string[]
+          ),
         [] as string[]
       );
       // eslint-disable-next-line no-param-reassign
       node.waitingFor = new Set(deps);
-      deps.forEach(d => {
+      deps.forEach((d) => {
         this._dependingOn.set(
           d,
-          (this._dependingOn.get(d) || []).concat(node as BrowsedFileNode & {
-            waitingFor: Set<string>;
-          })
+          (this._dependingOn.get(d) || []).concat(
+            node as BrowsedFileNode & {
+              waitingFor: Set<string>;
+            }
+          )
         );
       });
     }
@@ -413,8 +414,8 @@ export class SourceBrowser {
     if (node.nodeClass === NodeClass.Variable && this._readNodeFile(node)) {
       // eslint-disable-next-line no-param-reassign
       await readFile(node.relative)
-        .then(value => node.setRawValue(value))
-        .catch(err => {
+        .then((value) => node.setRawValue(value))
+        .catch((err) => {
           if (err.code === 'EISDIR') {
             return;
           }
@@ -425,7 +426,7 @@ export class SourceBrowser {
     return this._nodeHandler(node).then(() => {
       // Handle children
       if (node.children) {
-        node.children.forEach(child => {
+        node.children.forEach((child) => {
           // eslint-disable-next-line no-param-reassign
           child.parent = node;
           this.processPath(child);
@@ -435,7 +436,7 @@ export class SourceBrowser {
       // Handle dependencies
       const depending = this._dependingOn.get(node.nodeId);
       if (depending) {
-        depending.forEach(dep => {
+        depending.forEach((dep) => {
           dep.waitingFor.delete(node.nodeId);
 
           if (!dep.waitingFor.size) {
