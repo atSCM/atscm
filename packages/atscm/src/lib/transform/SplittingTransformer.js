@@ -98,7 +98,9 @@ export default class SplittingTransformer extends PartialTransformer {
     }
 
     const regExp = new RegExp(
-      `^\\.${name}(${this.constructor.sourceExtensions.join('|')})\\.json$`
+      `^\\.${name
+        .replace(/\[/, '\\[')
+        .replace(/\]/, '\\]')}(${this.constructor.sourceExtensions.join('|')})\\.json$`
     );
 
     // Find source files an child definition files
