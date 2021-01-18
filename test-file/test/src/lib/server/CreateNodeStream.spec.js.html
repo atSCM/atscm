@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -175,10 +178,10 @@ import NodeId from &apos;../../../../src/lib/model/opcua/NodeId&apos;;
 import { FileNode } from &apos;../../../../src/lib/gulp/src&apos;;
 
 /** @test {CreateNodeStream} */
-describe(&apos;CreateNodeStream&apos;, function() {
+describe(&apos;CreateNodeStream&apos;, function () {
   /** @test {CreateNodeStream#scriptId} */
-  describe(&apos;#scriptId&apos;, function() {
-    it(&apos;should return the atscm CreateNode script&apos;, function() {
+  describe(&apos;#scriptId&apos;, function () {
+    it(&apos;should return the atscm CreateNode script&apos;, function () {
       return expect(
         new CreateNodeStream().scriptId,
         &apos;to equal&apos;,
@@ -188,8 +191,8 @@ describe(&apos;CreateNodeStream&apos;, function() {
   });
 
   /** @test {CreateNodeStream#scriptParameters} */
-  describe(&apos;#scriptParameters&apos;, function() {
-    it.skip(&apos;should return a single JSON encoded parameter&apos;, function() {
+  describe(&apos;#scriptParameters&apos;, function () {
+    it.skip(&apos;should return a single JSON encoded parameter&apos;, function () {
       const file = new FileNode({
         name: &apos;Test&apos;,
         parent: null,
@@ -240,7 +243,7 @@ describe(&apos;CreateNodeStream&apos;, function() {
       expect(decoded.value, &apos;to be undefined&apos;);
     });
 
-    it.skip(&apos;should include dataType, arrayType and value for variables&apos;, function() {
+    it.skip(&apos;should include dataType, arrayType and value for variables&apos;, function () {
       const file = new AtviseFile({
         path: &apos;./src/AGENT/OBJECTS/Test.prop.float.array&apos;,
         base: &apos;./src/&apos;,
@@ -262,8 +265,8 @@ describe(&apos;CreateNodeStream&apos;, function() {
   });
 
   /** @test {CreateNodeStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&apos;should tell which node failed to create&apos;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&apos;should tell which node failed to create&apos;, function () {
       return expect(
         CreateNodeStream.prototype.processErrorMessage,
         &apos;when called with&apos;,
@@ -275,12 +278,12 @@ describe(&apos;CreateNodeStream&apos;, function() {
   });
 
   /** @test {CreateNodeStream#handleOutputArguments} */
-  describe(&apos;#handleOutputArguments&apos;, function() {
-    it(&apos;should forward script errors&apos;, function() {
+  describe(&apos;#handleOutputArguments&apos;, function () {
+    it(&apos;should forward script errors&apos;, function () {
       const stream = new CreateNodeStream();
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           stream.handleOutputArguments(
             {},
             [{ value: StatusCodes.Bad }, { value: &apos;Test error&apos; }],
@@ -291,14 +294,14 @@ describe(&apos;CreateNodeStream&apos;, function() {
       );
     });
 
-    it(&apos;should warn if creating the node failed&apos;, async function() {
+    it(&apos;should warn if creating the node failed&apos;, async function () {
       const stream = new CreateNodeStream();
 
       const warnSpy = spy();
       Logger.on(&apos;warn&apos;, warnSpy);
 
       await expect(
-        cb =&gt;
+        (cb) =&gt;
           stream.handleOutputArguments(
             { nodeId: &apos;Test&apos; },
             [{ value: StatusCodes.Good }, {}, {}, { value: [{ value: false }, { value: true }] }],
@@ -311,14 +314,14 @@ describe(&apos;CreateNodeStream&apos;, function() {
       return expect(warnSpy, &apos;to have a call satisfying&apos;, { args: [/Failed to create.*Test/] });
     });
 
-    it(&apos;should log if a node was created&apos;, async function() {
+    it(&apos;should log if a node was created&apos;, async function () {
       const stream = new CreateNodeStream();
 
       const debugSpy = spy();
       Logger.on(&apos;debug&apos;, debugSpy);
 
       await expect(
-        cb =&gt;
+        (cb) =&gt;
           stream.handleOutputArguments(
             { nodeId: &apos;Test&apos; },
             [{ value: StatusCodes.Good }, {}, {}, { value: [{ value: true }, { value: false }] }],
@@ -331,14 +334,14 @@ describe(&apos;CreateNodeStream&apos;, function() {
       return expect(debugSpy, &apos;to have a call satisfying&apos;, { args: [/Created node.*Test/] });
     });
 
-    it.skip(&apos;should log if node already existed&apos;, async function() {
+    it.skip(&apos;should log if node already existed&apos;, async function () {
       const stream = new CreateNodeStream();
 
       const debugSpy = spy();
       Logger.on(&apos;debug&apos;, debugSpy);
 
       await expect(
-        cb =&gt;
+        (cb) =&gt;
           stream.handleOutputArguments(
             { nodeId: &apos;Test&apos; },
             [{ value: StatusCodes.Good }, {}, {}, { value: [{ value: false }, { value: false }] }],
@@ -353,12 +356,12 @@ describe(&apos;CreateNodeStream&apos;, function() {
   });
 
   /** @test {CreateNodeStream#processChunk} */
-  describe.skip(&apos;#processChunk&apos;, function() {
+  describe.skip(&apos;#processChunk&apos;, function () {
     const testTime = Date.now();
     const testFolderNodePath = `src/AGENT/OBJECTS/TestCreate-${testTime}`;
     const nodeIdBase = `AGENT.OBJECTS.TestCreate-${testTime}`;
 
-    before(&apos;create test node folder&apos;, function() {
+    before(&apos;create test node folder&apos;, function () {
       const stream = new CreateNodeStream();
 
       return expect(
@@ -446,7 +449,7 @@ describe(&apos;CreateNodeStream&apos;, function() {
     ];
 
     tests.forEach(({ nodeClass, value }) =&gt; {
-      it(`should be able to create ${value.dataType.key} ${nodeClass.key}s`, async function() {
+      it(`should be able to create ${value.dataType.key} ${nodeClass.key}s`, async function () {
         const stream = new CreateNodeStream();
 
         const nodeId = new NodeId(`${nodeIdBase}.Test${value.dataType.key}`);
@@ -470,7 +473,7 @@ describe(&apos;CreateNodeStream&apos;, function() {
         const session = await Session.create();
 
         const [[{ value: readValue }]] = await expect(
-          cb =&gt; session.readVariableValue([nodeId.toString()], cb),
+          (cb) =&gt; session.readVariableValue([nodeId.toString()], cb),
           &apos;to call the callback without error&apos;
         );
 

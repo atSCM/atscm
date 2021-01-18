@@ -187,7 +187,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber364",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber366",
     "#createCombinedFile should create metadata section if omitted",
     "test"
   ],
@@ -223,7 +223,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber307",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber309",
     "#createCombinedFile should inline script",
     "test"
   ],
@@ -247,13 +247,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber397",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber399",
     "#createCombinedFile should insert parameters before other atv tags",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber418",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber420",
     "#createCombinedFile should insert parameters in the correct order",
     "test"
   ],
@@ -277,31 +277,31 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber378",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber380",
     "#createCombinedFile should keep parameters specified in SVG",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber320",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber322",
     "#createCombinedFile should link dependencies",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber345",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber347",
     "#createCombinedFile should reuse existant metadata section",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber298",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber300",
     "#createCombinedFile should work with empty svg tag",
     "test"
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber333",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber335",
     "#createCombinedFile should work without empty parameters config",
     "test"
   ],
@@ -355,7 +355,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber433",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber435",
     "#createCombinedFile when encoding fails",
     "test"
   ],
@@ -367,7 +367,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber441",
+    "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber443",
     "#createCombinedFile when encoding fails should forward encode error",
     "test"
   ],
@@ -1398,6 +1398,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "atscm/src/lib/regexp.ts~escapeforregexp",
+    "function/index.html#static-function-escapeForRegExp",
+    "<span>escapeForRegExp</span> <span class=\"search-result-import-path\">atscm/src/lib/regexp.ts</span>",
+    "function"
+  ],
+  [
     "atscm/src/lib/helpers/tasks.js~finishtask",
     "function/index.html#static-function-finishTask",
     "<span>finishTask</span> <span class=\"search-result-import-path\">atscm/src/lib/helpers/tasks.js</span>",
@@ -1516,6 +1522,18 @@ window.esdocSearchIndex = [
     "function/index.html#static-function-sortReferences",
     "<span>sortReferences</span> <span class=\"search-result-import-path\">atscm/src/lib/helpers/mapping.js</span>",
     "function"
+  ],
+  [
+    "atscm/src/lib/regexp.ts~specialchars",
+    "variable/index.html#static-variable-specialChars",
+    "<span>specialChars</span> <span class=\"search-result-import-path\">atscm/src/lib/regexp.ts</span>",
+    "variable"
+  ],
+  [
+    "atscm/src/lib/regexp.ts~specialcharsregexp",
+    "variable/index.html#static-variable-specialCharsRegExp",
+    "<span>specialCharsRegExp</span> <span class=\"search-result-import-path\">atscm/src/lib/regexp.ts</span>",
+    "variable"
   ],
   [
     "atscm/src/lib/gulp/src.ts~src",
@@ -2809,7 +2827,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber83",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber91",
     "InitTask .run ",
     "test"
   ],
@@ -2821,7 +2839,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber65",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber73",
     "InitTask .run should not escape author field in package.json (#52)",
     "test"
   ],
@@ -2857,7 +2875,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/integration/issues/issue-265.spec.js.html#lineNumber28",
+    "test-file/test/integration/issues/issue-265.spec.js.html#lineNumber31",
     "Issue #265 (https://github.com/atSCM/atscm/issues/265) should not create duplicate entries in rename.json",
     "test"
   ],
@@ -2893,13 +2911,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/integration/issues/issue-330.spec.js.html#lineNumber42",
+    "test-file/test/integration/issues/issue-330.spec.js.html#lineNumber45",
     "Issue #330 (https://github.com/atSCM/atscm/issues/330) when attribute is renamed",
     "test"
   ],
   [
     "",
-    "test-file/test/integration/issues/issue-330.spec.js.html#lineNumber54",
+    "test-file/test/integration/issues/issue-330.spec.js.html#lineNumber57",
     "Issue #330 (https://github.com/atSCM/atscm/issues/330) when attribute is renamed should not error",
     "test"
   ],
@@ -3313,7 +3331,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber33",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber35",
     "PartialTransformer should call super if shouldBeTransformed returns true",
     "test"
   ],
@@ -3325,31 +3343,31 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber81",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber83",
     "PartialTransformer should return false by default",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber52",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber54",
     "PartialTransformer when #applyToFilteredStream is not overridden",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber53",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber55",
     "PartialTransformer when #applyToFilteredStream is not overridden should invoke #transformFromDB / #transformFromFilesystem",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber64",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber66",
     "PartialTransformer when #applyToFilteredStream is overridden",
     "test"
   ],
   [
     "",
-    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber65",
+    "test-file/test/src/lib/transform/PartialTransformer.spec.js.html#lineNumber67",
     "PartialTransformer when #applyToFilteredStream is overridden should invoke #applyToFilteredStream",
     "test"
   ],
@@ -4579,13 +4597,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber54",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber58",
     "cleanup with open sessions should call process.kill",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber62",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber66",
     "cleanup with open sessions should forward Session.closeOpen errors",
     "test"
   ],
@@ -4597,13 +4615,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber71",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber75",
     "cleanup without open sessions",
     "test"
   ],
   [
     "",
-    "test-file/test/src/util/cleanup.spec.js.html#lineNumber72",
+    "test-file/test/src/util/cleanup.spec.js.html#lineNumber76",
     "cleanup without open sessions should return true",
     "test"
   ],
@@ -4657,7 +4675,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/lib/helpers/async.spec.js.html#lineNumber17",
+    "test-file/test/src/lib/helpers/async.spec.js.html#lineNumber20",
     "promisified should be rejected when async function fails",
     "test"
   ],
@@ -4701,6 +4719,24 @@ window.esdocSearchIndex = [
     "",
     "test-file/test/src/tasks/push.spec.js.html#lineNumber15",
     "push should return a promise",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/src/lib/regexp.spec.js.html#lineNumber4",
+    "regex helpers",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/src/lib/regexp.spec.js.html#lineNumber5",
+    "regex helpers excapeForRegExp",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/src/lib/regexp.spec.js.html#lineNumber6",
+    "regex helpers excapeForRegExp should escape special characters",
     "test"
   ],
   [
@@ -6021,6 +6057,12 @@ window.esdocSearchIndex = [
     "src/lib/model/opcua/reversereferencetypeids.js",
     "file/src/lib/model/opcua/ReverseReferenceTypeIds.js.html",
     "src/lib/model/opcua/ReverseReferenceTypeIds.js",
+    "file"
+  ],
+  [
+    "src/lib/regexp.ts",
+    "file/src/lib/regexp.ts.html",
+    "src/lib/regexp.ts",
     "file"
   ],
   [
@@ -7881,6 +7923,12 @@ window.esdocSearchIndex = [
     "test/src/lib/model/opcua/reversereferencetypeids.spec.js",
     "test-file/test/src/lib/model/opcua/ReverseReferenceTypeIds.spec.js.html",
     "test/src/lib/model/opcua/ReverseReferenceTypeIds.spec.js",
+    "testFile"
+  ],
+  [
+    "test/src/lib/regexp.spec.js",
+    "test-file/test/src/lib/regexp.spec.js.html",
+    "test/src/lib/regexp.spec.js",
     "testFile"
   ],
   [

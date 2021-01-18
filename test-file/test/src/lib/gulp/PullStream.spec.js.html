@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -169,7 +172,7 @@ import { TransformDirection } from &apos;../../../../src/lib/transform/Transform
 import { ServerNode } from &apos;../../../../src/lib/model/Node&apos;;
 
 const StubTransformer = {
-  applyTransformers: spy(stream =&gt; stream),
+  applyTransformers: spy((stream) =&gt; stream),
 };
 
 const readline = {
@@ -199,7 +202,7 @@ class StubReadStream extends ReadStream {
     },
     handleErrors
   ) {
-    handleErrors(null, StatusCodes.Good, done =&gt; {
+    handleErrors(null, StatusCodes.Good, (done) =&gt; {
       this.push({
         nodeId,
         value: new Variant({
@@ -216,9 +219,9 @@ class StubReadStream extends ReadStream {
 }
 
 /** @test {PullStream} */
-describe(&apos;PullStream&apos;, function() {
+describe(&apos;PullStream&apos;, function () {
   /** @test {PullStream#constructor} */
-  describe(&apos;#constructor&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
     let logListener;
 
     beforeEach(() =&gt; {
@@ -231,7 +234,7 @@ describe(&apos;PullStream&apos;, function() {
       }
     });
 
-    it(&apos;should return a stream&apos;, function() {
+    it(&apos;should return a stream&apos;, function () {
       const stream = new PullStream(new PassThrough({ objectMode: true }));
       expect(stream, &apos;to be a&apos;, Stream);
       stream.end();
@@ -239,7 +242,7 @@ describe(&apos;PullStream&apos;, function() {
       expect(stream, &apos;to yield objects satisfying&apos;, &apos;to have length&apos;, 0);
     });
 
-    it(&apos;should apply transformers from db&apos;, function() {
+    it(&apos;should apply transformers from db&apos;, function () {
       const readStream = new PassThrough({ objectMode: true });
       const stream = new PullStream(readStream);
 
@@ -264,7 +267,7 @@ describe(&apos;PullStream&apos;, function() {
       );
     });
 
-    it.skip(&apos;should print progress&apos;, function() {
+    it.skip(&apos;should print progress&apos;, function () {
       const stream = new PullStream(Object.assign(new StubReadStream(), { _processed: 12 }));
 
       setTimeout(() =&gt; stream.end(), 1200);
@@ -280,7 +283,7 @@ describe(&apos;PullStream&apos;, function() {
       });
     });
 
-    it.skip(&apos;should work without log listeners&apos;, function() {
+    it.skip(&apos;should work without log listeners&apos;, function () {
       const stream = new PullStream(new StubReadStream());
 
       setTimeout(() =&gt; stream.end(), 1200);

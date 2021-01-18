@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -157,13 +160,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import AtviseFile from &apos;<span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber355">atscm/src/lib/server/AtviseFile.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import AtviseFile from &apos;<span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber357">atscm/src/lib/server/AtviseFile.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber355">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber357">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -1128,7 +1131,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber435">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber437">source</a></span></span>
     </span>
   </h3>
 
@@ -1222,7 +1225,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber410">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber412">source</a></span></span>
     </span>
   </h3>
 
@@ -1316,7 +1319,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber469">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber471">source</a></span></span>
     </span>
   </h3>
 
@@ -1396,7 +1399,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber458">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber460">source</a></span></span>
     </span>
   </h3>
 
@@ -1477,7 +1480,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber360">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber362">source</a></span></span>
     </span>
   </h3>
 
@@ -1556,7 +1559,7 @@ files.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber870">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber872">source</a></span></span>
     </span>
   </h3>
 
@@ -1641,7 +1644,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber692">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber694">source</a></span></span>
     </span>
   </h3>
 
@@ -1691,7 +1694,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber768">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber770">source</a></span></span>
     </span>
   </h3>
 
@@ -1735,7 +1738,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber783">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber785">source</a></span></span>
     </span>
   </h3>
 
@@ -1779,7 +1782,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber680">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber682">source</a></span></span>
     </span>
   </h3>
 
@@ -1830,7 +1833,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber739">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber741">source</a></span></span>
     </span>
   </h3>
 
@@ -1880,7 +1883,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber755">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber757">source</a></span></span>
     </span>
   </h3>
 
@@ -1930,7 +1933,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber731">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber733">source</a></span></span>
     </span>
   </h3>
 
@@ -1974,7 +1977,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber747">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber749">source</a></span></span>
     </span>
   </h3>
 
@@ -2024,7 +2027,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber820">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber822">source</a></span></span>
     </span>
   </h3>
 
@@ -2068,7 +2071,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber668">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber670">source</a></span></span>
     </span>
   </h3>
 
@@ -2112,7 +2115,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber801">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber803">source</a></span></span>
     </span>
   </h3>
 
@@ -2162,7 +2165,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber832">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber834">source</a></span></span>
     </span>
   </h3>
 
@@ -2206,7 +2209,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber704">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber706">source</a></span></span>
     </span>
   </h3>
 
@@ -2250,7 +2253,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber716">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber718">source</a></span></span>
     </span>
   </h3>
 
@@ -2300,7 +2303,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber763">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber765">source</a></span></span>
     </span>
   </h3>
 
@@ -2344,7 +2347,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber775">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber777">source</a></span></span>
     </span>
   </h3>
 
@@ -2390,7 +2393,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber535">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber537">source</a></span></span>
     </span>
   </h3>
 
@@ -2434,7 +2437,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber588">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber590">source</a></span></span>
     </span>
   </h3>
 
@@ -2478,7 +2481,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber543">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber545">source</a></span></span>
     </span>
   </h3>
 
@@ -2522,7 +2525,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber508">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber510">source</a></span></span>
     </span>
   </h3>
 
@@ -2566,7 +2569,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber517">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber519">source</a></span></span>
     </span>
   </h3>
 
@@ -2614,7 +2617,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber853">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber855">source</a></span></span>
     </span>
   </h3>
 
@@ -2694,7 +2697,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber656">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber658">source</a></span></span>
     </span>
   </h3>
 
@@ -2753,7 +2756,7 @@ trying to read it&apos;s path.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber501">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/server/AtviseFile.js.html#lineNumber503">source</a></span></span>
     </span>
   </h3>
 

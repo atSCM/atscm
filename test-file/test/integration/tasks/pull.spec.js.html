@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -173,8 +176,8 @@ const runPull = proxyquire(&apos;../../../src/tasks/pull&apos;, {
   },
 }).default;
 
-describe(&apos;pull task&apos;, function() {
-  context(&apos;with the `--clean` flag&apos;, function() {
+describe(&apos;pull task&apos;, function () {
+  context(&apos;with the `--clean` flag&apos;, function () {
     const projectDir = tmpDir(&apos;pull-clean&apos;);
     const sourceDir = join(projectDir, &apos;src&apos;);
     const testFile = join(sourceDir, &apos;file-that-exists.txt&apos;);
@@ -192,7 +195,7 @@ describe(&apos;pull task&apos;, function() {
       ]).then(() =&gt; process.chdir(projectDir))
     );
 
-    it(&apos;should empty the source directory first&apos;, function() {
+    it(&apos;should empty the source directory first&apos;, function () {
       return expect(readdir(sourceDir), &apos;when fulfilled&apos;, &apos;not to be empty&apos;)
         .then(() =&gt; runPull({ clean: true }))
         .then(() =&gt; expect(readdir(sourceDir), &apos;when fulfilled&apos;, &apos;to be empty&apos;));

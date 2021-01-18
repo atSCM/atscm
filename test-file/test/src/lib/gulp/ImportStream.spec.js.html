@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -167,10 +170,10 @@ import ImportStream from &apos;../../../../src/lib/gulp/ImportStream&apos;;
 import Session from &apos;../../../../src/lib/server/Session&apos;;
 
 /** @test {ImportStream} */
-describe(&apos;ImportStream&apos;, function() {
+describe(&apos;ImportStream&apos;, function () {
   /** @test {ImportStream#methodId} */
-  describe(&apos;#methodId&apos;, function() {
-    it(&apos;should return importNodes method id&apos;, function() {
+  describe(&apos;#methodId&apos;, function () {
+    it(&apos;should return importNodes method id&apos;, function () {
       expect(
         ImportStream.prototype.methodId.toString(),
         &apos;to equal&apos;,
@@ -180,8 +183,8 @@ describe(&apos;ImportStream&apos;, function() {
   });
 
   /** @test {ImportStream#inputArguments} */
-  describe(&apos;#inputArguments&apos;, function() {
-    it(&apos;should contain global scope argument&apos;, function() {
+  describe(&apos;#inputArguments&apos;, function () {
+    it(&apos;should contain global scope argument&apos;, function () {
       const [scope] = ImportStream.prototype.inputArguments({});
 
       expect(scope.value, &apos;to be a&apos;, NodeId);
@@ -189,7 +192,7 @@ describe(&apos;ImportStream&apos;, function() {
       expect(scope.value.value, &apos;to equal&apos;, 0);
     });
 
-    it(&apos;should contain file contents&apos;, function() {
+    it(&apos;should contain file contents&apos;, function () {
       const contents = &apos;test&apos;;
       const fileArg = ImportStream.prototype.inputArguments({ contents })[1];
 
@@ -199,8 +202,8 @@ describe(&apos;ImportStream&apos;, function() {
   });
 
   /** @test {ImportStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&apos;should prefix file path&apos;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&apos;should prefix file path&apos;, function () {
       const path = &apos;TestPath&apos;;
 
       return expect(
@@ -212,7 +215,7 @@ describe(&apos;ImportStream&apos;, function() {
       );
     });
 
-    it(&apos;should print path relative to project directory&apos;, function() {
+    it(&apos;should print path relative to project directory&apos;, function () {
       const relative = [&apos;path&apos;, &apos;to&apos;, &apos;file&apos;].join(separator);
 
       return expect(
@@ -226,34 +229,34 @@ describe(&apos;ImportStream&apos;, function() {
   });
 
   /** @test {ImportStream#handleOutputArguments} */
-  describe(&apos;#handleOutputArguments&apos;, function() {
-    it(&apos;should error if import failed&apos;, function() {
+  describe(&apos;#handleOutputArguments&apos;, function () {
+    it(&apos;should error if import failed&apos;, function () {
       return expect(
-        cb =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: false }], cb),
+        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: false }], cb),
         &apos;to call the callback with error&apos;,
         &apos;Import failed&apos;
       );
     });
 
-    it(&apos;should error without status&apos;, function() {
+    it(&apos;should error without status&apos;, function () {
       return expect(
-        cb =&gt; ImportStream.prototype.handleOutputArguments({}, undefined, cb),
+        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, undefined, cb),
         &apos;to call the callback with error&apos;,
         &apos;Import failed&apos;
       );
     });
 
-    it(&apos;should not error if import succeeded&apos;, function() {
+    it(&apos;should not error if import succeeded&apos;, function () {
       return expect(
-        cb =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: true }], cb),
+        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: true }], cb),
         &apos;to call the callback without error&apos;
       );
     });
   });
 
   /** @test {ImportStream#processChunk} */
-  describe(&apos;#processChunk&apos;, function() {
-    it(&apos;should create new nodes on success&apos;, async function() {
+  describe(&apos;#processChunk&apos;, function () {
+    it(&apos;should create new nodes on success&apos;, async function () {
       const nodeName = `TestNode-${Date.now()}`;
       const fixturePath = join(__dirname, &apos;../../../fixtures/TestImport.xml&apos;);
       const replaceStream = createTransformStream((file, enc, callback) =&gt; {
@@ -270,9 +273,7 @@ describe(&apos;ImportStream&apos;, function() {
       console.log(`Importing test node: ${nodeName}`);
 
       await expect(
-        src(fixturePath)
-          .pipe(replaceStream)
-          .pipe(importStream),
+        src(fixturePath).pipe(replaceStream).pipe(importStream),
         &apos;to yield objects satisfying&apos;,
         []
       );
@@ -280,7 +281,7 @@ describe(&apos;ImportStream&apos;, function() {
       const session = await Session.create();
 
       const [value] = await expect(
-        cb =&gt; session.readVariableValue([`ns=1;s=AGENT.OBJECTS.${nodeName}`], cb),
+        (cb) =&gt; session.readVariableValue([`ns=1;s=AGENT.OBJECTS.${nodeName}`], cb),
         &apos;to call the callback without error&apos;
       );
 

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -187,7 +190,7 @@ const InitTask = proxyquire(&apos;../../../src/init/InitTask&apos;, {
 }).default;
 
 /** @test {InitTask} */
-describe(&apos;InitTask&apos;, function() {
+describe(&apos;InitTask&apos;, function () {
   const baseConfig = {
     name: &apos;unit-testing&apos;,
     atviseHost: &apos;localhost&apos;,
@@ -207,12 +210,12 @@ describe(&apos;InitTask&apos;, function() {
   });
 
   function expectValidConfig(lang, transform) {
-    it(`should create valid ${lang} config`, function() {
+    it(`should create valid ${lang} config`, function () {
       return InitTask.run(optionsForLang(lang)).then(() =&gt; {
-        const createdFiles = destSpy.args.map(args =&gt; args[0]);
+        const createdFiles = destSpy.args.map((args) =&gt; args[0]);
 
         // Expect config file is created
-        const configs = createdFiles.filter(file =&gt; file.relative.match(/Atviseproject/));
+        const configs = createdFiles.filter((file) =&gt; file.relative.match(/Atviseproject/));
         expect(configs, &apos;to have length&apos;, 1);
 
         // Expect code can be transpiled
@@ -242,7 +245,7 @@ describe(&apos;InitTask&apos;, function() {
   }
 
   expectValidConfig(&apos;es2015&apos;, (code, createdFiles) =&gt; {
-    const rcs = createdFiles.filter(file =&gt; file.relative.match(/.babelrc/));
+    const rcs = createdFiles.filter((file) =&gt; file.relative.match(/.babelrc/));
 
     expect(rcs, &apos;to have length&apos;, 1);
 
@@ -251,10 +254,10 @@ describe(&apos;InitTask&apos;, function() {
     return babelTransform(code, rc).code;
   });
 
-  expectValidConfig(&apos;es5&apos;, code =&gt; code);
+  expectValidConfig(&apos;es5&apos;, (code) =&gt; code);
 
   expectValidConfig(&apos;ts&apos;, (code, createdFiles) =&gt; {
-    const rcs = createdFiles.filter(file =&gt; file.relative.match(/tsconfig.json/));
+    const rcs = createdFiles.filter((file) =&gt; file.relative.match(/tsconfig.json/));
 
     expect(rcs, &apos;to have length&apos;, 1);
 

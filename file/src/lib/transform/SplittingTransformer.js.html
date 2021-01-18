@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -159,6 +162,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/lib/transform/SplittingTransformer.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { extname, basename, join } from &apos;path&apos;;
 import { readdir } from &apos;fs-extra&apos;;
+import { escapeForRegExp } from &apos;../regexp&apos;;
 import PartialTransformer from &apos;./PartialTransformer.js&apos;;
 
 /**
@@ -257,7 +261,7 @@ export default class SplittingTransformer extends PartialTransformer {
     }
 
     const regExp = new RegExp(
-      `^\\.${name}(${this.constructor.sourceExtensions.join(&apos;|&apos;)})\\.json$`
+      `^\\.${escapeForRegExp(name)}(${this.constructor.sourceExtensions.join(&apos;|&apos;)})\\.json$`
     );
 
     // Find source files an child definition files
@@ -283,7 +287,7 @@ export default class SplittingTransformer extends PartialTransformer {
     Object.assign(node, { children });
 
     const sourceNodes = await Promise.all(
-      sourceFiles.map(f =&gt;
+      sourceFiles.map((f) =&gt;
         context.readNode({
           path: join(node.relative, f),
           tree: { parent: node },

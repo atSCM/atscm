@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -169,7 +172,7 @@ import NodeId from &apos;../../../../src/lib/model/opcua/NodeId&apos;;
 class CreateNodeStream extends _CreateNodeStream {
   processChunk(file, handleErrors) {
     setTimeout(() =&gt; {
-      handleErrors(null, StatusCodes.Good, done =&gt; done());
+      handleErrors(null, StatusCodes.Good, (done) =&gt; done());
     }, 10);
   }
 }
@@ -182,10 +185,10 @@ class WriteStream extends _WriteStream {
 }
 
 /** @test {WriteStream} */
-describe(&apos;WriteStream&apos;, function() {
+describe(&apos;WriteStream&apos;, function () {
   /** @test {WriteStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&apos;should include nodeId&apos;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&apos;should include nodeId&apos;, function () {
       expect(
         WriteStream.prototype.processErrorMessage(
           new AtviseFile({
@@ -200,8 +203,8 @@ describe(&apos;WriteStream&apos;, function() {
   });
 
   /** @test {WriteStream#processChunk} */
-  describe(&apos;#processChunk&apos;, function() {
-    it(&apos;should forward errors&apos;, function() {
+  describe(&apos;#processChunk&apos;, function () {
+    it(&apos;should forward errors&apos;, function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener(&apos;session-open&apos;, () =&gt; {
@@ -223,7 +226,7 @@ describe(&apos;WriteStream&apos;, function() {
       );
     });
 
-    it(&apos;should forward synchronous errors&apos;, function() {
+    it(&apos;should forward synchronous errors&apos;, function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener(&apos;session-open&apos;, () =&gt; {
@@ -247,7 +250,7 @@ describe(&apos;WriteStream&apos;, function() {
       );
     });
 
-    it(&apos;should warn if access is denied&apos;, function() {
+    it(&apos;should warn if access is denied&apos;, function () {
       const stream = new WriteStream(new CreateNodeStream());
 
       stream.prependOnceListener(&apos;session-open&apos;, () =&gt; {
@@ -276,7 +279,7 @@ describe(&apos;WriteStream&apos;, function() {
         .then(() =&gt; expect(warnSpy.lastCall, &apos;to satisfy&apos;, [/opened in atvise builder/]));
     });
 
-    it(&apos;should push non-variable files&apos;, function() {
+    it(&apos;should push non-variable files&apos;, function () {
       const createStream = new CreateNodeStream();
       const stream = new WriteStream(createStream);
       stream.pipe(createStream);
@@ -296,7 +299,7 @@ describe(&apos;WriteStream&apos;, function() {
       ]);
     });
 
-    it(&apos;should push files where no node can be found&apos;, function() {
+    it(&apos;should push files where no node can be found&apos;, function () {
       const createStream = new CreateNodeStream();
       const stream = new WriteStream(createStream);
       stream.pipe(createStream);
@@ -316,7 +319,7 @@ describe(&apos;WriteStream&apos;, function() {
       ]);
     });
 
-    it(&apos;should push files with good status to add references stream&apos;, async function() {
+    it(&apos;should push files with good status to add references stream&apos;, async function () {
       const pushToAddRefsStream = spy();
       const stream = new WriteStream(new CreateNodeStream(), {
         push: pushToAddRefsStream,

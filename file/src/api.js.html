@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -223,7 +226,7 @@ async function withSession(action) {
  * @return {Promise&lt;any&gt;} The read value.
  */
 export async function readNode(nodeId) {
-  return withSession(session =&gt; promisified(cb =&gt; session.readVariableValue(nodeId, cb))).then(
+  return withSession((session) =&gt; promisified((cb) =&gt; session.readVariableValue(nodeId, cb))).then(
     ({ value, statusCode }) =&gt; {
       if (statusCode !== StatusCodes.Good) {
         throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
@@ -241,15 +244,15 @@ export async function readNode(nodeId) {
  * @return {Promise&lt;node-opcua~StatusCodes} The operation status result.
  */
 export function writeNode(nodeId, value) {
-  return withSession(session =&gt; promisified(cb =&gt; session.writeSingleNode(nodeId, value, cb))).then(
-    statusCode =&gt; {
-      if (statusCode !== StatusCodes.Good) {
-        throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
-      }
-
-      return statusCode;
+  return withSession((session) =&gt;
+    promisified((cb) =&gt; session.writeSingleNode(nodeId, value, cb))
+  ).then((statusCode) =&gt; {
+    if (statusCode !== StatusCodes.Good) {
+      throw Object.assign(new Error(statusCode.description), { nodeId, statusCode });
     }
-  );
+
+    return statusCode;
+  });
 }
 
 // Methods / Scripts
@@ -260,8 +263,8 @@ export function writeNode(nodeId, value) {
  * @param {Array&lt;Variant&gt;} args The arguments to pass.
  */
 export function callMethod(methodId, args = []) {
-  return withSession(session =&gt;
-    promisified(cb =&gt;
+  return withSession((session) =&gt;
+    promisified((cb) =&gt;
       session.call(
         [
           {
@@ -311,7 +314,7 @@ export function callScript(scriptId, parameters = {}) {
       arrayType: VariantArrayType.Array,
       value: Object.values(parameters),
     },
-  ]).then(result =&gt; {
+  ]).then((result) =&gt; {
     const statusCode = result.outputArguments[0].value;
 
     if (statusCode.value) {
@@ -391,7 +394,7 @@ export function createNode(
         )
       ),
     },
-  }).then(async result =&gt; {
+  }).then(async (result) =&gt; {
     const [{ value: createdNode }] = result.outputArguments[3].value;
 
     if (createdNode &amp;&amp; is64Bit) {

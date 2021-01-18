@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -180,7 +183,7 @@ import QueueStream from &apos;./QueueStream&apos;;
  *
  * }
  */
-export const waitForDependencies = Stream =&gt;
+export const waitForDependencies = (Stream) =&gt;
   class Waiting extends Stream {
     /**
      * Creates a new WaitingStream.
@@ -193,14 +196,14 @@ export const waitForDependencies = Stream =&gt;
       this._waitingFor = {};
       this._finishedProcessing = {};
 
-      this.on(&apos;processed-chunk&apos;, file =&gt; {
+      this.on(&apos;processed-chunk&apos;, (file) =&gt; {
         const key = file.nodeId.toString();
         const dependents = this._waitingFor[key];
         delete this._waitingFor[key];
         this._finishedProcessing[key] = true;
 
         if (dependents) {
-          dependents.forEach(d =&gt; {
+          dependents.forEach((d) =&gt; {
             const k = d.nodeId.toString();
             this._dependencies[k] -= 1;
 
@@ -233,7 +236,7 @@ export const waitForDependencies = Stream =&gt;
      */
     _enqueueChunk(file) {
       const dependencies = this.dependenciesFor(file)
-        .filter(id =&gt; {
+        .filter((id) =&gt; {
           if (id.namespace === 0 || !id.value || ProjectConfig.nodes.includes(id)) {
             return false;
           }
@@ -244,7 +247,7 @@ export const waitForDependencies = Stream =&gt;
             !id.value.match(/^SYSTEM\.LIBRARY\.ATVISE/)
           );
         })
-        .map(id =&gt; id.toString());
+        .map((id) =&gt; id.toString());
 
       if (dependencies &amp;&amp; dependencies.length) {
         const needToWait = dependencies.reduce((wait, dependency) =&gt; {

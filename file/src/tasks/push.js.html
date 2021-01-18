@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -201,14 +204,14 @@ export function performPush(path, options) {
     TransformDirection.FromFilesystem
   );
 
-  const ensureReferences = node =&gt; {
+  const ensureReferences = (node) =&gt; {
     const references = [...node.references].reduce((result, [key, value]) =&gt; {
       if (ignoredReferences.has(key)) {
         return result;
       }
 
       return Object.assign(result, {
-        [key]: [...value].map(s =&gt; (typeof s === &apos;string&apos; ? `ns=1;s=${s}` : s)),
+        [key]: [...value].map((s) =&gt; (typeof s === &apos;string&apos; ? `ns=1;s=${s}` : s)),
       });
     }, {});
 
@@ -225,7 +228,7 @@ export function performPush(path, options) {
             Logger.debug(`Added ${Object.keys(references).length} reference(s) to ${node.nodeId}`);
           }
         })
-        .catch(err =&gt; {
+        .catch((err) =&gt; {
           throw Object.assign(err, { node });
         });
     }
@@ -233,7 +236,7 @@ export function performPush(path, options) {
     return Promise.resolve();
   };
 
-  const create = node =&gt; {
+  const create = (node) =&gt; {
     const nodeId = new NodeId(node.nodeId);
     let parentNodeId = node.parent &amp;&amp; node.parent.nodeId;
 
@@ -266,7 +269,7 @@ export function performPush(path, options) {
 
         return ensureReferences(node);
       })
-      .catch(err =&gt; {
+      .catch((err) =&gt; {
         throw Object.assign(err, { node });
       });
   };
@@ -296,7 +299,7 @@ export function performPush(path, options) {
       // console.error(&apos;write&apos;, node.nodeId, node.value);
       return writeNode(`ns=1;s=${node.nodeId}`, node.variantValue).then(
         () =&gt; ensureReferences(node),
-        err =&gt; {
+        (err) =&gt; {
           if (openInBuilderStatus.has(err.statusCode)) {
             Logger.warn(`Error writing node ${node.nodeId}
     - Make sure it is not opened in atvise builder
@@ -332,7 +335,7 @@ export default async function push() {
 
   return reportProgress(promise, {
     getter: () =&gt; promise.browser._pushedPath.size,
-    formatter: count =&gt; `Processed ${count} files`,
+    formatter: (count) =&gt; `Processed ${count} files`,
   }).then(finishTask, handleTaskError);
 }
 

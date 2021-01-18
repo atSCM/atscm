@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -187,10 +190,10 @@ class WithParams extends StubImplementation {
 }
 
 /** @test {CallScriptStream} */
-describe(&apos;CallScriptStream&apos;, function() {
+describe(&apos;CallScriptStream&apos;, function () {
   /** @test {CallScriptStream#methodId} */
-  describe(&apos;#methodId&apos;, function() {
-    it(&quot;should return the callScript method&apos;s id&quot;, function() {
+  describe(&apos;#methodId&apos;, function () {
+    it(&quot;should return the callScript method&apos;s id&quot;, function () {
       return expect(
         CallScriptStream.prototype.methodId.value,
         &apos;to equal&apos;,
@@ -200,15 +203,15 @@ describe(&apos;CallScriptStream&apos;, function() {
   });
 
   /** @test {CallScriptStream#scriptId} */
-  describe(&apos;#scriptId&apos;, function() {
-    it(&apos;should throw if not overridden&apos;, function() {
+  describe(&apos;#scriptId&apos;, function () {
+    it(&apos;should throw if not overridden&apos;, function () {
       return expect(() =&gt; CallScriptStream.prototype.scriptId, &apos;to throw&apos;, /must be implemented/i);
     });
   });
 
   /** @test {CallScriptStream#scriptParameters} */
-  describe(&apos;#scriptParameters&apos;, function() {
-    it(&apos;should return an empty object if not overridden&apos;, function() {
+  describe(&apos;#scriptParameters&apos;, function () {
+    it(&apos;should return an empty object if not overridden&apos;, function () {
       return expect(
         CallScriptStream.prototype.scriptParameters,
         &apos;when called with&apos;,
@@ -220,8 +223,8 @@ describe(&apos;CallScriptStream&apos;, function() {
   });
 
   /** @test {CallScriptStream#inputArguments} */
-  describe(&apos;#inputArguments&apos;, function() {
-    it(&apos;should return an array of node-opcua~Variants&apos;, function() {
+  describe(&apos;#inputArguments&apos;, function () {
+    it(&apos;should return an array of node-opcua~Variants&apos;, function () {
       const stream = new StubImplementation();
 
       return expect(
@@ -229,7 +232,7 @@ describe(&apos;CallScriptStream&apos;, function() {
         &apos;when called with&apos;,
         [{}],
         &apos;to have items satisfying&apos;,
-        expect.it(item =&gt; {
+        expect.it((item) =&gt; {
           expect(item, &apos;to be an object&apos;);
           expect(item, &apos;to have property&apos;, &apos;dataType&apos;);
           expect(item, &apos;to have property&apos;, &apos;value&apos;);
@@ -237,7 +240,7 @@ describe(&apos;CallScriptStream&apos;, function() {
       );
     });
 
-    it(&apos;should return names and values from #scriptParameters&apos;, function() {
+    it(&apos;should return names and values from #scriptParameters&apos;, function () {
       const stream = new WithParams();
       const file = { stem: &apos;test&apos; };
       const [{ value: paramNames }, { value: paramValues }] = stream.inputArguments(file).slice(2);
@@ -253,10 +256,10 @@ describe(&apos;CallScriptStream&apos;, function() {
   });
 
   /** @test {CallScriptStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&quot;should include the file&apos;s name&quot;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&quot;should include the file&apos;s name&quot;, function () {
       return expect(
-        f =&gt; new StubImplementation().processErrorMessage(f),
+        (f) =&gt; new StubImplementation().processErrorMessage(f),
         &apos;when called with&apos;,
         [{ relative: &apos;./path/file&apos; }],
         &apos;to end with&apos;,
@@ -264,9 +267,9 @@ describe(&apos;CallScriptStream&apos;, function() {
       );
     });
 
-    it(&quot;should include the called script&apos;s id&quot;, function() {
+    it(&quot;should include the called script&apos;s id&quot;, function () {
       return expect(
-        f =&gt; new StubImplementation().processErrorMessage(f),
+        (f) =&gt; new StubImplementation().processErrorMessage(f),
         &apos;when called with&apos;,
         [{ relative: &apos;./path/file&apos; }],
         &apos;to contain&apos;,
@@ -276,8 +279,8 @@ describe(&apos;CallScriptStream&apos;, function() {
   });
 
   /** @test {CallScriptStream#processChunk} */
-  describe(&apos;#processChunk&apos;, function() {
-    it(&apos;should process as usual if not called on atscm script&apos;, function() {
+  describe(&apos;#processChunk&apos;, function () {
+    it(&apos;should process as usual if not called on atscm script&apos;, function () {
       const stream = new StubImplementation();
 
       return expect(
@@ -289,7 +292,7 @@ describe(&apos;CallScriptStream&apos;, function() {
       );
     });
 
-    it(&quot;should suggest running &apos;atscm import&apos; if atscm script is missing&quot;, function() {
+    it(&quot;should suggest running &apos;atscm import&apos; if atscm script is missing&quot;, function () {
       const stream = new StubAtscmImplementation();
 
       return expect(

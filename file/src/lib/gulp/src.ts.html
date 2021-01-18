@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -201,13 +204,13 @@ export class FileNode extends SourceNode {
     }
 
     if (references) {
-      (Object.entries(references) as ([
+      (Object.entries(references) as [
         keyof typeof ReferenceTypeIds,
         (string | number)[]
-      ])[]).forEach(([ref, ids]) =&gt; {
+      ][]).forEach(([ref, ids]) =&gt; {
         const type = ReferenceTypeIds[ref] || parseInt(ref, 10);
 
-        ids.forEach(id =&gt; {
+        ids.forEach((id) =&gt; {
           this.references.addReference(type, id);
           this._resolvedReferences.addReference(type, id);
         });
@@ -350,7 +353,7 @@ export class SourceBrowser {
     let processError: Error;
 
     const done = new Promise&lt;void&gt;((resolve, reject) =&gt; {
-      this._reject = err =&gt; {
+      this._reject = (err) =&gt; {
         if (processError) {
           // Multiple errors occured. In most cases this means, that the server connection was
           // closed after the first error.
@@ -424,43 +427,40 @@ export class SourceBrowser {
 
     if (s.isDirectory()) {
       let container;
-      const nextChildren = (await readdir(path)).reduce(
-        (nodes, p) =&gt; {
-          const node = {
-            name: p,
-            path: join(path, p),
-            push,
-          };
+      const nextChildren = (await readdir(path)).reduce((nodes, p) =&gt; {
+        const node = {
+          name: p,
+          path: join(path, p),
+          push,
+        };
 
-          if (p.match(containerFileRegexp)) {
-            container = node;
+        if (p.match(containerFileRegexp)) {
+          container = node;
 
-            return nodes;
+          return nodes;
+        }
+
+        let parts: string[];
+        const noProcessingNeeded = nodes.find((current) =&gt; {
+          const n = current.name;
+          if (n === `.${p}.json`) {
+            return true;
+          } // Skip files with definitions already present
+
+          const [raw, rest] = parts || (parts = p.split(&apos;.inner&apos;));
+
+          if (rest === &apos;&apos; &amp;&amp; (n === raw || n === `.${raw}.json`)) {
+            // Got an *.inner directory
+            // eslint-disable-next-line no-param-reassign
+            current.children = (current.children || []).concat(node);
+            return true;
           }
 
-          let parts: string[];
-          const noProcessingNeeded = nodes.find(current =&gt; {
-            const n = current.name;
-            if (n === `.${p}.json`) {
-              return true;
-            } // Skip files with definitions already present
+          return false;
+        });
 
-            const [raw, rest] = parts || (parts = p.split(&apos;.inner&apos;));
-
-            if (rest === &apos;&apos; &amp;&amp; (n === raw || n === `.${raw}.json`)) {
-              // Got an *.inner directory
-              // eslint-disable-next-line no-param-reassign
-              current.children = (current.children || []).concat(node);
-              return true;
-            }
-
-            return false;
-          });
-
-          return noProcessingNeeded ? nodes : nodes.concat(node);
-        },
-        [] as DiscoveredNodeFile[]
-      );
+        return noProcessingNeeded ? nodes : nodes.concat(node);
+      }, [] as DiscoveredNodeFile[]);
 
       if (container) {
         return this._processPath(Object.assign(container, { children: nextChildren, parent }));
@@ -470,7 +470,7 @@ export class SourceBrowser {
       }
 
       const inheritParent = path.endsWith(&apos;.inner&apos;);
-      nextChildren.forEach(node =&gt; {
+      nextChildren.forEach((node) =&gt; {
         if (inheritParent) {
           // eslint-disable-next-line no-param-reassign
           node.parent = parent;
@@ -532,24 +532,28 @@ export class SourceBrowser {
     if (!node.waitingFor) {
       const deps = Array.from(node.references).reduce(
         (result, [, ids]) =&gt;
-          result.concat(Array.from(ids).filter(id =&gt; {
-            if (typeof id === &apos;number&apos;) {
-              // OPC-UA node
-              return false;
-            }
+          result.concat(
+            Array.from(ids).filter((id) =&gt; {
+              if (typeof id === &apos;number&apos;) {
+                // OPC-UA node
+                return false;
+              }
 
-            return !this._pushed.has(id) &amp;&amp; !ProjectConfig.isExternal(id);
-          }) as string[]),
+              return !this._pushed.has(id) &amp;&amp; !ProjectConfig.isExternal(id);
+            }) as string[]
+          ),
         [] as string[]
       );
       // eslint-disable-next-line no-param-reassign
       node.waitingFor = new Set(deps);
-      deps.forEach(d =&gt; {
+      deps.forEach((d) =&gt; {
         this._dependingOn.set(
           d,
-          (this._dependingOn.get(d) || []).concat(node as BrowsedFileNode &amp; {
-            waitingFor: Set&lt;string&gt;;
-          })
+          (this._dependingOn.get(d) || []).concat(
+            node as BrowsedFileNode &amp; {
+              waitingFor: Set&lt;string&gt;;
+            }
+          )
         );
       });
     }
@@ -572,8 +576,8 @@ export class SourceBrowser {
     if (node.nodeClass === NodeClass.Variable &amp;&amp; this._readNodeFile(node)) {
       // eslint-disable-next-line no-param-reassign
       await readFile(node.relative)
-        .then(value =&gt; node.setRawValue(value))
-        .catch(err =&gt; {
+        .then((value) =&gt; node.setRawValue(value))
+        .catch((err) =&gt; {
           if (err.code === &apos;EISDIR&apos;) {
             return;
           }
@@ -584,7 +588,7 @@ export class SourceBrowser {
     return this._nodeHandler(node).then(() =&gt; {
       // Handle children
       if (node.children) {
-        node.children.forEach(child =&gt; {
+        node.children.forEach((child) =&gt; {
           // eslint-disable-next-line no-param-reassign
           child.parent = node;
           this.processPath(child);
@@ -594,7 +598,7 @@ export class SourceBrowser {
       // Handle dependencies
       const depending = this._dependingOn.get(node.nodeId);
       if (depending) {
-        depending.forEach(dep =&gt; {
+        depending.forEach((dep) =&gt; {
           dep.waitingFor.delete(node.nodeId);
 
           if (!dep.waitingFor.size) {

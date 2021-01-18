@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -163,7 +166,7 @@ import expect from &apos;../../expect&apos;;
 import { importSetup, pull, deleteNode } from &apos;../../helpers/atscm&apos;;
 import { tmpDir } from &apos;../../helpers/util&apos;;
 
-describe(&apos;Issue #265 (https://github.com/atSCM/atscm/issues/265)&apos;, function() {
+describe(&apos;Issue #265 (https://github.com/atSCM/atscm/issues/265)&apos;, function () {
   const renamePath = &apos;./atscm/rename.json&apos;;
   const setup = &apos;issue-265&apos;;
   const originalName = &apos;conflicting-nodes&apos;;
@@ -172,7 +175,7 @@ describe(&apos;Issue #265 (https://github.com/atSCM/atscm/issues/265)&apos;, fun
 
   const catchErrorLog = () =&gt; {};
 
-  before(&apos;reset renames, import setup and pull conflicting nodes&apos;, async function() {
+  before(&apos;reset renames, import setup and pull conflicting nodes&apos;, async function () {
     Logger.on(&apos;error&apos;, () =&gt; catchErrorLog);
     await outputJson(renamePath, {});
 
@@ -181,20 +184,23 @@ describe(&apos;Issue #265 (https://github.com/atSCM/atscm/issues/265)&apos;, fun
     nodeIds = nodeNames.map((nodeName, i) =&gt; `${nodePaths[i]}.${nodeName}`);
     const destination = tmpDir(setup.replace(/\//g, &apos;-&apos;));
 
-    await pull(nodeIds.map(nodeId =&gt; `ns=1;s=${nodeId}`), destination);
+    await pull(
+      nodeIds.map((nodeId) =&gt; `ns=1;s=${nodeId}`),
+      destination
+    );
   });
 
-  it(&apos;should not create duplicate entries in rename.json&apos;, async function() {
+  it(&apos;should not create duplicate entries in rename.json&apos;, async function () {
     const renames = await readJson(renamePath);
 
     expect(Object.keys(renames), &apos;to equal&apos;, [`${nodeIds[0]}.Parent`]);
   });
 
-  after(&apos;delete tmp node&apos;, function() {
+  after(&apos;delete tmp node&apos;, function () {
     Logger.removeListener(&apos;error&apos;, () =&gt; catchErrorLog);
 
     // Delete the pushed node
-    return Promise.all(nodeIds.map(n =&gt; deleteNode(n)));
+    return Promise.all(nodeIds.map((n) =&gt; deleteNode(n)));
   });
 });
 </code></pre>

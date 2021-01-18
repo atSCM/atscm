@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -166,17 +169,17 @@ import ScriptTransformer from &apos;../../../src/transform/ScriptTransformer&apo
 const transformerHelper = new TransformerHelper(ScriptTransformer);
 
 /** @test {ScriptTransformer} */
-describe.skip(&apos;ScriptTransformer&apos;, function() {
+describe.skip(&apos;ScriptTransformer&apos;, function () {
   const ScriptPath = &apos;SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.script&apos;;
   const QDPath = &apos;SYSTEM/LIBRARY/PROJECT/SERVERSCRIPTS/Test.qd&apos;;
 
   /** @test {ScriptTransformer#shouldBeTransformed} */
-  describe(&apos;#shouldBeTransformed&apos;, function() {
-    it(&apos;should return true for ScriptCode type nodes&apos;, function() {
+  describe(&apos;#shouldBeTransformed&apos;, function () {
+    it(&apos;should return true for ScriptCode type nodes&apos;, function () {
       expect(ScriptTransformer.prototype.shouldBeTransformed({ isScript: true }), &apos;to be true&apos;);
     });
 
-    it(&apos;should return true for QuickDynamic type nodes&apos;, function() {
+    it(&apos;should return true for QuickDynamic type nodes&apos;, function () {
       expect(
         ScriptTransformer.prototype.shouldBeTransformed({ isQuickDynamic: true }),
         &apos;to be true&apos;
@@ -185,8 +188,8 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   });
 
   /** @test {ScriptTransformer#transformFromDB} */
-  describe(&apos;#transformFromDB&apos;, function() {
-    it(&apos;should forward parse errors&apos;, function() {
+  describe(&apos;#transformFromDB&apos;, function () {
+    it(&apos;should forward parse errors&apos;, function () {
       return expect(
         transformerHelper.writeXMLToTransformer(ScriptPath, &apos;invalid xml&apos;),
         &apos;to be rejected with&apos;,
@@ -194,7 +197,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should warn with invalid xml&apos;, function() {
+    it(&apos;should warn with invalid xml&apos;, function () {
       const onWarn = spy();
       Logger.on(&apos;warn&apos;, onWarn);
 
@@ -207,25 +210,25 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
       });
     });
 
-    it(&apos;should write empty config file for empty Script&apos;, function() {
+    it(&apos;should write empty config file for empty Script&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(ScriptPath, &apos;&lt;script&gt;&lt;/script&gt;&apos;)
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt; {
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt; {
           expect(contents[0], &apos;to equal&apos;, &apos;{}&apos;);
         });
     });
 
-    it(&apos;should write empty .js file for empty Script&apos;, function() {
+    it(&apos;should write empty .js file for empty Script&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(ScriptPath, &apos;&lt;script&gt;&lt;/script&gt;&apos;)
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt; {
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt; {
           expect(contents[1], &apos;to equal&apos;, &apos;&apos;);
         });
     });
 
-    it(&apos;should only store metadata elements&apos;, function() {
+    it(&apos;should only store metadata elements&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -233,11 +236,11 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;metadata&gt;shouldn&apos;t be handled&lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {}));
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt; expect(JSON.parse(contents[0]), &apos;to equal&apos;, {}));
     });
 
-    it(&apos;should store custom metadata elements&apos;, function() {
+    it(&apos;should store custom metadata elements&apos;, function () {
       const onWarn = spy();
       Logger.on(&apos;debug&apos;, onWarn);
 
@@ -251,8 +254,8 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             metadata: {
               longrunning: &apos;1&apos;,
@@ -266,7 +269,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         });
     });
 
-    it(&apos;should store array of custom metadata elements if needed&apos;, function() {
+    it(&apos;should store array of custom metadata elements if needed&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -277,15 +280,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             metadata: { custom: [&apos;test&apos;, &apos;test2&apos;] },
           })
         );
     });
 
-    it(&apos;should store icon metadata&apos;, function() {
+    it(&apos;should store icon metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -295,8 +298,8 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             icon: {
               type: &apos;image/png&apos;,
@@ -306,7 +309,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         );
     });
 
-    it(&apos;should store empty icon metadata&apos;, function() {
+    it(&apos;should store empty icon metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -316,8 +319,8 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             icon: {
               content: &apos;&apos;,
@@ -326,7 +329,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         );
     });
 
-    it(&apos;should store visible metadata&apos;, function() {
+    it(&apos;should store visible metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -336,15 +339,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             visible: true,
           })
         );
     });
 
-    it(&apos;should properly interpret visible metadata&apos;, function() {
+    it(&apos;should properly interpret visible metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -354,15 +357,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             visible: false,
           })
         );
     });
 
-    it(&apos;should store title metadata&apos;, function() {
+    it(&apos;should store title metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -372,15 +375,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             title: &apos;script title&apos;,
           })
         );
     });
 
-    it(&apos;should store description metadata&apos;, function() {
+    it(&apos;should store description metadata&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -390,15 +393,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/metadata&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             description: &apos;script description&apos;,
           })
         );
     });
 
-    it(&apos;should store parameters&apos;, function() {
+    it(&apos;should store parameters&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -406,15 +409,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;parameter name=&quot;paramname&quot;/&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt;
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt;
           expect(JSON.parse(contents[0]), &apos;to equal&apos;, {
             parameters: [{ name: &apos;paramname&apos; }],
           })
         );
     });
 
-    it(&apos;should store relative parameter without target&apos;, function() {
+    it(&apos;should store relative parameter without target&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -426,15 +429,15 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/parameter&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
         .then(([json]) =&gt; JSON.parse(json))
-        .then(config =&gt; {
+        .then((config) =&gt; {
           expect(config.parameters[0].relative, &apos;to be&apos;, &apos;true&apos;);
           expect(config.parameters[0].target, &apos;to equal&apos;, {});
         });
     });
 
-    it(&apos;should store relative parameter with target&apos;, function() {
+    it(&apos;should store relative parameter with target&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -453,9 +456,9 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/parameter&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
         .then(([json]) =&gt; JSON.parse(json))
-        .then(config =&gt; {
+        .then((config) =&gt; {
           expect(config.parameters[0].relative, &apos;to be&apos;, &apos;true&apos;);
           expect(config.parameters[0].target, &apos;to equal&apos;, {
             namespaceIndex: 1,
@@ -464,7 +467,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         });
     });
 
-    it(&apos;should store relative parameter target with invalid namespace&apos;, function() {
+    it(&apos;should store relative parameter target with invalid namespace&apos;, function () {
       return transformerHelper
         .writeXMLToTransformer(
           ScriptPath,
@@ -483,9 +486,9 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;/parameter&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
         .then(([json]) =&gt; JSON.parse(json))
-        .then(config =&gt; {
+        .then((config) =&gt; {
           expect(config.parameters[0].relative, &apos;to be&apos;, &apos;true&apos;);
           expect(config.parameters[0].target, &apos;to equal&apos;, {
             namespaceIndex: 1,
@@ -494,7 +497,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         });
     });
 
-    it(&apos;should store code&apos;, function() {
+    it(&apos;should store code&apos;, function () {
       const code = &apos;console.log(&quot;called&quot;);&apos;;
       return transformerHelper
         .writeXMLToTransformer(
@@ -503,14 +506,14 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
   &lt;code&gt;${code}&lt;/code&gt;
 &lt;/script&gt;`
         )
-        .then(files =&gt; transformerHelper.expectFileContents(files))
-        .then(contents =&gt; expect(contents[1], &apos;to equal&apos;, code));
+        .then((files) =&gt; transformerHelper.expectFileContents(files))
+        .then((contents) =&gt; expect(contents[1], &apos;to equal&apos;, code));
     });
   });
 
   /** @test {ScriptTransformer#createCombinedFile} */
-  describe(&apos;#createCombinedFile&apos;, function() {
-    it(&apos;should forward config parse errors&apos;, function() {
+  describe(&apos;#createCombinedFile&apos;, function () {
+    it(&apos;should forward config parse errors&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
           &apos;.json&apos;: &apos;&quot;description&quot;: &quot;script description&quot; }&apos;,
@@ -520,32 +523,32 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
       );
     });
 
-    context(&apos;when called on a quick dynamic&apos;, function() {
-      it(&apos;should store empty metadata&apos;, function() {
+    context(&apos;when called on a quick dynamic&apos;, function () {
+      it(&apos;should store empty metadata&apos;, function () {
         return expect(
           transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
             &apos;.json&apos;: &apos;{ }&apos;,
           }),
           &apos;to call the callback&apos;
         )
-          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-          .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;metadata/&gt;&apos;));
+          .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;metadata/&gt;&apos;));
       });
 
-      it(&apos;should insert icon metadata&apos;, function() {
+      it(&apos;should insert icon metadata&apos;, function () {
         return expect(
           transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
             &apos;.json&apos;: &apos;{ &quot;icon&quot;: { &quot;type&quot;: &quot;image/png&quot;, &quot;content&quot;: &quot;asdf&quot; } }&apos;,
           }),
           &apos;to call the callback&apos;
         )
-          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-          .then(contents =&gt;
+          .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then((contents) =&gt;
             expect(contents[0], &apos;to contain&apos;, &apos;&lt;icon type=&quot;image/png&quot;&gt;asdf&lt;/icon&gt;&apos;)
           );
       });
 
-      it(&apos;should insert visible metadata&apos;, function() {
+      it(&apos;should insert visible metadata&apos;, function () {
         return Promise.all([
           expect(
             transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
@@ -553,77 +556,77 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
             }),
             &apos;to call the callback&apos;
           )
-            .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-            .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;0&lt;/visible&gt;&apos;)),
+            .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+            .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;0&lt;/visible&gt;&apos;)),
           expect(
             transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
               &apos;.json&apos;: &apos;{ &quot;visible&quot;: true }&apos;,
             }),
             &apos;to call the callback&apos;
           )
-            .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-            .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;1&lt;/visible&gt;&apos;)),
+            .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+            .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;visible&gt;1&lt;/visible&gt;&apos;)),
         ]);
       });
 
-      it(&apos;should insert title metadata&apos;, function() {
+      it(&apos;should insert title metadata&apos;, function () {
         return expect(
           transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
             &apos;.json&apos;: &apos;{ &quot;title&quot;: &quot;qd title&quot; }&apos;,
           }),
           &apos;to call the callback&apos;
         )
-          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-          .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;title&gt;qd title&lt;/title&gt;&apos;));
+          .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;title&gt;qd title&lt;/title&gt;&apos;));
       });
 
-      it(&apos;should insert description metadata&apos;, function() {
+      it(&apos;should insert description metadata&apos;, function () {
         return expect(
           transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
             &apos;.json&apos;: &apos;{ &quot;description&quot;: &quot;qd desc&quot; }&apos;,
           }),
           &apos;to call the callback&apos;
         )
-          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-          .then(contents =&gt;
+          .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then((contents) =&gt;
             expect(contents[0], &apos;to contain&apos;, &apos;&lt;description&gt;qd desc&lt;/description&gt;&apos;)
           );
       });
     });
 
-    context(&apos;when called on a script&apos;, function() {
-      it(&apos;should ignore quickdynamic metadata&apos;, function() {
+    context(&apos;when called on a script&apos;, function () {
+      it(&apos;should ignore quickdynamic metadata&apos;, function () {
         return expect(
           transformerHelper.createCombinedFileWithContents(`${ScriptPath}/Test`, {
             &apos;.json&apos;: &apos;{ &quot;icon&quot;: { &quot;type&quot;: &quot;image/png&quot;, &quot;content&quot;: &quot;asdf&quot; } }&apos;,
           }),
           &apos;to call the callback&apos;
         )
-          .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-          .then(contents =&gt; expect(contents[0], &apos;not to contain&apos;, &apos;&lt;icon&apos;, &apos;&lt;metadata&apos;));
+          .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+          .then((contents) =&gt; expect(contents[0], &apos;not to contain&apos;, &apos;&lt;icon&apos;, &apos;&lt;metadata&apos;));
       });
     });
 
-    it(&apos;should insert parameters&apos;, function() {
+    it(&apos;should insert parameters&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
           &apos;.json&apos;: &apos;{ &quot;parameters&quot;: [{ &quot;name&quot;: &quot;paramname&quot; }] }&apos;,
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;parameter name=&quot;paramname&quot;/&gt;&apos;));
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;parameter name=&quot;paramname&quot;/&gt;&apos;));
     });
 
-    it(&apos;should insert relative parameter without target&apos;, function() {
+    it(&apos;should insert relative parameter without target&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
           &apos;.json&apos;: &apos;{ &quot;parameters&quot;: [{ &quot;name&quot;: &quot;paramname&quot;, &quot;relative&quot;: &quot;true&quot;, &quot;target&quot;: {} }] }&apos;,
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt;
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt;
           expect(
             contents[0],
             &apos;to contain&apos;,
@@ -636,7 +639,7 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         );
     });
 
-    it(&apos;should insert relative parameter with target&apos;, function() {
+    it(&apos;should insert relative parameter with target&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
           &apos;.json&apos;: JSON.stringify({
@@ -654,8 +657,8 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt;
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt;
           expect(
             contents[0],
             &apos;to contain&apos;,
@@ -675,31 +678,31 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         );
     });
 
-    it(&apos;should insert custom metadata&apos;, function() {
+    it(&apos;should insert custom metadata&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
           &apos;.json&apos;: &apos;{ &quot;metadata&quot;: { &quot;custom&quot;: &quot;test&quot; } }&apos;,
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;custom&gt;test&lt;/custom&gt;&apos;));
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, &apos;&lt;custom&gt;test&lt;/custom&gt;&apos;));
     });
 
-    it(&apos;should insert custom metadata array&apos;, function() {
+    it(&apos;should insert custom metadata array&apos;, function () {
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
           &apos;.json&apos;: &apos;{ &quot;metadata&quot;: { &quot;custom&quot;: [&quot;test&quot;, &quot;test2&quot;] } }&apos;,
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt;
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt;
           expect(contents[0], &apos;to contain&apos;, &apos;&lt;custom&gt;test&lt;/custom&gt;&apos;, &apos;&lt;custom&gt;test2&lt;/custom&gt;&apos;)
         );
     });
 
-    it(&apos;should insert script code&apos;, function() {
+    it(&apos;should insert script code&apos;, function () {
       const code = &apos;console.log(&quot;called&quot;);&apos;;
       return expect(
         transformerHelper.createCombinedFileWithContents(`${QDPath}/Test`, {
@@ -707,12 +710,12 @@ describe.skip(&apos;ScriptTransformer&apos;, function() {
         }),
         &apos;to call the callback&apos;
       )
-        .then(args =&gt; transformerHelper.expectFileContents([args[1]]))
-        .then(contents =&gt; expect(contents[0], &apos;to contain&apos;, `&lt;code&gt;&lt;![CDATA[${code}]]&gt;&lt;/code&gt;`));
+        .then((args) =&gt; transformerHelper.expectFileContents([args[1]]))
+        .then((contents) =&gt; expect(contents[0], &apos;to contain&apos;, `&lt;code&gt;&lt;![CDATA[${code}]]&gt;&lt;/code&gt;`));
     });
 
-    context(&apos;when encoding fails&apos;, function() {
-      it(&apos;should forward encode errors&apos;, function() {
+    context(&apos;when encoding fails&apos;, function () {
+      it(&apos;should forward encode errors&apos;, function () {
         class FailingScriptTransformer extends ScriptTransformer {
           encodeContents(object, callback) {
             callback(new Error(&apos;Encode error&apos;));

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -174,7 +177,7 @@ export default class XMLTransformer extends SplittingTransformer {
     super(options);
 
     function build(object, buildOptions) {
-      const root = object.childNodes.find(n =&gt; isElement(n));
+      const root = object.childNodes.find((n) =&gt; isElement(n));
 
       if (root) {
         moveToTop(root, &apos;metadata&apos;);
@@ -191,7 +194,7 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromDB}.
      * @type {function(object: Object): string}
      */
-    this._fromDBBuilder = object =&gt; {
+    this._fromDBBuilder = (object) =&gt; {
       const xml = build(object, { compact: false, spaces: 2 });
       return xml.replace(/\r?\n/g, EOL);
     };
@@ -201,7 +204,7 @@ export default class XMLTransformer extends SplittingTransformer {
      * The builder to use with direction {@link TransformDirection.FromFilesystem}.
      * @type {function(object: Object): string}
      */
-    this._fromFilesystemBuilder = object =&gt; {
+    this._fromFilesystemBuilder = (object) =&gt; {
       const xml = build(object, { compact: false, spaces: 1 });
       return xml.replace(/\r?\n/g, &apos;\n&apos;);
     };

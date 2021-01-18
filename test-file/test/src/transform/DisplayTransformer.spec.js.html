@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -166,18 +169,18 @@ import { TransformDirection } from &apos;../../../src/lib/transform/Transformer&
 import DisplayTransformer from &apos;../../../src/transform/DisplayTransformer&apos;;
 
 /** @test {DisplayTransformer} */
-describe.skip(&apos;DisplayTransformer&apos;, function() {
+describe.skip(&apos;DisplayTransformer&apos;, function () {
   const nonDisplayFile = { isDisplay: false };
 
   /** @test {DisplayTransformer#shouldBeTransformed} */
-  describe(&apos;#shouldBeTransformed&apos;, function() {
-    it(&apos;should return false for non-display files&apos;, function() {
+  describe(&apos;#shouldBeTransformed&apos;, function () {
+    it(&apos;should return false for non-display files&apos;, function () {
       expect(DisplayTransformer.prototype.shouldBeTransformed(nonDisplayFile), &apos;to equal&apos;, false);
     });
   });
 
   /** @test {DisplayTransformer#transformFromDB} */
-  describe(&apos;#transformFromDB&apos;, function() {
+  describe(&apos;#transformFromDB&apos;, function () {
     function writeXMLToDisplayTransformer(xmlString) {
       const transformer = new DisplayTransformer({ direction: TransformDirection.FromDB });
       const file = new AtviseFile({
@@ -187,10 +190,10 @@ ${xmlString}`),
       });
 
       const data = [];
-      transformer.on(&apos;data&apos;, d =&gt; data.push(d));
+      transformer.on(&apos;data&apos;, (d) =&gt; data.push(d));
 
       const promise = new Promise((resolve, reject) =&gt; {
-        transformer.once(&apos;error&apos;, err =&gt; reject(err));
+        transformer.once(&apos;error&apos;, (err) =&gt; reject(err));
         transformer.once(&apos;end&apos;, () =&gt; resolve(data));
       });
 
@@ -200,7 +203,7 @@ ${xmlString}`),
       return promise;
     }
 
-    it(&apos;should forward parse errors&apos;, function() {
+    it(&apos;should forward parse errors&apos;, function () {
       return expect(
         writeXMLToDisplayTransformer(&apos;invalid xml&apos;),
         &apos;to be rejected with&apos;,
@@ -208,13 +211,13 @@ ${xmlString}`),
       );
     });
 
-    it(&apos;should error with invalid xml&apos;, function() {
+    it(&apos;should error with invalid xml&apos;, function () {
       return expect(writeXMLToDisplayTransformer(&apos;&apos;), &apos;to be rejected with&apos;, /No `svg` tag/);
     });
 
     function expectFileContents(xmlString, filter) {
       return expect(writeXMLToDisplayTransformer(xmlString), &apos;to be fulfilled&apos;).then(
-        resultingFiles =&gt; {
+        (resultingFiles) =&gt; {
           const _files = resultingFiles.filter(filter);
           try {
             expect(_files, &apos;to have length&apos;, 1);
@@ -230,44 +233,44 @@ ${xmlString}`),
     }
 
     function expectConfig(xmlString) {
-      return expectFileContents(xmlString, file =&gt; file.extname === &apos;.json&apos;).then(string =&gt; {
+      return expectFileContents(xmlString, (file) =&gt; file.extname === &apos;.json&apos;).then((string) =&gt; {
         let obj;
         expect(() =&gt; (obj = JSON.parse(string)), &apos;not to throw&apos;);
         return obj;
       });
     }
 
-    it(&apos;should store empty config for empty display&apos;, function() {
-      return expectConfig(&apos;&lt;svg&gt;&lt;/svg&gt;&apos;).then(config =&gt; {
+    it(&apos;should store empty config for empty display&apos;, function () {
+      return expectConfig(&apos;&lt;svg&gt;&lt;/svg&gt;&apos;).then((config) =&gt; {
         expect(config, &apos;to equal&apos;, {});
       });
     });
 
-    it(&apos;should store dependencies in config when referenced as &quot;src&quot;&apos;, function() {
+    it(&apos;should store dependencies in config when referenced as &quot;src&quot;&apos;, function () {
       return expectConfig(`&lt;svg&gt;
   &lt;script src=&quot;path/to/dependency.js&quot;&gt;&lt;/script&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
         expect(config.dependencies, &apos;to be defined&apos;);
         expect(config.dependencies, &apos;to have length&apos;, 1);
         expect(config.dependencies[0], &apos;to equal&apos;, &apos;path/to/dependency.js&apos;);
       });
     });
 
-    it(&apos;should store dependencies in config when referenced as &quot;xlink:href&quot;&apos;, function() {
+    it(&apos;should store dependencies in config when referenced as &quot;xlink:href&quot;&apos;, function () {
       return expectConfig(`&lt;svg&gt;
   &lt;script xlink:href=&quot;path/to/dependency.js&quot;&gt;&lt;/script&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
         expect(config.dependencies, &apos;to be defined&apos;);
         expect(config.dependencies, &apos;to have length&apos;, 1);
         expect(config.dependencies[0], &apos;to equal&apos;, &apos;path/to/dependency.js&apos;);
       });
     });
 
-    it(&apos;should store multiple dependencies in config&apos;, function() {
+    it(&apos;should store multiple dependencies in config&apos;, function () {
       return expectConfig(`&lt;svg&gt;
   &lt;script src=&quot;path/to/dependency1.js&quot;&gt;&lt;/script&gt;
   &lt;script src=&quot;path/to/dependency2.js&quot;&gt;&lt;/script&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
         expect(config.dependencies, &apos;to be defined&apos;);
         expect(config.dependencies, &apos;to have length&apos;, 2);
         expect(config.dependencies[0], &apos;to equal&apos;, &apos;path/to/dependency1.js&apos;);
@@ -275,70 +278,70 @@ ${xmlString}`),
       });
     });
 
-    context(&apos;when display contains inline script&apos;, function() {
+    context(&apos;when display contains inline script&apos;, function () {
       const script = &apos;console.log(&quot;called&quot;);&apos;;
 
-      it(&apos;should be stored when given with attributes&apos;, function() {
+      it(&apos;should be stored when given with attributes&apos;, function () {
         return expectFileContents(
           `&lt;svg&gt;
   &lt;script type=&quot;text/javascript&quot;&gt;${script}&lt;/script&gt;
 &lt;/svg&gt;`,
-          file =&gt; file.extname === &apos;.js&apos;
-        ).then(string =&gt; {
+          (file) =&gt; file.extname === &apos;.js&apos;
+        ).then((string) =&gt; {
           expect(string, &apos;to equal&apos;, script);
         });
       });
 
-      it(&apos;should be stored when given without attributes&apos;, function() {
+      it(&apos;should be stored when given without attributes&apos;, function () {
         return expectFileContents(
           `&lt;svg&gt;
   &lt;script&gt;${script}&lt;/script&gt;
 &lt;/svg&gt;`,
-          file =&gt; file.extname === &apos;.js&apos;
-        ).then(string =&gt; {
+          (file) =&gt; file.extname === &apos;.js&apos;
+        ).then((string) =&gt; {
           expect(string, &apos;to equal&apos;, script);
         });
       });
 
-      it(&apos;should store empty inline scripts in separate file&apos;, function() {
+      it(&apos;should store empty inline scripts in separate file&apos;, function () {
         return expectFileContents(
           `&lt;svg&gt;
   &lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
 &lt;/svg&gt;`,
-          file =&gt; file.extname === &apos;.js&apos;
-        ).then(string =&gt; {
+          (file) =&gt; file.extname === &apos;.js&apos;
+        ).then((string) =&gt; {
           expect(string, &apos;to equal&apos;, &apos;&apos;);
         });
       });
     });
 
-    context(&apos;when display contains metadata tag&apos;, function() {
-      it(&apos;should work without actual metadata&apos;, function() {
+    context(&apos;when display contains metadata tag&apos;, function () {
+      it(&apos;should work without actual metadata&apos;, function () {
         return expectConfig(`&lt;svg&gt;
   &lt;metadata&gt;&lt;/metadata&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
           expect(config, &apos;to be defined&apos;);
         });
       });
 
-      it(&apos;should work without parameters&apos;, function() {
+      it(&apos;should work without parameters&apos;, function () {
         return expectConfig(`&lt;svg&gt;
   &lt;metadata&gt;
     &lt;atv:gridconfig height=&quot;20&quot; width=&quot;20&quot; enabled=&quot;false&quot; gridstyle=&quot;lines&quot;/&gt;
   &lt;/metadata&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
           expect(config, &apos;to be defined&apos;);
         });
       });
 
-      it(&apos;should store parameters&apos;, function() {
+      it(&apos;should store parameters&apos;, function () {
         return expectConfig(`&lt;svg&gt;
   &lt;metadata&gt;
     &lt;atv:parameter behavior=&quot;mandatory&quot; desc=&quot;base&quot; valuetype=&quot;address&quot; name=&quot;base&quot;/&gt;
     &lt;atv:parameter behavior=&quot;optional&quot; desc=&quot;state label&quot; substitute=&quot;$LABEL$&quot; valuetype=&quot;trstring&quot;
       defaultvalue=&quot;T{Switched on}&quot; name=&quot;labelOn&quot;/&gt;
   &lt;/metadata&gt;
-&lt;/svg&gt;`).then(config =&gt; {
+&lt;/svg&gt;`).then((config) =&gt; {
           expect(config.parameters, &apos;to be defined&apos;);
           expect(config.parameters, &apos;to be a&apos;, Array);
           expect(config.parameters, &apos;to have length&apos;, 2);
@@ -360,7 +363,7 @@ ${xmlString}`),
       });
     });
 
-    context(&apos;when encoding fails&apos;, function() {
+    context(&apos;when encoding fails&apos;, function () {
       beforeEach(() =&gt;
         stub(DisplayTransformer.prototype, &apos;encodeContents&apos;).callsFake((obj, cb) =&gt;
           cb(new Error(&apos;Encode error&apos;))
@@ -368,7 +371,7 @@ ${xmlString}`),
       );
       afterEach(() =&gt; DisplayTransformer.prototype.encodeContents.restore());
 
-      it(&apos;should forward encode error&apos;, function() {
+      it(&apos;should forward encode error&apos;, function () {
         return expect(
           writeXMLToDisplayTransformer(&apos;&lt;svg&gt;&lt;/svg&gt;&apos;),
           &apos;to be rejected with&apos;,
@@ -379,7 +382,7 @@ ${xmlString}`),
   });
 
   /** @test {DisplayTransformer#createCombinedFile} */
-  describe(&apos;#createCombinedFile&apos;, function() {
+  describe(&apos;#createCombinedFile&apos;, function () {
     function createDisplayWithFileContents(contents) {
       let lastKey;
       const files = Object.keys(contents).reduce((prev, ext) =&gt; {
@@ -396,10 +399,10 @@ ${xmlString}`),
 
       const transformer = new DisplayTransformer({ direction: TransformDirection.FromFilesystem });
 
-      return cb =&gt; transformer.createCombinedFile(files, files[lastKey], cb);
+      return (cb) =&gt; transformer.createCombinedFile(files, files[lastKey], cb);
     }
 
-    it(&apos;should fail with invalid config file&apos;, function() {
+    it(&apos;should fail with invalid config file&apos;, function () {
       return expect(
         createDisplayWithFileContents({
           &apos;.json&apos;: &apos;&apos;,
@@ -409,7 +412,7 @@ ${xmlString}`),
       );
     });
 
-    it(&apos;should fail without SVG file&apos;, function() {
+    it(&apos;should fail without SVG file&apos;, function () {
       return expect(
         createDisplayWithFileContents({
           &apos;.json&apos;: &apos;{}&apos;,
@@ -419,7 +422,7 @@ ${xmlString}`),
       );
     });
 
-    it(&apos;should fail with invalid SVG&apos;, function() {
+    it(&apos;should fail with invalid SVG&apos;, function () {
       return expect(
         createDisplayWithFileContents({
           &apos;.svg&apos;: &apos;invalid XML&apos;,
@@ -429,7 +432,7 @@ ${xmlString}`),
       );
     });
 
-    it(&apos;should fail without `svg` tag&apos;, function() {
+    it(&apos;should fail without `svg` tag&apos;, function () {
       return expect(
         createDisplayWithFileContents({
           &apos;.svg&apos;: &apos;&lt;root&gt;&lt;/root&gt;&apos;,
@@ -440,21 +443,23 @@ ${xmlString}`),
     });
 
     function expectDisplayWithFileContentToHaveXML(contents, xmlString) {
-      return expect(createDisplayWithFileContents(contents), &apos;to call the callback&apos;).then(args =&gt; {
-        expect(args[0], &apos;to be falsy&apos;);
-        expect(args[1], &apos;to be a&apos;, File);
-        expect(args[1].contents, &apos;to be a&apos;, Buffer);
+      return expect(createDisplayWithFileContents(contents), &apos;to call the callback&apos;).then(
+        (args) =&gt; {
+          expect(args[0], &apos;to be falsy&apos;);
+          expect(args[1], &apos;to be a&apos;, File);
+          expect(args[1].contents, &apos;to be a&apos;, Buffer);
 
-        return expect(
-          args[1].contents.toString(),
-          &apos;to equal&apos;,
-          `&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+          return expect(
+            args[1].contents.toString(),
+            &apos;to equal&apos;,
+            `&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
 ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
-        );
-      });
+          );
+        }
+      );
     }
 
-    it(&apos;should work with empty svg tag&apos;, function() {
+    it(&apos;should work with empty svg tag&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;/svg&gt;&apos;,
@@ -463,7 +468,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should inline script&apos;, function() {
+    it(&apos;should inline script&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;rect&gt;&lt;/rect&gt;&lt;/svg&gt;&apos;,
@@ -476,7 +481,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should link dependencies&apos;, function() {
+    it(&apos;should link dependencies&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;rect&gt;&lt;/rect&gt;&lt;/svg&gt;&apos;,
@@ -489,7 +494,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should work without empty parameters config&apos;, function() {
+    it(&apos;should work without empty parameters config&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;rect&gt;&lt;/rect&gt;&lt;/svg&gt;&apos;,
@@ -501,7 +506,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should reuse existant metadata section&apos;, function() {
+    it(&apos;should reuse existant metadata section&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: `&lt;svg&gt;
@@ -520,7 +525,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should create metadata section if omitted&apos;, function() {
+    it(&apos;should create metadata section if omitted&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;/svg&gt;&apos;,
@@ -534,7 +539,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should keep parameters specified in SVG&apos;, function() {
+    it(&apos;should keep parameters specified in SVG&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: `&lt;svg&gt;
@@ -553,7 +558,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should insert parameters before other atv tags&apos;, function() {
+    it(&apos;should insert parameters before other atv tags&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: `&lt;svg&gt;
@@ -574,7 +579,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    it(&apos;should insert parameters in the correct order&apos;, function() {
+    it(&apos;should insert parameters in the correct order&apos;, function () {
       return expectDisplayWithFileContentToHaveXML(
         {
           &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;/svg&gt;&apos;,
@@ -589,7 +594,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
     });
 
-    context(&apos;when encoding fails&apos;, function() {
+    context(&apos;when encoding fails&apos;, function () {
       beforeEach(() =&gt;
         stub(DisplayTransformer.prototype, &apos;encodeContents&apos;).callsFake((obj, cb) =&gt;
           cb(new Error(&apos;Encode error&apos;))
@@ -597,7 +602,7 @@ ${xmlString}`.replace(/\r?\n|\r/g, &apos;\r\n&apos;)
       );
       afterEach(() =&gt; DisplayTransformer.prototype.encodeContents.restore());
 
-      it(&apos;should forward encode error&apos;, function() {
+      it(&apos;should forward encode error&apos;, function () {
         return expect(
           createDisplayWithFileContents({
             &apos;.svg&apos;: &apos;&lt;svg&gt;&lt;rect&gt;&lt;/rect&gt;&lt;/svg&gt;&apos;,

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -195,16 +198,16 @@ export default class Watcher extends Emitter {
 
     reportProgress(this._nodeBrowser.browse(nodes), {
       getter: () =&gt; this._nodeBrowser._pushed,
-      formatter: count =&gt; `Subscribed to ${count} nodes`,
+      formatter: (count) =&gt; `Subscribed to ${count} nodes`,
     })
       .then(() =&gt; this.emit(&apos;ready&apos;))
-      .catch(err =&gt; this.emit(&apos;error&apos;, err));
+      .catch((err) =&gt; this.emit(&apos;error&apos;, err));
 
     /**
      * Resolved once the server subscription is set up.
      * @type {Promise&lt;any&gt;}
      */
-    this.subscriptionStarted = this._setupSubscription().catch(err =&gt; this.emit(&apos;error&apos;, err));
+    this.subscriptionStarted = this._setupSubscription().catch((err) =&gt; this.emit(&apos;error&apos;, err));
   }
 
   /**
@@ -213,7 +216,7 @@ export default class Watcher extends Emitter {
    */
   _setupSubscription() {
     return Session.create().then(
-      session =&gt;
+      (session) =&gt;
         new Promise((resolve, reject) =&gt; {
           /** The current session, if connected @type {Session} */
           this._session = session;
@@ -228,7 +231,7 @@ export default class Watcher extends Emitter {
           });
 
           subscription.on(&apos;started&apos;, () =&gt; resolve(subscription));
-          subscription.on(&apos;failure&apos;, err =&gt; reject(err));
+          subscription.on(&apos;failure&apos;, (err) =&gt; reject(err));
         })
     );
   }
@@ -284,11 +287,11 @@ export default class Watcher extends Emitter {
 
         resolve();
       });
-      item.on(&apos;err&apos;, err =&gt; {
+      item.on(&apos;err&apos;, (err) =&gt; {
         clearTimeout(timeout);
         reject(err instanceof Error ? err : new Error(err));
       });
-    }).catch(err =&gt; {
+    }).catch((err) =&gt; {
       throw Object.assign(err, { node });
     });
   }
@@ -312,7 +315,7 @@ export default class Watcher extends Emitter {
    */
   close() {
     if (this._session) {
-      Session.close(this._session).catch(err =&gt; this.emit(&apos;error&apos;, err));
+      Session.close(this._session).catch((err) =&gt; this.emit(&apos;error&apos;, err));
     }
   }
 }

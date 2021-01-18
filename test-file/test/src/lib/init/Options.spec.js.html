@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -161,19 +164,19 @@
 import InitOption from &apos;../../../../src/lib/init/Option&apos;;
 
 /** @test {InitOption} */
-describe(&apos;InitOption&apos;, function() {
-  it(&apos;should throw when run without arguments&apos;, function() {
+describe(&apos;InitOption&apos;, function () {
+  it(&apos;should throw when run without arguments&apos;, function () {
     expect(() =&gt; new InitOption(), &apos;to throw&apos;, &apos;message or options required&apos;);
   });
 
   /** @test {InitOption#constructor} */
-  describe(&apos;#constructor&apos;, function() {
-    context(&apos;when run with string, string&apos;, function() {
-      it(&apos;should throw error for empty message&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
+    context(&apos;when run with string, string&apos;, function () {
+      it(&apos;should throw error for empty message&apos;, function () {
         expect(() =&gt; new InitOption(&apos;&apos;), &apos;to throw error&apos;, &apos;message is required&apos;);
       });
 
-      it(&apos;should work with message only&apos;, function() {
+      it(&apos;should work with message only&apos;, function () {
         let opt;
 
         expect(() =&gt; (opt = new InitOption(&apos;message&apos;)), &apos;not to throw&apos;);
@@ -181,37 +184,37 @@ describe(&apos;InitOption&apos;, function() {
         expect(opt.default, &apos;to be&apos;, undefined);
       });
 
-      it(&apos;should set default type&apos;, function() {
+      it(&apos;should set default type&apos;, function () {
         expect(new InitOption(&apos;message&apos;).type, &apos;to equal&apos;, InitOption.DefaultType);
       });
 
-      it(&apos;should add `?` to message&apos;, function() {
+      it(&apos;should add `?` to message&apos;, function () {
         expect(new InitOption(&apos;message&apos;).message, &apos;to equal&apos;, &apos;message?&apos;);
       });
 
-      it(&apos;should store default if given&apos;, function() {
+      it(&apos;should store default if given&apos;, function () {
         expect(new InitOption(&apos;message&apos;, &apos;default&apos;).default, &apos;to equal&apos;, &apos;default&apos;);
       });
     });
 
-    context(&apos;when run with object&apos;, function() {
-      it(&apos;should throw error for missing message&apos;, function() {
+    context(&apos;when run with object&apos;, function () {
+      it(&apos;should throw error for missing message&apos;, function () {
         expect(() =&gt; new InitOption({}), &apos;to throw error&apos;, &apos;message is required&apos;);
       });
 
-      it(&apos;should throw error for empty message&apos;, function() {
+      it(&apos;should throw error for empty message&apos;, function () {
         expect(() =&gt; new InitOption({ message: &apos;&apos; }), &apos;to throw error&apos;, &apos;message is required&apos;);
       });
 
-      it(&apos;should add `?` to message&apos;, function() {
+      it(&apos;should add `?` to message&apos;, function () {
         expect(new InitOption({ message: &apos;message&apos; }).message, &apos;to equal&apos;, &apos;message?&apos;);
       });
 
-      it(&apos;should set default type&apos;, function() {
+      it(&apos;should set default type&apos;, function () {
         expect(new InitOption({ message: &apos;message&apos; }).type, &apos;to equal&apos;, InitOption.DefaultType);
       });
 
-      it(&apos;should store type, message, default and validate&apos;, function() {
+      it(&apos;should store type, message, default and validate&apos;, function () {
         const opts = {
           type: &apos;test&apos;,
           message: &apos;message&apos;,

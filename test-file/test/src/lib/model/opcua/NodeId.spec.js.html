@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -164,44 +167,44 @@ import { NodeId as OpcNodeId } from &apos;node-opcua&apos;;
 import NodeId from &apos;../../../../../src/lib/model/opcua/NodeId&apos;;
 
 /** @test {NodeId} */
-describe(&apos;NodeId&apos;, function() {
+describe(&apos;NodeId&apos;, function () {
   const path = join(&apos;AGENT/DISPLAYS/Main&apos;);
   const id = &apos;AGENT.DISPLAYS.Main&apos;;
 
   /** @test {NodeId#constructor} */
-  describe(&apos;#constructor&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
     function expectType(type, ...args) {
       expect(new NodeId(...args).identifierType, &apos;to equal&apos;, type);
     }
 
-    context(&apos;when called with value only&apos;, function() {
-      it(&apos;should work&apos;, function() {
+    context(&apos;when called with value only&apos;, function () {
+      it(&apos;should work&apos;, function () {
         expect(() =&gt; new NodeId(&apos;AGENT.DISPLAYS&apos;), &apos;not to throw&apos;);
       });
 
-      it(&apos;should set namespace to 1&apos;, function() {
+      it(&apos;should set namespace to 1&apos;, function () {
         expect(new NodeId(&apos;AGENT.DISPLAYS&apos;).namespace, &apos;to equal&apos;, 1);
       });
 
-      it(&apos;should set indentifierType to string if string is passed&apos;, function() {
+      it(&apos;should set indentifierType to string if string is passed&apos;, function () {
         expectType(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;);
       });
 
-      it(&apos;should set indentifierType to number if number is passed&apos;, function() {
+      it(&apos;should set indentifierType to number if number is passed&apos;, function () {
         expectType(NodeId.NodeIdType.NUMERIC, 123);
       });
     });
 
-    context(&apos;when called with a nodeid string&apos;, function() {
-      it(&apos;should work&apos;, function() {
+    context(&apos;when called with a nodeid string&apos;, function () {
+      it(&apos;should work&apos;, function () {
         expect(() =&gt; new NodeId(&apos;ns=1;s=AGENT.DISPLAYS&apos;), &apos;not to throw&apos;);
       });
 
-      it(&apos;should get namespace from string&apos;, function() {
+      it(&apos;should get namespace from string&apos;, function () {
         expect(new NodeId(&apos;ns=13;s=AGENT.DISPLAYS&apos;).namespace, &apos;to equal&apos;, 13);
       });
 
-      it(&apos;should get identifierType from string&apos;, function() {
+      it(&apos;should get identifierType from string&apos;, function () {
         expectType(NodeId.NodeIdType.STRING, &apos;ns=1;s=AGENT.DISPLAYS&apos;);
         expectType(NodeId.NodeIdType.NUMERIC, &apos;ns=1;i=13&apos;);
         // FIXME: Missing tests for type GUID
@@ -209,35 +212,35 @@ describe(&apos;NodeId&apos;, function() {
       });
     });
 
-    context(&apos;when called with type, value, namespace&apos;, function() {
-      it(&apos;should work&apos;, function() {
+    context(&apos;when called with type, value, namespace&apos;, function () {
+      it(&apos;should work&apos;, function () {
         expect(() =&gt; new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;, 1), &apos;not to throw&apos;);
       });
 
-      it(&apos;should set namespace to 1 if omitted&apos;, function() {
+      it(&apos;should set namespace to 1 if omitted&apos;, function () {
         expect(() =&gt; new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;), &apos;not to throw&apos;);
         expect(new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;).namespace, &apos;to equal&apos;, 1);
       });
     });
 
-    it(&quot;should extend node-opcua&apos;s NodeId&quot;, function() {
+    it(&quot;should extend node-opcua&apos;s NodeId&quot;, function () {
       expect(new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1), &apos;to be a&apos;, OpcNodeId);
     });
   });
 
   /** @test {NodeId#fromFilePath} */
-  describe(&apos;#fromFilePath&apos;, function() {
-    it(&apos;should return a NodeId&apos;, function() {
+  describe(&apos;#fromFilePath&apos;, function () {
+    it(&apos;should return a NodeId&apos;, function () {
       expect(NodeId.fromFilePath(path), &apos;to be a&apos;, NodeId);
     });
 
-    it(&apos;should return file path again&apos;, function() {
+    it(&apos;should return file path again&apos;, function () {
       const nodeId = NodeId.fromFilePath(path);
       expect(nodeId.filePath, &apos;to be a&apos;, &apos;string&apos;);
       expect(join(nodeId.filePath), &apos;to equal&apos;, path);
     });
 
-    it(&apos;should work with resource paths&apos;, function() {
+    it(&apos;should work with resource paths&apos;, function () {
       expect(
         NodeId.fromFilePath(
           join(&apos;SYSTEM/LIBRARY/ATVISE/RESOURCES/timer/imgs_glossy/top-separator.gif&apos;)
@@ -247,7 +250,7 @@ describe(&apos;NodeId&apos;, function() {
       );
     });
 
-    it(&apos;should work with multi extension resource paths&apos;, function() {
+    it(&apos;should work with multi extension resource paths&apos;, function () {
       expect(
         NodeId.fromFilePath(join(&apos;SYSTEM/LIBRARY/PROJECT/RESOURCES/styles/bootstrap.min.css&apos;))
           .value,
@@ -256,7 +259,7 @@ describe(&apos;NodeId&apos;, function() {
       );
     });
 
-    it(&apos;should unescape slashes&apos;, function() {
+    it(&apos;should unescape slashes&apos;, function () {
       return expect(
         NodeId.fromFilePath(join(&apos;test/no%2Ffolder&apos;)).value,
         &apos;to equal&apos;,
@@ -266,22 +269,22 @@ describe(&apos;NodeId&apos;, function() {
   });
 
   /** @test {NodeId#filePath} */
-  describe(&apos;#filePath&apos;, function() {
-    it(&apos;should return a valid file path&apos;, function() {
+  describe(&apos;#filePath&apos;, function () {
+    it(&apos;should return a valid file path&apos;, function () {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, id, 1);
 
       expect(nodeId.filePath, &apos;to be a&apos;, &apos;string&apos;);
       expect(join(nodeId.filePath), &apos;to equal&apos;, path);
     });
 
-    it(&apos;should handle resource paths&apos;, function() {
+    it(&apos;should handle resource paths&apos;, function () {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, &apos;SYSTEM.LIBRARY.RESOURCES/dir/test.e&apos;, 1);
 
       expect(nodeId.filePath, &apos;to be a&apos;, &apos;string&apos;);
       expect(nodeId.filePath, &apos;to equal&apos;, &apos;SYSTEM/LIBRARY/RESOURCES/dir/test.e&apos;);
     });
 
-    it(&apos;should escape slashes&apos;, function() {
+    it(&apos;should escape slashes&apos;, function () {
       return expect(
         new NodeId(&apos;AGENT.OBJECTS.Test/node&apos;).filePath,
         &apos;to equal&apos;,
@@ -291,51 +294,51 @@ describe(&apos;NodeId&apos;, function() {
   });
 
   /** @test {_lastSeparator} */
-  describe(&apos;#_lastSeparator&apos;, function() {
-    it(&apos;should return null for non-string node ids&apos;, function() {
+  describe(&apos;#_lastSeparator&apos;, function () {
+    it(&apos;should return null for non-string node ids&apos;, function () {
       expect(new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1)._lastSeparator, &apos;to be&apos;, null);
     });
 
-    it(&apos;should return `/` for resource paths&apos;, function() {
+    it(&apos;should return `/` for resource paths&apos;, function () {
       expect(new NodeId(NodeId.NodeIdType.STRING, &apos;Test/Resource&apos;, 1)._lastSeparator, &apos;to be&apos;, &apos;/&apos;);
     });
 
-    it(&apos;should return `.` for regular node ids&apos;, function() {
+    it(&apos;should return `.` for regular node ids&apos;, function () {
       expect(new NodeId(NodeId.NodeIdType.STRING, &apos;Test.Node&apos;, 1)._lastSeparator, &apos;to be&apos;, &apos;.&apos;);
     });
   });
 
   /** @test {NodeId#parent} */
-  describe(&apos;#parent&apos;, function() {
-    it(&apos;should return null for non-string node ids&apos;, function() {
+  describe(&apos;#parent&apos;, function () {
+    it(&apos;should return null for non-string node ids&apos;, function () {
       const child = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1);
       const parent = child.parent;
 
       expect(parent, &apos;to be&apos;, null);
     });
 
-    it(&apos;should inherit identifier type&apos;, function() {
+    it(&apos;should inherit identifier type&apos;, function () {
       const child = new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS.Main&apos;, 13);
       const parent = child.parent;
 
       expect(parent.identifierType, &apos;to equal&apos;, NodeId.NodeIdType.STRING);
     });
 
-    it(&apos;should inherit namespace&apos;, function() {
+    it(&apos;should inherit namespace&apos;, function () {
       const child = new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS.Main&apos;, 13);
       const parent = child.parent;
 
       expect(parent.namespace, &apos;to equal&apos;, 13);
     });
 
-    it(&apos;should return parent nodes for dot separated node ids&apos;, function() {
+    it(&apos;should return parent nodes for dot separated node ids&apos;, function () {
       const child = new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS.Main&apos;, 13);
       const parent = child.parent;
 
       expect(parent.value, &apos;to equal&apos;, &apos;AGENT.DISPLAYS&apos;);
     });
 
-    it(&apos;should return parent nodes for slash separated node ids&apos;, function() {
+    it(&apos;should return parent nodes for slash separated node ids&apos;, function () {
       const child = new NodeId(NodeId.NodeIdType.STRING, &apos;SYSTEM.LIBRARY.RESOURCES/dir/test.e&apos;, 13);
       const parent = child.parent;
 
@@ -344,8 +347,8 @@ describe(&apos;NodeId&apos;, function() {
   });
 
   /** @test {NodeId#isChildOf} */
-  describe(&apos;#isChildOf&apos;, function() {
-    it(&apos;should return false for non-string ids&apos;, function() {
+  describe(&apos;#isChildOf&apos;, function () {
+    it(&apos;should return false for non-string ids&apos;, function () {
       const invalid = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 13);
       const valid = new NodeId(NodeId.NodeIdType.STRING, &apos;Node.Path&apos;, 13);
 
@@ -353,21 +356,21 @@ describe(&apos;NodeId&apos;, function() {
       expect(valid.isChildOf(invalid), &apos;to be false&apos;);
     });
 
-    it(&apos;should return false for different namespaces&apos;, function() {
+    it(&apos;should return false for different namespaces&apos;, function () {
       const first = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node&apos;, 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To&apos;, 2);
 
       expect(first.isChildOf(second), &apos;to be false&apos;);
     });
 
-    it(&apos;should return false for same nodes values&apos;, function() {
+    it(&apos;should return false for same nodes values&apos;, function () {
       const first = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node&apos;, 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node&apos;, 1);
 
       expect(first.isChildOf(second), &apos;to be false&apos;);
     });
 
-    it(&apos;should return false for similar node values&apos;, function() {
+    it(&apos;should return false for similar node values&apos;, function () {
       const base = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node&apos;, 1);
       const postfixed = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node1&apos;, 1);
       const prefixed = new NodeId(NodeId.NodeIdType.STRING, &apos;Another.Path.To.Node&apos;, 1);
@@ -379,21 +382,21 @@ describe(&apos;NodeId&apos;, function() {
       expect(prefixed.isChildOf(base), &apos;to be false&apos;);
     });
 
-    it(&apos;should return true for real parents&apos;, function() {
+    it(&apos;should return true for real parents&apos;, function () {
       const first = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To.Node&apos;, 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.To&apos;, 1);
 
       expect(first.isChildOf(second), &apos;to be true&apos;);
     });
 
-    it(&apos;should return true for parent resource nodes&apos;, function() {
+    it(&apos;should return true for parent resource nodes&apos;, function () {
       const first = new NodeId(NodeId.NodeIdType.STRING, &apos;Path/to/Node&apos;, 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, &apos;Path/to&apos;, 1);
 
       expect(first.isChildOf(second), &apos;to be true&apos;);
     });
 
-    it(&apos;should return true for resource child nodes&apos;, function() {
+    it(&apos;should return true for resource child nodes&apos;, function () {
       const first = new NodeId(NodeId.NodeIdType.STRING, &apos;Path/to/Node.html.Translate&apos;, 1);
       const second = new NodeId(NodeId.NodeIdType.STRING, &apos;Path/to/Node.html&apos;, 1);
 
@@ -402,46 +405,46 @@ describe(&apos;NodeId&apos;, function() {
   });
 
   /** @test {NodeId#browseName} */
-  describe(&apos;#browseName&apos;, function() {
-    it(&apos;should return null for non-string node ids&apos;, function() {
+  describe(&apos;#browseName&apos;, function () {
+    it(&apos;should return null for non-string node ids&apos;, function () {
       const node = new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1);
 
       expect(node.browseName, &apos;to be&apos;, null);
     });
 
-    it(&apos;should return the last node path component&apos;, function() {
+    it(&apos;should return the last node path component&apos;, function () {
       const node = new NodeId(NodeId.NodeIdType.STRING, &apos;Path.to.node&apos;, 1);
       expect(node.browseName, &apos;to be&apos;, &apos;node&apos;);
     });
 
-    it(&apos;should return the last resource path component&apos;, function() {
+    it(&apos;should return the last resource path component&apos;, function () {
       const node = new NodeId(NodeId.NodeIdType.STRING, &apos;Path/to/Node&apos;, 1);
       expect(node.browseName, &apos;to be&apos;, &apos;Node&apos;);
     });
   });
 
   /** @test {NodeId#inspect} */
-  describe(&apos;#inspect&apos;, function() {
+  describe(&apos;#inspect&apos;, function () {
     const opts = {
-      stylize: spy(t =&gt; t),
+      stylize: spy((t) =&gt; t),
     };
 
     beforeEach(() =&gt; opts.stylize.resetHistory());
 
-    it(&apos;should return &quot;namespace value&quot;&apos;, function() {
+    it(&apos;should return &quot;namespace value&quot;&apos;, function () {
       const nodeId = new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;, 1);
 
       expect(nodeId.inspect(0, opts), &apos;to match&apos;, /1 AGENT\.DISPLAYS/);
     });
 
-    it(&apos;should style string id as string&apos;, function() {
+    it(&apos;should style string id as string&apos;, function () {
       new NodeId(NodeId.NodeIdType.STRING, &apos;AGENT.DISPLAYS&apos;, 1).inspect(0, opts);
 
       expect(opts.stylize.calledTwice, &apos;to be true&apos;);
       expect(opts.stylize.lastCall.args, &apos;to equal&apos;, [&apos;AGENT.DISPLAYS&apos;, &apos;string&apos;]);
     });
 
-    it(&apos;should style numeric id as number&apos;, function() {
+    it(&apos;should style numeric id as number&apos;, function () {
       new NodeId(NodeId.NodeIdType.NUMERIC, 123, 1).inspect(0, opts);
 
       expect(opts.stylize.calledTwice, &apos;to be true&apos;);

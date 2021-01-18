@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -200,28 +203,28 @@ const FailingSession = proxyquire(&apos;../../../../src/lib/server/Session&apos;
 }).default;
 
 /** @test {Session} */
-describe(&apos;Session&apos;, function() {
+describe(&apos;Session&apos;, function () {
   /** @test {Session.create} */
-  describe(&apos;.create&apos;, function() {
-    it(&apos;should create a new ClientSession&apos;, function() {
+  describe(&apos;.create&apos;, function () {
+    it(&apos;should create a new ClientSession&apos;, function () {
       return expect(Session.create(), &apos;to be fulfilled&apos;)
-        .then(session =&gt; {
+        .then((session) =&gt; {
           expect(session, &apos;to be a&apos;, ClientSession);
           return session;
         })
-        .then(session =&gt; Session.close(session));
+        .then((session) =&gt; Session.close(session));
     });
 
-    it(&apos;should store newly created session&apos;, function() {
+    it(&apos;should store newly created session&apos;, function () {
       return expect(Session.create(), &apos;to be fulfilled&apos;)
-        .then(session =&gt; {
+        .then((session) =&gt; {
           expect(Session.open, &apos;to contain&apos;, session);
           return session;
         })
-        .then(session =&gt; Session.close(session));
+        .then((session) =&gt; Session.close(session));
     });
 
-    it(&apos;should fail with invalid credentials&apos;, function() {
+    it(&apos;should fail with invalid credentials&apos;, function () {
       return Promise.all([
         // Missing username
         expect(
@@ -255,42 +258,42 @@ describe(&apos;Session&apos;, function() {
       ]);
     });
 
-    it(&apos;should forward Client.create errors&apos;, function() {
+    it(&apos;should forward Client.create errors&apos;, function () {
       return expect(FailingClientSession.create(), &apos;to be rejected with&apos;, &apos;Client.create error&apos;);
     });
 
-    it(&apos;should forward non-login errors&apos;, function() {
+    it(&apos;should forward non-login errors&apos;, function () {
       return expect(FailingSession.create(), &apos;to be rejected with&apos;, /Client\.createSession error/);
     });
   });
 
   /** @test {Session.close} */
-  describe(&apos;.close&apos;, function() {
-    it(&apos;should fail without session&apos;, function() {
+  describe(&apos;.close&apos;, function () {
+    it(&apos;should fail without session&apos;, function () {
       return expect(() =&gt; Session.close(), &apos;to be rejected with&apos;, &apos;session is required&apos;);
     });
 
-    it(&apos;should return if session is already closed&apos;, function() {
+    it(&apos;should return if session is already closed&apos;, function () {
       return expect(Session.create(), &apos;to be fulfilled&apos;)
-        .then(session =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;))
-        .then(session =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;));
+        .then((session) =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;))
+        .then((session) =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;));
     });
 
-    it(&apos;should wait for session to close if already closing&apos;, function() {
+    it(&apos;should wait for session to close if already closing&apos;, function () {
       return expect(Session.create(), &apos;to be fulfilled&apos;)
-        .then(session =&gt; {
+        .then((session) =&gt; {
           spy(session, &apos;close&apos;);
           return session;
         })
-        .then(session =&gt;
+        .then((session) =&gt;
           expect(Promise.all([Session.close(session), Session.close(session)]), &apos;to be fulfilled&apos;)
         )
-        .then(sessions =&gt; {
+        .then((sessions) =&gt; {
           expect(sessions, &apos;to have length&apos;, 2);
         });
     });
 
-    it.skip(&apos;should warn if session does not exist&apos;, function() {
+    it.skip(&apos;should warn if session does not exist&apos;, function () {
       const logListener = spy();
       Logger.on(&apos;debug&apos;, logListener);
 
@@ -314,12 +317,12 @@ describe(&apos;Session&apos;, function() {
       });
     });
 
-    it(&apos;should do nothing if client is not connected&apos;, function() {
+    it(&apos;should do nothing if client is not connected&apos;, function () {
       return expect(Session.create(), &apos;to be fulfilled&apos;)
         .then(
-          session =&gt;
+          (session) =&gt;
             new Promise((resolve, reject) =&gt; {
-              session._client.disconnect(err =&gt; {
+              session._client.disconnect((err) =&gt; {
                 if (err) {
                   reject(err);
                 } else {
@@ -328,10 +331,10 @@ describe(&apos;Session&apos;, function() {
               });
             })
         )
-        .then(session =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;));
+        .then((session) =&gt; expect(Session.close(session), &apos;to be fulfilled&apos;));
     });
 
-    it(&apos;should ignore errors closing session&apos;, function() {
+    it(&apos;should ignore errors closing session&apos;, function () {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
@@ -345,7 +348,7 @@ describe(&apos;Session&apos;, function() {
       return expect(Session.close(session), &apos;to be fulfilled&apos;);
     });
 
-    it(&apos;should ignore errors disconnecting client&apos;, function() {
+    it(&apos;should ignore errors disconnecting client&apos;, function () {
       const session = new ClientSession();
       session._client = {
         closeSession(sess, del, callback) {
@@ -361,23 +364,23 @@ describe(&apos;Session&apos;, function() {
   });
 
   /** @test {Session.closeOpen} */
-  describe(&apos;.closeOpen&apos;, function() {
-    it(&apos;should return if no sessions are open&apos;, function() {
+  describe(&apos;.closeOpen&apos;, function () {
+    it(&apos;should return if no sessions are open&apos;, function () {
       return expect(Session.closeOpen(), &apos;to be fulfilled with&apos;, []);
     });
 
-    it(&apos;should close open sessions&apos;, function() {
+    it(&apos;should close open sessions&apos;, function () {
       expect(Session.open, &apos;to have length&apos;, 0);
-      return expect(Session.create(), &apos;to be fulfilled&apos;).then(session =&gt;
+      return expect(Session.create(), &apos;to be fulfilled&apos;).then((session) =&gt;
         expect(Session.closeOpen(), &apos;to be fulfilled with&apos;, [session])
       );
     });
 
-    it(&apos;should wait for opening sessions to open before closing&apos;, function() {
+    it(&apos;should wait for opening sessions to open before closing&apos;, function () {
       let session;
-      Session.create().then(sess =&gt; (session = sess));
+      Session.create().then((sess) =&gt; (session = sess));
 
-      return expect(Session.closeOpen(), &apos;to be fulfilled&apos;).then(sessions =&gt; {
+      return expect(Session.closeOpen(), &apos;to be fulfilled&apos;).then((sessions) =&gt; {
         expect(sessions, &apos;to equal&apos;, [session]);
       });
     });

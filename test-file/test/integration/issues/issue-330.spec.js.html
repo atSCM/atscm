@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -161,7 +164,7 @@
 import { importSetup, pull, deleteNode } from &apos;../../helpers/atscm&apos;;
 import { tmpDir } from &apos;../../helpers/util&apos;;
 
-describe(&apos;Issue #330 (https://github.com/atSCM/atscm/issues/330)&apos;, function() {
+describe(&apos;Issue #330 (https://github.com/atSCM/atscm/issues/330)&apos;, function () {
   const originalNames = [&apos;Header&apos;];
   const nodePaths = [&apos;AGENT.DISPLAYS.HEADER&apos;];
 
@@ -173,53 +176,59 @@ describe(&apos;Issue #330 (https://github.com/atSCM/atscm/issues/330)&apos;, fun
     });
   }
 
-  context(&apos;when pulling XML with `&gt;` in attribute value&apos;, function() {
+  context(&apos;when pulling XML with `&gt;` in attribute value&apos;, function () {
     const setup = &apos;issue-330/original&apos;;
     let nodeNames;
     let nodeIds;
     let destination;
 
-    before(&apos;Import setup&apos;, async function() {
+    before(&apos;Import setup&apos;, async function () {
       nodeNames = await importSetup(setup, ...originalNames);
       nodeIds = getNodeIds(nodeNames);
       destination = tmpDir(setup.replace(/\//g, &apos;-&apos;));
     });
 
-    it(&apos;should not error&apos;, function() {
+    it(&apos;should not error&apos;, function () {
       return expect(
-        pull(nodeIds.map(nodeId =&gt; `ns=1;s=${nodeId}`), destination),
+        pull(
+          nodeIds.map((nodeId) =&gt; `ns=1;s=${nodeId}`),
+          destination
+        ),
         &apos;to be fulfilled&apos;
       );
     });
 
-    after(&apos;delete tmp node&apos;, function() {
+    after(&apos;delete tmp node&apos;, function () {
       // Delete the pushed node
-      return Promise.all(nodeIds.map(n =&gt; deleteNode(n)));
+      return Promise.all(nodeIds.map((n) =&gt; deleteNode(n)));
     });
   });
 
-  context(&apos;when attribute is renamed&apos;, function() {
+  context(&apos;when attribute is renamed&apos;, function () {
     const setup = &apos;issue-330/fixed&apos;;
     let nodeNames;
     let nodeIds;
     let destination;
 
-    before(&apos;Import setup&apos;, async function() {
+    before(&apos;Import setup&apos;, async function () {
       nodeNames = await importSetup(setup, ...originalNames);
       nodeIds = getNodeIds(nodeNames);
       destination = tmpDir(setup.replace(/\//g, &apos;-&apos;));
     });
 
-    it(&apos;should not error&apos;, function() {
+    it(&apos;should not error&apos;, function () {
       return expect(
-        pull(nodeIds.map(nodeId =&gt; `ns=1;s=${nodeId}`), destination),
+        pull(
+          nodeIds.map((nodeId) =&gt; `ns=1;s=${nodeId}`),
+          destination
+        ),
         &apos;to be fulfilled&apos;
       );
     });
 
-    after(&apos;delete tmp node&apos;, function() {
+    after(&apos;delete tmp node&apos;, function () {
       // Delete the pushed node
-      return Promise.all(nodeIds.map(n =&gt; deleteNode(n)));
+      return Promise.all(nodeIds.map((n) =&gt; deleteNode(n)));
     });
   });
 });

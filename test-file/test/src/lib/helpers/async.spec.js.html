@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -161,26 +164,33 @@
 import { delay, promisified } from &apos;../../../../src/lib/helpers/async&apos;;
 
 /** @test {delay} */
-describe(&apos;delay&apos;, function() {
-  it(&apos;should resolve after duration&apos;, function() {
+describe(&apos;delay&apos;, function () {
+  it(&apos;should resolve after duration&apos;, function () {
     return expect(() =&gt; delay(100), &apos;to be fulfilled&apos;);
   });
 });
 
 /** @test {promisified} */
-describe(&apos;promisified&apos;, function() {
-  it(&apos;should be fulfilled when async function calls callback&apos;, function() {
-    return expect(promisified(cb =&gt; process.nextTick(cb)), &apos;to be fulfilled&apos;);
+describe(&apos;promisified&apos;, function () {
+  it(&apos;should be fulfilled when async function calls callback&apos;, function () {
+    return expect(
+      promisified((cb) =&gt; process.nextTick(cb)),
+      &apos;to be fulfilled&apos;
+    );
   });
 
-  it(&apos;should be rejected when async function fails&apos;, function() {
+  it(&apos;should be rejected when async function fails&apos;, function () {
     function failingAsync(callback) {
       process.nextTick(() =&gt; {
         callback(new Error(&apos;Oops&apos;));
       });
     }
 
-    return expect(promisified(cb =&gt; failingAsync(cb)), &apos;to be rejected with&apos;, &apos;Oops&apos;);
+    return expect(
+      promisified((cb) =&gt; failingAsync(cb)),
+      &apos;to be rejected with&apos;,
+      &apos;Oops&apos;
+    );
   });
 });
 </code></pre>

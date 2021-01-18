@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -164,11 +167,11 @@ import expect from &apos;../../expect&apos;;
 import { tmpDir } from &apos;../../helpers/util&apos;;
 import { importSetup, pull, deleteNode } from &apos;../../helpers/atscm&apos;;
 
-describe(&apos;Issue #345 (https://github.com/atSCM/atscm/issues/345)&apos;, function() {
+describe(&apos;Issue #345 (https://github.com/atSCM/atscm/issues/345)&apos;, function () {
   const setup = &apos;issue-345&apos;;
   let nodeIds;
 
-  it(&apos;pull should not error on empty script&apos;, async function() {
+  it(&apos;pull should not error on empty script&apos;, async function () {
     const nodeNames = await importSetup(setup, &apos;EmptyScript&apos;);
     const nodePaths = [&apos;SYSTEM.LIBRARY.PROJECT.MENUSCRIPTS&apos;];
     nodeIds = nodeNames.map((nodeName, i) =&gt; {
@@ -182,7 +185,10 @@ describe(&apos;Issue #345 (https://github.com/atSCM/atscm/issues/345)&apos;, fun
     Logger.on(&apos;warn&apos;, warnSpy);
 
     // Run atscm pull
-    await pull(nodeIds.map(nodeId =&gt; `ns=1;s=${nodeId}`), destination);
+    await pull(
+      nodeIds.map((nodeId) =&gt; `ns=1;s=${nodeId}`),
+      destination
+    );
 
     // No files should be pulled, ...
     await expect(() =&gt; readdir(destination), &apos;to be rejected with&apos;, { code: &apos;ENOENT&apos; });
@@ -192,7 +198,7 @@ describe(&apos;Issue #345 (https://github.com/atSCM/atscm/issues/345)&apos;, fun
     return expect(warnSpy, &apos;to have a call satisfying&apos;, { args: [/is empty/] });
   });
 
-  after(() =&gt; nodeIds.forEach(id =&gt; deleteNode(id)));
+  after(() =&gt; nodeIds.forEach((id) =&gt; deleteNode(id)));
 });
 </code></pre>
 

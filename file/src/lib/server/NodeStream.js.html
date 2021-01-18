@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -205,7 +208,7 @@ export default class NodeStream extends Readable {
      */
     this._start = Date.now();
 
-    const nodes = nodesToBrowse.filter(nodeId =&gt; {
+    const nodes = nodesToBrowse.filter((nodeId) =&gt; {
       // FIXME: Move to node browser and implement
       const ignored = false &amp;&amp; this.isIgnored({ nodeId });
 
@@ -239,7 +242,7 @@ export default class NodeStream extends Readable {
       recursive: options.recursive === undefined ? true : options.recursive,
     });
 
-    this._browser.onNode = node =&gt; {
+    this._browser.onNode = (node) =&gt; {
       if (node.nodeId.match(/\s$/)) {
         Logger.warn(`Node &apos;${node.nodeId}&apos; has trailing spaces in it&apos;s name.`);
         Logger.info(&apos; - Rename it to prevent errors on windows.&apos;);
@@ -254,7 +257,7 @@ export default class NodeStream extends Readable {
       this.destroy();
     };
 
-    this._browser.onError = err =&gt; {
+    this._browser.onError = (err) =&gt; {
       if (this.isDestroyed) {
         return;
       }
@@ -290,7 +293,7 @@ export default class NodeStream extends Readable {
       this._browser
         .destroy()
         .then(() =&gt; callback(err))
-        .catch(destroyErr =&gt; callback(err || destroyErr));
+        .catch((destroyErr) =&gt; callback(err || destroyErr));
     });
   }
 

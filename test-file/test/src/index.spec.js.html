@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -167,44 +170,44 @@ import SplittingTransformer from &apos;../../src/lib/transform/SplittingTransfor
 import DisplayTransformer from &apos;../../src/transform/DisplayTransformer&apos;;
 import ScriptTransformer from &apos;../../src/transform/ScriptTransformer&apos;;
 
-describe(&apos;atscm module&apos;, function() {
+describe(&apos;atscm module&apos;, function () {
   /** @test {Atviseproject} */
-  it(&apos;should export Atviseproject class&apos;, function() {
+  it(&apos;should export Atviseproject class&apos;, function () {
     expect(globalExports.Atviseproject, &apos;to be&apos;, Atviseproject);
   });
 
   /** @test {NodeId} */
-  it(&apos;should export NodeId class&apos;, function() {
+  it(&apos;should export NodeId class&apos;, function () {
     expect(globalExports.NodeId, &apos;to be&apos;, NodeId);
   });
 
   /** @test {Transformer} */
-  it(&apos;should export Transformer class&apos;, function() {
+  it(&apos;should export Transformer class&apos;, function () {
     expect(globalExports.Transformer, &apos;to be&apos;, Transformer);
   });
 
   /** @test {TransformDirection} */
-  it(&apos;should export TransformDirection enum&apos;, function() {
+  it(&apos;should export TransformDirection enum&apos;, function () {
     expect(globalExports.TransformDirection, &apos;to be&apos;, TransformDirection);
   });
 
   /** @test {PartialTransformer} */
-  it(&apos;should export PartialTransformer class&apos;, function() {
+  it(&apos;should export PartialTransformer class&apos;, function () {
     expect(globalExports.PartialTransformer, &apos;to be&apos;, PartialTransformer);
   });
 
   /** @test {SplittingTransformer} */
-  it(&apos;should export SplittingTransformer class&apos;, function() {
+  it(&apos;should export SplittingTransformer class&apos;, function () {
     expect(globalExports.SplittingTransformer, &apos;to be&apos;, SplittingTransformer);
   });
 
   /** @test {DisplayTransformer} */
-  it(&apos;should export DisplayTransformer class&apos;, function() {
+  it(&apos;should export DisplayTransformer class&apos;, function () {
     expect(globalExports.DisplayTransformer, &apos;to be&apos;, DisplayTransformer);
   });
 
   /** @test {ScriptTransformer} */
-  it(&apos;should export ScriptTransformer class&apos;, function() {
+  it(&apos;should export ScriptTransformer class&apos;, function () {
     expect(globalExports.ScriptTransformer, &apos;to be&apos;, ScriptTransformer);
   });
 });

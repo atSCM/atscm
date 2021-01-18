@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -162,11 +165,11 @@ import expect from &apos;../../expect&apos;;
 import NewlinesTransformer from &apos;../../../src/transform/Newlines&apos;;
 import File from &apos;../../../src/lib/server/AtviseFile&apos;;
 
-describe.skip(&apos;NewlinesTransformer&apos;, function() {
+describe.skip(&apos;NewlinesTransformer&apos;, function () {
   /** @test {MappingTransformer#constructor} */
-  describe(&apos;#constructor&apos;, function() {
-    context(&apos;trailingNewlines option&apos;, function() {
-      it(&apos;should default to false&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
+    context(&apos;trailingNewlines option&apos;, function () {
+      it(&apos;should default to false&apos;, function () {
         const transformer = new NewlinesTransformer();
         expect(transformer._addTrailingNewlines, &apos;to be&apos;, false);
 
@@ -177,8 +180,8 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
   });
 
   /** @test {NewlinesTransformer#shouldBeTransformed} */
-  describe(&apos;#shouldBeTransformed&apos;, function() {
-    it(&apos;should return true for reference files&apos;, function() {
+  describe(&apos;#shouldBeTransformed&apos;, function () {
+    it(&apos;should return true for reference files&apos;, function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         &apos;called with&apos;,
@@ -193,7 +196,7 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should return true for source files&apos;, function() {
+    it(&apos;should return true for source files&apos;, function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         &apos;called with&apos;,
@@ -208,7 +211,7 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should return false for binary files&apos;, function() {
+    it(&apos;should return false for binary files&apos;, function () {
       expect(
         NewlinesTransformer.prototype.shouldBeTransformed,
         &apos;called with&apos;,
@@ -225,13 +228,13 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
   });
 
   /** @test {NewlinesTransformer#transformFromDB} */
-  describe(&apos;#transformFromDB&apos;, function() {
-    it(&apos;should replace non-native newlines&apos;, function() {
+  describe(&apos;#transformFromDB&apos;, function () {
+    it(&apos;should replace non-native newlines&apos;, function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = [&apos;first line&apos;, &apos;second&apos;];
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           transformer.transformFromDB(
             new File({
               path: &apos;./src/test/Test.script/Test.js&apos;,
@@ -246,12 +249,12 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should add trailing newlines if set&apos;, function() {
+    it(&apos;should add trailing newlines if set&apos;, function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = [&apos;first line&apos;, &apos;second&apos;];
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           transformer.transformFromDB(
             new File({
               path: &apos;./src/test/Test.script/Test.js&apos;,
@@ -268,13 +271,13 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
   });
 
   /** @test {NewlinesTransformer#transformFromFilesystem} */
-  describe(&apos;#transformFromFilesystem&apos;, function() {
-    it(&apos;should replace native newlines&apos;, function() {
+  describe(&apos;#transformFromFilesystem&apos;, function () {
+    it(&apos;should replace native newlines&apos;, function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: false });
       const lines = [&apos;first line&apos;, &apos;second&apos;];
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           transformer.transformFromFilesystem(
             new File({
               path: &apos;./src/test/Test.script/Test.js&apos;,
@@ -289,12 +292,12 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should remove trailing newlines if set&apos;, function() {
+    it(&apos;should remove trailing newlines if set&apos;, function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = [&apos;first line&apos;, &apos;second&apos;];
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           transformer.transformFromFilesystem(
             new File({
               path: &apos;./src/test/Test.script/Test.js&apos;,
@@ -309,21 +312,16 @@ describe.skip(&apos;NewlinesTransformer&apos;, function() {
       );
     });
 
-    it(&apos;should remove only one trailing newline if set&apos;, function() {
+    it(&apos;should remove only one trailing newline if set&apos;, function () {
       const transformer = new NewlinesTransformer({ trailingNewlines: true });
       const lines = [&apos;first line&apos;, &apos;second&apos;];
 
       return expect(
-        cb =&gt;
+        (cb) =&gt;
           transformer.transformFromFilesystem(
             new File({
               path: &apos;./src/test/Test.script/Test.js&apos;,
-              contents: Buffer.from(
-                lines
-                  .concat(&apos;&apos;)
-                  .concat(&apos;&apos;)
-                  .join(EOL)
-              ),
+              contents: Buffer.from(lines.concat(&apos;&apos;).concat(&apos;&apos;).join(EOL)),
             }),
             &apos;utf8&apos;,
             cb

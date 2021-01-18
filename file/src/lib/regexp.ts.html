@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/tasks/import.js | atscm</title>
+  <title data-ice="title">src/lib/regexp.ts | atscm</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -159,75 +159,23 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/tasks/import.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { src } from &apos;gulp&apos;;
-import scripts from &apos;@atscm/server-scripts&apos;;
-import { version } from &apos;@atscm/server-scripts/package.json&apos;;
-import toPromise from &apos;stream-to-promise&apos;;
-import { DataType } from &apos;node-opcua/lib/datamodel/variant&apos;;
-import { StatusCodes } from &apos;node-opcua/lib/datamodel/opcua_status_code&apos;;
-import Logger from &apos;gulplog&apos;;
-import ImportStream from &apos;../lib/gulp/ImportStream&apos;;
-import { writeNode, createNode } from &apos;../api&apos;;
-import { versionNode } from &apos;../lib/server/scripts/version&apos;;
-import { delay } from &apos;../lib/helpers/async&apos;;
-import { handleTaskError, finishTask } from &apos;../lib/helpers/tasks&apos;;
-import Session from &apos;../lib/server/Session&apos;;
-import { setupContext } from &apos;../hooks/hooks&apos;;
-import checkAtserver from &apos;../hooks/check-atserver&apos;;
+<div class="content" data-ice="content"><h1 data-ice="title">src/lib/regexp.ts</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/** Special characters in regular expressions. */
+export const specialChars = [&apos;[&apos;, &apos;\\&apos;, &apos;^&apos;, &apos;$&apos;, &apos;.&apos;, &apos;|&apos;, &apos;?&apos;, &apos;*&apos;, &apos;+&apos;, &apos;(&apos;, &apos;)&apos;, &apos;]&apos;];
+
+/** A regular expression that matches all special characters in regular expressions. */
+export const specialCharsRegExp = new RegExp(
+  `(${specialChars.map((c) =&gt; `\\${c}`).join(&apos;|&apos;)})`,
+  &apos;g&apos;
+);
 
 /**
- * Imports all xml files needed for atscm usage.
- * @return {Promise&lt;void&gt;} The running task.
+ * Returns a string with all special regular expression characters escaped.
+ * @param source The string to escape.
  */
-export default async function importTask() {
-  const srcStream = src(scripts);
-  const versionVariant = { dataType: DataType.String, value: version };
-
-  Session.pool();
-
-  const context = setupContext();
-  await checkAtserver(context);
-
-  return toPromise(srcStream.pipe(new ImportStream()))
-    .then(() =&gt; writeNode(versionNode, versionVariant))
-    .catch((err) =&gt; {
-      if (err.statusCode === StatusCodes.BadNodeIdUnknown) {
-        const maxTries = 20;
-        const retryDelay = 100;
-
-        let tryNo = 0;
-        const tryToCreate = () =&gt; {
-          tryNo++;
-
-          return createNode(versionNode, {
-            name: &apos;version&apos;,
-            value: versionVariant,
-          }).then(async ({ outputArguments }) =&gt; {
-            if (outputArguments[3].value.length &lt; 2) {
-              if (tryNo &lt; maxTries) {
-                Logger.debug(`Create script is not ready yet. Retrying after ${retryDelay}ms`);
-
-                await delay(retryDelay);
-                return tryToCreate();
-              }
-
-              throw new Error(&apos;CreateNode script is not ready yet. Try again later&apos;);
-            }
-
-            return true;
-          });
-        };
-
-        return tryToCreate().then(() =&gt; Logger.debug(`Import worked on attempt # ${tryNo}`));
-      }
-
-      throw err;
-    })
-    .then(finishTask, handleTaskError);
+export function escapeForRegExp(source: string) {
+  return source.replace(specialCharsRegExp, &apos;\\$1&apos;);
 }
-
-importTask.description = &apos;Imports all xml resources needed for atscm usage&apos;;
 </code></pre>
 
 </div>

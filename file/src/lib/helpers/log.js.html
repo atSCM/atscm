@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -185,7 +188,7 @@ import Logger from &apos;gulplog&apos;;
  */
 export function reportProgress(task, { getter, formatter, level = &apos;info&apos;, logResult = true } = {}) {
   const start = Date.now();
-  const ops = value =&gt; (value / ((Date.now() - start) / 1000)).toFixed(1);
+  const ops = (value) =&gt; (value / ((Date.now() - start) / 1000)).toFixed(1);
   const message = () =&gt; {
     const value = getter();
     return `${formatter(value)} (${ops(value)}/s)`;
@@ -200,7 +203,7 @@ export function reportProgress(task, { getter, formatter, level = &apos;info&apo
     }
   }, 80);
 
-  const done = err =&gt; {
+  const done = (err) =&gt; {
     clearInterval(interval);
 
     if (logResult &amp;&amp; !err) {
@@ -215,7 +218,10 @@ export function reportProgress(task, { getter, formatter, level = &apos;info&apo
     }
   };
 
-  return task.then(() =&gt; done(), err =&gt; done(err));
+  return task.then(
+    () =&gt; done(),
+    (err) =&gt; done(err)
+  );
 }
 </code></pre>
 

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -161,52 +164,52 @@
 import Validator from &apos;../../../src/init/OptionsValidator&apos;;
 
 /** @test {InitOptionsValidator} */
-describe(&apos;InitOptionsValidator&apos;, function() {
+describe(&apos;InitOptionsValidator&apos;, function () {
   /** @test {InitOptionsValidator.name} */
-  describe(&apos;.name&apos;, function() {
-    it(&apos;should fail for empty names&apos;, function() {
+  describe(&apos;.name&apos;, function () {
+    it(&apos;should fail for empty names&apos;, function () {
       expect(Validator.name(&apos;&apos;), &apos;to match&apos;, /must be greater than zero/);
     });
 
-    it(&apos;should fail with capital letters&apos;, function() {
+    it(&apos;should fail with capital letters&apos;, function () {
       expect(Validator.name(&apos;atSCM&apos;), &apos;to match&apos;, /can no longer contain capital letters/);
     });
 
-    it(&apos;should fail with non-url-safe characters&apos;, function() {
+    it(&apos;should fail with non-url-safe characters&apos;, function () {
       expect(Validator.name(&apos;#asdf&apos;), &apos;to match&apos;, /URL-friendly characters/);
     });
 
-    it(&apos;should fail with names starting with . or _&apos;, function() {
+    it(&apos;should fail with names starting with . or _&apos;, function () {
       expect(Validator.name(&apos;_atscm&apos;), &apos;to match&apos;, /cannot start with an underscore/);
       expect(Validator.name(&apos;.atscm&apos;), &apos;to match&apos;, /cannot start with a period/);
     });
 
-    it(&apos;should fail with leading or trailing spaces&apos;, function() {
+    it(&apos;should fail with leading or trailing spaces&apos;, function () {
       expect(Validator.name(&apos; atscm&apos;), &apos;to match&apos;, /cannot contain leading or trailing spaces/);
       expect(Validator.name(&apos;atscm &apos;), &apos;to match&apos;, /cannot contain leading or trailing spaces/);
     });
 
-    it(&apos;should fail with core nodejs module name&apos;, function() {
+    it(&apos;should fail with core nodejs module name&apos;, function () {
       expect(Validator.name(&apos;http&apos;), &apos;to match&apos;, /is a core module name/);
     });
 
-    it(&apos;should fail with blacklisted name&apos;, function() {
+    it(&apos;should fail with blacklisted name&apos;, function () {
       expect(Validator.name(&apos;node_modules&apos;), &apos;to match&apos;, /is a blacklisted name/);
     });
 
-    it(&quot;should fail with &apos;atscm&apos;&quot;, function() {
+    it(&quot;should fail with &apos;atscm&apos;&quot;, function () {
       expect(Validator.name(&apos;atscm&apos;), &apos;to match&apos;, /is not allowed/);
     });
 
-    it(&apos;should fail with names longer than 214 characters&apos;, function() {
+    it(&apos;should fail with names longer than 214 characters&apos;, function () {
       expect(Validator.name(&apos;a&apos;.repeat(215)), &apos;to match&apos;, /can no longer contain more than 214/);
     });
 
-    it(&apos;should work for valid package names&apos;, function() {
+    it(&apos;should work for valid package names&apos;, function () {
       expect(Validator.name(&apos;project-name&apos;), &apos;to be&apos;, true);
     });
 
-    it(&apos;should work for scoped package names&apos;, function() {
+    it(&apos;should work for scoped package names&apos;, function () {
       expect(Validator.name(&apos;@project/name&apos;), &apos;to be&apos;, true);
     });
   });

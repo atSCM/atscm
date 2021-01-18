@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -166,17 +169,17 @@ import Stream from &apos;../../../../src/lib/server/Stream&apos;;
 import Session from &apos;../../../../src/lib/server/Session&apos;;
 
 /** @test {Stream} */
-describe(&apos;Stream&apos;, function() {
+describe(&apos;Stream&apos;, function () {
   /** @test {Stream#constructor} */
-  describe(&apos;#constructor&apos;, function() {
-    it(&apos;should return a stream&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
+    it(&apos;should return a stream&apos;, function () {
       expect(new Stream(), &apos;to be a&apos;, CoreStream);
     });
 
-    it(&apos;should emit &quot;session-open&quot; once session is open&apos;, function(done) {
+    it(&apos;should emit &quot;session-open&quot; once session is open&apos;, function (done) {
       const stream = new Stream();
 
-      stream.on(&apos;session-open&apos;, session =&gt; {
+      stream.on(&apos;session-open&apos;, (session) =&gt; {
         expect(stream.session, &apos;to be defined&apos;);
         expect(stream.session, &apos;to be a&apos;, ClientSession);
         expect(session, &apos;to be&apos;, stream.session);
@@ -185,7 +188,7 @@ describe(&apos;Stream&apos;, function() {
       });
     });
 
-    it(&apos;should forward session connect errors&apos;, function(done) {
+    it(&apos;should forward session connect errors&apos;, function (done) {
       const FailingStream = proxyquire(&apos;../../../../src/lib/server/Stream&apos;, {
         &apos;./Session&apos;: {
           _esModule: true,
@@ -197,13 +200,13 @@ describe(&apos;Stream&apos;, function() {
         },
       }).default;
 
-      new FailingStream().on(&apos;error&apos;, err =&gt; {
+      new FailingStream().on(&apos;error&apos;, (err) =&gt; {
         expect(err, &apos;to have message&apos;, &apos;Failed&apos;);
         done();
       });
     });
 
-    it(&apos;should close session on end&apos;, function() {
+    it(&apos;should close session on end&apos;, function () {
       const stream = new Stream();
 
       stream.once(&apos;session-open&apos;, () =&gt; {
@@ -217,7 +220,7 @@ describe(&apos;Stream&apos;, function() {
       });
     });
 
-    it(&apos;should be endable even if session was not opened yet&apos;, function(done) {
+    it(&apos;should be endable even if session was not opened yet&apos;, function (done) {
       const stream = new Stream();
       const listener = spy();
 
@@ -232,7 +235,7 @@ describe(&apos;Stream&apos;, function() {
       stream.end();
     });
 
-    it(&apos;should forward errors occurring while closing session&apos;, function(done) {
+    it(&apos;should forward errors occurring while closing session&apos;, function (done) {
       const FailingStream = proxyquire(&apos;../../../../src/lib/server/Stream&apos;, {
         &apos;./Session&apos;: {
           _esModule: true,
@@ -245,7 +248,7 @@ describe(&apos;Stream&apos;, function() {
       }).default;
 
       const stream = new FailingStream()
-        .on(&apos;error&apos;, err =&gt; {
+        .on(&apos;error&apos;, (err) =&gt; {
           expect(err, &apos;to have message&apos;, &apos;Failed&apos;);
           done();
         })

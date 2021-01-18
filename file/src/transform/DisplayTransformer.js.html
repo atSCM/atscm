@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -242,7 +245,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // Extract JavaScript
     if (scriptTags.length) {
-      scriptTags.forEach(script =&gt; {
+      scriptTags.forEach((script) =&gt; {
         const attributes = attributeValues(script);
         if (attributes &amp;&amp; (attributes.src || attributes[&apos;xlink:href&apos;])) {
           if (!config.dependencies) {
@@ -295,7 +298,7 @@ export default class DisplayTransformer extends XMLTransformer {
       if (paramTags.length) {
         config.parameters = [];
 
-        paramTags.forEach(n =&gt; config.parameters.push(attributeValues(n)));
+        paramTags.forEach((n) =&gt; config.parameters.push(attributeValues(n)));
       }
     }
 
@@ -358,7 +361,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // Insert dependencies
     if (config.dependencies) {
-      config.dependencies.forEach(s =&gt; {
+      config.dependencies.forEach((s) =&gt; {
         appendChild(svg, createElement(&apos;script&apos;, undefined, { &apos;xlink:href&apos;: s }));
       });
     }

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -165,7 +168,7 @@ import QueueStream from &apos;../../../../src/lib/server/QueueStream&apos;;
 function fakeQueueStream(
   err = null,
   status = StatusCodes.Good,
-  onSuccess = done =&gt; done(),
+  onSuccess = (done) =&gt; done(),
   options = {}
 ) {
   return new (class FakeQueueStream extends QueueStream {
@@ -179,54 +182,54 @@ function fakeQueueStream(
 }
 
 /** @test {QueueStream} */
-describe(&apos;QueueStream&apos;, function() {
+describe(&apos;QueueStream&apos;, function () {
   /** @test {QueueStream#constructor} */
-  describe(&apos;#constructor&apos;, function() {
-    it(&apos;should work without options&apos;, function() {
+  describe(&apos;#constructor&apos;, function () {
+    it(&apos;should work without options&apos;, function () {
       expect(() =&gt; new QueueStream(), &apos;not to throw&apos;);
     });
 
-    it(&apos;should store maxParallel option&apos;, function() {
+    it(&apos;should store maxParallel option&apos;, function () {
       expect(new QueueStream({ maxParallel: 99 })._maxParallel, &apos;to equal&apos;, 99);
     });
 
-    it(&apos;should store start date&apos;, function() {
+    it(&apos;should store start date&apos;, function () {
       expect(new QueueStream()._start, &apos;to be a&apos;, &apos;number&apos;);
     });
 
-    it(&apos;should listen for processed-chunk events&apos;, function() {
+    it(&apos;should listen for processed-chunk events&apos;, function () {
       expect(new QueueStream().listenerCount(&apos;processed-chunk&apos;), &apos;to be&apos;, 1);
     });
   });
 
   /** @test {QueueStream#hasPending} */
-  describe(&apos;#hasPending&apos;, function() {
-    it(&apos;should return true if there are queued operations&apos;, function() {
+  describe(&apos;#hasPending&apos;, function () {
+    it(&apos;should return true if there are queued operations&apos;, function () {
       const stream = new QueueStream();
       stream._queued.push({});
 
       expect(stream.hasPending, &apos;to be&apos;, true);
     });
 
-    it(&apos;should return true if there are running operations&apos;, function() {
+    it(&apos;should return true if there are running operations&apos;, function () {
       const stream = new QueueStream();
       stream._processing = 1;
 
       expect(stream.hasPending, &apos;to be&apos;, true);
     });
 
-    it(&apos;should return false otherwise&apos;, function() {
+    it(&apos;should return false otherwise&apos;, function () {
       expect(new QueueStream().hasPending, &apos;to be&apos;, false);
     });
   });
 
   /** @test {QueueStream#queueEmpty} */
-  describe(&apos;#queueEmpty&apos;, function() {
-    it(&apos;should return true if not operations are queued&apos;, function() {
+  describe(&apos;#queueEmpty&apos;, function () {
+    it(&apos;should return true if not operations are queued&apos;, function () {
       expect(new QueueStream().queueEmpty, &apos;to be&apos;, true);
     });
 
-    it(&apos;should return false if there are queued operations&apos;, function() {
+    it(&apos;should return false if there are queued operations&apos;, function () {
       const stream = new QueueStream();
       stream._queued.push({});
 
@@ -235,8 +238,8 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#processed} */
-  describe(&apos;#processed&apos;, function() {
-    it(&apos;should return the number of processed items&apos;, function() {
+  describe(&apos;#processed&apos;, function () {
+    it(&apos;should return the number of processed items&apos;, function () {
       const stream = new QueueStream();
       stream._processed = 13;
 
@@ -245,12 +248,12 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#opsPerSecond} */
-  describe(&apos;#opsPerSecond&apos;, function() {
-    it(&apos;should return 0 right after creating the stream&apos;, function() {
+  describe(&apos;#opsPerSecond&apos;, function () {
+    it(&apos;should return 0 right after creating the stream&apos;, function () {
       expect(new QueueStream().opsPerSecond, &apos;to be&apos;, 0);
     });
 
-    it(&apos;should return the number of processed items after one second&apos;, function() {
+    it(&apos;should return the number of processed items after one second&apos;, function () {
       const stream = new QueueStream();
       stream._start -= 1000;
       stream._processed = 13;
@@ -260,17 +263,17 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&apos;should throw if not overridden&apos;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&apos;should throw if not overridden&apos;, function () {
       expect(() =&gt; new QueueStream().processErrorMessage({}), &apos;to throw&apos;, /must be implemented/);
     });
   });
 
   /** @test {QueueStream#processChunk} */
-  describe(&apos;#processChunk&apos;, function() {
-    it(&apos;should throw if not overridden&apos;, function() {
+  describe(&apos;#processChunk&apos;, function () {
+    it(&apos;should throw if not overridden&apos;, function () {
       expect(
-        cb =&gt; new QueueStream().processChunk({}, cb),
+        (cb) =&gt; new QueueStream().processChunk({}, cb),
         &apos;to call the callback with error&apos;,
         /must be implemented/
       );
@@ -278,8 +281,8 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#_processChunk} */
-  describe(&apos;#_processChunk&apos;, function() {
-    it(&apos;should increase #_processing&apos;, function() {
+  describe(&apos;#_processChunk&apos;, function () {
+    it(&apos;should increase #_processing&apos;, function () {
       const stream = fakeQueueStream();
 
       expect(stream._processing, &apos;to equal&apos;, 0);
@@ -287,7 +290,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(stream._processing, &apos;to equal&apos;, 0);
     });
 
-    it(&apos;should emit processed-chunk event&apos;, function() {
+    it(&apos;should emit processed-chunk event&apos;, function () {
       const stream = fakeQueueStream();
       const listener = spy();
       stream.on(&apos;processed-chunk&apos;, listener);
@@ -297,7 +300,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(listener.lastCall.args[0], &apos;to equal&apos;, &apos;item&apos;);
     });
 
-    it(&apos;should emit errors&apos;, function() {
+    it(&apos;should emit errors&apos;, function () {
       const stream = fakeQueueStream(new Error(&apos;Test&apos;));
       const listener = spy();
       stream.on(&apos;error&apos;, listener);
@@ -307,7 +310,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(listener.lastCall, &apos;to satisfy&apos;, [/Error processing item: Test/]);
     });
 
-    it(&apos;should emit error on invalid status&apos;, function() {
+    it(&apos;should emit error on invalid status&apos;, function () {
       const stream = fakeQueueStream(null, StatusCodes.BadAggregateInvalidInputs);
 
       const listener = spy();
@@ -320,8 +323,8 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#_enqueueChunk} */
-  describe(&apos;#_enqueueChunk&apos;, function() {
-    it(&apos;should call _processChunk if allowed&apos;, function() {
+  describe(&apos;#_enqueueChunk&apos;, function () {
+    it(&apos;should call _processChunk if allowed&apos;, function () {
       const stream = fakeQueueStream();
       stub(stream, &apos;_processChunk&apos;);
 
@@ -330,7 +333,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(stream._processChunk.lastCall, &apos;to satisfy&apos;, [&apos;item&apos;]);
     });
 
-    it(&apos;should add chunk to queue if maxParallel is reached&apos;, function() {
+    it(&apos;should add chunk to queue if maxParallel is reached&apos;, function () {
       const stream = fakeQueueStream();
       stream._processing = stream._maxParallel;
 
@@ -341,8 +344,8 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#_transform} */
-  describe(&apos;#_transform&apos;, function() {
-    it(&apos;should wait for session to open&apos;, function() {
+  describe(&apos;#_transform&apos;, function () {
+    it(&apos;should wait for session to open&apos;, function () {
       const stream = fakeQueueStream();
       stub(stream, &apos;_enqueueChunk&apos;);
 
@@ -350,7 +353,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(stream._enqueueChunk, &apos;was not called&apos;);
     });
 
-    it(&apos;should enqueue item once session is open&apos;, function(done) {
+    it(&apos;should enqueue item once session is open&apos;, function (done) {
       const stream = fakeQueueStream();
       stub(stream, &apos;_enqueueChunk&apos;);
 
@@ -364,8 +367,8 @@ describe(&apos;QueueStream&apos;, function() {
   });
 
   /** @test {QueueStream#_flush} */
-  describe(&apos;#_flush&apos;, function() {
-    it(&apos;should wait for queue to drain&apos;, function() {
+  describe(&apos;#_flush&apos;, function () {
+    it(&apos;should wait for queue to drain&apos;, function () {
       const stream = fakeQueueStream();
       stream._processing = 1;
       const listener = spy();
@@ -377,7 +380,7 @@ describe(&apos;QueueStream&apos;, function() {
       expect(listener, &apos;was called once&apos;);
     });
 
-    it(&apos;should flush instantly if queue is empty&apos;, function() {
+    it(&apos;should flush instantly if queue is empty&apos;, function () {
       const stream = fakeQueueStream();
       const listener = spy();
       stream._flush(listener);
@@ -386,9 +389,9 @@ describe(&apos;QueueStream&apos;, function() {
     });
   });
 
-  context(&apos;when chunk has been processed&apos;, function() {
-    context(&apos;and queue is empty&apos;, function() {
-      it(&apos;should emit drained if not processing any items&apos;, function() {
+  context(&apos;when chunk has been processed&apos;, function () {
+    context(&apos;and queue is empty&apos;, function () {
+      it(&apos;should emit drained if not processing any items&apos;, function () {
         const stream = new QueueStream();
         const listener = spy();
         stream.on(&apos;drained&apos;, listener);
@@ -397,7 +400,7 @@ describe(&apos;QueueStream&apos;, function() {
         expect(listener, &apos;was called once&apos;);
       });
 
-      it(&apos;should not emit drained if processing an items&apos;, function() {
+      it(&apos;should not emit drained if processing an items&apos;, function () {
         const stream = new QueueStream();
         stream._processing = 1;
         const listener = spy();
@@ -408,8 +411,8 @@ describe(&apos;QueueStream&apos;, function() {
       });
     });
 
-    context(&apos;and queue is not empty&apos;, function() {
-      it(&apos;should call _processChunk with queued chunk&apos;, function() {
+    context(&apos;and queue is not empty&apos;, function () {
+      it(&apos;should call _processChunk with queued chunk&apos;, function () {
         const stream = new QueueStream();
         const item = {};
         stub(stream, &apos;_processChunk&apos;);

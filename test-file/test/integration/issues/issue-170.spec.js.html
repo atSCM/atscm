@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -159,15 +162,15 @@
 <div class="content" data-ice="content"><h1 data-ice="title">test/integration/issues/issue-170.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expectCorrectMapping } from &apos;../../helpers/atscm&apos;;
 
-describe.skip(&apos;push task&apos;, function() {
-  context(&apos;when pushing SMTP servers&apos;, function() {
+describe.skip(&apos;push task&apos;, function () {
+  context(&apos;when pushing SMTP servers&apos;, function () {
     expectCorrectMapping(&apos;issue-170/smtp-server&apos;, {
       path: &apos;AGENT.SMTPSERVERS&apos;,
       name: &apos;TestSMTPServer&apos;,
     });
   });
 
-  context(&apos;when pushing node with alarm configuration&apos;, function() {
+  context(&apos;when pushing node with alarm configuration&apos;, function () {
     expectCorrectMapping(&apos;issue-170/node-with-alarmconfig&apos;, {
       path: &apos;AGENT.OBJECTS&apos;,
       name: &apos;TestWithAlarmConfig&apos;,
@@ -175,49 +178,49 @@ describe.skip(&apos;push task&apos;, function() {
   });
 
   // NOTE: This only works on atvise server 3+
-  context(&apos;when pushing webserver with protected call&apos;, function() {
+  context(&apos;when pushing webserver with protected call&apos;, function () {
     expectCorrectMapping(&apos;issue-170/webserver-with-protectedcall&apos;, {
       path: &apos;AGENT.WEBACCESS&apos;,
       name: &apos;http2&apos;,
     });
   });
 
-  context(&apos;when pushing archives with partition interval and file limit&apos;, function() {
+  context(&apos;when pushing archives with partition interval and file limit&apos;, function () {
     expectCorrectMapping(&apos;issue-170/archive-interval-filelimit&apos;, {
       path: &apos;AGENT.HISTORY&apos;,
       name: &apos;TestArchive&apos;,
     });
   });
 
-  context(&apos;when pushing aggregate templates and functions&apos;, function() {
+  context(&apos;when pushing aggregate templates and functions&apos;, function () {
     expectCorrectMapping(&apos;issue-170/aggregate-template&apos;, {
       path: &apos;AGENT.HISTORY.AGGREGATETEMPLATES&apos;,
       name: &apos;TestAggregateTemplate&apos;,
     });
   });
 
-  context(&apos;when pushing custom alarm category&apos;, function() {
+  context(&apos;when pushing custom alarm category&apos;, function () {
     expectCorrectMapping(&apos;issue-170/alarm-category&apos;, {
       path: &apos;SYSTEM.LIBRARY.PROJECT.ALARMCATEGORIES&apos;,
       name: &apos;TestAlarmCategory&apos;,
     });
   });
 
-  context(&apos;when pushing custom user groups&apos;, function() {
+  context(&apos;when pushing custom user groups&apos;, function () {
     expectCorrectMapping(&apos;issue-170/user-and-group&apos;, {
       path: [&apos;SYSTEM.SECURITY.GROUPS&apos;, &apos;SYSTEM.SECURITY.USERS&apos;],
       name: [&apos;TestGroup&apos;, &apos;TestUser&apos;],
     });
   });
 
-  context(&apos;when pushing serverscripts in redundant project&apos;, function() {
+  context(&apos;when pushing serverscripts in redundant project&apos;, function () {
     expectCorrectMapping(&apos;issue-170/redundancy-serverscript&apos;, {
       path: &apos;SYSTEM.LIBRARY.PROJECT.SERVERSCRIPTS&apos;,
       name: &apos;LongRunningScript&apos;,
     });
   });
 
-  context(&apos;when pushing resources with compress properties&apos;, function() {
+  context(&apos;when pushing resources with compress properties&apos;, function () {
     expectCorrectMapping(&apos;issue-170/compressed-node&apos;, {
       path: &apos;SYSTEM.LIBRARY.PROJECT.RESOURCES&apos;,
       name: &apos;CompressedNode.html&apos;,

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -159,43 +162,43 @@
 <div class="content" data-ice="content"><h1 data-ice="title">test/integration/mapping.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { expectCorrectMapping } from &apos;../helpers/atscm&apos;;
 
-describe(&apos;Mapping&apos;, function() {
-  context.skip(&apos;when resource directory with dot in name&apos;, function() {
+describe(&apos;Mapping&apos;, function () {
+  context.skip(&apos;when resource directory with dot in name&apos;, function () {
     expectCorrectMapping(&apos;mapping/dot-in-dirname&apos;, {
       path: &apos;SYSTEM.LIBRARY.PROJECT.RESOURCES/DataTables/Bootstrap-4-4.0.0/css&apos;,
       name: &apos;bootstrap.min.css&apos;,
     });
   });
 
-  context(&apos;a display containing a folder&apos;, function() {
+  context(&apos;a display containing a folder&apos;, function () {
     expectCorrectMapping(&apos;mapping/folder-in-display&apos;, {
       path: &apos;AGENT.DISPLAYS&apos;,
       name: &apos;FolderInDisplay&apos;,
     });
   });
 
-  context(&apos;a display containing a display with the same name&apos;, function() {
+  context(&apos;a display containing a display with the same name&apos;, function () {
     expectCorrectMapping(&apos;mapping/child-display-with-same-name&apos;, {
       path: &apos;AGENT.DISPLAYS&apos;,
       name: &apos;ChildWithSameName&apos;,
     });
   });
 
-  context(&apos;a variable array&apos;, function() {
+  context(&apos;a variable array&apos;, function () {
     expectCorrectMapping(&apos;mapping/test-array-values&apos;, {
       path: &apos;AGENT.OBJECTS&apos;,
       name: &apos;InvalidArrayValue&apos;,
     });
   });
 
-  context(&apos;a 64bit variable value&apos;, function() {
+  context(&apos;a 64bit variable value&apos;, function () {
     expectCorrectMapping(&apos;mapping/int64&apos;, {
       path: &apos;AGENT.OBJECTS&apos;,
       name: &apos;TestCreateInt64&apos;,
     });
   });
 
-  context(&apos;a node with a historical configuration&apos;, function() {
+  context(&apos;a node with a historical configuration&apos;, function () {
     expectCorrectMapping(&apos;mapping/historical-config&apos;, {
       path: &apos;AGENT.OBJECTS&apos;,
       name: &apos;TestHistoryConfig&apos;,

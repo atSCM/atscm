@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -526,6 +529,35 @@
         
         
         <div data-ice="description"><p>Returns a buffer containing a <span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html">node-opcua~Variant</a></span>s encoded value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span><span class="code" data-ice="signature">(source: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns a string with all special regular expression characters escaped.</p>
 </div>
       </div>
     </td>
@@ -1368,11 +1400,11 @@ addReferences(&apos;AGENT.DISPLAYS.Main&apos;, {
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/hooks/check-atserver.ts.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/hooks/check-atserver.ts.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {approveToContinue} from &apos;<span><a href="file/src/hooks/check-atserver.ts.html#lineNumber47">atscm/src/hooks/check-atserver.ts</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {approveToContinue} from &apos;<span><a href="file/src/hooks/check-atserver.ts.html#lineNumber49">atscm/src/hooks/check-atserver.ts</a></span>&apos;</code></pre></div>
   
   
   
@@ -1677,11 +1709,11 @@ addReferences(&apos;AGENT.DISPLAYS.Main&apos;, {
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/hooks/check-atserver.ts.html#lineNumber67">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/hooks/check-atserver.ts.html#lineNumber69">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import checkAtserver from &apos;<span><a href="file/src/hooks/check-atserver.ts.html#lineNumber67">atscm/src/hooks/check-atserver.ts</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import checkAtserver from &apos;<span><a href="file/src/hooks/check-atserver.ts.html#lineNumber69">atscm/src/hooks/check-atserver.ts</a></span>&apos;</code></pre></div>
   
   
   
@@ -2045,11 +2077,11 @@ non-variable nodes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/coding.js.html#lineNumber283">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/coding.js.html#lineNumber285">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {decodeVariant} from &apos;<span><a href="file/src/lib/coding.js.html#lineNumber283">atscm/src/lib/coding.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {decodeVariant} from &apos;<span><a href="file/src/lib/coding.js.html#lineNumber285">atscm/src/lib/coding.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Returns a <span><a href="http://node-opcua.github.io/api_doc/0.1.0/classes/Variant.html">node-opcua~Variant</a></span> from a Buffer with the given <em>dataType</em> and <em>arrayType</em>.</p>
@@ -2219,11 +2251,11 @@ non-variable nodes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/gulp/dest.js.html#lineNumber377">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/gulp/dest.js.html#lineNumber374">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import dest from &apos;<span><a href="file/src/lib/gulp/dest.js.html#lineNumber377">atscm/src/lib/gulp/dest.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import dest from &apos;<span><a href="file/src/lib/gulp/dest.js.html#lineNumber374">atscm/src/lib/gulp/dest.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Creates a new <span><a href="class/src/lib/gulp/dest.js~WriteStream.html">WriteStream</a></span> to write to <em>path</em>.</p>
@@ -2339,6 +2371,78 @@ non-variable nodes.</p>
           <td class="return-type code" data-ice="returnType"><span>Buffer</span></td>
           <td class="return-desc" data-ice="returnDescription"><p>A buffer containing the encoded value.</p>
 </td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-function-escapeForRegExp">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">escapeForRegExp</span><span class="code" data-ice="signature">(source: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/lib/regexp.ts.html#lineNumber14">source</a></span></span>
+    </span>
+  </h3>
+
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {escapeForRegExp} from &apos;<span><a href="file/src/lib/regexp.ts.html#lineNumber14">atscm/src/lib/regexp.ts</a></span>&apos;</code></pre></div>
+  
+  
+  <div data-ice="description"><p>Returns a string with all special regular expression characters escaped.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">source</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>*</span></td>
+          
         </tr>
       </tbody>
     </table>
@@ -3137,11 +3241,11 @@ that occurred.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/tasks/pull.js.html#lineNumber66">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/tasks/pull.js.html#lineNumber69">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import pull from &apos;<span><a href="file/src/tasks/pull.js.html#lineNumber66">atscm/src/tasks/pull.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import pull from &apos;<span><a href="file/src/tasks/pull.js.html#lineNumber69">atscm/src/tasks/pull.js</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Pulls all nodes from atvise server.</p>
@@ -3710,11 +3814,11 @@ reportProgress(task, {
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/lib/gulp/src.ts.html#lineNumber471">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/lib/gulp/src.ts.html#lineNumber472">source</a></span></span>
     </span>
   </h3>
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import src from &apos;<span><a href="file/src/lib/gulp/src.ts.html#lineNumber471">atscm/src/lib/gulp/src.ts</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import src from &apos;<span><a href="file/src/lib/gulp/src.ts.html#lineNumber472">atscm/src/lib/gulp/src.ts</a></span>&apos;</code></pre></div>
   
   
   <div data-ice="description"><p>Starts a new source browser at the given path.</p>

@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -165,7 +168,7 @@ import Atviseproject from &apos;../config/Atviseproject&apos;;
 import CallScriptStream from &apos;./scripts/CallScriptStream&apos;;
 import { waitForDependencies } from &apos;./WaitingStream&apos;;
 
-const serverNodes = new Set(Atviseproject.ServerRelatedNodes.map(id =&gt; id.value));
+const serverNodes = new Set(Atviseproject.ServerRelatedNodes.map((id) =&gt; id.value));
 
 const ignoredReferences = new Set([
   ReferenceTypeIds.toParent,
@@ -242,7 +245,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
       }
 
       return Object.assign(result, {
-        [key]: [...value].map(s =&gt; (typeof s === &apos;string&apos; ? `ns=1;s=${s}` : s)),
+        [key]: [...value].map((s) =&gt; (typeof s === &apos;string&apos; ? `ns=1;s=${s}` : s)),
       });
     }, {});
 
@@ -254,7 +257,7 @@ export default class AddReferencesStream extends waitForDependencies(CallScriptS
           dataType: DataType.String,
           value: JSON.stringify({
             nodeId: file.nodeId,
-            references: referenceKeys.map(type =&gt; ({
+            references: referenceKeys.map((type) =&gt; ({
               referenceIdValue: parseInt(type, 10),
               items: references[type],
             })),

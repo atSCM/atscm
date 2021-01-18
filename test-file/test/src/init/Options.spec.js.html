@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -162,25 +165,25 @@ import InitOptionsAsArray, { InitOptions } from &apos;../../../src/init/Options&
 import InitOption from &apos;../../../src/lib/init/Option&apos;;
 
 /** @test {InitOptions} */
-describe(&apos;InitOptions&apos;, function() {
-  it(&apos;should contain InitOptions stored against names&apos;, function() {
-    Object.keys(InitOptions).forEach(key =&gt; {
+describe(&apos;InitOptions&apos;, function () {
+  it(&apos;should contain InitOptions stored against names&apos;, function () {
+    Object.keys(InitOptions).forEach((key) =&gt; {
       expect(key, &apos;to be a&apos;, &apos;string&apos;);
       expect(InitOptions[key], &apos;to be a&apos;, InitOption);
     });
   });
 
   /** @test {InitOptions.atviseUser} */
-  describe(&apos;.atviseUser&apos;, function() {
-    it(&apos;should only be asked if using login&apos;, function() {
+  describe(&apos;.atviseUser&apos;, function () {
+    it(&apos;should only be asked if using login&apos;, function () {
       expect(InitOptions.atviseUser.when({ useLogin: false }), &apos;to equal&apos;, false);
       expect(InitOptions.atviseUser.when({ useLogin: true }), &apos;to equal&apos;, true);
     });
   });
 
   /** @test {InitOptions.atvisePassword} */
-  describe(&apos;.atvisePassword&apos;, function() {
-    it(&apos;should only be asked if using login&apos;, function() {
+  describe(&apos;.atvisePassword&apos;, function () {
+    it(&apos;should only be asked if using login&apos;, function () {
       expect(InitOptions.atvisePassword.when({ useLogin: false }), &apos;to equal&apos;, false);
       expect(InitOptions.atvisePassword.when({ useLogin: true }), &apos;to equal&apos;, true);
     });
@@ -188,9 +191,9 @@ describe(&apos;InitOptions&apos;, function() {
 });
 
 /** @test {InitOptionsAsArray} */
-describe(&apos;InitOptionsAsArray&apos;, function() {
-  it(&apos;should contain all InitOptions&apos;, function() {
-    InitOptionsAsArray.forEach(opt =&gt; {
+describe(&apos;InitOptionsAsArray&apos;, function () {
+  it(&apos;should contain all InitOptions&apos;, function () {
+    InitOptionsAsArray.forEach((opt) =&gt; {
       expect(InitOptions[opt.name], &apos;to be defined&apos;);
       expect(opt, &apos;to have properties&apos;, InitOptions[opt.name]);
     });

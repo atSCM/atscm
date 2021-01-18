@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -164,10 +167,10 @@ import AddReferencesStream from &apos;../../../../src/lib/server/AddReferencesSt
 import { ReferenceTypeIds } from &apos;../../../../src/lib/model/Node&apos;;
 
 /** @test {AddReferencesStream} */
-describe(&apos;AddReferencesStream&apos;, function() {
+describe(&apos;AddReferencesStream&apos;, function () {
   /** @test {AddReferencesStream#scriptId} */
-  describe(&apos;#scriptId&apos;, function() {
-    it(&quot;should return the AddReferences script&apos;s id&quot;, function() {
+  describe(&apos;#scriptId&apos;, function () {
+    it(&quot;should return the AddReferences script&apos;s id&quot;, function () {
       expect(
         AddReferencesStream.prototype.scriptId.value,
         &apos;to equal&apos;,
@@ -177,8 +180,8 @@ describe(&apos;AddReferencesStream&apos;, function() {
   });
 
   /** @test {AddReferencesStream#scriptParameters} */
-  describe(&apos;#scriptParameters&apos;, function() {
-    it(&apos;should return null without references&apos;, function() {
+  describe(&apos;#scriptParameters&apos;, function () {
+    it(&apos;should return null without references&apos;, function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({ references: new Map() }),
         &apos;to be&apos;,
@@ -186,7 +189,7 @@ describe(&apos;AddReferencesStream&apos;, function() {
       );
     });
 
-    it(&apos;should return null witout additional references&apos;, function() {
+    it(&apos;should return null witout additional references&apos;, function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({
           references: new Map([
@@ -200,7 +203,7 @@ describe(&apos;AddReferencesStream&apos;, function() {
       );
     });
 
-    it(&apos;should return JSON string for additional references&apos;, function() {
+    it(&apos;should return JSON string for additional references&apos;, function () {
       expect(
         AddReferencesStream.prototype.scriptParameters({
           references: new Map([
@@ -226,8 +229,8 @@ describe(&apos;AddReferencesStream&apos;, function() {
   });
 
   /** @test {AddReferencesStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function() {
-    it(&apos;should decorate the error message&apos;, function() {
+  describe(&apos;#processErrorMessage&apos;, function () {
+    it(&apos;should decorate the error message&apos;, function () {
       expect(
         AddReferencesStream.prototype.processErrorMessage({
           nodeId: new NodeId(&apos;ns=1;s=AGENT.OBJECTS.Test&apos;),
@@ -240,8 +243,8 @@ describe(&apos;AddReferencesStream&apos;, function() {
   });
 
   /** @test {AddReferencesStream#handleOutputArguments} */
-  describe(&apos;#handleOutputArguments&apos;, function() {
-    it(&apos;should error with bad status codes&apos;, function() {
+  describe(&apos;#handleOutputArguments&apos;, function () {
+    it(&apos;should error with bad status codes&apos;, function () {
       return expect(
         AddReferencesStream.prototype.handleOutputArguments.bind(null, {}, [
           { value: StatusCodes.Bad },
@@ -252,7 +255,7 @@ describe(&apos;AddReferencesStream&apos;, function() {
       );
     });
 
-    it(&apos;should retry when script had failures&apos;, async function() {
+    it(&apos;should retry when script had failures&apos;, async function () {
       const stream = new AddReferencesStream();
       const file = { nodeId: new NodeId(&apos;AGENT.OBJECTS.Failing&apos;) };
       const handleOutput = AddReferencesStream.prototype.handleOutputArguments.bind(stream, file, [
@@ -278,7 +281,7 @@ describe(&apos;AddReferencesStream&apos;, function() {
       );
     });
 
-    it(&apos;should continue without failures&apos;, function() {
+    it(&apos;should continue without failures&apos;, function () {
       return expect(
         AddReferencesStream.prototype.handleOutputArguments.bind(null, {}, [
           { value: StatusCodes.Good },

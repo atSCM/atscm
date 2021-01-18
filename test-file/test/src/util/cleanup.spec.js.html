@@ -52,6 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-InitOptionsAsArray">InitOptionsAsArray</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib">lib</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-decodeVariant">decodeVariant</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-encodeVariant">encodeVariant</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-escapeForRegExp">escapeForRegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialChars">specialChars</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-specialCharsRegExp">specialCharsRegExp</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-config">lib/config</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/config/Atviseproject.ts~Atviseproject.html">Atviseproject</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#lib-gulp">lib/gulp</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/ImportStream.js~ImportStream.html">ImportStream</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/lib/gulp/PullStream.js~PullStream.html">PullStream</a></span></span></li>
@@ -182,20 +185,20 @@ function createCleanup(numberOfOpenSessions, closeOpenShouldFail) {
 }
 
 /** @test {cleanup} */
-describe(&apos;cleanup&apos;, function() {
+describe(&apos;cleanup&apos;, function () {
   before(() =&gt; stub(process, &apos;kill&apos;));
   after(() =&gt; process.kill.restore());
   afterEach(() =&gt; process.kill.resetHistory());
 
-  it(&apos;should call uninstall&apos;, function() {
+  it(&apos;should call uninstall&apos;, function () {
     const uninstall = spy();
     createCleanup(0, false)(null, null, uninstall);
 
     expect(uninstall.calledOnce, &apos;to be&apos;, true);
   });
 
-  context(&apos;when receiving SIGINT&apos;, function() {
-    it(&apos;should log &quot;Ctrl-C&quot;&apos;, function() {
+  context(&apos;when receiving SIGINT&apos;, function () {
+    it(&apos;should log &quot;Ctrl-C&quot;&apos;, function () {
       const onWarn = spy();
       Logger.on(&apos;warn&apos;, onWarn);
 
@@ -205,12 +208,16 @@ describe(&apos;cleanup&apos;, function() {
     });
   });
 
-  context(&apos;with open sessions&apos;, function() {
-    it(&apos;should return false&apos;, function() {
-      expect(createCleanup(3, false)(null, null, () =&gt; {}), &apos;to be&apos;, false);
+  context(&apos;with open sessions&apos;, function () {
+    it(&apos;should return false&apos;, function () {
+      expect(
+        createCleanup(3, false)(null, null, () =&gt; {}),
+        &apos;to be&apos;,
+        false
+      );
     });
 
-    it(&apos;should call process.kill&apos;, function(done) {
+    it(&apos;should call process.kill&apos;, function (done) {
       createCleanup(3, false)(null, null, () =&gt; {});
       setTimeout(() =&gt; {
         expect(process.kill.calledOnce, &apos;to be&apos;, true);
@@ -218,7 +225,7 @@ describe(&apos;cleanup&apos;, function() {
       }, 10);
     });
 
-    it(&apos;should forward Session.closeOpen errors&apos;, function(done) {
+    it(&apos;should forward Session.closeOpen errors&apos;, function (done) {
       createCleanup(3, true)(null, null, () =&gt; {});
       setTimeout(() =&gt; {
         expect(process.kill.calledOnce, &apos;to be&apos;, true);
@@ -227,9 +234,13 @@ describe(&apos;cleanup&apos;, function() {
     });
   });
 
-  context(&apos;without open sessions&apos;, function() {
-    it(&apos;should return true&apos;, function() {
-      expect(createCleanup(0, false)(null, null, () =&gt; {}), &apos;to be&apos;, true);
+  context(&apos;without open sessions&apos;, function () {
+    it(&apos;should return true&apos;, function () {
+      expect(
+        createCleanup(0, false)(null, null, () =&gt; {}),
+        &apos;to be&apos;,
+        true
+      );
     });
   });
 });
