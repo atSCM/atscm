@@ -1,7 +1,7 @@
 import { extname, basename, join } from 'path';
 import { readdir } from 'fs-extra';
-import PartialTransformer from './PartialTransformer.js';
 import { escapeForRegExp } from '../regexp';
+import PartialTransformer from './PartialTransformer.js';
 
 /**
  * A transformer that splits a node into multiple source nodes when pulling.
