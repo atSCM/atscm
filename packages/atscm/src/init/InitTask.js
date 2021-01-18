@@ -34,7 +34,7 @@ export default class InitTask {
 
     const install = deps.lang[langId];
 
-    const stream = src(this.filesToHandle(langId))
+    const stream = src(this.filesToHandle(langId), { dot: true })
       .pipe(
         handlebars(options, {
           helpers: helpers(),
