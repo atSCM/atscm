@@ -1,6 +1,7 @@
 import { extname, basename, join } from 'path';
 import { readdir } from 'fs-extra';
 import PartialTransformer from './PartialTransformer.js';
+import { escapeForRegExp } from '../regexp.js';
 
 /**
  * A transformer that splits a node into multiple source nodes when pulling.
@@ -98,9 +99,7 @@ export default class SplittingTransformer extends PartialTransformer {
     }
 
     const regExp = new RegExp(
-      `^\\.${name
-        .replace(/\[/, '\\[')
-        .replace(/\]/, '\\]')}(${this.constructor.sourceExtensions.join('|')})\\.json$`
+      `^\\.${escapeForRegExp(name)}(${this.constructor.sourceExtensions.join('|')})\\.json$`
     );
 
     // Find source files an child definition files
