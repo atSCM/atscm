@@ -1,5 +1,6 @@
 import { extname, basename, join } from 'path';
 import { readdir } from 'fs-extra';
+import { escapeForRegExp } from '../regexp';
 import PartialTransformer from './PartialTransformer.js';
 
 /**
@@ -98,7 +99,7 @@ export default class SplittingTransformer extends PartialTransformer {
     }
 
     const regExp = new RegExp(
-      `^\\.${name}(${this.constructor.sourceExtensions.join('|')})\\.json$`
+      `^\\.${escapeForRegExp(name)}(${this.constructor.sourceExtensions.join('|')})\\.json$`
     );
 
     // Find source files an child definition files
