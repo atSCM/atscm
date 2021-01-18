@@ -53,12 +53,12 @@ After running `atscm watch` files and atvise server nodes are watched for change
 This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/workspaces) holding these packages:
 
 <!-- BEGIN packages -->
-<!-- This section is generated, do not edit it! -->
+<!-- This section is generated. Run `npm run update-monorepo` to update it. -->
 
 - [atscm](./packages/atscm) Source code management utilities for atvise
 
   > ![npm](https://img.shields.io/npm/v/atscm?logo=npm)
   >
-  > [GitHub](https://github.com/atSCM/packages/atscm#readme) · [npm](https://www.npmjs.com/package/atscm)
+  > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/atscm#readme) · [npm](https://www.npmjs.com/package/atscm)
 
 <!-- END packages -->

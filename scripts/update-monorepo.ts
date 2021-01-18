@@ -52,7 +52,7 @@ async function updateReadme() {
     )
   );
 
-  readme.updateSection(
+  await readme.updateSection(
     'packages',
     packages
       .map(
