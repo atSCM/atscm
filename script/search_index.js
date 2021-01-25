@@ -2827,7 +2827,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber91",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber92",
     "InitTask .run ",
     "test"
   ],
@@ -2839,7 +2839,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/src/init/InitTask.spec.js.html#lineNumber73",
+    "test-file/test/src/init/InitTask.spec.js.html#lineNumber74",
     "InitTask .run should not escape author field in package.json (#52)",
     "test"
   ],

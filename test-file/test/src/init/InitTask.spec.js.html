@@ -161,7 +161,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">test/src/init/InitTask.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { readdirSync } from &apos;fs&apos;;
-import { join, isAbsolute } from &apos;path&apos;;
+import { join, isAbsolute, basename } from &apos;path&apos;;
 import expect from &apos;unexpected&apos;;
 import { spy } from &apos;sinon&apos;;
 import proxyquire from &apos;proxyquire&apos;;
@@ -211,6 +211,7 @@ describe(&apos;InitTask&apos;, function () {
   describe(&apos;.run&apos;, function () {
     it(&apos;should handle all general files&apos;, function () {
       const files = readdirSync(join(__dirname, &apos;../../../res/init/templates/general&apos;));
+      const renamedFiles = files.map((f) =&gt; (f === &apos;gitignore&apos; ? &apos;.gitignore&apos; : f));
 
       return InitTask.run({ configLang: &apos;es2015&apos; }).then(() =&gt; {
         expect(srcSpy.callCount, &apos;to be greater than&apos;, 0);
@@ -220,14 +221,14 @@ describe(&apos;InitTask&apos;, function () {
         expect(handled, &apos;to have values satisfying&apos;, &apos;to have properties&apos;, { _isVinyl: true });
 
         expect(
-          handled.map((f) =&gt; f.relative),
+          resulting.map((f) =&gt; basename(f.history[0])),
           &apos;to contain&apos;,
           ...files
         );
         expect(
           resulting.map((f) =&gt; f.relative),
           &apos;to contain&apos;,
-          ...files
+          ...renamedFiles
         );
       });
     });
