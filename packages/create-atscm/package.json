@@ -1,0 +1,37 @@
+{
+  "name": "create-atscm",
+  "version": "0.0.0",
+  "description": "Create a new atscm project with `npm init`",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atSCM/atscm.git",
+    "directory": "packages/create-atscm"
+  },
+  "author": "Lukas Hechenberger <npm@ls-age.com> (https://ls-age.com/)",
+  "homepage": "https://github.com/atSCM/atscm/tree/master/packages/create-atscm#readme",
+  "bugs": {
+    "url": "https://github.com/atSCM/atscm/issues"
+  },
+  "bin": "out/bin.js",
+  "scripts": {
+    "build": "esbuild src/bin.ts --bundle --platform=node --target=node10 --outfile=out/bin.js --external:execa",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "atscm",
+    "init",
+    "create",
+    "project",
+    "seup",
+    "scaffold",
+    "atvise",
+    "atserver"
+  ],
+  "dependencies": {
+    "execa": "5.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.8.34"
+  }
+}
