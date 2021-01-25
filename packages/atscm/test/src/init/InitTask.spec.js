@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs';
-import { join, isAbsolute } from 'path';
+import { join, isAbsolute, basename } from 'path';
 import expect from 'unexpected';
 import { spy } from 'sinon';
 import proxyquire from 'proxyquire';
@@ -49,6 +49,7 @@ describe('InitTask', function () {
   describe('.run', function () {
     it('should handle all general files', function () {
       const files = readdirSync(join(__dirname, '../../../res/init/templates/general'));
+      const renamedFiles = files.map((f) => (f === 'gitignore' ? '.gitignore' : f));
 
       return InitTask.run({ configLang: 'es2015' }).then(() => {
         expect(srcSpy.callCount, 'to be greater than', 0);
@@ -58,14 +59,14 @@ describe('InitTask', function () {
         expect(handled, 'to have values satisfying', 'to have properties', { _isVinyl: true });
 
         expect(
-          handled.map((f) => f.relative),
+          resulting.map((f) => basename(f.history[0])),
           'to contain',
           ...files
         );
         expect(
           resulting.map((f) => f.relative),
           'to contain',
-          ...files
+          ...renamedFiles
         );
       });
     });
