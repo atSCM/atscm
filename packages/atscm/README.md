@@ -21,18 +21,26 @@ _atscm_ is a [node.js](https://nodejs.org) based utility that stores the content
 
 ## Installation
 
-_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+Prerequisite: Install node.js (version 10 or later)
 
-<details>
-<summary><strong>Installing <i>atscm-cli</i></strong></summary>
+<details><summary>How to check which version is installed</summary>
 
 - Make sure [node.js](https://nodejs.org) (version 10 or later) is installed by running `node --version`.
 - Make sure [npm](https://www.npmjs.com) is installed by running `npm --version`.
-- Run `npm install --global atscm-cli` to install _atscm-cli_ globally. _You may have to run this command as an administrator._
 
 </details>
 
+### With atscm-cli
+
+_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+
+> Run `npm install --global atscm-cli` to install _atscm-cli_ globally. _You may have to run this command as an administrator._
+
 With [atscm-cli](https://github.com/atSCM/atscm-cli) installed run `atscm init` to create a new _atscm_ project.
+
+### With `npm init`
+
+Simply run `npm init atscm` to create a new atscm project.
 
 ## Basic usage
 
