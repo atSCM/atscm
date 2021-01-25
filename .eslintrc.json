@@ -23,9 +23,10 @@
         "no-use-before-define": "off",
         "jsdoc/require-param-type": "off",
         "jsdoc/require-returns-type": "off",
-        "@typescript-eslint/camelcase": ["error", { "properties": "never" }],
+        "camelcase": ["error", { "properties": "never" }],
         "@typescript-eslint/no-unused-vars": ["error", { "vars": "local", "args": "after-used" }],
-        "@typescript-eslint/explicit-function-return-type": "off"
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/ban-types": "warn"
       }
     }
   ]

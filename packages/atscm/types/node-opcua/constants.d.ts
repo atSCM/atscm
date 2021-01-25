@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase,max-len */
+/* eslint-disable camelcase,max-len */
 
 declare module 'node-opcua/lib/opcua_node_ids' {
   export const DataTypeIds: {
