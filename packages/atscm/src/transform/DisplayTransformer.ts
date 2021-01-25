@@ -13,6 +13,7 @@ import {
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import { Display as DisplayConfig } from '../../types/schemas/display';
+import { BrowsedNode } from '../lib/server/NodeBrowser';
 
 const rootMetaTags = [{ tag: 'title' }, { tag: 'desc', key: 'description' }];
 
@@ -55,10 +56,13 @@ export default class DisplayTransformer extends XMLTransformer {
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
-   * @param {BrowsedNode} node The node to split.
-   * @param {Object} context The transform context.
+   * @param node The node to split.
+   * @param context The transform context.
    */
-  async transformFromDB(node, context) {
+  async transformFromDB(
+    node: BrowsedNode,
+    context: { remove: () => void; addNode: (add: BrowsedNode) => void }
+  ) {
     if (!this.shouldBeTransformed(node)) {
       return undefined;
     }
@@ -239,7 +243,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // - Title and description
     rootMetaTags.reverse().forEach(({ tag, key }) => {
-      const value = config[key || tag];
+      const value = config[key || tag] as string;
 
       if (value !== undefined) {
         prependChild(svg, createElement(tag, [createTextNode(value)]));
