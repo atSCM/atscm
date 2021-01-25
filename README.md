@@ -13,18 +13,26 @@ For more details visit our docs at [atscm.github.io](https://atscm.github.io). W
 
 ### Installation
 
-_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+Prerequisite: Install node.js (version 10 or later)
 
-<details>
-<summary><strong>Installing <i>atscm-cli</i></strong></summary>
+<details><summary>How to check which version is installed</summary>
 
 - Make sure [node.js](https://nodejs.org) (version 10 or later) is installed by running `node --version`.
 - Make sure [npm](https://www.npmjs.com) is installed by running `npm --version`.
-- Run `npm install --global atscm-cli` to install _atscm-cli_ globally. _You may have to run this command as an administrator._
 
 </details>
 
+#### With atscm-cli
+
+_atscm_ can be installed via [atscm-cli](https://github.com/atSCM/atscm-cli).
+
+> Run `npm install --global atscm-cli` to install _atscm-cli_ globally. _You may have to run this command as an administrator._
+
 With [atscm-cli](https://github.com/atSCM/atscm-cli) installed run `atscm init` to create a new _atscm_ project.
+
+#### With `npm init`
+
+Simply run `npm init atscm` to create a new atscm project.
 
 ### Basic usage
 
@@ -60,7 +68,6 @@ This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/works
   > ![npm](https://img.shields.io/npm/v/atscm?logo=npm)
   >
   > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/atscm#readme) · [npm](https://www.npmjs.com/package/atscm)
-
 - [create-atscm](./packages/create-atscm) Create a new atscm project with `npm init`
 
   > ![npm](https://img.shields.io/npm/v/create-atscm?logo=npm)
