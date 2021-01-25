@@ -22,6 +22,22 @@ orbs:
           - run:
               name: Logging in to npm
               command: echo "$NPM_TOKEN" > ~/.npmrc
+      release:
+        parameters:
+          package:
+            type: string
+          flags:
+            type: string
+            default: ''
+        steps:
+          - run:
+              name: Bump version
+              command: |
+                npx bump-version release \
+                  --package-manager pnpm \
+                  --dir packages/<< parameters.package >> \
+                  << parameters.flags >> \
+                  --gh-token $RELEASE_GITHUB_TOKEN
       run-integration-tests:
         parameters:
           atserver:
@@ -209,14 +225,11 @@ jobs:
       - atscm/attach
       - atscm/git-login
       - atscm/npm-login
-      - run:
-          name: Deploying changes
-          command: |
-            npx bump-version release \
-              --package-manager pnpm \
-              --dir packages/atscm \
-              --release-files packages/atscm/out packages/atscm/docs/api \
-              --gh-token $RELEASE_GITHUB_TOKEN
+      - atscm/release:
+          package: atscm
+          flags: --release-files packages/atscm/out packages/atscm/docs/api
+      - atscm/release:
+          package: create-atscm
 
   update-hosted-docs:
     executor: atscm/node
