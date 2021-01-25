@@ -1,5 +1,16 @@
-<a name="1.1.2"></a>
-## 1.1.2 (2021-01-18)
+<a name="1.1.3"></a>
+## 1.1.3 (2021-01-25)
+
+
+### Bug Fixes
+
+* **init:** Rename gitignore in init template ([#428](https://github.com/atSCM/atscm/issues/428)) ([1a75245](https://github.com/atSCM/atscm/commits/1a75245))
+
+
+
+
+<a name="atscm-v1.1.2"></a>
+# atscm-v1.1.2 (2021-01-18)
 
 
 ### Bug Fixes
