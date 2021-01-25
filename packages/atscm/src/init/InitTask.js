@@ -3,6 +3,7 @@ import { src, dest } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
 import helpers from 'handlebars-helpers';
 import streamToPromise from 'stream-to-promise';
+import through from 'through2';
 import deps from '../../res/init/templates/dependencies.json';
 
 /**
@@ -29,12 +30,21 @@ export default class InitTask {
    * @return {Promise<{ install: string[] }, Error>} Resolved with information on further actions
    * to run or rejected if the task failed.
    */
-  static run(options) {
+  static async run(options) {
     const langId = options.configLang;
 
     const install = deps.lang[langId];
 
+    const renameGitignore = through.obj((file, _, callback) => {
+      if (file.basename === 'gitignore') {
+        file.basename = '.gitignore';
+      }
+
+      callback(null, file);
+    });
+
     const stream = src(this.filesToHandle(langId), { dot: true })
+      .pipe(renameGitignore)
       .pipe(
         handlebars(options, {
           helpers: helpers(),
@@ -42,6 +52,8 @@ export default class InitTask {
       )
       .pipe(dest('./'));
 
-    return streamToPromise(stream).then(() => ({ install }));
+    await streamToPromise(stream);
+
+    return { install };
   }
 }
