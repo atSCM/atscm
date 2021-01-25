@@ -286,7 +286,7 @@ export default class DisplayTransformer extends XMLTransformer {
     }
 
     // Insert referenced scripts after inline scripts
-    let referencedScripts =
+    const referencedScripts =
       config.referencedScripts || config.dependencies?.map((href) => ({ href }));
 
     if (referencedScripts) {
