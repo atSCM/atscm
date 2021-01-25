@@ -37,6 +37,7 @@ export default class InitTask {
 
     const renameGitignore = through.obj((file, _, callback) => {
       if (file.basename === 'gitignore') {
+        // eslint-disable-next-line no-param-reassign
         file.basename = '.gitignore';
       }
 
