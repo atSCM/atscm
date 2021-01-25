@@ -180,18 +180,21 @@
 </ul>
 <p><!-- BEGIN overview -->
 </p>
-<h2 id="installation">Installation</h2><p><em>atscm</em> can be installed via <a href="https://github.com/atSCM/atscm-cli">atscm-cli</a>.</p>
-<p><details>
-<summary>&lt;strong&gt;Installing &lt;i&gt;atscm-cli&lt;/i&gt;&lt;/strong&gt;</summary>
+<h2 id="installation">Installation</h2><p>Prerequisite: Install node.js (version 10 or later)</p>
+<p><details><summary>How to check which version is installed</summary>
 
 - Make sure <a href="https://nodejs.org">node.js</a> (version 10 or later) is installed by running <code>node --version</code>.
 - Make sure <a href="https://www.npmjs.com">npm</a> is installed by running <code>npm --version</code>.
-- Run <code>npm install --global atscm-cli</code> to install <em>atscm-cli</em> globally. <em>You may have to run this command as an administrator.</em>
 
 </details>
 
 </p>
+<h3 id="with-atscm-cli">With atscm-cli</h3><p><em>atscm</em> can be installed via <a href="https://github.com/atSCM/atscm-cli">atscm-cli</a>.</p>
+<blockquote>
+<p>Run <code>npm install --global atscm-cli</code> to install <em>atscm-cli</em> globally. <em>You may have to run this command as an administrator.</em></p>
+</blockquote>
 <p>With <a href="https://github.com/atSCM/atscm-cli">atscm-cli</a> installed run <code>atscm init</code> to create a new <em>atscm</em> project.</p>
+<h3 id="with--code-npm-init--code-">With <code>npm init</code></h3><p>Simply run <code>npm init atscm</code> to create a new atscm project.</p>
 <h2 id="basic-usage">Basic usage</h2><p><strong>Pulling nodes from atvise server</strong></p>
 <p>Running <code>atscm pull</code> will download all nodes from atvise server into the <code>./src</code> folder inside your project.</p>
 <p>By default only displays, serverside scripts and quickdynamics will be split into their JavaScript and SVG sources. You can specify additional transformers to use in your <a href="#project-configuration">Project configuration</a> file.</p>
