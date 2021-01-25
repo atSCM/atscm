@@ -34,7 +34,7 @@
     "eslint-config-prettier": "6.11.0",
     "husky": "4.2.5",
     "prettier": "2.1.2",
-    "prettier-plugin-package": "^1.0.0",
+    "prettier-plugin-package": "1.0.0",
     "sucrase": "3.15.0"
   },
   "commitlint": {
@@ -46,5 +46,10 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "renovate": {
+    "extends": [
+      "@ls-age:automergeDev"
+    ]
   }
 }
