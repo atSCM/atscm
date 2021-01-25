@@ -12,6 +12,7 @@ import {
   attributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import { Display as DisplayConfig } from '../../types/schemas/display';
 
 const rootMetaTags = [{ tag: 'title' }, { tag: 'desc', key: 'description' }];
 
@@ -77,7 +78,7 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display: No `svg` tag');
     }
 
-    const config = {};
+    const config: DisplayConfig = {};
     const scriptTags = removeChildren(document, 'script');
     let inlineScript;
 
@@ -168,7 +169,7 @@ export default class DisplayTransformer extends XMLTransformer {
    */
   combineNodes(node, sources) {
     const configFile = sources['.json'];
-    let config = {};
+    let config: DisplayConfig = {};
 
     if (configFile) {
       try {

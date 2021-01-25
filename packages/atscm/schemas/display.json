@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "description": "An atvise display configuration file",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A display's title"
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description of the display"
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Display parameters",
+      "items": {
+        "type": "object",
+        "description": "A display paramter",
+        "required": ["name", "valuetype", "behaviour"],
+        "properties": {
+          "name": { "type": "string" },
+          "desc": { "type": "string" },
+          "valuetype": {
+            "type": "string",
+            "enum": [
+              "address",
+              "display",
+              "string",
+              "trstring",
+              "number",
+              "bool",
+              "color",
+              "enum",
+              "global"
+            ]
+          },
+          "behaviour": {
+            "type": "string",
+            "enum": ["mandatory", "optional"]
+          },
+          "defaultvalue": { "type": "string" },
+          "config": { "type": "string" }
+        },
+        "defaultSnippets": [
+          {
+            "label": "New parameter",
+            "description": "Adds a display parameter",
+            "body": { "name": "$1", "valuetype": "$2", "behaviour": "$3" }
+          }
+        ]
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "External scripts to load",
+      "deprecated": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "external-script": {
+      "title": "External script",
+      "type": "object",
+      "required": ["href"],
+      "properties": {
+        "name": { "type": "string", "description": "A name for the script" },
+        "desc": { "type": "string", "description": "A description for the script" },
+        "type": { "type": "string", "default": "type/ecmascript" }
+      },
+      "defaultSnippets": [
+        {
+          "label": "New script",
+          "description": "Adds an external script",
+          "body": { "name": "$1", "href": "$2" }
+        }
+      ]
+    }
+  }
+}
