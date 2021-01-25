@@ -10,10 +10,12 @@ import {
   textContent,
   createTextNode,
   attributeValues,
+  AttributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import { Display as DisplayConfig } from '../../types/schemas/display';
 import { BrowsedNode } from '../lib/server/NodeBrowser';
+import { SplittingTransformer } from '..';
 
 const rootMetaTags = [{ tag: 'title' }, { tag: 'desc', key: 'description' }];
 
@@ -109,7 +111,7 @@ export default class DisplayTransformer extends XMLTransformer {
       });
     }
     if (inlineScript) {
-      const scriptFile = this.constructor.splitFile(node, '.js');
+      const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
       const scriptText = textContent(inlineScript);
 
       scriptFile.value = {
@@ -141,11 +143,13 @@ export default class DisplayTransformer extends XMLTransformer {
       if (paramTags.length) {
         config.parameters = [];
 
-        paramTags.forEach((n) => config.parameters.push(attributeValues(n)));
+        paramTags.forEach((n) =>
+          config.parameters.push(attributeValues(n) as DisplayConfig['parameters'][0])
+        );
       }
     }
 
-    const configFile = this.constructor.splitFile(node, '.json');
+    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
     configFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -153,7 +157,7 @@ export default class DisplayTransformer extends XMLTransformer {
     };
     context.addNode(configFile);
 
-    const svgFile = this.constructor.splitFile(node, '.svg');
+    const svgFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.svg');
     svgFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -162,7 +166,7 @@ export default class DisplayTransformer extends XMLTransformer {
     context.addNode(svgFile);
 
     // equals: node.renameTo(`${node.name}.display`);
-    return super.transformFromDB(node);
+    return super.transformFromDB(node, context);
   }
 
   /**
@@ -188,7 +192,8 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error(`No display SVG for ${node.nodeId}`);
     }
 
-    const scriptFile = sources[this.constructor.scriptSourceExtension];
+    const scriptFile =
+      sources[(this.constructor as typeof DisplayTransformer).scriptSourceExtension];
     let inlineScript = '';
     if (scriptFile) {
       inlineScript = scriptFile.stringValue;
@@ -233,7 +238,10 @@ export default class DisplayTransformer extends XMLTransformer {
 
       // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
       for (let i = config.parameters.length - 1; i >= 0; i--) {
-        prependChild(metaTag, createElement('atv:parameter', undefined, config.parameters[i]));
+        prependChild(
+          metaTag,
+          createElement('atv:parameter', undefined, config.parameters[i] as AttributeValues)
+        );
       }
 
       // Insert <metadata> as first element in the resulting svg, after <defs>, <desc> and
