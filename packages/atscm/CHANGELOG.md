@@ -1,5 +1,16 @@
-<a name="1.1.3"></a>
-## 1.1.3 (2021-01-25)
+<a name="1.2.0-beta.0"></a>
+# 1.2.0-beta.0 (2021-01-25)
+
+
+### Features
+
+* Add create-atscm package ([#429](https://github.com/atSCM/atscm/issues/429)) ([99e4a42](https://github.com/atSCM/atscm/commits/99e4a42))
+
+
+
+
+<a name="atscm-v1.1.3"></a>
+# atscm-v1.1.3 (2021-01-25)
 
 
 ### Bug Fixes
