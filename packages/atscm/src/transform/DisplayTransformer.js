@@ -51,6 +51,30 @@ export default class DisplayTransformer extends XMLTransformer {
     return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
+  normalizeScriptAttributes(attributes) {
+    return Object.entries(attributes).reduce((soFar, [originalKey, value]) => {
+      // Remote empty values
+      if (!value) return soFar;
+
+      let key = originalKey.split('atv:')?.[1] || originalKey.split('xlink:')?.[1] || originalKey;
+
+      // Rename 'src' to 'href'
+      if (key === 'src') {
+        if (soFar.href) {
+          throw new Error(
+            `Script tag has multiple source attributes: ${Object.keys(attributes).join(', ')}`
+          );
+        }
+        key = 'href';
+      }
+
+      // Remove useless information
+      if (key === 'type' && value === 'text/ecmascript') return soFar;
+
+      return { ...soFar, [key]: value };
+    }, {});
+  }
+
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
@@ -81,16 +105,32 @@ export default class DisplayTransformer extends XMLTransformer {
     const scriptTags = removeChildren(document, 'script');
     let inlineScript;
 
+    rootMetaTags.forEach(({ tag, key }) => {
+      const [element, ...additional] = removeChildren(document, tag);
+      if (!element) return;
+
+      config[key || tag] = textContent(element);
+
+      if (additional.length) {
+        Logger.warn(`Removed additional <${tag} /> element inside ${node.nodeId}`);
+      }
+    });
+
     // Extract JavaScript
     if (scriptTags.length) {
       scriptTags.forEach((script) => {
         const attributes = attributeValues(script);
-        if (attributes && (attributes.src || attributes['xlink:href'])) {
-          if (!config.dependencies) {
-            config.dependencies = [];
-          }
 
-          config.dependencies.push(attributes.src || attributes['xlink:href']);
+        if (attributes?.['atv:href']) {
+          // Linked scripts
+          (config.linkedScripts || (config.linkedScripts = [])).push({
+            ...this.normalizeScriptAttributes(attributes),
+          });
+        } else if (attributes && (attributes.src || attributes['xlink:href'])) {
+          // Referenced scripts
+          (config.referencedScripts || (config.referencedScripts = [])).push({
+            ...this.normalizeScriptAttributes(attributes),
+          });
         } else {
           // Warn on multiple inline scripts
           if (inlineScript) {
@@ -114,17 +154,6 @@ export default class DisplayTransformer extends XMLTransformer {
       };
       context.addNode(scriptFile);
     }
-
-    rootMetaTags.forEach(({ tag, key }) => {
-      const [element, ...additional] = removeChildren(document, tag);
-      if (!element) return;
-
-      config[key || tag] = textContent(element);
-
-      if (additional.length) {
-        Logger.warn(`Removed additional <${tag} /> element inside ${node.nodeId}`);
-      }
-    });
 
     // Extract metadata
     const metaTag = findChild(document, 'metadata');
@@ -158,6 +187,27 @@ export default class DisplayTransformer extends XMLTransformer {
 
     // equals: node.renameTo(`${node.name}.display`);
     return super.transformFromDB(node);
+  }
+
+  scriptTagAttributes(referenced, config) {
+    return Object.entries(config).reduce(
+      (soFar, [key, value]) => {
+        let outputKey;
+
+        if (referenced) {
+          if (key === 'href') {
+            outputKey = 'xlink:href';
+          } else if (key === 'type') {
+            outputKey = key;
+          }
+        }
+
+        return { ...soFar, [outputKey || `atv:${key}`]: value };
+      },
+      {
+        type: 'text/ecmascript',
+      }
+    );
   }
 
   /**
@@ -197,15 +247,30 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display SVG: No `svg` tag');
     }
 
+    // Insert linked scripts
+
+    if (config.linkedScripts) {
+      config.linkedScripts.forEach((s) => {
+        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(false, s)));
+      });
+    }
+
     // Insert dependencies
+    // if (config.dependencies && config.referencedScripts) {
+    //   throw new Error(`Cannot use both 'dependencies' and 'referencedScripts'`);
+    // }
+
     if (config.dependencies) {
-      config.dependencies.forEach((s) => {
-        appendChild(svg, createElement('script', undefined, { 'xlink:href': s }));
+      config.dependencies.forEach((href) => {
+        appendChild(
+          svg,
+          createElement('script', undefined, this.scriptTagAttributes(true, { href }))
+        );
       });
     }
 
     // Insert script
-    // FIXME: Import order is not preserved!
+    // NOTE: Import order is not preserved on atserver < 3.5
     if (scriptFile) {
       appendChild(
         svg,
@@ -213,6 +278,21 @@ export default class DisplayTransformer extends XMLTransformer {
           type: 'text/ecmascript',
         })
       );
+    }
+
+    // Insert referenced scripts after the inline script block
+    if (config.referencedScripts) {
+      console.error("TODO: Validate we're pushing to atserver 3.5+");
+    }
+
+    // Insert referenced scripts after inline scripts
+    let referencedScripts =
+      config.referencedScripts || config.dependencies?.map((href) => ({ href }));
+
+    if (referencedScripts) {
+      referencedScripts.forEach((s) => {
+        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(true, s)));
+      });
     }
 
     // Insert metadata
