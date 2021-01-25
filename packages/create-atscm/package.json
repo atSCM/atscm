@@ -15,7 +15,7 @@
   },
   "bin": "out/bin.js",
   "scripts": {
-    "build": "esbuild src/bin.ts --bundle --platform=node --target=node10 --outfile=out/bin.js --external:execa",
+    "build": "esbuild src/bin.ts --bundle --platform=node --target=node10 --outfile=out/bin.js --external:execa --banner='#!/usr/bin/env node'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
