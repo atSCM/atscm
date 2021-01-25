@@ -115,22 +115,19 @@ jobs:
 
   build:
     executor: atscm/node
-    working_directory: ~/project/packages/atscm
     steps:
       - atscm/attach
       - run:
-          name: Transpiling source code
-          command: npm run compile
-      - run:
-          name: Build type declaration files
-          command: npm run types
+          name: Run build scripts
+          command: pnpm -r run build
       - run:
           name: Check package file paths
-          command: npx pkg-ok
+          command: pnpm -r exec -- npx pkg-ok
       - persist_to_workspace:
           root: ~/project
           paths:
             - packages/atscm/out
+            - packages/create-atscm/out
 
   docs:
     executor: atscm/node
