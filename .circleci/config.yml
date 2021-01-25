@@ -143,6 +143,7 @@ jobs:
           root: ~/project
           paths:
             - packages/atscm/out
+            - packages/create-atscm/out
 
   docs:
     executor: atscm/node
@@ -227,6 +228,8 @@ jobs:
       - atscm/release:
           package: atscm
           flags: --release-files packages/atscm/out packages/atscm/docs/api
+      - atscm/release:
+          package: create-atscm
 
   update-hosted-docs:
     executor: atscm/node
