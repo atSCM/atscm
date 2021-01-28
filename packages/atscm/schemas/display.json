@@ -17,7 +17,7 @@
       "items": {
         "type": "object",
         "description": "A display paramter",
-        "required": ["name", "valuetype", "behaviour"],
+        "required": ["name", "valuetype", "behavior"],
         "properties": {
           "name": { "type": "string" },
           "desc": { "type": "string" },
@@ -35,7 +35,7 @@
               "global"
             ]
           },
-          "behaviour": {
+          "behavior": {
             "type": "string",
             "enum": ["mandatory", "optional"]
           },
@@ -46,7 +46,7 @@
           {
             "label": "New parameter",
             "description": "Adds a display parameter",
-            "body": { "name": "$1", "valuetype": "$2", "behaviour": "$3" }
+            "body": { "name": "$1", "valuetype": "$2", "behavior": "$3" }
           }
         ]
       }
