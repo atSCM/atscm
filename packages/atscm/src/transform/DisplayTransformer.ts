@@ -13,7 +13,7 @@ import {
   AttributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
-import { Display as DisplayConfig } from '../../types/schemas/display';
+import { DisplayConfig } from '../../types/schemas/display-config';
 import { BrowsedNode } from '../lib/server/NodeBrowser';
 import { SplittingTransformer } from '..';
 

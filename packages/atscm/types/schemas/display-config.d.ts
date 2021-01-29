@@ -8,7 +8,7 @@
 /**
  * An atvise display configuration file
  */
-export interface Display {
+export interface DisplayConfig {
   /**
    * A display's title
    */
