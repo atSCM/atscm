@@ -33,7 +33,7 @@ export interface Display {
       | 'color'
       | 'enum'
       | 'global';
-    behaviour: 'mandatory' | 'optional';
+    behavior: 'mandatory' | 'optional';
     defaultvalue?: string;
     config?: string;
     [k: string]: unknown;
