@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "description": "An atvise server script configuration file",
+  "properties": {
+    "icon": {
+      "type": "object",
+      "description": "The icon to show in atvise builder",
+      "required": ["content", "type"],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "A base64 encoded image"
+        },
+        "type": {
+          "type": "string",
+          "description": "A valid image mime type"
+        }
+      }
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "If the script should be shown inside the atvise builder library",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "description": "The script's title"
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description of what the script does"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Custom script metadata",
+      "patternProperties": {
+        "^": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Display parameters",
+      "items": {
+        "$comment": "NOTE: This is imported from './parameter-config.json'",
+        "type": "object",
+        "description": "A parameter",
+        "required": ["name", "valuetype", "behavior"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The parameter's name"
+          },
+          "desc": {
+            "type": "string",
+            "description": "A short description of what the parameter does"
+          },
+          "substitute": {
+            "type": "string",
+            "description": "A string to search in the code and replace with the parameter's value"
+          },
+          "valuetype": {
+            "type": "string",
+            "description": "The parameter's type",
+            "enum": [
+              "address",
+              "display",
+              "string",
+              "trstring",
+              "number",
+              "bool",
+              "color",
+              "enum",
+              "global"
+            ]
+          },
+          "behavior": {
+            "type": "string",
+            "enum": ["mandatory", "optional", "hidden"]
+          },
+          "defaultvalue": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string",
+            "description": "Holds possible values in enum parameters",
+            "examples": ["Yes;No"]
+          },
+          "group": {
+            "type": "string"
+          },
+          "target": {
+            "type": "object",
+            "properties": {
+              "namespaceIndex": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["namespaceIndex", "name"],
+            "additionalProperties": false
+          }
+        },
+        "defaultSnippets": [
+          {
+            "label": "New parameter",
+            "description": "Creates an additional parameter",
+            "body": {
+              "name": "$1",
+              "valuetype": "$2",
+              "behavior": "$3"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

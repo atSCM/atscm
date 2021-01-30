@@ -45,8 +45,10 @@ export default class SplittingTransformer extends PartialTransformer {
   /**
    * Renames a container node, should be called by all subclasses.
    * @param {BrowsedNode} node A container node.
+   * @param {any} context The tranform context.
    */
-  async transformFromDB(node) {
+  // eslint-disable-next-line no-unused-vars
+  async transformFromDB(node, context) {
     node.renameTo(`${node.name}${this.constructor.extension}`);
   }
 

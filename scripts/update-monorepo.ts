@@ -63,7 +63,7 @@ async function updateReadme() {
   >
   > [GitHub](${p.homepage}) · [npm](https://www.npmjs.com/package/${p.name})`
       )
-      .join('\n')
+      .join('\n\n')
   );
   await readme.save();
 }
