@@ -279,7 +279,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
         let elements;
 
         // Handle relative parameter targets
-        if (attributes.relative === 'true' && attributes.target) {
+        if (attributes.relative === 'true') {
           const { namespaceIndex, name } = attributes.target || {};
           const targetElements = createElement('Elements');
 
