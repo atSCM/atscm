@@ -33,7 +33,22 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Custom script metadata"
+      "description": "Custom script metadata",
+      "patternProperties": {
+        "^": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
     },
     "parameters": {
       "type": "array",

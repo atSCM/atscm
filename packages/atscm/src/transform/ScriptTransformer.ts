@@ -11,8 +11,10 @@ import {
   appendChild,
   isElement,
   attributeValues,
+  AttributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import type SplittingTransformer from '../lib/transform/SplittingTransformer';
 import type { ServerscriptConfig } from '../../types/schemas/serverscript-config';
 
 /**
@@ -64,7 +66,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
           );
           break;
         case 'visible':
-          config.visible = Boolean(parseInt(textContent(child), 10));
+          config.visible = Boolean(parseInt(textContent(child) || '1', 10));
           break;
         case 'title':
           config.title = textContent(child) ?? undefined;
@@ -77,16 +79,17 @@ export class AtviseScriptTransformer extends XMLTransformer {
             config.metadata = {};
           }
 
-          const value = textContent(child);
+          const value = textContent(child)!;
 
           if (config.metadata[child.name]) {
-            if (!Array.isArray(config.metadata[child.name])) {
-              config.metadata[child.name] = [config.metadata[child.name]];
+            const soFar = config.metadata[child.name];
+            if (!Array.isArray(soFar)) {
+              config.metadata[child.name] = [soFar];
             }
 
-            config.metadata[child.name].push(value);
+            (config.metadata[child.name] as string[]).push(value);
           } else {
-            config.metadata[child.name] = textContent(child);
+            config.metadata[child.name] = value;
           }
 
           if (!['longrunning'].includes(child.name)) {
@@ -114,12 +117,10 @@ export class AtviseScriptTransformer extends XMLTransformer {
     return paramTags.map((node) => {
       const { childNodes } = node;
       const attributes = attributeValues(node);
-      const param = Object.assign({}, attributes);
+      const param = Object.assign({}, attributes) as ServerscriptConfig['parameters'][0];
 
       // Handle relative parameter targets
       if (attributes.relative === 'true') {
-        param.target = {};
-
         const target = findChild(childNodes.find(isElement), [
           'Elements',
           'RelativePathElement',
@@ -179,7 +180,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     };
 
     // Write config file
-    const configFile = this.constructor.splitFile(node, '.json');
+    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
     configFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -189,7 +190,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     // Write JavaScript file
     const codeNode = findChild(document, 'code');
-    const scriptFile = this.constructor.splitFile(node, '.js');
+    const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
     scriptFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -197,7 +198,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     };
     context.addNode(scriptFile);
 
-    return super.transformFromDB(node);
+    return super.transformFromDB(node, context);
   }
 
   /**
@@ -217,7 +218,8 @@ export class AtviseScriptTransformer extends XMLTransformer {
       }
     }
 
-    const scriptFile = sources[this.constructor.scriptSourceExtension];
+    const scriptFile =
+      sources[(this.constructor as typeof AtviseScriptTransformer).scriptSourceExtension];
     let code = '';
 
     if (scriptFile) {
@@ -241,7 +243,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
       if (config.icon) {
         const { content, ...iconConfig } = config.icon;
 
-        meta.push(createElement('icon', [createTextNode(content)], iconConfig));
+        meta.push(createElement('icon', [createTextNode(content)], iconConfig as AttributeValues));
       }
 
       // - Other fields
@@ -278,7 +280,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
         // Handle relative parameter targets
         if (attributes.relative === 'true' && attributes.target) {
-          const { namespaceIndex, name } = attributes.target;
+          const { namespaceIndex, name } = attributes.target || {};
           const targetElements = createElement('Elements');
 
           elements = [createElement('RelativePath', [targetElements])];
@@ -298,7 +300,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
           delete attributes.target;
         }
 
-        appendChild(document, createElement('parameter', elements, attributes));
+        appendChild(document, createElement('parameter', elements, attributes as AttributeValues));
       });
     }
 
