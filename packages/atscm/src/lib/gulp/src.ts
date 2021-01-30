@@ -138,6 +138,7 @@ type NodeHandler<R = void> = (node: FileNode) => R;
 interface SourceBrowserOptions {
   handleNode: NodeHandler<Promise<void>>;
   readNodeFile: NodeHandler<boolean>;
+  atserverVersion: string;
 }
 
 /**
