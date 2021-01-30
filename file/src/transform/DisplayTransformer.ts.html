@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../../">
-  <title data-ice="title">src/lib/transform/Transformer.js | atscm</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/transform/DisplayTransformer.ts | atscm</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -156,166 +156,270 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/lib/transform/Transformer.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Logger from &apos;gulplog&apos;;
+<div class="content" data-ice="content"><h1 data-ice="title">src/transform/DisplayTransformer.ts</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { DataType, VariantArrayType } from &apos;node-opcua/lib/datamodel/variant&apos;;
+import Logger from &apos;gulplog&apos;;
+import {
+  findChild,
+  removeChildren,
+  createCDataNode,
+  createElement,
+  appendChild,
+  prependChild,
+  textContent,
+  createTextNode,
+  attributeValues,
+  AttributeValues,
+} from &apos;modify-xml&apos;;
+import XMLTransformer from &apos;../lib/transform/XMLTransformer&apos;;
+import type { DisplayConfig } from &apos;../../types/schemas/display-config&apos;;
+import { BrowsedNode } from &apos;../lib/server/NodeBrowser&apos;;
+import { SplittingTransformer } from &apos;..&apos;;
+
+const rootMetaTags = [{ tag: &apos;title&apos; }, { tag: &apos;desc&apos;, key: &apos;description&apos; }];
 
 /**
- * The directions a transformer can be run in.
- * @type {{FromDB: string, FromFilesystem: string}}
+ * Splits read atvise display XML nodes into their SVG and JavaScript sources,
+ * alongside with a .json file containing the display&apos;s parameters.
  */
-export const TransformDirection = {
-  FromDB: &apos;FromDB&apos;,
-  FromFilesystem: &apos;FromFilesystem&apos;,
-};
-
-/**
- * Checks if the given string is a valid {@link TransformDirection}.
- * @param {string} direction The direction string to check.
- * @return {boolean} `true` if the direction is valid.
- */
-function isValidDirection(direction) {
-  return [TransformDirection.FromDB, TransformDirection.FromFilesystem].includes(direction);
-}
-
-/**
- * The base transformer class.
- * @abstract
- */
-export default class Transformer {
+export default class DisplayTransformer extends XMLTransformer {
   /**
-   * Returns a function that combines multiple transformer actions.
-   * @param {Transformer[]} transformers An array of transformers.
-   * @param {TransformDirection} direction The direction to use.
-   * @return {function(node: Node): Promise&lt;any&gt;} The combined transform function.
+   * The extension to add to display container node names when they are pulled.
+   * @type {string}
    */
-  static combinedTransformer(transformers, direction) {
-    const directed = transformers.map((t) =&gt; t.withDirection(direction));
+  static get extension() {
+    return &apos;.display&apos;;
+  }
 
-    if (direction === TransformDirection.FromFilesystem) {
-      directed.reverse();
+  /**
+   * The source file extension to allow for scripts.
+   */
+  static get scriptSourceExtension() {
+    return &apos;.js&apos;;
+  }
+
+  /**
+   * The source file extensions to allow.
+   * @type {string[]}
+   */
+  static get sourceExtensions() {
+    return [&apos;.json&apos;, &apos;.svg&apos;, this.scriptSourceExtension];
+  }
+
+  /**
+   * Returns `true` for all display nodes.
+   * @param {Node} node The node to check.
+   */
+  shouldBeTransformed(node) {
+    return node.hasTypeDefinition(&apos;VariableTypes.ATVISE.Display&apos;);
+  }
+
+  /**
+   * Splits any read files containing atvise displays into their SVG and JavaScript sources,
+   * alongside with a json file containing the display&apos;s parameters.
+   * @param node The node to split.
+   * @param context The transform context.
+   */
+  async transformFromDB(
+    node: BrowsedNode,
+    context: { remove: () =&gt; void; addNode: (add: BrowsedNode) =&gt; void }
+  ) {
+    if (!this.shouldBeTransformed(node)) {
+      return undefined;
     }
 
-    return async (node, context) =&gt; {
-      for (const transformer of directed) {
-        if ((await transformer.compatTransform(direction, node, context)) !== undefined) {
-          // break;
-        }
-      }
-    };
-  }
-
-  /**
-   * Creates a new Transformer with the specified options.
-   * @param {Object} [options] The options to use.
-   * @param {TransformDirection} [options.direction] The direction to use.
-   * @throws {Error} Throws an error if the given direction is invalid.
-   */
-  constructor({ direction } = {}) {
-    if (direction) {
-      if (!isValidDirection(direction)) {
-        throw new Error(&apos;Invalid direction&apos;);
-      }
-      this.direction = direction;
-    }
-  }
-
-  /**
-   * Returns the Transformer with the given direction.
-   * @param {TransformDirection} direction The direction to use.
-   * @return {Transformer} Itself, to be chainable.
-   * @throws {Error} Throws an error if the given direction is invalid.
-   */
-  withDirection(direction) {
-    if (!isValidDirection(direction)) {
-      throw new Error(&apos;Invalid direction&apos;);
+    if (node.arrayType !== VariantArrayType.Scalar) {
+      // FIXME: Instead of throwing we could simply pass the original node to the callback
+      throw new Error(&apos;Array of displays not supported&apos;);
     }
 
-    /**
-     * The transformer&apos;s direction
-     * @type {TransformerDirection}
-     */
-    this.direction = direction;
-    return this;
-  }
+    const xml = this.decodeContents(node);
+    if (!xml) {
+      throw new Error(&apos;Error parsing display&apos;);
+    }
 
-  /**
-   * Determines if a node&apos;s value node should be read, e.G. The *Variable.Bool* file for a node
-   * defined in *.Variable.Bool.Json*.
-   * @param {FileNode} node The node to read or not.
-   * @return {boolean?} *true* if the node&apos;s value file should be read, undefined to let other
-   * transformers decide.
-   */
-  // eslint-disable-next-line no-unused-vars
-  readNodeFile(node) {
-    return undefined;
-  }
+    const document = findChild(xml, &apos;svg&apos;);
+    if (!document) {
+      throw new Error(&apos;Error parsing display: No `svg` tag&apos;);
+    }
 
-  /**
-   * **Must be overridden by all subclasses:** Transforms the given node when using
-   * {@link TransformDirection.FromDB}.
-   * @param {BrowsedNode} node The node to split.
-   * @param {Object} context The transform context.
-   */
-  // eslint-disable-next-line no-unused-vars
-  async transformFromDB(node, context) {
-    throw new Error(&apos;Transformer#transformFromDB must be overridden by all subclasses&apos;);
-  }
+    const config: DisplayConfig = {};
+    const scriptTags = removeChildren(document, &apos;script&apos;);
+    let inlineScript;
 
-  /**
-   * **Must be overridden by all subclasses:** Transforms the given node when using
-   * {@link TransformDirection.FromFilesystem}.
-   * @param {BrowsedNode} node The node to transform.
-   * @param {Object} context The browser context.
-   */
-  // eslint-disable-next-line no-unused-vars
-  async transformFromFilesystem(node, context) {
-    throw new Error(&apos;Transformer#transformFromFilesystem must be overridden by all subclasses&apos;);
-  }
+    // Extract JavaScript
+    if (scriptTags.length) {
+      scriptTags.forEach((script) =&gt; {
+        const attributes = attributeValues(script);
+        if (attributes &amp;&amp; (attributes.src || attributes[&apos;xlink:href&apos;])) {
+          if (!config.dependencies) {
+            config.dependencies = [];
+          }
 
-  /**
-   * A transform wrapper that works with both async/await (atscm &gt;= 1) and callback-based
-   * (atscm &lt; 1)transformers.
-   * @param {TransformDirection} direction The direction to use.
-   * @param {Node} node The node to transform.
-   * @param {Object} context The browser context.
-   */
-  compatTransform(direction, node, context) {
-    const transform = (direction === TransformDirection.FromDB
-      ? this.transformFromDB
-      : this.transformFromFilesystem
-    ).bind(this);
-
-    const fnName = `${this.constructor.name}#transform${
-      direction === TransformDirection.FromDB ? &apos;FromDB&apos; : &apos;FromFilesystem&apos;
-    }`;
-
-    return new Promise((resolve, reject) =&gt; {
-      const promise = transform(node, context, (err, result) =&gt; {
-        if (!this.constructor._warnedStreamAPI) {
-          this.constructor._warnedStreamAPI = true;
-          Logger.debug(`Deprecated: ${fnName} uses the Stream API instead of async/await.`);
+          config.dependencies.push(attributes.src || attributes[&apos;xlink:href&apos;]);
+        } else {
+          // Warn on multiple inline scripts
+          if (inlineScript) {
+            Logger[node.id.value.startsWith(&apos;SYSTEM.LIBRARY.ATVISE&apos;) ? &apos;debug&apos; : &apos;warn&apos;](
+              `&apos;${node.id.value}&apos; contains multiple inline scripts.`
+            );
+            document.childNodes.push(inlineScript);
+          }
+          inlineScript = script;
         }
-        if (err) {
-          return reject(Object.assign(err, { node }));
-        }
-
-        // Handle &quot;repush&quot;
-        if (result === node) {
-          return resolve();
-        }
-
-        return resolve(result);
       });
+    }
+    if (inlineScript) {
+      const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, &apos;.js&apos;);
+      const scriptText = textContent(inlineScript);
 
-      if (promise instanceof Promise) {
-        promise.then(resolve, (err) =&gt; reject(Object.assign(err, { node })));
-      } else if (this.transformFromDB.length &lt; 3) {
-        reject(
-          new Error(`${fnName} did not return a Promise.
-  - Did you forget \`async\`?`)
-        );
+      scriptFile.value = {
+        dataType: DataType.String,
+        arrayType: VariantArrayType.Scalar,
+        value: scriptText,
+      };
+      context.addNode(scriptFile);
+    }
+
+    rootMetaTags.forEach(({ tag, key }) =&gt; {
+      const [element, ...additional] = removeChildren(document, tag);
+      if (!element) return;
+
+      config[key || tag] = textContent(element);
+
+      if (additional.length) {
+        Logger.warn(`Removed additional &lt;${tag} /&gt; element inside ${node.nodeId}`);
       }
     });
+
+    // Extract metadata
+    const metaTag = findChild(document, &apos;metadata&apos;);
+    if (metaTag &amp;&amp; metaTag.childNodes) {
+      // TODO: Warn on multiple metadata tags
+
+      // - Parameters
+      const paramTags = removeChildren(metaTag, &apos;atv:parameter&apos;);
+      if (paramTags.length) {
+        config.parameters = [];
+
+        paramTags.forEach((n) =&gt;
+          config.parameters.push(attributeValues(n) as DisplayConfig[&apos;parameters&apos;][0])
+        );
+      }
+    }
+
+    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, &apos;.json&apos;);
+    configFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: JSON.stringify(config, null, &apos;  &apos;),
+    };
+    context.addNode(configFile);
+
+    const svgFile = (this.constructor as typeof SplittingTransformer).splitFile(node, &apos;.svg&apos;);
+    svgFile.value = {
+      dataType: DataType.String,
+      arrayType: VariantArrayType.Scalar,
+      value: this.encodeContents(xml),
+    };
+    context.addNode(svgFile);
+
+    // equals: node.renameTo(`${node.name}.display`);
+    return super.transformFromDB(node, context);
+  }
+
+  /**
+   * Creates a display from the collected nodes.
+   * @param {BrowsedNode} node The container node.
+   * @param {Map&lt;string, BrowsedNode&gt;} sources The collected files, stored against their
+   * extension.
+   */
+  combineNodes(node, sources) {
+    const configFile = sources[&apos;.json&apos;];
+    let config: DisplayConfig = {};
+
+    if (configFile) {
+      try {
+        config = JSON.parse(configFile.stringValue);
+      } catch (e) {
+        throw new Error(`Error parsing JSON in ${configFile.relative}: ${e.message}`);
+      }
+    }
+
+    const svgFile = sources[&apos;.svg&apos;];
+    if (!svgFile) {
+      throw new Error(`No display SVG for ${node.nodeId}`);
+    }
+
+    const scriptFile =
+      sources[(this.constructor as typeof DisplayTransformer).scriptSourceExtension];
+    let inlineScript = &apos;&apos;;
+    if (scriptFile) {
+      inlineScript = scriptFile.stringValue;
+    }
+
+    const xml = this.decodeContents(svgFile);
+    const result = xml;
+    const svg = findChild(result, &apos;svg&apos;);
+
+    if (!svg) {
+      throw new Error(&apos;Error parsing display SVG: No `svg` tag&apos;);
+    }
+
+    // Insert dependencies
+    if (config.dependencies) {
+      config.dependencies.forEach((s) =&gt; {
+        appendChild(svg, createElement(&apos;script&apos;, undefined, { &apos;xlink:href&apos;: s }));
+      });
+    }
+
+    // Insert script
+    // FIXME: Import order is not preserved!
+    if (scriptFile) {
+      appendChild(
+        svg,
+        createElement(&apos;script&apos;, [createCDataNode(inlineScript)], {
+          type: &apos;text/ecmascript&apos;,
+        })
+      );
+    }
+
+    // Insert metadata
+    // - Parameters
+    if (config.parameters &amp;&amp; config.parameters.length &gt; 0) {
+      let [metaTag] = removeChildren(svg, &apos;metadata&apos;);
+
+      // FIXME: Warn on multiple metadata tags
+
+      if (!metaTag) {
+        metaTag = createElement(&apos;metadata&apos;);
+      }
+
+      // Parameters should come before other atv attributes, e.g. `atv:gridconfig`
+      for (let i = config.parameters.length - 1; i &gt;= 0; i--) {
+        prependChild(
+          metaTag,
+          createElement(&apos;atv:parameter&apos;, undefined, config.parameters[i] as AttributeValues)
+        );
+      }
+
+      // Insert &lt;metadata&gt; as first element in the resulting svg, after &lt;defs&gt;, &lt;desc&gt; and
+      // &lt;title&gt; if defined (nothing to do, they are ordered inside #encodeContents)
+      prependChild(svg, metaTag);
+    }
+
+    // - Title and description
+    rootMetaTags.reverse().forEach(({ tag, key }) =&gt; {
+      const value = config[key || tag] as string;
+
+      if (value !== undefined) {
+        prependChild(svg, createElement(tag, [createTextNode(value)]));
+      }
+    });
+
+    // eslint-disable-next-line
+    node.value.value = this.encodeContents(result);
+    return node;
   }
 }
 </code></pre>

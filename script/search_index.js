@@ -552,7 +552,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer#shouldbetransformed src/transform/displaytransformer.js~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
+    "displaytransformer#shouldbetransformed src/transform/displaytransformer.ts~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
     "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
     "#shouldBeTransformed",
     "test"
@@ -606,7 +606,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer#transformfromdb src/transform/displaytransformer.js~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
+    "displaytransformer#transformfromdb src/transform/displaytransformer.ts~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
     "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber21",
     "#transformFromDB",
     "test"
@@ -1014,12 +1014,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "atscm/src/transform/scripttransformer.js~atvisescripttransformer",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html",
-    "<span>AtviseScriptTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/ScriptTransformer.js</span>",
-    "class"
-  ],
-  [
     "atscm/src/lib/server/types.js~atvisetype",
     "class/src/lib/server/Types.js~AtviseType.html",
     "<span>AtviseType</span> <span class=\"search-result-import-path\">atscm/src/lib/server/Types.js</span>",
@@ -1080,9 +1074,9 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
-    "atscm/src/transform/displaytransformer.js~displaytransformer",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html",
-    "<span>DisplayTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/DisplayTransformer.js</span>",
+    "atscm/src/transform/displaytransformer.ts~displaytransformer",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html",
+    "<span>DisplayTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/DisplayTransformer.ts</span>",
     "class"
   ],
   [
@@ -1206,12 +1200,6 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "atscm/src/transform/scripttransformer.js~quickdynamictransformer",
-    "class/src/transform/ScriptTransformer.js~QuickDynamicTransformer.html",
-    "<span>QuickDynamicTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/ScriptTransformer.js</span>",
-    "class"
-  ],
-  [
     "atscm/src/lib/model/node.ts~referencetypeids",
     "variable/index.html#static-variable-ReferenceTypeIds",
     "<span>ReferenceTypeIds</span> <span class=\"search-result-import-path\">atscm/src/lib/model/Node.ts</span>",
@@ -1233,12 +1221,6 @@ window.esdocSearchIndex = [
     "atscm/src/lib/model/node.ts~servernode",
     "class/src/lib/model/Node.ts~ServerNode.html",
     "<span>ServerNode</span> <span class=\"search-result-import-path\">atscm/src/lib/model/Node.ts</span>",
-    "class"
-  ],
-  [
-    "atscm/src/transform/scripttransformer.js~serverscripttransformer",
-    "class/src/transform/ScriptTransformer.js~ServerscriptTransformer.html",
-    "<span>ServerscriptTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/ScriptTransformer.js</span>",
     "class"
   ],
   [
@@ -4524,7 +4506,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer src/transform/displaytransformer.js~displaytransformer,displaytransformer",
+    "displaytransformer src/transform/displaytransformer.ts~displaytransformer,displaytransformer",
     "test-file/test/src/index.spec.js.html#lineNumber43",
     "atscm module should export DisplayTransformer class",
     "test"
@@ -7338,45 +7320,45 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/transform/displaytransformer.js",
-    "file/src/transform/DisplayTransformer.js.html",
-    "src/transform/DisplayTransformer.js",
+    "src/transform/displaytransformer.ts",
+    "file/src/transform/DisplayTransformer.ts.html",
+    "src/transform/DisplayTransformer.ts",
     "file"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer#combinenodes",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-combineNodes",
-    "src/transform/DisplayTransformer.js~DisplayTransformer#combineNodes",
+    "src/transform/displaytransformer.ts~displaytransformer#combinenodes",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-combineNodes",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer#combineNodes",
     "method"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer#shouldbetransformed",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-shouldBeTransformed",
-    "src/transform/DisplayTransformer.js~DisplayTransformer#shouldBeTransformed",
+    "src/transform/displaytransformer.ts~displaytransformer#shouldbetransformed",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-shouldBeTransformed",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer#shouldBeTransformed",
     "method"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer#transformfromdb",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#instance-method-transformFromDB",
-    "src/transform/DisplayTransformer.js~DisplayTransformer#transformFromDB",
+    "src/transform/displaytransformer.ts~displaytransformer#transformfromdb",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-transformFromDB",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer#transformFromDB",
     "method"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer.extension",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#static-get-extension",
-    "src/transform/DisplayTransformer.js~DisplayTransformer.extension",
+    "src/transform/displaytransformer.ts~displaytransformer.extension",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-extension",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer.extension",
     "member"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer.scriptsourceextension",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#static-get-scriptSourceExtension",
-    "src/transform/DisplayTransformer.js~DisplayTransformer.scriptSourceExtension",
+    "src/transform/displaytransformer.ts~displaytransformer.scriptsourceextension",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-scriptSourceExtension",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer.scriptSourceExtension",
     "member"
   ],
   [
-    "src/transform/displaytransformer.js~displaytransformer.sourceextensions",
-    "class/src/transform/DisplayTransformer.js~DisplayTransformer.html#static-get-sourceExtensions",
-    "src/transform/DisplayTransformer.js~DisplayTransformer.sourceExtensions",
+    "src/transform/displaytransformer.ts~displaytransformer.sourceextensions",
+    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-sourceExtensions",
+    "src/transform/DisplayTransformer.ts~DisplayTransformer.sourceExtensions",
     "member"
   ],
   [
@@ -7455,72 +7437,6 @@ window.esdocSearchIndex = [
     "src/transform/newlines.js~newlinestransformer#transformsreferenceconfigfiles",
     "class/src/transform/Newlines.js~NewlinesTransformer.html#instance-get-transformsReferenceConfigFiles",
     "src/transform/Newlines.js~NewlinesTransformer#transformsReferenceConfigFiles",
-    "member"
-  ],
-  [
-    "src/transform/scripttransformer.js",
-    "file/src/transform/ScriptTransformer.js.html",
-    "src/transform/ScriptTransformer.js",
-    "file"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer#combinenodes",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#instance-method-combineNodes",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer#combineNodes",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer#processmetadata",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#instance-method-processMetadata",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer#processMetadata",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer#processparameters",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#instance-method-processParameters",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer#processParameters",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer#transformfromdb",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#instance-method-transformFromDB",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer#transformFromDB",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer.scriptsourceextension",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#static-get-scriptSourceExtension",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer.scriptSourceExtension",
-    "member"
-  ],
-  [
-    "src/transform/scripttransformer.js~atvisescripttransformer.sourceextensions",
-    "class/src/transform/ScriptTransformer.js~AtviseScriptTransformer.html#static-get-sourceExtensions",
-    "src/transform/ScriptTransformer.js~AtviseScriptTransformer.sourceExtensions",
-    "member"
-  ],
-  [
-    "src/transform/scripttransformer.js~quickdynamictransformer#shouldbetransformed",
-    "class/src/transform/ScriptTransformer.js~QuickDynamicTransformer.html#instance-method-shouldBeTransformed",
-    "src/transform/ScriptTransformer.js~QuickDynamicTransformer#shouldBeTransformed",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~quickdynamictransformer.extension",
-    "class/src/transform/ScriptTransformer.js~QuickDynamicTransformer.html#static-get-extension",
-    "src/transform/ScriptTransformer.js~QuickDynamicTransformer.extension",
-    "member"
-  ],
-  [
-    "src/transform/scripttransformer.js~serverscripttransformer#shouldbetransformed",
-    "class/src/transform/ScriptTransformer.js~ServerscriptTransformer.html#instance-method-shouldBeTransformed",
-    "src/transform/ScriptTransformer.js~ServerscriptTransformer#shouldBeTransformed",
-    "method"
-  ],
-  [
-    "src/transform/scripttransformer.js~serverscripttransformer.extension",
-    "class/src/transform/ScriptTransformer.js~ServerscriptTransformer.html#static-get-extension",
-    "src/transform/ScriptTransformer.js~ServerscriptTransformer.extension",
     "member"
   ],
   [
