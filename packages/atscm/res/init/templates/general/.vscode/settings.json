@@ -3,6 +3,10 @@
     {
       "fileMatch": ["/*.display/*.json"],
       "url": "./node_modules/atscm/schemas/display-config.json"
+    },
+    {
+      "fileMatch": ["/*.script/*.json", "/*.qd/*.json"],
+      "url": "./node_modules/atscm/schemas/serverscript-config.json"
     }
   ]
 }
