@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/updating.html"><a href="manual/updating.html" data-ice="link">Updating atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/updating.html"><a href="manual/updating.html#installing-new-versions" data-ice="link">Installing new versions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/updating.html"><a href="manual/updating.html#updating-your-atscm-project" data-ice="link">Updating your atscm project</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-1--import--em-partialtransformer--em--class" data-ice="link">Step 1: Import PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-2--create-the--em-babeltransformer--em--class" data-ice="link">Step 2: Create the BabelTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-3--use--em-babeltransformer--em-" data-ice="link">Step 3: Use BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-4--implement--em-partialtransformer-shouldbetransformed--em-" data-ice="link">Step 4: Implement PartialTransformer#shouldBeTransformed</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-5--implement--em-transformer-transformfromfilesystem--em-" data-ice="link">Step 5: Implement Transformer#transformFromFilesystem</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-6--test--em-babeltransformer--em-" data-ice="link">Step 6: Test BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-7--implement--em-transformer-transformfromdb--em-" data-ice="link">Step 7: Implement Transformer#transformFromDB</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html" data-ice="link">Node ID conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-atscm-handles-id-conflicts" data-ice="link">How atscm handles id conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-to-resolve-id-conflicts" data-ice="link">How to resolve id conflicts</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-transformer--em--class" data-ice="link">Using Transformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-partialtransformer--em--class" data-ice="link">Using PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/debugging.html"><a href="manual/debugging.html" data-ice="link">Guide: Debugging atscm</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/error-handling.html"><a href="manual/error-handling.html" data-ice="link">Guide: Error handling</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/error-handling.html"><a href="manual/error-handling.html#adding-source-locations" data-ice="link">Adding source locations</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/api.html"><a href="manual/api.html" data-ice="link">Guide: Using the API</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#examples" data-ice="link">Examples</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/testing.html"><a href="manual/testing.html" data-ice="link">Contribute: Testing atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#unit-tests" data-ice="link">Unit tests</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#integration-tests" data-ice="link">Integration tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/testing.html"><a href="manual/testing.html#test-setups" data-ice="link">Test setups</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html" data-ice="link">Contributing</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#found-a-bug-" data-ice="link">Found a bug?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#missing-a-feature-" data-ice="link">Missing a feature?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submission-guidelines" data-ice="link">Submission Guidelines</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-an-issue" data-ice="link">Submitting an issue</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-a-pull-request--pr-" data-ice="link">Submitting a Pull Request (PR)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#code-quality-control" data-ice="link">Code quality control</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#setting-up-the-development-environment" data-ice="link">Setting up the development environment</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#linting-files" data-ice="link">Linting files</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#running-tests" data-ice="link">Running tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#creating-api-documentation" data-ice="link">Creating API documentation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-guideline" data-ice="link">Commit Message Guideline</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-format" data-ice="link">Commit message format</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#type" data-ice="link">Type</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#scope" data-ice="link">Scope</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#body" data-ice="link">Body</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#footer" data-ice="link">Footer</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-linting" data-ice="link">Commit message linting</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h2" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-1-3--2021-01-25-" data-ice="link">1.1.3 (2021-01-25)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#atscm-v1-1-2--2021-01-18-" data-ice="link">atscm-v1.1.2 (2021-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#atscm-v1-1-1--2021-01-18-" data-ice="link">atscm-v1.1.1 (2021-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="guide--using-the-api">Guide: Using the API</h1><blockquote>
+<p>Learn how to use the atscm API to e.g. run server serverscripts in your node application.
+<strong>Available since atscm v1.0.0.</strong> Use <code>atscm update</code> to use the latest version</p>
+</blockquote>
+<h2 id="installation">Installation</h2><p>First of all, make sure your project has atscm installed: Take a look at your <em>package.json</em> file and make sure, atscm is present in the <em>dependencies</em> or (depending on your use case) <em>devDependencies</em> section. Otherwise, <strong>install atscm if necessary</strong>:</p>
+<pre><code class="lang-bash"><code class="source-code prettyprint"># If you need atscm as a runtime-dependency
+npm install --save atscm
+
+# If you need atscm as a development dependency (most likely)
+npm install --save-dev atscm</code>
+</code></pre>
+<h2 id="configuration">Configuration</h2><p>Similar to regular atscm projects, you need an <em>Atviseproject</em> file that contains atscm&apos;s configuration. A minimal example may look like this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// Atviseproject.js
+const { Atviseproject } = require(&apos;atscm&apos;);
+
+module.exports = class ApiProject extends Atviseproject {
+  // Add your configuration here, if needed.
+  // By default, atvise server is assumed to run on opc.tcp://localhost:4840
+};</code>
+</code></pre>
+<p>Before you can finally require the atscm API in your project, you have to <strong>set the <code>ATSCM_CONFIG_PATH</code> environment variable</strong>, pointing to your <em>Atviseproject</em> file. You can do this in multiple ways:</p>
+<ul>
+<li><p>You can set it in your app at runtime (<em>recommended</em>)</p>
+<p>Adjust your app&apos;s entry file (assuming it&apos;s called <em>app.js</em> in these examples) to set the variable <strong>before you import atscm</strong>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// app.js
+const { join } = require(&apos;path&apos;);
+
+process.env.ATSCM_CONFIG_PATH = join(__dirname, &apos;../Atviseproject.js&apos;);
+
+// Your app comes here...</code>
+</code></pre>
+</li>
+<li><p>You can set it every time you run your application:</p>
+<p>E.g. instead of running your app with <code>node ./app.js</code> you can use <code>ATSCM_CONFIG_PATH=&quot;/my-project/Atviseproject.js&quot; node ./app.js</code>.</p>
+<p>You can also use npm scripts so you simply have to run <code>npm run start</code>:</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">// package.json
+{
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;ATSCM_CONFIG_PATH=&apos;/my-project/Atviseproject.js&apos; node ./app.js&quot;
+  }
+}</code>
+</code></pre>
+<p>If your running on windows, use <a href="https://www.npmjs.com/package/cross-env"><code>cross-env</code></a> to set the environment variable (don&apos;t forget <code>npm install cross-env</code>):</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">// package.json
+{
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;cross-env ATSCM_CONFIG_PATH=&apos;/my-project/Atviseproject.js&apos; node ./app.js&quot;
+  }
+}</code>
+</code></pre>
+</li>
+</ul>
+<h2 id="usage">Usage</h2><p>Require <code>atscm/api</code> and call the methods you need:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// Set process.env.ATSCM_CONFIG_PATH here...
+
+const atscm = require(&apos;atscm/api&apos;);
+
+// You can use atscm here...</code>
+</code></pre>
+<h2 id="examples">Examples</h2><p><strong>Create an export file for a node</strong></p>
+<pre><code class="lang-js"><code class="source-code prettyprint">// app.js
+
+// Import node core modules
+const { promises: fsp } = require(&apos;fs&apos;);
+const { join, dirname } = require(&apos;path&apos;);
+
+// Set atscm config env variable
+process.env.ATSCM_CONFIG_PATH = join(__dirname, &apos;./Atviseproject.js&apos;);
+
+// Require atscm and node-opcua APIs
+const { NodeId } = require(&apos;atscm&apos;);
+const { callMethod } = require(&apos;atscm/api&apos;);
+const { Variant, DataType, VariantArrayType } = require(&apos;node-opcua&apos;);
+
+// Configuration: You could also use process.argv here...
+const nodesToExport = [&apos;AGENT.DISPLAYS.Main&apos;];
+const exportPath = &apos;./out/export.xml&apos;;
+
+// Our main function
+async function createExportFile() {
+  console.log(`Exporting nodes: ${nodesToExport.join(&apos;,&apos;)}`);
+
+  // Use the &apos;exportNodes&apos; method to create an xml export on the server
+  const {
+    outputArguments: [{ value }],
+  } = await callMethod(new NodeId(&apos;AGENT.OPCUA.METHODS.exportNodes&apos;), [
+    new Variant({
+      dataType: DataType.NodeId,
+      arrayType: VariantArrayType.Array,
+      value: nodesToExport.map((id) =&gt; new NodeId(id)),
+    }),
+  ]);
+
+  // Create the output directory if needed
+  await fsp.mkdir(dirname(exportPath), { recursive: true });
+
+  // Write the export to the file
+  await fsp.writeFile(exportPath, value);
+
+  console.log(`Export written to ${exportPath}`);
+}
+
+// Run it and catch any errors
+createExportFile().catch((error) =&gt; {
+  console.error(error);
+  process.exitCode = 1;
+});</code>
+</code></pre>
+<blockquote>
+<p>Note: The example assumes the Atviseproject file is located in the same directory as the app&apos;s entry file. Otherwise you have to adjust you code accordingly.</p>
+</blockquote>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
