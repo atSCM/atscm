@@ -75,6 +75,7 @@ importers:
       babel-plugin-istanbul: 6.0.0
       broken-link-checker-local: 0.2.1
       buffer-replace: 1.0.0
+      camelcase: 6.2.0
       codecov: 3.7.2
       cross-env: 7.0.2
       esdoc: 1.1.0
@@ -113,6 +114,7 @@ importers:
       broken-link-checker-local: 0.2.1
       browser-sync: ^2.26.7
       buffer-replace: 1.0.0
+      camelcase: 6.2.0
       chalk: ^4.0.0
       codecov: 3.7.2
       cross-env: 7.0.2
@@ -3394,6 +3396,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-8KMDF1Vz2gzOq54ONPJS65IvTUaB1cHJ2DMM7MbPmLZljDH1qpzzLsWdiN9pHh6qvkRVDTi/07+eNGch/oLU4w==
+  /camelcase/6.2.0:
+    dev: true
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
   /can-write-to-dir/1.0.0:
     dependencies:
       graceful-fs: 4.2.4
