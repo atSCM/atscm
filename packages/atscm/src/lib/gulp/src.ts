@@ -160,19 +160,28 @@ export class SourceBrowser {
   // eslint-disable-next-line no-spaced-func
   private _dependingOn = new Map<string, (BrowsedFileNode & { waitingFor: Set<string> })[]>();
 
+  private _atserverVersion: string;
+
   /**
    * Sets up a new browser.
    * @param options The options to apply.
    * @param options.handleNode A callback called with every discovered node.
    * @param options.readNodeFile A callback deciding if a node file should be read.
    */
-  public constructor({ handleNode, readNodeFile }: SourceBrowserOptions) {
+  public constructor({ handleNode, readNodeFile, atserverVersion }: SourceBrowserOptions) {
     this._queue = new PromiseQueue({
       concurrency: 250,
     });
 
     this._nodeHandler = handleNode;
     this._readNodeFile = readNodeFile;
+
+    // Setup context
+    this._atserverVersion = atserverVersion;
+  }
+
+  get atserverVersion(): string {
+    return this._atserverVersion;
   }
 
   /**

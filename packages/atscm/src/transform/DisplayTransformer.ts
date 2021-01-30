@@ -12,6 +12,7 @@ import {
   attributeValues,
   AttributeValues,
 } from 'modify-xml';
+import { gte } from 'semver';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import type { DisplayConfig } from '../../types/schemas/display-config';
 import { BrowsedNode } from '../lib/server/NodeBrowser';
@@ -55,28 +56,14 @@ export default class DisplayTransformer extends XMLTransformer {
     return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
-  normalizeScriptAttributes(attributes) {
-    return Object.entries(attributes).reduce((soFar, [originalKey, value]) => {
-      // Remote empty values
-      if (!value) return soFar;
-
-      let key = originalKey.split('atv:')?.[1] || originalKey.split('xlink:')?.[1] || originalKey;
-
-      // Rename 'src' to 'href'
-      if (key === 'src') {
-        if (soFar.href) {
-          throw new Error(
-            `Script tag has multiple source attributes: ${Object.keys(attributes).join(', ')}`
-          );
-        }
-        key = 'href';
-      }
-
-      // Remove useless information
-      if (key === 'type' && value === 'text/ecmascript') return soFar;
-
-      return { ...soFar, [key]: value };
-    }, {});
+  private normalizeScriptAttributes(
+    attributes: AttributeValues
+  ): Omit<DisplayConfig['scripts'][0], 'type'> {
+    return {
+      src: attributes['atv:href'] || attributes['xlink:href'] || attributes.src,
+      name: attributes['atv:name'],
+      mimeType: attributes.type,
+    };
   }
 
   /**
@@ -108,7 +95,7 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display: No `svg` tag');
     }
 
-    const config: DisplayConfig = {};
+    const config: DisplayConfig = { scripts: [] };
     const scriptTags = removeChildren(document, 'script');
     let inlineScript;
 
@@ -130,12 +117,14 @@ export default class DisplayTransformer extends XMLTransformer {
 
         if (attributes?.['atv:href']) {
           // Linked scripts
-          (config.linkedScripts || (config.linkedScripts = [])).push({
+          config.scripts.push({
+            type: 'linked',
             ...this.normalizeScriptAttributes(attributes),
           });
         } else if (attributes && (attributes.src || attributes['xlink:href'])) {
           // Referenced scripts
-          (config.referencedScripts || (config.referencedScripts = [])).push({
+          config.scripts.push({
+            type: 'referenced',
             ...this.normalizeScriptAttributes(attributes),
           });
         } else {
@@ -178,6 +167,10 @@ export default class DisplayTransformer extends XMLTransformer {
       }
     }
 
+    // Remove empty config values
+    if (!config.scripts.length) delete config.scripts;
+
+    // Write files
     const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
     configFile.value = {
       dataType: DataType.String,
@@ -198,18 +191,21 @@ export default class DisplayTransformer extends XMLTransformer {
     return super.transformFromDB(node, context);
   }
 
-  scriptTagAttributes(referenced, config) {
+  scriptTagAttributes(config: Partial<DisplayConfig['scripts'][0]> & { src: string }) {
     return Object.entries(config).reduce(
       (soFar, [key, value]) => {
         let outputKey;
 
-        if (referenced) {
-          if (key === 'href') {
-            outputKey = 'xlink:href';
-          } else if (key === 'type') {
-            outputKey = key;
-          }
-        }
+        if (key === 'mimeType') outputKey = 'type';
+        if (key === 'src') outputKey = config.type === 'referenced' ? 'xlink:href' : 'atv:href';
+
+        // if (config.type === 'referenced') {
+        //   if (key === 'src') {
+        //     outputKey = 'xlink:href';
+        //   } else if (key === 'type') {
+        //     outputKey = key;
+        //   }
+        // } else if (key === 'src')
 
         return { ...soFar, [outputKey || `atv:${key}`]: value };
       },
@@ -224,8 +220,9 @@ export default class DisplayTransformer extends XMLTransformer {
    * @param {BrowsedNode} node The container node.
    * @param {Map<string, BrowsedNode>} sources The collected files, stored against their
    * extension.
+   * @param context The current transform context.
    */
-  combineNodes(node, sources) {
+  combineNodes(node, sources, context) {
     const configFile = sources['.json'];
     let config: DisplayConfig = {};
 
@@ -257,29 +254,44 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display SVG: No `svg` tag');
     }
 
+    if (config.dependencies && config.scripts) {
+      throw new Error(`Cannot use both 'dependencies' and 'scripts'`);
+    }
+
+    const linkedScriptsSupported = gte(context.atserverVersion, '3.5.0');
+
+    const referencedScripts = config.dependencies
+      ? config.dependencies.map((src) => ({ src }))
+      : config?.scripts.filter((s) => s.type === 'referenced') ?? [];
+
+    const addReferencedScripts = () =>
+      referencedScripts.forEach((s) => {
+        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(s)));
+      });
+
     // Insert linked scripts
 
-    if (config.linkedScripts) {
-      config.linkedScripts.forEach((s) => {
-        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(false, s)));
+    if (config.scripts) {
+      config.scripts.forEach((s) => {
+        if (s.type === 'linked') {
+          if (!linkedScriptsSupported) {
+            // FIXME: Add possibility to ignore this error (and do what? :) )
+            throw new Error(`Linked scripts are only supported on atserver 3.5 and later`);
+          }
+
+          appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(s)));
+        }
       });
     }
 
     // Insert dependencies
-    // if (config.dependencies && config.referencedScripts) {
-    //   throw new Error(`Cannot use both 'dependencies' and 'referencedScripts'`);
-    // }
 
-    if (config.dependencies) {
-      config.dependencies.forEach((href) => {
-        appendChild(
-          svg,
-          createElement('script', undefined, this.scriptTagAttributes(true, { href }))
-        );
-      });
+    // On atserver < 3.5 insert dependencies before the inline script
+    if (!linkedScriptsSupported) {
+      addReferencedScripts();
     }
 
-    // Insert script
+    // Insert inline script
     // NOTE: Import order is not preserved on atserver < 3.5
     if (scriptFile) {
       appendChild(
@@ -290,19 +302,10 @@ export default class DisplayTransformer extends XMLTransformer {
       );
     }
 
-    // Insert referenced scripts after the inline script block
-    if (config.referencedScripts) {
-      console.error("TODO: Validate we're pushing to atserver 3.5+");
-    }
+    // Insert referenced scripts after inline scripts in atserver 3.5+
 
-    // Insert referenced scripts after inline scripts
-    const referencedScripts =
-      config.referencedScripts || config.dependencies?.map((href) => ({ href }));
-
-    if (referencedScripts) {
-      referencedScripts.forEach((s) => {
-        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(true, s)));
-      });
+    if (linkedScriptsSupported) {
+      addReferencedScripts();
     }
 
     // Insert metadata

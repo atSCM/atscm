@@ -96,6 +96,30 @@
       "items": {
         "type": "string"
       }
+    },
+    "scripts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "src"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["linked", "referenced"]
+          },
+          "src": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string",
+            "default": "text/ecmascript"
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "definitions": {

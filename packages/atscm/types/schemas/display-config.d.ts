@@ -63,5 +63,11 @@ export interface DisplayConfig {
    * External scripts to load
    */
   dependencies?: string[];
+  scripts?: {
+    type: 'linked' | 'referenced';
+    src: string;
+    name?: string;
+    mimeType?: string;
+  }[];
   [k: string]: unknown;
 }
