@@ -11,8 +11,11 @@ import {
   appendChild,
   isElement,
   attributeValues,
+  AttributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import type SplittingTransformer from '../lib/transform/SplittingTransformer';
+import type { ServerscriptConfig } from '../../types/schemas/serverscript-config';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -40,7 +43,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
    * @return {Object} The metadata found.
    */
   processMetadata(document) {
-    const config = {};
+    const config: ServerscriptConfig = {};
 
     const metaTag = findChild(document, 'metadata');
     // console.error('Meta', metaTag);
@@ -59,33 +62,34 @@ export class AtviseScriptTransformer extends XMLTransformer {
             {
               content: textContent(child) || '',
             },
-            attributeValues(child)
+            attributeValues(child) as { [name: string]: string } & { type: string }
           );
           break;
         case 'visible':
-          config.visible = Boolean(parseInt(textContent(child), 10));
+          config.visible = Boolean(parseInt(textContent(child) || '1', 10));
           break;
         case 'title':
-          config.title = textContent(child);
+          config.title = textContent(child) ?? undefined;
           break;
         case 'description':
-          config.description = textContent(child);
+          config.description = textContent(child) ?? undefined;
           break;
         default: {
           if (!config.metadata) {
             config.metadata = {};
           }
 
-          const value = textContent(child);
+          const value = textContent(child)!;
 
           if (config.metadata[child.name]) {
-            if (!Array.isArray(config.metadata[child.name])) {
-              config.metadata[child.name] = [config.metadata[child.name]];
+            const soFar = config.metadata[child.name];
+            if (!Array.isArray(soFar)) {
+              config.metadata[child.name] = [soFar];
             }
 
-            config.metadata[child.name].push(value);
+            (config.metadata[child.name] as string[]).push(value);
           } else {
-            config.metadata[child.name] = textContent(child);
+            config.metadata[child.name] = value;
           }
 
           if (!['longrunning'].includes(child.name)) {
@@ -106,19 +110,17 @@ export class AtviseScriptTransformer extends XMLTransformer {
    */
   processParameters(document) {
     const paramTags = findChildren(document, 'parameter');
-    if (!paramTags.length) {
+    if (!paramTags?.length) {
       return undefined;
     }
 
     return paramTags.map((node) => {
       const { childNodes } = node;
       const attributes = attributeValues(node);
-      const param = Object.assign({}, attributes);
+      const param = Object.assign({}, attributes) as ServerscriptConfig['parameters'][0];
 
       // Handle relative parameter targets
       if (attributes.relative === 'true') {
-        param.target = {};
-
         const target = findChild(childNodes.find(isElement), [
           'Elements',
           'RelativePathElement',
@@ -132,7 +134,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
           const parsedIndex = parseInt(index, 10);
 
-          param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
+          param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name: name || '' };
         }
       }
 
@@ -178,7 +180,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     };
 
     // Write config file
-    const configFile = this.constructor.splitFile(node, '.json');
+    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
     configFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -188,7 +190,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     // Write JavaScript file
     const codeNode = findChild(document, 'code');
-    const scriptFile = this.constructor.splitFile(node, '.js');
+    const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
     scriptFile.value = {
       dataType: DataType.String,
       arrayType: VariantArrayType.Scalar,
@@ -196,7 +198,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     };
     context.addNode(scriptFile);
 
-    return super.transformFromDB(node);
+    return super.transformFromDB(node, context);
   }
 
   /**
@@ -206,7 +208,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
    */
   combineNodes(node, sources) {
     const configFile = sources['.json'];
-    let config = {};
+    let config: ServerscriptConfig = {};
 
     if (configFile) {
       try {
@@ -216,7 +218,8 @@ export class AtviseScriptTransformer extends XMLTransformer {
       }
     }
 
-    const scriptFile = sources[this.constructor.scriptSourceExtension];
+    const scriptFile =
+      sources[(this.constructor as typeof AtviseScriptTransformer).scriptSourceExtension];
     let code = '';
 
     if (scriptFile) {
@@ -238,10 +241,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
     if (node.isQuickDynamic) {
       // - Icon
       if (config.icon) {
-        const icon = config.icon.content;
-        delete config.icon.content;
+        const { content, ...iconConfig } = config.icon;
 
-        meta.push(createElement('icon', [createTextNode(icon)], config.icon));
+        meta.push(createElement('icon', [createTextNode(content)], iconConfig as AttributeValues));
       }
 
       // - Other fields
@@ -277,8 +279,8 @@ export class AtviseScriptTransformer extends XMLTransformer {
         let elements;
 
         // Handle relative parameter targets
-        if (attributes.relative === 'true' && attributes.target) {
-          const { namespaceIndex, name } = attributes.target;
+        if (attributes.relative === 'true') {
+          const { namespaceIndex, name } = attributes.target || {};
           const targetElements = createElement('Elements');
 
           elements = [createElement('RelativePath', [targetElements])];
@@ -298,7 +300,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
           delete attributes.target;
         }
 
-        appendChild(document, createElement('parameter', elements, attributes));
+        appendChild(document, createElement('parameter', elements, attributes as AttributeValues));
       });
     }
 

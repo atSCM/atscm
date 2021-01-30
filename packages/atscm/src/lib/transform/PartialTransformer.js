@@ -19,6 +19,7 @@ export default class ModernPartialTransformer extends Transformer {
   /**
    * `true` if `file` should be transformed.
    * @param {AtviseFile} file The file to transform or not.
+   * @return {boolean}
    * @abstract
    */
   // eslint-disable-next-line no-unused-vars
