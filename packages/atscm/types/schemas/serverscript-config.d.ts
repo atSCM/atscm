@@ -6,17 +6,41 @@
  */
 
 /**
- * An atvise display configuration file
+ * An atvise server script configuration file
  */
-export interface DisplayConfig {
+export interface ServerscriptConfig {
   /**
-   * A display's title
+   * The icon to show in atvise builder
+   */
+  icon?: {
+    /**
+     * A base64 encoded image
+     */
+    content: string;
+    /**
+     * A valid image mime type
+     */
+    type: string;
+    [k: string]: unknown;
+  };
+  /**
+   * If the script should be shown inside the atvise builder library
+   */
+  visible?: boolean;
+  /**
+   * The script's title
    */
   title?: string;
   /**
-   * A short description of the display
+   * A short description of what the script does
    */
   description?: string;
+  /**
+   * Custom script metadata
+   */
+  metadata?: {
+    [k: string]: unknown;
+  };
   /**
    * Display parameters
    */
@@ -59,9 +83,5 @@ export interface DisplayConfig {
     };
     [k: string]: unknown;
   }[];
-  /**
-   * External scripts to load
-   */
-  dependencies?: string[];
   [k: string]: unknown;
 }

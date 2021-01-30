@@ -13,6 +13,7 @@ import {
   attributeValues,
 } from 'modify-xml';
 import XMLTransformer from '../lib/transform/XMLTransformer';
+import type { ServerscriptConfig } from '../../types/schemas/serverscript-config';
 
 /**
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
@@ -40,7 +41,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
    * @return {Object} The metadata found.
    */
   processMetadata(document) {
-    const config = {};
+    const config: ServerscriptConfig = {};
 
     const metaTag = findChild(document, 'metadata');
     // console.error('Meta', metaTag);
@@ -59,17 +60,17 @@ export class AtviseScriptTransformer extends XMLTransformer {
             {
               content: textContent(child) || '',
             },
-            attributeValues(child)
+            attributeValues(child) as { [name: string]: string } & { type: string }
           );
           break;
         case 'visible':
           config.visible = Boolean(parseInt(textContent(child), 10));
           break;
         case 'title':
-          config.title = textContent(child);
+          config.title = textContent(child) ?? undefined;
           break;
         case 'description':
-          config.description = textContent(child);
+          config.description = textContent(child) ?? undefined;
           break;
         default: {
           if (!config.metadata) {
@@ -106,7 +107,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
    */
   processParameters(document) {
     const paramTags = findChildren(document, 'parameter');
-    if (!paramTags.length) {
+    if (!paramTags?.length) {
       return undefined;
     }
 
@@ -132,7 +133,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
           const parsedIndex = parseInt(index, 10);
 
-          param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name };
+          param.target = { namespaceIndex: isNaN(parsedIndex) ? 1 : parsedIndex, name: name || '' };
         }
       }
 
@@ -206,7 +207,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
    */
   combineNodes(node, sources) {
     const configFile = sources['.json'];
-    let config = {};
+    let config: ServerscriptConfig = {};
 
     if (configFile) {
       try {
@@ -238,10 +239,9 @@ export class AtviseScriptTransformer extends XMLTransformer {
     if (node.isQuickDynamic) {
       // - Icon
       if (config.icon) {
-        const icon = config.icon.content;
-        delete config.icon.content;
+        const { content, ...iconConfig } = config.icon;
 
-        meta.push(createElement('icon', [createTextNode(icon)], config.icon));
+        meta.push(createElement('icon', [createTextNode(content)], iconConfig));
       }
 
       // - Other fields

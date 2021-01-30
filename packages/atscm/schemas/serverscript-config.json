@@ -1,15 +1,39 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "description": "An atvise display configuration file",
+  "description": "An atvise server script configuration file",
   "properties": {
+    "icon": {
+      "type": "object",
+      "description": "The icon to show in atvise builder",
+      "required": ["content", "type"],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "A base64 encoded image"
+        },
+        "type": {
+          "type": "string",
+          "description": "A valid image mime type"
+        }
+      }
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "If the script should be shown inside the atvise builder library",
+      "default": true
+    },
     "title": {
       "type": "string",
-      "description": "A display's title"
+      "description": "The script's title"
     },
     "description": {
       "type": "string",
-      "description": "A short description of the display"
+      "description": "A short description of what the script does"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Custom script metadata"
     },
     "parameters": {
       "type": "array",
@@ -88,45 +112,6 @@
           }
         ]
       }
-    },
-    "dependencies": {
-      "type": "array",
-      "description": "External scripts to load",
-      "deprecated": true,
-      "items": {
-        "type": "string"
-      }
-    }
-  },
-  "definitions": {
-    "external-script": {
-      "title": "External script",
-      "type": "object",
-      "required": ["href"],
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "A name for the script"
-        },
-        "desc": {
-          "type": "string",
-          "description": "A description for the script"
-        },
-        "type": {
-          "type": "string",
-          "default": "type/ecmascript"
-        }
-      },
-      "defaultSnippets": [
-        {
-          "label": "New script",
-          "description": "Adds an external script",
-          "body": {
-            "name": "$1",
-            "href": "$2"
-          }
-        }
-      ]
     }
   }
 }
