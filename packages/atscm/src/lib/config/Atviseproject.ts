@@ -5,7 +5,7 @@ import DisplayTransformer from '../../transform/DisplayTransformer';
 import {
   ServerscriptTransformer,
   QuickDynamicTransformer,
-} from '../../transform/ScriptTransformer.js';
+} from '../../transform/ScriptTransformer';
 import MappingTransformer from '../../transform/Mapping';
 import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
 import { Transformer } from '../..';
