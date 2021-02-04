@@ -262,7 +262,7 @@ export default class DisplayTransformer extends XMLTransformer {
 
     const referencedScripts = config.dependencies
       ? config.dependencies.map((src) => ({ src }))
-      : config?.scripts.filter((s) => s.type === 'referenced') ?? [];
+      : config.scripts?.filter((s) => s.type === 'referenced') ?? [];
 
     const addReferencedScripts = () =>
       referencedScripts.forEach((s) => {
