@@ -61,8 +61,8 @@ export default class DisplayTransformer extends XMLTransformer {
   ): Omit<DisplayConfig['scripts'][0], 'type'> {
     return {
       src: attributes['atv:href'] || attributes['xlink:href'] || attributes.src,
-      name: attributes['atv:name'],
-      mimeType: attributes.type,
+      name: attributes['atv:name'] || undefined,
+      mimeType: attributes.type !== 'text/ecmascript' ? attributes.type : undefined,
     };
   }
 
@@ -114,31 +114,37 @@ export default class DisplayTransformer extends XMLTransformer {
     if (scriptTags.length) {
       scriptTags.forEach((script) => {
         const attributes = attributeValues(script);
+        const normalized = this.normalizeScriptAttributes(attributes);
 
         if (attributes?.['atv:href']) {
           // Linked scripts
           config.scripts.push({
             type: 'linked',
-            ...this.normalizeScriptAttributes(attributes),
+            ...(normalized as { src: string }),
           });
-        } else if (attributes && (attributes.src || attributes['xlink:href'])) {
+        } else if (attributes?.src || attributes?.['xlink:href']) {
           // Referenced scripts
           config.scripts.push({
             type: 'referenced',
-            ...this.normalizeScriptAttributes(attributes),
+            ...(normalized as { src: string }),
           });
-        } else {
+        } else if (inlineScript) {
           // Warn on multiple inline scripts
-          if (inlineScript) {
-            Logger[node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'](
-              `'${node.id.value}' contains multiple inline scripts.`
-            );
-            document.childNodes.push(inlineScript);
-          }
+          Logger[node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'](
+            `'${node.id.value}' contains multiple inline scripts.`
+          );
+          document.childNodes.push(inlineScript);
+        } else {
+          // Inline script
+          config.scripts.push({
+            type: 'inline',
+            ...normalized,
+          });
           inlineScript = script;
         }
       });
     }
+
     if (inlineScript) {
       const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
       const scriptText = textContent(inlineScript);
@@ -168,6 +174,18 @@ export default class DisplayTransformer extends XMLTransformer {
     }
 
     // Remove empty config values
+    // - Remove inline script config if it's the only script
+    //   FIXME: Add option to disable this
+    const [firstScript] = config.scripts;
+    if (config.scripts.length === 1 && firstScript.type === 'inline') {
+      const hasValues = ~Object.values({ ...firstScript, type: undefined }).findIndex((v) => v);
+
+      if (!hasValues) {
+        config.scripts.pop();
+      }
+    }
+
+    // Remove empty scripts array
     if (!config.scripts.length) delete config.scripts;
 
     // Write files

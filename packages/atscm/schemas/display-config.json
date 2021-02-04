@@ -99,55 +99,74 @@
     },
     "scripts": {
       "type": "array",
+      "contains": {
+        "$ref": "#/definitions/inline-script"
+      },
       "items": {
-        "type": "object",
-        "required": ["type", "src"],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["linked", "referenced"]
+        "oneOf": [
+          {
+            "$ref": "#/definitions/external-script"
           },
-          "src": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "mimeType": {
-            "type": "string",
-            "default": "text/ecmascript"
+          {
+            "$ref": "#/definitions/inline-script"
           }
-        },
-        "additionalProperties": false
+        ]
       }
     }
   },
   "definitions": {
-    "external-script": {
-      "title": "External script",
+    "script-common": {
       "type": "object",
-      "required": ["href"],
+      "required": ["type"],
       "properties": {
+        "type": {
+          "type": "string"
+        },
         "name": {
           "type": "string",
-          "description": "A name for the script"
+          "description": "An optional name to give the script"
         },
-        "desc": {
+        "mimeType": {
           "type": "string",
-          "description": "A description for the script"
-        },
-        "type": {
-          "type": "string",
-          "default": "type/ecmascript"
+          "default": "text/ecmascript"
         }
-      },
-      "defaultSnippets": [
+      }
+    },
+    "inline-script": {
+      "description": "A display's inline script",
+      "allOf": [
         {
-          "label": "New script",
-          "description": "Adds an external script",
-          "body": {
-            "name": "$1",
-            "href": "$2"
+          "$ref": "#/definitions/script-common"
+        },
+        {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "inline"
+            }
+          }
+        }
+      ]
+    },
+    "external-script": {
+      "title": "External script",
+      "allOf": [
+        {
+          "$ref": "#/definitions/script-common"
+        },
+        {
+          "type": "object",
+          "required": ["type", "src"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["linked", "referenced"]
+            },
+            "src": {
+              "type": "string"
+            }
           }
         }
       ]
