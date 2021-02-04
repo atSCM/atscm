@@ -111,7 +111,22 @@
             "$ref": "#/definitions/inline-script"
           }
         ]
-      }
+      },
+      "defaultSnippets": [
+        {
+          "label": "Scripts",
+          "description": "Adds a scripts configuration",
+          "body": [
+            {
+              "type": "inline"
+            },
+            {
+              "type": "${1:referenced}",
+              "src": "/$2"
+            }
+          ]
+        }
+      ]
     }
   },
   "definitions": {
