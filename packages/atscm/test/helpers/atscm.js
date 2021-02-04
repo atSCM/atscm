@@ -13,6 +13,8 @@ import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
 import dest from '../../src/lib/gulp/dest';
 import { performPush } from '../../src/tasks/push';
+import { setupContext } from '../../src/hooks/hooks';
+import checkAtserver from '../../src/hooks/check-atserver';
 import { id, tmpDir, readFile } from './util';
 
 export function pull(nodes, destination) {
@@ -25,8 +27,11 @@ export function pull(nodes, destination) {
   return performPull(nodes.map((n) => new NodeId(n)));
 }
 
-export function push(source) {
-  return performPush(source);
+export async function push(source) {
+  const context = setupContext();
+  const { version: atserverVersion } = await checkAtserver(context);
+
+  return performPush(source, { atserverVersion });
 }
 
 export const setupDir = join(__dirname, '../fixtures/setup');

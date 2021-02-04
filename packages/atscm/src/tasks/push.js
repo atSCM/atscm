@@ -166,10 +166,10 @@ export default async function push() {
 
   const context = setupContext();
 
-  const { version } = await checkAtserver(context);
+  const { version: atserverVersion } = await checkAtserver(context);
   await checkServerscripts(context);
 
-  const promise = performPush('./src', { atserverVersion: version });
+  const promise = performPush('./src', { atserverVersion });
 
   return reportProgress(promise, {
     getter: () => promise.browser._pushedPath.size,
