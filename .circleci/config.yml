@@ -295,6 +295,12 @@ workflows:
           atserver: '3.4'
           requires:
             - integration-33x
+      - atscm/integration:
+          name: integration-35x
+          atserver: '3.5'
+          requires:
+            - build
+            - start-testserver
       - deploy:
           requires:
             - lint-source
@@ -302,6 +308,7 @@ workflows:
             - integration-32x
             - integration-33x
             - integration-34x
+            - integration-35x
             - docs
           filters:
             branches:
