@@ -58,6 +58,9 @@ orbs:
                   '3.4')
                     ATSCM_PROJECT__PORT__OPC=4842
                     ;;
+                  '3.5')
+                    ATSCM_PROJECT__PORT__OPC=4843
+                    ;;
                   *)
                     echo "Invalid atserver version $ATSERVER_VERSION"
                     exit 1;
