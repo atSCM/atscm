@@ -1,6 +1,5 @@
 import { EOL } from 'os';
 import { parse, render, isElement, moveToTop, attributeValues } from 'modify-xml';
-import ProjectConfig from '../../config/ProjectConfig';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
 
@@ -22,8 +21,14 @@ export default class XMLTransformer extends SplittingTransformer {
    * Creates a new XMLTransformer based on some options.
    * @param {Object} [options] The options to use.
    */
-  constructor(options = {}) {
+  constructor({ sortXMLAttributes = false, removeBuilderRefs = false, ...options } = {}) {
     super(options);
+
+    /** @protected */
+    this.sortXMLAttributes = sortXMLAttributes;
+
+    /** @protected */
+    this.removeBuilderRefs = removeBuilderRefs;
 
     function build(object, buildOptions) {
       const root = object.childNodes.find((n) => isElement(n));
@@ -35,13 +40,13 @@ export default class XMLTransformer extends SplittingTransformer {
         moveToTop(root, 'title');
       }
 
-      if (ProjectConfig.sortXMLAttributes || ProjectConfig.removeBuilderRefs)
+      if (sortXMLAttributes || removeBuilderRefs)
         walk(root, (e) => {
           /* eslint-disable no-param-reassign */
-          if (ProjectConfig.removeBuilderRefs)
+          if (removeBuilderRefs)
             e.attributes = e.attributes.filter((a) => !['atv:refpx', 'atv:refpy'].includes(a.name));
 
-          if (ProjectConfig.sortXMLAttributes)
+          if (sortXMLAttributes)
             e.attributes = e.attributes.sort((a, b) => (b.name > a.name ? -1 : 1));
 
           delete e.openTag;
@@ -77,7 +82,7 @@ export default class XMLTransformer extends SplittingTransformer {
    * @param {import('modify-xml').Element} node The node to handle.
    */
   sortedAttributeValues(node) {
-    if (!ProjectConfig.sortXMLAttributes) return attributeValues(node);
+    if (!this.sortXMLAttributes) return attributeValues(node);
 
     return Object.fromEntries(
       Object.entries(attributeValues(node)).sort((a, b) => (b > a ? -1 : 1))
