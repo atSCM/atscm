@@ -1,5 +1,16 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2021-01-30)
+<a name="1.3.0-beta.0"></a>
+# 1.3.0-beta.0 (2021-02-11)
+
+
+### Features
+
+* **atscm:** Sort XML attributes to minimize diffs ([0bc6012](https://github.com/atSCM/atscm/commits/0bc6012))
+
+
+
+
+<a name="atscm-v1.2.0"></a>
+# atscm-v1.2.0 (2021-01-30)
 
 
 ### Features
