@@ -1,7 +1,18 @@
 import { EOL } from 'os';
-import { parse, render, isElement, moveToTop } from 'modify-xml';
+import { parse, render, isElement, moveToTop, attributeValues } from 'modify-xml';
+import ProjectConfig from '../../config/ProjectConfig';
 import { TransformDirection } from './Transformer';
 import SplittingTransformer from './SplittingTransformer';
+
+function walk(element, action, filter = isElement) {
+  action(element);
+
+  if (element.childNodes) {
+    for (const child of element.childNodes.filter((n) => filter(n))) {
+      walk(child, action);
+    }
+  }
+}
 
 /**
  * A transformer used to transform XML documents.
@@ -23,6 +34,19 @@ export default class XMLTransformer extends SplittingTransformer {
         moveToTop(root, 'desc');
         moveToTop(root, 'title');
       }
+
+      if (ProjectConfig.sortXMLAttributes || ProjectConfig.removeBuilderRefs)
+        walk(root, (e) => {
+          /* eslint-disable no-param-reassign */
+          if (ProjectConfig.removeBuilderRefs)
+            e.attributes = e.attributes.filter((a) => !['atv:refpx', 'atv:refpy'].includes(a.name));
+
+          if (ProjectConfig.sortXMLAttributes)
+            e.attributes = e.attributes.sort((a, b) => (b.name > a.name ? -1 : 1));
+
+          delete e.openTag;
+          /* eslint-enable no-param-reassign */
+        });
 
       return render(object, { indent: ' '.repeat(buildOptions.spaces) });
     }
@@ -46,6 +70,18 @@ export default class XMLTransformer extends SplittingTransformer {
       const xml = build(object, { compact: false, spaces: 1 });
       return xml.replace(/\r?\n/g, '\n');
     };
+  }
+
+  /**
+   * @protected
+   * @param {import('modify-xml').Element} node The node to handle.
+   */
+  sortedAttributeValues(node) {
+    if (!ProjectConfig.sortXMLAttributes) return attributeValues(node);
+
+    return Object.fromEntries(
+      Object.entries(attributeValues(node)).sort((a, b) => (b > a ? -1 : 1))
+    );
   }
 
   /**

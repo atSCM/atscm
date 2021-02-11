@@ -116,7 +116,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
 
     return paramTags.map((node) => {
       const { childNodes } = node;
-      const attributes = attributeValues(node);
+      const attributes = this.sortedAttributeValues(node);
       const param = Object.assign({}, attributes) as ServerscriptConfig['parameters'][0];
 
       // Handle relative parameter targets

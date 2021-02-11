@@ -171,4 +171,20 @@ export default class Atviseproject {
   static get timeout(): number {
     return 10000;
   }
+
+  /**
+   * Remove `atv:refpx` and `atv:refpy` attributes from XML to minimize diffs between pulls. This
+   * will eventually default to *true* in a future atscm version.
+   */
+  static get removeBuilderRefs(): boolean {
+    return false;
+  }
+
+  /**
+   * Sort XML attributes to minimize diffs between pulls. This will eventually default to *true* in
+   * a future atscm version.
+   */
+  static get sortXMLAttributes(): boolean {
+    return false;
+  }
 }
