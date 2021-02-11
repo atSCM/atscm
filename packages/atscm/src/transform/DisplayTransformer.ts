@@ -144,7 +144,7 @@ export default class DisplayTransformer extends XMLTransformer {
         config.parameters = [];
 
         paramTags.forEach((n) =>
-          config.parameters.push(attributeValues(n) as DisplayConfig['parameters'][0])
+          config.parameters.push(this.sortedAttributeValues(n) as DisplayConfig['parameters'][0])
         );
       }
     }
