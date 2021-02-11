@@ -1,5 +1,16 @@
-<a name="1.2.0"></a>
-# 1.2.0 (2021-01-30)
+<a name="1.3.0"></a>
+# 1.3.0 (2021-02-11)
+
+
+### Features
+
+* **atscm:** Allow sorting of XML attributes ([#438](https://github.com/atSCM/atscm/issues/438)) ([31cf329](https://github.com/atSCM/atscm/commits/31cf329))
+
+
+
+
+<a name="atscm-v1.2.0"></a>
+# atscm-v1.2.0 (2021-01-30)
 
 
 ### Features
