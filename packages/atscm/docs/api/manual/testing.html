@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../">
+  <title data-ice="title">Manual | atscm</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Source code management utilities for atvise"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="atscm"><meta property="twitter:description" content="Source code management utilities for atvise"></head>
+<body class="layout-container manual-root" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/atSCM/atscm"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div class="manual-toc-root">
+  
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/updating.html"><a href="manual/updating.html" data-ice="link">Updating atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/updating.html"><a href="manual/updating.html#installing-new-versions" data-ice="link">Installing new versions</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/updating.html"><a href="manual/updating.html#updating-your-atscm-project" data-ice="link">Updating your atscm project</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html" data-ice="link">Tutorial: Custom Transformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#overview" data-ice="link">Overview</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-0--project-setup" data-ice="link">Step 0: Project setup</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-1--import--em-partialtransformer--em--class" data-ice="link">Step 1: Import PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-2--create-the--em-babeltransformer--em--class" data-ice="link">Step 2: Create the BabelTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-3--use--em-babeltransformer--em-" data-ice="link">Step 3: Use BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-4--implement--em-partialtransformer-shouldbetransformed--em-" data-ice="link">Step 4: Implement PartialTransformer#shouldBeTransformed</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-5--implement--em-transformer-transformfromfilesystem--em-" data-ice="link">Step 5: Implement Transformer#transformFromFilesystem</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-6--test--em-babeltransformer--em-" data-ice="link">Step 6: Test BabelTransformer</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#step-7--implement--em-transformer-transformfromdb--em-" data-ice="link">Step 7: Implement Transformer#transformFromDB</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#result" data-ice="link">Result</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/custom-transformer.html"><a href="manual/custom-transformer.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html" data-ice="link">Node ID conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-atscm-handles-id-conflicts" data-ice="link">How atscm handles id conflicts</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/id-conflicts.html"><a href="manual/id-conflicts.html#how-to-resolve-id-conflicts" data-ice="link">How to resolve id conflicts</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html" data-ice="link">Guide: gulp.js plugins</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-transformer--em--class" data-ice="link">Using Transformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#using--em-partialtransformer--em--class" data-ice="link">Using PartialTransformer class</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#conclusion" data-ice="link">Conclusion</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/gulp-plugins.html"><a href="manual/gulp-plugins.html#further-reading" data-ice="link">Further reading</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/debugging.html"><a href="manual/debugging.html" data-ice="link">Guide: Debugging atscm</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/error-handling.html"><a href="manual/error-handling.html" data-ice="link">Guide: Error handling</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/error-handling.html"><a href="manual/error-handling.html#adding-source-locations" data-ice="link">Adding source locations</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/api.html"><a href="manual/api.html" data-ice="link">Guide: Using the API</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#installation" data-ice="link">Installation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#configuration" data-ice="link">Configuration</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#usage" data-ice="link">Usage</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/api.html"><a href="manual/api.html#examples" data-ice="link">Examples</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/testing.html"><a href="manual/testing.html" data-ice="link">Contribute: Testing atscm</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#unit-tests" data-ice="link">Unit tests</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/testing.html"><a href="manual/testing.html#integration-tests" data-ice="link">Integration tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/testing.html"><a href="manual/testing.html#test-setups" data-ice="link">Test setups</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html" data-ice="link">Contributing</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#found-a-bug-" data-ice="link">Found a bug?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#missing-a-feature-" data-ice="link">Missing a feature?</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submission-guidelines" data-ice="link">Submission Guidelines</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-an-issue" data-ice="link">Submitting an issue</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#submitting-a-pull-request--pr-" data-ice="link">Submitting a Pull Request (PR)</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#code-quality-control" data-ice="link">Code quality control</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#setting-up-the-development-environment" data-ice="link">Setting up the development environment</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#linting-files" data-ice="link">Linting files</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#running-tests" data-ice="link">Running tests</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#creating-api-documentation" data-ice="link">Creating API documentation</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-guideline" data-ice="link">Commit Message Guideline</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-format" data-ice="link">Commit message format</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#type" data-ice="link">Type</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#scope" data-ice="link">Scope</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#subject" data-ice="link">Subject</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#body" data-ice="link">Body</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#footer" data-ice="link">Footer</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CONTRIBUTING.html"><a href="manual/CONTRIBUTING.html#commit-message-linting" data-ice="link">Commit message linting</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#1-2-0--2021-01-30-" data-ice="link">1.2.0 (2021-01-30)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#create-atscm-v0-1-0--2021-01-25-" data-ice="link">create-atscm-v0.1.0 (2021-01-25)</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#atscm-v1-1-3--2021-01-25-" data-ice="link">atscm-v1.1.3 (2021-01-25)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#atscm-v1-1-2--2021-01-18-" data-ice="link">atscm-v1.1.2 (2021-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+<li data-ice="manualNav" class="indent-h1" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#atscm-v1-1-1--2021-01-18-" data-ice="link">atscm-v1.1.1 (2021-01-18)</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/CHANGELOG.html"><a href="manual/CHANGELOG.html#bug-fixes" data-ice="link">Bug Fixes</a></li>
+</ul>
+  </div>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="contribute--testing-atscm">Contribute: Testing atscm</h1><p>atscm uses both unit and integration tests. <a href="https://mochajs.org">Mocha</a> is used as a test runner and <a href="https://github.com/istanbuljs/nyc#readme">nyc</a> for test coverage reports.</p>
+<p><strong>Test scripts:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>npm run test</code></td>
+<td style="text-align:left">Run all tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:unit</code></td>
+<td style="text-align:left">Run all unit tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:integration</code></td>
+<td style="text-align:left">Run all integration tests</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:watch</code></td>
+<td style="text-align:left">Re-run all tests when files change</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>npm run test:coverage</code></td>
+<td style="text-align:left">Check test coverage</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unit-tests">Unit tests</h2><p>The unit tests are located inside <code>./test/src</code>. Test files are named after the module they test, e.g. unit tests for <code>./src/my/module.js</code> are inside <code>./test/src/my/module.spec.js</code>.</p>
+<h2 id="integration-tests">Integration tests</h2><p>Integration tests are used to ensure cross-version and -platform compatibility. They are located inside <code>./test/integration</code>.</p>
+<h3 id="test-setups">Test setups</h3><p>For most integration tests, we use test setups to create the proper project structure to test against. These are XML files that can be imported to the running atserver before the tests are run. <strong>The easiest way to create such files is with atbuilder:</strong></p>
+<ul>
+<li>First <em>connect atvise builder</em> to your running atserver</li>
+<li>Create and <em>configure the node(s)</em> you want to test against</li>
+<li>Select theses nodes, right-click them and choose <em>&quot;Export hierarchy to XML&quot;</em> from the context menu.</li>
+<li>Save the export file to <code>./test/fixtures/setup</code>.</li>
+</ul>
+<p>After this, you can use the <em>importSetup</em> method exported from <a href="./manual/./test/helpers/atscm.js"><code>./test/helpers/atscm.js</code></a> to import this setup. See the existing integration tests for examples.</p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
