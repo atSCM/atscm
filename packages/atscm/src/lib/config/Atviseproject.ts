@@ -55,6 +55,13 @@ export default class Atviseproject {
     return false;
   }
 
+  private static get xmlTransformerOptions() {
+    return {
+      sortXMLAttributes: this.sortXMLAttributes,
+      removeBuilderRefs: this.removeBuilderRefs,
+    };
+  }
+
   /**
    * The transformers to use in this project. Returns a {@link DisplayTransformer}, a
    * {@link ScriptTransformer} and a {@link NewlinesTransformer} by default.
@@ -62,9 +69,9 @@ export default class Atviseproject {
   static get useTransformers(): Transformer[] {
     return [
       new AlarmConfigTransformer(),
-      new DisplayTransformer(),
-      new ServerscriptTransformer(),
-      new QuickDynamicTransformer(),
+      new DisplayTransformer(this.xmlTransformerOptions),
+      new ServerscriptTransformer(this.xmlTransformerOptions),
+      new QuickDynamicTransformer(this.xmlTransformerOptions),
       new MappingTransformer() as any,
     ];
   }
