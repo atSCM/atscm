@@ -1,5 +1,10 @@
-<a name="1.3.0-beta.0"></a>
-# 1.3.0-beta.0 (2021-02-11)
+<a name="1.3.0-beta.1"></a>
+# 1.3.0-beta.1 (2021-02-11)
+
+
+### Bug Fixes
+
+* Remove reference to ProjectConfig ([ec0277c](https://github.com/atSCM/atscm/commits/ec0277c))
 
 
 ### Features
