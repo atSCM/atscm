@@ -158,9 +158,19 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/lib/transform/XMLTransformer.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { EOL } from &apos;os&apos;;
-import { parse, render, isElement, moveToTop } from &apos;modify-xml&apos;;
+import { parse, render, isElement, moveToTop, attributeValues } from &apos;modify-xml&apos;;
 import { TransformDirection } from &apos;./Transformer&apos;;
 import SplittingTransformer from &apos;./SplittingTransformer&apos;;
+
+function walk(element, action, filter = isElement) {
+  action(element);
+
+  if (element.childNodes) {
+    for (const child of element.childNodes.filter((n) =&gt; filter(n))) {
+      walk(child, action);
+    }
+  }
+}
 
 /**
  * A transformer used to transform XML documents.
@@ -170,8 +180,14 @@ export default class XMLTransformer extends SplittingTransformer {
    * Creates a new XMLTransformer based on some options.
    * @param {Object} [options] The options to use.
    */
-  constructor(options = {}) {
+  constructor({ sortXMLAttributes = false, removeBuilderRefs = false, ...options } = {}) {
     super(options);
+
+    /** @protected */
+    this.sortXMLAttributes = sortXMLAttributes;
+
+    /** @protected */
+    this.removeBuilderRefs = removeBuilderRefs;
 
     function build(object, buildOptions) {
       const root = object.childNodes.find((n) =&gt; isElement(n));
@@ -182,6 +198,19 @@ export default class XMLTransformer extends SplittingTransformer {
         moveToTop(root, &apos;desc&apos;);
         moveToTop(root, &apos;title&apos;);
       }
+
+      if (sortXMLAttributes || removeBuilderRefs)
+        walk(root, (e) =&gt; {
+          /* eslint-disable no-param-reassign */
+          if (removeBuilderRefs)
+            e.attributes = e.attributes.filter((a) =&gt; ![&apos;atv:refpx&apos;, &apos;atv:refpy&apos;].includes(a.name));
+
+          if (sortXMLAttributes)
+            e.attributes = e.attributes.sort((a, b) =&gt; (b.name &gt; a.name ? -1 : 1));
+
+          delete e.openTag;
+          /* eslint-enable no-param-reassign */
+        });
 
       return render(object, { indent: &apos; &apos;.repeat(buildOptions.spaces) });
     }
@@ -205,6 +234,18 @@ export default class XMLTransformer extends SplittingTransformer {
       const xml = build(object, { compact: false, spaces: 1 });
       return xml.replace(/\r?\n/g, &apos;\n&apos;);
     };
+  }
+
+  /**
+   * @protected
+   * @param {import(&apos;modify-xml&apos;).Element} node The node to handle.
+   */
+  sortedAttributeValues(node) {
+    if (!this.sortXMLAttributes) return attributeValues(node);
+
+    return Object.fromEntries(
+      Object.entries(attributeValues(node)).sort((a, b) =&gt; (b &gt; a ? -1 : 1))
+    );
   }
 
   /**

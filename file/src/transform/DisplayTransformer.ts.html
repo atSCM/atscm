@@ -303,7 +303,7 @@ export default class DisplayTransformer extends XMLTransformer {
         config.parameters = [];
 
         paramTags.forEach((n) =&gt;
-          config.parameters.push(attributeValues(n) as DisplayConfig[&apos;parameters&apos;][0])
+          config.parameters.push(this.sortedAttributeValues(n) as DisplayConfig[&apos;parameters&apos;][0])
         );
       }
     }

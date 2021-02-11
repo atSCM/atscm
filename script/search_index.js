@@ -5268,6 +5268,18 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/lib/config/atviseproject.ts~atviseproject.removebuilderrefs",
+    "class/src/lib/config/Atviseproject.ts~Atviseproject.html#static-get-removeBuilderRefs",
+    "src/lib/config/Atviseproject.ts~Atviseproject.removeBuilderRefs",
+    "member"
+  ],
+  [
+    "src/lib/config/atviseproject.ts~atviseproject.sortxmlattributes",
+    "class/src/lib/config/Atviseproject.ts~Atviseproject.html#static-get-sortXMLAttributes",
+    "src/lib/config/Atviseproject.ts~Atviseproject.sortXMLAttributes",
+    "member"
+  ],
+  [
     "src/lib/config/atviseproject.ts~atviseproject.timeout",
     "class/src/lib/config/Atviseproject.ts~Atviseproject.html#static-get-timeout",
     "src/lib/config/Atviseproject.ts~Atviseproject.timeout",
@@ -5283,6 +5295,12 @@ window.esdocSearchIndex = [
     "src/lib/config/atviseproject.ts~atviseproject.vcs",
     "class/src/lib/config/Atviseproject.ts~Atviseproject.html#static-get-vcs",
     "src/lib/config/Atviseproject.ts~Atviseproject.vcs",
+    "member"
+  ],
+  [
+    "src/lib/config/atviseproject.ts~atviseproject.xmltransformeroptions",
+    "class/src/lib/config/Atviseproject.ts~Atviseproject.html#static-get-xmlTransformerOptions",
+    "src/lib/config/Atviseproject.ts~Atviseproject.xmlTransformerOptions",
     "member"
   ],
   [
