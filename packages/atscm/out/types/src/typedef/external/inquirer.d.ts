@@ -1,0 +1,4 @@
+/**
+ * ~PromptType
+ */
+type inquirer = string;
