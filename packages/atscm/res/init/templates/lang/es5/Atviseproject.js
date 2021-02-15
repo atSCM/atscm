@@ -41,6 +41,13 @@ class {{pascalcase name}} extends Atviseproject {
   }
   {{/if}}
 
+  /**
+   * Remove `atv:refpx` and `atv:refpy` attributes from XML to minimize diffs between pulls.
+   * @type {boolean}
+   */
+  static get removeBuilderRefs() {
+    return true;
+  }
 }
 
 module.exports = { default: {{pascalcase name}} };
