@@ -66,7 +66,7 @@ export async function approveToContinue(
   }
 }
 
-export default async function checkAtserver(context: HookContext): Promise<void> {
+export default async function checkAtserver(context: HookContext): Promise<{ version: string }> {
   const { log } = context;
 
   log.debug('Checking atserver version');
@@ -125,4 +125,6 @@ export default async function checkAtserver(context: HookContext): Promise<void>
       return current;
     });
   }
+
+  return { version: remoteVersion };
 }

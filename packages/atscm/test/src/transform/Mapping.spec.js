@@ -159,7 +159,7 @@ describe.skip('MappingTransformer', function () {
           [
             {
               basename: '.CustomVar.var.xml.json',
-              contents: new Buffer(
+              contents: Buffer.from(
                 JSON.stringify(
                   {
                     references: {

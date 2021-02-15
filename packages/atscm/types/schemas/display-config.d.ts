@@ -5,6 +5,19 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+export type ExternalScript = ScriptCommon & {
+  type: 'linked' | 'referenced';
+  src: string;
+  [k: string]: unknown;
+};
+/**
+ * A display's inline script
+ */
+export type InlineScript = ScriptCommon & {
+  type: 'inline';
+  [k: string]: unknown;
+};
+
 /**
  * An atvise display configuration file
  */
@@ -63,5 +76,15 @@ export interface DisplayConfig {
    * External scripts to load
    */
   dependencies?: string[];
+  scripts?: (ExternalScript | InlineScript)[];
+  [k: string]: unknown;
+}
+export interface ScriptCommon {
+  type: string;
+  /**
+   * An optional name to give the script
+   */
+  name?: string;
+  mimeType?: string;
   [k: string]: unknown;
 }

@@ -66,9 +66,10 @@ export default class SplittingTransformer extends PartialTransformer {
    * @abstract
    * @param {BrowsedNode} node The container node.
    * @param {Map<string, BrowsedNode>} sourceNodes The source nodes.
+   * @param {any} context The current context.
    */
   // eslint-disable-next-line no-unused-vars
-  combineNodes(node, sourceNodes) {
+  combineNodes(node, sourceNodes, context) {
     throw new Error('Must be implemented by all subclasses');
   }
 
@@ -77,9 +78,10 @@ export default class SplittingTransformer extends PartialTransformer {
    * {@link SplittingTransformer#combineNodes}.
    * @param {BrowsedNode} node The container node.
    * @param {{ [extension: string]: BrowedNode }} sourceNodes The source nodes.
+   * @param {any} context The current context.
    */
-  _combineNodes(node, sourceNodes) {
-    this.combineNodes(node, sourceNodes);
+  _combineNodes(node, sourceNodes, context) {
+    this.combineNodes(node, sourceNodes, context);
     node.renameTo(basename(node.name, this.constructor.extension));
   }
 
@@ -143,7 +145,8 @@ export default class SplittingTransformer extends PartialTransformer {
             [extname(n.fileName)]: n,
           }),
         {}
-      )
+      ),
+      context
     );
   }
 }

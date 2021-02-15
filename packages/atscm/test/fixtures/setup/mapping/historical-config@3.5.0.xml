@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- created at 2021-02-15 09:26:42 -->
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd">
+	<Extensions>
+		<atvise Version="3.5"/>
+	</Extensions>
+	<NamespaceUris>
+		<Uri>http://www.atvise.com/atServer/UA/</Uri>
+	</NamespaceUris>
+	<Aliases>
+		<!-- data types -->
+		<Alias Alias="Boolean">i=1</Alias>
+		<Alias Alias="SByte">i=2</Alias>
+		<Alias Alias="Byte">i=3</Alias>
+		<Alias Alias="Int16">i=4</Alias>
+		<Alias Alias="UInt16">i=5</Alias>
+		<Alias Alias="Int32">i=6</Alias>
+		<Alias Alias="UInt32">i=7</Alias>
+		<Alias Alias="Int64">i=8</Alias>
+		<Alias Alias="UInt64">i=9</Alias>
+		<Alias Alias="Float">i=10</Alias>
+		<Alias Alias="Double">i=11</Alias>
+		<Alias Alias="String">i=12</Alias>
+		<Alias Alias="DateTime">i=13</Alias>
+		<Alias Alias="ByteString">i=15</Alias>
+		<Alias Alias="XmlElement">i=16</Alias>
+		<Alias Alias="NodeId">i=17</Alias>
+		<Alias Alias="LocalizedText">i=21</Alias>
+		<!-- references -->
+		<Alias Alias="Organizes">i=35</Alias>
+		<Alias Alias="HasEventSource">i=36</Alias>
+		<Alias Alias="HasModellingRule">i=37</Alias>
+		<Alias Alias="HasTypeDefinition">i=40</Alias>
+		<Alias Alias="HasSubtype">i=45</Alias>
+		<Alias Alias="HasProperty">i=46</Alias>
+		<Alias Alias="HasComponent">i=47</Alias>
+		<Alias Alias="HasNotifier">i=48</Alias>
+		<Alias Alias="HasCondition">i=9006</Alias>
+		<Alias Alias="HasHistoricalConfiguration">i=56</Alias>
+		<!-- types -->
+		<Alias Alias="BaseDataType">i=24</Alias>
+		<Alias Alias="BaseObjectType">i=58</Alias>
+		<Alias Alias="FolderType">i=61</Alias>
+		<Alias Alias="BaseVariableType">i=62</Alias>
+		<Alias Alias="BaseDataVariableType">i=63</Alias>
+		<Alias Alias="PropertyType">i=68</Alias>
+		<Alias Alias="AlarmConditionStateType">ns=1;i=1001</Alias>
+		<!-- modelling rules -->
+		<Alias Alias="New">i=78</Alias>
+		<Alias Alias="Shared">i=79</Alias>
+		<!-- other -->
+		<Alias Alias="Server">i=2253</Alias>
+		<Alias Alias="Objects">i=85</Alias>
+	</Aliases>
+	<UAObject NodeId="ns=1;s=AGENT" BrowseName="1:AGENT">
+		<DisplayName Locale="en">AGENT</DisplayName>
+		<Description Locale="en">AGENT</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">Objects</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.Server.Local</Reference>
+		</References>
+		<Extensions>
+			<atvise ExportedNodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig" ExportedBrowseName="1:TestHistoryConfig" Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS" BrowseName="1:OBJECTS">
+		<DisplayName Locale="en">OBJECTS</DisplayName>
+		<Description Locale="en">OBJECTS</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+		<Extensions>
+			<atvise Upstream="true"/>
+		</Extensions>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig" BrowseName="1:TestHistoryConfig">
+		<DisplayName Locale="en">TestHistoryConfig</DisplayName>
+		<Description Locale="en">TestHistoryConfig</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS</Reference>
+			<Reference ReferenceType="HasTypeDefinition">FolderType</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive" BrowseName="1:Archive">
+		<DisplayName Locale="en">Archive</DisplayName>
+		<Description Locale="en">Archive</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">ns=1;s=ObjectTypes.ATVISE.ArchiveGroup.Data</Reference>
+			<Reference ReferenceType="HasModellingRule">Shared</Reference>
+		</References>
+	</UAObject>
+	<UAObject NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration" BrowseName="0:AggregateConfiguration">
+		<DisplayName Locale="">AggregateConfiguration</DisplayName>
+		<Description Locale="">AggregateConfiguration</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+			<Reference ReferenceType="HasTypeDefinition">i=11187</Reference>
+		</References>
+	</UAObject>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration.PercentDataBad" BrowseName="0:PercentDataBad" DataType="Byte" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="">PercentDataBad</DisplayName>
+		<Description Locale="">PercentDataBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>100</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration.PercentDataGood" BrowseName="0:PercentDataGood" DataType="Byte" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="">PercentDataGood</DisplayName>
+		<Description Locale="">PercentDataGood</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Byte>100</uax:Byte>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration.TreatUncertainAsBad" BrowseName="0:TreatUncertainAsBad" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="">TreatUncertainAsBad</DisplayName>
+		<Description Locale="">TreatUncertainAsBad</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>true</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration.UseSlopedExtrapolation" BrowseName="0:UseSlopedExtrapolation" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="">UseSlopedExtrapolation</DisplayName>
+		<Description Locale="">UseSlopedExtrapolation</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.AggregateConfiguration</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.Stepped" BrowseName="0:Stepped" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="">Stepped</DisplayName>
+		<Description Locale="">Stepped</Description>
+		<References>
+			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+			<Reference ReferenceType="HasTypeDefinition">PropertyType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.disable" BrowseName="1:disable" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">disable</DisplayName>
+		<Description Locale="en">disable</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.partition_interval" BrowseName="1:partition_interval" DataType="String" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">partition_interval</DisplayName>
+		<Description Locale="en">partition_interval</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:String>n</uax:String>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive.file_limit" BrowseName="1:file_limit" DataType="UInt32" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">file_limit</DisplayName>
+		<Description Locale="en">file_limit</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+		</References>
+		<Value>
+			<uax:UInt32>0</uax:UInt32>
+		</Value>
+	</UAVariable>
+	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Node" BrowseName="1:Node" DataType="Boolean" AccessLevel="7" UserAccessLevel="7" Historizing="true">
+		<DisplayName Locale="en">Node</DisplayName>
+		<Description Locale="en">Node</Description>
+		<References>
+			<Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=AGENT.OBJECTS.TestHistoryConfig</Reference>
+			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
+			<Reference ReferenceType="HasHistoricalConfiguration">ns=1;s=AGENT.OBJECTS.TestHistoryConfig.Archive</Reference>
+		</References>
+		<Value>
+			<uax:Boolean>false</uax:Boolean>
+		</Value>
+	</UAVariable>
+</UANodeSet>

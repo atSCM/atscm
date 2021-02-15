@@ -12,6 +12,7 @@ import {
   attributeValues,
   AttributeValues,
 } from 'modify-xml';
+import { gte } from 'semver';
 import XMLTransformer from '../lib/transform/XMLTransformer';
 import type { DisplayConfig } from '../../types/schemas/display-config';
 import { BrowsedNode } from '../lib/server/NodeBrowser';
@@ -55,6 +56,16 @@ export default class DisplayTransformer extends XMLTransformer {
     return node.hasTypeDefinition('VariableTypes.ATVISE.Display');
   }
 
+  private normalizeScriptAttributes(
+    attributes: AttributeValues
+  ): Omit<DisplayConfig['scripts'][0], 'type'> {
+    return {
+      src: attributes['atv:href'] || attributes['xlink:href'] || attributes.src,
+      name: attributes['atv:name'] || undefined,
+      mimeType: attributes.type !== 'text/ecmascript' ? attributes.type : undefined,
+    };
+  }
+
   /**
    * Splits any read files containing atvise displays into their SVG and JavaScript sources,
    * alongside with a json file containing the display's parameters.
@@ -84,43 +95,9 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display: No `svg` tag');
     }
 
-    const config: DisplayConfig = {};
+    const config: DisplayConfig = { scripts: [] };
     const scriptTags = removeChildren(document, 'script');
     let inlineScript;
-
-    // Extract JavaScript
-    if (scriptTags.length) {
-      scriptTags.forEach((script) => {
-        const attributes = attributeValues(script);
-        if (attributes && (attributes.src || attributes['xlink:href'])) {
-          if (!config.dependencies) {
-            config.dependencies = [];
-          }
-
-          config.dependencies.push(attributes.src || attributes['xlink:href']);
-        } else {
-          // Warn on multiple inline scripts
-          if (inlineScript) {
-            Logger[node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'](
-              `'${node.id.value}' contains multiple inline scripts.`
-            );
-            document.childNodes.push(inlineScript);
-          }
-          inlineScript = script;
-        }
-      });
-    }
-    if (inlineScript) {
-      const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
-      const scriptText = textContent(inlineScript);
-
-      scriptFile.value = {
-        dataType: DataType.String,
-        arrayType: VariantArrayType.Scalar,
-        value: scriptText,
-      };
-      context.addNode(scriptFile);
-    }
 
     rootMetaTags.forEach(({ tag, key }) => {
       const [element, ...additional] = removeChildren(document, tag);
@@ -132,6 +109,53 @@ export default class DisplayTransformer extends XMLTransformer {
         Logger.warn(`Removed additional <${tag} /> element inside ${node.nodeId}`);
       }
     });
+
+    // Extract JavaScript
+    if (scriptTags.length) {
+      scriptTags.forEach((script) => {
+        const attributes = attributeValues(script);
+        const normalized = this.normalizeScriptAttributes(attributes);
+
+        if (attributes?.['atv:href']) {
+          // Linked scripts
+          config.scripts.push({
+            type: 'linked',
+            ...(normalized as { src: string }),
+          });
+        } else if (attributes?.src || attributes?.['xlink:href']) {
+          // Referenced scripts
+          config.scripts.push({
+            type: 'referenced',
+            ...(normalized as { src: string }),
+          });
+        } else if (inlineScript) {
+          // Warn on multiple inline scripts
+          Logger[node.id.value.startsWith('SYSTEM.LIBRARY.ATVISE') ? 'debug' : 'warn'](
+            `'${node.id.value}' contains multiple inline scripts.`
+          );
+          document.childNodes.push(inlineScript);
+        } else {
+          // Inline script
+          config.scripts.push({
+            type: 'inline',
+            ...normalized,
+          });
+          inlineScript = script;
+        }
+      });
+    }
+
+    if (inlineScript) {
+      const scriptFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.js');
+      const scriptText = textContent(inlineScript);
+
+      scriptFile.value = {
+        dataType: DataType.String,
+        arrayType: VariantArrayType.Scalar,
+        value: scriptText,
+      };
+      context.addNode(scriptFile);
+    }
 
     // Extract metadata
     const metaTag = findChild(document, 'metadata');
@@ -149,6 +173,22 @@ export default class DisplayTransformer extends XMLTransformer {
       }
     }
 
+    // Remove empty config values
+    // - Remove inline script config if it's the only script
+    //   FIXME: Add option to disable this
+    const [firstScript] = config.scripts;
+    if (config.scripts.length === 1 && firstScript.type === 'inline') {
+      const hasValues = ~Object.values({ ...firstScript, type: undefined }).findIndex((v) => v);
+
+      if (!hasValues) {
+        config.scripts.pop();
+      }
+    }
+
+    // Remove empty scripts array
+    if (!config.scripts.length) delete config.scripts;
+
+    // Write files
     const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
     configFile.value = {
       dataType: DataType.String,
@@ -169,13 +209,30 @@ export default class DisplayTransformer extends XMLTransformer {
     return super.transformFromDB(node, context);
   }
 
+  scriptTagAttributes(config: Partial<DisplayConfig['scripts'][0]> & { src: string }) {
+    return Object.entries(config).reduce(
+      (soFar, [key, value]) => {
+        let outputKey;
+
+        if (key === 'mimeType') outputKey = 'type';
+        if (key === 'src') outputKey = config.type === 'referenced' ? 'xlink:href' : 'atv:href';
+
+        return { ...soFar, [outputKey || `atv:${key}`]: value };
+      },
+      {
+        type: 'text/ecmascript',
+      }
+    );
+  }
+
   /**
    * Creates a display from the collected nodes.
    * @param {BrowsedNode} node The container node.
    * @param {Map<string, BrowsedNode>} sources The collected files, stored against their
    * extension.
+   * @param context The current transform context.
    */
-  combineNodes(node, sources) {
+  combineNodes(node, sources, context) {
     const configFile = sources['.json'];
     let config: DisplayConfig = {};
 
@@ -207,15 +264,45 @@ export default class DisplayTransformer extends XMLTransformer {
       throw new Error('Error parsing display SVG: No `svg` tag');
     }
 
-    // Insert dependencies
-    if (config.dependencies) {
-      config.dependencies.forEach((s) => {
-        appendChild(svg, createElement('script', undefined, { 'xlink:href': s }));
+    if (config.dependencies && config.scripts) {
+      throw new Error(`Cannot use both 'dependencies' and 'scripts'`);
+    }
+
+    const linkedScriptsSupported = gte(context.atserverVersion, '3.5.0');
+
+    const referencedScripts = config.dependencies
+      ? config.dependencies.map((src) => ({ src }))
+      : config.scripts?.filter((s) => s.type === 'referenced') ?? [];
+
+    const addReferencedScripts = () =>
+      referencedScripts.forEach((s) => {
+        appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(s)));
+      });
+
+    // Insert linked scripts
+
+    if (config.scripts) {
+      config.scripts.forEach((s) => {
+        if (s.type === 'linked') {
+          if (!linkedScriptsSupported) {
+            // FIXME: Add possibility to ignore this error (and do what? :) )
+            throw new Error(`Linked scripts are only supported on atserver 3.5 and later`);
+          }
+
+          appendChild(svg, createElement('script', undefined, this.scriptTagAttributes(s)));
+        }
       });
     }
 
-    // Insert script
-    // FIXME: Import order is not preserved!
+    // Insert dependencies
+
+    // On atserver < 3.5 insert dependencies before the inline script
+    if (!linkedScriptsSupported) {
+      addReferencedScripts();
+    }
+
+    // Insert inline script
+    // NOTE: Import order is not preserved on atserver < 3.5
     if (scriptFile) {
       appendChild(
         svg,
@@ -223,6 +310,12 @@ export default class DisplayTransformer extends XMLTransformer {
           type: 'text/ecmascript',
         })
       );
+    }
+
+    // Insert referenced scripts after inline scripts in atserver 3.5+
+
+    if (linkedScriptsSupported) {
+      addReferencedScripts();
     }
 
     // Insert metadata
