@@ -217,14 +217,6 @@ export default class DisplayTransformer extends XMLTransformer {
         if (key === 'mimeType') outputKey = 'type';
         if (key === 'src') outputKey = config.type === 'referenced' ? 'xlink:href' : 'atv:href';
 
-        // if (config.type === 'referenced') {
-        //   if (key === 'src') {
-        //     outputKey = 'xlink:href';
-        //   } else if (key === 'type') {
-        //     outputKey = key;
-        //   }
-        // } else if (key === 'src')
-
         return { ...soFar, [outputKey || `atv:${key}`]: value };
       },
       {
