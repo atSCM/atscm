@@ -1,5 +1,16 @@
-<a name="1.3.0"></a>
-# 1.3.0 (2021-02-11)
+<a name="1.4.0"></a>
+# 1.4.0 (2021-02-15)
+
+
+### Features
+
+* **atscm:** Support for atvise server 3.5.x ([#432](https://github.com/atSCM/atscm/issues/432)) ([853e347](https://github.com/atSCM/atscm/commits/853e347))
+
+
+
+
+<a name="atscm-v1.3.0"></a>
+# atscm-v1.3.0 (2021-02-11)
 
 
 ### Features
