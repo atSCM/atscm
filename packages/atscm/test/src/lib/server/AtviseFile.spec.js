@@ -288,7 +288,7 @@ describe('AtviseFile', function () {
     ].forEach((t) => testDecoderForDataType(...t));
 
     it('should forward binary buffer for ByteString', function () {
-      const buffer = new Buffer('test');
+      const buffer = Buffer.from('test');
       expect(
         AtviseFile.decodeValue(buffer, DataType.ByteString, VariantArrayType.Scalar),
         'to equal',
@@ -308,7 +308,7 @@ describe('AtviseFile', function () {
     context('with an array passed', function () {
       it('should JSON decode standard values', function () {
         const value = ['<xml />', '<xml />'];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.XmlElement, VariantArrayType.Array),
           'to equal',
@@ -318,7 +318,7 @@ describe('AtviseFile', function () {
 
       it('should JSON decode special encoded values', function () {
         const value = [[0, 1]];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.UInt64, VariantArrayType.Array),
           'to equal',
@@ -328,7 +328,7 @@ describe('AtviseFile', function () {
 
       it('should JSON decode null values', function () {
         const value = [null];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.String, VariantArrayType.Array),
           'to equal',
@@ -649,7 +649,7 @@ describe('AtviseFile', function () {
 
   /** @test {AtivseFile#value} */
   describe('#value', function () {
-    const val = new Buffer('test');
+    const val = Buffer.from('test');
 
     before(() => {
       stub(AtviseFile, 'decodeValue').callsFake(() => true);
