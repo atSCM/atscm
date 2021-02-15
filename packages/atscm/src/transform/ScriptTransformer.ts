@@ -349,3 +349,19 @@ export class QuickDynamicTransformer extends AtviseScriptTransformer {
     return node.isVariable && node.isQuickDynamic;
   }
 }
+
+export class DisplayScriptTransformer extends AtviseScriptTransformer {
+  /** The container's extension. */
+  static get extension() {
+    return '.ds';
+  }
+
+  /**
+   * Returns `true` for all nodes containing quick dynamics.
+   * @param {Node} node The node to check.
+   * @return {boolean} If the node is a quick dynamic.
+   */
+  shouldBeTransformed(node) {
+    return node.isVariable && node.isDisplayScript;
+  }
+}

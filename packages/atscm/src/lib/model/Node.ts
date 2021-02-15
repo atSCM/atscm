@@ -452,6 +452,13 @@ export default abstract class Node {
   public get isQuickDynamic(): boolean {
     return this.hasTypeDefinition('VariableTypes.ATVISE.QuickDynamic');
   }
+
+  /**
+   * If the node is a display script.
+   */
+  public get isDisplayScript(): boolean {
+    return this.hasTypeDefinition('VariableTypes.ATVISE.DisplayScript');
+  }
 }
 
 /**

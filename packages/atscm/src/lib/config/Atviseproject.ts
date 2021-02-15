@@ -5,6 +5,7 @@ import DisplayTransformer from '../../transform/DisplayTransformer';
 import {
   ServerscriptTransformer,
   QuickDynamicTransformer,
+  DisplayScriptTransformer,
 } from '../../transform/ScriptTransformer';
 import MappingTransformer from '../../transform/Mapping';
 import AlarmConfigTransformer from '../../transform/AlarmConfigTransformer';
@@ -72,6 +73,7 @@ export default class Atviseproject {
       new DisplayTransformer(this.xmlTransformerOptions),
       new ServerscriptTransformer(this.xmlTransformerOptions),
       new QuickDynamicTransformer(this.xmlTransformerOptions),
+      new DisplayScriptTransformer(this.xmlTransformerOptions),
       new MappingTransformer() as any,
     ];
   }
