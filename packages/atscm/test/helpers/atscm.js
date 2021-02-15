@@ -5,7 +5,15 @@ import { obj as createTransformStream } from 'through2';
 import { StatusCodes, Variant, DataType, VariantArrayType } from 'node-opcua';
 import { src as gulpSrc } from 'gulp';
 import proxyquire from 'proxyquire';
-import { parse, removeChildren, isElement, attributeValues, render } from 'modify-xml';
+import {
+  parse,
+  removeChildren,
+  isElement,
+  attributeValues,
+  render,
+  isElementWithName,
+  isTextNode,
+} from 'modify-xml';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -176,7 +184,12 @@ export function exportNode(nodeId) {
   return exportNodes([nodeId]);
 }
 
-function removeComments(xml) {
+const renameReferences = new Map([
+  // Atserver 3.5.x Uses "i=85" instead of "Objects" in references
+  ['i=85', 'Objects'],
+]);
+
+function normalizeXml(xml) {
   const doc = parse(xml);
 
   // Atserver 3.3+ adds <Extensions><atvise Version="3.x"/></Extensions> to <UANodeSet>s
@@ -187,10 +200,20 @@ function removeComments(xml) {
 
   /* eslint-disable no-param-reassign */
   const walk = (n) => {
+    const parentIsReference = isElementWithName(n, 'Reference');
+
     n.childNodes = n.childNodes
       .reduce((all, child) => {
         if (child.type === 'comment' || (child.type === 'text' && child.value.match(/^\s*$/))) {
           return all;
+        }
+
+        // Normalize reference ids
+        if (parentIsReference && isTextNode(child)) {
+          const replacement = renameReferences.get(child.value);
+          if (replacement) {
+            child.value = replacement;
+          }
         }
 
         return all.concat(child.type === 'element' ? walk(child) : child);
@@ -234,7 +257,7 @@ function removeComments(xml) {
 }
 
 export function compareXml(value, expected) {
-  return expect(render(removeComments(value)), 'to equal', render(removeComments(expected)));
+  return expect(render(normalizeXml(value)), 'to equal', render(normalizeXml(expected)));
 }
 
 export function expectCorrectMapping(setup, node) {
