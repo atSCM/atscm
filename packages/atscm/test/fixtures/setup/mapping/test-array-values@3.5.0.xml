@@ -92,6 +92,7 @@
 		<Value>
 			<uax:ListOfBoolean>
 				<uax:Boolean>false</uax:Boolean>
+				<uax:Boolean>true</uax:Boolean>
 			</uax:ListOfBoolean>
 		</Value>
 	</UAVariable>
@@ -103,7 +104,10 @@
 			<Reference ReferenceType="HasTypeDefinition">BaseVariableType</Reference>
 		</References>
 		<Value>
-			<uax:ListOfByte/>
+			<uax:ListOfByte>
+				<uax:Byte>0</uax:Byte>
+				<uax:Byte>2</uax:Byte>
+			</uax:ListOfByte>
 		</Value>
 	</UAVariable>
 	<UAVariable NodeId="ns=1;s=AGENT.OBJECTS.InvalidArrayValue.TestFloat" BrowseName="1:TestFloat" DataType="Float" ValueRank="1" AccessLevel="7" UserAccessLevel="7" Historizing="true">
@@ -116,6 +120,7 @@
 		<Value>
 			<uax:ListOfFloat>
 				<uax:Float>0</uax:Float>
+				<uax:Float>0.2</uax:Float>
 			</uax:ListOfFloat>
 		</Value>
 	</UAVariable>
@@ -129,6 +134,7 @@
 		<Value>
 			<uax:ListOfSByte>
 				<uax:SByte>0</uax:SByte>
+				<uax:SByte>2</uax:SByte>
 			</uax:ListOfSByte>
 		</Value>
 	</UAVariable>
@@ -142,6 +148,7 @@
 		<Value>
 			<uax:ListOfUInt16>
 				<uax:UInt16>0</uax:UInt16>
+				<uax:UInt16>2</uax:UInt16>
 			</uax:ListOfUInt16>
 		</Value>
 	</UAVariable>
@@ -155,6 +162,7 @@
 		<Value>
 			<uax:ListOfUInt32>
 				<uax:UInt32>0</uax:UInt32>
+				<uax:UInt32>2</uax:UInt32>
 			</uax:ListOfUInt32>
 		</Value>
 	</UAVariable>
@@ -168,6 +176,7 @@
 		<Value>
 			<uax:ListOfUInt64>
 				<uax:UInt64>0</uax:UInt64>
+				<uax:UInt64>2</uax:UInt64>
 			</uax:ListOfUInt64>
 		</Value>
 	</UAVariable>
@@ -181,6 +190,7 @@
 		<Value>
 			<uax:ListOfInt64>
 				<uax:Int64>0</uax:Int64>
+				<uax:Int64>2</uax:Int64>
 			</uax:ListOfInt64>
 		</Value>
 	</UAVariable>
@@ -194,6 +204,7 @@
 		<Value>
 			<uax:ListOfDouble>
 				<uax:Double>0</uax:Double>
+				<uax:Double>2</uax:Double>
 			</uax:ListOfDouble>
 		</Value>
 	</UAVariable>
@@ -206,7 +217,8 @@
 		</References>
 		<Value>
 			<uax:ListOfString>
-				<uax:String></uax:String>
+				<uax:String>String 1</uax:String>
+				<uax:String>String 2</uax:String>
 			</uax:ListOfString>
 		</Value>
 	</UAVariable>
@@ -233,6 +245,7 @@
 		<Value>
 			<uax:ListOfInt16>
 				<uax:Int16>0</uax:Int16>
+				<uax:Int16>2</uax:Int16>
 			</uax:ListOfInt16>
 		</Value>
 	</UAVariable>
@@ -246,6 +259,7 @@
 		<Value>
 			<uax:ListOfInt32>
 				<uax:Int32>0</uax:Int32>
+				<uax:Int32>2</uax:Int32>
 			</uax:ListOfInt32>
 		</Value>
 	</UAVariable>
@@ -258,8 +272,8 @@
 		</References>
 		<Value>
 			<uax:ListOfDateTime>
-				<uax:DateTime>0001-01-01T00:00:01.1111111Z</uax:DateTime>
-				<uax:DateTime>0001-01-01T00:00:02.2222222Z</uax:DateTime>
+				<uax:DateTime>0001-01-01T00:00:00.0000000Z</uax:DateTime>
+				<uax:DateTime>0002-02-02T02:02:02.2000000Z</uax:DateTime>
 			</uax:ListOfDateTime>
 		</Value>
 	</UAVariable>
