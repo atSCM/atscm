@@ -1,4 +1,5 @@
-import { join, sep } from 'path';
+import { basename, dirname, join, sep } from 'path';
+import { promises as fsp } from 'fs';
 import replace from 'buffer-replace';
 import promisify from 'stream-to-promise';
 import { obj as createTransformStream } from 'through2';
@@ -14,6 +15,7 @@ import {
   isElementWithName,
   isTextNode,
 } from 'modify-xml';
+import { lte } from 'semver';
 import expect from '../expect';
 import ImportStream from '../../src/lib/gulp/ImportStream';
 import CallMethodStream from '../../src/lib/server/scripts/CallMethodStream';
@@ -21,9 +23,13 @@ import CallScriptStream from '../../src/lib/server/scripts/CallScriptStream';
 import NodeId from '../../src/lib/model/opcua/NodeId';
 import dest from '../../src/lib/gulp/dest';
 import { performPush } from '../../src/tasks/push';
-import { setupContext } from '../../src/hooks/hooks';
-import checkAtserver from '../../src/hooks/check-atserver';
+import { loadRemoteVersion } from '../../src/hooks/check-atserver';
 import { id, tmpDir, readFile } from './util';
+
+let atserverVersion;
+function getAtserverVersion() {
+  return atserverVersion || (atserverVersion = loadRemoteVersion());
+}
 
 export function pull(nodes, destination) {
   const { performPull } = proxyquire('../../src/tasks/pull', {
@@ -36,16 +42,26 @@ export function pull(nodes, destination) {
 }
 
 export async function push(source) {
-  const context = setupContext();
-  const { version: atserverVersion } = await checkAtserver(context);
-
-  return performPush(source, { atserverVersion });
+  return performPush(source, { atserverVersion: await getAtserverVersion() });
 }
 
 export const setupDir = join(__dirname, '../fixtures/setup');
 
-export function setupPath(name) {
-  return join(setupDir, `${name}.xml`);
+async function setupPath(path) {
+  const fallback = join(setupDir, `${path}.xml`);
+
+  const dir = dirname(fallback);
+  const name = basename(path, '.xml');
+  const regExp = new RegExp(`${name}@(.+).xml`);
+
+  for (const file of await fsp.readdir(dir)) {
+    const [, version] = file.match(regExp) || [];
+    if (version && lte(version, await getAtserverVersion())) {
+      return join(dir, file);
+    }
+  }
+
+  return fallback;
 }
 
 export async function importSetup(name, ...rename) {
@@ -67,7 +83,7 @@ export async function importSetup(name, ...rename) {
     });
 
   const doImport = async () => {
-    const sourceStream = gulpSrc(setupPath(name));
+    const sourceStream = gulpSrc(await setupPath(name));
     const importStream = new ImportStream();
 
     return promisify(
@@ -311,7 +327,7 @@ export function expectCorrectMapping(setup, node) {
       rawPushed.toString()
     );
 
-    const original = await readFile(setupPath(setup), 'utf8');
+    const original = await readFile(await setupPath(setup), 'utf8');
 
     return compareXml(pushed, original);
   });
