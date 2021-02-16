@@ -1,5 +1,16 @@
-<a name="1.4.0"></a>
-# 1.4.0 (2021-02-15)
+<a name="1.4.1-beta.0"></a>
+## 1.4.1-beta.0 (2021-02-16)
+
+
+### Bug Fixes
+
+* Test change ([ede3881](https://github.com/atSCM/atscm/commits/ede3881))
+
+
+
+
+<a name="atscm-v1.4.0"></a>
+# atscm-v1.4.0 (2021-02-15)
 
 
 ### Features
