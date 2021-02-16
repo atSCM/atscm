@@ -1,3 +1,14 @@
+<a name="1.1.2"></a>
+## 1.1.2 (2021-02-16)
+
+
+### Bug Fixes
+
+* **init:** Skip unnecessary install ([#192](https://github.com/atSCM/atscm-cli/issues/192)) ([20e1126](https://github.com/atSCM/atscm-cli/commits/20e1126))
+
+
+
+
 <a name="1.1.1"></a>
 ## 1.1.1 (2020-04-05)
 
