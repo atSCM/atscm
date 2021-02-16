@@ -1,4 +1,5 @@
 import { relative } from 'path';
+import { promises as fsp } from 'fs';
 import findPackages, { Project } from '@pnpm/find-workspace-packages';
 import TemplateFile from '@ls-age/update-section';
 import rootManifest from '../package.json';
@@ -68,7 +69,20 @@ async function updateReadme() {
   await readme.save();
 }
 
-updateReadme().catch((error) => {
-  process.exitCode = 1;
-  console.error(error);
-});
+async function updateIgnorefiles() {
+  const prettierignore = new TemplateFile('.prettierignore', {
+    commentPattern: { pattern: ['#', '#'] },
+  });
+  await prettierignore.updateSection(
+    'gitignore',
+    (await fsp.readFile('.gitignore', 'utf8')).trim()
+  );
+  await prettierignore.save();
+}
+
+updateReadme()
+  .then(updateIgnorefiles)
+  .catch((error) => {
+    process.exitCode = 1;
+    console.error(error);
+  });

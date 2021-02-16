@@ -1,16 +1,20 @@
+/* eslint-disable import/no-commonjs */
+/// <reference types="../../context" />
+
+//* start output
+
 const { Atviseproject } = require('atscm');
 
 /**
  * atscm configuration of {{name}}.
  */
-class {{pascalcase name}} extends Atviseproject {
-
+class __CONFIG_CLASS_NAME__ extends Atviseproject {
   /**
-   * The atvise-server's host
+   * The atvise-server's host.
    * @type {string}
    */
   static get host() {
-    return '{{atviseHost}}';
+    return __INIT__.atviseHost;
   }
 
   /**
@@ -21,25 +25,25 @@ class {{pascalcase name}} extends Atviseproject {
    */
   static get port() {
     return {
-      opc: {{atvisePortOpc}},
-      http: {{atvisePortHttp}},
+      opc: __INIT__.atvisePortOpc,
+      http: __INIT__.atvisePortHttp,
     };
   }
-  {{#if useLogin}}
+  //* {{#if useLogin}}
 
   /**
    * The login to use. Return `false` if no login is required.
-   * @type {Boolean|Object}
+   * @type {boolean|Object}
    * @property {string} username The username to log in with.
    * @property {string} password The password to log in with.
    */
   static get login() {
     return {
-      username: '{{atviseUser}}',
-      password: '{{atvisePassword}}',
+      username: __INIT__.atviseUser,
+      password: __INIT__.atvisePassword,
     };
   }
-  {{/if}}
+  //* {{/if}}
 
   /**
    * Remove `atv:refpx` and `atv:refpy` attributes from XML to minimize diffs between pulls.
@@ -50,4 +54,4 @@ class {{pascalcase name}} extends Atviseproject {
   }
 }
 
-module.exports = { default: {{pascalcase name}} };
+module.exports = { default: __CONFIG_CLASS_NAME__ };

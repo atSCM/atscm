@@ -1,13 +1,13 @@
 {
   "name": "{{name}}",
   "version": "0.1.0",
+  "private": true,
   "description": "{{description}}",
+  "license": "UNLICENSED",
+  "author": "{{{author}}}",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "{{{author}}}",
-  "license": "UNLICENSED",
-  "private": true,
   "devDependencies": {
     "atscm": "^{{modulePackage.version}}"
   }
