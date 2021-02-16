@@ -241,7 +241,10 @@ jobs:
           cleanup:
             - run:
                 name: Reset documentation changes
-                command: git checkout -- packages/atscm/docs/api/
+                command: |
+                  if git diff --exit-code; then
+                    git checkout -- packages/atscm/docs/api
+                  fi
       - atscm/release:
           package: create-atscm
 
