@@ -1,9 +1,10 @@
-<a name="1.4.1-beta.0"></a>
-## 1.4.1-beta.0 (2021-02-16)
+<a name="1.4.1-beta.1"></a>
+## 1.4.1-beta.1 (2021-02-16)
 
 
 ### Bug Fixes
 
+* **circleci:** Reset documentation changes after release ([8337142](https://github.com/atSCM/atscm/commits/8337142))
 * Test change ([ede3881](https://github.com/atSCM/atscm/commits/ede3881))
 
 
