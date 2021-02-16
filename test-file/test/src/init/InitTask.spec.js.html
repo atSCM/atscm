@@ -209,7 +209,7 @@ describe(&apos;InitTask&apos;, function () {
       const files = readdirSync(join(__dirname, &apos;../../../res/init/templates/general&apos;));
       const renamedFiles = files.map((f) =&gt; (f === &apos;gitignore&apos; ? &apos;.gitignore&apos; : f));
 
-      return InitTask.run({ configLang: &apos;es2015&apos; }).then(() =&gt; {
+      return InitTask.run({ configLang: &apos;es2015&apos;, name: &apos;test&apos; }).then(() =&gt; {
         expect(srcSpy.callCount, &apos;to be greater than&apos;, 0);
 
         const handled = srcSpy.args.map((args) =&gt; args[0]);
@@ -232,7 +232,7 @@ describe(&apos;InitTask&apos;, function () {
     it(&apos;should not escape author field in package.json (#52)&apos;, function () {
       const author = &apos;Sample name &lt;mail@example.com&gt;&apos;;
 
-      return InitTask.run({ configLang: &apos;es2015&apos;, author }).then(() =&gt; {
+      return InitTask.run({ configLang: &apos;es2015&apos;, author, name: &apos;test&apos; }).then(() =&gt; {
         expect(srcSpy.callCount, &apos;to be greater than&apos;, 0);
 
         const pkgOut = destSpy.args
@@ -248,7 +248,7 @@ describe(&apos;InitTask&apos;, function () {
       const files = readdirSync(join(__dirname, &apos;../../../res/init/templates/lang&apos;, configLang));
 
       it(`should handle ${configLang} files`, function () {
-        return InitTask.run({ configLang }).then(() =&gt; {
+        return InitTask.run({ configLang, name: &apos;test&apos; }).then(() =&gt; {
           const handled = srcSpy.args.map((args) =&gt; args[0].relative);
           const resulting = destSpy.args.map((args) =&gt; args[0].relative);
 

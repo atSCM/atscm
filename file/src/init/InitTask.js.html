@@ -159,10 +159,27 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { join } from &apos;path&apos;;
 import { src, dest } from &apos;gulp&apos;;
 import handlebars from &apos;gulp-compile-handlebars&apos;;
+import replace from &apos;gulp-replace&apos;;
 import helpers from &apos;handlebars-helpers&apos;;
 import streamToPromise from &apos;stream-to-promise&apos;;
 import through from &apos;through2&apos;;
+import camelCase from &apos;camelcase&apos;;
 import deps from &apos;../../res/init/templates/dependencies.json&apos;;
+
+/**
+ * Converts a string to pascal case.
+ * @param {string} str The string to convert.
+ */
+const pascalCase = (str) =&gt; camelCase(str, { pascalCase: true });
+
+/**
+ * Converts a value to a valid JavaScript literal.
+ * @param {any} value The value to convert.
+ */
+const toLiteral = (value) =&gt;
+  ({
+    string: `&apos;${value}&apos;`,
+  }[typeof value] || JSON.stringify(value));
 
 /**
  * The action run when running &quot;atscm init&quot;.
@@ -203,6 +220,10 @@ export default class InitTask {
     });
 
     const stream = src(this.filesToHandle(langId), { dot: true })
+      .pipe(replace(/[\s\S]*\/\/\* start output\s*/, &apos;&apos;))
+      .pipe(replace(&apos;__CONFIG_CLASS_NAME__&apos;, pascalCase(options.name)))
+      .pipe(replace(/\/\/\*\s?/g, &apos;&apos;))
+      .pipe(replace(/__INIT__.([a-z]+)/gi, (_, name) =&gt; toLiteral(options[name])))
       .pipe(renameGitignore)
       .pipe(
         handlebars(options, {
