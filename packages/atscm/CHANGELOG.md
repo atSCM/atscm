@@ -1,5 +1,16 @@
-<a name="1.4.0"></a>
-# 1.4.0 (2021-02-15)
+<a name="1.4.1"></a>
+## 1.4.1 (2021-02-16)
+
+
+### Bug Fixes
+
+* **atscm:** Format init template files ([#440](https://github.com/atSCM/atscm/issues/440)) ([e0c8521](https://github.com/atSCM/atscm/commits/e0c8521))
+
+
+
+
+<a name="atscm-v1.4.0"></a>
+# atscm-v1.4.0 (2021-02-15)
 
 
 ### Features
