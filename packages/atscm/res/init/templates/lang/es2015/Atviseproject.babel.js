@@ -5,7 +5,7 @@
 import { Atviseproject } from 'atscm';
 
 /**
- * atscm configuration of __INIT__.name....
+ * atscm configuration of {{name}}.
  */
 export default class __CONFIG_CLASS_NAME__ extends Atviseproject {
   /**

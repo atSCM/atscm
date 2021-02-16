@@ -6,7 +6,7 @@
 const { Atviseproject } = require('atscm');
 
 /**
- * atscm configuration of {{name}}....
+ * atscm configuration of {{name}}.
  */
 class __CONFIG_CLASS_NAME__ extends Atviseproject {
   /**
