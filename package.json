@@ -14,7 +14,7 @@
     "url": "https://github.com/atSCM/atscm/issues"
   },
   "scripts": {
-    "format": "prettier --ignore-path .gitignore . \"!**/{CHANGELOG.md,pnpm-lock.yaml}\" \"!packages/atscm/res/**/*\" \"!packages/atscm/types/node-opcua/constants.d.ts\"",
+    "format": "prettier --ignore-path .gitignore . \"!**/{CHANGELOG.md,pnpm-lock.yaml}\" \"!packages/atscm/types/node-opcua/constants.d.ts\"",
     "lint": "eslint --ignore-path .gitignore . --ext .js,.ts",
     "preinstall": "node ./scripts/pnpm-only.js",
     "test": "echo \"Error: no test specified\" && exit 1",
