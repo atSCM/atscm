@@ -119,7 +119,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/AlarmConfigTransformer.ts~LintTransformer.html">LintTransformer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.ts~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Newlines.js~NewlinesTransformer.html">NewlinesTransformer</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef">typedef</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeStream.BrowseResult">NodeStream.BrowseResult</a></span></span></li>
@@ -447,7 +446,7 @@ describe(&apos;AtviseFile&apos;, function () {
     ].forEach((t) =&gt; testDecoderForDataType(...t));
 
     it(&apos;should forward binary buffer for ByteString&apos;, function () {
-      const buffer = new Buffer(&apos;test&apos;);
+      const buffer = Buffer.from(&apos;test&apos;);
       expect(
         AtviseFile.decodeValue(buffer, DataType.ByteString, VariantArrayType.Scalar),
         &apos;to equal&apos;,
@@ -467,7 +466,7 @@ describe(&apos;AtviseFile&apos;, function () {
     context(&apos;with an array passed&apos;, function () {
       it(&apos;should JSON decode standard values&apos;, function () {
         const value = [&apos;&lt;xml /&gt;&apos;, &apos;&lt;xml /&gt;&apos;];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.XmlElement, VariantArrayType.Array),
           &apos;to equal&apos;,
@@ -477,7 +476,7 @@ describe(&apos;AtviseFile&apos;, function () {
 
       it(&apos;should JSON decode special encoded values&apos;, function () {
         const value = [[0, 1]];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.UInt64, VariantArrayType.Array),
           &apos;to equal&apos;,
@@ -487,7 +486,7 @@ describe(&apos;AtviseFile&apos;, function () {
 
       it(&apos;should JSON decode null values&apos;, function () {
         const value = [null];
-        const buffer = new Buffer(JSON.stringify(value));
+        const buffer = Buffer.from(JSON.stringify(value));
         expect(
           AtviseFile.decodeValue(buffer, DataType.String, VariantArrayType.Array),
           &apos;to equal&apos;,
@@ -808,7 +807,7 @@ describe(&apos;AtviseFile&apos;, function () {
 
   /** @test {AtivseFile#value} */
   describe(&apos;#value&apos;, function () {
-    const val = new Buffer(&apos;test&apos;);
+    const val = Buffer.from(&apos;test&apos;);
 
     before(() =&gt; {
       stub(AtviseFile, &apos;decodeValue&apos;).callsFake(() =&gt; true);

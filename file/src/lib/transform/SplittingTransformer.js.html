@@ -119,7 +119,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/AlarmConfigTransformer.ts~LintTransformer.html">LintTransformer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.ts~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Newlines.js~NewlinesTransformer.html">NewlinesTransformer</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef">typedef</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeStream.BrowseResult">NodeStream.BrowseResult</a></span></span></li>
@@ -225,9 +224,10 @@ export default class SplittingTransformer extends PartialTransformer {
    * @abstract
    * @param {BrowsedNode} node The container node.
    * @param {Map&lt;string, BrowsedNode&gt;} sourceNodes The source nodes.
+   * @param {any} context The current context.
    */
   // eslint-disable-next-line no-unused-vars
-  combineNodes(node, sourceNodes) {
+  combineNodes(node, sourceNodes, context) {
     throw new Error(&apos;Must be implemented by all subclasses&apos;);
   }
 
@@ -236,9 +236,10 @@ export default class SplittingTransformer extends PartialTransformer {
    * {@link SplittingTransformer#combineNodes}.
    * @param {BrowsedNode} node The container node.
    * @param {{ [extension: string]: BrowedNode }} sourceNodes The source nodes.
+   * @param {any} context The current context.
    */
-  _combineNodes(node, sourceNodes) {
-    this.combineNodes(node, sourceNodes);
+  _combineNodes(node, sourceNodes, context) {
+    this.combineNodes(node, sourceNodes, context);
     node.renameTo(basename(node.name, this.constructor.extension));
   }
 
@@ -302,7 +303,8 @@ export default class SplittingTransformer extends PartialTransformer {
             [extname(n.fileName)]: n,
           }),
         {}
-      )
+      ),
+      context
     );
   }
 }

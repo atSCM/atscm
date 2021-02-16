@@ -552,7 +552,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer#shouldbetransformed src/transform/displaytransformer.ts~displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
+    "displaytransformer#shouldbetransformed displaytransformer#shouldbetransformed,displaytransformer#shouldbetransformed",
     "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber14",
     "#shouldBeTransformed",
     "test"
@@ -606,7 +606,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer#transformfromdb src/transform/displaytransformer.ts~displaytransformer#transformfromdb,displaytransformer#transformfromdb",
+    "displaytransformer#transformfromdb displaytransformer#transformfromdb,displaytransformer#transformfromdb",
     "test-file/test/src/transform/DisplayTransformer.spec.js.html#lineNumber21",
     "#transformFromDB",
     "test"
@@ -1072,12 +1072,6 @@ window.esdocSearchIndex = [
     "variable/index.html#static-variable-DataTypeForExtension",
     "<span>DataTypeForExtension</span> <span class=\"search-result-import-path\">atscm/src/lib/server/AtviseFile.js</span>",
     "variable"
-  ],
-  [
-    "atscm/src/transform/displaytransformer.ts~displaytransformer",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html",
-    "<span>DisplayTransformer</span> <span class=\"search-result-import-path\">atscm/src/transform/DisplayTransformer.ts</span>",
-    "class"
   ],
   [
     "atscm/src/lib/server/atvisefile.js~extensionfordatatype",
@@ -4506,7 +4500,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "displaytransformer src/transform/displaytransformer.ts~displaytransformer,displaytransformer",
+    "displaytransformer displaytransformer,displaytransformer",
     "test-file/test/src/index.spec.js.html#lineNumber43",
     "atscm module should export DisplayTransformer class",
     "test"
@@ -5562,6 +5556,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/lib/gulp/src.ts~sourcebrowser#_atserverversion",
+    "class/src/lib/gulp/src.ts~SourceBrowser.html#instance-member-_atserverVersion",
+    "src/lib/gulp/src.ts~SourceBrowser#_atserverVersion",
+    "member"
+  ],
+  [
     "src/lib/gulp/src.ts~sourcebrowser#_dependingon",
     "class/src/lib/gulp/src.ts~SourceBrowser.html#instance-member-_dependingOn",
     "src/lib/gulp/src.ts~SourceBrowser#_dependingOn",
@@ -5619,6 +5619,12 @@ window.esdocSearchIndex = [
     "src/lib/gulp/src.ts~sourcebrowser#_reject",
     "class/src/lib/gulp/src.ts~SourceBrowser.html#instance-member-_reject",
     "src/lib/gulp/src.ts~SourceBrowser#_reject",
+    "member"
+  ],
+  [
+    "src/lib/gulp/src.ts~sourcebrowser#atserverversion",
+    "class/src/lib/gulp/src.ts~SourceBrowser.html#instance-get-atserverVersion",
+    "src/lib/gulp/src.ts~SourceBrowser#atserverVersion",
     "member"
   ],
   [
@@ -5859,6 +5865,12 @@ window.esdocSearchIndex = [
     "src/lib/model/node.ts~node#isdisplay",
     "class/src/lib/model/Node.ts~Node.html#instance-get-isDisplay",
     "src/lib/model/Node.ts~Node#isDisplay",
+    "member"
+  ],
+  [
+    "src/lib/model/node.ts~node#isdisplayscript",
+    "class/src/lib/model/Node.ts~Node.html#instance-get-isDisplayScript",
+    "src/lib/model/Node.ts~Node#isDisplayScript",
     "member"
   ],
   [
@@ -7336,48 +7348,6 @@ window.esdocSearchIndex = [
     "class/src/transform/AlarmConfigTransformer.ts~LintTransformer.html#instance-method-transformFromFilesystem",
     "src/transform/AlarmConfigTransformer.ts~LintTransformer#transformFromFilesystem",
     "method"
-  ],
-  [
-    "src/transform/displaytransformer.ts",
-    "file/src/transform/DisplayTransformer.ts.html",
-    "src/transform/DisplayTransformer.ts",
-    "file"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer#combinenodes",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-combineNodes",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer#combineNodes",
-    "method"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer#shouldbetransformed",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-shouldBeTransformed",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer#shouldBeTransformed",
-    "method"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer#transformfromdb",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#instance-method-transformFromDB",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer#transformFromDB",
-    "method"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer.extension",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-extension",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer.extension",
-    "member"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer.scriptsourceextension",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-scriptSourceExtension",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer.scriptSourceExtension",
-    "member"
-  ],
-  [
-    "src/transform/displaytransformer.ts~displaytransformer.sourceextensions",
-    "class/src/transform/DisplayTransformer.ts~DisplayTransformer.html#static-get-sourceExtensions",
-    "src/transform/DisplayTransformer.ts~DisplayTransformer.sourceExtensions",
-    "member"
   ],
   [
     "src/transform/mapping.js",

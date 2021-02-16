@@ -119,7 +119,6 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-push">push</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-watch">watch</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#transform">transform</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/AlarmConfigTransformer.ts~LintTransformer.html">LintTransformer</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/DisplayTransformer.ts~DisplayTransformer.html">DisplayTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Mapping.js~MappingTransformer.html">MappingTransformer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/transform/Newlines.js~NewlinesTransformer.html">NewlinesTransformer</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#typedef">typedef</a><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeStream.BrowseResult">NodeStream.BrowseResult</a></span></span></li>
@@ -164,6 +163,7 @@ import DisplayTransformer from &apos;../../transform/DisplayTransformer&apos;;
 import {
   ServerscriptTransformer,
   QuickDynamicTransformer,
+  DisplayScriptTransformer,
 } from &apos;../../transform/ScriptTransformer&apos;;
 import MappingTransformer from &apos;../../transform/Mapping&apos;;
 import AlarmConfigTransformer from &apos;../../transform/AlarmConfigTransformer&apos;;
@@ -231,6 +231,7 @@ export default class Atviseproject {
       new DisplayTransformer(this.xmlTransformerOptions),
       new ServerscriptTransformer(this.xmlTransformerOptions),
       new QuickDynamicTransformer(this.xmlTransformerOptions),
+      new DisplayScriptTransformer(this.xmlTransformerOptions),
       new MappingTransformer() as any,
     ];
   }
