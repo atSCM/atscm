@@ -1,0 +1,22 @@
+# BEGIN gitignore #
+# This section is generated, do not edit it! #
+# General
+.nyc_output
+.eslintcache
+coverage
+coverage.lcov
+node_modules
+out
+
+# Package-specific
+packages/atscm/atscm/rename.json
+packages/atscm/docs/api
+packages/atscm/test/tmp
+# END gitignore #
+
+# Generated files
+CHANGELOG.md
+pnpm-lock.yaml
+
+# Large, external files
+packages/atscm/types/node-opcua/constants.d.ts
