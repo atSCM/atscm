@@ -1,10 +1,18 @@
 import { join } from 'path';
 import { src, dest } from 'gulp';
 import handlebars from 'gulp-compile-handlebars';
+import replace from 'gulp-replace';
 import helpers from 'handlebars-helpers';
 import streamToPromise from 'stream-to-promise';
 import through from 'through2';
+import camelCase from 'camelcase';
 import deps from '../../res/init/templates/dependencies.json';
+
+const pascalCase = (str) => camelCase(str, { pascalCase: true });
+const toLiteral = (value) =>
+  ({
+    string: `'${value}'`,
+  }[typeof value] || JSON.stringify(value));
 
 /**
  * The action run when running "atscm init".
@@ -45,6 +53,10 @@ export default class InitTask {
     });
 
     const stream = src(this.filesToHandle(langId), { dot: true })
+      .pipe(replace(/[\s\S]*\/\/\* start output\s*/, ''))
+      .pipe(replace('__CONFIG_CLASS_NAME__', pascalCase(options.name)))
+      .pipe(replace(/\/\/\*\s?/g, ''))
+      .pipe(replace(/__INIT__.([a-z]+)/gi, (_, name) => toLiteral(options[name])))
       .pipe(renameGitignore)
       .pipe(
         handlebars(options, {

@@ -15,7 +15,7 @@
   },
   "scripts": {
     "format": "prettier --ignore-path .gitignore . \"!**/{CHANGELOG.md,pnpm-lock.yaml}\" \"!packages/atscm/res/**/*\" \"!packages/atscm/types/node-opcua/constants.d.ts\"",
-    "lint": "eslint --ignore-path .gitignore . --ignore-pattern \"packages/atscm/res/**/*\"  --ext .js,.ts",
+    "lint": "eslint --ignore-path .gitignore . --ext .js,.ts",
     "preinstall": "node ./scripts/pnpm-only.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update-monorepo": "sucrase-node scripts/update-monorepo.ts"

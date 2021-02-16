@@ -1,16 +1,19 @@
+/// <reference types="../../context" />
+
+//* start output
+
 import { Atviseproject } from 'atscm';
 
 /**
- * atscm configuration of {{name}}.
+ * atscm configuration of __INIT__.name....
  */
-export default class {{pascalcase name}} extends Atviseproject {
-
+export default class __CONFIG_CLASS_NAME__ extends Atviseproject {
   /**
-   * The atvise-server's host
+   * The atvise-server's host.
    * @type {string}
    */
   static get host() {
-    return '{{atviseHost}}';
+    return __INIT__.atviseHost;
   }
 
   /**
@@ -21,11 +24,11 @@ export default class {{pascalcase name}} extends Atviseproject {
    */
   static get port() {
     return {
-      opc: {{atvisePortOpc}},
-      http: {{atvisePortHttp}},
+      opc: __INIT__.atvisePortOpc,
+      http: __INIT__.atvisePortHttp,
     };
   }
-  {{#if useLogin}}
+  //* {{#if useLogin}}
 
   /**
    * The login to use. Return `false` if no login is required.
@@ -35,11 +38,11 @@ export default class {{pascalcase name}} extends Atviseproject {
    */
   static get login() {
     return {
-      username: '{{atviseUser}}',
-      password: '{{atvisePassword}}',
+      username: __INIT__.atviseUser,
+      password: __INIT__.atvisePassword,
     };
   }
-  {{/if}}
+  //* {{/if}}
 
   /**
    * Remove `atv:refpx` and `atv:refpy` attributes from XML to minimize diffs between pulls.
