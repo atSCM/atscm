@@ -8,7 +8,16 @@ import through from 'through2';
 import camelCase from 'camelcase';
 import deps from '../../res/init/templates/dependencies.json';
 
+/**
+ * Converts a string to pascal case.
+ * @param {string} str The string to convert.
+ */
 const pascalCase = (str) => camelCase(str, { pascalCase: true });
+
+/**
+ * Converts a value to a valid JavaScript literal.
+ * @param {any} value The value to convert.
+ */
 const toLiteral = (value) =>
   ({
     string: `'${value}'`,
