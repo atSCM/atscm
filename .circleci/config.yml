@@ -29,6 +29,9 @@ orbs:
           flags:
             type: string
             default: ''
+          cleanup:
+            type: steps
+            default: []
         steps:
           - run:
               name: Bump version
@@ -38,6 +41,10 @@ orbs:
                   --dir packages/<< parameters.package >> \
                   << parameters.flags >> \
                   --gh-token $RELEASE_GITHUB_TOKEN
+          - steps: << parameters.cleanup >>
+          - run:
+              name: Checkout release branch
+              command: git checkout $CIRCLE_BRANCH
       run-integration-tests:
         parameters:
           atserver:
@@ -231,6 +238,10 @@ jobs:
       - atscm/release:
           package: atscm
           flags: --release-files packages/atscm/out packages/atscm/docs/api
+          cleanup:
+            - run:
+                name: Reset documentation changes
+                command: git checkout -- packages/atscm/docs/api/
       - atscm/release:
           package: create-atscm
 
