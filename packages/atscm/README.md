@@ -65,3 +65,4 @@ After running `atscm watch` files and atvise server nodes are watched for change
 ## Project configuration
 
 An atscm project's configuration is stored inside the _Atviseproject_ file inside your project root. See the [Atviseproject class reference](https://atscm.github.io/atscm/class/src/lib/config/Atviseproject.js~Atviseproject.html) for available options.
+---
