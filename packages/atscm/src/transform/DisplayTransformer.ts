@@ -134,7 +134,7 @@ export default class DisplayTransformer extends XMLTransformer {
             `'${node.id.value}' contains multiple inline scripts.`
           );
           document.childNodes.push(inlineScript);
-        } else {
+        } else if (textContent(script)) {
           // Inline script
           config.scripts.push({
             type: 'inline',
