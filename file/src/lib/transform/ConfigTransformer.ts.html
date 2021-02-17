@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">test/src/lib/gulp/ImportStream.spec.js | atscm</title>
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/lib/transform/ConfigTransformer.ts | atscm</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -156,136 +156,52 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">test/src/lib/gulp/ImportStream.spec.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { join, sep as separator } from &apos;path&apos;;
-import { DataType, NodeId } from &apos;node-opcua&apos;;
-import { src } from &apos;gulp&apos;;
-import { obj as createTransformStream } from &apos;through2&apos;;
-import replace from &apos;buffer-replace&apos;;
-import expect from &apos;../../../expect&apos;;
-import ImportStream from &apos;../../../../src/lib/gulp/ImportStream&apos;;
-import Session from &apos;../../../../src/lib/server/Session&apos;;
+<div class="content" data-ice="content"><h1 data-ice="title">src/lib/transform/ConfigTransformer.ts</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { DataType, VariantArrayType } from &apos;node-opcua/lib/datamodel/variant&apos;;
+import XMLTransformer from &apos;./XMLTransformer&apos;;
 
-/** @test {ImportStream} */
-describe(&apos;ImportStream&apos;, function () {
-  /** @test {ImportStream#methodId} */
-  describe(&apos;#methodId&apos;, function () {
-    it(&apos;should return importNodes method id&apos;, function () {
-      expect(
-        ImportStream.prototype.methodId.toString(),
-        &apos;to equal&apos;,
-        &apos;ns=1;s=AGENT.OPCUA.METHODS.importNodes&apos;
-      );
-    });
-  });
+export default class ConfigTransformer&lt;C = Record&lt;string, unknown&gt;&gt; extends XMLTransformer {
+  /**
+   * Returns an object containing all non-empty properties of the input object. Returns null if no
+   * properties are non-empty.
+   * @param input The config to process.
+   */
+  protected nonEmptyConfig(input: C) {
+    let result: C | null = null;
 
-  /** @test {ImportStream#inputArguments} */
-  describe(&apos;#inputArguments&apos;, function () {
-    it(&apos;should contain global scope argument&apos;, function () {
-      const [scope] = ImportStream.prototype.inputArguments({});
+    for (const [key, value] of Object.entries(input)) {
+      if (Array.isArray(value) ? value.length &gt; 0 : value !== undefined) {
+        result = result || ({} as C);
+        result[key] = value;
+      }
+    }
 
-      expect(scope.value, &apos;to be a&apos;, NodeId);
-      expect(scope.value.namespace, &apos;to equal&apos;, 0);
-      expect(scope.value.value, &apos;to equal&apos;, 0);
-    });
+    return result;
+  }
 
-    it(&apos;should contain file contents&apos;, function () {
-      const contents = &apos;test&apos;;
-      const fileArg = ImportStream.prototype.inputArguments({ contents })[1];
+  /**
+   * Writes the config file to disk if needed.
+   * @param config The config to write.
+   * @param node The original source node.
+   * @param context The current transformer context.
+   * @return `true` it the config was actually written.
+   */
+  protected writeConfigFile(config: C, node, context) {
+    const processed = this.nonEmptyConfig(config);
 
-      expect(fileArg.value, &apos;to equal&apos;, contents);
-      expect(fileArg.dataType, &apos;to equal&apos;, DataType.XmlElement);
-    });
-  });
+    if (processed) {
+      const configFile = (this.constructor as typeof XMLTransformer).splitFile(node, &apos;.json&apos;);
+      configFile.value = {
+        dataType: DataType.String,
+        arrayType: VariantArrayType.Scalar,
+        value: JSON.stringify(config, null, &apos;  &apos;),
+      };
+      context.addNode(configFile);
+    }
 
-  /** @test {ImportStream#processErrorMessage} */
-  describe(&apos;#processErrorMessage&apos;, function () {
-    it(&apos;should prefix file path&apos;, function () {
-      const path = &apos;TestPath&apos;;
-
-      return expect(
-        ImportStream.prototype.processErrorMessage,
-        &apos;when called with&apos;,
-        [{ path }],
-        &apos;to begin with&apos;,
-        &apos;Error importing file&apos;
-      );
-    });
-
-    it(&apos;should print path relative to project directory&apos;, function () {
-      const relative = [&apos;path&apos;, &apos;to&apos;, &apos;file&apos;].join(separator);
-
-      return expect(
-        ImportStream.prototype.processErrorMessage,
-        &apos;when called with&apos;,
-        [{ relative }],
-        &apos;to end with&apos;,
-        relative
-      );
-    });
-  });
-
-  /** @test {ImportStream#handleOutputArguments} */
-  describe(&apos;#handleOutputArguments&apos;, function () {
-    it(&apos;should error if import failed&apos;, function () {
-      return expect(
-        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: false }], cb),
-        &apos;to call the callback with error&apos;,
-        &apos;Import failed&apos;
-      );
-    });
-
-    it(&apos;should error without status&apos;, function () {
-      return expect(
-        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, undefined, cb),
-        &apos;to call the callback with error&apos;,
-        &apos;Import failed&apos;
-      );
-    });
-
-    it(&apos;should not error if import succeeded&apos;, function () {
-      return expect(
-        (cb) =&gt; ImportStream.prototype.handleOutputArguments({}, [{ value: true }], cb),
-        &apos;to call the callback without error&apos;
-      );
-    });
-  });
-
-  /** @test {ImportStream#processChunk} */
-  describe(&apos;#processChunk&apos;, function () {
-    it(&apos;should create new nodes on success&apos;, async function () {
-      const nodeName = `TestNode-${Date.now()}`;
-      const fixturePath = join(__dirname, &apos;../../../fixtures/TestImport.xml&apos;);
-      const replaceStream = createTransformStream((file, enc, callback) =&gt; {
-        callback(
-          null,
-          Object.assign(file, {
-            contents: replace(file.contents, &apos;TestNode&apos;, nodeName),
-          })
-        );
-      });
-      const importStream = new ImportStream();
-
-      // eslint-disable-next-line no-console
-      console.log(`Importing test node: ${nodeName}`);
-
-      await expect(
-        src(fixturePath).pipe(replaceStream).pipe(importStream),
-        &apos;to yield objects satisfying&apos;,
-        []
-      );
-
-      const session = await Session.create();
-
-      const [value] = await expect(
-        (cb) =&gt; session.readVariableValue([`ns=1;s=AGENT.OBJECTS.${nodeName}`], cb),
-        &apos;to call the callback without error&apos;
-      );
-
-      return expect(value[0].value.value, &apos;to equal&apos;, 13);
-    });
-  });
-});
+    return !!processed;
+  }
+}
 </code></pre>
 
 </div>

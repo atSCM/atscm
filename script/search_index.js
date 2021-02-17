@@ -1062,6 +1062,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "atscm/src/lib/transform/configtransformer.ts~configtransformer",
+    "class/src/lib/transform/ConfigTransformer.ts~ConfigTransformer.html",
+    "<span>ConfigTransformer</span> <span class=\"search-result-import-path\">atscm/src/lib/transform/ConfigTransformer.ts</span>",
+    "class"
+  ],
+  [
     "atscm/src/lib/server/createnodestream.js~createnodestream",
     "class/src/lib/server/CreateNodeStream.js~CreateNodeStream.html",
     "<span>CreateNodeStream</span> <span class=\"search-result-import-path\">atscm/src/lib/server/CreateNodeStream.js</span>",
@@ -7042,6 +7048,24 @@ window.esdocSearchIndex = [
     "file/src/lib/server/scripts/version.js.html",
     "src/lib/server/scripts/version.js",
     "file"
+  ],
+  [
+    "src/lib/transform/configtransformer.ts",
+    "file/src/lib/transform/ConfigTransformer.ts.html",
+    "src/lib/transform/ConfigTransformer.ts",
+    "file"
+  ],
+  [
+    "src/lib/transform/configtransformer.ts~configtransformer#nonemptyconfig",
+    "class/src/lib/transform/ConfigTransformer.ts~ConfigTransformer.html#instance-method-nonEmptyConfig",
+    "src/lib/transform/ConfigTransformer.ts~ConfigTransformer#nonEmptyConfig",
+    "method"
+  ],
+  [
+    "src/lib/transform/configtransformer.ts~configtransformer#writeconfigfile",
+    "class/src/lib/transform/ConfigTransformer.ts~ConfigTransformer.html#instance-method-writeConfigFile",
+    "src/lib/transform/ConfigTransformer.ts~ConfigTransformer#writeConfigFile",
+    "method"
   ],
   [
     "src/lib/transform/partialtransformer.js",
