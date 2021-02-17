@@ -13,7 +13,7 @@ import {
   attributeValues,
   AttributeValues,
 } from 'modify-xml';
-import XMLTransformer from '../lib/transform/XMLTransformer';
+import ConfigTransformer from '../lib/transform/ConfigTransformer';
 import type SplittingTransformer from '../lib/transform/SplittingTransformer';
 import type { ServerscriptConfig } from '../../types/schemas/serverscript-config';
 
@@ -21,7 +21,7 @@ import type { ServerscriptConfig } from '../../types/schemas/serverscript-config
  * A transformer that splits atvise scripts and quick dynamics into a code file and a .json file
  * containing parameters and metadata.
  */
-export class AtviseScriptTransformer extends XMLTransformer {
+export class AtviseScriptTransformer extends ConfigTransformer<ServerscriptConfig> {
   /**
    * The source file extension to allow for scripts.
    */
@@ -75,11 +75,14 @@ export class AtviseScriptTransformer extends XMLTransformer {
           config.description = textContent(child) ?? undefined;
           break;
         default: {
+          const value = textContent(child)!;
+
+          // Priority 0 is added to all display scripts by default (atserver 3.5)
+          if (child.name === 'priority' && value.trim() === '0') break;
+
           if (!config.metadata) {
             config.metadata = {};
           }
-
-          const value = textContent(child)!;
 
           if (config.metadata[child.name]) {
             const soFar = config.metadata[child.name];
@@ -92,7 +95,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
             config.metadata[child.name] = value;
           }
 
-          if (!['longrunning'].includes(child.name)) {
+          if (!['longrunning', 'priority'].includes(child.name)) {
             Logger.debug(`Generic metadata element '${child.name}'`); // FIXME:  at ${node.nodeId}
           }
           break;
@@ -180,13 +183,7 @@ export class AtviseScriptTransformer extends XMLTransformer {
     };
 
     // Write config file
-    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
-    configFile.value = {
-      dataType: DataType.String,
-      arrayType: VariantArrayType.Scalar,
-      value: JSON.stringify(config, null, '  '),
-    };
-    context.addNode(configFile);
+    this.writeConfigFile(config, node, context);
 
     // Write JavaScript file
     const codeNode = findChild(document, 'code');

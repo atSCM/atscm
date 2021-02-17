@@ -13,7 +13,7 @@ import {
   AttributeValues,
 } from 'modify-xml';
 import { gte } from 'semver';
-import XMLTransformer from '../lib/transform/XMLTransformer';
+import ConfigTransformer from '../lib/transform/ConfigTransformer';
 import type { DisplayConfig } from '../../types/schemas/display-config';
 import { BrowsedNode } from '../lib/server/NodeBrowser';
 import { SplittingTransformer } from '..';
@@ -24,7 +24,7 @@ const rootMetaTags = [{ tag: 'title' }, { tag: 'desc', key: 'description' }];
  * Splits read atvise display XML nodes into their SVG and JavaScript sources,
  * alongside with a .json file containing the display's parameters.
  */
-export default class DisplayTransformer extends XMLTransformer {
+export default class DisplayTransformer extends ConfigTransformer<DisplayConfig> {
   /**
    * The extension to add to display container node names when they are pulled.
    * @type {string}
@@ -189,13 +189,7 @@ export default class DisplayTransformer extends XMLTransformer {
     if (!config.scripts.length) delete config.scripts;
 
     // Write files
-    const configFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.json');
-    configFile.value = {
-      dataType: DataType.String,
-      arrayType: VariantArrayType.Scalar,
-      value: JSON.stringify(config, null, '  '),
-    };
-    context.addNode(configFile);
+    this.writeConfigFile(config, node, context);
 
     const svgFile = (this.constructor as typeof SplittingTransformer).splitFile(node, '.svg');
     svgFile.value = {
