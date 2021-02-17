@@ -44,7 +44,7 @@ orbs:
           - steps: << parameters.cleanup >>
           - run:
               name: Checkout release branch
-              command: git checkout $CIRCLE_BRANCH
+              command: git checkout -f $CIRCLE_BRANCH
       run-integration-tests:
         parameters:
           atserver:
@@ -238,16 +238,6 @@ jobs:
       - atscm/release:
           package: atscm
           flags: --release-files packages/atscm/out packages/atscm/docs/api
-          cleanup:
-            - run:
-                name: Reset documentation changes
-                command: |
-                  if git diff --exit-code; then
-                    echo "These files have changes after deploment"
-                    git status
-
-                    git checkout -- .
-                  fi
       - atscm/release:
           package: create-atscm
 
