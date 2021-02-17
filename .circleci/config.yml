@@ -243,7 +243,10 @@ jobs:
                 name: Reset documentation changes
                 command: |
                   if git diff --exit-code; then
-                    git checkout -- packages/atscm/docs/api
+                    echo "These files have changes after deploment"
+                    git status
+
+                    git checkout -- .
                   fi
       - atscm/release:
           package: create-atscm
