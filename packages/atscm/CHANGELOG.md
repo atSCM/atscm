@@ -1,5 +1,16 @@
-<a name="1.4.2"></a>
-## 1.4.2 (2021-02-17)
+<a name="1.5.0"></a>
+# 1.5.0 (2021-02-17)
+
+
+### Features
+
+* **pull:** Create config files only if necessary ([#448](https://github.com/atSCM/atscm/issues/448)) ([90aed75](https://github.com/atSCM/atscm/commits/90aed75))
+
+
+
+
+<a name="atscm-v1.4.2"></a>
+# atscm-v1.4.2 (2021-02-17)
 
 
 ### Bug Fixes
