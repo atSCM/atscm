@@ -235,6 +235,10 @@ export class AtviseScriptTransformer extends ConfigTransformer<ServerscriptConfi
     // Insert metadata
     const meta = [];
 
+    if ((node.isDisplayScript || node.isScript) && !config.metadata?.priority) {
+      meta.push(createElement('priority', [createTextNode('0')]));
+    }
+
     if (node.isQuickDynamic) {
       // - Icon
       if (config.icon) {
