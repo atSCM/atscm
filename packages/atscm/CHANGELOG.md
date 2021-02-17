@@ -1,5 +1,16 @@
-<a name="1.4.1"></a>
-## 1.4.1 (2021-02-16)
+<a name="1.4.2"></a>
+## 1.4.2 (2021-02-17)
+
+
+### Bug Fixes
+
+* **pull:** Do not pull empty display scripts ([#447](https://github.com/atSCM/atscm/issues/447)) ([9fbaba1](https://github.com/atSCM/atscm/commits/9fbaba1))
+
+
+
+
+<a name="atscm-v1.4.1"></a>
+# atscm-v1.4.1 (2021-02-16)
 
 
 ### Bug Fixes
