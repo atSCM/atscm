@@ -1,5 +1,16 @@
-<a name="1.5.0"></a>
-# 1.5.0 (2021-02-17)
+<a name="1.5.1"></a>
+## 1.5.1 (2021-02-19)
+
+
+### Bug Fixes
+
+* **atscm:** Add missing init dependency ([#449](https://github.com/atSCM/atscm/issues/449)) ([4ac28ba](https://github.com/atSCM/atscm/commits/4ac28ba))
+
+
+
+
+<a name="atscm-v1.5.0"></a>
+# atscm-v1.5.0 (2021-02-17)
 
 
 ### Features
