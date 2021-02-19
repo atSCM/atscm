@@ -10,8 +10,8 @@
     "node": ">=10.0"
   },
   "scripts": {
-    "compile": "babel src --out-dir out --source-maps",
-    "compile:watch": "npm run compile -- --watch",
+    "build": "babel src --out-dir out --source-maps",
+    "dev": "npm run compile -- --watch",
     "docs": "esdoc -c esdoc.json",
     "docs:coverage": "esdoc-coverage -c esdoc.json",
     "format": "prettier --ignore-path .gitignore \"**/*\" \"!{{.git,.npm}ignore,CHANGELOG.md}\"",
