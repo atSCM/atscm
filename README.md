@@ -69,6 +69,12 @@ This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/works
   >
   > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/atscm#readme) · [npm](https://www.npmjs.com/package/atscm)
 
+- [atscm-cli](./packages/atscm-cli) atSCM command line interface
+
+  > ![npm](https://img.shields.io/npm/v/atscm-cli?logo=npm)
+  >
+  > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/atscm-cli#readme) · [npm](https://www.npmjs.com/package/atscm-cli)
+
 - [create-atscm](./packages/create-atscm) Create a new atscm project with `npm init`
 
   > ![npm](https://img.shields.io/npm/v/create-atscm?logo=npm)
