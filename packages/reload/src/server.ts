@@ -64,4 +64,6 @@ export async function startServer({ target, port = 3000, path = '__reload__', lo
   };
 }
 
-export type ReloadServer = ReturnType<typeof startServer>;
+type PromiseResultType<F> = F extends Promise<infer R> ? R : never;
+
+export type ReloadServer = PromiseResultType<ReturnType<typeof startServer>>;
