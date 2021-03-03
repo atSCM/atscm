@@ -67,21 +67,21 @@ describe('WatchTask', function () {
   /** @test {WatchTask#constructor} */
   describe('#constructor', function () {
     it('should create a new browser-sync instance', function () {
-      expect(new WatchTask().browserSyncInstance, 'to be defined');
+      expect(new WatchTask({}).browserSyncInstance, 'to be defined');
     });
   });
 
   /** @test {WatchTask#_waitForWatcher} */
   describe('#_waitForWatcher', function () {
     it('should be rejected on error', function () {
-      const task = new WatchTask();
+      const task = new WatchTask({});
       const fakeWatcher = new TestEmitter('error', new Error('Test error'));
 
       return expect(task._waitForWatcher(fakeWatcher), 'to be rejected with', 'Test error');
     });
 
     it('should be fulfilled on ready', function () {
-      const task = new WatchTask();
+      const task = new WatchTask({});
       const fakeWatcher = new TestEmitter('ready');
 
       return expect(task._waitForWatcher(fakeWatcher), 'to be fulfilled');
@@ -97,7 +97,7 @@ describe('WatchTask', function () {
         }
       }
 
-      const task = new FailingTask();
+      const task = new FailingTask({});
 
       return expect(task.startFileWatcher(), 'to be rejected with', /does not exist/);
     });
@@ -109,7 +109,7 @@ describe('WatchTask', function () {
         }
       }
 
-      const task = new FailingTask();
+      const task = new FailingTask({});
 
       return expect(
         task.startFileWatcher(),
@@ -119,7 +119,7 @@ describe('WatchTask', function () {
     });
 
     it('should call #_waitForWatcher', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       spy(task, '_waitForWatcher');
 
       return expect(task.startFileWatcher(), 'to be fulfilled').then(() =>
@@ -131,7 +131,7 @@ describe('WatchTask', function () {
   /** @test {WatchTask#startServerWatcher} */
   describe('#startServerWatcher', function () {
     it('should call #_waitForWatcher', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       spy(task, '_waitForWatcher');
 
       return expect(task.startServerWatcher(), 'to be fulfilled').then(() =>
@@ -143,7 +143,7 @@ describe('WatchTask', function () {
   /** @test {WatchTask#initBrowserSync} */
   describe('#initBrowserSync', function () {
     it('should call BrowserSync#init', function () {
-      const task = new WatchTask();
+      const task = new WatchTask({});
       stub(task.browserSyncInstance, 'init').returns(true);
 
       task.initBrowserSync();
@@ -154,7 +154,7 @@ describe('WatchTask', function () {
   /** @test {WatchTask#handleFileChange} */
   describe('#handleFileChange', function () {
     it.skip('should not do anything when lately pulled files change', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
 
       return expect(
         task.handleFileChange('./path.file', './src', { mtime: new Date(-10000) }),
@@ -164,7 +164,7 @@ describe('WatchTask', function () {
     });
 
     it('should not do anything while pulling', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       task._handlingChange = true;
 
       return expect(
@@ -175,7 +175,7 @@ describe('WatchTask', function () {
     });
 
     it.skip('should push changed files', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
 
       return expect(
         task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
@@ -185,7 +185,7 @@ describe('WatchTask', function () {
     });
 
     it.skip('should reload browser', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       spy(task.browserSyncInstance, 'reload');
 
       return expect(
@@ -199,7 +199,7 @@ describe('WatchTask', function () {
   /** @test {WatchTask#handleServerChange} */
   describe('#handleServerChange', function () {
     it('should do nothing while pushing', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       task._handlingChange = true;
 
       return expect(
@@ -212,7 +212,7 @@ describe('WatchTask', function () {
     });
 
     it.skip('should do nothing when handling node that was just pushed', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       task._lastPushed = 'ns=13;s=Test';
 
       return expect(
@@ -223,7 +223,7 @@ describe('WatchTask', function () {
     });
 
     it.skip('should pull changed nodes', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
 
       return expect(
         task.handleServerChange({ nodeId: 'ns=13;s=Test', mtime: new Date() }),
@@ -236,21 +236,21 @@ describe('WatchTask', function () {
   /** @test {WatchTask#run} */
   describe('#run', function () {
     it('should fail if file watcher errors', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       task.startFileWatcher = () => Promise.reject(new Error('Test'));
 
       return expect(task.run(), 'to be rejected with', 'Test');
     });
 
     it('should fail if server watcher errors', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       task.startServerWatcher = () => Promise.reject(new Error('Test'));
 
       return expect(task.run(), 'to be rejected with', 'Test');
     });
 
     it('should init browser sync', function () {
-      const task = new StubWatchTask();
+      const task = new StubWatchTask({});
       stub(task.browserSyncInstance, 'init').callsFake(() => {
         task.browserSyncInstance.emitter.emit('service:running', true);
       });
