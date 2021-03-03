@@ -1,7 +1,7 @@
 import Emitter from 'events';
 import proxyquire from 'proxyquire';
 import { obj as createThroughStream } from 'through2';
-import { spy, stub } from 'sinon';
+import { spy } from 'sinon';
 import expect from '../../expect';
 import watch, { WatchTask } from '../../../src/tasks/watch';
 import NodeId from '../../../src/lib/model/opcua/NodeId';
@@ -64,13 +64,6 @@ const stubWatch = stubModule.default;
 
 /** @test {WatchTask} */
 describe('WatchTask', function () {
-  /** @test {WatchTask#constructor} */
-  describe('#constructor', function () {
-    it('should create a new browser-sync instance', function () {
-      expect(new WatchTask({}).browserSyncInstance, 'to be defined');
-    });
-  });
-
   /** @test {WatchTask#_waitForWatcher} */
   describe('#_waitForWatcher', function () {
     it('should be rejected on error', function () {
@@ -140,17 +133,6 @@ describe('WatchTask', function () {
     });
   });
 
-  /** @test {WatchTask#initBrowserSync} */
-  describe('#initBrowserSync', function () {
-    it('should call BrowserSync#init', function () {
-      const task = new WatchTask({});
-      stub(task.browserSyncInstance, 'init').returns(true);
-
-      task.initBrowserSync();
-      expect(task.browserSyncInstance.init, 'was called once');
-    });
-  });
-
   /** @test {WatchTask#handleFileChange} */
   describe('#handleFileChange', function () {
     it.skip('should not do anything when lately pulled files change', function () {
@@ -182,17 +164,6 @@ describe('WatchTask', function () {
         'to be fulfilled with',
         true
       );
-    });
-
-    it.skip('should reload browser', function () {
-      const task = new StubWatchTask({});
-      spy(task.browserSyncInstance, 'reload');
-
-      return expect(
-        task.handleFileChange('./path.file', './src', { mtime: new Date(Date.now()) }),
-        'to be fulfilled with',
-        true
-      ).then(() => expect(task.browserSyncInstance.reload, 'was called once'));
     });
   });
 
@@ -247,17 +218,6 @@ describe('WatchTask', function () {
       task.startServerWatcher = () => Promise.reject(new Error('Test'));
 
       return expect(task.run(), 'to be rejected with', 'Test');
-    });
-
-    it('should init browser sync', function () {
-      const task = new StubWatchTask({});
-      stub(task.browserSyncInstance, 'init').callsFake(() => {
-        task.browserSyncInstance.emitter.emit('service:running', true);
-      });
-
-      return expect(task.run(), 'to be fulfilled').then(() =>
-        expect(task.browserSyncInstance.init, 'was called once')
-      );
     });
   });
 });
