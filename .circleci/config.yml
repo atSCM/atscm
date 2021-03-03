@@ -284,7 +284,7 @@ workflows:
             - build
       - unit-tests:
           requires:
-            - install-deps
+            - build
             - start-testserver
       - test-coverage:
           requires:
