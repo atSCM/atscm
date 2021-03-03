@@ -16,7 +16,7 @@
   "scripts": {
     "format": "prettier .",
     "lint": "eslint --ignore-path .gitignore . --ext .js,.ts",
-    "preinstall": "node ./scripts/pnpm-only.js",
+    "preinstall": "node ./scripts/preinstall.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "update-monorepo": "sucrase-node scripts/update-monorepo.ts"
   },
