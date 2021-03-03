@@ -152,8 +152,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - packages/atscm/out
-            - packages/create-atscm/out
+            - packages/*/out
 
   docs:
     executor: atscm/node
