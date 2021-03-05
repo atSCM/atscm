@@ -63,7 +63,7 @@ const StubWatchTask = stubModule.WatchTask;
 const stubWatch = stubModule.default;
 
 /** @test {WatchTask} */
-describe('WatchTask', function () {
+describe.skip('WatchTask', function () {
   /** @test {WatchTask#_waitForWatcher} */
   describe('#_waitForWatcher', function () {
     it('should be rejected on error', function () {
@@ -223,7 +223,7 @@ describe('WatchTask', function () {
 });
 
 /** @test {watch} */
-describe('watch', function () {
+describe.skip('watch', function () {
   it('should export a function', function () {
     expect(watch, 'to be a', 'function');
   });
