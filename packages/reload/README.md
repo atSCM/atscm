@@ -22,7 +22,7 @@ async function start() {
     port: 3000,
   });
 
-  // Then, later, call reload to reload all browsers
+  // Then, later, call reload to reload all connected browsers
   setTimeout(() => reload(), 5000);
 }
 
