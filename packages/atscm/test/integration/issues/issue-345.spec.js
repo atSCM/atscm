@@ -7,7 +7,7 @@ import { importSetup, pull, deleteNode } from '../../helpers/atscm';
 
 describe('Issue #345 (https://github.com/atSCM/atscm/issues/345)', function () {
   const setup = 'issue-345';
-  let nodeIds;
+  let nodeIds = [];
 
   it('pull should not error on empty script', async function () {
     const nodeNames = await importSetup(setup, 'EmptyScript');
