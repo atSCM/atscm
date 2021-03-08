@@ -17,7 +17,7 @@ describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function () {
   context('when pulling XML with `>` in attribute value', function () {
     const setup = 'issue-330/original';
     let nodeNames;
-    let nodeIds;
+    let nodeIds = [];
     let destination;
 
     before('Import setup', async function () {
@@ -45,7 +45,7 @@ describe('Issue #330 (https://github.com/atSCM/atscm/issues/330)', function () {
   context('when attribute is renamed', function () {
     const setup = 'issue-330/fixed';
     let nodeNames;
-    let nodeIds;
+    let nodeIds = [];
     let destination;
 
     before('Import setup', async function () {
