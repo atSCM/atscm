@@ -137,7 +137,7 @@ jobs:
           command: echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
       - run:
           name: Starting atserver in google cloud
-          command: gcloud compute instances start instance-1 --project=atscm-ci --zone=us-central1-f
+          command: gcloud compute instances start instance-2 --project=atscm-ci --zone=us-central1-a
 
   build:
     executor: atscm/node
