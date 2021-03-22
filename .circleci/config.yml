@@ -193,7 +193,6 @@ jobs:
   unit-tests:
     executor: atscm/node
     working_directory: ~/project/packages/atscm
-    parallelism: 4
     steps:
       - atscm/attach
       - run:
