@@ -193,6 +193,8 @@ jobs:
   unit-tests:
     executor: atscm/node
     working_directory: ~/project/packages/atscm
+    environment:
+      ATSCM_PROJECT__PORT__OPC: 4843
     steps:
       - atscm/attach
       - run:
