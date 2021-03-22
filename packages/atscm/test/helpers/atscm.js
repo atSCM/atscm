@@ -54,14 +54,16 @@ async function setupPath(path) {
   const name = basename(path, '.xml');
   const regExp = new RegExp(`${name}@(.+).xml`);
 
+  let versioned;
   for (const file of await fsp.readdir(dir)) {
     const [, version] = file.match(regExp) || [];
+
     if (version && lte(version, await getAtserverVersion())) {
-      return join(dir, file);
+      versioned = join(dir, file);
     }
   }
 
-  return fallback;
+  return versioned || fallback;
 }
 
 export async function importSetup(name, ...rename) {
