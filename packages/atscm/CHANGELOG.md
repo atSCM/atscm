@@ -1,5 +1,16 @@
-<a name="1.5.1"></a>
-## 1.5.1 (2021-02-19)
+<a name="1.5.2"></a>
+## 1.5.2 (2021-03-23)
+
+
+### Bug Fixes
+
+* **atscm:** Support atserver 3.5.2 ([#453](https://github.com/atSCM/atscm/issues/453)) ([a9d5a3a](https://github.com/atSCM/atscm/commits/a9d5a3a))
+
+
+
+
+<a name="atscm-v1.5.1"></a>
+# atscm-v1.5.1 (2021-02-19)
 
 
 ### Bug Fixes
