@@ -282,7 +282,7 @@ export function expectCorrectMapping(setup, node) {
   const originalNames = [].concat(node.name);
   let nodeNames;
   let nodePaths;
-  let nodeIds;
+  let nodeIds = [];
   let destination;
 
   before(`import setup and pull ${setup}`, async function () {

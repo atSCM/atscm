@@ -75,4 +75,10 @@ This repository is structured as a [pnpm workspace](https://pnpm.js.org/en/works
   >
   > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/create-atscm#readme) · [npm](https://www.npmjs.com/package/create-atscm)
 
+- [@atscm/reload](./packages/reload) A proxy used to reload a browser window as changes occur
+
+  > ![npm](https://img.shields.io/npm/v/@atscm/reload?logo=npm)
+  >
+  > [GitHub](https://github.com/atSCM/atscm/tree/master/packages/reload#readme) · [npm](https://www.npmjs.com/package/@atscm/reload)
+
 <!-- END packages -->

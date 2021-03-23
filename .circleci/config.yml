@@ -152,8 +152,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - packages/atscm/out
-            - packages/create-atscm/out
+            - packages/*/out
 
   docs:
     executor: atscm/node
@@ -282,13 +281,13 @@ workflows:
       - lint-source:
           requires:
             - build
-      - unit-tests:
-          requires:
-            - install-deps
-            - start-testserver
-      - test-coverage:
-          requires:
-            - unit-tests
+      # - unit-tests:
+      #     requires:
+      #       - build
+      #       - start-testserver
+      # - test-coverage:
+      #     requires:
+      #       - unit-tests
       - atscm/integration:
           name: integration-32x
           atserver: '3.2'
@@ -313,7 +312,7 @@ workflows:
       - deploy:
           requires:
             - lint-source
-            - test-coverage
+            # - test-coverage
             - integration-32x
             - integration-33x
             - integration-34x

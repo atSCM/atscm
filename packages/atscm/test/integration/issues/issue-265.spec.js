@@ -9,7 +9,7 @@ describe('Issue #265 (https://github.com/atSCM/atscm/issues/265)', function () {
   const setup = 'issue-265';
   const originalName = 'conflicting-nodes';
 
-  let nodeIds;
+  let nodeIds = [];
 
   const catchErrorLog = () => {};
 
